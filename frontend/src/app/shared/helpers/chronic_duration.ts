@@ -64,6 +64,7 @@ export interface ChronicDurationOptions {
   limitToHours?:boolean;
   weeks?:boolean;
   units?:number;
+  hoursOnly?:boolean;
 }
 
 type Dividers = Partial<Record<DurationUnit, string>> & { pluralize?:boolean; keepZero?:boolean};
@@ -282,6 +283,11 @@ export function parseChronicDuration(string:string, opts:ChronicDurationOptions 
 // Given an integer and an optional format,
 // returns a formatted string representing elapsed time
 export function outputChronicDuration(seconds:number, opts:ChronicDurationOptions = {}):string|null {
+  if (opts.hoursOnly) {
+    const hours = Math.round(seconds / 3600);
+    return `${hours}h`;
+  }
+
   const units:Record<DurationUnit, number> = {
     years: 0,
     months: 0,
