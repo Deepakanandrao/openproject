@@ -284,7 +284,12 @@ export function parseChronicDuration(string:string, opts:ChronicDurationOptions 
 // returns a formatted string representing elapsed time
 export function outputChronicDuration(seconds:number, opts:ChronicDurationOptions = {}):string|null {
   if (opts.hoursOnly) {
-    const hours = Math.round(seconds / 3600);
+    const decimalHours = seconds / 3600;
+    const hours = Math.floor(decimalHours);
+    if (decimalHours % 1 !== 0) {
+      const minutes = Math.round((decimalHours % 1) * 60);
+      return `${hours}h ${minutes}m`;
+    }
     return `${hours}h`;
   }
 
