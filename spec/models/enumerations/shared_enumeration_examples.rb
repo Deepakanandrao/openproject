@@ -1,4 +1,6 @@
-#-- copyright
+# frozen_string_literal: true
+
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -24,38 +26,28 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
 require "spec_helper"
 
-require Rails.root.join("spec/models/enumerations/shared_enumeration_examples").to_s
-
-RSpec.describe TimeEntryActivity do
-  let(:new_activity) { described_class.new }
-  let(:saved_activity) { described_class.create name: "Design" }
-
-  it "is an enumeration" do
-    expect(new_activity)
-      .to be_a(Enumeration)
+RSpec.shared_context "enumeration validation" do |default_supported| # rubocop:disable RSpec/ContextWording
+  let(:enumeration) do
+    super()
+  rescue NoMethodError
+    raise "'enumeration' let needs to be set"
   end
 
-  describe "#objects_count" do
-    it "represents the count of time entries of that activity" do
-      expect { create(:time_entry, activity: saved_activity) }
-        .to change(saved_activity, :objects_count)
-              .from(0)
-              .to(1)
+  describe "#valid?" do
+    if default_supported
+      context "with the enumeration being inactive and default" do
+        it "is invalid", :aggregate_failures do
+          enumeration.active = false
+          enumeration.is_default = true
+
+          expect(enumeration.valid?).to be false
+          expect(enumeration.errors.symbols_for(:is_default)).to contain_exactly(:active_required)
+        end
+      end
     end
-  end
-
-  describe "#option_name" do
-    it "is enumeration_activities" do
-      expect(new_activity.option_name)
-        .to eq :enumeration_activities
-    end
-  end
-
-  it_behaves_like "enumeration validation", false do
-    let(:enumeration) { build_stubbed(:time_entry_activity) }
   end
 end

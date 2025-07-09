@@ -44,6 +44,7 @@ class Enumeration < ApplicationRecord
             uniqueness: { scope: %i(type project_id),
                           case_sensitive: false }
   validates :name, length: { maximum: 256 }
+  validate :default_is_active, if: -> { self.class.can_have_default_value? }
 
   scope :shared, -> { where(project_id: nil) }
   scope :active, -> { where(active: true) }
@@ -172,5 +173,11 @@ class Enumeration < ApplicationRecord
 
   def check_integrity
     raise "Can't delete enumeration" if in_use?
+  end
+
+  def default_is_active
+    if is_default? && !active?
+      errors.add(:is_default, :active_required)
+    end
   end
 end

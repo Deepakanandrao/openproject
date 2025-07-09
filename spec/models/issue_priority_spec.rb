@@ -29,11 +29,17 @@
 #++
 require "spec_helper"
 
+require_relative "enumerations/shared_enumeration_examples"
+
 RSpec.describe IssuePriority do
   shared_let(:priority) { create(:priority) }
   shared_let(:default_priority) { create(:default_priority) }
 
   let(:stubbed_priority) { build_stubbed(:priority) }
+
+  it_behaves_like "enumeration validation", true do
+    let(:enumeration) { build_stubbed(:priority) }
+  end
 
   describe ".ancestors" do
     it "is an enumeration" do
