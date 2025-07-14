@@ -242,4 +242,30 @@ RSpec.describe ApplicationHelper do
       ERR
     end
   end
+
+  describe "#link_to_content_update" do
+    let(:options) { { controller: "work_packages", action: "show", id: 10 } }
+
+    subject { link_to_content_update("Пакет работ", options, html_options) }
+
+    context "without html_options" do
+      let(:html_options) { {} }
+
+      it "renders with 'target=\"_top\"'" do
+        expect(subject).to be_html_eql %{
+          <a target="_top" href="/work_packages/10">Пакет работ</a>
+        }
+      end
+    end
+
+    context "with html_options" do
+      let(:html_options) { { aria: { label: "Работайте усердно!", current: "page" } } }
+
+      it "renders with 'target=\"_top\"'" do
+        expect(subject).to be_html_eql %{
+          <a target="_top" aria-label="Работайте усердно!" aria-current="page" href="/work_packages/10">Пакет работ</a>
+        }
+      end
+    end
+  end
 end

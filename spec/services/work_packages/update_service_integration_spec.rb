@@ -159,7 +159,7 @@ RSpec.describe WorkPackages::UpdateService, "integration", type: :model do
 
     describe "time_entries" do
       let!(:time_entries) do
-        create_list(:time_entry, 2, project:, work_package:)
+        create_list(:time_entry, 2, project:, entity: work_package)
       end
 
       it "moves the time entries along" do

@@ -597,6 +597,26 @@ RSpec.describe "Primerized work package relations tab",
         relations_tab.relatable_action_menu(child_wp).click
         relations_tab.expect_relatable_delete_button(child_wp)
       end
+
+      it "does not show the option add new relations except for child" do
+        scroll_to_element relations_panel
+
+        wait_for_network_idle
+
+        tabs.expect_counter("relations", 8)
+
+        # The menu is shown as the user can add a child
+        relations_tab.expect_add_relation_button
+        relations_tab.open_add_relation_action_menu
+
+        # Expect options to add children
+        relations_tab.expect_new_relation_type("Parent")
+        relations_tab.expect_new_relation_type("Child")
+        relations_tab.expect_no_new_relation_type("Related To")
+
+        # .. but no sub menu for further relations
+        relations_tab.expect_no_add_menu_sub_menu
+      end
     end
   end
 end

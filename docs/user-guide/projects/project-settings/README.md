@@ -30,3 +30,4 @@ In OpenProject you can customize your project settings. To do this, open a proje
 | [Activities (time tracking)](activities-time-tracking) | Activate or deactivate Activities (for time tracking) in a project. |
 | [Backlogs settings](backlogs-settings)                 | Manage backlogs settings for a project.                      |
 | [Files](files)                                         | Manage the storages connected to the project, add project folders and activate manual attachment uploads. |
+

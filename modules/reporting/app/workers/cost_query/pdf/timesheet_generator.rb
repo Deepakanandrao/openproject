@@ -220,11 +220,12 @@ class CostQuery::PDF::TimesheetGenerator
   end
 
   def build_table_subject_cell(entry)
-    return "" if entry.work_package.nil?
+    return "" if entry.entity.nil?
+    return "" unless entry.entity.is_a?(WorkPackage)
 
-    href = url_helpers.work_package_url(entry.work_package)
+    href = url_helpers.work_package_url(entry.entity)
     {
-      content: "#{make_link_href(href, "##{entry.work_package.id}")} #{entry.work_package.subject || ''}",
+      content: "#{make_link_href(href, "##{entry.entity.id}")} #{entry.entity.subject || ''}",
       inline_format: true
     }
   end

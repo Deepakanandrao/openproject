@@ -19,8 +19,8 @@ RSpec.describe "Cost report showing my own times", :js do
     build(:cost_entry,
           cost_type:,
           project:,
-          work_package:,
-          spent_on: Date.today,
+          entity: work_package,
+          spent_on: Date.current,
           units: "10",
           user:,
           comments: "foobar")

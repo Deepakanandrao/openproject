@@ -92,7 +92,7 @@ module WorkPackage::PDFExport::Export::Wp::Attributes
     # QueryGroup are relative to our work package, so we need to adjust the filter
     group.query.filters.each do |filter|
       if filter.respond_to?(:has_templated_value?) && filter.has_templated_value?
-        group.query.filters[0].values = [work_package.id]
+        filter.values = [work_package.id]
       end
     end
   end

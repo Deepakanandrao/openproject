@@ -95,6 +95,6 @@ See COPYRIGHT and LICENSE files for more details.
     </div>
   </div>
   <% if paginated? %>
-    <%= helpers.pagination_links_full(model, pagination_options) %>
+    <%= helpers.pagination_links_full(model, **pagination_options) %>
   <% end %>
 <% end %>

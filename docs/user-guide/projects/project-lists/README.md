@@ -27,20 +27,20 @@ Your projects can be available publicly or internally. OpenProject does not limi
 
 There are several ways to get an overview of all your projects. You can press the **Project lists** button at the bottom of the **Select a project** menu in the top left header navigation. You can search through the projects or use the **Favorites** button to find your projects quicker.
 
-![project lists button](Project-list-button.png)
+!["Project lists" button at the bottom of the All projects dropdown menu in the header navigation of Openproject](openproject_userguide_projects_project_lists_button.png)
 
 > [!TIP]
 > If you have already selected a project, the **x** icon next to that project will navigate you away from that selected project. 
 
-![Close an already selected project](openproject_user_guide_project_project_list.png)
+![Icon to close an already selected project in the All projects dropdown menu in OpenProject](openproject_user_guide_project_project_list_x.png)
 
 Alternatively, you can use the [**Global modules menu**](../../home/global-modules/#projects) and select *Projects*. You can access that menu either on the left side of the OpenProject application homepage or by using the grid menu icon in the top right corner.
 
-![Select all projects from the global modules menu in OpenProject](view_all_projects_options.png)
+![Select all projects from the global modules menu on the left side menu in OpenProject](openproject_user_guide_project_project_lists_project_global_module.png)
 
 You will then get a list of all your active projects in OpenProject.
 
-![A list of all projects in OpenProject](openproject_user_guide_project_lists.png)
+![A list of all projects in OpenProject](openproject_user_guide_project_project_lists_overview.png)
 
 ### Project lists view explained
 
@@ -50,7 +50,14 @@ Each project is displayed in a single line, starting with the **Favorite** colum
 
 ![Open a project description in the project lists view in OpenProject](expand-link-project-description.png)
 
-With the horizontal **three dots** icon on the right side of the list you can open **further features**, such as [creating a new subproject](../#create-a-subproject), [project settings](../project-settings), [add a project to favorites](../../project-overview/#mark-a-project-as-favorite), [archiving a project](../#archive-a-project), [copying](../#copy-a-project) and [deleting a project](../#delete-a-project). Please note that you have to be a System Administrator in OpenProject to access these features. Find out how to un-archive projects [here](../#archive-a-project).
+With the horizontal **three dots** icon on the right side of the list you can open **further features**, 
+such as [creating a new subproject](../#create-a-subproject), [project settings](../project-settings), 
+[add a project to favorites](../../project-overview/#mark-a-project-as-favorite), 
+[archiving a project](../project-settings/project-information/#archive-a-project), 
+[copying](../project-settings/project-information/#copy-a-project) and 
+[deleting a project](../project-settings/project-information/#delete-a-project). 
+Please note that you have to be a System Administrator in OpenProject to access these features. 
+Find out how to un-archive projects [here](../project-settings/project-information/#archive-a-project).
 
 ![new subproject project list](new-subproject-project-list.png)
 

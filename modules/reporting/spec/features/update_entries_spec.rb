@@ -38,7 +38,7 @@ RSpec.describe "Updating entries within the cost report", :js do
   let!(:time_entry_user) do
     create(:time_entry,
            user:,
-           work_package:,
+           entity: work_package,
            project:,
            hours: 5)
   end
@@ -51,7 +51,7 @@ RSpec.describe "Updating entries within the cost report", :js do
 
   let!(:cost_entry_user) do
     create(:cost_entry,
-           work_package:,
+           entity: work_package,
            project:,
            units: 3.00,
            cost_type:,

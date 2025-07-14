@@ -114,7 +114,7 @@ describe('wpTablePagination Directive', () => {
         app.pagination = new PaginationInstance(1, 11, 10);
         app.update();
         fixture.detectChanges();
-        expect(pageString(element)).toEqual('(1 - 10/11)');
+        expect(pageString(element)).toEqual('(1 - 10/11)');
       }));
 
     describe('"next" link', () => {
@@ -143,7 +143,7 @@ describe('wpTablePagination Directive', () => {
         const element = jQuery(fixture.elementRef.nativeElement);
 
         function numberOfPageNumberLinks() {
-          return element.find('button[rel="next"]').length;
+          return element.find('button[data-rel="next"]').length;
         }
 
         app.pagination = new PaginationInstance(1, 1, 10);

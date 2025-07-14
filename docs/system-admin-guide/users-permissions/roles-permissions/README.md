@@ -50,7 +50,7 @@ A user can have one or more roles which grant permissions on different levels.
 
 ### Non-member
 
-**Non member** is the default role of users of your OpenProject instance who have not been added to a project. This only applies if the project has been set as [public](../../../user-guide/projects/#set-a-project-to-public) in the project settings.
+**Non member** is the default role of users of your OpenProject instance who have not been added to a project. This only applies if the project has been set as [public](../../../user-guide/projects/project-settings/project-information/#make-a-project-public) in the project settings.
 
 > [!NOTE]
 > The *Non-member* role cannot be deleted.

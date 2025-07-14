@@ -49,13 +49,10 @@ Here you can update the information and **save** your changes. If you're changin
 
 ## Profile settings
 
-Within the **Settings** on **Account settings** page you can change the language of OpenProject, adapt the time zone, select which display mode you would like to activate and change the order in which comments are displayed in the **Activity list** for work packages.
-
-Also, you can activate a **warning if you are leaving a work package with unsaved changes**.
-
-Additionally, you can activate to **auto-hide success notifications** from the system. This (only) means that the green pop-up success notifications will be removed automatically after five seconds.
+Within the **Settings** on **Account settings** page you can change the language of OpenProject and adapt the time zone.
 
 ![OpenProject personal account settings](openproject_account_settings_settings.png)
+
 
 ### Change your language
 
@@ -63,27 +60,41 @@ To change the language in OpenProject, navigate to the **Account settings** and 
 
 Here you can choose between multiple languages.
 
-OpenProject is translated to more than 30 languages, like German, Chinese, French, Italian, Korean, Latvian, Lithuanian, Polish, Portuguese, Russian, Spanish, Turkish and many more. If you do not see your preferred language in the My account settings, the language needs to be activated by your system administrator in the [system's settings](../../system-admin-guide/system-settings/languages/).
+OpenProject is translated to more than 30 languages, like German, Chinese, French, Italian, Korean, Latvian, Lithuanian, Polish, Portuguese, Russian, Spanish, Turkish and many more. If you do not see your preferred language in your account settings, the language needs to be activated by your system administrator in the [system's settings](../../system-admin-guide/system-settings/languages/).
 
-Pressing the blue **Save** button will save your changes.
+Pressing the **Save** button will save your changes.
 
 If you want to help us to add further languages or to add the translations in your language, you can contribute to the CrowdIn translations project [here](https://crowdin.com/project/openproject).
 
 ### Change your time zone
 
-You can choose a time zone in which you work and how the comments and changes will be saved.
+You can choose a time zone in which you work from the dropdown menu of the respective field.
 
-Pressing the blue **Save** button will save your changes.
+Pressing the **Save** button will save your changes.
 
-### Select the high contrast color mode
+## Interface
 
-In the dropdown menu **Mode** you can pick the color mode. The default setting is the **Light mode**. You can also select the **Light high contrast mode**, which will significantly increase the contrast and override the color theme of the OpenProject instance for you.
+Under **Interface** section of project settings you can adjust the color mode, activate alerts and adjust backlog settings. Settings here are grouped into three sections: *Look and feel*, *Alerts* and *Backlogs module*.
+
+### Look and feel
+
+In the **Look and feel** section under **Interface** in your profile settings (accessible via the left-hand menu), you can select your preferred display mode and adjust the order in which comments appear in the **Activity list** for work packages.
+
+You can also **disable keyboard shortcuts** . This is useful if you rely on a screen reader or want to avoid triggering actions by accident.
+
+Click **Update look and feel** to save your changes.
+
+!["Look and feel" section under Interface settings in OpenProject account settings](openproject_account_settings_interface_look_and_feel.png)
+
+#### Select the high contrast color mode
+
+In the dropdown menu **Color mode** you can pick the color mode. The default setting is the **Light mode**. You can also select the **Light high contrast mode**, which will significantly increase the contrast and override the color theme of the OpenProject instance for you.
 
 This mode is recommended for users with visuals impairment.
 
 ![High contrast mode in OpenProject account settings](openproject_account_settings_settings_light_high_contrast_mode.png)
 
-### Select the dark mode
+#### Select the dark mode
 
 In the dropdown menu **Mode** you can pick the color mode. The default setting is the **Light mode**. You can also select the **Dark mode**, which will change the color theme of the OpenProject instance for you.
 
@@ -92,17 +103,32 @@ In the dropdown menu **Mode** you can pick the color mode. The default setting i
 
 ![Dark mode in OpenProject account settings](openproject_account_settings_dark_mode.png)
 
-### Change the order to display comments
+#### Change the order to display comments
 
 You can select the order of the comments (for example of the comments for a work package which appear in the Activity tab). You can select the **newest at the bottom** or **newest on top** to display the comments.
 
 If you choose newest on top, the latest comment will appear on top in the Activity list.
 
+#### Disable keyboard shortcuts
+
+If you use a screen reader or want to avoid accidentally triggering an action with a  shortcut, you can choose to disable default [keyboard shortcuts](../../user-guide/keyboard-shortcuts-access-keys/) by selecting the respective option.
+
+### Alerts
+Under **Alerts** section you can activate a **warning if you are leaving a work package with unsaved changes**.
+
+Additionally, you can activate to **auto-hide success notifications** from the system. This (only) means that the green pop-up success notifications will be removed automatically after five seconds.
+
+![Alerts section under interface settings in OpenProject account settings](openproject_account_settings_interface_alerts.png)
+
 ### Backlogs settings
 
 There are two personal settings available for the [Backlogs module](../../user-guide/backlogs-scrum/):
+
 **Task color**: Here you can enter the color in which your tasks on the task board (on the Backlogs page) are displayed. Tasks on the task board are color-coded based on who they are assigned to. Every user has a default color assigned but if you prefer a different color, you can change it.
+
 **Show versions folded**: When you navigate to the "Backlogs" module in a project, the available versions (e.g. Product backlog, Sprints) are displayed. By default they are expanded, i.e. all work packages included in those versions are shown right away. If you have a large number of versions that are shown on the "Backlogs" page, you may opt to collapse them by default. This way you see all the versions on a page and can then choose to expand those versions for which you want to see details.
+
+![Backlogs settings under Interface settings in OpenProject account settings](openproject_account_settings_interface_backlogs_module.png)
 
 ## Change password
 
@@ -114,7 +140,7 @@ Enter your current password.
 
 Enter your new password and confirm it a second time.
 
-Press the blue **Save** button in order to confirm the password changes.
+Press the **Save** button in order to confirm the password changes.
 
 > [!NOTE]
 > You cannot reset your Google password in OpenProject. If you authenticate with a Google/Gmail account, please go to your Google account administration in order to change your password.
@@ -218,6 +244,13 @@ Create a new token by clicking the **+RSS token** button. This will create your 
 
 ![OpenProject RSS token](openproject_account_settings_access_tokens_rss.png)
 
+### File storages
+
+File Storage tokens connect your OpenProject instance with an external File Storage. If you have not yet logged into any of the file storages activated for your instance, this list will be empty. You can delete tokens by clicking on the **Delete** icon.
+
+![File storages access tokens under Account settings in OpenProject](openproject_account_settings_access_tokens_file_storages.png)
+
+
 ## Sessions management
 
 To view and manage your OpenProject sessions navigate to **Account settings** and choose **Sessions management** from the menu.
@@ -264,7 +297,7 @@ You can also opt-in to receive **email alerts for other items (that are not work
 - **Wiki page added** - ...adds a new [Wiki page](../../user-guide/wiki/)
 - **Wiki page updated** - ...updates a [Wiki page](../../user-guide/wiki/)
 - **Membership added** - ...adds you to a new [Work package](../../getting-started/work-packages-introduction/)
-- **Membership updates** - ...updates your membership associations
+- **Membership updated** - ...updates your membership associations
 
 ## Set an avatar
 

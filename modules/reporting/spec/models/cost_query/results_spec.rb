@@ -33,8 +33,8 @@ RSpec.describe CostQuery, :reporting_query_helper do
     create(:admin)
     project = create(:project_with_types)
     work_package = create(:work_package, project:)
-    create(:time_entry, work_package:, project:)
-    create(:cost_entry, work_package:, project:)
+    create(:time_entry, entity: work_package, project:)
+    create(:cost_entry, entity: work_package, project:)
   end
 
   minimal_query

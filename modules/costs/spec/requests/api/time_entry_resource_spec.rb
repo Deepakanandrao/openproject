@@ -358,7 +358,7 @@ RSpec.describe "API v3 time_entry resource" do
     context "when start- & end-time tracking is disabled", with_settings: { allow_tracking_start_and_end_times: false } do
       context "when start and end time were tracked" do
         let!(:time_entry) do
-          create(:time_entry, :with_start_and_end_time, project:, work_package:, user: current_user)
+          create(:time_entry, :with_start_and_end_time, project:, entity: work_package, user: current_user)
         end
 
         it "does not include start and end time fields" do
@@ -557,7 +557,7 @@ RSpec.describe "API v3 time_entry resource" do
       let(:additional_setup) { -> { existing_ongoing_time_entry } }
 
       let(:existing_ongoing_time_entry) do
-        create(:time_entry, ongoing: true, project:, work_package:, user: current_user)
+        create(:time_entry, ongoing: true, project:, entity: work_package, user: current_user)
       end
 
       let(:params) do

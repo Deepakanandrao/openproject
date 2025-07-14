@@ -16,7 +16,9 @@ A project in OpenProject can be understood as a project as defined above. Also, 
 
 </div>
 
-> **Note**: In order to see a project and work in it, you have to be a [member of the project](../invite-members).
+>  [!NOTE]
+>
+> In order to see a project and work in it, you have to be a [member of the project](../invite-members).
 
 | Topic                                                   | Content                                                      |
 | ------------------------------------------------------- | ------------------------------------------------------------ |
@@ -60,7 +62,7 @@ To create a new project, click the green button **+ Project** directly on the sy
 - You can either create a completely new project, a subproject of an existing project or a (sub)project from a template. For the latter option, choose a [template](../../user-guide/projects/project-templates/#create-a-project-template) using the drop-down menu.
 - Enter a **name** for your project and click the **Create** button.
 - Integrate the project into the existing project hierarchy by defining it as a subproject of an existing project.
-- The **Advanced Settings** allow for further configuration, e.g. description, URL, etc.
+- The **Advanced settings** allow for further configuration, e.g. description, URL, etc.
 
 ![Name and create a new project in OpenProject](openproject_getting_started_new_project_form.png)
 
@@ -84,6 +86,6 @@ You will see a list with all your projects and their details.
 
 ![Projects overview list in OpenProject](openproject_getting_started_project_lists_overview.png)
 
-## Advanced Project Settings
+## Advanced project settings
 
 In our detailed user guide you can find out how to configure further [advanced project settings](../../user-guide/projects/) for your projects, e.g. description, project hierarchy or setting it to public.

@@ -116,6 +116,12 @@ module Components
         end
       end
 
+      def expect_no_add_menu_sub_menu
+        within(add_relation_action_menu) do
+          expect(page).to have_no_link("add_relation_sub_menu", wait: 1)
+        end
+      end
+
       def open_add_relation_action_menu
         return if add_relation_action_menu.visible?
 

@@ -7,9 +7,9 @@
           class="op-pagination--item-link op-pagination--item-link_prev"
           type="button"
           (click)="showPage(pagination.page - 1)"
-          rel="prev start"
-          [attr.aria-label]="text.label_previous">
-          &#60;
+          data-rel="prev">
+          <svg chevron-left-icon size="xsmall" class="op-pagination--item-link-icon op-pagination--item-link-icon_prev" />
+          {{text.label_previous}}
         </button>
       </li>
 
@@ -20,11 +20,15 @@
             class="op-pagination--item-link"
             type="button"
             (click)="showPage(pageNumber)"
-            rel="next"
+            data-rel="prev"
+            [attr.aria-label]="text.page_number(pageNumber)"
             [textContent]="pageNumber"
           ></button>
         </li>
-        <li class="op-pagination--space">…</li>
+        <li class="op-pagination--space">
+          <span class="sr-only" [textContent]="text.pages_skipped"></span>
+          <span aria-hidden="true">…</span>
+        </li>
       </ng-container>
 
       <ng-container *ngIf="pageNumbers.length > 1">
@@ -34,7 +38,7 @@
           <em
             *ngIf="pageNumber === pagination.page"
             [attr.aria-label]="text.page_number(pageNumber)"
-            aria-current="true"
+            aria-current="page"
             tabindex="0">
             {{ pageNumber }}
           </em>
@@ -43,12 +47,15 @@
             type="button"
             *ngIf="pageNumber !== pagination.page"
             (click)="showPage(pageNumber)"
-            rel="next"
+            data-rel="next"
             [attr.aria-label]="text.page_number(pageNumber)"
             [textContent]="pageNumber"
           ></button>
         </li>
-        <li *ngIf="postPageNumbers.length" class="op-pagination--space" role="separator">…</li>
+        <li class="op-pagination--space">
+          <span class="sr-only" [textContent]="text.pages_skipped"></span>
+          <span aria-hidden="true">…</span>
+        </li>
       </ng-container>
 
       <ng-container *ngIf="postPageNumbers.length">
@@ -57,7 +64,8 @@
             class="op-pagination--item-link"
             type="button"
             (click)="showPage(pageNumber)"
-            rel="next"
+            data-rel="next"
+            [attr.aria-label]="text.page_number(pageNumber)"
             [textContent]="pageNumber"
           ></button>
         </li>
@@ -66,20 +74,20 @@
       <li [hidden]="!(pagination.total && pagination.page < pageNumbers[pageNumbers.length - 1])"
           class="op-pagination--item">
         <button
+          class="op-pagination--item-link op-pagination--item-link_next"
           type="button"
           (click)="showPage(pagination.page + 1)"
-          rel="next"
-          class="op-pagination--item-link op-pagination--item-link_next"
-          [attr.aria-label]="text.label_next">
-          &#62;
+          data-rel="next">
+          {{text.label_next}}
+          <svg chevron-right-icon size="xsmall" class="op-pagination--item-link-icon op-pagination--item-link-icon_next" />
         </button>
       </li>
-      <li class="op-pagination--range">
-        <span [textContent]="currentRange"></span>
+      <li class="op-pagination--range" aria-live="polite">
+        {{currentRange}}
         <span *ngIf="pageNumbers.length === 1"
           id="op-pagination-empty-text"
           tabindex="0"
-          class="hidden-for-sighted"
+          class="sr-only"
           [textContent]="text.no_other_page"></span>
       </li>
       <li class="op-pagination--info"
@@ -97,22 +105,20 @@
         role="presentation">
         <li
           class="op-pagination--label"
-          [attr.aria-label]="text.per_page"
           [textContent]="text.per_page">
         </li>
         <li
           *ngFor="let perPageOption of perPageOptions"
           class="op-pagination--item"
           [ngClass]="{ 'op-pagination--item_current': perPageOption === pagination.perPage }">
-          <span *ngIf="perPageOption !== pagination.perPage">
-            <button
-              class="op-pagination--item-link"
-              type="button"
-              (click)="selectPerPage(perPageOption)"
-              [textContent]="perPageOption"
-              [attr.aria-label]="text.show_per_page(perPageOption)"
-            ></button>
-          </span>
+          <button
+            *ngIf="perPageOption !== pagination.perPage"
+            class="op-pagination--item-link"
+            type="button"
+            (click)="selectPerPage(perPageOption)"
+            [textContent]="perPageOption"
+            [attr.aria-label]="text.show_per_page(perPageOption)"
+          ></button>
           <span *ngIf="perPageOption === pagination.perPage"
             tabindex="0"
             aria-current="true"

@@ -28,11 +28,81 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
+class OpenProjectNameSchema < Scimitar::Schema::Base
+  def self.scim_attributes
+    @scim_attributes ||= [
+      Scimitar::Schema::Attribute.new(name: "familyName",
+                                      caseExact: false,
+                                      type: "string",
+                                      required: true),
+      Scimitar::Schema::Attribute.new(name: "givenName",
+                                      caseExact: false,
+                                      type: "string",
+                                      required: true)
+    ]
+  end
+end
+
+class OpenProjectNameComplexType < Scimitar::ComplexTypes::Base
+  set_schema OpenProjectNameSchema
+end
+
 module ScimitarSchemaExtension
-  def scim_attributes
-    super + [Scimitar::Schema::Attribute.new(name: "externalId",
-                                             type: "string",
-                                             caseExact: true,
-                                             required: true)]
+  module Group
+    def scim_attributes
+      [
+        Scimitar::Schema::Attribute.new(name: "displayName",
+                                        type: "string",
+                                        required: true),
+        Scimitar::Schema::Attribute.new(name: "members",
+                                        multiValued: true,
+                                        complexType: Scimitar::ComplexTypes::ReferenceMember,
+                                        mutability: "readWrite"),
+        Scimitar::Schema::Attribute.new(name: "externalId",
+                                        type: "string",
+                                        uniqueness: "server",
+                                        caseExact: true,
+                                        required: true),
+        Scimitar::Schema::Attribute.new(name: "id",
+                                        caseExact: true,
+                                        type: "string",
+                                        uniqueness: "server",
+                                        mutability: "readOnly")
+      ]
+    end
+  end
+
+  module User
+    def scim_attributes
+      [
+        Scimitar::Schema::Attribute.new(name: "userName",
+                                        type: "string",
+                                        uniqueness: "server",
+                                        required: true),
+        Scimitar::Schema::Attribute.new(name: "name",
+                                        complexType: OpenProjectNameComplexType,
+                                        required: true),
+        Scimitar::Schema::Attribute.new(name: "active",
+                                        type: "boolean"),
+        Scimitar::Schema::Attribute.new(name: "emails",
+                                        multiValued: true,
+                                        complexType: Scimitar::ComplexTypes::Email,
+                                        required: true),
+        Scimitar::Schema::Attribute.new(name: "groups",
+                                        multiValued: true,
+                                        complexType: Scimitar::ComplexTypes::ReferenceGroup,
+                                        mutability: "readOnly"),
+        Scimitar::Schema::Attribute.new(name: "externalId",
+                                        type: "string",
+                                        uniqueness: "server",
+                                        caseExact: true,
+                                        required: true),
+        Scimitar::Schema::Attribute.new(name: "id",
+                                        caseExact: true,
+                                        type: "string",
+                                        uniqueness: "server",
+                                        mutability: "readOnly")
+      ]
+    end
   end
 end

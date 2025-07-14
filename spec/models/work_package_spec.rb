@@ -321,12 +321,12 @@ RSpec.describe WorkPackage do
     let!(:time_entry1) do
       create(:time_entry,
              project:,
-             work_package:)
+             entity: work_package)
     end
     let!(:time_entry2) do
       create(:time_entry,
              project:,
-             work_package:)
+             entity: work_package)
     end
 
     before do
@@ -651,7 +651,7 @@ RSpec.describe WorkPackage do
     end
 
     it "has already the work_package assigned" do
-      expect(stub_work_package.add_time_entry.work_package).to eq(stub_work_package)
+      expect(stub_work_package.add_time_entry.entity).to eq(stub_work_package)
     end
 
     it "returns an unsaved entry" do

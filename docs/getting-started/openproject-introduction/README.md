@@ -103,10 +103,10 @@ Create and manage project budgets, track and evaluate time and costs. Have custo
 
 Document project achievements, lessons learned, best practices and easily summarize the main results of a project. Archive projects for later reference and lessons learned.
 
-| Features        | Documentation for                                            |
-| --------------- | ------------------------------------------------------------ |
-| [Wiki](../../user-guide/wiki/create-edit-wiki/)            | Document all relevant project information, lessons learned, best practices, results, and more. |
-| [Project archive](../../user-guide/projects/#archive-a-project) | Archive your project for further reference and documentation. |
+| Features                                                                                             | Documentation for                                            |
+|------------------------------------------------------------------------------------------------------| ------------------------------------------------------------ |
+| [Wiki](../../user-guide/wiki/create-edit-wiki/)                                                      | Document all relevant project information, lessons learned, best practices, results, and more. |
+| [Project archive](../../user-guide/projects/project-settings/project-information/#archive-a-project) | Archive your project for further reference and documentation. |
 
 ## OpenProject products
 

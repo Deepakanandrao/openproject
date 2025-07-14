@@ -174,7 +174,7 @@ You can archive a project directly from the project overview page. To do that cl
 > [!NOTE]
 > This option is always available to instance and project administrators. It can also be activated for specific roles by enabling the *archive_project* permission for that role via the [Roles and permissions page](../../system-admin-guide/users-permissions/roles-permissions/) in the administrator settings.
 
-You can also archive a project under [project settings](../projects/#archive-a-project) or in a [projects list](../projects/project-lists/). 
+You can also archive a project under [project settings](../projects/project-settings/project-information/#archive-a-project) or in a [projects list](../projects/project-lists/). 
 
 ## Widgets
 

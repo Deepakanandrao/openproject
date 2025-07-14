@@ -191,7 +191,7 @@ $arrow-left-width: 36px
   z-index: 1
   background: var(--main-menu-bg-color)
   padding: 0
-  height: calc(var(--main-menu-item-height) + 10px)
+  height: var(--main-menu-item-height)
 
   .main-menu--arrow-left-to-project:not(.Button)
     display: inline-block
@@ -233,8 +233,8 @@ a.main-menu--parent-node:not(.Button)
   ul.menu_root
     flex-grow: 1
 
-    > li,
-    .main-menu-item
+    > li:not(.partial),
+    .main-menu-item:not(.partial)
       margin-bottom: 2px
 
     &.closed
@@ -257,8 +257,7 @@ a.main-menu--parent-node:not(.Button)
 
         .main-menu--children
           display: block
-          // Children header == 50px
-          height: calc(100% - 50px)
+          height: calc(100% - #{var(--main-menu-item-height)})
           overflow: auto
 
           li

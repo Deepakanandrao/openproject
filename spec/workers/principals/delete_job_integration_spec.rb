@@ -110,7 +110,7 @@ RSpec.describe Principals::DeleteJob, type: :model do
                project: work_package.project,
                units: 100.0,
                spent_on: Time.zone.today,
-               work_package:,
+               entity: work_package,
                comments: "")
       end
 

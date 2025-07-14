@@ -38,10 +38,10 @@ Rails.application.config.to_prepare do
   )
 
   Scimitar::Schema::User.singleton_class.class_eval do
-    prepend ScimitarSchemaExtension
+    prepend ScimitarSchemaExtension::User
   end
 
   Scimitar::Schema::Group.singleton_class.class_eval do
-    prepend ScimitarSchemaExtension
+    prepend ScimitarSchemaExtension::Group
   end
 end

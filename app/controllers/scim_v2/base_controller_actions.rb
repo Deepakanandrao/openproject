@@ -89,6 +89,33 @@ module ScimV2
 
         all_possible_attributes - excluded_attributes - excluded_parents
       end
+
+      def raise_result_errors_for_scim(result)
+        result.on_failure do |result|
+          if uniqueness_error?(result)
+            raise Scimitar::ErrorResponse.new(
+              status: 409,
+              scimType: "uniqueness",
+              detail: "Operation failed due to a uniqueness constraint: #{result.message}"
+            )
+          elsif authorization_error?(result)
+            raise Scimitar::ErrorResponse.new(
+              status: 403,
+              detail: "Action forbidden: insufficient permissions."
+            )
+          else
+            raise result.message
+          end
+        end
+      end
+
+      def uniqueness_error?(result)
+        result.errors.any? { |e| e.type == :taken }
+      end
+
+      def authorization_error?(result)
+        result.errors.any? { |e| e.type == :error_unauthorized }
+      end
     end
   end
 end

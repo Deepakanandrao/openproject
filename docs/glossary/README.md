@@ -383,7 +383,7 @@ A project template in OpenProject is defined as a dummy project to copy and adju
 
 ### Public project
 
-In OpenProject, projects can be private or public. Public means that the project is visible to any user, regardless of project [membership](#member). The visibility of a project can be changed in the project settings. [Read how to set a project to public in OpenProject](../user-guide/projects/#set-a-project-to-public).
+In OpenProject, projects can be private or public. Public means that the project is visible to any user, regardless of project [membership](#member). The visibility of a project can be changed in the project settings. [Read how to set a project to public in OpenProject](../user-guide/projects/project-settings/project-information/#make-a-project-public).
 
 ## Q
 

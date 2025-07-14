@@ -135,7 +135,7 @@ RSpec.describe "Work Package timer", :js, :selenium do
     context "when an old timer exists" do
       let!(:active_timer) do
         Timecop.travel(2.days.ago) do
-          create(:time_entry, project:, work_package: work_package_a, user:, ongoing: true)
+          create(:time_entry, project:, entity: work_package_a, user:, ongoing: true)
         end
       end
 
