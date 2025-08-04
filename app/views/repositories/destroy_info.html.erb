@@ -60,7 +60,9 @@ See COPYRIGHT and LICENSE files for more details.
       <div class="danger-zone--verification">
         <input type="text">
         <%= styled_button_tag project_repository_path(@project),
-                              turbo_method: :delete,
+                              data: {
+                                turbo_method: :delete,
+                              },
                               title: t(:button_delete),
                               disabled: true,
                               class: "-primary" do %>
