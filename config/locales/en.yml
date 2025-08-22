@@ -364,6 +364,7 @@ en:
     errors:
       defined: "must not be defined."
       int?: "must be an integer."
+      decimal?: "must be a decimal."
       filled?: "must be filled."
       greater_or_equal_zero: "must be greater or equal to 0."
       not_found: "not found."

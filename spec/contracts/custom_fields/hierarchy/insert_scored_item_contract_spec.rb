@@ -23,14 +23,14 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
 require "rails_helper"
 
-RSpec.describe CustomFields::Hierarchy::InsertItemContract do
+RSpec.describe CustomFields::Hierarchy::InsertScoredItemContract do
   subject { described_class.new }
 
   # rubocop:disable Rails/DeprecatedActiveModelErrorsMethods
@@ -38,7 +38,7 @@ RSpec.describe CustomFields::Hierarchy::InsertItemContract do
     let(:parent) { create(:hierarchy_item) }
 
     context "when all required fields are valid" do
-      let(:params) { { parent:, label: "Valid Label" } }
+      let(:params) { { parent:, label: "Valid Label", score: 0.1337 } }
 
       it "is valid" do
         result = subject.call(params)
@@ -48,7 +48,7 @@ RSpec.describe CustomFields::Hierarchy::InsertItemContract do
 
     context "when parent is not of type 'Item'" do
       let(:invalid_parent) { create(:custom_field) }
-      let(:params) { { parent: invalid_parent, label: "Valid Label" } }
+      let(:params) { { parent: invalid_parent, label: "Valid Label", score: 0.1337 } }
 
       it "is invalid" do
         result = subject.call(params)
@@ -58,11 +58,9 @@ RSpec.describe CustomFields::Hierarchy::InsertItemContract do
     end
 
     context "when label is not unique within the same hierarchy level" do
-      before do
-        create(:hierarchy_item, parent:, label: "Duplicate Label")
-      end
+      let(:params) { { parent:, label: "Duplicate Label", score: 0.1337 } }
 
-      let(:params) { { parent:, label: "Duplicate Label" } }
+      before { create(:hierarchy_item, parent:, label: "Duplicate Label", score: 0.1337) }
 
       it "is invalid" do
         result = subject.call(params)
@@ -97,42 +95,21 @@ RSpec.describe CustomFields::Hierarchy::InsertItemContract do
       end
     end
 
-    context "when short is not unique in the same hierarchy level" do
-      let(:params) { { parent:, label: "Valid Label", short: "Repeated Short" } }
-
-      before { create(:hierarchy_item, parent:, label: "Unique Label", short: "Repeated Short") }
+    context "when score is not a decimal value" do
+      let(:params) { { parent:, label: "Valid Label", score: "pi" } }
 
       it "is invalid with localized validation errors" do
         result = subject.call(params)
         expect(result).to be_failure
-        expect(result.errors.to_h).to include(short: [I18n.t("dry_validation.errors.rules.short.not_unique")])
-      end
-    end
-
-    context "when short is set and is a string" do
-      let(:params) { { parent:, label: "Valid Label", short: "Valid Short" } }
-
-      it "is valid" do
-        result = subject.call(params)
-        expect(result).to be_success
-      end
-    end
-
-    context "when short is set and is not a string" do
-      let(:params) { { parent:, label: "Valid Label", short: 123 } }
-
-      it "is invalid" do
-        result = subject.call(params)
-        expect(result).to be_failure
-        expect(result.errors.to_h).to include(short: [I18n.t("dry_validation.errors.str?")])
+        expect(result.errors.to_h).to include(score: [I18n.t("dry_validation.errors.decimal?")])
       end
     end
 
     context "when inputs are valid" do
       it "creates a success result" do
         [
-          { parent:, label: "A label", short: "A shorthand" },
-          { parent:, label: "A label" }
+          { parent:, label: "A label", score: 0.1337 },
+          { parent:, label: "Another label", score: 1.47e12 }
         ].each { |params| expect(subject.call(params)).to be_success }
       end
     end
@@ -140,15 +117,15 @@ RSpec.describe CustomFields::Hierarchy::InsertItemContract do
     context "when inputs are invalid" do
       it "creates a failure result" do
         [
-          { parent:, label: "A label", short: "" },
-          { parent:, label: "A label", short: nil },
-          { parent:, label: "" },
-          { parent:, label: nil },
+          { parent:, label: "A label", score: "" },
+          { parent:, label: "A label", score: nil },
+          { parent:, label: "", score: 1.47e12 },
+          { parent:, label: nil, score: 1.47e12 },
           { parent: },
           { parent: nil },
-          { parent: nil, label: "A label" },
-          { parent: "parent", label: "A label" },
-          { parent: 42, label: "A label" }
+          { parent: nil, label: "A label", score: 1.47e12 },
+          { parent: "parent", label: "A label", score: 1.47e12 },
+          { parent: 42, label: "A label", score: 1.47e12 }
         ].each { |params| expect(subject.call(params)).to be_failure }
       end
     end
