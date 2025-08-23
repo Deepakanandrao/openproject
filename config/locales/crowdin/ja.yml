@@ -295,6 +295,7 @@ ja:
         placeholder:
           label: "アイテムラベル"
           short: "ショートネーム"
+          score: "Score"
       notice:
         remember_items_and_projects: "このカスタムフィールドの各タブに項目とプロジェクトを設定することを忘れないでください。"
       hierarchy:
@@ -1058,6 +1059,7 @@ ja:
         types: "ワークパッケージのタイプ"
         versions: "バージョン"
         work_packages: "ワークパッケージ"
+        workspace_type: "Workspace type"
       project_custom_field:
         is_required: "すべてのプロジェクトに必要"
         custom_field_section: セクション
@@ -3063,6 +3065,8 @@ ja:
   label_project_view_all: "全プロジェクトを表示"
   label_project_show_details: "プロジェクトの詳細を表示"
   label_project_hide_details: "プロジェクトの詳細を非表示"
+  label_portfolio: "Portfolio"
+  label_portfolio_new: "New portfolio"
   label_public_projects: "公開プロジェクト"
   label_query_new: "新しいクエリ"
   label_query_plural: "カスタムクエリ"
@@ -3211,6 +3215,8 @@ ja:
   label_watched_work_packages: "ウォッチしているワークパッケージ"
   label_what_is_this: "これは何ですか?"
   label_week: "週"
+  label_widget: "Widget"
+  label_widget_new: "New widget"
   label_wiki_content_added: "Wikiページが追加されました。"
   label_wiki_content_updated: "Wikiページが更新されました。"
   label_wiki_toc: "目次"
@@ -3556,6 +3562,7 @@ ja:
   permission_add_work_packages: "ワークパッケージの追加"
   permission_add_messages: "メッセージの投稿"
   permission_add_project: "プロジェクトの作成"
+  permission_add_portfolios: "Create portfolios"
   permission_add_work_package_attachments: "添付ファイルを追加"
   permission_add_work_package_attachments_explanation: "作業項目の編集権限なしで添付ファイルを追加できます"
   permission_add_internal_comments: "内部コメントの追加"

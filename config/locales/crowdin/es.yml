@@ -295,6 +295,7 @@ es:
         placeholder:
           label: "Etiqueta del elemento"
           short: "Nombre corto"
+          score: "Score"
       notice:
         remember_items_and_projects: "Recuerde configurar los artículos y proyectos en las pestañas respectivas para este campo personalizado."
       hierarchy:
@@ -1064,6 +1065,7 @@ es:
         types: "Tipos"
         versions: "Versiones"
         work_packages: "Paquetes de trabajo"
+        workspace_type: "Workspace type"
       project_custom_field:
         is_required: "Obligatorio para todos los proyectos"
         custom_field_section: Sección
@@ -3105,6 +3107,8 @@ es:
   label_project_view_all: "Ver todos los proyectos"
   label_project_show_details: "Mostrar los detalles del proyecto"
   label_project_hide_details: "Ocultar los detalles del proyecto"
+  label_portfolio: "Portfolio"
+  label_portfolio_new: "New portfolio"
   label_public_projects: "Proyectos públicos"
   label_query_new: "Nueva consulta"
   label_query_plural: "Consultas personalizadas"
@@ -3253,6 +3257,8 @@ es:
   label_watched_work_packages: "Paquetes de trabajos seguidos"
   label_what_is_this: "¿Qué es esto?"
   label_week: "Semana"
+  label_widget: "Widget"
+  label_widget_new: "New widget"
   label_wiki_content_added: "Página wiki añadida"
   label_wiki_content_updated: "Página wiki actualizada"
   label_wiki_toc: "Tabla de contenidos"
@@ -3599,6 +3605,7 @@ es:
   permission_add_work_packages: "Añadir paquetes de trabajo"
   permission_add_messages: "Publicar mensajes"
   permission_add_project: "Crear proyectos"
+  permission_add_portfolios: "Create portfolios"
   permission_add_work_package_attachments: "Añadir archivos adjuntos"
   permission_add_work_package_attachments_explanation: "Permite añadir archivos adjuntos sin el permiso Editar paquetes de trabajo"
   permission_add_internal_comments: "Escribir comentarios internos"

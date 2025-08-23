@@ -297,6 +297,7 @@ th:
         placeholder:
           label: "Item label"
           short: "Short name"
+          score: "Score"
       notice:
         remember_items_and_projects: "Remember to set items and projects in the respective tabs for this custom field."
       hierarchy:
@@ -1059,6 +1060,7 @@ th:
         types: "ประเภท"
         versions: "เวอร์ชั่น"
         work_packages: "ชุดภารกิจ"
+        workspace_type: "Workspace type"
       project_custom_field:
         is_required: "Required for all projects"
         custom_field_section: Section
@@ -3064,6 +3066,8 @@ th:
   label_project_view_all: "ดูโครงการทั้งหมด"
   label_project_show_details: "Show project details"
   label_project_hide_details: "Hide project details"
+  label_portfolio: "Portfolio"
+  label_portfolio_new: "New portfolio"
   label_public_projects: "โครงการสาธารณะ"
   label_query_new: "แบบสอบถามใหม่"
   label_query_plural: "แบบสอบถามแบบกำหนดเอง"
@@ -3212,6 +3216,8 @@ th:
   label_watched_work_packages: "เฝ้าดูชุดภารกิจ"
   label_what_is_this: "What is this?"
   label_week: "สัปดาห์"
+  label_widget: "Widget"
+  label_widget_new: "New widget"
   label_wiki_content_added: "เพิ่มหน้าวิกิแล้ว"
   label_wiki_content_updated: "ปรับปรุงหน้าวิกิแล้ว"
   label_wiki_toc: "สารบัญ"
@@ -3557,6 +3563,7 @@ th:
   permission_add_work_packages: "เพิ่มลำดับภารกิจ"
   permission_add_messages: "โพสต์ข้อความ"
   permission_add_project: "Create projects"
+  permission_add_portfolios: "Create portfolios"
   permission_add_work_package_attachments: "เพิ่มไฟล์แนบ"
   permission_add_work_package_attachments_explanation: "Allows adding attachments without Edit work packages permission"
   permission_add_internal_comments: "Write internal comments"

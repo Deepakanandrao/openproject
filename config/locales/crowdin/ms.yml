@@ -296,6 +296,7 @@ ms:
         placeholder:
           label: "Label item"
           short: "Nama pendek"
+          score: "Score"
       notice:
         remember_items_and_projects: "Ingat untuk menetapkan item dan projek dalam tab masing-masing untuk medan tersuai ini."
       hierarchy:
@@ -1057,6 +1058,7 @@ ms:
         types: "Jenis"
         versions: "Versi-versi"
         work_packages: "Pakej Kerja"
+        workspace_type: "Workspace type"
       project_custom_field:
         is_required: "Diperlukan untuk semua projek"
         custom_field_section: Bahagian
@@ -3062,6 +3064,8 @@ ms:
   label_project_view_all: "Lihat semua projek"
   label_project_show_details: "Paparkan butiran projek"
   label_project_hide_details: "Sembunyikan butiran projek"
+  label_portfolio: "Portfolio"
+  label_portfolio_new: "New portfolio"
   label_public_projects: "Projek awam"
   label_query_new: "Pertanyaan baharu"
   label_query_plural: "Pertanyaan tersuai"
@@ -3210,6 +3214,8 @@ ms:
   label_watched_work_packages: "Pakej kerja yang dipantau"
   label_what_is_this: "Apakah ini?"
   label_week: "Minggu"
+  label_widget: "Widget"
+  label_widget_new: "New widget"
   label_wiki_content_added: "Halaman wiki ditambah"
   label_wiki_content_updated: "Halaman wiki dikemas kini"
   label_wiki_toc: "Jadual Kandungan"
@@ -3554,6 +3560,7 @@ ms:
   permission_add_work_packages: "Tambah pakej kerja"
   permission_add_messages: "Pos mesej"
   permission_add_project: "Cipta projek"
+  permission_add_portfolios: "Create portfolios"
   permission_add_work_package_attachments: "Tambah lampiran"
   permission_add_work_package_attachments_explanation: "Benarkan penambahan lampiran tanpa kebenaran Edit pakej kerja"
   permission_add_internal_comments: "Write internal comments"

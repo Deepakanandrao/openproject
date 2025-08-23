@@ -293,6 +293,7 @@ id:
         placeholder:
           label: "Item label"
           short: "Short name"
+          score: "Score"
       notice:
         remember_items_and_projects: "Remember to set items and projects in the respective tabs for this custom field."
       hierarchy:
@@ -1055,6 +1056,7 @@ id:
         types: "Tipe"
         versions: "Versi"
         work_packages: "Paket-Penugasan"
+        workspace_type: "Workspace type"
       project_custom_field:
         is_required: "Required for all projects"
         custom_field_section: Bagian
@@ -3060,6 +3062,8 @@ id:
   label_project_view_all: "Lihat semua Project"
   label_project_show_details: "Tampilkan detail proyek"
   label_project_hide_details: "Sembunyikan detail proyek"
+  label_portfolio: "Portfolio"
+  label_portfolio_new: "New portfolio"
   label_public_projects: "Project untuk publik"
   label_query_new: "Queri baru"
   label_query_plural: "Kustom queri"
@@ -3208,6 +3212,8 @@ id:
   label_watched_work_packages: "Paket-Penugasan yang telah diakses"
   label_what_is_this: "What is this?"
   label_week: "Minggu"
+  label_widget: "Widget"
+  label_widget_new: "New widget"
   label_wiki_content_added: "Halaman Wiki ditambahkan"
   label_wiki_content_updated: "Halaman Wiki diupdate"
   label_wiki_toc: "Daftar isi"
@@ -3552,6 +3558,7 @@ id:
   permission_add_work_packages: "Tambah Paket-Penugasan"
   permission_add_messages: "Kirim pesan"
   permission_add_project: "Create projects"
+  permission_add_portfolios: "Create portfolios"
   permission_add_work_package_attachments: "Tambahkan lampiran"
   permission_add_work_package_attachments_explanation: "Allows adding attachments without Edit work packages permission"
   permission_add_internal_comments: "Write internal comments"

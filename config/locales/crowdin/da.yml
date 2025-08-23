@@ -295,6 +295,7 @@ da:
         placeholder:
           label: "Item label"
           short: "Short name"
+          score: "Score"
       notice:
         remember_items_and_projects: "Remember to set items and projects in the respective tabs for this custom field."
       hierarchy:
@@ -1065,6 +1066,7 @@ da:
         types: "Typer"
         versions: "Versioner"
         work_packages: "Arbejdspakker"
+        workspace_type: "Workspace type"
       project_custom_field:
         is_required: "Required for all projects"
         custom_field_section: Section
@@ -3106,6 +3108,8 @@ da:
   label_project_view_all: "Se alle projekter"
   label_project_show_details: "Show project details"
   label_project_hide_details: "Hide project details"
+  label_portfolio: "Portfolio"
+  label_portfolio_new: "New portfolio"
   label_public_projects: "Offentlige projekter"
   label_query_new: "Ny forespørgsel"
   label_query_plural: "Selvvalgte forespørgsler"
@@ -3254,6 +3258,8 @@ da:
   label_watched_work_packages: "Arbejdspakker, der er tilset"
   label_what_is_this: "What is this?"
   label_week: "Uge"
+  label_widget: "Widget"
+  label_widget_new: "New widget"
   label_wiki_content_added: "Wikiside tilføjet"
   label_wiki_content_updated: "Wikiside opdateret"
   label_wiki_toc: "Indholdsfortegnelse"
@@ -3601,6 +3607,7 @@ da:
   permission_add_work_packages: "Tilføj arbejdspakker"
   permission_add_messages: "Send beskeder"
   permission_add_project: "Create projects"
+  permission_add_portfolios: "Create portfolios"
   permission_add_work_package_attachments: "Add attachments"
   permission_add_work_package_attachments_explanation: "Allows adding attachments without Edit work packages permission"
   permission_add_internal_comments: "Write internal comments"

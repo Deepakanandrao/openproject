@@ -295,6 +295,7 @@ it:
         placeholder:
           label: "Etichetta elemento"
           short: "Abbreviazione"
+          score: "Score"
       notice:
         remember_items_and_projects: "Ricorda di impostare elementi e progetti nelle rispettive schede per questo campo personalizzato."
       hierarchy:
@@ -1064,6 +1065,7 @@ it:
         types: "Tipi"
         versions: "Versioni"
         work_packages: "Macro-attività"
+        workspace_type: "Workspace type"
       project_custom_field:
         is_required: "Richiesto per tutti i progetti"
         custom_field_section: Sezione
@@ -3105,6 +3107,8 @@ it:
   label_project_view_all: "Vedi tutti i progetti"
   label_project_show_details: "Mostra dettagli progetto"
   label_project_hide_details: "Nascondi dettagli progetto"
+  label_portfolio: "Portfolio"
+  label_portfolio_new: "New portfolio"
   label_public_projects: "Progetti pubblici"
   label_query_new: "Nuova query"
   label_query_plural: "Query personalizzate"
@@ -3253,6 +3257,8 @@ it:
   label_watched_work_packages: "Macro-attività osservate"
   label_what_is_this: "Cos'è questo?"
   label_week: "Settimana"
+  label_widget: "Widget"
+  label_widget_new: "New widget"
   label_wiki_content_added: "Pagina wiki aggiunta"
   label_wiki_content_updated: "Pagina wiki aggiornata"
   label_wiki_toc: "Sommario"
@@ -3600,6 +3606,7 @@ it:
   permission_add_work_packages: "Aggiungere macro-attività (work package)"
   permission_add_messages: "Postare messaggi"
   permission_add_project: "Crea progetti"
+  permission_add_portfolios: "Create portfolios"
   permission_add_work_package_attachments: "Aggiungi allegati"
   permission_add_work_package_attachments_explanation: "Consente di aggiungere allegati senza l'autorizzazione Modifica macro-attività"
   permission_add_internal_comments: "Scrivere commenti interni"

@@ -297,6 +297,7 @@ ko:
         placeholder:
           label: "항목 레이블"
           short: "짧은 이름"
+          score: "Score"
       notice:
         remember_items_and_projects: "이 사용자 지정 필드의 각 탭에서 항목과 프로젝트를 설정해야 합니다."
       hierarchy:
@@ -1059,6 +1060,7 @@ ko:
         types: "유형"
         versions: "버전"
         work_packages: "작업 패키지"
+        workspace_type: "Workspace type"
       project_custom_field:
         is_required: "모든 프로젝트에 필수"
         custom_field_section: 섹션
@@ -3064,6 +3066,8 @@ ko:
   label_project_view_all: "모든 프로젝트 보기"
   label_project_show_details: "프로젝트 세부 정보 표시"
   label_project_hide_details: "프로젝트 세부 정보 숨기기"
+  label_portfolio: "Portfolio"
+  label_portfolio_new: "New portfolio"
   label_public_projects: "공용 프로젝트"
   label_query_new: "새 쿼리"
   label_query_plural: "사용자 지정 쿼리"
@@ -3212,6 +3216,8 @@ ko:
   label_watched_work_packages: "주시하는 작업 패키지"
   label_what_is_this: "이게 뭐예요?"
   label_week: "주"
+  label_widget: "Widget"
+  label_widget_new: "New widget"
   label_wiki_content_added: "위키 페이지 추가됨"
   label_wiki_content_updated: "위키 페이지 업데이트됨"
   label_wiki_toc: "목차"
@@ -3556,6 +3562,7 @@ ko:
   permission_add_work_packages: "작업 패키지 추가"
   permission_add_messages: "메시지 게시"
   permission_add_project: "프로젝트 만들기"
+  permission_add_portfolios: "Create portfolios"
   permission_add_work_package_attachments: "첨부 파일 추가"
   permission_add_work_package_attachments_explanation: "작업 패키지 편집 권한 없이 첨부 파일 추가를 허용합니다."
   permission_add_internal_comments: "내부 코멘트 작성"

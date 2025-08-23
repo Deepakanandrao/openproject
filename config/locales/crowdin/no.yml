@@ -297,6 +297,7 @@
         placeholder:
           label: "Item label"
           short: "Short name"
+          score: "Score"
       notice:
         remember_items_and_projects: "Husk å angi elementer og prosjekter i de respektive fanene for dette egendefinerte feltet."
       hierarchy:
@@ -1066,6 +1067,7 @@
         types: "Typer"
         versions: "Versjoner"
         work_packages: "Arbeidspakker"
+        workspace_type: "Workspace type"
       project_custom_field:
         is_required: "Påkrevd for alle prosjekter"
         custom_field_section: Seksjon
@@ -3107,6 +3109,8 @@
   label_project_view_all: "Vis alle prosjekter"
   label_project_show_details: "Vis prosjektdetaljer"
   label_project_hide_details: "Skjul prosjektdetaljer"
+  label_portfolio: "Portfolio"
+  label_portfolio_new: "New portfolio"
   label_public_projects: "Offentlige prosjekter"
   label_query_new: "Ny spørring"
   label_query_plural: "Egendefinerte spørringer"
@@ -3255,6 +3259,8 @@
   label_watched_work_packages: "Overvåkede arbeidspakker"
   label_what_is_this: "Hva er dette?"
   label_week: "Uke"
+  label_widget: "Widget"
+  label_widget_new: "New widget"
   label_wiki_content_added: "Wiki-side lagt til"
   label_wiki_content_updated: "Wiki-side oppdatert"
   label_wiki_toc: "Innholdsfortegnelse"
@@ -3602,6 +3608,7 @@
   permission_add_work_packages: "Legg til arbeidspakker"
   permission_add_messages: "Skriv meldinger"
   permission_add_project: "Opprett prosjekt"
+  permission_add_portfolios: "Create portfolios"
   permission_add_work_package_attachments: "Legg til vedlegg"
   permission_add_work_package_attachments_explanation: "Tillater å legge til vedlegg uten å redigere arbeidspakke-tillatelse"
   permission_add_internal_comments: "Write internal comments"

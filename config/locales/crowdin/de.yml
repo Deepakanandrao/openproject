@@ -294,6 +294,7 @@ de:
         placeholder:
           label: "Elementbezeichnung"
           short: "Kurzname"
+          score: "Score"
       notice:
         remember_items_and_projects: "Denken Sie daran, Einträge und Projekte in den jeweiligen Registerkarten für dieses benutzerdefinierte Feld festzulegen."
       hierarchy:
@@ -1059,6 +1060,7 @@ de:
         types: "Typen"
         versions: "Versionen"
         work_packages: "Arbeitspakete"
+        workspace_type: "Workspace type"
       project_custom_field:
         is_required: "In allen Projekten erforderlich"
         custom_field_section: Abschnitt
@@ -3100,6 +3102,8 @@ de:
   label_project_view_all: "Alle Projekte anzeigen"
   label_project_show_details: "Projektdetails anzeigen"
   label_project_hide_details: "Projektdetails verstecken"
+  label_portfolio: "Portfolio"
+  label_portfolio_new: "New portfolio"
   label_public_projects: "Öffentliche Projekte"
   label_query_new: "Neuer Bericht"
   label_query_plural: "Benutzerdefinierte Berichte"
@@ -3248,6 +3252,8 @@ de:
   label_watched_work_packages: "Beobachtete Arbeitspakete"
   label_what_is_this: "Was ist das?"
   label_week: "Woche"
+  label_widget: "Widget"
+  label_widget_new: "New widget"
   label_wiki_content_added: "Die Wiki-Seite wurde erfolgreich hinzugefügt."
   label_wiki_content_updated: "Die Wiki-Seite wurde erfolgreich aktualisiert."
   label_wiki_toc: "Inhaltsverzeichnis"
@@ -3595,6 +3601,7 @@ de:
   permission_add_work_packages: "Arbeitspakete hinzufügen"
   permission_add_messages: "Forenbeiträge hinzufügen"
   permission_add_project: "Projekte erstellen"
+  permission_add_portfolios: "Create portfolios"
   permission_add_work_package_attachments: "Anhänge hinzufügen"
   permission_add_work_package_attachments_explanation: "Erlaubt das Hinzufügen von Anhängen ohne die Berechtigung, das Arbeitspaket selbst zu bearbeiten"
   permission_add_internal_comments: "Interne Kommentare schreiben"

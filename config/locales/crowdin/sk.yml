@@ -297,6 +297,7 @@ sk:
         placeholder:
           label: "Item label"
           short: "Short name"
+          score: "Score"
       notice:
         remember_items_and_projects: "Remember to set items and projects in the respective tabs for this custom field."
       hierarchy:
@@ -1083,6 +1084,7 @@ sk:
         types: "Typy"
         versions: "Verzie"
         work_packages: "Pracovné balíčky"
+        workspace_type: "Workspace type"
       project_custom_field:
         is_required: "Required for all projects"
         custom_field_section: Section
@@ -3196,6 +3198,8 @@ sk:
   label_project_view_all: "Zobraziť všetky projekty"
   label_project_show_details: "Zobraziť detaily projektu"
   label_project_hide_details: "Skryť detaily projektu"
+  label_portfolio: "Portfolio"
+  label_portfolio_new: "New portfolio"
   label_public_projects: "Verejné projekty"
   label_query_new: "Nový dopyt"
   label_query_plural: "Vlastné dopyty"
@@ -3344,6 +3348,8 @@ sk:
   label_watched_work_packages: "Pozorované pracovné balíčky"
   label_what_is_this: "Čo je to?"
   label_week: "Týždeň"
+  label_widget: "Widget"
+  label_widget_new: "New widget"
   label_wiki_content_added: "Wikistránka bola pridaná"
   label_wiki_content_updated: "Wikistránka bola aktualizovaná"
   label_wiki_toc: "Obsah"
@@ -3694,6 +3700,7 @@ sk:
   permission_add_work_packages: "Pridať pracovné balíky"
   permission_add_messages: "Publikovať správy"
   permission_add_project: "Create projects"
+  permission_add_portfolios: "Create portfolios"
   permission_add_work_package_attachments: "Pridať prílohy"
   permission_add_work_package_attachments_explanation: "Allows adding attachments without Edit work packages permission"
   permission_add_internal_comments: "Write internal comments"

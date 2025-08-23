@@ -294,6 +294,7 @@ nl:
         placeholder:
           label: "Item label"
           short: "Verkorte Naam"
+          score: "Score"
       notice:
         remember_items_and_projects: "Vergeet niet om items en projecten in te stellen op de respectievelijke tabbladen voor dit aangepaste veld."
       hierarchy:
@@ -1063,6 +1064,7 @@ nl:
         types: "Typen"
         versions: "Versies"
         work_packages: "Werkpakketten"
+        workspace_type: "Workspace type"
       project_custom_field:
         is_required: "Vereist voor alle projecten"
         custom_field_section: Sectie
@@ -3104,6 +3106,8 @@ nl:
   label_project_view_all: "Bekijk alle projecten"
   label_project_show_details: "Toon project details"
   label_project_hide_details: "Verberg project details"
+  label_portfolio: "Portfolio"
+  label_portfolio_new: "New portfolio"
   label_public_projects: "Publieke projecten"
   label_query_new: "Nieuwe query"
   label_query_plural: "Aangepaste query 's"
@@ -3252,6 +3256,8 @@ nl:
   label_watched_work_packages: "Gevolgde werkpakketten"
   label_what_is_this: "Wat is dit?"
   label_week: "Week"
+  label_widget: "Widget"
+  label_widget_new: "New widget"
   label_wiki_content_added: "Wiki-pagina toegevoegd"
   label_wiki_content_updated: "Wiki-pagina bijgewerkt"
   label_wiki_toc: "Inhoudsopgave"
@@ -3598,6 +3604,7 @@ nl:
   permission_add_work_packages: "Werkpakketten toevoegen"
   permission_add_messages: "Berichten posten"
   permission_add_project: "Projecten aanmaken"
+  permission_add_portfolios: "Create portfolios"
   permission_add_work_package_attachments: "Bijlagen toevoegen"
   permission_add_work_package_attachments_explanation: "Allows adding attachments without Edit work packages permission"
   permission_add_internal_comments: "Write internal comments"

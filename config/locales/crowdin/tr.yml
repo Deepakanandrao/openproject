@@ -297,6 +297,7 @@ tr:
         placeholder:
           label: "Öğe etiketi"
           short: "Kısa adı"
+          score: "Score"
       notice:
         remember_items_and_projects: "Bu özel alan için ilgili sekmelerde öğeleri ve projeleri ayarlamayı unutmayın."
       hierarchy:
@@ -1066,6 +1067,7 @@ tr:
         types: "Türler"
         versions: "Sürümler"
         work_packages: "İş Paketleri"
+        workspace_type: "Workspace type"
       project_custom_field:
         is_required: "Tüm projelerde zorunludur"
         custom_field_section: Bölüm
@@ -3107,6 +3109,8 @@ tr:
   label_project_view_all: "Tüm projeleri görüntüle"
   label_project_show_details: "Proje detaylarını göster"
   label_project_hide_details: "Proje detaylarını gizle"
+  label_portfolio: "Portfolio"
+  label_portfolio_new: "New portfolio"
   label_public_projects: "Genel Projeler"
   label_query_new: "Yeni Sorgu"
   label_query_plural: "Özel Sorgular"
@@ -3255,6 +3259,8 @@ tr:
   label_watched_work_packages: "Takip edilen iş paketleri"
   label_what_is_this: "Bu nedir?"
   label_week: "Hafta"
+  label_widget: "Widget"
+  label_widget_new: "New widget"
   label_wiki_content_added: "Viki sayfası eklendi"
   label_wiki_content_updated: "Wiki sayfası güncellendi"
   label_wiki_toc: "İçindekiler Tablosu"
@@ -3600,6 +3606,7 @@ tr:
   permission_add_work_packages: "İş paketi eklemek"
   permission_add_messages: "İleti göndermek"
   permission_add_project: "Proje oluşturma"
+  permission_add_portfolios: "Create portfolios"
   permission_add_work_package_attachments: "Dosya Ekle"
   permission_add_work_package_attachments_explanation: "Allows adding attachments without Edit work packages permission"
   permission_add_internal_comments: "Write internal comments"

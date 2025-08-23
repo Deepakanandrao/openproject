@@ -297,6 +297,7 @@ vi:
         placeholder:
           label: "Item label"
           short: "Short name"
+          score: "Score"
       notice:
         remember_items_and_projects: "Remember to set items and projects in the respective tabs for this custom field."
       hierarchy:
@@ -1059,6 +1060,7 @@ vi:
         types: "Các loại"
         versions: "Các phiên bản"
         work_packages: "Work Packages"
+        workspace_type: "Workspace type"
       project_custom_field:
         is_required: "Yêu cầu cho tất cả các dự án"
         custom_field_section: Phần
@@ -3064,6 +3066,8 @@ vi:
   label_project_view_all: "Xem tất cả các dự án"
   label_project_show_details: "Hiển thị chi tiết dự án"
   label_project_hide_details: "Ẩn chi tiết Dự án"
+  label_portfolio: "Portfolio"
+  label_portfolio_new: "New portfolio"
   label_public_projects: "Các dự án công khai"
   label_query_new: "Truy vấn mới"
   label_query_plural: "Truy vấn tùy chỉnh"
@@ -3212,6 +3216,8 @@ vi:
   label_watched_work_packages: "Các công việc đã xem"
   label_what_is_this: "Đây là gì?"
   label_week: "Tuần"
+  label_widget: "Widget"
+  label_widget_new: "New widget"
   label_wiki_content_added: "Đã thêm trang Wiki"
   label_wiki_content_updated: "Trang Wiki đã được cập nhật"
   label_wiki_toc: "Mục lục"
@@ -3557,6 +3563,7 @@ vi:
   permission_add_work_packages: "Thêm mới Gói công việc"
   permission_add_messages: "Đăng tin nhắn"
   permission_add_project: "Tạo dự án"
+  permission_add_portfolios: "Create portfolios"
   permission_add_work_package_attachments: "Thêm tệp đính kèm"
   permission_add_work_package_attachments_explanation: "Cho phép thêm tệp đính kèm mà không cần quyền chỉnh sửa gói công việc"
   permission_add_internal_comments: "Write internal comments"

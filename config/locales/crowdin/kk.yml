@@ -297,6 +297,7 @@ kk:
         placeholder:
           label: "Item label"
           short: "Short name"
+          score: "Score"
       notice:
         remember_items_and_projects: "Remember to set items and projects in the respective tabs for this custom field."
       hierarchy:
@@ -1067,6 +1068,7 @@ kk:
         types: "Types"
         versions: "Versions"
         work_packages: "Work Packages"
+        workspace_type: "Workspace type"
       project_custom_field:
         is_required: "Required for all projects"
         custom_field_section: Section
@@ -3108,6 +3110,8 @@ kk:
   label_project_view_all: "View all projects"
   label_project_show_details: "Show project details"
   label_project_hide_details: "Hide project details"
+  label_portfolio: "Portfolio"
+  label_portfolio_new: "New portfolio"
   label_public_projects: "Public projects"
   label_query_new: "New query"
   label_query_plural: "Custom queries"
@@ -3256,6 +3260,8 @@ kk:
   label_watched_work_packages: "Watched work packages"
   label_what_is_this: "What is this?"
   label_week: "Week"
+  label_widget: "Widget"
+  label_widget_new: "New widget"
   label_wiki_content_added: "Wiki page added"
   label_wiki_content_updated: "Wiki page updated"
   label_wiki_toc: "Table of Contents"
@@ -3603,6 +3609,7 @@ kk:
   permission_add_work_packages: "Add work packages"
   permission_add_messages: "Post messages"
   permission_add_project: "Create projects"
+  permission_add_portfolios: "Create portfolios"
   permission_add_work_package_attachments: "Add attachments"
   permission_add_work_package_attachments_explanation: "Allows adding attachments without Edit work packages permission"
   permission_add_internal_comments: "Write internal comments"

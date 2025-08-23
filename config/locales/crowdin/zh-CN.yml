@@ -294,6 +294,7 @@ zh-CN:
         placeholder:
           label: "项目标签"
           short: "短名"
+          score: "Score"
       notice:
         remember_items_and_projects: "请记住，在相应的选项卡中为此自定义字段设置条目和项目。"
       hierarchy:
@@ -1055,6 +1056,7 @@ zh-CN:
         types: "类型"
         versions: "版本"
         work_packages: "工作包"
+        workspace_type: "Workspace type"
       project_custom_field:
         is_required: "在所有项目中应用"
         custom_field_section: 单元
@@ -3060,6 +3062,8 @@ zh-CN:
   label_project_view_all: "查看所有项目"
   label_project_show_details: "显示项目详细信息"
   label_project_hide_details: "隐藏项目详细信息"
+  label_portfolio: "Portfolio"
+  label_portfolio_new: "New portfolio"
   label_public_projects: "公开项目"
   label_query_new: "新的查询"
   label_query_plural: "自定义查询"
@@ -3208,6 +3212,8 @@ zh-CN:
   label_watched_work_packages: "受关注的工作包"
   label_what_is_this: "这是什么?"
   label_week: "周"
+  label_widget: "Widget"
+  label_widget_new: "New widget"
   label_wiki_content_added: "添加维基页面"
   label_wiki_content_updated: "更新维基页面"
   label_wiki_toc: "目录"
@@ -3550,6 +3556,7 @@ zh-CN:
   permission_add_work_packages: "添加工作包"
   permission_add_messages: "发布消息"
   permission_add_project: "创建项目"
+  permission_add_portfolios: "Create portfolios"
   permission_add_work_package_attachments: "添加附件"
   permission_add_work_package_attachments_explanation: "允许在没有编辑工作包权限的情况下添加附件"
   permission_add_internal_comments: "写内部评论"

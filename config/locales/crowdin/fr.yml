@@ -297,6 +297,7 @@ fr:
         placeholder:
           label: "Étiquette de l'élément"
           short: "Nom abrégé"
+          score: "Score"
       notice:
         remember_items_and_projects: "N'oubliez pas de définir les éléments et les projets dans les onglets respectifs de ce champ personnalisé."
       hierarchy:
@@ -1065,6 +1066,7 @@ fr:
         types: "Types"
         versions: "Versions"
         work_packages: "Lots de Travaux"
+        workspace_type: "Workspace type"
       project_custom_field:
         is_required: "Requis pour tous les projets"
         custom_field_section: Section
@@ -3106,6 +3108,8 @@ fr:
   label_project_view_all: "Afficher tous les projets"
   label_project_show_details: "Afficher les détails du projet"
   label_project_hide_details: "Masquer les détails du projet"
+  label_portfolio: "Portfolio"
+  label_portfolio_new: "New portfolio"
   label_public_projects: "Projets publics"
   label_query_new: "Nouvelle requête"
   label_query_plural: "Requêtes personnalisées"
@@ -3254,6 +3258,8 @@ fr:
   label_watched_work_packages: "Lots de travaux suivis"
   label_what_is_this: "Qu'est-ce que c'est?"
   label_week: "Semaine"
+  label_widget: "Widget"
+  label_widget_new: "New widget"
   label_wiki_content_added: "Page wiki ajoutée"
   label_wiki_content_updated: "Page wiki mise à jour"
   label_wiki_toc: "Table des matières"
@@ -3601,6 +3607,7 @@ fr:
   permission_add_work_packages: "Ajouter des lots de travaux"
   permission_add_messages: "Poster des messages"
   permission_add_project: "Créer des projets"
+  permission_add_portfolios: "Create portfolios"
   permission_add_work_package_attachments: "Ajouter pièces jointes"
   permission_add_work_package_attachments_explanation: "Permet d'ajouter des pièces jointes sans avoir le droit de modifier les lots de travaux"
   permission_add_internal_comments: "Écrire des commentaires internes"

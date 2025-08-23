@@ -296,6 +296,7 @@ hu:
         placeholder:
           label: "Item label"
           short: "Short name"
+          score: "Score"
       notice:
         remember_items_and_projects: "Remember to set items and projects in the respective tabs for this custom field."
       hierarchy:
@@ -1066,6 +1067,7 @@ hu:
         types: "Típus"
         versions: "Verzió"
         work_packages: "Feladatcsoportok"
+        workspace_type: "Workspace type"
       project_custom_field:
         is_required: "Required for all projects"
         custom_field_section: Szekció
@@ -3107,6 +3109,8 @@ hu:
   label_project_view_all: "Minden projekt megtekintése"
   label_project_show_details: "Projekt részleteinek megjelenítése"
   label_project_hide_details: "Projekt részleteinek elrejtése"
+  label_portfolio: "Portfolio"
+  label_portfolio_new: "New portfolio"
   label_public_projects: "Nyilvános projektek"
   label_query_new: "Új lekérdezés"
   label_query_plural: "Egyéni lekérdezések"
@@ -3255,6 +3259,8 @@ hu:
   label_watched_work_packages: "Megfigyelt munkacsomagok"
   label_what_is_this: "Mi ez?"
   label_week: "Hét"
+  label_widget: "Widget"
+  label_widget_new: "New widget"
   label_wiki_content_added: "Wiki oldal hozzáadva"
   label_wiki_content_updated: "Wiki oldal frissítve"
   label_wiki_toc: "Tartalomjegyzék"
@@ -3601,6 +3607,7 @@ hu:
   permission_add_work_packages: "feladatcsoport hozzáadása"
   permission_add_messages: "Elküldött üzenetek"
   permission_add_project: "Projekt létrehozása"
+  permission_add_portfolios: "Create portfolios"
   permission_add_work_package_attachments: "Melléklet hozzáadása"
   permission_add_work_package_attachments_explanation: "Allows adding attachments without Edit work packages permission"
   permission_add_internal_comments: "Write internal comments"

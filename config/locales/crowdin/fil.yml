@@ -297,6 +297,7 @@ fil:
         placeholder:
           label: "Item label"
           short: "Short name"
+          score: "Score"
       notice:
         remember_items_and_projects: "Remember to set items and projects in the respective tabs for this custom field."
       hierarchy:
@@ -1067,6 +1068,7 @@ fil:
         types: "Mga uri"
         versions: "Mga bersyon"
         work_packages: "Ang mga pakete na ginawa"
+        workspace_type: "Workspace type"
       project_custom_field:
         is_required: "Required for all projects"
         custom_field_section: Section
@@ -3108,6 +3110,8 @@ fil:
   label_project_view_all: "Tingnan lahat ang mga proyekto"
   label_project_show_details: "Ipakita ang mga detalye ng proyekto"
   label_project_hide_details: "Itago ang mga detalye ng proyekto"
+  label_portfolio: "Portfolio"
+  label_portfolio_new: "New portfolio"
   label_public_projects: "Publikong proyekto"
   label_query_new: "Bagong query"
   label_query_plural: "Ang mga custom query"
@@ -3256,6 +3260,8 @@ fil:
   label_watched_work_packages: "Pinanuod na mga work package"
   label_what_is_this: "What is this?"
   label_week: "Linggo"
+  label_widget: "Widget"
+  label_widget_new: "New widget"
   label_wiki_content_added: "Ang idinagdag na wiking pahina"
   label_wiki_content_updated: "Naka-update na wiking pahina"
   label_wiki_toc: "Talaan ng Nilalamn"
@@ -3603,6 +3609,7 @@ fil:
   permission_add_work_packages: "Magdagdag ng mga work package"
   permission_add_messages: "Mga post na mensahe"
   permission_add_project: "Create projects"
+  permission_add_portfolios: "Create portfolios"
   permission_add_work_package_attachments: "Magdagdag ng mga nakalakip"
   permission_add_work_package_attachments_explanation: "Allows adding attachments without Edit work packages permission"
   permission_add_internal_comments: "Write internal comments"
