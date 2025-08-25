@@ -70,8 +70,13 @@ en:
         end_after: "Meeting series ends"
         end_date: "End date"
         iterations: "Occurrences"
+      meeting_participant:
+        invited: "Invited"
+        attended: "Attended"
     errors:
       models:
+        meeting_participant:
+          invalid_user: "%{name} is not a valid participant."
         recurring_meeting:
           must_cover_existing_meetings:
             one: "There is one open meeting in the series that is not covered by the new schedule. Adjust the schedule to include all existing meetings."

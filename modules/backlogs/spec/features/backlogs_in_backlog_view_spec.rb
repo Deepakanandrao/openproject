@@ -29,8 +29,7 @@
 require "spec_helper"
 require_relative "../support/pages/backlogs"
 
-RSpec.describe "Backlogs in backlog view", :js,
-               :selenium do
+RSpec.describe "Backlogs in backlog view", :js do
   let!(:project) do
     create(:project,
            types: [story, task],

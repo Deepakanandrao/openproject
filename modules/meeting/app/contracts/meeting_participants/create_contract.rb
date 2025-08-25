@@ -27,40 +27,32 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
+module MeetingParticipants
+  class CreateContract < ::ModelContract
+    attribute :meeting
+    attribute :user_id
+    attribute :invited
+    attribute :attended
 
-module Meetings
-  class CreateService < ::BaseServices::Create
-    protected
+    validate :user_can_see_meetings_in_project
+    validate :user_allowed_to_edit
 
-    def after_perform(call)
-      meeting = call.result
+    private
 
-      if call.success? && Journal::NotificationConfiguration.active? && meeting.notify?
-        meeting.participants.where(invited: true).each do |participant|
-          MeetingMailer
-            .invited(meeting, participant.user, User.current)
-            .deliver_later
-        end
+    def user_allowed_to_edit
+      return if model.meeting.nil?
+
+      unless user.allowed_in_project?(:edit_meetings, model.meeting.project)
+        errors.add(:base, :error_unauthorized)
       end
-
-      if call.success?
-        backlog = create_backlog(call.result)
-        call.merge!(backlog)
-      end
-
-      call
     end
 
-    def create_backlog(meeting)
-      MeetingSections::CreateService
-        .new(user: user)
-        .call(
-          {
-            meeting_id: meeting.id,
-            backlog: true,
-            title: I18n.t(:label_agenda_backlog)
-          }
-        )
+    def user_can_see_meetings_in_project
+      return if model.user.nil? || model.meeting.nil?
+
+      unless model.user.allowed_in_project?(:view_meetings, model.meeting.project)
+        errors.add(:user, :invalid_user, name: model.name)
+      end
     end
   end
 end

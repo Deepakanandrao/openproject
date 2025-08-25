@@ -27,40 +27,7 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
-
-module Meetings
-  class CreateService < ::BaseServices::Create
-    protected
-
-    def after_perform(call)
-      meeting = call.result
-
-      if call.success? && Journal::NotificationConfiguration.active? && meeting.notify?
-        meeting.participants.where(invited: true).each do |participant|
-          MeetingMailer
-            .invited(meeting, participant.user, User.current)
-            .deliver_later
-        end
-      end
-
-      if call.success?
-        backlog = create_backlog(call.result)
-        call.merge!(backlog)
-      end
-
-      call
-    end
-
-    def create_backlog(meeting)
-      MeetingSections::CreateService
-        .new(user: user)
-        .call(
-          {
-            meeting_id: meeting.id,
-            backlog: true,
-            title: I18n.t(:label_agenda_backlog)
-          }
-        )
-    end
+module MeetingParticipants
+  class SetAttributesService < BaseServices::SetAttributes
   end
 end
