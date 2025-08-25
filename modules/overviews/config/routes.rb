@@ -4,7 +4,9 @@ Rails.application.routes.draw do
   constraints(project_id: Regexp.new("(?!(#{Project::RESERVED_IDENTIFIERS.join('|')})$)(\\w|-)+"), format: :html) do
     scope "projects/:project_id", as: "project" do
       scope module: "overviews" do
-        resource :overview, path: "/", only: [:show]
+        resource :overview, path: "/", only: [:show] do
+          get :dashboard, on: :member
+        end
 
         controller :overviews do
           get "project_custom_fields_sidebar" => :project_custom_fields_sidebar, as: :custom_fields_sidebar

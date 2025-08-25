@@ -75,7 +75,7 @@ RSpec.describe Overviews::ShowComponent, type: :component do
   end
 
   it "renders widgets" do
-    expect(rendered_component).to have_element "opce-overview"
+    expect(rendered_component).to have_element "opce-dashboard"
   end
 
   context "when user is not allowed to manage" do

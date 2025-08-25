@@ -31,15 +31,15 @@ import { GridPageComponent } from 'core-app/shared/components/grids/grid/page/gr
 import { GRID_PROVIDERS } from 'core-app/shared/components/grids/grid/grid.component';
 
 @Component({
-  selector: 'overview',
+  selector: 'dashboard',
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: '../../shared/components/grids/grid/page/grid-page.component.html',
   styleUrls: ['../../shared/components/grids/grid/page/grid-page.component.sass'],
   providers: GRID_PROVIDERS,
   standalone: false,
 })
-export class OverviewComponent extends GridPageComponent {
+export class DashboardComponent extends GridPageComponent {
   protected gridScopePath():string {
-    return this.pathHelper.projectPath(this.currentProject.identifier ?? '');
+    return this.pathHelper.projectDashboardsPath(this.currentProject.identifier ?? '');
   }
 }

@@ -29,7 +29,7 @@
 import { NgModule } from '@angular/core';
 import { OpSharedModule } from 'core-app/shared/shared.module';
 import { OpenprojectGridsModule } from 'core-app/shared/components/grids/openproject-grids.module';
-import { OverviewComponent } from 'core-app/features/overview/overview.component';
+import { DashboardComponent } from 'core-app/features/overview/dashboard.component';
 
 @NgModule({
   imports: [
@@ -40,7 +40,7 @@ import { OverviewComponent } from 'core-app/features/overview/overview.component
   providers: [
   ],
   declarations: [
-    OverviewComponent,
+    DashboardComponent,
   ],
 })
 export class OpenprojectOverviewModule {} // eslint-disable-line @typescript-eslint/no-extraneous-class
