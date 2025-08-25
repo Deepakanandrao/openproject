@@ -29,7 +29,7 @@
 class BudgetsController < ApplicationController
   include AttachableServiceCall
 
-  before_action :find_budget, only: %i[show edit update copy destroy_info parent update_parent destroy_parent]
+  before_action :find_budget, only: %i[show edit update copy destroy_info]
   before_action :find_budgets, only: :destroy
   before_action :check_and_update_belonging_work_packages, only: :destroy
   before_action :find_project_by_project_id, only: %i[new create update_material_budget_item update_labor_budget_item]
@@ -47,12 +47,16 @@ class BudgetsController < ApplicationController
 
   helper :sort
   include SortHelper
+
   helper :projects
   include ProjectsHelper
+
   helper :attachments
   include AttachmentsHelper
+
   helper :costlog
   include CostlogHelper
+
   helper :budgets
   include BudgetsHelper
   include PaginationHelper
@@ -74,7 +78,6 @@ class BudgetsController < ApplicationController
 
   def show
     @edit_allowed = User.current.allowed_in_project?(:edit_budgets, @project)
-    @child_budget_relations = @budget.child_budget_relations.includes(child_budget: :project)
 
     respond_to do |format|
       format.html { render action: "show", layout: !request.xhr? }
@@ -195,35 +198,6 @@ class BudgetsController < ApplicationController
     end
   end
 
-  def parent
-    @parent_projects = @project.ancestors
-    @budget_candidates = Budget.visible(User.current).where(project_id: @parent_projects)
-
-    @parent_budget_relation = @budget.parent_budget_relation || BudgetRelation.new
-  end
-
-  def update_parent
-    parent_relation = @budget.parent_budget_relation || @budget.build_parent_budget_relation
-
-    if parent_relation.update(budget_relation_params)
-      flash[:notice] = t(:notice_successful_update)
-      redirect_to budget_path(@budget)
-    else
-      flash[:error] = t(:notice_failed_update)
-      render action: :parent, status: :unprocessable_entity
-    end
-  end
-
-  def destroy_parent
-    if @budget.parent_budget_relation.destroy
-      flash[:notice] = t(:notice_relation_destroyed)
-      redirect_to budget_path(@budget), method: :get
-    else
-      flash[:error] = t(:notice_failed_delete)
-      render action: :parent, status: :unprocessable_entity
-    end
-  end
-
   private
 
   def find_budget
@@ -263,10 +237,6 @@ class BudgetsController < ApplicationController
     end
 
     response
-  end
-
-  def budget_relation_params
-    params.expect(budget_relation: %i[parent_budget_id relation_type])
   end
 
   def default_budget_sort

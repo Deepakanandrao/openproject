@@ -46,18 +46,6 @@ class Budget < ApplicationRecord
   has_many :cost_entries, through: :work_packages
   has_many :time_entries, through: :work_packages
 
-  has_one :parent_budget_relation, class_name: "BudgetRelation",
-                                   foreign_key: "child_budget_id",
-                                   dependent: :destroy,
-                                   inverse_of: :child_budget
-
-  has_one :parent_budget, through: :parent_budget_relation, source: :parent_budget
-
-  has_many :child_budget_relations, class_name: "BudgetRelation",
-                                    foreign_key: "parent_budget_id",
-                                    dependent: :destroy,
-                                    inverse_of: :parent_budget
-
   include ActiveModel::ForbiddenAttributesProtection
 
   acts_as_attachable
@@ -68,16 +56,7 @@ class Budget < ApplicationRecord
                 url: Proc.new { |o| { controller: "budgets", action: "show", id: o.id } }
 
   validates :subject, :project, :author, :fixed_date, presence: true
-  validates :subject, length: { maximum: 255 }
-  validates :subject, length: { minimum: 1 }
-
-  enum :state, {
-    planned: "planned",
-    draft: "draft",
-    submitted: "submitted",
-    approved: "approved",
-    rejected: "rejected"
-  }, validate: { allow_nil: true }
+  validates :subject, length: { minimum: 1, maximum: 255 }
 
   class << self
     def visible(user)
@@ -99,8 +78,10 @@ class Budget < ApplicationRecord
     protected
 
     def copy_attributes(source)
-      source.attributes.slice("project_id", "subject", "description", "fixed_date", "state",
-                              "base_amount").merge("author" => User.current)
+      source
+        .attributes
+        .slice("project_id", "subject", "description", "fixed_date", "base_amount")
+        .merge("author" => User.current)
     end
 
     def copy_budget_items(source, sink, items:)
@@ -119,34 +100,7 @@ class Budget < ApplicationRecord
   end
 
   def budget
-    base_amount + material_budget + labor_budget + budget_added_by_children
-  end
-
-  def budget_added_by_children
-    # TODO: Efficient with query
-    @budget_added_by_children ||= child_budget_relations.add.includes(:child_budget).sum do |rel|
-      rel.child_budget.budget
-    end
-  end
-
-  def allocated_to_children
-    # TODO: Efficient with query
-    @allocated_to_children ||= child_budget_relations.includes(:child_budget).sum { |rel| rel.child_budget.budget }
-  end
-
-  def allocated_unused
-    allocated_to_children - spent_on_children
-  end
-
-  def spent_with_children
-    spent + spent_on_children
-  end
-
-  def spent_on_children
-    # TODO: Efficient with query
-    @spent_on_children ||= child_budget_relations.includes(:child_budget).sum do |rel|
-      rel.child_budget.spent_with_children
-    end
+    base_amount + material_budget + labor_budget
   end
 
   def type_label
@@ -161,9 +115,7 @@ class Budget < ApplicationRecord
   def budget_ratio
     return 0.0 if budget.nil? || budget == 0.0
 
-    gone = spent + allocated_to_children
-
-    ((gone / budget) * 100).round
+    ((spent / budget) * 100).round
   end
 
   def css_classes
@@ -215,7 +167,7 @@ class Budget < ApplicationRecord
   end
 
   def available
-    budget - spent - allocated_to_children
+    budget - spent
   end
 
   def new_material_budget_item_attributes=(material_budget_item_attributes)

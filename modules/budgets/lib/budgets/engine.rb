@@ -13,7 +13,7 @@ module Budgets
                    permissible_on: :project
         permission :edit_budgets,
                    {
-                     budgets: %i[index show edit update destroy destroy_info new create copy parent destroy_parent update_parent]
+                     budgets: %i[index show edit update destroy destroy_info new create copy]
                    },
                    permissible_on: :project
       end
@@ -72,7 +72,6 @@ module Budgets
         select Queries::Projects::Selects::BudgetSpent
         select Queries::Projects::Selects::BudgetSpentRatio
         select Queries::Projects::Selects::BudgetAvailable
-        select Queries::Projects::Selects::BudgetAllocated
       end
     end
   end

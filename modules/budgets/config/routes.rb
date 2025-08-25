@@ -36,9 +36,6 @@ Rails.application.routes.draw do
 
   resources :budgets, only: %i[show update destroy edit] do
     member do
-      get :parent
-      post :parent, to: "budgets#update_parent"
-      delete :parent, to: "budgets#destroy_parent"
       get :copy
       get :destroy_info
     end

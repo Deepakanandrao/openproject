@@ -149,7 +149,6 @@ RSpec.describe ProjectQuery do
                             budget_planned
                             budget_spent
                             budget_spent_ratio
-                            budget_allocated
                           ])
       end
     end
@@ -177,7 +176,6 @@ RSpec.describe ProjectQuery do
                             budget_available
                             budget_planned
                             budget_spent
-                            budget_allocated
                             budget_spent_ratio
                           ])
       end

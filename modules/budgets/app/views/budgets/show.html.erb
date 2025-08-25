@@ -48,21 +48,6 @@ See COPYRIGHT and LICENSE files for more details.
           value: extended_progress_bar(@budget.budget_ratio, width: "80px", legend: @budget.budget_ratio)
         )
         component.with_attribute(
-          key: Budget.human_attribute_name(:state),
-          value: @budget.state.present? ? I18n.t(@budget.state, scope: %i[activerecord attributes budget states]) : "-"
-        )
-        component.with_attribute(
-          key: Budget.human_attribute_name(:parent_budget),
-          value: if @budget.parent_budget_relation.present?
-                   link_to(
-                     "#{@budget.parent_budget.project.name}: #{@budget.parent_budget.subject} (#{I18n.t(@budget.parent_budget_relation.relation_type, scope: %i[activerecord attributes budget_relation relation_types])})",
-                     budget_path(@budget.parent_budget)
-                   )
-                 else
-                   "-"
-                 end
-        )
-        component.with_attribute(
           key: Budget.human_attribute_name(:description),
           value: content_tag(:div, class: "op-uc-container") do
             format_text @budget, :description, attachments: @budget.attachments
@@ -86,12 +71,6 @@ See COPYRIGHT and LICENSE files for more details.
           key: Budget.human_attribute_name(:labor_budget),
           value: number_to_currency(@budget.labor_budget)
         )
-        if @budget.child_budget_relations.add.any?
-          component.with_attribute(
-            key: Budget.human_attribute_name(:budget_added_by_children),
-            value: number_to_currency(@budget.budget_added_by_children)
-          )
-        end
         component.with_attribute(
           key: Budget.human_attribute_name(:budget),
           value: content_tag(:strong, number_to_currency(@budget.budget))
@@ -100,12 +79,6 @@ See COPYRIGHT and LICENSE files for more details.
           key: Budget.human_attribute_name(:spent),
           value: number_to_currency(@budget.spent * -1)
         )
-        if @budget.child_budget_relations.subtract.any?
-          component.with_attribute(
-            key: Budget.human_attribute_name(:allocated_to_children),
-            value: number_to_currency(@budget.allocated_to_children * -1)
-          )
-        end
         component.with_attribute(
           key: Budget.human_attribute_name(:available),
           value: content_tag(:strong, number_to_currency(@budget.available))
@@ -118,14 +91,6 @@ See COPYRIGHT and LICENSE files for more details.
   <%= list_attachments(resource) %>
 
   <%= render partial: "budget_items" %>
-
-<fieldset class="form--fieldset">
-  <legend class="form--fieldset-legend">
-    <%= I18n.t(:label_budget_child_budgets) %>
-  </legend>
-  <%= render(Budgets::ChildBudgetsTableComponent.new(rows: @child_budget_relations)) %>
-</fieldset>
-
 </div>
 
 <div style="clear: both;"></div>
