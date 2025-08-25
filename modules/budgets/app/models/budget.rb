@@ -47,6 +47,7 @@ class Budget < ApplicationRecord
   has_many :time_entries, through: :work_packages
 
   include ActiveModel::ForbiddenAttributesProtection
+  include Costs::NumberHelper
 
   acts_as_attachable
   acts_as_journalized
@@ -128,6 +129,10 @@ class Budget < ApplicationRecord
 
   def name
     subject
+  end
+
+  def base_amount=(value)
+    super(parse_number_string(value))
   end
 
   def material_budget
