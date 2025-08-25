@@ -1,8 +1,3 @@
-<% content_for :header_tags do %>
-  <meta name="custom_fields_sidebar_enabled" data-enabled="<%= @custom_fields_sidebar_enabled %>">
-  <meta name="life_cycle_sidebar_enabled" data-enabled="<%= @life_cycle_sidebar_enabled %>">
-<% end -%>
-
 <%=
   render(Primer::OpenProject::PageHeader.new) do |header|
     header.with_title(variant: :medium) { t("overviews.label") }
@@ -74,4 +69,32 @@
   end
 %>
 
-<%= angular_component_tag "opce-overview" %>
+<%=
+  if @custom_fields_sidebar_enabled || @life_cycle_sidebar_enabled
+    render(Primer::Alpha::Layout.new) do |component|
+      component.with_main do
+        angular_component_tag "opce-overview"
+      end
+
+      component.with_sidebar(width: :narrow, col_placement: :end) do
+        if @life_cycle_sidebar_enabled
+          concat(
+            turbo_frame_tag "project-life-cycle-sidebar", src: project_life_cycle_sidebar_path(@project) do
+              image_tag("loading_indicator.svg")
+            end
+          )
+        end
+
+        if @custom_fields_sidebar_enabled
+          concat(
+            turbo_frame_tag "project-custom-fields-sidebar", src: project_custom_fields_sidebar_path(@project) do
+              image_tag("loading_indicator.svg")
+            end
+          )
+        end
+      end
+    end
+  else
+    angular_component_tag "opce-overview"
+  end
+%>
