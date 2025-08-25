@@ -4,7 +4,7 @@
     header.with_breadcrumbs(
       [
         { href: project_path(@project), text: @project.name, skip_for_mobile: true },
-        t("overviews.label")
+        I18n.t("overviews.label_home", workspace_type: @project.workspace_label)
       ]
     )
     favored = @project.favored_by?(User.current)
