@@ -34,7 +34,9 @@ import {
 } from 'core-app/shared/helpers/chronic_duration';
 
 export function durationStringToSeconds(value:string):number {
+    // Make sure we also accept german decimal commas
     const normalizedValue = value.replace(',', '.');
+
     return parseChronicDuration(normalizedValue, {
       defaultUnit: 'hours',
       ignoreSecondsWhenColonSeperated: true,
