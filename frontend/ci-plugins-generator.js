@@ -29,9 +29,9 @@ export class LinkedPluginsModule { }
   `;
 };
 
-const railsRout = path.join(__dirname, '..');
-const pluginDir = path.join(railsRout, 'modules');
-const targetDir = path.join(railsRout, 'frontend/src/app/features/plugins/linked');
+const railsRoot = path.join(__dirname, '..');
+const pluginDir = path.join(railsRoot, 'modules');
+const targetDir = path.join(railsRoot, 'frontend/src/app/features/plugins/linked');
 
 const plugins = new Map([
   ['budgets', path.join(pluginDir, 'budgets')],
@@ -51,7 +51,7 @@ plugins.forEach((pluginPath, name) => {
   const linkTarget = path.join(pluginPath, 'frontend', 'module');
   const linkPath = path.join(targetDir, name);
 
-  console.log(`Linking frontend of OpenProject plugin ${name} to ${linkPath}.`);
+  console.log(`Linking frontend of OpenProject plugin ${name} (${linkPath} -> ${linkTarget}).`);
   fs.symlinkSync(linkTarget, linkPath);
 });
 
@@ -61,7 +61,7 @@ const allFrontendPlugins = Array.from(plugins).filter(([, pluginPath]) => {
 });
 
 function generatePluginModule(plugins) {
-  const fileRegister = path.join(railsRout, 'frontend/src/app/features/plugins/linked-plugins.module.ts');
+  const fileRegister = path.join(railsRoot, 'frontend/src/app/features/plugins/linked-plugins.module.ts');
   console.log(`Regenerating frontend plugin registry ${fileRegister}.`);
 
   const result = LINKED_PLUGINS_MODULE_TEMPLATE(plugins);

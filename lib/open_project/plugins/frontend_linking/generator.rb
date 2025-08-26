@@ -105,7 +105,7 @@ module ::OpenProject::Plugins
           source = File.join(path, "frontend", "module")
           target = File.join(target_dir, name)
 
-          puts "Linking frontend of OpenProject plugin #{name} to #{target}."
+          puts "Linking frontend of OpenProject plugin #{name} (#{target} -> #{source})."
           FileUtils.ln_sf(source, target)
         end
       end
