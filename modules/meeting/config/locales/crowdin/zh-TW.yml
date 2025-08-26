@@ -58,8 +58,13 @@ zh-TW:
         end_after: "系列會議結束"
         end_date: "結束日期"
         iterations: "出現次數"
+      meeting_participant:
+        invited: "Invited"
+        attended: "Attended"
     errors:
       models:
+        meeting_participant:
+          invalid_user: "%{name} is not a valid participant."
         recurring_meeting:
           must_cover_existing_meetings:
             one: "該系列中有一個公開會議未包含在新的時間表中。調整時間表以包含所有現有會議。"
@@ -74,7 +79,7 @@ zh-TW:
       meeting_agenda: "會議大綱"
       meeting_section: "區段"
       token/ical_meeting:
-        other: "iCal Meeting subscription"
+        other: "iCal 會議訂閱"
   activity:
     filter:
       meeting: "會議"
@@ -92,7 +97,6 @@ zh-TW:
           updated: "從 %{old_value} 更改至 %{value}"
           updated_html: "從 <i>%{old_value}</i> 更改至 <i>%{value}</i>"
   description_attended: "出席人員"
-  description_invite: "已邀請"
   events:
     meeting: 會議已編輯
     meeting_agenda: 會議大綱已編輯
@@ -168,10 +172,25 @@ zh-TW:
   label_version: "版本"
   label_time_zone: "時區"
   label_start_date: "開始日期"
-  label_subscribe_icalendar: "Subscribe to calendar"
+  label_subscribe_icalendar: "訂閱行事曆"
   meeting:
     participants:
-      template: "這些參與者將自動被邀請參加未來所有建立的會議。"
+      label:
+        participants: "參與者"
+        attended: "已出席"
+        mark_as_attended: "標記為已出席"
+        mark_all_as_attended: "全部標記為已出席"
+        remove_participant: "移除參與者"
+        manage_participants: "管理參與者"
+        no_participants: "沒有參與者"
+        show_all: "顯示全部"
+      text:
+        template: "這些參與者將自動被邀請參加未來所有建立的會議。"
+        manage_participants: "搜尋並新增專案成員為此會議的參與者。"
+        search_for_members: "搜尋專案成員"
+      blankslate:
+        heading: "沒有與會者"
+        description: "目前還沒有與會者。"
     attachments:
       template: "這些隨附的檔案將納入所有未來的系列會議中。"
       text: "所有會議參與者都可以使用附件， 您也可以將它們拖放到議程項目註釋中。"
@@ -194,11 +213,11 @@ zh-TW:
       series:
         title: "[%{project_name}] 會議系列 '%{title}'"
         summary: "%{actor} 已設立新的會議系列 '%{title}'"
-      series_rescheduled:
-        title: "[%{project_name}] 會議系列 '%{title}' 已改時程"
-        summary: "%{actor} 已變更會議系列的時間表 '%{title}'"
-        old_schedule: "舊排程"
-        new_schedule: "新增排程"
+      series_updated:
+        title: "[%{project_name}] Meeting series '%{title}' has been updated"
+        summary: "Meeting series '%{title}' has been updated by %{actor}"
+        old_schedule: "Old schedule"
+        new_schedule: "New schedule"
       invited:
         summary: "%{actor} 已向您發出會議邀請 '%{title}'"
       cancelled:
@@ -209,13 +228,15 @@ zh-TW:
         summary_series: "'%{title}' 系列會議已被 %{actor}取消。"
         summary: "%{title}' 已被 %{actor}取消。"
         date_time: "排定日期/時間"
-      rescheduled:
-        header: "會議 %{title} 已經重新安排"
-        summary: "會議 %{title} 已經被 %{actor} 重新安排"
-        body: "會議 %{title} 已經被 %{actor} 重新安排。"
-        old_date_time: "舊日期/時間"
-        new_date_time: "新日期/時間"
-    label_mail_all_participants: "將行事曆邀請電郵給所有參與者"
+      updated:
+        header: "Meeting '%{title}' has been updated"
+        summary: "Meeting '%{title}' has been updated by %{actor}"
+        body: "The meeting '%{title}' has been updated by %{actor}."
+        old_date_time: "Old date/time"
+        new_date_time: "New date/time"
+        old_location: "Old location"
+        new_location: "New location"
+    label_mail_all_participants: "發送電子郵件邀請參加者"
     types:
       one_time: "一次性"
       recurring: "重覆"
@@ -300,6 +321,11 @@ zh-TW:
           enable: "啟用電子郵件更新"
           disable: "停用電子郵件更新"
       banner:
+        participants:
+          enabled: >
+            All participants will receive updated calendar invites via email when you add or remove participants.
+          disabled: >
+            Email calendar updates are disabled. Participants will not receive an email informing them when you add or remove participants.
         onetime:
           enabled: >
             所有參與者都會透過電子郵件收到更新的行事曆邀請，通知他們您的變更。
@@ -496,17 +522,12 @@ zh-TW:
   label_meeting_reopen_action: "重新開啟會議"
   label_meeting_close_action: "關閉會議"
   label_meeting_in_progress_action: "會議開始"
-  text_meeting_open_description: "此會議是開放的。您可以新增/移除議程項目，並隨意編輯。一旦議程準備就緒，請將其標示為進行中，以記錄結果。"
+  text_meeting_open_description: "You can add/remove agenda items and participants. Once the agenda is ready, mark it as in progress to document outcomes."
   text_meeting_closed_description: "此會議已關閉。您不能再新增/移除議程項目。"
-  text_meeting_in_progress_description: "此會議正在進行中。您可以記錄每個議程項目的結果、重新排列它們，甚至新增新的項目。會議完成後，您可以將其標示為已結束，以鎖定它。"
+  text_meeting_in_progress_description: "You can modify the agenda, document outcomes for each item and track attendance for participants. Once the meeting is complete, you can mark it as closed to lock it."
   text_meeting_open_dropdown_description: "任何現有的結果都會保留，但使用者將無法新增新的結果。"
   text_meeting_in_progress_dropdown_description: "記錄會議期間的結果，例如資訊需求或所做的決策。"
   text_meeting_closed_dropdown_description: "此會議已結束，您無法再修改議程項目或結果。"
-  label_meeting_manage_participants: "管理參與者"
-  label_meeting_no_participants: "沒有參與者"
-  label_meeting_show_hide_participants: "顯示/隱藏 %{count} 更多"
-  label_meeting_show_all_participants: "顯示全部"
-  label_meeting_add_participants: "新增參與者"
   text_meeting_not_editable_anymore: "本次會議已不可編輯。"
   text_meeting_not_present_anymore: "此次會議已被刪除。請選擇另一場會議。"
   label_add_work_package_to_meeting_dialog_title: "將工作套件新增到到會議"
@@ -521,31 +542,31 @@ zh-TW:
   text_agenda_item_move_next_meeting_cancelled: "由於下次會議已被取消，因此無法轉到下次會議。"
   text_work_package_add_to_meeting_hint: '使用"增加到會議"按鈕將此工作套件新增到即將舉行的會議。'
   text_work_package_has_no_past_meeting_agenda_items: "在過往會議中沒有提及本工作套件。"
-  text_email_updates_muted: "電子郵件行事曆更新已靜音。當您變更時，參與者將不會透過電子郵件收到更新的邀請。"
+  text_email_updates_muted: "將停止電子郵件通知「行事曆更新」。當您變更時，參與者將不會透過電子郵件收到更新的邀請。"
   text_email_updates_enabled: "已啟用電子郵件行事曆更新。當您作出變更時，所有參與者都會透過電子郵件收到更新的邀請。"
   my_account:
     access_tokens:
       token/ical_meeting:
-        title: "iCalendar for meetings"
-        text_hint: "iCalendar meeting tokens allow users to subscribe to all their meetings and view up-to-date meeting information in external clients."
-        disabled_text: "iCalendar meeting subscriptions are not enabled by the administrator. Please contact your administrator to use this feature."
-        empty_text_hint: 'To add an iCalendar meeting token, go to the <a href="%{path}">meetings section</a> and subscribe from there.'
-        add_button: "Subscribe to calendar"
+        title: "會議用 iCalendar"
+        text_hint: "iCalendar 會議令牌(Tokens)可讓使用者訂閱其所有會議，並在外部用戶端中檢視最新的會議資訊。"
+        disabled_text: "iCalendar 會議訂閱未由管理員啟用。若要使用此功能，請聯絡您的管理員。"
+        empty_text_hint: '若要新增 iCalendar 會議權杖，請前往 <a href="%{path}">會議區段</a> 並在那裡進行訂閱。'
+        add_button: "訂閱行事曆"
   my:
     access_token:
       dialog:
         token/ical_meeting:
-          dialog_title: "New iCal subscription token for meetings"
-          dialog_body: "This token will generate an iCal subscription URL that lets you view all your meetings in an external calendar application."
-          create_button: "Create subscription"
-          name_label: "Token name"
-          name_caption: 'You can name it after where you will use it, such as"My phone" or "Work computer.'
+          dialog_title: "新的會議 iCal 訂閱令牌(Tokens)"
+          dialog_body: "此令牌(Tokens)將產生一個 iCal 訂閱網址，讓您能在外部行事曆應用程式中檢視所有會議。"
+          create_button: "建立訂閱"
+          name_label: "令牌名稱"
+          name_caption: '您可以依使用位置為其命名，例如「我的手機」或「工作電腦」。'
       created_dialog:
         token/ical_meeting:
-          title: "An iCal meeting subscription token has been generated"
-          body: "Treat the following URL as you would a password. Anyone who has access to it can view all your meetings."
-          warning: "This is the only time you will see this token. Make sure to copy it now."
+          title: "已生成一個 iCal 會議訂閱令牌(Token)。"
+          body: "請將以下 URL 視同密碼處理。任何擁有該連結的人都能檢視您的所有會議。"
+          warning: "這是您唯一一次看到此令牌(Token)的機會，請務必立即複製。"
       revocation:
         token/ical_meeting:
-          notice_success: "The iCalendar meeting subscription has been revoked successfully."
-          notice_failure: "Failed to revoke iCalendar meeting subscription: %{error}"
+          notice_success: "iCalendar 會議訂閱已成功撤銷。"
+          notice_failure: "撤銷 iCalendar 會議訂閱失敗：%{error}"

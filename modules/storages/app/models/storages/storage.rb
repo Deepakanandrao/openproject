@@ -199,7 +199,7 @@ module Storages
     end
 
     def provider_type_share_point?
-      is_a?(SharePointStorage)
+      is_a?(SharepointStorage)
     end
 
     def health_reason_identifier

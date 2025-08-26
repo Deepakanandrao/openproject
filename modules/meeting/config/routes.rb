@@ -44,8 +44,6 @@ Rails.application.routes.draw do
         put :update_title
         get :details_dialog
         put :update_details
-        get :participants_dialog
-        put :update_participants
         put :change_state
         post :notify
         get :history
@@ -134,6 +132,15 @@ Rails.application.routes.draw do
       end
       member do
         get :cancel_edit
+      end
+    end
+    resources :participants, controller: "meeting_participants" do
+      collection do
+        get :manage_participants_dialog
+        post :mark_all_attended
+      end
+      member do
+        post :toggle_attendance
       end
     end
 

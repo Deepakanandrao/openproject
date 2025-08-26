@@ -21,11 +21,11 @@ zh-TW:
         project_folder_mode: 專案資料夾模式
         storage: 儲存空間
         storage_url: 儲存 URL
-      storages/share_point_storage:
+      storages/sharepoint_storage:
         host: Sharepoint 網站 URL
-        library: Library ID
+        library: 圖書館 ID
         name: 名稱
-        site: 站點 ID
+        site: 站台ID
       storages/storage:
         authentication_method: 驗證方式
         creator: 建立者
@@ -195,10 +195,10 @@ zh-TW:
       oauth_client_incomplete:
         nextcloud: 允許 OpenProject 使用 OAuth 存取 Nextcloud 資料。
         one_drive: 允許 OpenProject 使用 OAuth 連接 OneDrive/Sharepoint 存取 Azure 資料。
-        share_point: 允許 OpenProject 使用 OAuth 存取 SharePoint 資料。
+        sharepoint: 允許 OpenProject 使用 OAuth 存取 SharePoint 資料。
       redirect_uri_incomplete:
         one_drive: 使用正確的 URI 重定向完成設定。
-        share_point: '「請輸入正確的 URI 重導位置以完成設定。」'
+        sharepoint: '「請輸入正確的 URI 重導位置以完成設定。」'
     confirm_replace_oauth_application: 此操作將重設目前的 OAuth 憑證。 確認後，您必須在儲存空間提供商重新輸入憑證，並且所有遠端使用者都必須再次針對 OpenProject 進行授權。 您確定要繼續嗎？
     confirm_replace_oauth_client: 此操作將重設目前的 OAuth 憑證。 確認後，您必須輸入儲存提供者的新憑證，並且所有使用者都必須再次針對 %{provider_type} 進行授權。 您確定要繼續嗎？
     delete_warning:
@@ -393,11 +393,11 @@ zh-TW:
       setting_up_additional_storages_non_admin: 管理員可在 「管理」/「檔案儲存」 中設定額外的檔案儲存空間。
       setting_up_storages: 設定檔案儲存裝置，請參閱
       setting_up_storages_non_admin: 管理員可在 「管理」/「檔案儲存」 中設定檔案儲存空間。
-      share_point:
+      sharepoint:
         application_link_text: SharePoint 網站
         integration: SharePoint 管理 / OpenProject
-        oauth_configuration: 從 %{application_link_text}中的所需應用程式複製這些值。
-        provider_configuration: 請確保您在%{application_link_text} 具有管理權限，或在進行設置之前與您的 Microsoft 管理員聯繫。在門戶中，您還需要註冊一個 Azure 應用程序或使用現有的應用程序進行身份驗證。
+        oauth_configuration: 請從 %{application_link_text} 中的目標應用程式複製這些值。
+        provider_configuration: 在進行設定前，請確保您在 %{application_link_text} 中擁有管理權限，或聯絡您的 Microsoft 管理員。在入口網站中，您還需要註冊一個 Azure 應用程式，或使用現有的應用程式進行驗證。
       type: '請確保您在 Nextcloud 實例中具有管理權限，並在進行設置之前安裝了以下應用程序：'
       type_link_text: "“整合 OpenProject”"
     label_active: 啟用
@@ -499,8 +499,8 @@ zh-TW:
         label_oauth_client_secret: Azure OAuth 客戶端密鑰值
         name: OneDrive
         name_placeholder: 例如 OneDrive
-      share_point:
-        label_oauth_client_id: Azure OAuth 應用程式(客戶端) ID
+      sharepoint:
+        label_oauth_client_id: Azure OAuth 應用程式 (用戶端) ID
         label_oauth_client_secret: Azure OAuth 客戶端密鑰值
         name: Sharepoint
         name_placeholder: 例如 SharePoint

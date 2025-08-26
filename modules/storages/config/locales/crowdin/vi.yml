@@ -21,7 +21,7 @@ vi:
         project_folder_mode: Project folder mode
         storage: Lưu trữ
         storage_url: Storage URL
-      storages/share_point_storage:
+      storages/sharepoint_storage:
         host: Sharepoint Site URL
         library: Library ID
         name: Name
@@ -195,10 +195,10 @@ vi:
       oauth_client_incomplete:
         nextcloud: Cho phép OpenProject truy cập dữ liệu Nextcloud bằng OAuth.
         one_drive: Allow OpenProject to access Azure data using OAuth to connect OneDrive.
-        share_point: Allow OpenProject to access SharePoint data using OAuth.
+        sharepoint: Allow OpenProject to access SharePoint data using OAuth.
       redirect_uri_incomplete:
         one_drive: Hoàn tất cấu hình với URI chuyển hướng chính xác.
-        share_point: Complete the setup with the correct URI redirection.
+        sharepoint: Complete the setup with the correct URI redirection.
     confirm_replace_oauth_application: Hành động này sẽ đặt lại các thông tin xác thực OAuth hiện tại. Sau khi xác nhận, bạn sẽ phải nhập lại thông tin xác thực tại nhà cung cấp lưu trữ và tất cả người dùng từ xa sẽ phải xác thực lại với OpenProject. Bạn có chắc chắn muốn tiếp tục không?
     confirm_replace_oauth_client: Hành động này sẽ đặt lại các thông tin xác thực OAuth hiện tại. Sau khi xác nhận, bạn sẽ phải nhập thông tin mới từ nhà cung cấp lưu trữ và tất cả người dùng sẽ phải xác thực lại với %{provider_type}. Bạn có chắc chắn muốn tiếp tục không?
     delete_warning:
@@ -393,7 +393,7 @@ vi:
       setting_up_additional_storages_non_admin: Administrators can set up additional file storages in Administration / File storages.
       setting_up_storages: Để thiết lập lưu trữ tệp, vui lòng truy cập
       setting_up_storages_non_admin: Administrators can set up file storages in Administration / File storages.
-      share_point:
+      sharepoint:
         application_link_text: SharePoint site
         integration: SharePoint Administration / OpenProject
         oauth_configuration: Copy these values from the desired application in the %{application_link_text}.
@@ -498,7 +498,7 @@ vi:
         label_oauth_client_secret: Giá trị Bí mật khách hàng OAuth Azure
         name: OneDrive
         name_placeholder: 'ví dụ: OneDrive'
-      share_point:
+      sharepoint:
         label_oauth_client_id: Azure OAuth Application (client) ID
         label_oauth_client_secret: Azure OAuth Client Secret Value
         name: SharePoint

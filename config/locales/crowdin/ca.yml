@@ -294,6 +294,7 @@ ca:
         placeholder:
           label: "Item label"
           short: "Short name"
+          score: "Score"
       notice:
         remember_items_and_projects: "Remember to set items and projects in the respective tabs for this custom field."
       hierarchy:
@@ -329,6 +330,7 @@ ca:
     single: "o"
   dry_validation:
     errors:
+      defined: "must not be defined."
       int?: "must be an integer."
       filled?: "must be filled."
       greater_or_equal_zero: "must be greater or equal to 0."
@@ -336,6 +338,8 @@ ca:
       rules:
         copy_workflow_from:
           workflow_missing: "has no own workflow."
+        custom_field:
+          format_not_supported: "format '%{field_format}' is unsupported."
         item:
           root_item: "cannot be a root item."
           not_persisted: "must be an already existing item."
@@ -1061,6 +1065,7 @@ ca:
         types: "Tipus"
         versions: "Versions"
         work_packages: "Paquets de treball"
+        workspace_type: "Workspace type"
       project_custom_field:
         is_required: "Required for all projects"
         custom_field_section: Secció
@@ -2586,9 +2591,10 @@ ca:
       token/api:
         title: "API"
         text_hint: "API tokens allow third-party applications to communicate with this OpenProject instance via REST APIs."
-        static_token_name: "API token"
         disabled_text: "API tokens are not enabled by the administrator. Please contact your administrator to use this feature."
         add_button: "API Token"
+      api:
+        static_token_name: "API token"
       ical:
         title: "iCalendar"
         text_hint: 'iCalendar tokens allow users to <a href="%{path}" target="_blank">subscribe to OpenProject calendars</a> and view up-to-date work package information from external clients.'
@@ -2911,6 +2917,7 @@ ca:
   label_invite_user: "Invitar usuari"
   label_item: "Item"
   label_item_plural: "Items"
+  label_scored_list: "Scored list"
   label_share: "Compartir"
   label_share_project_list: "Share project list"
   label_share_work_package: "Share work package"
@@ -3100,6 +3107,10 @@ ca:
   label_project_view_all: "Veure tots els projectes"
   label_project_show_details: "Mostra detalls del projecte"
   label_project_hide_details: "Amaga detalls del projecte"
+  label_portfolio: "Portfolio"
+  label_portfolio_new: "New portfolio"
+  label_program: "Program"
+  label_program_new: "New program"
   label_public_projects: "Projectes públics"
   label_query_new: "Nova consulta"
   label_query_plural: "Consultes personalitzades"
@@ -3248,6 +3259,8 @@ ca:
   label_watched_work_packages: "Paquets de treball observats"
   label_what_is_this: "Què és això?"
   label_week: "Setmana"
+  label_widget: "Widget"
+  label_widget_new: "New widget"
   label_wiki_content_added: "S'ha afegit la pàgina wiki"
   label_wiki_content_updated: "S'ha actualitzat la pàgina wiki"
   label_wiki_toc: "Taula de continguts"
@@ -3591,6 +3604,8 @@ ca:
   permission_add_work_packages: "Afegir paquets de treball"
   permission_add_messages: "Publicar missatges"
   permission_add_project: "Create projects"
+  permission_add_portfolios: "Create portfolios"
+  permission_add_programs: "Create programs"
   permission_add_work_package_attachments: "Afegir fitxers adjunts"
   permission_add_work_package_attachments_explanation: "Allows adding attachments without Edit work packages permission"
   permission_add_internal_comments: "Write internal comments"

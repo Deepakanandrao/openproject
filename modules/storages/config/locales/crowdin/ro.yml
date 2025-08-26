@@ -21,7 +21,7 @@ ro:
         project_folder_mode: Project folder mode
         storage: Depozitare
         storage_url: Storage URL
-      storages/share_point_storage:
+      storages/sharepoint_storage:
         host: Sharepoint Site URL
         library: Library ID
         name: Name
@@ -195,10 +195,10 @@ ro:
       oauth_client_incomplete:
         nextcloud: Allow OpenProject to access Nextcloud data using OAuth.
         one_drive: Allow OpenProject to access Azure data using OAuth to connect OneDrive.
-        share_point: Allow OpenProject to access SharePoint data using OAuth.
+        sharepoint: Allow OpenProject to access SharePoint data using OAuth.
       redirect_uri_incomplete:
         one_drive: Complete the setup with the correct URI redirection.
-        share_point: Complete the setup with the correct URI redirection.
+        sharepoint: Complete the setup with the correct URI redirection.
     confirm_replace_oauth_application: This action will reset the current OAuth credentials. After confirming you will have to reenter the credentials at the storage provider and all remote users will have to authorize against OpenProject again. Are you sure you want to proceed?
     confirm_replace_oauth_client: This action will reset the current OAuth credentials. After confirming you will have to enter new credentials from the storage provider and all users will have to authorize against %{provider_type} again. Are you sure you want to proceed?
     delete_warning:
@@ -397,7 +397,7 @@ ro:
       setting_up_additional_storages_non_admin: Administrators can set up additional file storages in Administration / File storages.
       setting_up_storages: Pentru configurarea fișierelor, vă rugăm să vizitați
       setting_up_storages_non_admin: Administrators can set up file storages in Administration / File storages.
-      share_point:
+      sharepoint:
         application_link_text: SharePoint site
         integration: SharePoint Administration / OpenProject
         oauth_configuration: Copy these values from the desired application in the %{application_link_text}.
@@ -503,7 +503,7 @@ ro:
         label_oauth_client_secret: Azure OAuth Client Secret Value
         name: OneDrive
         name_placeholder: e.g. OneDrive
-      share_point:
+      sharepoint:
         label_oauth_client_id: Azure OAuth Application (client) ID
         label_oauth_client_secret: Azure OAuth Client Secret Value
         name: SharePoint

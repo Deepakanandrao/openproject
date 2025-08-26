@@ -123,7 +123,7 @@ ja:
       2fa_from_webauthn: WebAuthn デバイス <strong>%{device_name}</strong>を挿入してください。 それがUSBベースの場合は、それを接続し、それをタッチしてください。
       webauthn:
         title: "WebAuthn"
-        description: Register a FIDO2 device (like YubiKey) or the secure enclave of your mobile device.
+        description: FIDO2デバイス（YubiKeyなど）またはモバイルデバイスのセキュアエンクレーブを登録します。
         further_steps: 名前を選択したら、[続行] ボタンをクリックします。ブラウザが WebAuthn デバイスの提示を促します。そうしたら、デバイスの登録は完了です。
       totp:
         title: "App-based authenticator"

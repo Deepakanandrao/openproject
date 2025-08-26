@@ -295,6 +295,7 @@ es:
         placeholder:
           label: "Etiqueta del elemento"
           short: "Nombre corto"
+          score: "Score"
       notice:
         remember_items_and_projects: "Recuerde configurar los artículos y proyectos en las pestañas respectivas para este campo personalizado."
       hierarchy:
@@ -330,6 +331,7 @@ es:
     single: "o bien"
   dry_validation:
     errors:
+      defined: "must not be defined."
       int?: "debe ser un entero."
       filled?: "debe rellenarse."
       greater_or_equal_zero: "debe ser mayor o igual a 0."
@@ -337,6 +339,8 @@ es:
       rules:
         copy_workflow_from:
           workflow_missing: "no tiene flujo de trabajo propio."
+        custom_field:
+          format_not_supported: "format '%{field_format}' is unsupported."
         item:
           root_item: "no puede ser un elemento raíz."
           not_persisted: "debe ser un elemento ya existente."
@@ -1061,6 +1065,7 @@ es:
         types: "Tipos"
         versions: "Versiones"
         work_packages: "Paquetes de trabajo"
+        workspace_type: "Workspace type"
       project_custom_field:
         is_required: "Obligatorio para todos los proyectos"
         custom_field_section: Sección
@@ -2586,9 +2591,10 @@ es:
       token/api:
         title: "API"
         text_hint: "API tokens allow third-party applications to communicate with this OpenProject instance via REST APIs."
-        static_token_name: "API token"
         disabled_text: "API tokens are not enabled by the administrator. Please contact your administrator to use this feature."
         add_button: "API Token"
+      api:
+        static_token_name: "Token API"
       ical:
         title: "iCalendar"
         text_hint: 'Los tokens iCalendar permiten a los usuarios <a href="%{path}" target="_blank">suscribirse a los calendarios de OpenProject</a> y ver la información actualizada de los paquetes de trabajo de clientes externos.'
@@ -2911,6 +2917,7 @@ es:
   label_invite_user: "Invitar usuario"
   label_item: "Elemento"
   label_item_plural: "Elementos"
+  label_scored_list: "Scored list"
   label_share: "Compartir"
   label_share_project_list: "Listas de proyectos compartidas"
   label_share_work_package: "Compartir paquete de trabajo"
@@ -3100,6 +3107,10 @@ es:
   label_project_view_all: "Ver todos los proyectos"
   label_project_show_details: "Mostrar los detalles del proyecto"
   label_project_hide_details: "Ocultar los detalles del proyecto"
+  label_portfolio: "Portfolio"
+  label_portfolio_new: "New portfolio"
+  label_program: "Program"
+  label_program_new: "New program"
   label_public_projects: "Proyectos públicos"
   label_query_new: "Nueva consulta"
   label_query_plural: "Consultas personalizadas"
@@ -3248,6 +3259,8 @@ es:
   label_watched_work_packages: "Paquetes de trabajos seguidos"
   label_what_is_this: "¿Qué es esto?"
   label_week: "Semana"
+  label_widget: "Widget"
+  label_widget_new: "New widget"
   label_wiki_content_added: "Página wiki añadida"
   label_wiki_content_updated: "Página wiki actualizada"
   label_wiki_toc: "Tabla de contenidos"
@@ -3594,6 +3607,8 @@ es:
   permission_add_work_packages: "Añadir paquetes de trabajo"
   permission_add_messages: "Publicar mensajes"
   permission_add_project: "Crear proyectos"
+  permission_add_portfolios: "Create portfolios"
+  permission_add_programs: "Create programs"
   permission_add_work_package_attachments: "Añadir archivos adjuntos"
   permission_add_work_package_attachments_explanation: "Permite añadir archivos adjuntos sin el permiso Editar paquetes de trabajo"
   permission_add_internal_comments: "Escribir comentarios internos"

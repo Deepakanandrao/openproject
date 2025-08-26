@@ -21,7 +21,7 @@ ms:
         project_folder_mode: Mod Folder Projek
         storage: Storan
         storage_url: URL Simpanan
-      storages/share_point_storage:
+      storages/sharepoint_storage:
         host: Sharepoint Site URL
         library: Library ID
         name: Name
@@ -195,10 +195,10 @@ ms:
       oauth_client_incomplete:
         nextcloud: Benarkan OpenProject untuk mengakses data Nextcloud menggunakan OAuth.
         one_drive: Allow OpenProject to access Azure data using OAuth to connect OneDrive.
-        share_point: Allow OpenProject to access SharePoint data using OAuth.
+        sharepoint: Allow OpenProject to access SharePoint data using OAuth.
       redirect_uri_incomplete:
         one_drive: Lengkapkan penyediaan dengan pengubah hala URI yang betul.
-        share_point: Complete the setup with the correct URI redirection.
+        sharepoint: Complete the setup with the correct URI redirection.
     confirm_replace_oauth_application: Tindakan ini akan menetapkan semula kelayakan OAuth semasa. Selepas pengesahan, anda perlu masukkan semula kelayakan di penyedia storan dan semua pengguna jauh perlu membenarkan OpenProject sekali lagi. Adakah anda pasti anda mahu teruskan?
     confirm_replace_oauth_client: Tindakan ini akan menetapkan semula kelayakan OAuth semasa. Selepas pengesahan, anda perlu masukkan semula kelayakan di penyedia storan dan semua pengguna jauh perlu membenarkan %{provider_type} sekali lagi. Adakah anda pasti anda mahu teruskan?
     delete_warning:
@@ -393,7 +393,7 @@ ms:
       setting_up_additional_storages_non_admin: Administrators can set up additional file storages in Administration / File storages.
       setting_up_storages: Untuk penyediaan storan fail, sila kunjungi
       setting_up_storages_non_admin: Administrators can set up file storages in Administration / File storages.
-      share_point:
+      sharepoint:
         application_link_text: SharePoint site
         integration: SharePoint Administration / OpenProject
         oauth_configuration: Copy these values from the desired application in the %{application_link_text}.
@@ -499,7 +499,7 @@ ms:
         label_oauth_client_secret: Nilai Pelanggan Rahsia OAuth Azure
         name: OneDrive
         name_placeholder: cth. OneDrive
-      share_point:
+      sharepoint:
         label_oauth_client_id: Azure OAuth Application (client) ID
         label_oauth_client_secret: Azure OAuth Client Secret Value
         name: SharePoint

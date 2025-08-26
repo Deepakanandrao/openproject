@@ -145,7 +145,7 @@ RSpec.describe Meetings::PDF::Default::Exporter do
                                    title: "Agenda Item in Backlog", presenter: user, notes: "# yeah")
     end
     let(:invited) { create(:meeting_participant, user: other_user, meeting:, invited: true) }
-    let(:attended) { create(:meeting_participant, :attendee, user: user, meeting:) }
+    let(:attended) { create(:meeting_participant, user: user, meeting:, invited: true, attended: true) }
 
     before do
       User.current = user
@@ -156,6 +156,7 @@ RSpec.describe Meetings::PDF::Default::Exporter do
       meeting_backlog_item # create the backlog item
       attended # create the attended participant
       invited # create the invited participant
+      meeting.reload # ensure participants are accessible
     end
 
     context "with bells and whistles options" do
@@ -175,7 +176,7 @@ RSpec.describe Meetings::PDF::Default::Exporter do
           *meeting_head,
           "Participants (2)",
           "Export User", "  ", "Attended",
-          "Other Account", "  ", "Invited",
+          "Other Account",
 
           "Untitled section", "  ", "15 mins",
           "Agenda Item TOP 1", "  ", "15 mins", "  ", "Export User",

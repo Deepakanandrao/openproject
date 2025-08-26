@@ -313,8 +313,16 @@ class CustomField < ApplicationRecord
     field_format == "hierarchy"
   end
 
+  def field_format_scored_list?
+    field_format == "scored_list"
+  end
+
   def field_format_calculated_value?
     field_format == "calculated_value"
+  end
+
+  def hierarchical_list?
+    field_format_hierarchy? || field_format_scored_list?
   end
 
   def multi_value_possible?
