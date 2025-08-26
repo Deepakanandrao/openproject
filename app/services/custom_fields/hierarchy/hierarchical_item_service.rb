@@ -45,7 +45,7 @@ module CustomFields
       end
 
       # Insert a new node on the hierarchy tree at a desired position or at the end if no sort_order is passed.
-      # @param contract [Class<CustomFields::Hierarchy::InsertListItemContract>, Class<CustomFields::Hierarchy::InsertScoredItemContract>]
+      # @param contract_class [Class<CustomFields::Hierarchy::InsertListItemContract>, Class<CustomFields::Hierarchy::InsertScoredItemContract>]
       #   the params validation contract class
       # @param parent [CustomField::Hierarchy::Item] the parent of the node
       # @param label [String] the node label/name that must be unique at the same tree level
@@ -53,8 +53,8 @@ module CustomFields
       # @param score [Decimal] a numeric value for the node
       # @param sort_order [Integer] the position into which insert the item.
       # @return [Success(CustomField::Hierarchy::Item), Failure(Dry::Validation::Result), Failure(ActiveModel::Errors)]
-      def insert_item(contract:, parent:, label:, short: nil, score: nil, sort_order: nil)
-        contract
+      def insert_item(contract_class:, parent:, label:, short: nil, score: nil, sort_order: nil)
+        contract_class
           .new
           .call({ parent:, label:, short:, score: }.compact)
           .to_monad
@@ -62,15 +62,15 @@ module CustomFields
       end
 
       # Updates an item/node
-      # @param contract [Class<CustomFields::Hierarchy::UpdateListItemContract>, Class<CustomFields::Hierarchy::UpdateScoredItemContract>]
+      # @param contract_class [Class<CustomFields::Hierarchy::UpdateListItemContract>, Class<CustomFields::Hierarchy::UpdateScoredItemContract>]
       #   the params validation contract class
       # @param item [CustomField::Hierarchy::Item] the item to be updated
       # @param label [String] the node label/name that must be unique at the same tree level
       # @param short [String] an alias for the node
       # @param score [Decimal] a numeric value for the node
       # @return [Success(CustomField::Hierarchy::Item), Failure(Dry::Validation::Result), Failure(ActiveModel::Errors)]
-      def update_item(contract:, item:, label: nil, short: nil, score: nil)
-        contract
+      def update_item(contract_class:, item:, label: nil, short: nil, score: nil)
+        contract_class
           .new
           .call({ item:, label:, short:, score: }.compact)
           .to_monad
