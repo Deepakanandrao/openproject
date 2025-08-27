@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# -- copyright
+#-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,22 +26,9 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-# ++
+#++
 
-require "support/pages/custom_fields/project_mappings"
-
-module Pages
-  module Admin
-    module CustomFields
-      module CustomFieldsProjects
-        class ProjectMappings < ::Pages::CustomFields::ProjectMappings
-          def path(project_custom_field)
-            "/admin/settings/project_custom_fields/#{project_custom_field.id}/project_mappings"
-          end
-
-          def row_id_prefix = "#settings-project-custom-fields-project-custom-field-mapping-row-component-project"
-        end
-      end
-    end
+module CustomFields
+  class DeleteService < ::BaseServices::Delete
   end
 end
