@@ -39,32 +39,36 @@ class MeetingAgendaItem::MeetingForm < ApplicationForm
       caption: I18n.t("label_meeting_selection_caption"),
       autocomplete_options: {
         component: "opce-meeting-autocompleter",
+        items: meeting_options,
+        # Do not try to load data from API (it will look for a "resource")
+        defaultData: false,
+        bindLabel: "name",
+        bindValue: "id",
         multiple: false,
-        decorated: true,
         append_to: append_to_container
       }
-    ) do |select|
-      MeetingAgendaItems::CreateContract
-        .assignable_meetings(User.current)
-        .where("meetings.start_time + (interval '1 hour' * meetings.duration) >= ?", Time.zone.now)
-        .order("meetings.start_time")
-        .includes(:project)
-        .each do |meeting|
-          select.option(
-            label: "#{meeting.project.name}: " \
-                   "#{meeting.title} " \
-                   "#{format_date(meeting.start_time)} " \
-                   "#{format_time(meeting.start_time, include_date: false)}",
-            value: meeting.id
-          )
-        end
-    end
+    )
   end
 
   def initialize(disabled: false, wrapper_id: nil)
     super()
     @disabled = disabled
     @wrapper_id = wrapper_id
+  end
+
+  def meeting_options
+    MeetingAgendaItems::CreateContract
+      .assignable_meetings(User.current)
+      .where("meetings.start_time + (interval '1 hour' * meetings.duration) >= ?", Time.zone.now)
+      .order("meetings.start_time")
+      .includes(:project)
+      .map do |meeting|
+      {
+        id: meeting.id,
+        name: meeting.title,
+        start_time: format_time(meeting.start_time)
+      }
+    end
   end
 
   def append_to_container
