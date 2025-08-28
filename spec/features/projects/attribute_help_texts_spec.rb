@@ -77,7 +77,7 @@ RSpec.describe "Project attribute help texts", :js do
       visit project_path(project)
 
       within "#menu-sidebar" do
-        click_link_or_button "Overview"
+        click_link_or_button "Project home"
       end
 
       wait_for_network_idle
@@ -88,7 +88,12 @@ RSpec.describe "Project attribute help texts", :js do
       visit project_path(project)
 
       within "#menu-sidebar" do
-        click_link_or_button "Overview"
+        click_link_or_button "Project home"
+      end
+      wait_for_network_idle
+
+      within_test_selector "overview-tabs" do
+        click_on "Dashboard"
       end
 
       wait_for_network_idle

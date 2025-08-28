@@ -39,7 +39,7 @@ module Pages
     end
 
     def path
-      project_overview_path(project)
+      dashboard_project_overview_path(project)
     end
   end
 end
