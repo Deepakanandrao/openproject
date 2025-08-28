@@ -1256,7 +1256,7 @@ RSpec.describe API::V3::WorkPackages::WorkPackageRepresenter do
 
           it_behaves_like "has a titled link" do
             let(:link) { "customField#{custom_field.id}" }
-            let(:href) { "/api/v3/custom_field_items/#{item.id}" }
+            let(:href) { "/api/v3/custom_field_items/#{scored_item.id}" }
             let(:title) { "TIE Fighter" }
           end
         end
