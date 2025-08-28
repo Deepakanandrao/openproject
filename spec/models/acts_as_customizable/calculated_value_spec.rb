@@ -31,21 +31,23 @@
 require "spec_helper"
 
 RSpec.describe ActsAsCustomizable::CalculatedValue, with_flag: { calculated_value_project_attribute: true } do
+  using CustomFieldFormulaReferencing
+
   let(:model_class) do
     Class.new do
       include ActsAsCustomizable::CalculatedValue
 
-      attr_accessor :custom_field_values
+      def custom_field_values(*) = nil
+      attr_writer :custom_field_values
     end
   end
 
   let(:instance) { model_class.new }
 
   before do
-    allow(instance).to receive_messages(custom_field_values:, :custom_field_values= => nil)
+    allow(instance).to receive(:custom_field_values).with(all: true).and_return(custom_field_values)
+    allow(instance).to receive(:custom_field_values=)
   end
-
-  def ref(custom_field) = "{{cf_#{custom_field.id}}}"
 
   describe "#calculate_custom_fields" do
     context "when calling with empty array" do
@@ -141,8 +143,8 @@ RSpec.describe ActsAsCustomizable::CalculatedValue, with_flag: { calculated_valu
       let(:cf_a) { build_stubbed(:integer_project_custom_field) }
       let(:cf_b) { build_stubbed(:integer_project_custom_field) }
 
-      let(:cf1) { build_stubbed(:calculated_value_project_custom_field, formula: "#{ref cf_a} + #{ref cf_b}") }
-      let(:cf2) { build_stubbed(:calculated_value_project_custom_field, formula: "#{ref cf_a} * #{ref cf_b}") }
+      let(:cf1) { build_stubbed(:calculated_value_project_custom_field, formula: "#{cf_a} + #{cf_b}") }
+      let(:cf2) { build_stubbed(:calculated_value_project_custom_field, formula: "#{cf_a} * #{cf_b}") }
 
       let(:custom_field_values) do
         {
@@ -166,7 +168,7 @@ RSpec.describe ActsAsCustomizable::CalculatedValue, with_flag: { calculated_valu
     context "when calling with custom fields referencing other calculated fields" do
       let(:cf1) { build_stubbed(:calculated_value_project_custom_field, formula: "1 + 1") }
       let(:cf2) { build_stubbed(:calculated_value_project_custom_field, formula: "1 + 2") }
-      let(:cf3) { build_stubbed(:calculated_value_project_custom_field, formula: "#{ref cf1} * #{ref cf2}") }
+      let(:cf3) { build_stubbed(:calculated_value_project_custom_field, formula: "#{cf1} * #{cf2}") }
 
       let(:custom_field_values) do
         {
@@ -204,8 +206,8 @@ RSpec.describe ActsAsCustomizable::CalculatedValue, with_flag: { calculated_valu
       let(:cf_missing) { build_stubbed(:integer_project_custom_field) }
       let(:cf_unavailable) { build_stubbed(:integer_project_custom_field) }
 
-      let(:cf_using_missing) { build_stubbed(:calculated_value_project_custom_field, formula: "1 + #{ref cf_missing}") }
-      let(:cf_using_unavailable) { build_stubbed(:calculated_value_project_custom_field, formula: "2 + #{ref cf_unavailable}") }
+      let(:cf_using_missing) { build_stubbed(:calculated_value_project_custom_field, formula: "1 + #{cf_missing}") }
+      let(:cf_using_unavailable) { build_stubbed(:calculated_value_project_custom_field, formula: "2 + #{cf_unavailable}") }
       let(:cf_other) { build_stubbed(:calculated_value_project_custom_field, formula: "1 + 2") }
 
       let(:custom_field_values) do
@@ -250,10 +252,10 @@ RSpec.describe ActsAsCustomizable::CalculatedValue, with_flag: { calculated_valu
 
       before do
         {
-          cf1 => "#{ref cf_a} * #{ref cf2}",
-          cf2 => "#{ref cf_b} * #{ref cf3}",
-          cf3 => "#{ref cf1} * #{ref cf4}",
-          cf4 => "#{ref cf_c} * #{ref cf_d}"
+          cf1 => "#{cf_a} * #{cf2}",
+          cf2 => "#{cf_b} * #{cf3}",
+          cf3 => "#{cf1} * #{cf4}",
+          cf4 => "#{cf_c} * #{cf_d}"
         }.each do |cf, formula|
           cf.formula = formula
         end

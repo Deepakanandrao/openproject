@@ -21,7 +21,7 @@ pl:
         project_folder_mode: Tryb folderu projektu
         storage: Magazyn danych
         storage_url: Adres URL magazynu
-      storages/share_point_storage:
+      storages/sharepoint_storage:
         host: Adres URL witryny Sharepoint
         library: Identyfikator biblioteki
         name: Nazwa
@@ -195,10 +195,10 @@ pl:
       oauth_client_incomplete:
         nextcloud: Zezwalaj OpenProject na dostęp do danych Nextcloud przy użyciu OAuth.
         one_drive: Zezwalaj OpenProject na dostęp do danych Azure przy użyciu OAuth w celu połączenia z usługą OneDrive.
-        share_point: Zezwalaj OpenProject na dostęp do danych SharePoint przy użyciu OAuth.
+        sharepoint: Zezwalaj OpenProject na dostęp do danych SharePoint przy użyciu OAuth.
       redirect_uri_incomplete:
         one_drive: Ukończ konfigurację z poprawnym przekierowaniem identyfikatora URI.
-        share_point: Ukończ konfigurację z poprawnym przekierowaniem identyfikatora URI.
+        sharepoint: Ukończ konfigurację z poprawnym przekierowaniem identyfikatora URI.
     confirm_replace_oauth_application: Ta czynność zresetuje bieżące dane uwierzytelniające OAuth. Po potwierdzeniu będą Państwo musieli ponownie wprowadzić dane uwierzytelniające u dostawcy pamięci masowej, a wszyscy zdalni użytkownicy będą musieli ponownie autoryzować się w OpenProject. Czy na pewno chcą Państwo kontynuować?
     confirm_replace_oauth_client: Ta czynność spowoduje zresetowanie bieżących poświadczeń OAuth. Po potwierdzeniu będą Państwo musieli wprowadzić nowe dane uwierzytelniające od dostawcy pamięci masowej, a wszyscy użytkownicy będą musieli ponownie autoryzować się na stronie %{provider_type} . Czy na pewno chcą Państwo kontynuować?
     delete_warning:
@@ -236,10 +236,11 @@ pl:
       openproject_oauth: OpenProject OAuth
       project_folders: Foldery projektu
       redirect_uri: Przekieruj URI
+      sharepoint_oauth: Azure OAuth
       storage_audience_blank: Nie skonfigurowano żadnych odbiorców.
       storage_audience_description: Wymienianie tokenów dla odbiorców „%{audience}”.
       storage_audience_idp: Użycie tokena dostępu uzyskanego przez dostawcę tożsamości podczas logowania, niezależnie od odbiorców.
-      storage_oauth: Nextcloud OAuth
+      storage_oauth: Storage OAuth
       storage_provider: Dostawca magazynu
       token_exchange: Wymiana tokenów
     health:
@@ -278,6 +279,7 @@ pl:
           drive_id_exists: Dysk istnieje
           drive_id_format: Format Drive ID
           header: Konfiguracja
+          host: Host URL
           host_url_accessible: Adres URL hosta jest dostępny
           storage_configured: Ukończono konfigurację
           tenant_id: Identyfikator dzierżawcy
@@ -399,7 +401,7 @@ pl:
       setting_up_additional_storages_non_admin: Administratorzy mogą skonfigurować dodatkowe magazyny plików w obszarze Administracja / Magazyny plików.
       setting_up_storages: Aby skonfigurować magazyny plików, odwiedź
       setting_up_storages_non_admin: Administratorzy mogą skonfigurować magazyny plików w obszarze Administracja / Magazyny plików.
-      share_point:
+      sharepoint:
         application_link_text: Witryna SharePoint
         integration: Administracja SharePoint/OpenProject
         oauth_configuration: Skopiuj te wartości z żądanej aplikacji w %{application_link_text}.
@@ -504,7 +506,7 @@ pl:
         label_oauth_client_secret: Tajny klucz klienta OAuth Azure
         name: OneDrive
         name_placeholder: np. OneDrive
-      share_point:
+      sharepoint:
         label_oauth_client_id: Identyfikator aplikacji OAuth Azure (klienta)
         label_oauth_client_secret: Tajny klucz klienta OAuth Azure
         name: SharePoint

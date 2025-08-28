@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -227,10 +229,10 @@ Redmine::MenuManager.map :my_menu do |menu|
             { controller: "/my", action: "account" },
             caption: :label_profile,
             icon: "person-fill"
-  menu.push :settings,
-            { controller: "/my", action: "settings" },
-            caption: :label_setting_plural,
-            icon: "gear"
+  menu.push :locale,
+            { controller: "/my", action: "locale" },
+            caption: :label_locale,
+            icon: "globe"
   menu.push :interface,
             { controller: "/my", action: "interface" },
             caption: :label_interface,

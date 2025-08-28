@@ -48,7 +48,8 @@ OpenProject::FeatureDecisions.add :calculated_value_project_attribute,
                                   description: "Allows the use of calculated values as a project attribute."
 
 OpenProject::FeatureDecisions.add :oidc_group_sync,
-                                  description: "Allows to synchronize groups from OpenID Connect providers"
+                                  description: "Allows to synchronize groups from OpenID Connect providers",
+                                  force_active: true
 
 OpenProject::FeatureDecisions.add :scim_api,
                                   description: "Enables SCIM API.",
@@ -60,3 +61,10 @@ OpenProject::FeatureDecisions.add :block_note_editor,
 OpenProject::FeatureDecisions.add :minutes_styling_meeting_pdf,
                                   description: "Allow exporting a meeting with FITKO styling. " \
                                                "See #65124 for details."
+
+OpenProject::FeatureDecisions.add :scored_list_custom_fields,
+                                  description: "Enables the use of the custom field type 'Scored List', which lets " \
+                                               "the admin add scores to list items."
+
+OpenProject::FeatureDecisions.add :portfolio_models,
+                                  description: "Enables the creation and management of portfolio and program work spaces."

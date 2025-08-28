@@ -30,7 +30,7 @@
 
 module Settings
   class Definition
-    ENV_PREFIX = "OPENPROJECT_".freeze
+    ENV_PREFIX = "OPENPROJECT_"
     AR_BOOLEAN_TYPE = ActiveRecord::Type::Boolean.new
     DEFINITIONS = {
       activity_days_default: {

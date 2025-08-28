@@ -21,7 +21,7 @@ uk:
         project_folder_mode: Режим папки проєкту
         storage: Сховище
         storage_url: URL-адреса сховища
-      storages/share_point_storage:
+      storages/sharepoint_storage:
         host: URL-адреса сайту SharePoint
         library: Ідентифікатор бібліотеки
         name: Назва
@@ -195,10 +195,10 @@ uk:
       oauth_client_incomplete:
         nextcloud: Надайте OpenProject доступ до даних Nextcloud із використанням OAuth.
         one_drive: Надайте OpenProject доступ до даних Azure із використанням OAuth для підключення OneDrive.
-        share_point: Надайте OpenProject доступ до даних SharePoint із використанням OAuth.
+        sharepoint: Надайте OpenProject доступ до даних SharePoint із використанням OAuth.
       redirect_uri_incomplete:
         one_drive: Завершіть налаштування за допомогою правильного URI переспрямування.
-        share_point: Завершіть налаштування за допомогою правильного URI переспрямування.
+        sharepoint: Завершіть налаштування за допомогою правильного URI переспрямування.
     confirm_replace_oauth_application: Ця дія призведе до скидання поточних облікових даних OAuth. Коли ви підтвердите дію, вам потрібно буде повторно ввести облікові дані в системі постачальника сховища. У такому разі всім віддаленим користувачам знадобиться знову пройти автентифікацію в OpenProject. Продовжити?
     confirm_replace_oauth_client: Ця дія призведе до скидання поточних облікових даних OAuth. Коли ви підтвердите дію, вам потрібно буде ввести нові облікові дані в системі постачальника сховища. У такому разі всім користувачам знадобиться знову пройти автентифікацію в %{provider_type}. Продовжити?
     delete_warning:
@@ -236,10 +236,11 @@ uk:
       openproject_oauth: OpenProject OAuth
       project_folders: Папки проєкту
       redirect_uri: URI переспрямування
+      sharepoint_oauth: Azure OAuth
       storage_audience_blank: Аудиторію не налаштовано.
       storage_audience_description: Триває обмін маркерів для аудиторії «%{audience}».
       storage_audience_idp: Використання маркера доступу, отриманого від постачальника ідентифікаційних даних під час входу, незалежно від аудиторії.
-      storage_oauth: Nextcloud OAuth
+      storage_oauth: Storage OAuth
       storage_provider: Постачальник сховища
       token_exchange: Обмін маркерів
     health:
@@ -278,6 +279,7 @@ uk:
           drive_id_exists: Диск існує
           drive_id_format: Формат ID Диска
           header: Конфігурація
+          host: Host URL
           host_url_accessible: URL-адреса хосту доступна
           storage_configured: Налаштування завершено
           tenant_id: ID клієнта
@@ -399,7 +401,7 @@ uk:
       setting_up_additional_storages_non_admin: Адміністратори можуть налаштовувати додаткові файлові сховища в розділі «Адміністрування» / «Файлові сховища».
       setting_up_storages: Щоб створити файлові сховища, перейдіть у
       setting_up_storages_non_admin: Адміністратори можуть налаштовувати файлові сховища в розділі «Адміністрування» / «Файлові сховища».
-      share_point:
+      sharepoint:
         application_link_text: Сайт SharePoint
         integration: Адміністрування SharePoint / OpenProject
         oauth_configuration: 'Скопіюйте ці значення з потрібного додатка в цей: %{application_link_text}.'
@@ -505,7 +507,7 @@ uk:
         label_oauth_client_secret: Значення секрету клієнта Azure OAuth
         name: OneDrive
         name_placeholder: напр. OneDrive
-      share_point:
+      sharepoint:
         label_oauth_client_id: Ідентифікатор (клієнт) додатка Azure OAuth
         label_oauth_client_secret: Значення секрету клієнта Azure OAuth
         name: SharePoint

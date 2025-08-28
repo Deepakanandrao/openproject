@@ -21,7 +21,7 @@ pt-PT:
         project_folder_mode: Modo da pasta do projeto
         storage: Armazenamento
         storage_url: URL do armazenamento
-      storages/share_point_storage:
+      storages/sharepoint_storage:
         host: URL do site SharePoint
         library: ID da biblioteca
         name: Nome
@@ -195,10 +195,10 @@ pt-PT:
       oauth_client_incomplete:
         nextcloud: Permitir que o OpenProject aceda os dados da Nextcloud através do OAuth.
         one_drive: Permitir que o OpenProject aceda aos dados do Azure com o OAuth para ligar OneDrive.
-        share_point: Permitir que o OpenProject aceda aos dados do SharePoint com o OAuth.
+        sharepoint: Permitir que o OpenProject aceda aos dados do SharePoint com o OAuth.
       redirect_uri_incomplete:
         one_drive: Conclua a configuração com o redirecionamento correto da URI.
-        share_point: Conclua a configuração com o redirecionamento correto da URI.
+        sharepoint: Conclua a configuração com o redirecionamento correto da URI.
     confirm_replace_oauth_application: Esta ação irá repor as credenciais OAuth atuais. Após a confirmação, terá de voltar a introduzir as credenciais no fornecedor de armazenamento e todos os utilizadores remotos terão de autorizar novamente o OpenProject. Tem a certeza de que pretende continuar?
     confirm_replace_oauth_client: Esta ação irá repor as credenciais OAuth atuais. Depois de confirmar, terá de introduzir novas credenciais do fornecedor de armazenamento e todos os utilizadores terão de autorizar novamente em %{provider_type}. Tem a certeza de que pretende continuar?
     delete_warning:
@@ -236,10 +236,11 @@ pt-PT:
       openproject_oauth: OAuth do OpenProject
       project_folders: Pastas do projeto
       redirect_uri: Redirecionar URI
+      sharepoint_oauth: Azure OAuth
       storage_audience_blank: Não foi configurado nenhum público.
       storage_audience_description: Intercâmbio de tokens para audiência "%{audience}".
       storage_audience_idp: Utilizar o token de acesso obtido pelo fornecedor de identidade durante o início de sessão, independentemente da audiência.
-      storage_oauth: Nextcloud OAuth
+      storage_oauth: Storage OAuth
       storage_provider: Fornecedor de armazenamento
       token_exchange: Intercâmbio de Tokens
     health:
@@ -278,6 +279,7 @@ pt-PT:
           drive_id_exists: A unidade existe
           drive_id_format: Formato da ID da unidade
           header: Configuração
+          host: Host URL
           host_url_accessible: URL do anfitrião acessível
           storage_configured: Configuração concluída
           tenant_id: ID do Inquilino
@@ -395,7 +397,7 @@ pt-PT:
       setting_up_additional_storages_non_admin: Os administradores podem configurar armazenamentos de ficheiros adicionais em Administração / Armazenamentos de ficheiros.
       setting_up_storages: Para configurar armazenamentos de ficheiros, visite
       setting_up_storages_non_admin: Os administradores podem configurar o armazenamento de ficheiros em Administração / Armazenamento de ficheiros.
-      share_point:
+      sharepoint:
         application_link_text: Site do SharePoint
         integration: Administração de SharePoint / OpenProject
         oauth_configuration: Copie estes valores da aplicação pretendida no %{application_link_text}.
@@ -500,7 +502,7 @@ pt-PT:
         label_oauth_client_secret: Valor Secreto do Cliente Azure OAuth
         name: OneDrive
         name_placeholder: p. ex., OneDrive
-      share_point:
+      sharepoint:
         label_oauth_client_id: ID da aplicação Azure OAuth (cliente)
         label_oauth_client_secret: Valor Secreto do Cliente Azure OAuth
         name: SharePoint

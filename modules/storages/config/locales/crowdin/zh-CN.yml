@@ -21,7 +21,7 @@ zh-CN:
         project_folder_mode: 项目文件夹模式
         storage: 存储
         storage_url: 存储 URL
-      storages/share_point_storage:
+      storages/sharepoint_storage:
         host: Sharepoint 站点 URL
         library: 库 ID
         name: 名称
@@ -195,10 +195,10 @@ zh-CN:
       oauth_client_incomplete:
         nextcloud: 允许 OpenProject 使用 OAuth 访问 Nextcloud 数据。
         one_drive: 允许 OpenProject 使用 OAuth 访问Azure 数据来连接 OneDrive。
-        share_point: 允许 OpenProject 使用 OAuth 访问 SharePoint 数据。
+        sharepoint: 允许 OpenProject 使用 OAuth 访问 SharePoint 数据。
       redirect_uri_incomplete:
         one_drive: 使用正确的 URI 重定向完成设置。
-        share_point: 使用正确的 URI 重定向完成设置。
+        sharepoint: 使用正确的 URI 重定向完成设置。
     confirm_replace_oauth_application: 此操作将重置当前的 OAuth 凭据。确认后，您必须在存储提供商处重新输入凭据，并且所有远程用户都必须再次针对 OpenProject 进行授权。您确定要继续吗？
     confirm_replace_oauth_client: 此操作将重置当前的 OAuth 凭据。确认后，您必须输入存储提供商的新凭据，并且所有用户都必须再次针对 %{provider_type} 进行授权。您确定要继续吗？
     delete_warning:
@@ -236,10 +236,11 @@ zh-CN:
       openproject_oauth: OpenProject OAuth
       project_folders: 项目文件夹
       redirect_uri: 重定向 URI
+      sharepoint_oauth: Azure OAuth
       storage_audience_blank: 没有配置受众。
       storage_audience_description: 为受众 “%{audience}” 交换令牌。
       storage_audience_idp: 使用身份提供者在登录时获得的访问令牌，不管受众如何。
-      storage_oauth: Nextcloud OAuth
+      storage_oauth: Storage OAuth
       storage_provider: 存储提供商
       token_exchange: 令牌交换
     health:
@@ -278,6 +279,7 @@ zh-CN:
           drive_id_exists: 驱动器已存在
           drive_id_format: 驱动器 ID 格式
           header: 配置
+          host: Host URL
           host_url_accessible: 主机 URL 可访问
           storage_configured: 配置完成
           tenant_id: 租户 ID
@@ -317,7 +319,7 @@ zh-CN:
         oidc_token_acquisition_failed: 您的 OpenID Connect 设置中没有指明令牌的接收方，也没有提供令牌交换功能。请查看我们的文档以获取更多信息。
         oidc_token_exchange_failed: 您的 OpenID Connect 提供商上的 Token Exchange 设置似乎存在问题。请检查其配置并重试。
         oidc_token_refresh_failed: 当检查你对这个存储的访问权限时出现错误。详情请查看服务器日志。
-        sp_client_cant_delete_folder: The client is having trouble deleting folders in SharePoint. Please check the setup documentation for your storage.
+        sp_client_cant_delete_folder: 客户在删除 SharePoint 中的文件夹时遇到问题。请查看存储的设置文档。
         sp_client_id_missing: The configured OAuth 2 client id is missing for SharePoint. Please check the configuration.
         sp_client_secret_missing: The configured OAuth 2 client secret is missing for SharePoint. Please check the configuration.
         sp_client_write_permission_missing: The client seems to have write permissions missing in SharePoint. Please check the setup documentation for your storage.
@@ -393,7 +395,7 @@ zh-CN:
       setting_up_additional_storages_non_admin: 管理员可以在“管理/文件存储”中设置额外的文件存储。
       setting_up_storages: 如需设置文件存储，请访问
       setting_up_storages_non_admin: 管理员可以在“管理/文件存储”中设置文件存储。
-      share_point:
+      sharepoint:
         application_link_text: SharePoint 站点
         integration: SharePoint 管理 / OpenProject
         oauth_configuration: 从 %{application_link_text} 中的所需应用程序复制这些值。
@@ -498,8 +500,8 @@ zh-CN:
         label_oauth_client_secret: Azure OAuth 客户端密钥值
         name: OneDrive
         name_placeholder: 例如OneDrive
-      share_point:
-        label_oauth_client_id: Azure OAuth 应用程序（客户端）ID
+      sharepoint:
+        label_oauth_client_id: Azure OAuth 应用程序 (客户端) ID
         label_oauth_client_secret: Azure OAuth 客户端密钥值
         name: SharePoint
         name_placeholder: 例如 SharePoint

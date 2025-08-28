@@ -106,7 +106,7 @@ class MeetingsController < ApplicationController
       text = I18n.t(:notice_successful_create)
       unless User.current.pref.time_zone?
         link = I18n.t(:notice_timezone_missing, zone: formatted_time_zone_offset)
-        text += " #{view_context.link_to(link, { controller: '/my', action: :settings, anchor: 'pref_time_zone' },
+        text += " #{view_context.link_to(link, { controller: '/my', action: :locale, anchor: 'pref_time_zone' },
                                          class: 'link_to_profile')}"
       end
       flash[:notice] = text.html_safe # rubocop:disable Rails/OutputSafety
@@ -453,7 +453,7 @@ class MeetingsController < ApplicationController
 
     @converted_params[:project] = @project if @project.present?
     @converted_params[:duration] = @converted_params[:duration].to_hours if @converted_params[:duration].present?
-    @converted_params[:send_notifications] = meeting_params[:notify] == "1" && params[:meeting][:copied_from_meeting_id].present?
+    @converted_params[:send_notifications] = meeting_params[:notify] == "1"
 
     # Handle participants separately for each meeting type
     @converted_params[:participants_attributes] ||= {}
