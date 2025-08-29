@@ -46,10 +46,10 @@ module OpenProject
           @links ||= static_links.merge(dynamic_links)
         end
 
-        def url_for(*items)
+        def url_for(*items, localize_url: true)
           href = links.dig(*items, :href)
 
-          if docs_url?(href)
+          if localize_url && docs_url?(href)
             with_locale_param(href)
           else
             href
