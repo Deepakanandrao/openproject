@@ -28,36 +28,11 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Primer
-  module OpenProject
-    module Forms
-      module Dsl
-        class BlockNoteEditorInput < Primer::Forms::Dsl::Input
-          attr_reader :name, :label, :value, :classes, :document_id
-
-          def initialize(name:, label:, value:, document_id:, **system_arguments)
-            @name = name
-            @label = label
-            @value = value
-            @classes = system_arguments[:classes]
-            @document_id = document_id
-
-            super(**system_arguments)
-          end
-
-          def to_component
-            BlockNoteEditor.new(input: self, value:, document_id:)
-          end
-
-          def type
-            :block_note_editor
-          end
-
-          def focusable?
-            true
-          end
-        end
-      end
-    end
+module CspHelper
+  def parse_csp(csp_string)
+    csp_string
+      .split("; ")
+      .map(&:split)
+      .each_with_object({}) { |csp_part, csp_hash_map| csp_hash_map[csp_part[0]] = csp_part[1..] }
   end
 end

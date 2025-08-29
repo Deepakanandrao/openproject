@@ -28,34 +28,35 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Primer
-  module OpenProject
-    module Forms
-      module Dsl
-        class BlockNoteEditorInput < Primer::Forms::Dsl::Input
-          attr_reader :name, :label, :value, :classes, :document_id
+require "spec_helper"
 
-          def initialize(name:, label:, value:, document_id:, **system_arguments)
-            @name = name
-            @label = label
-            @value = value
-            @classes = system_arguments[:classes]
-            @document_id = document_id
+RSpec.describe "" do
+  include CspHelper
 
-            super(**system_arguments)
-          end
+  current_user { create(:user) }
 
-          def to_component
-            BlockNoteEditor.new(input: self, value:, document_id:)
-          end
+  describe "GET /" do
+    context "when collaborative_editing_hocuspocus_url is set as a valid URI" do
+      it "responds with 200 and appends storage host to the connect-src CSP",
+         with_settings: { collaborative_editing_hocuspocus_url: "wss://hocuspocus.local" } do
+        get "/"
 
-          def type
-            :block_note_editor
-          end
+        expect(last_response).to have_http_status(200)
+        csp = parse_csp(last_response.headers["Content-Security-Policy"])
+        expect(csp["connect-src"]).to include("wss://hocuspocus.local")
+      end
+    end
 
-          def focusable?
-            true
-          end
+    context "when collaborative_editing_hocuspocus_url is set to an invalid URI" do
+      it "responds with 200 and logs the problem",
+         with_settings: { collaborative_editing_hocuspocus_url: "://hocuspocus.local" } do
+        allow(OpenProject.logger).to receive(:info)
+
+        get "/"
+
+        expect(last_response).to have_http_status(200)
+        expect(OpenProject.logger).to have_received(:info) do |&blk|
+          expect(blk.call).to eq "Setting.collaborative_editing_hocuspocus_url is set to an invalid URI: ://hocuspocus.local"
         end
       end
     end
