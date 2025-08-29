@@ -40,6 +40,23 @@ module ProjectCustomFieldProjectMappings
       service_result
     end
 
+    def after_perform(service_result)
+      super.tap do
+        recalculate_values(service_result)
+      end
+    end
+
+    def recalculate_values(service_result)
+      mapping = service_result.result
+      project = mapping.project
+
+      affected_cfs = project.all_available_custom_fields.affected_calculated_fields([mapping.custom_field_id])
+
+      project.calculate_custom_fields(affected_cfs)
+
+      project.save if project.changed_for_autosave?
+    end
+
     def create_mapping(service_result)
       return if service_result.result.persisted?
 
