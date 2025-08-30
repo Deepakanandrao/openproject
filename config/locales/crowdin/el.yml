@@ -914,7 +914,7 @@ el:
   account:
     delete: "Διαγραφή λογαριασμού"
     delete_confirmation: "Είστε σίγουρος ότι θέλετε να διαγράψετε αυτό το λογαριασμό;"
-    deletion_pending: "Account has been locked and was scheduled for deletion. Note that this process takes place in the background. It might take a few moments until the user is fully deleted."
+    deletion_pending: "Account has been scheduled for deletion. Note that this process takes place in the background. It might take a few moments until the user is fully deleted."
     deletion_info:
       data_consequences:
         other: 'Από τα δεδομένα που δημιούργησε ο χρήστης (π.χ. email, προτιμήσεις, πακέτα εργασίας, καταχωρίσεις wiki) θα διαγραφούν όσο το δυνατόν περισσότερα. Σημειώστε όμως ότι τα δεδομένα όπως τα πακέτα εργασίας και οι καταχωρίσεις wiki δεν μπορούν να διαγραφούν χωρίς να παρεμποδίσουν την εργασία των άλλων χρηστών. Ως εκ τούτου, τέτοια δεδομένα θα ανατεθούν σε ένα λογαριασμό που θα ονομάζεται "Διαγραμμένος Χρήστης". Εφόσον τα δεδομένα όλων των διαγραμμένων λογαριασμών ανατίθενται σε αυτόν το λογαριασμό, δεν θα είναι δυνατό να διακρίνετε τα δεδομένα που δημιούργησε ο χρήστης από τα δεδομένα κάποιου άλλου διαγραμμένου λογαριασμού.'
@@ -2519,6 +2519,21 @@ el:
       community: "Κοινότητα OpenProject"
       upsell:
         title: "Upgrade to Enterprise edition"
+      new_features:
+        header: "Read about new features and product updates."
+        learn_about: "Learn more about all new features"
+        #We need to include the version to invalidate outdated translations in other locales
+        "16_4":
+          new_features_title: >
+            The release contains various new features and improvements, such as:
+          new_features_list:
+            line_0: Option to auto-sync system color + contrast mode.
+            line_1: Dark high contrast mode for improved accessibility.
+            line_2: PDF export of project lists.
+            line_3: Custom font for all PDF exports (Enterprise add-on).
+            line_4: Improved meeting participants dialog.
+            line_5: Improved budget handling in project queries and budget planning.
+            line_6: Updated Home and Project overview page.
     links:
       upgrade_enterprise_edition: "Upgrade to Enterprise edition"
       postgres_migration: "Μεταφορά της εγκατάστασης σας σε PostgreSQL"
@@ -3989,6 +4004,8 @@ el:
   setting_feeds_limit: "Όριο συγκατάθεσης τροφοδοσίας"
   setting_file_max_size_displayed: "Μέγιστο μέγεθος αρχείων κειμένου που εμφανίζονται inline"
   setting_host_name: "Όνομα εξυπηρετητή"
+  setting_collaborative_editing_hocuspocus_url: "Hocuspocus server URL"
+  setting_collaborative_editing_hocuspocus_secret: "Hocuspocus server secret"
   setting_hours_per_day: "Hours per day"
   setting_hours_per_day_explanation: >-
     This defines what is considered a "day" when displaying duration in days and hours (for example, if a day is 8 hours, 32 hours would be 4 days).

@@ -915,7 +915,7 @@ it:
   account:
     delete: "Cancella account"
     delete_confirmation: "Sei davvero sicuro di voler cancellare questo account?"
-    deletion_pending: "Il profilo è stato bloccato e ne è stata pianificata l'eliminazione. Nota che questo processo avviene in background. Potrebbe volerci un po', prima della completa eliminazione dell'utente."
+    deletion_pending: "Account has been scheduled for deletion. Note that this process takes place in the background. It might take a few moments until the user is fully deleted."
     deletion_info:
       data_consequences:
         other: 'I dati creati dall''utente (ad esempio posta elettronica, preferenze, macro-attività, voci wiki) verranno eliminati completamente se possibile. Si noti, tuttavia, che alcuni tipi di dati, come ad esempio i pacchetti di lavoro e le voci wiki, non possono essere eliminati senza creare un ostacolo per il lavoro di altri utenti. La proprietà di tali dati sarà pertanto trasferita ad un account generico chiamato "Deleted user". Visto che i dati di tutti gli account eliminati vengono riassegnati a questo stesso account, non sarà più possibile distinguere i dati creati dall''utente dai dati di un altro account eliminato.'
@@ -2520,6 +2520,21 @@ it:
       community: "Comunità di OpenProject"
       upsell:
         title: "Aggiorna ad Enterprise edition"
+      new_features:
+        header: "Read about new features and product updates."
+        learn_about: "Learn more about all new features"
+        #We need to include the version to invalidate outdated translations in other locales
+        "16_4":
+          new_features_title: >
+            The release contains various new features and improvements, such as:
+          new_features_list:
+            line_0: Option to auto-sync system color + contrast mode.
+            line_1: Dark high contrast mode for improved accessibility.
+            line_2: PDF export of project lists.
+            line_3: Custom font for all PDF exports (Enterprise add-on).
+            line_4: Improved meeting participants dialog.
+            line_5: Improved budget handling in project queries and budget planning.
+            line_6: Updated Home and Project overview page.
     links:
       upgrade_enterprise_edition: "Aggiorna ad Enterprise edition"
       postgres_migration: "Migrazione dell'installazione su PostgreSQL"
@@ -2944,7 +2959,7 @@ it:
   label_journal_diff: "Confronto Descrizione"
   label_language: "Lingua"
   label_languages: "Lingue"
-  label_locale: "Lingua e regione"
+  label_locale: "Language and Region"
   label_jump_to_a_project: "Salta ad altro progetto..."
   label_keyword_plural: "Parole chiave"
   label_language_based: "Basato sulla lingua dell'utente"
@@ -3991,6 +4006,8 @@ it:
   setting_feeds_limit: "Limite al contenuto del contributo"
   setting_file_max_size_displayed: "Dimensione massima dei file di testo visualizzati inline"
   setting_host_name: "Nome dell'Host"
+  setting_collaborative_editing_hocuspocus_url: "Hocuspocus server URL"
+  setting_collaborative_editing_hocuspocus_secret: "Hocuspocus server secret"
   setting_hours_per_day: "Ore al giorno"
   setting_hours_per_day_explanation: >-
     Definisce ciò che viene considerato un "giorno" quando si visualizza la durata in giorni e ore (per esempio, se un giorno è di 8 ore, 32 ore sono 4 giorni).

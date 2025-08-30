@@ -915,7 +915,7 @@ pt-BR:
   account:
     delete: "Excluir conta"
     delete_confirmation: "Tem certeza que deseja excluir a conta?"
-    deletion_pending: "A conta foi bloqueada e sua exclusão foi agendada. Observe que este processo ocorre em segundo plano. Pode levar alguns minutos até que o usuário seja totalmente excluído."
+    deletion_pending: "Account has been scheduled for deletion. Note that this process takes place in the background. It might take a few moments until the user is fully deleted."
     deletion_info:
       data_consequences:
         other: 'Os dados que o usuário criou (ex.: e-mail, preferências, pacotes de trabalho, páginas wiki) serão excluídos na medida do possível. Note, porém, que dados como pacotes de trabalho e páginas wiki não podem ser excluídos sem impactar o trabalho dos demais usuários. Estes dados serão reatribuídos a uma conta chamada "Usuário excluído". Como os dados de todas as contas excluídas serão reatribuídos a esta conta, não será possível distinguir os dados que o usuário criou dos dados de outra conta excluída.'
@@ -2520,6 +2520,21 @@ pt-BR:
       community: "Comunidade do OpenProject"
       upsell:
         title: "Atualizar para a edição Enterprise"
+      new_features:
+        header: "Read about new features and product updates."
+        learn_about: "Learn more about all new features"
+        #We need to include the version to invalidate outdated translations in other locales
+        "16_4":
+          new_features_title: >
+            The release contains various new features and improvements, such as:
+          new_features_list:
+            line_0: Option to auto-sync system color + contrast mode.
+            line_1: Dark high contrast mode for improved accessibility.
+            line_2: PDF export of project lists.
+            line_3: Custom font for all PDF exports (Enterprise add-on).
+            line_4: Improved meeting participants dialog.
+            line_5: Improved budget handling in project queries and budget planning.
+            line_6: Updated Home and Project overview page.
     links:
       upgrade_enterprise_edition: "Atualizar para a edição Enterprise"
       postgres_migration: "Migrando sua instalação para PostgreSQL"
@@ -3990,6 +4005,8 @@ pt-BR:
   setting_feeds_limit: "Limite de conteúdo de feed"
   setting_file_max_size_displayed: "Tamanho máximo de arquivos de texto exibidos em linha"
   setting_host_name: "Nome do servidor"
+  setting_collaborative_editing_hocuspocus_url: "Hocuspocus server URL"
+  setting_collaborative_editing_hocuspocus_secret: "Hocuspocus server secret"
   setting_hours_per_day: "Horas por dia"
   setting_hours_per_day_explanation: >-
     Isso define o que é considerado um "dia" ao exibir a duração em dias e horas (por exemplo, se um dia tem 8 horas, 32 horas serão exibidas como 4 dias).

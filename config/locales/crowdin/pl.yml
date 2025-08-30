@@ -930,7 +930,7 @@ pl:
   account:
     delete: "Usuń konto"
     delete_confirmation: "Czy na pewno chcesz usunąć to konto?"
-    deletion_pending: "Konto zostało zablokowane i zaplanowane do usunięcia. Pamiętaj, że ten proces odbywa się w tle. Może upłynąć trochę czasu, zanim użytkownik zostanie w pełni usunięty."
+    deletion_pending: "Account has been scheduled for deletion. Note that this process takes place in the background. It might take a few moments until the user is fully deleted."
     deletion_info:
       data_consequences:
         other: 'Dane użytkownika (np. e-mail, preferencje, pakiety pracy, wpisy wiki) będą usunięte w miarę możliwości. Jednakże, takie dane jak Zadania i wpisy wiki nie mogą być usunięte bez wpływu na pracę pozostałych użytkowników i mogą ją utrudnić. Te dane zostaną przypisane do konta "Użytkownik usunięty". Wszystkie dane z usuwanego konta zostaną przypisane do tego ww. konta uniemożliwiając ich późniejszą identyfikację.'
@@ -2609,6 +2609,21 @@ pl:
       community: "Społeczność OpenProject"
       upsell:
         title: "Aktualizuj do wersji Enterprise"
+      new_features:
+        header: "Read about new features and product updates."
+        learn_about: "Learn more about all new features"
+        #We need to include the version to invalidate outdated translations in other locales
+        "16_4":
+          new_features_title: >
+            The release contains various new features and improvements, such as:
+          new_features_list:
+            line_0: Option to auto-sync system color + contrast mode.
+            line_1: Dark high contrast mode for improved accessibility.
+            line_2: PDF export of project lists.
+            line_3: Custom font for all PDF exports (Enterprise add-on).
+            line_4: Improved meeting participants dialog.
+            line_5: Improved budget handling in project queries and budget planning.
+            line_6: Updated Home and Project overview page.
     links:
       upgrade_enterprise_edition: "Aktualizuj do wersji Enterprise"
       postgres_migration: "Migrowanie instalacji do PostgreSQL"
@@ -4081,6 +4096,8 @@ pl:
   setting_feeds_limit: "Feed content limit"
   setting_file_max_size_displayed: "Maksymalny rozmiar plików tekstowych wyświetlanych w treści"
   setting_host_name: "Nazwa hosta"
+  setting_collaborative_editing_hocuspocus_url: "Hocuspocus server URL"
+  setting_collaborative_editing_hocuspocus_secret: "Hocuspocus server secret"
   setting_hours_per_day: "Liczba godzin dziennie"
   setting_hours_per_day_explanation: >-
     To definiuje, co jest uważane za „dzień” podczas wyświetlania czasu trwania w dniach i godzinach (na przykład, jeśli dzień ma 8 godzin, 32 godziny będą 4 dniami).

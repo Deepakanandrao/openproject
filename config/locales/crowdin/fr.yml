@@ -916,7 +916,7 @@ fr:
   account:
     delete: "Supprimer le compte"
     delete_confirmation: "Êtes-vous sûr de vouloir supprimer le compte ?"
-    deletion_pending: "Le compte a été verrouillé et a été programmé pour suppression. Notez que ce processus a lieu en arrière-plan. Cela peut prendre quelques instants avant que l'utilisateur soit complètement supprimé."
+    deletion_pending: "Account has been scheduled for deletion. Note that this process takes place in the background. It might take a few moments until the user is fully deleted."
     deletion_info:
       data_consequences:
         other: 'Les données créées par l''utilisateur (e.g. e-mail, préférences, lots de travaux, entrées wiki) seront supprimées autant que possible. Notez toutefois que les données comme les lots de travaux et les entrées wiki ne peuvent pas être supprimées sans impacter le travail des autres utilisateurs. Ces données sont donc réaffectées à un compte appelé «Utilisateur supprimé». Étant donné que les données de chaque compte supprimé sont réaffectées à ce compte, il ne sera plus possible de distinguer les données créées par cet utilisateur de celles d''un autre compte supprimé.'
@@ -2521,6 +2521,21 @@ fr:
       community: "Communauté OpenProject"
       upsell:
         title: "Passer à la version Entreprise"
+      new_features:
+        header: "Read about new features and product updates."
+        learn_about: "Learn more about all new features"
+        #We need to include the version to invalidate outdated translations in other locales
+        "16_4":
+          new_features_title: >
+            The release contains various new features and improvements, such as:
+          new_features_list:
+            line_0: Option to auto-sync system color + contrast mode.
+            line_1: Dark high contrast mode for improved accessibility.
+            line_2: PDF export of project lists.
+            line_3: Custom font for all PDF exports (Enterprise add-on).
+            line_4: Improved meeting participants dialog.
+            line_5: Improved budget handling in project queries and budget planning.
+            line_6: Updated Home and Project overview page.
     links:
       upgrade_enterprise_edition: "Passer à la version Entreprise"
       postgres_migration: "Migration de votre installation vers PostgreSQL"
@@ -3992,6 +4007,8 @@ fr:
   setting_feeds_limit: "Limite du contenu du flux"
   setting_file_max_size_displayed: "Taille maximale de l'affichage du fichers texte inline"
   setting_host_name: "Nom d'hôte"
+  setting_collaborative_editing_hocuspocus_url: "Hocuspocus server URL"
+  setting_collaborative_editing_hocuspocus_secret: "Hocuspocus server secret"
   setting_hours_per_day: "Heures par jour"
   setting_hours_per_day_explanation: >-
     Cela définit ce qui est considéré comme un « jour » lors de l'affichage de la durée en jours et en heures (par exemple, si un jour dure 8 heures, 32 heures représentent 4 jours).

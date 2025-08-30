@@ -906,7 +906,7 @@ id:
   account:
     delete: "Hapus akun"
     delete_confirmation: "Yakin Anda ingin menghapus akun?"
-    deletion_pending: "Akun telah dikunci dan dijadwalkan untuk dihapus. Perhatikan bahwa proses ini berlangsung di latar belakang. Mungkin perlu beberapa saat hingga pengguna dihapus sepenuhnya."
+    deletion_pending: "Account has been scheduled for deletion. Note that this process takes place in the background. It might take a few moments until the user is fully deleted."
     deletion_info:
       data_consequences:
         other: 'Data yang dibuat pengguna (seperti email, preferensi, Work Package, entri wiki) akan dihapus. Namun, data seperti Work Package dan entri wiki yang terhubung dengan pengguna lain tidak bisa dihapus. Data seperti ini akan dipindahkan ke sebuah akun bernama "Pengguna Terhapus". Karena data dari setiap akun terhapus dipindahkan ke akun tersebut, maka pembedaan antara data yang dibuat pengguna dengan data dari akun terhapus lainnya tidak akan bisa dilakukan.'
@@ -2474,6 +2474,21 @@ id:
       community: "OpenProject community"
       upsell:
         title: "Upgrade to Enterprise edition"
+      new_features:
+        header: "Read about new features and product updates."
+        learn_about: "Learn more about all new features"
+        #We need to include the version to invalidate outdated translations in other locales
+        "16_4":
+          new_features_title: >
+            The release contains various new features and improvements, such as:
+          new_features_list:
+            line_0: Option to auto-sync system color + contrast mode.
+            line_1: Dark high contrast mode for improved accessibility.
+            line_2: PDF export of project lists.
+            line_3: Custom font for all PDF exports (Enterprise add-on).
+            line_4: Improved meeting participants dialog.
+            line_5: Improved budget handling in project queries and budget planning.
+            line_6: Updated Home and Project overview page.
     links:
       upgrade_enterprise_edition: "Upgrade to Enterprise edition"
       postgres_migration: "Migrasi instalasi anda ke PostgreSQL"
@@ -3940,6 +3955,8 @@ id:
   setting_feeds_limit: "Batasan konten feed"
   setting_file_max_size_displayed: "Ukuran maks. file teks yang ditampilkan inline"
   setting_host_name: "Nama host"
+  setting_collaborative_editing_hocuspocus_url: "Hocuspocus server URL"
+  setting_collaborative_editing_hocuspocus_secret: "Hocuspocus server secret"
   setting_hours_per_day: "Hours per day"
   setting_hours_per_day_explanation: >-
     This defines what is considered a "day" when displaying duration in days and hours (for example, if a day is 8 hours, 32 hours would be 4 days).

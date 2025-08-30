@@ -917,7 +917,7 @@ hu:
   account:
     delete: "Felhasználói hozzáférés törölése"
     delete_confirmation: "Biztosan törölni akarja ezt a felhasználói hozzáférést?"
-    deletion_pending: "Account has been locked and was scheduled for deletion. Note that this process takes place in the background. It might take a few moments until the user is fully deleted."
+    deletion_pending: "Account has been scheduled for deletion. Note that this process takes place in the background. It might take a few moments until the user is fully deleted."
     deletion_info:
       data_consequences:
         other: 'A létrehozott adatok (pl. e-mail, beállítások, munkacsomag, wiki bejegyzés) lehetőség szerint törlődnek. Azonban máshol használt adatokat, mint pl. a munkacsomagok és wiki bejegyzések, nem lehet törölni a többi felhasználó munkájának akadályozása nélkül. Az ilyen adatokat ezért áthelyezzük egy "törölt felhasználó" nevű fiókba. Mivel minden törölt hozzáférésnél ez a fiók tartalmazza az adatokat, nem lehet megkülönböztetni a törölt felhasználók adatainak szerzőjét egymástól.'
@@ -2522,6 +2522,21 @@ hu:
       community: "OpenProject Közösség"
       upsell:
         title: "Váltás Vállalati Verzióra"
+      new_features:
+        header: "Read about new features and product updates."
+        learn_about: "Learn more about all new features"
+        #We need to include the version to invalidate outdated translations in other locales
+        "16_4":
+          new_features_title: >
+            The release contains various new features and improvements, such as:
+          new_features_list:
+            line_0: Option to auto-sync system color + contrast mode.
+            line_1: Dark high contrast mode for improved accessibility.
+            line_2: PDF export of project lists.
+            line_3: Custom font for all PDF exports (Enterprise add-on).
+            line_4: Improved meeting participants dialog.
+            line_5: Improved budget handling in project queries and budget planning.
+            line_6: Updated Home and Project overview page.
     links:
       upgrade_enterprise_edition: "Váltás Vállalati Verzióra"
       postgres_migration: "A rendszer költöztetése PostreSQL-re"
@@ -3992,6 +4007,8 @@ hu:
   setting_feeds_limit: "Tartalom szintjének a korlátja"
   setting_file_max_size_displayed: "A szöveg fájl sorainak maximum mérete megjelenítéskor"
   setting_host_name: "Gazdagép neve"
+  setting_collaborative_editing_hocuspocus_url: "Hocuspocus server URL"
+  setting_collaborative_editing_hocuspocus_secret: "Hocuspocus server secret"
   setting_hours_per_day: "Hours per day"
   setting_hours_per_day_explanation: >-
     This defines what is considered a "day" when displaying duration in days and hours (for example, if a day is 8 hours, 32 hours would be 4 days).

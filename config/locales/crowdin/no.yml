@@ -917,7 +917,7 @@
   account:
     delete: "Slett konto"
     delete_confirmation: "Er du sikker på at du vil slette kontoen?"
-    deletion_pending: "Kontoen er låst og ble planlagt slettet. Merk at denne prosessen skjer i bakgrunnen. Det kan ta noe tid til brukeren er fullstendig slettet."
+    deletion_pending: "Account has been scheduled for deletion. Note that this process takes place in the background. It might take a few moments until the user is fully deleted."
     deletion_info:
       data_consequences:
         other: 'Av dataene brukeren opprettet (f.eks. e-post, innstillinger, arbeidspakker, wiki-oppføringer) vil så mye som mulig bli slettet. Merk imidlertid at data som arbeidspakker og wiki-oppføringer ikke kan slettes uten å påvirke arbeidet til de andre brukerne. Slike data blir derfor flyttet til en konto kalt "Slettet bruker". Fordi dataene til hver slettede konto blir flyttet til denne kontoen vil det ikke være mulig å skille data brukeren har opprettet fra data for en annen slettet konto.'
@@ -2522,6 +2522,21 @@
       community: "OpenProject fellesskap"
       upsell:
         title: "Oppgrader til Enterprise utgaven"
+      new_features:
+        header: "Read about new features and product updates."
+        learn_about: "Learn more about all new features"
+        #We need to include the version to invalidate outdated translations in other locales
+        "16_4":
+          new_features_title: >
+            The release contains various new features and improvements, such as:
+          new_features_list:
+            line_0: Option to auto-sync system color + contrast mode.
+            line_1: Dark high contrast mode for improved accessibility.
+            line_2: PDF export of project lists.
+            line_3: Custom font for all PDF exports (Enterprise add-on).
+            line_4: Improved meeting participants dialog.
+            line_5: Improved budget handling in project queries and budget planning.
+            line_6: Updated Home and Project overview page.
     links:
       upgrade_enterprise_edition: "Oppgrader til Enterprise utgaven"
       postgres_migration: "Overføre installasjonen til PostgreSQL"
@@ -3993,6 +4008,8 @@
   setting_feeds_limit: "Innholdsgrense for Feed"
   setting_file_max_size_displayed: "Maks størrelse på tekstfiler som vises inline"
   setting_host_name: "Vertsnavn"
+  setting_collaborative_editing_hocuspocus_url: "Hocuspocus server URL"
+  setting_collaborative_editing_hocuspocus_secret: "Hocuspocus server secret"
   setting_hours_per_day: "Timer per dag"
   setting_hours_per_day_explanation: >-
     Dette vil definere hva som anses som en "dag" når varigheten vises i dager og timer (for eksempel hvis dagen er 8 timer, vil 32 timer være 4 dager).

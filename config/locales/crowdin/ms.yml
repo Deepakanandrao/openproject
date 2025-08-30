@@ -908,7 +908,7 @@ ms:
   account:
     delete: "Padam akaun"
     delete_confirmation: "Adakah anda pasti anda mahu memadam akaun?"
-    deletion_pending: "Akaun telah dikunci dan dijadualkan untuk pemadaman. Ambil perhatian bahawa proses ini berlaku di latar belakang. Ia mungkin mengambil beberapa saat sehingga pengguna dipadamkan sepenuhnya."
+    deletion_pending: "Account has been scheduled for deletion. Note that this process takes place in the background. It might take a few moments until the user is fully deleted."
     deletion_info:
       data_consequences:
         other: 'Data yang dicipta oleh pengguna (cth. e-mel, keutamaan, pakej kerja, entri wiki) akan dipadam sebanyak mungkin. Namun, perlu diingat bahawa data seperti pakej kerja dan entri wiki tidak boleh dipadam tanpa mengganggu kerja pengguna lain. Data tersebut kemudian ditugaskan semula ke akaun dipanggil "Pengguna yang dipadam", kerana data setiap akaun yang dipadam, ditugaskan semula ke akaun ini tidak akan dapat untuk membezakan data yang dicipta oleh pengguna daripada data akaun lain yang dipadam.'
@@ -2476,6 +2476,21 @@ ms:
       community: "Komuniti OpenProject"
       upsell:
         title: "Naik taraf ke edisi Enterprise"
+      new_features:
+        header: "Read about new features and product updates."
+        learn_about: "Learn more about all new features"
+        #We need to include the version to invalidate outdated translations in other locales
+        "16_4":
+          new_features_title: >
+            The release contains various new features and improvements, such as:
+          new_features_list:
+            line_0: Option to auto-sync system color + contrast mode.
+            line_1: Dark high contrast mode for improved accessibility.
+            line_2: PDF export of project lists.
+            line_3: Custom font for all PDF exports (Enterprise add-on).
+            line_4: Improved meeting participants dialog.
+            line_5: Improved budget handling in project queries and budget planning.
+            line_6: Updated Home and Project overview page.
     links:
       upgrade_enterprise_edition: "Naik taraf ke edisi Enterprise"
       postgres_migration: "Mengalihkan pemasangan anda ke PostgreSQL"
@@ -3944,6 +3959,8 @@ ms:
   setting_feeds_limit: "Had kandungan feed "
   setting_file_max_size_displayed: "Saiz maksimum fail teks ditampilkan sebaris "
   setting_host_name: "Nama hos"
+  setting_collaborative_editing_hocuspocus_url: "Hocuspocus server URL"
+  setting_collaborative_editing_hocuspocus_secret: "Hocuspocus server secret"
   setting_hours_per_day: "Jam sehari"
   setting_hours_per_day_explanation: >-
     Ini mentakrifkan perkara yang dianggap sebagai "hari" apabila memaparkan tempoh dalam hari dan jam (contohnya, jika sehari ialah 8 jam, 32 jam ialah 4 hari).

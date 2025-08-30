@@ -288,17 +288,6 @@ fr:
         format:
           date: "%{attribute} n’est pas une date valide. Format attendu : AAAA-MM-JJ."
         general: "Une erreur s'est produite."
-    homescreen:
-      blocks:
-        new_features:
-          text_new_features: "En savoir plus sur les nouvelles fonctionnalités et les mises à jour des produits."
-          learn_about: "En savoir plus sur les nouvelles fonctionnalités"
-          #Include the version to invalidate outdated translations in other locales.
-          #Otherwise, e.g. Chinese might still have the translations for 10.0 in the 12.0 release.
-          "16_3":
-            standard:
-              new_features_html: >
-                Cette version contient plusieurs nouvelles fonctionnalités et améliorations, telles que <br> <ul class="%{list_styling_class}"> <li>Améliorations UX/UI pour un look plus moderne.</li> <li>Réunions : option permettant de désactiver les notifications par e-mail et ICS.</li> <li>Les minuteries en cours sont affichées dans le module de suivi du temps.</li> <li>Rapport d'avancement : la somme du % d'achèvement est également affichée dans le mode basé sur l'état.</li> <li>Bilan de santé Nextcloud : indique la capacité d'échange de jetons manquante (add-on Enterprise).</li> </ul>
     ical_sharing_modal:
       title: "S'abonner au calendrier"
       inital_setup_error_message: "Une erreur est survenue lors de la récupération des données."

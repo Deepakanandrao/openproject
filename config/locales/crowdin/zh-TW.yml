@@ -906,7 +906,7 @@ zh-TW:
   account:
     delete: "刪除帳號"
     delete_confirmation: "您確定要刪除這個帳號嗎？"
-    deletion_pending: "帳戶已被鎖定且預計刪除。 請注意，此過程背景執行。 可能需要一些時間才能完全刪除使用者。"
+    deletion_pending: "Account has been scheduled for deletion. Note that this process takes place in the background. It might take a few moments until the user is fully deleted."
     deletion_info:
       data_consequences:
         other: '使用者所建立的資料（例如電子郵件、偏好設定、工作套件、維基條目）將盡可能被刪除。但請注意，像工作套件和維基條目等資料若刪除，會影響其他使用者的工作，因此這些資料會被重新指派給名為「已刪除使用者」的帳號。由於所有被刪除帳號的資料都會集中指派至此帳號，因此無法區分該使用者所建立的資料與其他已刪除帳號的資料。'
@@ -2474,6 +2474,21 @@ zh-TW:
       community: "OpenProject 社群"
       upsell:
         title: "升級到企業版"
+      new_features:
+        header: "Read about new features and product updates."
+        learn_about: "Learn more about all new features"
+        #We need to include the version to invalidate outdated translations in other locales
+        "16_4":
+          new_features_title: >
+            The release contains various new features and improvements, such as:
+          new_features_list:
+            line_0: Option to auto-sync system color + contrast mode.
+            line_1: Dark high contrast mode for improved accessibility.
+            line_2: PDF export of project lists.
+            line_3: Custom font for all PDF exports (Enterprise add-on).
+            line_4: Improved meeting participants dialog.
+            line_5: Improved budget handling in project queries and budget planning.
+            line_6: Updated Home and Project overview page.
     links:
       upgrade_enterprise_edition: "升級到企業版"
       postgres_migration: "將您的安裝遷移到 PostgreSQL"
@@ -3941,6 +3956,8 @@ zh-TW:
   setting_feeds_limit: "Feed 內容限制"
   setting_file_max_size_displayed: "直接显示文字文件內容的最大檔案容量"
   setting_host_name: "主機名稱"
+  setting_collaborative_editing_hocuspocus_url: "Hocuspocus server URL"
+  setting_collaborative_editing_hocuspocus_secret: "Hocuspocus server secret"
   setting_hours_per_day: "每天小時數"
   setting_hours_per_day_explanation: >-
     這定義了在以天和小時為單位顯示持續時間時，什麼是一"天"(例如，如果一天是 8 小時，32 小時就是 4 天)。

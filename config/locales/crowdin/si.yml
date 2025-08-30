@@ -918,7 +918,7 @@ si:
   account:
     delete: "ගිණුම මකන්න"
     delete_confirmation: "ඔබට ගිණුම මකා දැමීමට අවශ්ය බව ඔබට විශ්වාසද?"
-    deletion_pending: "Account has been locked and was scheduled for deletion. Note that this process takes place in the background. It might take a few moments until the user is fully deleted."
+    deletion_pending: "Account has been scheduled for deletion. Note that this process takes place in the background. It might take a few moments until the user is fully deleted."
     deletion_info:
       data_consequences:
         other: 'පරිශීලකයා විසින් නිර්මාණය කරන ලද දත්ත (උදා: ඊමේල්, මනාපයන්, වැඩ පැකේජ, විකි ඇතුළත් කිරීම්) හැකිතාක් මකා දැමෙනු ඇත. කෙසේ වෙතත්, අනෙකුත් පරිශීලකයින්ගේ කාර්යයට බාධා නොකර වැඩ පැකේජ සහ විකි ඇතුළත් කිරීම් වැනි දත්ත මකා දැමිය නොහැකි බව සලකන්න. එබැවින් එවැනි දත්ත “මකාදැමූ පරිශීලකයා” නමින් ගිණුමකට නැවත පවරනු ලැබේ. මකාදැමූ සෑම ගිණුමකම දත්ත මෙම ගිණුමට නැවත පැවරෙන බැවින් පරිශීලකයා වෙනත් මකාදැමූ ගිණුමක දත්ත වලින් නිර්මාණය කළ දත්ත වෙන්කර හඳුනා ගැනීමට නොහැකි වනු ඇත.'
@@ -2523,6 +2523,21 @@ si:
       community: "විවෘත ව්යාපෘති ප්රජාව"
       upsell:
         title: "Upgrade to Enterprise edition"
+      new_features:
+        header: "Read about new features and product updates."
+        learn_about: "Learn more about all new features"
+        #We need to include the version to invalidate outdated translations in other locales
+        "16_4":
+          new_features_title: >
+            The release contains various new features and improvements, such as:
+          new_features_list:
+            line_0: Option to auto-sync system color + contrast mode.
+            line_1: Dark high contrast mode for improved accessibility.
+            line_2: PDF export of project lists.
+            line_3: Custom font for all PDF exports (Enterprise add-on).
+            line_4: Improved meeting participants dialog.
+            line_5: Improved budget handling in project queries and budget planning.
+            line_6: Updated Home and Project overview page.
     links:
       upgrade_enterprise_edition: "Upgrade to Enterprise edition"
       postgres_migration: "ඔබගේ ස්ථාපනය PostgreSQL වෙත සංක්රමණය කිරීම"
@@ -3994,6 +4009,8 @@ si:
   setting_feeds_limit: "අන්තර්ගත සීමාව සංග්රහ"
   setting_file_max_size_displayed: "පේළිගත ප්රදර්ශනය පෙළ ගොනු උපරිම ප්රමාණය"
   setting_host_name: "සත්කාරක නාමය"
+  setting_collaborative_editing_hocuspocus_url: "Hocuspocus server URL"
+  setting_collaborative_editing_hocuspocus_secret: "Hocuspocus server secret"
   setting_hours_per_day: "Hours per day"
   setting_hours_per_day_explanation: >-
     This defines what is considered a "day" when displaying duration in days and hours (for example, if a day is 8 hours, 32 hours would be 4 days).

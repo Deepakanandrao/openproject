@@ -692,7 +692,7 @@ ja:
     dark_high_contrast: "暗い高コントラスト"
     light: "ライト"
     light_high_contrast: "明るいコントラストが高い"
-    sync_with_os: "自動 (OS カラーモードに一致)"
+    sync_with_os: "Automatic (match OS color mode)"
   types:
     index:
       no_results_title_text: 現在、種類はありません。
@@ -909,7 +909,7 @@ ja:
   account:
     delete: "アカウントを削除"
     delete_confirmation: "アカウントを削除してもよろしいですか？"
-    deletion_pending: "アカウントがロックされ、削除がスケジュールされました。このプロセスはバックグラウンドで行われることに注意してください。 ユーザーが完全に削除されるまで数分かかる場合があります。"
+    deletion_pending: "Account has been scheduled for deletion. Note that this process takes place in the background. It might take a few moments until the user is fully deleted."
     deletion_info:
       data_consequences:
         other: 'ユーザーが作成した殆どのデータ (例えば電子メール、設定、ワークパッケージ 、wiki記載 )が削除されます。ただし、他のユーザーの作業を妨害することがなくワークパッケージやwiki 記載のようなデータは削除することはできません。それ故に、このようなデータは「削除されたユーザー」と呼ばれるアカウントに再割り当てされます。削除された各アカウントのデータがこのアカウントに再割り当てされるので、そのユーザーが作成したデータと削除された別のユーザーのデータとを区別することができなくなります。'
@@ -2477,6 +2477,21 @@ ja:
       community: "OpenProject コミュニティ"
       upsell:
         title: "エンタープライズ版にアップグレード"
+      new_features:
+        header: "Read about new features and product updates."
+        learn_about: "Learn more about all new features"
+        #We need to include the version to invalidate outdated translations in other locales
+        "16_4":
+          new_features_title: >
+            The release contains various new features and improvements, such as:
+          new_features_list:
+            line_0: Option to auto-sync system color + contrast mode.
+            line_1: Dark high contrast mode for improved accessibility.
+            line_2: PDF export of project lists.
+            line_3: Custom font for all PDF exports (Enterprise add-on).
+            line_4: Improved meeting participants dialog.
+            line_5: Improved budget handling in project queries and budget planning.
+            line_6: Updated Home and Project overview page.
     links:
       upgrade_enterprise_edition: "エンタープライズ版にアップグレード"
       postgres_migration: "PostgreSQL にインストールを移行しています"
@@ -3946,6 +3961,8 @@ ja:
   setting_feeds_limit: "フィードの項目数の上限"
   setting_file_max_size_displayed: "画面表示するテキストファイルの最大サイズ"
   setting_host_name: "ホスト名"
+  setting_collaborative_editing_hocuspocus_url: "Hocuspocus server URL"
+  setting_collaborative_editing_hocuspocus_secret: "Hocuspocus server secret"
   setting_hours_per_day: "1日あたりの時間"
   setting_hours_per_day_explanation: >-
     1営業日あたりの稼働時間を定義します (例えば、 1日が8時間で32時間稼働した場合は4日間です)。

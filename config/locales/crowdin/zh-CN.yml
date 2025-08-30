@@ -906,7 +906,7 @@ zh-CN:
   account:
     delete: "删除帐户"
     delete_confirmation: "您确认想要删除您的账户？"
-    deletion_pending: "账户已被锁定并计划删除。请注意，这个过程是在后台进行的。可能需要一些时间才能完全删除用户。"
+    deletion_pending: "Account has been scheduled for deletion. Note that this process takes place in the background. It might take a few moments until the user is fully deleted."
     deletion_info:
       data_consequences:
         other: '创建的用户数据 (如电子邮件，首选项，工作包，维基条目) 将尽可能的删除。但是，请注意不会删除像工作包和维基条目类这些会影响其他用户工作的数据。这种数据因此会重新分配到称为"删除用户"的帐户。因为每个已删除帐户的数据被重新分配给此帐户，所以不可能区分不同用户所创建的数据。'
@@ -2474,6 +2474,21 @@ zh-CN:
       community: "OpenProject 社区"
       upsell:
         title: "升级到企业版"
+      new_features:
+        header: "Read about new features and product updates."
+        learn_about: "Learn more about all new features"
+        #We need to include the version to invalidate outdated translations in other locales
+        "16_4":
+          new_features_title: >
+            The release contains various new features and improvements, such as:
+          new_features_list:
+            line_0: Option to auto-sync system color + contrast mode.
+            line_1: Dark high contrast mode for improved accessibility.
+            line_2: PDF export of project lists.
+            line_3: Custom font for all PDF exports (Enterprise add-on).
+            line_4: Improved meeting participants dialog.
+            line_5: Improved budget handling in project queries and budget planning.
+            line_6: Updated Home and Project overview page.
     links:
       upgrade_enterprise_edition: "升级到企业版"
       postgres_migration: "将您的安装迁移到 PostgreSQL"
@@ -3938,6 +3953,8 @@ zh-CN:
   setting_feeds_limit: "Feed 内容限制"
   setting_file_max_size_displayed: "内联显示的文本文件的最大大小"
   setting_host_name: "主机名"
+  setting_collaborative_editing_hocuspocus_url: "Hocuspocus server URL"
+  setting_collaborative_editing_hocuspocus_secret: "Hocuspocus server secret"
   setting_hours_per_day: "每天小时数"
   setting_hours_per_day_explanation: >-
     这定义了在以天和小时为单位显示持续时间时，什么是一"天"（例如，如果一天是 8 小时，32 小时就是 4 天）。

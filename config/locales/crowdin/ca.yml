@@ -915,7 +915,7 @@ ca:
   account:
     delete: "Elimina el compte"
     delete_confirmation: "Segur que vols eliminar aquest compte?"
-    deletion_pending: "El compte ha estat bloquejat i està programada per eliminar-se. Tingues en compte que aquesta acció es processa de fons. Pot tardar uns moments fins que l'usuari estigui eliminat completament."
+    deletion_pending: "Account has been scheduled for deletion. Note that this process takes place in the background. It might take a few moments until the user is fully deleted."
     deletion_info:
       data_consequences:
         other: 'De les dades de l''usuari ha creat (per exemple, correu electrònic, preferències, paquets de treball, wiki entrades) se n''esborraran tantes com sigui possible. Fixeu-vos que dades com paquets de treball i entrades de la wiki no es poden suprimir sense que obstaculitzin la feina d''altres usuaris. Aquestes dades es reassignaran a un compte genèric anomenat "Usuari esborrat". Com que les dades de cada usuari suprimit es reassignen sempre a aquest compte genèric no serà possible distingir les dades d''aquest usuari de les dades d''un altre usuari esborrat.'
@@ -2520,6 +2520,21 @@ ca:
       community: "Comunitat OpenProject"
       upsell:
         title: "Actualitza a l'edició Enterprise"
+      new_features:
+        header: "Read about new features and product updates."
+        learn_about: "Learn more about all new features"
+        #We need to include the version to invalidate outdated translations in other locales
+        "16_4":
+          new_features_title: >
+            The release contains various new features and improvements, such as:
+          new_features_list:
+            line_0: Option to auto-sync system color + contrast mode.
+            line_1: Dark high contrast mode for improved accessibility.
+            line_2: PDF export of project lists.
+            line_3: Custom font for all PDF exports (Enterprise add-on).
+            line_4: Improved meeting participants dialog.
+            line_5: Improved budget handling in project queries and budget planning.
+            line_6: Updated Home and Project overview page.
     links:
       upgrade_enterprise_edition: "Actualitza a l'edició Enterprise"
       postgres_migration: "Migrant la teva instal·lació a PostgreSQL"
@@ -3985,6 +4000,8 @@ ca:
   setting_feeds_limit: "Límit de contingut del canals"
   setting_file_max_size_displayed: "Mida màxima dels fitxers de text mostrats en línia"
   setting_host_name: "Nom del servidor"
+  setting_collaborative_editing_hocuspocus_url: "Hocuspocus server URL"
+  setting_collaborative_editing_hocuspocus_secret: "Hocuspocus server secret"
   setting_hours_per_day: "Hours per day"
   setting_hours_per_day_explanation: >-
     This defines what is considered a "day" when displaying duration in days and hours (for example, if a day is 8 hours, 32 hours would be 4 days).

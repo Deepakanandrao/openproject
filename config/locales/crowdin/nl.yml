@@ -914,7 +914,7 @@ nl:
   account:
     delete: "Account Verwijderen"
     delete_confirmation: "Weet je zeker dat je dit account wilt verwijderen?"
-    deletion_pending: "Account is vergrendeld en is ingepland voor verwijdering. Let op dat dit proces op de achtergrond plaatsvindt. Het kan even duren voordat de gebruiker volledig verwijderd is."
+    deletion_pending: "Account has been scheduled for deletion. Note that this process takes place in the background. It might take a few moments until the user is fully deleted."
     deletion_info:
       data_consequences:
         other: 'Van de gegevens die de gebruiker heeft gemaakt (bijvoorbeeld e-mail, voorkeuren, werkpakketten, wiki-inzendingen) zal zoveel mogelijk worden verwijderd. Let echter op dat gegevens zoals werkpakketten en wiki-items niet kunnen worden verwijderd zonder het belemmeren van het werk van de andere gebruikers. Dergelijke gegevens worden dus opnieuw toegewezen aan een account genaamd "Verwijderde gebruiker". Zodra de gegevens van elk verwijderd account zijn toegewezen aan dit account, zal het niet mogelijk zijn om gegevens die de gebruiker heeft gemaakt te onderscheiden van de gegevens van een ander verwijderd account.'
@@ -2519,6 +2519,21 @@ nl:
       community: "OpenProject gemeenschap"
       upsell:
         title: "Upgrade naar Enterprise-editie"
+      new_features:
+        header: "Read about new features and product updates."
+        learn_about: "Learn more about all new features"
+        #We need to include the version to invalidate outdated translations in other locales
+        "16_4":
+          new_features_title: >
+            The release contains various new features and improvements, such as:
+          new_features_list:
+            line_0: Option to auto-sync system color + contrast mode.
+            line_1: Dark high contrast mode for improved accessibility.
+            line_2: PDF export of project lists.
+            line_3: Custom font for all PDF exports (Enterprise add-on).
+            line_4: Improved meeting participants dialog.
+            line_5: Improved budget handling in project queries and budget planning.
+            line_6: Updated Home and Project overview page.
     links:
       upgrade_enterprise_edition: "Upgrade naar Enterprise-editie"
       postgres_migration: "Uw installatie overzetten naar PostgreSQL"
@@ -3989,6 +4004,8 @@ nl:
   setting_feeds_limit: "Feed inhoud limiet"
   setting_file_max_size_displayed: "Maximale grootte van tekstbestanden inline weergegeven"
   setting_host_name: "Hostnaam"
+  setting_collaborative_editing_hocuspocus_url: "Hocuspocus server URL"
+  setting_collaborative_editing_hocuspocus_secret: "Hocuspocus server secret"
   setting_hours_per_day: "Uren per dag"
   setting_hours_per_day_explanation: >-
     This defines what is considered a "day" when displaying duration in days and hours (for example, if a day is 8 hours, 32 hours would be 4 days).
