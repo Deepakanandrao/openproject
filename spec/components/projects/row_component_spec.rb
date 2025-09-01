@@ -92,6 +92,7 @@ RSpec.describe Projects::RowComponent, type: :component do
           expect(menu).to have_selector :menuitem, text: "Copy"
           expect(menu).to have_selector :menuitem, text: "Delete" do |link|
             expect(link[:href]).to eq confirm_destroy_project_path(project)
+            expect(link[:"data-turbo-stream"]).to eq "true"
           end
         end
       end
