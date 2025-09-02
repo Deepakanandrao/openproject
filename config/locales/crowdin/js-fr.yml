@@ -1213,7 +1213,7 @@ fr:
       selected_filter:
         all: "Tous les projets"
         selected: "Uniquement la sélection"
-      search_placeholder: "Rechercher un projet..."
+      search_placeholder: "Search projects..."
       search_placeholder_favorites: "Recherche de favoris..."
       include_subprojects: "inclure tous les sous-projets"
       tooltip:
