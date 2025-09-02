@@ -43,6 +43,12 @@ module Overviews
         @project = project
         @current_user = current_user
       end
+
+      private
+
+      def edit_enabled?
+        current_user.allowed_in_project?(:edit_project, project)
+      end
     end
   end
 end

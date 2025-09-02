@@ -37,7 +37,7 @@ RSpec.describe Overviews::Widgets::ProjectStatusComponent, type: :component do
     render_inline(described_class.new(...))
   end
 
-  let(:project) { build_stubbed(:project) }
+  let(:project) { build_stubbed(:project, status_explanation: "**This project is in jeopardy!**") }
   let(:user) { build_stubbed(:user) }
 
   current_user { user }
@@ -50,21 +50,36 @@ RSpec.describe Overviews::Widgets::ProjectStatusComponent, type: :component do
     expect(rendered_component).to have_element :"turbo-frame"
   end
 
-  it "renders form" do
-    expect(rendered_component).to have_element :form, method: :post,
-                                                      action: project_widgets_project_status_path(project)
-  end
-
-  it "renders hidden method field" do
-    expect(rendered_component).to have_field "_method", type: :hidden, with: "patch"
-  end
-
   it "renders Projects Status Button component" do
     expect(rendered_component).to have_element id: "projects-status-button-component"
   end
 
-  it "renders text area field" do
-    expect(rendered_component).to have_element "opce-ckeditor-augmented-textarea",
-                                               "data-test-selector": "augmented-text-area-status_explanation"
+  context "when user is not allowed to edit" do
+    it "renders status description as formatted text" do
+      expect(rendered_component).to have_css "p"
+      expect(rendered_component).to have_css "strong", text: "This project is in jeopardy!"
+    end
+  end
+
+  context "when user is allowed to edit" do
+    before do
+      mock_permissions_for(user) do |mock|
+        mock.allow_in_project(:edit_project, project:)
+      end
+    end
+
+    it "renders form" do
+      expect(rendered_component).to have_element :form, method: :post,
+                                                        action: project_widgets_project_status_path(project)
+    end
+
+    it "renders hidden method field" do
+      expect(rendered_component).to have_field "_method", type: :hidden, with: "patch"
+    end
+
+    it "renders text area field" do
+      expect(rendered_component).to have_element "opce-ckeditor-augmented-textarea",
+                                                 "data-test-selector": "augmented-text-area-status_explanation"
+    end
   end
 end
