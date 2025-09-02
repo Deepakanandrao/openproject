@@ -31,21 +31,34 @@
 module OpPrimer
   # Conditionally renders a `Primer::Alpha::Layout` around the given content. If
   # the given condition is true, the component will render around the content.
-  # If the condition is false, only the content is rendered.
+  # If the condition is false, the content is rendered in a fallback component.
   class ConditionalLayoutComponent < Primer::Component # rubocop:disable OpenProject/AddPreviewForViewComponent
     delegate :with_sidebar, to: :@layout
 
     # @param condition [Boolean] Whether or not to wrap the content in a Layout component.
     # @param layout_component_args [Hash] The arguments to pass to the Layout component.
-    def initialize(condition:, **layout_component_args)
+    # @param fallback_component [Class] The component class to use as a fallback, defaults to `Primer::BaseComponent
+    # @param fallback_component_args [Hash] The arguments to pass to the fallback component.
+    # @param system_arguments [Hash] The arguments to pass to either Layout or fallback component.
+    def initialize(
+      condition:,
+      layout_component_args: {},
+      fallback_component: Primer::BaseComponent,
+      fallback_component_args: {},
+      **system_arguments
+    )
       super
 
       @condition = condition
-      @layout = Primer::Alpha::Layout.new(**layout_component_args)
+      @fallback_component = fallback_component
+      @fallback_component_args = fallback_component_args
+      @system_arguments = system_arguments
+
+      @layout = Primer::Alpha::Layout.new(**@system_arguments, **layout_component_args)
     end
 
     def call
-      return content unless @condition
+      return render_fallback unless @condition
 
       render @layout
     end
@@ -60,6 +73,12 @@ module OpPrimer
       content
 
       @layout.with_main { content }
+    end
+
+    def render_fallback
+      render @fallback_component.new(tag: :div, **@system_arguments, **@fallback_component_args) do
+        content
+      end
     end
   end
 end

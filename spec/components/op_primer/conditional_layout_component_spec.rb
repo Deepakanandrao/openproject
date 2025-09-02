@@ -39,7 +39,7 @@ RSpec.describe OpPrimer::ConditionalLayoutComponent, type: :component do
   let(:main_content) { "content" }
 
   subject(:rendered_component) do
-    render_component(condition:) do |component|
+    render_component(condition:, fallback_component_args: { classes: "op-fallback" }) do |component|
       component.with_sidebar do
         sidebar_content
       end
@@ -52,8 +52,8 @@ RSpec.describe OpPrimer::ConditionalLayoutComponent, type: :component do
     let(:condition) { false }
     let(:main_content) { "" }
 
-    it "renders nothing" do
-      expect(rendered_component.to_s).to be_blank
+    it "renders content in fallback" do
+      expect(rendered_component).to have_css ".op-fallback", text: ""
     end
   end
 
@@ -64,8 +64,8 @@ RSpec.describe OpPrimer::ConditionalLayoutComponent, type: :component do
       expect(rendered_component).to have_no_css ".Layout"
     end
 
-    it "renders content" do
-      expect(rendered_component).to have_text "content"
+    it "renders content in fallback" do
+      expect(rendered_component).to have_css ".op-fallback", text: "content"
     end
 
     it "does not render sidebar" do
@@ -80,7 +80,7 @@ RSpec.describe OpPrimer::ConditionalLayoutComponent, type: :component do
       expect(rendered_component).to have_css ".Layout"
     end
 
-    it "renders content" do
+    it "renders content in main" do
       expect(rendered_component).to have_css ".Layout-main", text: "content"
     end
 
