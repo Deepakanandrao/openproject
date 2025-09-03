@@ -2286,6 +2286,9 @@ fr:
   enumeration_reported_project_statuses: "Statuts de projet signalés"
   enumeration_caption_order_changed: "La commande a été modifiée avec succès."
   enumeration_could_not_be_moved: "L'énumération n'a pas pu être déplacée."
+  enterprise_trials:
+    dialog_component:
+      title: Enterprise Trial
   error_auth_source_sso_failed: "Single Sign-On (SSO) pour l’utilisateur '%{value}' a échoué"
   error_can_not_archive_project: "Ce projet ne peut être archivé : %{errors}"
   error_can_not_delete_entry: "Impossible de supprimer l’élément"
@@ -2537,6 +2540,11 @@ fr:
             line_4: Amélioration du dialogue entre les participants à la réunion.
             line_5: Amélioration de la gestion du budget dans les requêtes de projet et la planification budgétaire.
             line_6: Mise à jour de la page d'accueil et de la page d'aperçu du projet.
+        "16_5":
+          new_features_title: >
+            Cette version contient plusieurs nouvelles fonctionnalités et améliorations, telles que
+          new_features_list:
+            line_0: De nouvelles fonctionnalités et améliorations seront bientôt disponibles. N'hésitez pas à revenir nous voir !
     links:
       upgrade_enterprise_edition: "Passer à la version Entreprise"
       postgres_migration: "Migration de votre installation vers PostgreSQL"
@@ -4008,6 +4016,8 @@ fr:
   setting_feeds_limit: "Limite du contenu du flux"
   setting_file_max_size_displayed: "Taille maximale de l'affichage du fichers texte inline"
   setting_host_name: "Nom d'hôte"
+  setting_collaborative_editing_hocuspocus_url: "URL du serveur Hocuspocus"
+  setting_collaborative_editing_hocuspocus_secret: "Secret du serveur Hocuspocus"
   setting_hours_per_day: "Heures par jour"
   setting_hours_per_day_explanation: >-
     Cela définit ce qui est considéré comme un « jour » lors de l'affichage de la durée en jours et en heures (par exemple, si un jour dure 8 heures, 32 heures représentent 4 jours).
