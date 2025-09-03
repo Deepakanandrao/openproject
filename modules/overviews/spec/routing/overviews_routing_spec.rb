@@ -57,10 +57,10 @@ RSpec.describe Overviews::OverviewsController do
     end
 
     it do
-      expect(put("/projects/my-project/update_project_custom_values/44"))
+      expect(put("/projects/my-project/project_update_custom_values/44"))
         .to route_to(
           controller: "overviews/overviews",
-          action: "update_project_custom_values",
+          action: "project_update_custom_values",
           project_id: "my-project",
           section_id: "44"
         )
@@ -102,10 +102,10 @@ RSpec.describe Overviews::OverviewsController do
     end
 
     it do
-      expect(put(update_project_custom_values_path("my-project", 44)))
+      expect(put(project_update_custom_values_path("my-project", 44)))
         .to route_to(
           controller: "overviews/overviews",
-          action: "update_project_custom_values",
+          action: "project_update_custom_values",
           project_id: "my-project",
           section_id: "44"
         )

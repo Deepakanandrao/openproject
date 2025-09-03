@@ -39,5 +39,5 @@ RSpec.describe Overviews::OverviewsController, "edit_project_attributes permissi
   check_permission_required_for("overviews/overviews#project_custom_field_section_dialog", :edit_project_attributes)
 
   # update project attributes with edit_project permission, deeper permission check via contract in place
-  check_permission_required_for("overviews/overviews#update_project_custom_values", :edit_project_attributes)
+  check_permission_required_for("overviews/overviews#project_update_custom_values", :edit_project_attributes)
 end

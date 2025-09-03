@@ -67,7 +67,7 @@ module Overviews
           .controller_actions
           .push(
             "overviews/overviews/project_custom_field_section_dialog",
-            "overviews/overviews/update_project_custom_values"
+            "overviews/overviews/project_update_custom_values"
           )
 
         OpenProject::AccessControl.permission(:view_project_phases)

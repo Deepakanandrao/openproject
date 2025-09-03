@@ -47,7 +47,7 @@ module ::Overviews
       )
     end
 
-    def update_project_custom_values
+    def project_update_custom_values
       section = find_project_custom_field_section
       service_call = ::Projects::UpdateService
                       .new(
