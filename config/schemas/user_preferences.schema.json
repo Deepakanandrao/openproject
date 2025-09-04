@@ -11,7 +11,16 @@
                 },
                 "theme": {
                   "type": "string",
-                  "enum": ["light", "light_high_contrast", "dark", "dark_high_contrast", "sync_with_os"]
+                  "enum": ["light", "dark", "sync_with_os"]
+                },
+                "increase_theme_contrast": {
+                  "type": "boolean"
+                },
+                "enable_auto_light_theme_contrast": {
+                  "type": "boolean"
+                },
+                "enable_auto_dark_theme_contrast": {
+                  "type": "boolean"
                 },
                 "disable_keyboard_shortcuts": {
                     "type": "boolean"

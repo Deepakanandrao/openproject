@@ -38,14 +38,31 @@ class My::LookAndFeelForm < ApplicationForm
       caption: I18n.t("activerecord.attributes.user_preference.mode_guideline"),
       required: true,
       include_blank: false,
-      input_width: :small
+      input_width: :small,
+      data: {
+        my__look_and_feel_target: "themeSelect",
+        action: "my--look-and-feel#updateContrastOptions"
+      }
     ) do |select|
-      theme_options_for_select.each do |theme|
-        select.option(
-          value: theme[1],
-          label: theme[0]
-        )
-      end
+      theme_options_for_select.each { |(label, value)| select.option(value:, label:) }
+    end
+
+    f.check_box_group(data: { my__look_and_feel_target: "autoThemeContrast" }) do |group|
+      group.check_box name: :enable_auto_light_theme_contrast,
+                      label: I18n.t("activerecord.attributes.user_preference.enable_auto_light_theme_contrast"),
+                      checked: user_preference.enable_auto_light_theme_contrast?,
+                      caption: I18n.t("activerecord.attributes.user_preference.enable_auto_light_theme_contrast_caption")
+      group.check_box name: :enable_auto_dark_theme_contrast,
+                      label: I18n.t("activerecord.attributes.user_preference.enable_auto_dark_theme_contrast"),
+                      checked: user_preference.enable_auto_dark_theme_contrast?,
+                      caption: I18n.t("activerecord.attributes.user_preference.enable_auto_dark_theme_contrast_caption")
+    end
+
+    f.check_box_group(data: { my__look_and_feel_target: "singleThemeContrast" }) do |group|
+      group.check_box name: :increase_theme_contrast,
+                      label: I18n.t("activerecord.attributes.user_preference.increase_contrast"),
+                      checked: user_preference.increase_theme_contrast?,
+                      caption: I18n.t("activerecord.attributes.user_preference.increase_contrast_caption")
     end
 
     f.select_list(
@@ -55,12 +72,7 @@ class My::LookAndFeelForm < ApplicationForm
       include_blank: false,
       input_width: :small
     ) do |select|
-      comment_sort_order_options.each do |theme|
-        select.option(
-          value: theme[1],
-          label: theme[0]
-        )
-      end
+      comment_sort_order_options.each { |(label, value)| select.option(value:, label:) }
     end
 
     f.check_box name: :disable_keyboard_shortcuts,
@@ -71,5 +83,11 @@ class My::LookAndFeelForm < ApplicationForm
     f.submit(name: :submit,
              label: I18n.t("activerecord.attributes.user_preference.button_update_look_and_feel"),
              scheme: :default)
+  end
+
+  private
+
+  def user_preference
+    User.current.pref
   end
 end

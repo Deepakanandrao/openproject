@@ -266,6 +266,9 @@ class PermittedParams
   def pref
     params.fetch(:pref, {}).permit(:time_zone,
                                    :theme,
+                                   :increase_theme_contrast,
+                                   :enable_auto_light_theme_contrast,
+                                   :enable_auto_dark_theme_contrast,
                                    :comments_sorting,
                                    :disable_keyboard_shortcuts,
                                    :warn_on_leaving_unsaved,
