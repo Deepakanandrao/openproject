@@ -15,6 +15,7 @@ The Inset Box is made up of:
 - **Border:** enabled by default
 - **Border radius:** 2
 - **Background:** `:inset` (light grey)
+- **Padding:** 3
 
 <%= embed OpPrimer::InsetBoxComponentPreview, :default %>
 
@@ -23,6 +24,7 @@ The Inset Box is made up of:
 The Inset Box supports the following options:
 
 - **Border** – can be disabled with `border: false`.
+- **Padding** – defaults to `p: 3`.
 - **Background** – defaults to `:inset`, but can be set to `:muted` or other Primer colors.
 - **Other system arguments** – all `Primer::Box` arguments are passed through.
 
@@ -37,6 +39,8 @@ Some places where we already use the Inset Box:
 - in meeting agenda items and outcomes
 
 It is useful whenever content should stand out from the page background while staying lightweight.
+
+If content needs more structure (e.g., with headers, actions, or multiple items), consider using the [Border Box](./border_box) component instead.
 
 ## Best practices
 
@@ -55,4 +59,4 @@ It is useful whenever content should stand out from the page background while st
 
 <%= embed OpPrimer::InsetBoxComponentPreview, :default %>
 
-The Inset Box is implemented as a wrapper around `Primer::Box` with opinionated defaults for border, border radius, and background. It passes through all other `system_arguments` to `Primer::Box`.
+The Inset Box is implemented as a wrapper around `Primer::Box` with opinionated defaults for border, padding, border radius, and background. It passes through all other `system_arguments` to `Primer::Box`.
