@@ -29,11 +29,9 @@
 #++
 
 module OpPrimer
-  # @logical_path OpenProject/Primer
   class InsetBoxComponentPreview < ViewComponent::Preview
-    # See the [component documentation](/lookbook/pages/components/inset_box) for more details.
-    def playground
-      render OpPrimer::InsetBox.new do
+    def default
+      render OpPrimer::InsetBoxComponent.new do
         "I am a text inside InsetBox Component."
       end
     end

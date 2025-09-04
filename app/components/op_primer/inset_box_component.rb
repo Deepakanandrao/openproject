@@ -29,7 +29,7 @@
 #++
 
 module OpPrimer
-  class InsetBox < Primer::Component
+  class InsetBoxComponent < Primer::Component
     attr_reader :border, :system_arguments
 
     def initialize(border: true, **system_arguments)
