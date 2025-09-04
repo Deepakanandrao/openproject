@@ -586,9 +586,6 @@ zh-CN:
         token/api:
           title: "API 令牌已生成"
           warning: "这将是您看到此令牌的唯一机会。请务必立即复制。"
-      errors:
-        token_name_blank: "请提供一个 API 令牌名称"
-        token_name_in_use: "此 API 令牌名称已经在使用，请选择一个不同的名称"
       failed_to_reset_token: "无法重置访问令牌: %{error}"
       failed_to_create_token: "创建访问令牌失败： %{error}"
       failed_to_revoke_token: "撤销访问令牌失败： %{error}"
@@ -1131,6 +1128,8 @@ zh-CN:
         is_readonly: "只读工作包"
         excluded_from_totals: "从层次结构的总计中排除"
         default_done_ratio: "% 完成"
+      token/named:
+        token_name: "Token name"
       token/ical:
         calendar: "日历"
         ical_token_query_assignment: "查询任务"
@@ -1611,9 +1610,11 @@ zh-CN:
         version:
           undeletable_archived_projects: "无法删除该版本，因为它连接了工作包。"
           undeletable_work_packages_attached: "无法删除该版本，因为它连接了工作包。"
-        token/api:
+        token/named:
           attributes:
             token_name:
+              blank: "Please provide a token name"
+              in_use: "This token name is already in use, please select a different one"
               format: "%{message}"
       template:
         body: "请检查以下字段："
@@ -2508,7 +2509,8 @@ zh-CN:
       shortcuts: "快捷键"
       blog: "OpenProject 博客"
       forums: "社区论坛"
-      newsletter: "安全警报/通信"
+      security_alerts: "Security alerts"
+      newsletter: "Newsletter"
   image_conversion:
     imagemagick: "Imagemagick软件"
   journals:

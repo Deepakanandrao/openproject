@@ -594,9 +594,6 @@ hu:
         token/api:
           title: "The API token has been generated"
           warning: "This is the only time you will see this token. Make sure to copy it now."
-      errors:
-        token_name_blank: "Please provide an API token name"
-        token_name_in_use: "This API token name is already in use, please select a different one"
       failed_to_reset_token: "Hozzáférési token helyreállítása sikertelen: %{error}"
       failed_to_create_token: "Failed to create access token: %{error}"
       failed_to_revoke_token: "Failed to revoke access token: %{error}"
@@ -1142,6 +1139,8 @@ hu:
         is_readonly: "Munkacsomag csak olvasható"
         excluded_from_totals: "Exclude from calculation of totals in hierarchy"
         default_done_ratio: "% Complete"
+      token/named:
+        token_name: "Token name"
       token/ical:
         calendar: "Naptár"
         ical_token_query_assignment: "Query assignment"
@@ -1624,10 +1623,12 @@ hu:
         version:
           undeletable_archived_projects: "Nem lehet a verziót törölni amíg hozzá van rendelve munkacsomagokhoz."
           undeletable_work_packages_attached: "Nem lehet a verziót törölni amíg hozzá van rendelve munkacsomagokhoz."
-        token/api:
+        token/named:
           attributes:
             token_name:
-              format: "%{message}\n"
+              blank: "Please provide a token name"
+              in_use: "This token name is already in use, please select a different one"
+              format: "%{message}"
       template:
         body: "Kérjük, ellenőrizze az alábbi mezőket:"
         header:
@@ -2556,7 +2557,8 @@ hu:
       shortcuts: "Parancsikonok"
       blog: "OpenProject blog"
       forums: "Közösségi fórum"
-      newsletter: "Biztonsági figyelmeztetések / hírlevél"
+      security_alerts: "Security alerts"
+      newsletter: "Newsletter"
   image_conversion:
     imagemagick: "Képmásoló"
   journals:
@@ -3297,7 +3299,7 @@ hu:
   label_version_new: "Új verzió"
   label_version_edit: "Módosított verzió"
   label_version_plural: "Verzió"
-  label_version_sharing_descendants: "Az alprojektekkel rendelkező"
+  label_version_sharing_descendants: "Alprojektekkel"
   label_version_sharing_hierarchy: "A projekt hierarchiában"
   label_version_sharing_none: "Nem megosztott"
   label_version_sharing_system: "Az összes projekt"

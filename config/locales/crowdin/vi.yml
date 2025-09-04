@@ -589,9 +589,6 @@ vi:
         token/api:
           title: "The API token has been generated"
           warning: "This is the only time you will see this token. Make sure to copy it now."
-      errors:
-        token_name_blank: "Vui lòng cung cấp tên API token"
-        token_name_in_use: "Tên API token này đã được sử dụng, vui lòng chọn tên khác"
       failed_to_reset_token: "Lỗi cập nhật mã truy cập: %{error}"
       failed_to_create_token: "Không thể tạo token truy cập: %{error}"
       failed_to_revoke_token: "Không thể thu hồi token truy cập: %{error}"
@@ -1135,6 +1132,8 @@ vi:
         is_readonly: "Work package chỉ đọc"
         excluded_from_totals: "Loại trừ khỏi tính tổng trong phân cấp"
         default_done_ratio: "% Hoàn thành"
+      token/named:
+        token_name: "Token name"
       token/ical:
         calendar: "Lịch"
         ical_token_query_assignment: "Query assignment"
@@ -1615,9 +1614,11 @@ vi:
         version:
           undeletable_archived_projects: "Phiên bản không thể bị xóa vì nó có các gói công việc gắn liền với nó."
           undeletable_work_packages_attached: "Phiên bản không thể bị xóa vì nó có các gói công việc gắn liền với nó."
-        token/api:
+        token/named:
           attributes:
             token_name:
+              blank: "Please provide a token name"
+              in_use: "This token name is already in use, please select a different one"
               format: "%{message}"
       template:
         body: "Vui lòng kiểm tra các mục sau đây:"
@@ -2512,7 +2513,8 @@ vi:
       shortcuts: "Phím tắt"
       blog: "OpenProject blog"
       forums: "Diễn đàn cộng đồng"
-      newsletter: "Cảnh báo bảo mật / Bản tin"
+      security_alerts: "Security alerts"
+      newsletter: "Newsletter"
   image_conversion:
     imagemagick: "Imagemagick"
   journals:

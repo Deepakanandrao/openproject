@@ -607,9 +607,6 @@ cs:
         token/api:
           title: "The API token has been generated"
           warning: "This is the only time you will see this token. Make sure to copy it now."
-      errors:
-        token_name_blank: "Zadejte prosím název tokenu API"
-        token_name_in_use: "Tento název tokenu API je již používán, vyberte prosím jiný"
       failed_to_reset_token: "Nepodařilo se obnovit přístupový token: %{error}"
       failed_to_create_token: "Nepodařilo se vytvořit přístupový token: %{error}"
       failed_to_revoke_token: "Nepodařilo se odvolat přístupový token: %{error}"
@@ -1159,6 +1156,8 @@ cs:
         is_readonly: "Pracovní balíček jen pro čtení"
         excluded_from_totals: "Vyloučit z výpočtu úhrnů v hierarchii"
         default_done_ratio: "% Dokončeno"
+      token/named:
+        token_name: "Token name"
       token/ical:
         calendar: "Kalendář"
         ical_token_query_assignment: "Query assignment"
@@ -1645,9 +1644,11 @@ cs:
         version:
           undeletable_archived_projects: "Verze nemůže být odstraněna, protože jsou k ní připojeny pracovní balíčky."
           undeletable_work_packages_attached: "Verze nemůže být odstraněna, protože jsou k ní připojeny pracovní balíčky."
-        token/api:
+        token/named:
           attributes:
             token_name:
+              blank: "Please provide a token name"
+              in_use: "This token name is already in use, please select a different one"
               format: "%{message}"
       template:
         body: "Zkontrolujte, prosím, následující pole:"
@@ -2647,7 +2648,8 @@ cs:
       shortcuts: "Klávesové zkratky"
       blog: "OpenProject blog"
       forums: "Komunitní fórum"
-      newsletter: "Bezpečnostní upozornění / newsletter"
+      security_alerts: "Security alerts"
+      newsletter: "Newsletter"
   image_conversion:
     imagemagick: "Imagemagick"
   journals:

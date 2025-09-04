@@ -595,9 +595,6 @@ eo:
         token/api:
           title: "The API token has been generated"
           warning: "This is the only time you will see this token. Make sure to copy it now."
-      errors:
-        token_name_blank: "Please provide an API token name"
-        token_name_in_use: "This API token name is already in use, please select a different one"
       failed_to_reset_token: "Eraro dum restarigo de la alirĵetono: %{error}"
       failed_to_create_token: "Failed to create access token: %{error}"
       failed_to_revoke_token: "Failed to revoke access token: %{error}"
@@ -1143,6 +1140,8 @@ eo:
         is_readonly: "Nurlega laborpakaĵo"
         excluded_from_totals: "Exclude from calculation of totals in hierarchy"
         default_done_ratio: "% Complete"
+      token/named:
+        token_name: "Token name"
       token/ical:
         calendar: "Kalendaro"
         ical_token_query_assignment: "Query assignment"
@@ -1273,7 +1272,7 @@ eo:
         enterprise_plan_required: "requires at least the %{plan_name}."
         even: "must be even."
         exclusion: "rezervita."
-        feature_disabled: is not available.
+        feature_disabled: ne estas disponebla.
         file_too_large: "is too large (maximum size is %{count} Bytes)."
         filter_does_not_exist: "filter does not exist."
         format: "does not match the expected format '%{expected}'."
@@ -1625,9 +1624,11 @@ eo:
         version:
           undeletable_archived_projects: "The version cannot be deleted as it has work packages attached to it."
           undeletable_work_packages_attached: "The version cannot be deleted as it has work packages attached to it."
-        token/api:
+        token/named:
           attributes:
             token_name:
+              blank: "Please provide a token name"
+              in_use: "This token name is already in use, please select a different one"
               format: "%{message}"
       template:
         body: "Bonvolu kontroli la jenajn kampojn:"
@@ -2557,7 +2558,8 @@ eo:
       shortcuts: "Fulmoklavoj"
       blog: "Blogo de OpenProject"
       forums: "Komunuma forumo"
-      newsletter: "Sekurecaj avertoj / Nnovaĵoletero"
+      security_alerts: "Security alerts"
+      newsletter: "Newsletter"
   image_conversion:
     imagemagick: "Imagemagick"
   journals:
@@ -3978,7 +3980,7 @@ eo:
   setting_antivirus_scan_action: "Infected file action"
   setting_autofetch_changesets: "Autofetch repository changes"
   setting_autologin: "Autologin"
-  setting_available_languages: "Available languages"
+  setting_available_languages: "Disponeblaj lingvoj"
   setting_bcc_recipients: "Blind carbon copy recipients (bcc)"
   setting_brute_force_block_after_failed_logins: "Block user after this number of failed login attempts"
   setting_brute_force_block_minutes: "Time the user is blocked for"

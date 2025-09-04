@@ -588,9 +588,6 @@ ms:
         token/api:
           title: "The API token has been generated"
           warning: "This is the only time you will see this token. Make sure to copy it now."
-      errors:
-        token_name_blank: "Sila berikan nama token API"
-        token_name_in_use: "Nama token API ini sudah digunakan, sila pilih yang lain"
       failed_to_reset_token: "Gagal untuk set semula token akses: %{error}"
       failed_to_create_token: "Gagal membuat token akses: %{error}"
       failed_to_revoke_token: "Gagal menarik balik token akses: %{error}"
@@ -1133,6 +1130,8 @@ ms:
         is_readonly: "Pakej kerja baca-sahaja"
         excluded_from_totals: "Dikecualikan daripada pengiraan jumlah dalam hierarki"
         default_done_ratio: "% Lengkap"
+      token/named:
+        token_name: "Token name"
       token/ical:
         calendar: "Kalendar"
         ical_token_query_assignment: "Query assignment"
@@ -1613,9 +1612,11 @@ ms:
         version:
           undeletable_archived_projects: "Versi tidak dapat dipadam kerana ia mempunyai pakej kerja yang dilampirkan padanya."
           undeletable_work_packages_attached: "Versi tidak dapat dipadam kerana ia mempunyai pakej kerja yang dilampirkan padanya."
-        token/api:
+        token/named:
           attributes:
             token_name:
+              blank: "Please provide a token name"
+              in_use: "This token name is already in use, please select a different one"
               format: "%{message}"
       template:
         body: "Sila semak ruang-ruang yang berikut:"
@@ -2510,7 +2511,8 @@ ms:
       shortcuts: "Pintasan"
       blog: "Blog OpenProject"
       forums: "Forum komuniti"
-      newsletter: "Amaran keselamatan / Surat berita"
+      security_alerts: "Security alerts"
+      newsletter: "Newsletter"
   image_conversion:
     imagemagick: "Imagemagick"
   journals:

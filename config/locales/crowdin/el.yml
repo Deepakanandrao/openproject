@@ -591,9 +591,6 @@ el:
         token/api:
           title: "The API token has been generated"
           warning: "This is the only time you will see this token. Make sure to copy it now."
-      errors:
-        token_name_blank: "Please provide an API token name"
-        token_name_in_use: "This API token name is already in use, please select a different one"
       failed_to_reset_token: "Αποτυχία επαναφοράς του token πρόσβασης: %{error}"
       failed_to_create_token: "Failed to create access token: %{error}"
       failed_to_revoke_token: "Failed to revoke access token: %{error}"
@@ -1139,6 +1136,8 @@ el:
         is_readonly: "Εργασία μόνο για ανάγνωση"
         excluded_from_totals: "Exclude from calculation of totals in hierarchy"
         default_done_ratio: "% Complete"
+      token/named:
+        token_name: "Token name"
       token/ical:
         calendar: "Ημερολόγιο"
         ical_token_query_assignment: "Query assignment"
@@ -1621,9 +1620,11 @@ el:
         version:
           undeletable_archived_projects: "Η έκδοση δεν μπορεί να διαγραφεί επειδή είναι συνδεδεμένη με πακέτα εργασίας."
           undeletable_work_packages_attached: "Η έκδοση δεν μπορεί να διαγραφεί επειδή είναι συνδεδεμένη με πακέτα εργασίας."
-        token/api:
+        token/named:
           attributes:
             token_name:
+              blank: "Please provide a token name"
+              in_use: "This token name is already in use, please select a different one"
               format: "%{message}"
       template:
         body: "Παρακαλούμε ελέγξτε τα ακόλουθα πεδία:"
@@ -2553,7 +2554,8 @@ el:
       shortcuts: "Συντομεύσεις"
       blog: "OpenProject blog"
       forums: "Φόρουμ κοινότητας"
-      newsletter: "Ειδοποιήσεις ασφάλεια / Ενημερωτικό δελτίο"
+      security_alerts: "Security alerts"
+      newsletter: "Newsletter"
   image_conversion:
     imagemagick: "Imagemagick"
   journals:

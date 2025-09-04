@@ -595,9 +595,6 @@ fr:
         token/api:
           title: "Un jeton a été généré"
           warning: "Note : Ceci est la seule fois où vous verrez ce jeton, veuillez le copier maintenant."
-      errors:
-        token_name_blank: "Veuillez fournir un nom de jeton d'API"
-        token_name_in_use: "Ce nom de jeton d'API est déjà utilisé, veuillez en choisir un autre"
       failed_to_reset_token: "Impossible de réinitialiser le jeton d’accès : %{error}"
       failed_to_create_token: "Impossible de créer le jeton d'accès : %{error}"
       failed_to_revoke_token: "Impossible de révoquer le jeton d'accès : %{error}"
@@ -1141,6 +1138,8 @@ fr:
         is_readonly: "Paquet de travail en lecture seule"
         excluded_from_totals: "Exclure du calcul des totaux dans la hiérarchie"
         default_done_ratio: "% Réalisé"
+      token/named:
+        token_name: "Token name"
       token/ical:
         calendar: "Calendrier"
         ical_token_query_assignment: "Affectation d'une requête"
@@ -1623,9 +1622,11 @@ fr:
         version:
           undeletable_archived_projects: "La version ne peut pas être supprimée, car des lots de travaux y sont attachés."
           undeletable_work_packages_attached: "La version ne peut pas être supprimée car des lots de travaux y sont attachés."
-        token/api:
+        token/named:
           attributes:
             token_name:
+              blank: "Please provide a token name"
+              in_use: "This token name is already in use, please select a different one"
               format: "%{message}"
       template:
         body: "Veuillez vérifier les champs suivants :"
@@ -2555,7 +2556,8 @@ fr:
       shortcuts: "Raccourcis"
       blog: "Blog OpenProject"
       forums: "Forum de la communauté"
-      newsletter: "Alertes de sécurité / Lettre d’information"
+      security_alerts: "Security alerts"
+      newsletter: "Newsletter"
   image_conversion:
     imagemagick: "Imagemagick"
   journals:

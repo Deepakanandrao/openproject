@@ -603,9 +603,6 @@ uk:
         token/api:
           title: "The API token has been generated"
           warning: "Це єдиний раз, коли ви побачите цей маркер. Обов’язково скопіюйте його зараз."
-      errors:
-        token_name_blank: "Укажіть ім’я маркера API"
-        token_name_in_use: "Це ім’я маркера API уже використовується; виберіть інше"
       failed_to_reset_token: "Не вдалося відновити маркер доступу: %{error}"
       failed_to_create_token: "Не вдалося створити маркер доступу: %{error}"
       failed_to_revoke_token: "Не вдалося відкликати маркер доступу: %{error}"
@@ -1152,6 +1149,8 @@ uk:
         is_readonly: "Пакет робіт лише для перегляду"
         excluded_from_totals: "Виключити з підрахунку підсумків в ієрархії"
         default_done_ratio: "% завершення"
+      token/named:
+        token_name: "Token name"
       token/ical:
         calendar: "Календар"
         ical_token_query_assignment: "Призначення запиту"
@@ -1638,9 +1637,11 @@ uk:
         version:
           undeletable_archived_projects: "Версію не можна видалити, оскільки до неї приєднані робочі пакети."
           undeletable_work_packages_attached: "Версію не можна видалити, оскільки до неї приєднані робочі пакети."
-        token/api:
+        token/named:
           attributes:
             token_name:
+              blank: "Please provide a token name"
+              in_use: "This token name is already in use, please select a different one"
               format: "%{message}"
       template:
         body: "Перевірте наступні поля:"
@@ -2640,7 +2641,8 @@ uk:
       shortcuts: "Ярлики"
       blog: "Openproject блог"
       forums: "Форум спільноти"
-      newsletter: "Сигнали безпеки / Інформаційний бюлетень"
+      security_alerts: "Security alerts"
+      newsletter: "Newsletter"
   image_conversion:
     imagemagick: "Imagemagick"
   journals:

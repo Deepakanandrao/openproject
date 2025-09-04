@@ -595,9 +595,6 @@ tr:
         token/api:
           title: "The API token has been generated"
           warning: "This is the only time you will see this token. Make sure to copy it now."
-      errors:
-        token_name_blank: "Lütfen API anahtarı için bir ad girin"
-        token_name_in_use: "Bu API anahtarı adı kullanılmaktadır, lütfen başka bir tane seçin"
       failed_to_reset_token: "Erişim anahtarı sıfırlaması başarısız oldu: %{error}"
       failed_to_create_token: "Erişim anahtarı oluşturması başarısız oldu: %{error}"
       failed_to_revoke_token: "Failed to revoke access token: %{error}"
@@ -1142,6 +1139,8 @@ tr:
         is_readonly: "İş paketi salt okunur"
         excluded_from_totals: "Hiyerarşideki toplamların hesaplanmasından hariç tut"
         default_done_ratio: "Tamamlanma yüzdesi"
+      token/named:
+        token_name: "Token name"
       token/ical:
         calendar: "Takvim"
         ical_token_query_assignment: "Sorgu ataması"
@@ -1624,9 +1623,11 @@ tr:
         version:
           undeletable_archived_projects: "Eklenmiş iş paketleri olduğu için sürüm silinemez."
           undeletable_work_packages_attached: "Eklenmiş iş paketleri olduğu için sürüm silinemez."
-        token/api:
+        token/named:
           attributes:
             token_name:
+              blank: "Please provide a token name"
+              in_use: "This token name is already in use, please select a different one"
               format: "%{message}"
       template:
         body: "Lütfen aşağıdaki alanları kontrol edin:"
@@ -2556,7 +2557,8 @@ tr:
       shortcuts: "Kısayollar"
       blog: "OpenProject blog"
       forums: "Topluluk forumu"
-      newsletter: "Güvenlik uyarıları / Haber bülteni"
+      security_alerts: "Security alerts"
+      newsletter: "Newsletter"
   image_conversion:
     imagemagick: "Resim büyüsü"
   journals:

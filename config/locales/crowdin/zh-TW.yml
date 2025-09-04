@@ -588,9 +588,6 @@ zh-TW:
         token/api:
           title: "API 令牌(Token)已生成。"
           warning: "這是您唯一一次看到此令牌(Token)的機會，請務必立即複製。"
-      errors:
-        token_name_blank: "請提供API token名稱"
-        token_name_in_use: "此 API token名稱已被使用，請選擇其他名稱"
       failed_to_reset_token: "無法重置訪問令牌(Token): %{error}"
       failed_to_create_token: "無法建立訪問令牌(Token): %{error}"
       failed_to_revoke_token: "無法撤銷訪問令牌(Token): %{error}"
@@ -1131,6 +1128,8 @@ zh-TW:
         is_readonly: "設定「工作套件」唯讀"
         excluded_from_totals: "從層次結構的總計中排除"
         default_done_ratio: "% 完成"
+      token/named:
+        token_name: "Token name"
       token/ical:
         calendar: "行事曆"
         ical_token_query_assignment: "指派查詢"
@@ -1564,7 +1563,7 @@ zh-TW:
               must_be_set_when_work_is_set: "工時已設定時必填"
               must_be_set_when_work_and_percent_complete_are_set: "工時 和 完成百分比 已設置時必填。"
               must_be_set_to_zero_hours_when_work_is_set_and_percent_complete_is_100p: >-
-                must be 0h when Work is set and % Complete is 100%.
+                設定為 Work 且 % 完成度為 100% 時，必須為 0h。
               must_be_empty_when_work_is_empty_and_percent_complete_is_100p: >-
                 工時未設定設定，但完成度100%時，剩餘工時必須是空白。
           readonly_status: "工作套件處於唯讀狀態，因此無法變更其屬性。"
@@ -1611,9 +1610,11 @@ zh-TW:
         version:
           undeletable_archived_projects: "該版本無法刪除，因為包含工作套件。"
           undeletable_work_packages_attached: "該版本無法刪除，因為它附帶了工作套件。"
-        token/api:
+        token/named:
           attributes:
             token_name:
+              blank: "Please provide a token name"
+              in_use: "This token name is already in use, please select a different one"
               format: "%{message}"
       template:
         body: "請檢查下列欄位："
@@ -2508,7 +2509,8 @@ zh-TW:
       shortcuts: "快捷鍵"
       blog: "Openproject 部落格"
       forums: "社群討論區"
-      newsletter: "資通安全通知 / 電子報"
+      security_alerts: "Security alerts"
+      newsletter: "Newsletter"
   image_conversion:
     imagemagick: "Imagemagick"
   journals:

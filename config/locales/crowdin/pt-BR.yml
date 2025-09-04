@@ -594,9 +594,6 @@ pt-BR:
         token/api:
           title: "The API token has been generated"
           warning: "Esta é a única vez que você verá este token. Certifique-se de copiá-lo agora."
-      errors:
-        token_name_blank: "Forneça um nome para o token de API."
-        token_name_in_use: "Este nome de token de API já está em uso, escolha outro."
       failed_to_reset_token: "Falha ao redefinir o token de acesso: %{error}"
       failed_to_create_token: "Falha ao criar o token de acesso: %{error}"
       failed_to_revoke_token: "Falha ao revogar o token de acesso: %{error}"
@@ -1140,6 +1137,8 @@ pt-BR:
         is_readonly: "Pacote de trabalho somente leitura"
         excluded_from_totals: "Excluir do cálculo de totais na hierarquia"
         default_done_ratio: "% de conclusão"
+      token/named:
+        token_name: "Token name"
       token/ical:
         calendar: "Calendário"
         ical_token_query_assignment: "Atribuição de consulta"
@@ -1622,9 +1621,11 @@ pt-BR:
         version:
           undeletable_archived_projects: "A versão não pode ser excluída pois tem pacotes de trabalho anexados a ela."
           undeletable_work_packages_attached: "A versão não pode ser excluída pois tem pacotes de trabalho anexados a ela."
-        token/api:
+        token/named:
           attributes:
             token_name:
+              blank: "Please provide a token name"
+              in_use: "This token name is already in use, please select a different one"
               format: "%{message}"
       template:
         body: "Por favor, verifique os seguintes campos:"
@@ -2554,7 +2555,8 @@ pt-BR:
       shortcuts: "Atalhos"
       blog: "Blog do OpenProject"
       forums: "Fórum da Comunidade"
-      newsletter: "Alertas de segurança / Newsletter"
+      security_alerts: "Security alerts"
+      newsletter: "Newsletter"
   image_conversion:
     imagemagick: "Imagemagick"
   journals:

@@ -606,9 +606,6 @@ ru:
         token/api:
           title: "The API token has been generated"
           warning: "Это единственный раз, когда Вы увидите токен. Убедитесь, что вы сохранили его."
-      errors:
-        token_name_blank: "Пожалуйста, укажите имя токена API"
-        token_name_in_use: "Это имя токена API уже используется, пожалуйста, выберите другое"
       failed_to_reset_token: "Не удалось сбросить маркер доступа: %{error}"
       failed_to_create_token: "Не удалось создать токен доступа: %{error}"
       failed_to_revoke_token: "Не удалось отозвать токен доступа: %{error}"
@@ -1157,6 +1154,8 @@ ru:
         is_readonly: "Пакет работ только для просмотра"
         excluded_from_totals: "Исключить из расчета итогов в иерархии"
         default_done_ratio: "% завершения"
+      token/named:
+        token_name: "Token name"
       token/ical:
         calendar: "Календарь"
         ical_token_query_assignment: "Задание запроса"
@@ -1643,9 +1642,11 @@ ru:
         version:
           undeletable_archived_projects: "Версия не может быть удалена, так как имеет пакеты работ, прикрепленные к ней."
           undeletable_work_packages_attached: "Версия не может быть удалена, так как имеет пакеты работ, прикрепленные к ней."
-        token/api:
+        token/named:
           attributes:
             token_name:
+              blank: "Please provide a token name"
+              in_use: "This token name is already in use, please select a different one"
               format: "%{message}"
       template:
         body: "Пожалуйста, проверьте следующие поля:"
@@ -2645,7 +2646,8 @@ ru:
       shortcuts: "Ярлыки"
       blog: "Openproject блог"
       forums: "Форум сообщества"
-      newsletter: "Оповещения системы безопасности / Новости"
+      security_alerts: "Security alerts"
+      newsletter: "Newsletter"
   image_conversion:
     imagemagick: "Imagemagick"
   journals:

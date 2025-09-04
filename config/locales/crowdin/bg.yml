@@ -595,9 +595,6 @@ bg:
         token/api:
           title: "The API token has been generated"
           warning: "This is the only time you will see this token. Make sure to copy it now."
-      errors:
-        token_name_blank: "Моля, посочете име на API токен"
-        token_name_in_use: "Този API токен вече се използва, моля изберете друго."
       failed_to_reset_token: "Неуспешно нулиране на токена за достъп: %{error}"
       failed_to_create_token: "Неуспешно създаване на токен за достъп: %{error}"
       failed_to_revoke_token: "Неуспешно нулиране на токена за достъп: %{error}"
@@ -1143,6 +1140,8 @@ bg:
         is_readonly: "Work package read-only"
         excluded_from_totals: "Exclude from calculation of totals in hierarchy"
         default_done_ratio: "% Complete"
+      token/named:
+        token_name: "Token name"
       token/ical:
         calendar: "Календар"
         ical_token_query_assignment: "Query assignment"
@@ -1625,9 +1624,11 @@ bg:
         version:
           undeletable_archived_projects: "Версията не може да бъде изтрита, тъй като към нея са прикрепени работни пакети."
           undeletable_work_packages_attached: "Версията не може да бъде изтрита, тъй като към нея са прикрепени работни пакети."
-        token/api:
+        token/named:
           attributes:
             token_name:
+              blank: "Please provide a token name"
+              in_use: "This token name is already in use, please select a different one"
               format: "%{message}"
       template:
         body: "Моля проверете следните полета:"
@@ -2557,7 +2558,8 @@ bg:
       shortcuts: "Кратки клавишни комбинации"
       blog: "OpenProject блог"
       forums: "Форум на Общността"
-      newsletter: "Сигнали за сигурност / Бюлетин"
+      security_alerts: "Security alerts"
+      newsletter: "Newsletter"
   image_conversion:
     imagemagick: "Магия на изображението"
   journals:

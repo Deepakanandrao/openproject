@@ -589,9 +589,6 @@ ko:
         token/api:
           title: "The API token has been generated"
           warning: "이번에만 이 토큰이 표시됩니다. 지금 이 토큰을 복사해야 합니다."
-      errors:
-        token_name_blank: "API 토큰 이름을 입력하세요"
-        token_name_in_use: "이 API 토큰 이름은 이미 사용 중입니다. 다른 이름을 선택하세요."
       failed_to_reset_token: "액세스 토큰을 재설정하지 못함: %{error}"
       failed_to_create_token: "액세스 토큰을 만들지 못했습니다: %{error}"
       failed_to_revoke_token: "액세스 토큰을 취소하지 못했습니다: %{error}"
@@ -1135,6 +1132,8 @@ ko:
         is_readonly: "읽기 전용 작업 패키지"
         excluded_from_totals: "계층의 합계 계산에서 제외"
         default_done_ratio: "완료 %"
+      token/named:
+        token_name: "Token name"
       token/ical:
         calendar: "달력"
         ical_token_query_assignment: "쿼리 할당"
@@ -1615,9 +1614,11 @@ ko:
         version:
           undeletable_archived_projects: "첨부된 작업 패키지가 있으므로 이 버전은 삭제할 수 없습니다."
           undeletable_work_packages_attached: "첨부된 작업 패키지가 있으므로 이 버전은 삭제할 수 없습니다."
-        token/api:
+        token/named:
           attributes:
             token_name:
+              blank: "Please provide a token name"
+              in_use: "This token name is already in use, please select a different one"
               format: "%{message}"
       template:
         body: "다음 필드를 확인 하십시오."
@@ -2512,7 +2513,8 @@ ko:
       shortcuts: "바로가기 "
       blog: "OpenProject 블로그"
       forums: "커뮤니티 포럼"
-      newsletter: "보안 알림/뉴스레터"
+      security_alerts: "Security alerts"
+      newsletter: "Newsletter"
   image_conversion:
     imagemagick: "Imagemagick"
   journals:

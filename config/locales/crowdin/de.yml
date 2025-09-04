@@ -592,9 +592,6 @@ de:
         token/api:
           title: "Der API-Token wurde generiert"
           warning: "Dies ist das einzige Mal, dass dieses Token angezeigt wird. Stellen Sie sicher, dass Sie es jetzt kopieren."
-      errors:
-        token_name_blank: "Bitte geben Sie einen Namen für den API-Token an"
-        token_name_in_use: "Dieser API-Token-Name ist bereits in Verwendung, bitte wählen Sie einen anderen"
       failed_to_reset_token: "Zusatztoken konnte nicht zurückgesetzt werden: %{error}"
       failed_to_create_token: "Zugriffstoken konnte nicht erstellt werden: %{error}"
       failed_to_revoke_token: "Zugriffstoken kann nicht widerrufen werden: %{error}"
@@ -1135,6 +1132,8 @@ de:
         is_readonly: "Arbeitspakete schreibgeschützt"
         excluded_from_totals: "Von der Berechnung der Gesamtsumme in der Hierarchie ausschließen"
         default_done_ratio: "% abgeschlossen"
+      token/named:
+        token_name: "Token name"
       token/ical:
         calendar: "Kalender"
         ical_token_query_assignment: "Zuordnung der Abfrage"
@@ -1617,9 +1616,11 @@ de:
         version:
           undeletable_archived_projects: "Die Version kann nicht gelöscht werden, da sie Arbeitspakete enthält, die an sie angeschlossen sind."
           undeletable_work_packages_attached: "Die Version kann nicht gelöscht werden, da sie Arbeitspakete enthält, die an sie angeschlossen sind."
-        token/api:
+        token/named:
           attributes:
             token_name:
+              blank: "Please provide a token name"
+              in_use: "This token name is already in use, please select a different one"
               format: "%{message}"
       template:
         body: "Bitte überprüfen Sie die folgenden Felder:"
@@ -2549,7 +2550,8 @@ de:
       shortcuts: "Tastenkürzel"
       blog: "OpenProject Blog"
       forums: "Community Forum"
-      newsletter: "Sicherheitswarnungen / Newsletter"
+      security_alerts: "Security alerts"
+      newsletter: "Newsletter"
   image_conversion:
     imagemagick: "ImageMagick"
   journals:

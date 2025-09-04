@@ -587,9 +587,6 @@ ja:
         token/api:
           title: "API トークンが生成されました"
           warning: "このトークンが表示される唯一の時間です。今すぐコピーしてください。"
-      errors:
-        token_name_blank: "APIトークン名を入力してください"
-        token_name_in_use: "この API トークン名は既に使用されています。別のトークンを選択してください"
       failed_to_reset_token: "アクセストークンをリセットできませんでした: %{error}"
       failed_to_create_token: "アクセストークンの作成に失敗しました: %{error}"
       failed_to_revoke_token: "アクセストークンの取り消しに失敗しました: %{error}"
@@ -1134,6 +1131,8 @@ ja:
         is_readonly: "読み取り専用のワークパッケージ"
         excluded_from_totals: "階層内の合計の計算から除外"
         default_done_ratio: "%完了率"
+      token/named:
+        token_name: "Token name"
       token/ical:
         calendar: "カレンダー"
         ical_token_query_assignment: "クエリの割り当て"
@@ -1614,9 +1613,11 @@ ja:
         version:
           undeletable_archived_projects: "ワークパッケージが添付されているため、バージョンを削除できません。"
           undeletable_work_packages_attached: "ワークパッケージが添付されているため、バージョンを削除できません。"
-        token/api:
+        token/named:
           attributes:
             token_name:
+              blank: "Please provide a token name"
+              in_use: "This token name is already in use, please select a different one"
               format: "%{message}"
       template:
         body: "次のフィールドをチェックしてください："
@@ -2511,7 +2512,8 @@ ja:
       shortcuts: "ショートカット"
       blog: "OpenProject ブログ"
       forums: "コミュニティ フォーラム"
-      newsletter: "セキュリティアラート / ニュースレター"
+      security_alerts: "Security alerts"
+      newsletter: "Newsletter"
   image_conversion:
     imagemagick: "Imagemagick"
   journals:

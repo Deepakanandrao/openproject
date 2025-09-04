@@ -595,9 +595,6 @@
         token/api:
           title: "The API token has been generated"
           warning: "This is the only time you will see this token. Make sure to copy it now."
-      errors:
-        token_name_blank: "Vennligst oppgi navn på API-token"
-        token_name_in_use: "Dette API-token-navnet er allerede i bruk, velg et annet"
       failed_to_reset_token: "Tilgangstoken kunne ikke tilbakestilles: %{error}"
       failed_to_create_token: "Tilgangsnøkkelen kunne ikke opprettes: %{error}"
       failed_to_revoke_token: "Kunne ikke oppheve tilgangstoken: %{error}"
@@ -1142,6 +1139,8 @@
         is_readonly: "Arbeidspakken er skrivebeskyttet"
         excluded_from_totals: "Unnta fra beregning av totaler i hierarki"
         default_done_ratio: "% Ferdig "
+      token/named:
+        token_name: "Token name"
       token/ical:
         calendar: "Kalender"
         ical_token_query_assignment: "Query assignment"
@@ -1624,9 +1623,11 @@
         version:
           undeletable_archived_projects: "Versjonen kan ikke slettes ettersom den har arbeidspakker knyttet til den."
           undeletable_work_packages_attached: "Versjonen kan ikke slettes ettersom den har arbeidspakker knyttet til den."
-        token/api:
+        token/named:
           attributes:
             token_name:
+              blank: "Please provide a token name"
+              in_use: "This token name is already in use, please select a different one"
               format: "%{message}"
       template:
         body: "Kontroller følgende felter:"
@@ -2556,7 +2557,8 @@
       shortcuts: "Snarveier"
       blog: "OpenProject blogg"
       forums: "Brukerforum"
-      newsletter: "Sikkerhetsvarsler / Nyhetsbrev"
+      security_alerts: "Security alerts"
+      newsletter: "Newsletter"
   image_conversion:
     imagemagick: "Imagemagick"
   journals:
