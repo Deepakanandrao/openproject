@@ -1129,7 +1129,7 @@ zh-TW:
         excluded_from_totals: "從層次結構的總計中排除"
         default_done_ratio: "% 完成"
       token/named:
-        token_name: "Token name"
+        token_name: "令牌名稱"
       token/ical:
         calendar: "行事曆"
         ical_token_query_assignment: "指派查詢"
@@ -1613,8 +1613,8 @@ zh-TW:
         token/named:
           attributes:
             token_name:
-              blank: "Please provide a token name"
-              in_use: "This token name is already in use, please select a different one"
+              blank: "請提供令牌名稱"
+              in_use: "此令牌名稱已被使用，請選擇其他名稱"
               format: "%{message}"
       template:
         body: "請檢查下列欄位："
@@ -2509,8 +2509,8 @@ zh-TW:
       shortcuts: "快捷鍵"
       blog: "Openproject 部落格"
       forums: "社群討論區"
-      security_alerts: "Security alerts"
-      newsletter: "Newsletter"
+      security_alerts: "安全警示"
+      newsletter: "電子報"
   image_conversion:
     imagemagick: "Imagemagick"
   journals:
