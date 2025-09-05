@@ -38,6 +38,6 @@ import {
   standalone: false,
 })
 export class MeetingAutocompleterTemplateComponent implements IAutocompleterTemplateComponent {
-  // @ViewChild('labelTemplate') labelTemplate?:TemplateRef<Element>;
+  @ViewChild('labelTemplate') labelTemplate?:TemplateRef<Element>;
   @ViewChild('optionTemplate') optionTemplate:TemplateRef<Element>;
 }

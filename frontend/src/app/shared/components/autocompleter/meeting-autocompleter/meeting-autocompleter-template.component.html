@@ -1,3 +1,7 @@
+<ng-template #labelTemplate let-item>
+    {{ item.name }} - {{ item.start_date }} {{ item.start_time }} - {{ item.project }}
+</ng-template>
+
 <ng-template #optionTemplate let-item let-search="search">
     <div class="op-autocompleter__meeting-option-grid">
         <div class="op-autocompleter__field--name" [opSearchHighlight]="search">
