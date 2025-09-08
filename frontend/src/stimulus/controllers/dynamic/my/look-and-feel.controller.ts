@@ -52,12 +52,12 @@ export default class LookAndFeelController extends Controller {
   private toggleOptionGroups() {
     const isSyncWithOs = this.themeSelectTarget.value === this.syncWithOsValue;
 
-    this.toggleElementVisibility(this.autoThemeContrastTarget, !isSyncWithOs);
-    this.toggleElementVisibility(this.singleThemeContrastTarget, isSyncWithOs);
+    this.toggleElementVisibility(this.autoThemeContrastTarget, isSyncWithOs);
+    this.toggleElementVisibility(this.singleThemeContrastTarget, !isSyncWithOs);
   }
 
-  private toggleElementVisibility(targetElement:HTMLElement, shouldHide:boolean) {
+  private toggleElementVisibility(targetElement:HTMLElement, shouldShow:boolean) {
     const container = targetElement.closest(this.viewComponentSelector);
-    container?.classList.toggle(this.displayNoneClass, shouldHide);
+    container?.classList.toggle(this.displayNoneClass, !shouldShow);
   }
 }
