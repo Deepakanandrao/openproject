@@ -1109,6 +1109,7 @@ pl:
         few: "%{count} potomnych pakietów roboczych"
         many: "%{count} potomnych pakietów roboczych"
         other: "%{count} potomnych pakietów roboczych"
+      hour_string: "%{hours} h"
       hour:
         one: "1 h"
         other: "%{count} h"

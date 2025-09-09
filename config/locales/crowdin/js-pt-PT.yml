@@ -1103,6 +1103,7 @@ pt-PT:
       child_work_packages:
         one: "pacote de trabalho infantil"
         other: "%{count} pacotes de trabalho filhos"
+      hour_string: "%{hours} h"
       hour:
         one: "1 h"
         other: "%{count} h"

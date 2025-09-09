@@ -1102,6 +1102,7 @@ de:
       child_work_packages:
         one: "eine Unteraufgabe"
         other: "%{count} untergeordnete Arbeitspakete"
+      hour_string: "%{hours} h"
       hour:
         one: "1 h"
         other: "%{count} h"

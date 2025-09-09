@@ -1109,6 +1109,7 @@ uk:
         few: "%{count} робочий пакет дітей"
         many: "%{count} робочий пакет дітей"
         other: "%{count} робочий пакет дітей"
+      hour_string: "%{hours} h"
       hour:
         one: "1 год"
         other: "%{count} год"

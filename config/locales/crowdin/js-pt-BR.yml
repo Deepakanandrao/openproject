@@ -1102,6 +1102,7 @@ pt-BR:
       child_work_packages:
         one: "um pacote de trabalho filho"
         other: "%{count} pacotes de trabalho filhos"
+      hour_string: "%{hours} h"
       hour:
         one: "1 h"
         other: "%{count} hs"

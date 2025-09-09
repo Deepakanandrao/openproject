@@ -1103,6 +1103,7 @@ es:
       child_work_packages:
         one: "un sub-paquete de trabajo"
         other: "%{count} paquetes de trabajo secundarios"
+      hour_string: "%{hours} h"
       hour:
         one: "1 h"
         other: "%{count} h"

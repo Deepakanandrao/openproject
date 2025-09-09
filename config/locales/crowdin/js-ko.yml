@@ -1100,6 +1100,7 @@ ko:
         other: "작업 패키지"
       child_work_packages:
         other: "%{count}개의 작업 패키지 자식"
+      hour_string: "%{hours} h"
       hour:
         one: "1시간"
         other: "%{count}시간"

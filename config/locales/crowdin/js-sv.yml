@@ -1102,6 +1102,7 @@ sv:
       child_work_packages:
         one: "ett barnarbetspaket"
         other: "%{count} arbetspaket barn"
+      hour_string: "%{hours} h"
       hour:
         one: "1 tim"
         other: "%{count} timmar"

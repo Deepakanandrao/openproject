@@ -1103,6 +1103,7 @@ fr:
       child_work_packages:
         one: "un lot de travaux enfant"
         other: "%{count} lots de travaux enfant"
+      hour_string: "%{hours} h"
       hour:
         one: "1h"
         other: "%{count} h"

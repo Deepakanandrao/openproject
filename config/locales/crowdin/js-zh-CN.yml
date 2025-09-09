@@ -1100,6 +1100,7 @@ zh-CN:
         other: "工作包"
       child_work_packages:
         other: "%{count} 子工作包"
+      hour_string: "%{hours} h"
       hour:
         one: "1 小时"
         other: "%{count} 小时"

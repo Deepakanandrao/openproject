@@ -1103,6 +1103,7 @@ it:
       child_work_packages:
         one: "una macro-attività subordinata"
         other: "%{count} macro-attività subordinate"
+      hour_string: "%{hours} h"
       hour:
         one: "1 o"
         other: "%{count} o"
