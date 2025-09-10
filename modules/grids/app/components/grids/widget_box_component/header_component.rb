@@ -38,6 +38,7 @@ module Grids
         @title = title
         @system_arguments = system_arguments
         @system_arguments[:tag] = :header
+        @system_arguments[:test_selector] = "op-widget-box--header"
         @system_arguments[:classes] = class_names(
           @system_arguments[:classes],
           "op-widget-box--header"
