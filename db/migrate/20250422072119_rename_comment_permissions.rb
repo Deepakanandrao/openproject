@@ -37,8 +37,10 @@ class RenameCommentPermissions < ActiveRecord::Migration[8.0]
 
     ::Migration::MigrationUtils::PermissionRenamer.rename("view_comments_with_restricted_visibility", "view_internal_comments")
     ::Migration::MigrationUtils::PermissionRenamer.rename("add_comments_with_restricted_visibility", "add_internal_comments")
-    ::Migration::MigrationUtils::PermissionRenamer.rename("edit_own_comments_with_restricted_visibility", "edit_own_internal_comments")
-    ::Migration::MigrationUtils::PermissionRenamer.rename("edit_others_comments_with_restricted_visibility", "edit_others_internal_comments")
+    ::Migration::MigrationUtils::PermissionRenamer.rename("edit_own_comments_with_restricted_visibility",
+                                                          "edit_own_internal_comments")
+    ::Migration::MigrationUtils::PermissionRenamer.rename("edit_others_comments_with_restricted_visibility",
+                                                          "edit_others_internal_comments")
   end
 
   def down
@@ -48,7 +50,9 @@ class RenameCommentPermissions < ActiveRecord::Migration[8.0]
 
     ::Migration::MigrationUtils::PermissionRenamer.rename("view_internal_comments", "view_comments_with_restricted_visibility")
     ::Migration::MigrationUtils::PermissionRenamer.rename("add_internal_comments", "add_comments_with_restricted_visibility")
-    ::Migration::MigrationUtils::PermissionRenamer.rename("edit_own_internal_comments", "edit_own_comments_with_restricted_visibility")
-    ::Migration::MigrationUtils::PermissionRenamer.rename("edit_others_internal_comments", "edit_others_comments_with_restricted_visibility")
+    ::Migration::MigrationUtils::PermissionRenamer.rename("edit_own_internal_comments",
+                                                          "edit_own_comments_with_restricted_visibility")
+    ::Migration::MigrationUtils::PermissionRenamer.rename("edit_others_internal_comments",
+                                                          "edit_others_comments_with_restricted_visibility")
   end
 end

@@ -46,8 +46,8 @@ module Migration
           @role_permissions_table ||= ActiveRecord::Base.connection.quote_table_name("role_permissions")
         end
 
-        def quote_value(s)
-          ActiveRecord::Base.connection.quote(s)
+        def quote_value(value)
+          ActiveRecord::Base.connection.quote(value)
         end
       end
     end
