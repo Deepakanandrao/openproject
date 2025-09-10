@@ -42,8 +42,11 @@ See COPYRIGHT and LICENSE files for more details.
 <%= render ::Users::Sessions::TableComponent.new(rows: @sessions, current_session: session) %>
 
 <% if Setting::Autologin.enabled? && @autologin_tokens.any? %>
-  <h3><%= t("users.sessions.remembered_devices") %></h3>
-  <p><%= t("users.sessions.remembered_devices_caption") %></p>
-
+  <%=
+    render(Primer::Beta::Subhead.new(mt: 3)) do |component|
+      component.with_heading(tag: :h3) { t("users.sessions.remembered_devices") }
+      component.with_description { t("users.sessions.remembered_devices_caption") }
+    end
+  %>
   <%= render ::Users::AutoLoginTokens::TableComponent.new(rows: @autologin_tokens, current_token: @current_token) %>
 <% end %>
