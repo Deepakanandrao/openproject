@@ -1,6 +1,9 @@
 api_docs:
   href: https://www.openproject.org/docs/api/
   label: :label_api_doc
+api:
+  authentication_basic_auth:
+    href: https://www.openproject.org/docs/api/introduction/#api-key-through-basic-auth
 blog:
   href: https://www.openproject.org/blog
   label: homescreen.links.blog

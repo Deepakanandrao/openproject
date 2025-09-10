@@ -1842,6 +1842,7 @@ en:
     attachments: "Attachments"
     actor: "Actor"
     action: "Action"
+    api_key: "API key"
     author: "Author"
     avatar: "Avatar"
     base: "General Error:"
