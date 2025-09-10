@@ -205,7 +205,7 @@ These changes make SCIM integrations more robust and transparent, improving inte
 - Bugfix: Enable calculation of admin only calculated values on change of non admin only field values by non admins \[[#66471](https://community.openproject.org/wp/66471)\]
 - Bugfix: It is not possible to submit calculated value field form by pressing Enter/Return inside formula \[[#66472](https://community.openproject.org/wp/66472)\]
 - Bugfix: User cannot end a meeting series that has open occurrences \[[#66483](https://community.openproject.org/wp/66483)\]
-- Bugfix: One time meeting organiser doesn&#39;t receive the meeting invite \[[#66497](https://community.openproject.org/wp/66497)\]
+- Bugfix: One time meeting organizer doesn&#39;t receive the meeting invite \[[#66497](https://community.openproject.org/wp/66497)\]
 - Bugfix: WP number is visually truncated on time log entries table \[[#66504](https://community.openproject.org/wp/66504)\]
 - Bugfix: File links from other project folders are not copied when user copies a project \[[#66513](https://community.openproject.org/wp/66513)\]
 - Bugfix: API: Server error when passing invalid links \[[#66528](https://community.openproject.org/wp/66528)\]
