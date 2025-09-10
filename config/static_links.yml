@@ -213,6 +213,9 @@ upsell_get_quote:
 user_guides:
   href: https://www.openproject.org/docs/user-guide/
   label: homescreen.links.user_guides
+user_guide:
+  access_tokens:
+    href: https://www.openproject.org/docs/user-guide/account-settings/#access-tokens
 webinar_videos:
   href: https://www.youtube.com/watch?v=un6zCm8_FT4
 website:
