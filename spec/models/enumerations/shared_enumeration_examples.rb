@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#-- copyright
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,52 +26,42 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
-module Admin
-  module Enumerations
-    class ItemForm < ApplicationForm
-      delegate :object, to: :@builder
+require "spec_helper"
 
-      form do |form|
-        form.text_field(
-          name: :name,
-          label: object.class.human_attribute_name(:name),
-          required: true,
-          input_width: :medium
-        )
+RSpec.shared_context "enumeration#active handling" do |default_supported| # rubocop:disable RSpec/ContextWording
+  let(:enumeration) do
+    super()
+  rescue NoMethodError
+    raise "'enumeration' let needs to be set"
+  end
 
-        if object.colored?
-          form.color_select_list(
-            label: attribute_name(:color_id),
-            name: :color_id,
-            caption: object.color_label,
-            input_width: :medium
-          )
+  describe "#active" do
+    if default_supported
+      context "with the enumeration being inactive and default before saving" do
+        it "sets the enumeration to be active", :aggregate_failures do
+          enumeration.active = false
+          enumeration.is_default = true
+
+          enumeration.save
+
+          expect(enumeration).to be_persisted
+          expect(enumeration.active).to be true
         end
+      end
 
-        form.check_box(
-          name: :active,
-          label: object.class.human_attribute_name(:active),
-          disabled: object.is_default,
-          data: { "admin--enumerations-target": "active" }
-        )
+      context "with the enumeration being inactive and not default before saving" do
+        it "keeps the value of active", :aggregate_failures do
+          enumeration.active = false
+          enumeration.is_default = false
 
-        if object.class.can_have_default_value?
-          form.check_box(
-            name: :is_default,
-            label: I18n.t(:label_default),
-            caption: I18n.t(:"priorities.admin.default.caption"),
-            data: { action: "admin--enumerations#lockstepActive",
-                    "admin--enumerations-target": "default" }
-          )
+          enumeration.save
+
+          expect(enumeration).to be_persisted
+          expect(enumeration.active).to be false
+          expect(enumeration.is_default).to be false
         end
-
-        form.submit(
-          name: :submit,
-          label: I18n.t(:button_save),
-          scheme: :primary
-        )
       end
     end
   end
