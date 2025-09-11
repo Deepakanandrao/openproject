@@ -44,6 +44,8 @@ module ProjectCustomFieldProjectMappings
       service_call
     end
 
+    private
+
     def validate_permissions
       if @user.allowed_in_project?(:select_project_custom_fields, @project)
         ServiceResult.success
@@ -68,7 +70,17 @@ module ProjectCustomFieldProjectMappings
         service_call.errors = e.message
       end
 
+      recalculate_values(custom_field_ids:) if service_call.success?
+
       service_call
+    end
+
+    def recalculate_values(custom_field_ids:)
+      affected_cfs = @project.all_available_custom_fields.affected_calculated_fields(custom_field_ids)
+
+      @project.calculate_custom_fields(affected_cfs)
+
+      @project.save if @project.changed_for_autosave?
     end
 
     def fetch_custom_field_ids
