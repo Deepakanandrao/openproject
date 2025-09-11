@@ -121,7 +121,7 @@ export class OpBasicRangeDatePickerComponent implements OnInit, ControlValueAcce
   // This comment can be removed once the https://github.com/bigskysoftware/idiomorph/pull/131
   // is accepted.
 
-  @Input() inputId = `flatpickr-input-${+(new Date())}`;
+  id = `flatpickr-input-${+(new Date())}`;
 
   @Input() name = '';
 
@@ -197,7 +197,7 @@ export class OpBasicRangeDatePickerComponent implements OnInit, ControlValueAcce
   private initializeDatePicker() {
     this.datePickerInstance = new DatePicker(
       this.injector,
-      this.inputId,
+      this.id,
       this.value || '',
       {
         allowInput: true,
