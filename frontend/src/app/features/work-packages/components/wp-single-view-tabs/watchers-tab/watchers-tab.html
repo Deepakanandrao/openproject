@@ -11,7 +11,7 @@
     <div class="work-package--watchers form--selected-value--list"
       [ngClass]="{'-read-only': !allowedToRemove}">
 
-      @for (watcher of watching; track trackByHref($index, watcher)) {
+      @for (watcher of watching; track watcher.href) {
         <op-wp-watcher-entry
           [watcher]="watcher">
         </op-wp-watcher-entry>

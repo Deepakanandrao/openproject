@@ -47,7 +47,7 @@
                   </div>
                 </th>
               }
-              @for (column of columns; track trackByHref($index, column)) {
+              @for (column of columns; track column.href) {
                 <th
                   [ngClass]="{'-max': column.id === 'subject', '-min-200': ['estimatedTime', 'remainingTime'].includes(column.id) }"
                   class="wp-table--table-header">

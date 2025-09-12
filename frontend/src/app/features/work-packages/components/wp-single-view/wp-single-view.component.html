@@ -46,7 +46,7 @@
         data-overflowing-identifier=".__overflowing_project_context">
         <div>
           <p class="wp-project-context--warning" [textContent]="text.project.required"></p>
-          @for (descriptor of projectContext.field; track trackByName($index, descriptor)) {
+          @for (descriptor of projectContext.field; track descriptor.name) {
             <div class="attributes-key-value"
               [ngClass]="{'-span-all-columns': descriptor.spanAll }"
               >
@@ -93,7 +93,7 @@
         </op-editable-attribute-field>
       </div>
     </div>
-    @for (group of groupedFields; track trackByName($index, group)) {
+    @for (group of groupedFields; track group.name) {
       <div
         [hidden]="shouldHideGroup(group)"
         [attr.data-group-name]="group.name"

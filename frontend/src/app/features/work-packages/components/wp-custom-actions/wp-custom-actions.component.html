@@ -1,5 +1,5 @@
 @if (available) {
-  @for (action of actions; track trackByHref($index, action)) {
+  @for (action of actions; track action.href) {
     <wp-custom-action
       [workPackage]="workPackage"
       [action]="action"

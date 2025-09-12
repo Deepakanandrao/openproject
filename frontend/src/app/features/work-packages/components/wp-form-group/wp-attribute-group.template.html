@@ -1,4 +1,4 @@
-@for (descriptor of group.members; track trackByName($index, descriptor)) {
+@for (descriptor of group.members; track descriptor.name) {
   <div
     class="wp-attribute-group--attribute attributes-key-value"
     [ngClass]="{'wp-attribute-group--attribute_span-all': descriptor.spanAll }"

@@ -8,7 +8,7 @@
       class="op-tab-row"
       (scroll)="onScroll()"
       >
-      @for (tab of tabs; track trackById($index, tab)) {
+      @for (tab of tabs; track tab.id) {
         <li
           class="op-tab-row--tab"
           (dragenter)="startDebouncedTabActivation(tab)"

@@ -23,7 +23,7 @@
         </div>
       </li>
       <li class="advanced-filters--spacer"></li>
-      @for (filter of filters; track trackByName(index, filter); let index = $index) {
+      @for (filter of filters; track filter.name; let index = $index) {
         @if (isFilterAvailable(filter)) {
           <li
             id="filter_{{filter.id}}"
