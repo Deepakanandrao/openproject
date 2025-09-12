@@ -14,7 +14,7 @@
               <col data-highlight="false">
             }
             <!-- Generate col elements dynamically(!) for each requested column plus one for the action menu's column. -->
-            @for (column of [].constructor(columns.length); track column) {
+            @for (column of [].constructor(columns.length); track $index) {
               <col>
             }
             @if (configuration.columnMenuEnabled) {
