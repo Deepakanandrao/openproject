@@ -32,14 +32,12 @@
 
   <span class='op-pull-request--date'>
     {{ text.label_last_updated_on }}
-    <op-date-time [dateTimeValue]="pullRequest.githubUpdatedAt"></op-date-time>
+    <op-date-time [dateTimeValue]="pullRequest.githubUpdatedAt" />
   </span>.
 </div>
 
-<op-github-pull-request-state
-  class='op-pull-request--state'
-  [state]="state">
-</op-github-pull-request-state>
+<op-github-pull-request-state class='op-pull-request--state'
+  [state]="state" />
 
 @if (pullRequest._embedded.checkRuns?.length) {
   <span class="op-pull-request--checks-label"
@@ -56,7 +54,7 @@
       <li class='op-pr-check'>
         <span class='op-pr-check--state-icon' [ngClass]="'op-pr-check--state-icon_' + checkRunState(checkRun)">
           <op-icon icon-classes="icon-{{ checkRunStateIcon(checkRun) }}"
-          [icon-title]="checkRunStateText(checkRun)"></op-icon>
+          [icon-title]="checkRunStateText(checkRun)" />
         </span>
         <span class='op-pr-check--avatar'><img alt='app owner avatar' [src]="checkRun.appOwnerAvatarUrl"/></span>
         <span class='op-pr-check--info'>

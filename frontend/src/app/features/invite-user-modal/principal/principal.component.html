@@ -13,13 +13,12 @@
       required
       >
       @if (!(hasPrincipalSelected && isNewPrincipal)) {
-        <op-ium-principal-search
-          [spotFormBinding]="principalControl"
+        <op-ium-principal-search [spotFormBinding]="principalControl"
           [type]="type"
           [project]="project"
           slot="input"
           (createNew)="createNewFromInput($event)"
-        ></op-ium-principal-search>
+         />
       }
 
       @if (isNewPrincipal && type === PrincipalType.User) {
@@ -59,22 +58,20 @@
     </spot-form-field>
 
     @if (isNewPrincipal && type === PrincipalType.User && userDynamicFieldConfig.schema) {
-      <op-dynamic-form
-        [dynamicFormGroup]="dynamicFieldsControl"
+      <op-dynamic-form [dynamicFormGroup]="dynamicFieldsControl"
         [settings]="userDynamicFieldConfig"
         [formUrl]="apiV3Service.users.form.path"
         [handleSubmit]="false"
-      ></op-dynamic-form>
+       />
     }
 
     <spot-form-field
       [label]="text.role.label()"
       required
       >
-      <op-ium-role-search
-        [spotFormBinding]="roleControl"
+      <op-ium-role-search [spotFormBinding]="roleControl"
         slot="input"
-      ></op-ium-role-search>
+       />
       <p
         class="spot-form-field--description"
         slot="action"
@@ -117,7 +114,7 @@
         class="button button_no-margin spot-action-bar--action"
         (click)="back.emit()"
         >
-        <op-icon icon-classes="button--icon icon-arrow-left1"></op-icon>
+        <op-icon icon-classes="button--icon icon-arrow-left1" />
         {{ text.principal.backButton }}
       </button>
     </div>

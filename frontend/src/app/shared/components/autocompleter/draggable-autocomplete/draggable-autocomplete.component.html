@@ -6,8 +6,7 @@
         [attr.for]="id">
       </label>
 
-      <ng-select
-        #ngSelectComponent
+      <ng-select #ngSelectComponent
         [items]="availableOptions"
         ngClass="op-draggable-autocomplete--input ng-select--primerized"
         bindLabel="name"
@@ -20,7 +19,7 @@
         [appendTo]="appendTo"
         (open)="opened()"
         (change)="select($event)"
-      ></ng-select>
+       />
       @if (inputCaption) {
         <span class="FormControl-caption" [textContent]="inputCaption"></span>
       }

@@ -4,12 +4,11 @@
   let-search="search"
   >
   @if (item && item.href) {
-    <op-principal
-      [principal]="item"
+    <op-principal [principal]="item"
       [hideName]="true"
       [hoverCard]="hoverCards"
       size="mini"
-    ></op-principal>
+     />
   }
   <span [opSearchHighlight]="search"
     [attr.data-hover-card-url]="getHoverCardUrl(item)"
@@ -26,9 +25,8 @@
 </ng-template>
 @if (inviteUserToProject) {
   <ng-template #footerTemplate>
-    <op-invite-user-button
-      [projectId]="inviteUserToProject"
+    <op-invite-user-button [projectId]="inviteUserToProject"
       class="op-select-footer"
-    ></op-invite-user-button>
+     />
   </ng-template>
 }

@@ -9,8 +9,7 @@
           itemSize="100"
           class="op-ian-center--viewport"
           >
-          <op-in-app-notification-entry
-            *cdkVirtualFor="let records of notifications$ | async; trackBy: trackNotificationGroups; templateCacheSize: 0"
+          <op-in-app-notification-entry *cdkVirtualFor="let records of notifications$ | async; trackBy: trackNotificationGroups; templateCacheSize: 0"
             class="op-ian-item"
             [class.op-ian-item_expanded]="records[0].expanded"
             [class.op-ian-item_read]="records[0].readIAN === true"
@@ -20,7 +19,7 @@
             attr.data-test-selector="op-ian-notification-item-{{records[0].id}}"
             [attr.data-qa-ian-read]="records[0].readIAN === true || undefined"
             [attr.data-qa-ian-selected]="(selectedWorkPackage$ | async) === idFromLink(records[0]._links.resource.href)"
-          ></op-in-app-notification-entry>
+           />
         </cdk-virtual-scroll-viewport>
       } @else {
         <div class="op-ian-center--loading-indicator">

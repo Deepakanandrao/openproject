@@ -66,7 +66,7 @@
       ></a>
       @if (relatedWorkPackage) {
         <edit-form [resource]="relatedWorkPackage">
-          <op-editable-attribute-field [resource]="relatedWorkPackage" fieldName="status"></op-editable-attribute-field>
+          <op-editable-attribute-field [resource]="relatedWorkPackage" fieldName="status" />
         </edit-form>
       }
       <div
@@ -79,10 +79,9 @@
           [title]="text.description_label"
           (click)="userInputs.showRelationInfo = !userInputs.showRelationInfo"
           >
-          <op-icon
-            icon-classes="icon-info1 icon-no-color -padded wp-relations--icon wp-relations--description-icon"
+          <op-icon icon-classes="icon-info1 icon-no-color -padded wp-relations--icon wp-relations--description-icon"
             [icon-title]="text.toggleDescription"
-          ></op-icon>
+           />
         </button>
         @if (!!relation.delete) {
           <button
@@ -92,10 +91,9 @@
             [title]="text.removeButton"
             (click)="removeRelation()"
             >
-            <op-icon
-              icon-classes="icon-remove icon-no-color -padded wp-relations--icon"
+            <op-icon icon-classes="icon-remove icon-no-color -padded wp-relations--icon"
               [icon-title]="text.removeButton"
-            ></op-icon>
+             />
           </button>
         }
       </div>
@@ -125,13 +123,12 @@
               (keyup)="handleDescriptionKey($event)"
               [(ngModel)]="userInputs.newRelationText"
             ></textarea>
-            <edit-field-controls
-              [fieldController]="fieldController"
+            <edit-field-controls [fieldController]="fieldController"
               (onSave)="saveDescription()"
               (onCancel)="cancelDescriptionEdit()"
               [saveTitle]="text.save"
               [cancelTitle]="text.cancel"
-            ></edit-field-controls>
+             />
           </div>
         }
       </div>

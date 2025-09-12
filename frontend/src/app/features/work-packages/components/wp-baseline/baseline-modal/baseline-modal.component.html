@@ -17,10 +17,9 @@
 
     <span class="spot-icon spot-icon_dropdown"></span>
   </button>
-  <op-baseline
-    [visible]="opened"
+  <op-baseline [visible]="opened"
     [showActionBar]="true"
     slot="body"
     (submitted)="opened = false"
-  ></op-baseline>
+   />
 </spot-drop-modal>

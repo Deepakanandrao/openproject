@@ -14,13 +14,11 @@
   </span>
   @if (valueVisible) {
     <span class="form--text-field-container -slim">
-      <op-basic-single-date-picker
-        [id]="fieldId + '_visible'"
+      <op-basic-single-date-picker [id]="fieldId + '_visible'"
         [name]="fieldId + '_input'"
         [value]="fieldValue"
         (valueChange)="updateField($event)"
-        classes="form--text-field">
-      </op-basic-single-date-picker>
+        classes="form--text-field" />
     </span>
   }
   <input type="hidden"

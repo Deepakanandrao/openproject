@@ -1,6 +1,5 @@
 @if (url) {
-  <op-project-autocompleter
-    [ngClass]="'inline-edit--field ' + handler.fieldName"
+  <op-project-autocompleter [ngClass]="'inline-edit--field ' + handler.fieldName"
     [model]="value"
     [url]="url"
     [filters]="APIFilters"
@@ -10,7 +9,7 @@
     appendTo=".op-wide-autocomplete-wrapper"
     (change)="onModelChange($event)"
     (cancel)="handler.handleUserCancel()"
-  ></op-project-autocompleter>
+   />
 } @else {
   <op-content-loader
     class="project-edit-field--loading-indicator"

@@ -13,13 +13,12 @@
   }
 
   @if (active) {
-    <op-project-autocompleter
-      (change)="selectProject($event)"
+    <op-project-autocompleter (change)="selectProject($event)"
       (keydown.escape)="active = false"
       [filters]="APIFilters"
       [mapResultsFn]="this.mapProjectsFn.bind(this)"
       [placeholder]="text.please_select"
       dropdownPosition="top"
-    ></op-project-autocompleter>
+     />
   }
 </div>

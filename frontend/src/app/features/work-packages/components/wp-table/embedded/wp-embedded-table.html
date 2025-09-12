@@ -8,34 +8,28 @@
     @if (renderTable) {
       <!-- Filter container (if requested) -->
       @if (configuration.withFilters) {
-        <op-filter-container
-          [showFilterButton]="configuration.showFilterButton"
-          [filterButtonText]="configuration.filterButtonText">
-        </op-filter-container>
+        <op-filter-container [showFilterButton]="configuration.showFilterButton"
+          [filterButtonText]="configuration.filterButtonText" />
       }
       <!-- TABLE + TIMELINE horizontal split -->
       @if (!configuration.isCardView) {
-        <wp-table
-          [projectIdentifier]="projectIdentifier"
+        <wp-table [projectIdentifier]="projectIdentifier"
           [configuration]="configuration"
           (itemClicked)="handleWorkPackageClicked($event)"
           (stateLinkClicked)="openStateLink($event)"
-        class="work-packages-split-view--tabletimeline-content"></wp-table>
+        class="work-packages-split-view--tabletimeline-content" />
       }
       <!-- GRID representation of the WP -->
       <div class="work-packages-embedded-view--grid-view" >
         @if (configuration.isCardView) {
-          <wp-grid
-            (itemClicked)="handleWorkPackageClicked($event)"
+          <wp-grid (itemClicked)="handleWorkPackageClicked($event)"
             (stateLinkClicked)="openStateLink($event)"
-            [configuration]="configuration">
-          </wp-grid>
+            [configuration]="configuration" />
         }
       </div>
       <!-- Footer -->
       <div class="work-packages-split-view--tabletimeline-footer hide-when-print">
-        <wp-table-pagination [hideForSinglePageResults]="true">
-        </wp-table-pagination>
+        <wp-table-pagination [hideForSinglePageResults]="true" />
       </div>
     }
     @if (error) {

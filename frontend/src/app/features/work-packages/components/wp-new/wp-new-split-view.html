@@ -8,7 +8,7 @@
       (onSaved)="onSaved($event)">
       <div class="work-packages--details-content -create-mode">
         <div class="work-packages--new-details-header">
-          <wp-type-status [workPackage]="newWorkPackage"></wp-type-status>
+          <wp-type-status [workPackage]="newWorkPackage" />
           <div class="wp--details--switch-fullscreen-wrapper">
             <a (click)="switchToFullscreen()"
               class="work-packages-show-view-button wp--details--switch-fullscreen ">
@@ -17,17 +17,14 @@
           </div>
         </div>
         <wp-single-view [workPackage]="newWorkPackage"
-          [showProject]="copying">
-        </wp-single-view>
+          [showProject]="copying" />
       </div>
       <div class="work-packages--details-toolbar-container">
-        <wp-edit-actions-bar
-          (onCancel)="cancelAndBackToList()">
-        </wp-edit-actions-bar>
+        <wp-edit-actions-bar (onCancel)="cancelAndBackToList()" />
       </div>
       <div class="work-packages--details--resizer hidden-for-mobile hide-when-print">
         <wp-resizer [elementClass]="'work-packages-partitioned-page--content-right'"
-        [localStorageKey]="'openProject-splitViewFlexBasis'"></wp-resizer>
+        [localStorageKey]="'openProject-splitViewFlexBasis'" />
       </div>
     </edit-form>
   </div>

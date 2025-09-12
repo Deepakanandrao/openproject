@@ -9,7 +9,7 @@
             [attr.title]="text.toggleHierarchy"
             tabindex="-1"
             aria-hidden="true">
-            <op-icon icon-classes="icon {{ hierarchyIcon }}"></op-icon>
+            <op-icon icon-classes="icon {{ hierarchyIcon }}" />
           </span>
         }
         <!--suppress XmlDuplicatedId -->
@@ -27,20 +27,20 @@
         @if (displayDropdownIcon) {
           <op-icon icon-classes="dropdown-indicator icon-small icon-pulldown"
             icon-title="{{ text.openMenu }}"
-          ></op-icon>
+           />
         }
       </span>
     }
     @case ('relation') {
       <span class="generic-table--sort-header">
         <a [attr.title]="headerColumn.name">
-          <op-icon icon-classes="icon-context icon-relations relations-header--icon"></op-icon>
+          <op-icon icon-classes="icon-context icon-relations relations-header--icon" />
           {{columnName}}
         </a>
         @if (displayDropdownIcon) {
           <op-icon icon-classes="dropdown-indicator icon-small icon-pulldown"
             icon-title="{{ text.openMenu }}"
-          ></op-icon>
+           />
         }
       </span>
     }
@@ -73,7 +73,7 @@
         @if (displayDropdownIcon) {
           <op-icon icon-classes="dropdown-indicator icon-small icon-pulldown"
             icon-title="{{ text.openMenu }}"
-          ></op-icon>
+           />
         }
       </span>
     }

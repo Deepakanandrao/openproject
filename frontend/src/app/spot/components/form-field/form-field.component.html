@@ -13,31 +13,31 @@
       @if (required) {
         <span class="spot-form-field--label-indicator">*</span>
       }
-      <ng-content select="[slot=help-text]"></ng-content>
+      <ng-content select="[slot=help-text]" />
     </div>
     @if (!noWrapLabel) {
-      <ng-container *ngTemplateOutlet="inputTemplate"></ng-container>
+      <ng-container *ngTemplateOutlet="inputTemplate" />
     }
   </label>
   @if (noWrapLabel) {
-    <ng-container *ngTemplateOutlet="inputTemplate"></ng-container>
+    <ng-container *ngTemplateOutlet="inputTemplate" />
   }
   <div
     class="spot-form-field--description"
     [id]="descriptionID"
     >
-    <ng-content select="[slot=description]"></ng-content>
+    <ng-content select="[slot=description]" />
   </div>
   @if (showErrorMessage) {
     <div
       class="spot-form-field--errors"
       [id]="errorsID"
       >
-      <ng-content select="[slot=errors]"></ng-content>
+      <ng-content select="[slot=errors]" />
     </div>
   }
   <div class="spot-form-field--actions">
-    <ng-content select="[slot=action]"></ng-content>
+    <ng-content select="[slot=action]" />
   </div>
 }
 
@@ -46,6 +46,6 @@
     class="spot-form-field--input"
     [attr.aria-describedby]="describedByID"
     >
-    <ng-content select="[slot=input]"></ng-content>
+    <ng-content select="[slot=input]" />
   </div>
 </ng-template>

@@ -22,12 +22,11 @@
 
     <spot-form-field [label]="text.token_name" [required]="true" showValidationErrorOn="change">
 
-      <spot-text-field
-        formControlName="name"
+      <spot-text-field formControlName="name"
         slot="input"
         [placeholder]="text.token_name_placeholder"
         opAutofocus
-      ></spot-text-field>
+       />
 
       @if (nameControl?.errors?.rails) {
         <div

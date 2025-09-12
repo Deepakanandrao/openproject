@@ -51,7 +51,7 @@
     <!--Invite a new user by email-->
     @if (canInviteByEmail$ | async) {
       <div>
-        <op-icon icon-classes="icon-mail1 icon-context"></op-icon>
+        <op-icon icon-classes="icon-mail1 icon-context" />
         <b>{{ text.inviteNewUser }}</b>
         {{ input }}
       </div>
@@ -60,7 +60,7 @@
     <!--Create a new placeholder by name-->
     @if (canCreateNewPlaceholder$ | async) {
       <div>
-        <op-icon icon-classes="icon-add icon-context"></op-icon>
+        <op-icon icon-classes="icon-add icon-context" />
         <b>{{ text.createNewPlaceholder }}</b>
         {{ input }}
       </div>

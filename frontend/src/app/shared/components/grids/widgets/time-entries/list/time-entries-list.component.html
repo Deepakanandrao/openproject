@@ -2,17 +2,13 @@
   [name]="widgetName"
   [editable]="isEditable">
 
-  <widget-menu
-    slot="menu"
-    [resource]="resource">
-  </widget-menu>
+  <widget-menu slot="menu"
+    [resource]="resource" />
 </widget-header>
 
 <div class="op-widget-box--body">
   @if (noEntries) {
-    <op-no-results
-      [title]="text.noResults">
-    </op-no-results>
+    <op-no-results [title]="text.noResults" />
   }
 
   @if (!noEntries) {
@@ -112,7 +108,7 @@
                             tabindex="0"
                             [title]="text.edit"
                             attr.data-test-selector="edit-time-entry-{{ item.entry.id }}">
-                            <op-icon icon-classes="icon-context icon-edit"></op-icon>
+                            <op-icon icon-classes="icon-context icon-edit" />
                           </a>
                         }
                         @if (item.entry && item.entry.delete) {
@@ -122,7 +118,7 @@
                             (keyup.enter)="deleteIfConfirmed($event, item.entry)"
                             (keyup.space)="deleteIfConfirmed($event, item.entry)"
                             [title]="text.delete">
-                            <op-icon icon-classes="icon-context icon-delete"></op-icon>
+                            <op-icon icon-classes="icon-context icon-delete" />
                           </a>
                         }
                       </td>

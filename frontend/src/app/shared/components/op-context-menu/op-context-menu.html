@@ -35,13 +35,12 @@
               (click)="handleClick(item, $event)"
               >
               @if (item.icon) {
-                <op-icon icon-classes="icon-action-menu {{ item.icon }}"></op-icon>
+                <op-icon icon-classes="icon-action-menu {{ item.icon }}" />
               }
               <span [textContent]="item.linkText"></span>
               @if (item.postIcon) {
-                <op-icon
-                  [icon-title]="item.postIconTitle || ''"
-                icon-classes="icon-action-menu-post {{ item.postIcon }}"></op-icon>
+                <op-icon [icon-title]="item.postIconTitle || ''"
+                icon-classes="icon-action-menu-post {{ item.postIcon }}" />
               }
             </a>
           }
@@ -57,13 +56,12 @@
               (click)="handleClick(item, $event)"
               >
               @if (item.icon) {
-                <op-icon icon-classes="icon-action-menu {{ item.icon }}"></op-icon>
+                <op-icon icon-classes="icon-action-menu {{ item.icon }}" />
               }
               <span [textContent]="item.linkText"></span>
               @if (item.postIcon) {
-                <op-icon
-                  [icon-title]="item.postIconTitle || ''"
-                icon-classes="icon-action-menu-post {{ item.postIcon }}"></op-icon>
+                <op-icon [icon-title]="item.postIconTitle || ''"
+                icon-classes="icon-action-menu-post {{ item.postIcon }}" />
               }
             </button>
           }

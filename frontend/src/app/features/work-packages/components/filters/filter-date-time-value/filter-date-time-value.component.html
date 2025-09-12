@@ -1,5 +1,4 @@
-<op-basic-single-date-picker
-  [id]="'values-' + filter.id"
+<op-basic-single-date-picker [id]="'values-' + filter.id"
   [name]="'v[' + filter.id + ']'"
   class="advanced-filters--date-field"
   required="true"
@@ -8,7 +7,7 @@
   [value]="isoDateFormatter(value)"
 
   [opAutofocus]="shouldFocus"
-></op-basic-single-date-picker>
+ />
 
 @if (isTimeZoneDifferent) {
   <span

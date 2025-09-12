@@ -47,11 +47,10 @@
     }
 
     @if (valueType === '[1]Boolean') {
-      <op-filter-boolean-value
-        (filterChanged)="onFilterUpdated($event)"
+      <op-filter-boolean-value (filterChanged)="onFilterUpdated($event)"
         [shouldFocus]="shouldFocus"
         [filter]="filter"
-      ></op-filter-boolean-value>
+       />
     }
   </div>
   <!-- Values -->
@@ -59,75 +58,65 @@
     <div class="advanced-filters--filter-value">
       @switch (valueType) {
         @case ('[1]Integer') {
-          <op-filter-integer-value
-            (filterChanged)="onFilterUpdated($event)"
+          <op-filter-integer-value (filterChanged)="onFilterUpdated($event)"
             [shouldFocus]="shouldFocus"
             [filter]="filter"
-          ></op-filter-integer-value>
+           />
         }
         @case ('[1]Date') {
-          <op-filter-date-value
-            (filterChanged)="onFilterUpdated($event)"
+          <op-filter-date-value (filterChanged)="onFilterUpdated($event)"
             [shouldFocus]="shouldFocus"
             [filter]="filter"
-          ></op-filter-date-value>
+           />
         }
         @case ('[2]Date') {
-          <op-filter-dates-value
-            (filterChanged)="onFilterUpdated($event)"
+          <op-filter-dates-value (filterChanged)="onFilterUpdated($event)"
             [shouldFocus]="shouldFocus"
             [filter]="filter"
-          ></op-filter-dates-value>
+           />
         }
         @case ('[1]DateTime') {
-          <op-filter-date-time-value
-            (filterChanged)="onFilterUpdated($event)"
+          <op-filter-date-time-value (filterChanged)="onFilterUpdated($event)"
             [shouldFocus]="shouldFocus"
             [filter]="filter"
-          ></op-filter-date-time-value>
+           />
         }
         @case ('[2]DateTime') {
-          <op-filter-date-times-value
-            [shouldFocus]="shouldFocus"
+          <op-filter-date-times-value [shouldFocus]="shouldFocus"
             (filterChanged)="onFilterUpdated($event)"
             [filter]="filter"
-          ></op-filter-date-times-value>
+           />
         }
         @case ('[1]String') {
-          <op-filter-string-value
-            (filterChanged)="onFilterUpdated($event)"
+          <op-filter-string-value (filterChanged)="onFilterUpdated($event)"
             [shouldFocus]="shouldFocus"
             [filter]="filter"
-          ></op-filter-string-value>
+           />
         }
         @case ('[1]Float') {
-          <op-filter-string-value
-            (filterChanged)="onFilterUpdated($event)"
+          <op-filter-string-value (filterChanged)="onFilterUpdated($event)"
             [shouldFocus]="shouldFocus"
             [filter]="filter"
-          ></op-filter-string-value>
+           />
         }
         @case ('[]Project') {
-          <op-filter-project
-            (filterChanged)="onFilterUpdated($event)"
+          <op-filter-project (filterChanged)="onFilterUpdated($event)"
             [shouldFocus]="shouldFocus"
             [filter]="filter"
-          ></op-filter-project>
+           />
         }
         @default {
           @if (filter.currentSchema.loadedAllowedValues()) {
-            <op-filter-toggled-multiselect-value
-              (filterChanged)="onFilterUpdated($event)"
+            <op-filter-toggled-multiselect-value (filterChanged)="onFilterUpdated($event)"
               [shouldFocus]="shouldFocus"
               [filter]="filter"
-            ></op-filter-toggled-multiselect-value>
+             />
           }
           @if (!filter.currentSchema.loadedAllowedValues()) {
-            <op-filter-searchable-multiselect-value
-              (filterChanged)="onFilterUpdated($event)"
+            <op-filter-searchable-multiselect-value (filterChanged)="onFilterUpdated($event)"
               [shouldFocus]="shouldFocus"
               [filter]="filter"
-            ></op-filter-searchable-multiselect-value>
+             />
           }
         }
       }
@@ -147,7 +136,7 @@
       [title]="text.button_delete"
       (click)="removeThisFilter()"
       >
-      <op-icon icon-classes="icon-close advanced-filters--remove-filter-icon"></op-icon>
+      <op-icon icon-classes="icon-close advanced-filters--remove-filter-icon" />
     </button>
   </div>
 </ng-container>

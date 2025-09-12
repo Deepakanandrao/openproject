@@ -2,10 +2,8 @@
   [name]="widgetName"
   [editable]="false">
 
-  <widget-menu
-    slot="menu"
-    [resource]="resource">
-  </widget-menu>
+  <widget-menu slot="menu"
+    [resource]="resource" />
 </widget-header>
 
 @if ((projects$ | async); as projects) {

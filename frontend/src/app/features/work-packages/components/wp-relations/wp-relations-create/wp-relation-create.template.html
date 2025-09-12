@@ -40,14 +40,12 @@
           </select>
         </div>
         <div class="grid-content medium-8">
-          <wp-relations-autocomplete
-            [workPackage]="workPackage"
+          <wp-relations-autocomplete [workPackage]="workPackage"
             (change)="onSelected($event)"
             (cancel)="toggleRelationsCreateForm()"
             [hiddenOverflowContainer]="'.work-packages-tab-view--overflow'"
             [selectedRelationType]="selectedRelationType"
-            data-test-selector="wp-relations-autocomplete">
-          </wp-relations-autocomplete>
+            data-test-selector="wp-relations-autocomplete" />
         </div>
         <div class="grid-content medium-1 collapse wp-relations-controls-section relation-row">
           <button
@@ -55,7 +53,7 @@
             class="spot-link wp-create-relation--cancel"
             (click)="toggleRelationsCreateForm()"
             >
-            <op-icon icon-classes="icon-remove icon-no-color -padded" [icon-title]="text.abort"></op-icon>
+            <op-icon icon-classes="icon-remove icon-no-color -padded" [icon-title]="text.abort" />
           </button>
         </div>
       </div>

@@ -1,10 +1,9 @@
 @if ((board$ | async); as board) {
   @if (!board.isFree) {
-    <op-enterprise-banner-frame
-      class="boards-list--enterprise-banner"
+    <op-enterprise-banner-frame class="boards-list--enterprise-banner"
       feature="board_view"
       [dismissable]="true"
-    ></op-enterprise-banner-frame>
+     />
   }
   @if (available) {
     <div
@@ -30,8 +29,7 @@
           <board-list [resource]="boardWidget"
             [board]="board"
             (onRemove)="removeList(board, boardWidget)"
-            (visibilityChange)="changeVisibilityOfList(board, boardWidget, $event)">
-          </board-list>
+            (visibilityChange)="changeVisibilityOfList(board, boardWidget, $event)" />
         </div>
       }
       @if (showHiddenListWarning) {
@@ -45,7 +43,7 @@
         <div class="boards-list--add-item -no-text-select"
           (click)="addList(board)">
           <div class="boards-list--add-item-text">
-            <op-icon icon-classes="icon-add icon-context"></op-icon>
+            <op-icon icon-classes="icon-add icon-context" />
             <span [textContent]="text.addList"></span>
           </div>
         </div>

@@ -31,11 +31,10 @@
       ></h1>
 
       @if (this.currentUserService.isLoggedIn) {
-        <spot-toggle
-          [options]="displayModeOptions"
+        <spot-toggle [options]="displayModeOptions"
           [ngModel]="displayMode"
           (ngModelChange)="displayModeChange($event)"
-        ></spot-toggle>
+         />
       }
     </div>
     @if (projects$ | async; as projects) {
@@ -99,7 +98,7 @@
             }
           }
         } @else {
-          <op-loading-project-list class="op-project-list-modal--loading"></op-loading-project-list>
+          <op-loading-project-list class="op-project-list-modal--loading" />
         }
         @if (!portfolioModelsEnabled) {
           <div

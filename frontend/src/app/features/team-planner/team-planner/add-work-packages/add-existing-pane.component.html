@@ -17,8 +17,7 @@
       class="op-add-existing-pane--results"
       >
       @for (wp of currentWorkPackages$ | async; track wp) {
-        <wp-single-card
-          [workPackage]="wp"
+        <wp-single-card [workPackage]="wp"
           [selectedWhenOpen]="true"
           [showInfoButton]="true"
           [disabledInfo]="showDisabledText(wp)"
@@ -28,7 +27,7 @@
           (stateLinkClicked)="openStateLink($event)"
           (cardClicked)="workPackagesCalendar.onCardClicked($event)"
           (cardDblClicked)="workPackagesCalendar.onCardDblClicked($event)"
-        ></wp-single-card>
+         />
       }
     </div>
   } @else {

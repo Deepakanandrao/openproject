@@ -8,19 +8,17 @@
         >
         <op-editable-attribute-field [resource]="workPackage"
           [wrapperClasses]="'-no-label'"
-        [fieldName]="'subject'"></op-editable-attribute-field>
+        [fieldName]="'subject'" />
       </div>
     }
     <div class="wp-info-wrapper">
       @if (!isNewResource) {
-        <wp-status-button
-          [workPackage]="workPackage">
-        </wp-status-button>
+        <wp-status-button [workPackage]="workPackage" />
       }
       @if (!isNewResource) {
         <attribute-help-text [attribute]="'status'"
           [attributeScope]="'WorkPackage'"
-        ></attribute-help-text>
+         />
       }
       @if (!isNewResource) {
         <div class="work-packages--info-row"
@@ -31,15 +29,15 @@
           because otherwise the browser would add a second space after it -->
           <span>&nbsp;</span>
           <op-user-link class="user-link"
-          [user]="workPackage.author"></op-user-link>
+          [user]="workPackage.author" />
           <span>.&nbsp;</span>
           <span [textContent]="text.infoRow.lastUpdatedOn"></span>
           <span>&nbsp;</span>
-          <op-date-time [dateTimeValue]="workPackage.updatedAt"></op-date-time>
+          <op-date-time [dateTimeValue]="workPackage.updatedAt" />
           <span>.</span>
         </div>
       }
-      <wp-custom-actions [workPackage]="workPackage" class="custom-actions"></wp-custom-actions>
+      <wp-custom-actions [workPackage]="workPackage" class="custom-actions" />
     </div>
     @if (projectContext && projectContext.field) {
       <div class="attributes-group -project-context __overflowing_element_container __overflowing_project_context"
@@ -59,11 +57,11 @@
                   }
                 </wp-replacement-label>
                 <attribute-help-text [attribute]="descriptor.name"
-                [attributeScope]="'WorkPackage'"></attribute-help-text>
+                [attributeScope]="'WorkPackage'" />
               </div>
               <div class="attributes-key-value--value-container">
                 <op-editable-attribute-field [resource]="workPackage"
-                [fieldName]="descriptor.name"></op-editable-attribute-field>
+                [fieldName]="descriptor.name" />
               </div>
             </div>
           }
@@ -81,16 +79,14 @@
     }
     @for (component of prependedAttributeGroupComponents(); track component) {
       <ndc-dynamic [ndcDynamicComponent]="component"
-        [ndcDynamicInputs]="{ workPackage: workPackage }">
-      </ndc-dynamic>
+        [ndcDynamicInputs]="{ workPackage: workPackage }" />
     }
     <div class="attributes-group description-group">
       <div class="single-attribute work-packages--details--description">
         <op-editable-attribute-field [fieldName]="'description'"
           [resource]="workPackage"
           [isDropTarget]="true"
-          [wrapperClasses]="'-no-label'">
-        </op-editable-attribute-field>
+          [wrapperClasses]="'-no-label'" />
       </div>
     </div>
     @for (group of groupedFields; track group.name) {
@@ -106,8 +102,7 @@
             <ndc-dynamic [ndcDynamicComponent]="attributeGroupComponent(group)"
                    [ndcDynamicInputs]="{ workPackage: workPackage,
                                          group: group,
-                                         query: group.query }">
-            </ndc-dynamic>
+                                         query: group.query }" />
           </ng-container>
         }
         @if (!group.isolated) {
@@ -119,8 +114,7 @@
           </div>
           <ndc-dynamic [ndcDynamicComponent]="attributeGroupComponent(group)"
             [ndcDynamicInjector]="injector"
-            [ndcDynamicInputs]="{ workPackage: workPackage, group: group }">
-          </ndc-dynamic>
+            [ndcDynamicInputs]="{ workPackage: workPackage, group: group }" />
         }
       </div>
     }
@@ -138,23 +132,20 @@
           <span class="op-tab-content--header-text" [textContent]="text.attachments.label"></span>
         </div>
         <ndc-dynamic [ndcDynamicComponent]="attachmentListComponent()"
-          [ndcDynamicInputs]="{ resource: workPackage }">
-        </ndc-dynamic>
+          [ndcDynamicInputs]="{ resource: workPackage }" />
         @if (workPackage.canAddAttachments) {
           <ndc-dynamic [ndcDynamicComponent]="attachmentUploadComponent()"
             [ndcDynamicInputs]="{ resource: workPackage }"
-            >
-          </ndc-dynamic>
+             />
         }
       </div>
     }
     @for (storage of projectStorages | async; track storage) {
-      <op-storage
-        [resource]="workPackage"
+      <op-storage [resource]="workPackage"
         [projectStorage]="storage"
         [allowLinking]="true"
         [allowUploading]="true"
-      ></op-storage>
+       />
     }
   </div>
 }

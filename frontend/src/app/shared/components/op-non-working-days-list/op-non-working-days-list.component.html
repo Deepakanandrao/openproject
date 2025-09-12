@@ -1,9 +1,8 @@
 @if (calendarOptions) {
-  <full-calendar
-    #ucCalendar
+  <full-calendar #ucCalendar
     [options]="calendarOptions"
     class="op-non-working-days-list--calendar"
-  ></full-calendar>
+   />
 }
 
 @for (date of nonWorkingDays; track date) {
@@ -36,13 +35,12 @@
       [required]="true"
       [label]="text.non_working_day_name"
       >
-      <spot-text-field
-        name="name"
+      <spot-text-field name="name"
         slot="input"
         [required]="true"
         [(ngModel)]="selectedNonWorkingDayName"
         [showClearButton]="false"
-      ></spot-text-field>
+       />
     </spot-form-field>
 
     <button

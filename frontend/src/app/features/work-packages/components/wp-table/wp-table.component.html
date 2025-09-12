@@ -35,7 +35,7 @@
                 <th class="wp-table--manual-sort-th -short hide-when-print">
                   <div class="generic-table--empty-header">
                     @if (manualSortEnabled) {
-                      <op-icon icon-classes="icon-sort-by"></op-icon>
+                      <op-icon icon-classes="icon-sort-by" />
                     }
                   </div>
                 </th>
@@ -56,8 +56,7 @@
                     [table]="workPackageTable"
                     opColumnsContextMenu
                     [opColumnsContextMenu-column]="column"
-                    [opColumnsContextMenu-table]="workPackageTable">
-                  </sortHeader>
+                    [opColumnsContextMenu-table]="workPackageTable" />
                 </th>
               }
               @if (configuration.columnMenuEnabled || configuration.actionsColumnEnabled) {
@@ -65,8 +64,7 @@
                   >
                   @if (configuration.columnMenuEnabled) {
                     <div class="generic-table--sort-header-outer">
-                      <wp-table-config-menu>
-                      </wp-table-config-menu>
+                      <wp-table-config-menu />
                     </div>
                   }
                 </th>
@@ -78,7 +76,7 @@
               <tr id="empty-row-notification">
                 <td [attr.colspan]="numTableColumns">
                   <span>
-                    <op-icon icon-classes="icon-info1 icon-context"></op-icon>
+                    <op-icon icon-classes="icon-info1 icon-context" />
                     <span>
                       <strong>{{text.noResults.title}}</strong>
                       {{text.noResults.description}}
@@ -114,12 +112,12 @@
           <wp-resizer [elementClass]="'work-packages-tabletimeline--timeline-side'"
             [resizeEvent]="'wp-resize.timeline'"
             [variableName]="'--gantt-split-width'"
-          [localStorageKey]="'openProject-timelineFlexBasis'"></wp-resizer>
+          [localStorageKey]="'openProject-timelineFlexBasis'" />
         </div>
       }
       <div class="work-packages-tabletimeline--timeline-side"
         [ngClass]="{ '-single-margin': (sumVisible || inlineCreateVisible) && !(sumVisible && inlineCreateVisible), '-double-margin': sumVisible && inlineCreateVisible }">
-        <wp-timeline-container></wp-timeline-container>
+        <wp-timeline-container />
       </div>
     </div>
   }

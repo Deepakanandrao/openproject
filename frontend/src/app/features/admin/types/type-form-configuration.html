@@ -5,7 +5,7 @@
         <button type="button -primary"
           class="form-configuration--reset button"
           (click)="resetToDefault($event)">
-          <op-icon icon-classes="button--icon icon-undo"></op-icon>
+          <op-icon icon-classes="button--icon icon-undo" />
           <span class="button--text" [textContent]="text.reset"></span>
         </button>
       </li>
@@ -13,9 +13,9 @@
         <li
           class="toolbar-item drop-down">
           <a class="form-configuration--add-group button -primary" aria-haspopup="true">
-            <op-icon icon-classes="button--icon icon-add"></op-icon>
+            <op-icon icon-classes="button--icon icon-add" />
             <span class="button--text" [textContent]="text.label_group"></span>
-            <op-icon icon-classes="button--dropdown-indicator"></op-icon>
+            <op-icon icon-classes="button--dropdown-indicator" />
           </a>
           <ul class="menu-drop-down-container">
             <li>
@@ -48,18 +48,14 @@
     <div id="draggable-groups" dragula="groups" [(dragulaModel)]="groups">
       @for (group of groups; track group) {
         @if (group.type === 'attribute') {
-          <op-type-form-attribute-group
-            (removeAttribute)="deactivateAttribute($event)"
+          <op-type-form-attribute-group (removeAttribute)="deactivateAttribute($event)"
             (deleteGroup)="deleteGroup(group)"
-            [group]="group">
-          </op-type-form-attribute-group>
+            [group]="group" />
         }
         @if (group.type === 'query') {
-          <op-type-form-query-group
-            (editQuery)="editQuery(group)"
+          <op-type-form-query-group (editQuery)="editQuery(group)"
             (deleteGroup)="deleteGroup(group)"
-            [group]="group">
-          </op-type-form-query-group>
+            [group]="group" />
         }
       }
     </div>

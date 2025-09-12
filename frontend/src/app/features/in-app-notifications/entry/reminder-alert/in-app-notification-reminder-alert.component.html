@@ -1,13 +1,9 @@
 @if (hasDateAlert) {
-  <op-in-app-notification-date-alert
-    [aggregatedNotifications]="dateAlerts">
-  </op-in-app-notification-date-alert>
+  <op-in-app-notification-date-alert [aggregatedNotifications]="dateAlerts" />
 }
 @if (!hasDateAlert) {
-  <op-in-app-notification-relative-time
-    [notification]="reminderAlert"
-    [hasActorByLine]="false">
-  </op-in-app-notification-relative-time>
+  <op-in-app-notification-relative-time [notification]="reminderAlert"
+    [hasActorByLine]="false" />
 }
 
 <span

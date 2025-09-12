@@ -1,11 +1,10 @@
 @if (user) {
   <div class="op-assignee-board-header">
     @if (user.id) {
-      <op-principal
-        [principal]="user"
+      <op-principal [principal]="user"
         [hideName]="true"
         size="mini"
-      ></op-principal>
+       />
     }
     <h2 class="editable-toolbar-title--fixed">
       <small [textContent]="text.assignee"></small>

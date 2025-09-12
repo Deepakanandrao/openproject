@@ -10,7 +10,7 @@
       [attr.aria-label]="text.logTime"
       (click)="addEventToday()"
       >
-      <op-icon icon-classes="button--icon icon-log_time"></op-icon>
+      <op-icon icon-classes="button--icon icon-log_time" />
       <span
         class="button--text"
         [textContent]="text.logTime"
@@ -20,10 +20,9 @@
   }
   @if ((calendarOptions$ | async); as calendarOptions) {
     @if (calendarOptions) {
-      <full-calendar
-        #ucCalendar
+      <full-calendar #ucCalendar
         [options]="calendarOptions"
-      ></full-calendar>
+       />
     }
   }
 </div>

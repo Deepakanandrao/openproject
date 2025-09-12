@@ -58,10 +58,10 @@ import { UntilDestroyedMixin } from 'core-app/shared/helpers/angular/until-destr
       @if (completed || error) {
         <span class="upload-completed">
           @if (error) {
-            <op-icon icon-classes="icon-close"></op-icon>
+            <op-icon icon-classes="icon-close" />
           }
           @if (completed) {
-            <op-icon icon-classes="icon-checkmark"></op-icon>
+            <op-icon icon-classes="icon-checkmark" />
           }
         </span>
       }

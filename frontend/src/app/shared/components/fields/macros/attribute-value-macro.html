@@ -5,10 +5,8 @@
   </span>
 }
 @if (!!resource) {
-  <display-field
-    [resource]="resource"
+  <display-field [resource]="resource"
     containerType="single-view"
     [displayFieldOptions]="{ writable: false }"
-    [fieldName]="fieldName">
-  </display-field>
+    [fieldName]="fieldName" />
 }

@@ -36,7 +36,7 @@ import { IToast, ToastService } from './toast.service';
     <div class="op-toast--wrapper">
       <div class="op-toast--casing">
         @for (toast of stack; track toast) {
-          <op-toast [toast]="toast"></op-toast>
+          <op-toast [toast]="toast" />
         }
       </div>
     </div>

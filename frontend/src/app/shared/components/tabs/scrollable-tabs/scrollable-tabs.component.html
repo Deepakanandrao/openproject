@@ -48,10 +48,9 @@
               <span [textContent]="tab.name"></span>
               @if (counter(tab) | async; as tabCounter) {
                 @if (tab.showCountAsBubble) {
-                  <op-tab-count
-                    [count]="tabCounter"
+                  <op-tab-count [count]="tabCounter"
                     [attr.data-test-selector]="'tab-counter-' + tab.name"
-                  ></op-tab-count>
+                   />
                 }
                 @if (tabCounter > 0 && !tab.showCountAsBubble) {
                   <span
@@ -80,6 +79,6 @@
     </div>
   </div>
   <ul class="op-scrollable-tabs--actions">
-    <ng-content select="[slot=actions]"></ng-content>
+    <ng-content select="[slot=actions]" />
   </ul>
 </div>

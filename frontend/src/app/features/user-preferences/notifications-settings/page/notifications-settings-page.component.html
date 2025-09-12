@@ -172,10 +172,9 @@
     </div>
   }
 
-  <op-enterprise-banner-frame
-    feature="date_alerts"
+  <op-enterprise-banner-frame feature="date_alerts"
     [dismissable]="true"
-  ></op-enterprise-banner-frame>
+   />
 
   <div class="op-form--section-header">
     <h3 class="op-form--section-header-title">{{ text.alsoNotifyFor.title }}</h3>
@@ -244,12 +243,11 @@
   </div>
 
   @if (userId) {
-    <op-notification-settings-table
-      [userId]="userId"
+    <op-notification-settings-table [userId]="userId"
       [settings]="form.controls.projectSettings"
       formArrayName="projectSettings"
       class="op-notification-settings-page--table"
-    ></op-notification-settings-table>
+     />
   }
 
   <div class="generic-table--action-buttons">

@@ -2,10 +2,9 @@
   [class.op-baseline--header_banner-active]="!available"
   [class.op-baseline_tab]="!showActionBar">
 
-  <op-enterprise-banner-frame
-    feature="baseline_comparison"
+  <op-enterprise-banner-frame feature="baseline_comparison"
     [dismissable]="true"
-  ></op-enterprise-banner-frame>
+   />
   @if (available) {
     <span
       class="spot-body-small" [textContent]="text.header_description"
@@ -171,14 +170,12 @@
       </div>
     }
     @if (selectedFilter === 'aSpecificDate' || selectedFilter === 'betweenTwoSpecificDates') {
-      <op-datepicker-sheet
-        class="op-baseline--datepicker"
+      <op-datepicker-sheet class="op-baseline--datepicker"
         [dates]="selectedFilter === 'betweenTwoSpecificDates' ? selectedDates : [selectedDates[0]]"
         [mode]="selectedFilter === 'betweenTwoSpecificDates' ? 'range' : 'single'"
         [isDisabled]="futureDateComparer()"
         (datesSelected)="selectedDates = $event"
-        >
-      </op-datepicker-sheet>
+         />
     }
     @if (showActionBar) {
       <div class="spot-action-bar"
@@ -202,6 +199,6 @@
     }
   </form>
 } @else {
-  <op-baseline-loading></op-baseline-loading>
+  <op-baseline-loading />
 }
 

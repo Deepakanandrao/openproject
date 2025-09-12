@@ -3,18 +3,15 @@
   ></div>
 }
 @if (baselineEnabled) {
-  <op-baseline-legends
-  ></op-baseline-legends>
+  <op-baseline-legends />
 }
 <!-- TABLE + TIMELINE horizontal split -->
 @if (tableInformationLoaded && showTableView) {
-  <wp-table
-    [projectIdentifier]="CurrentProject.identifier"
+  <wp-table [projectIdentifier]="CurrentProject.identifier"
     [configuration]="wpTableConfiguration"
     (itemClicked)="handleWorkPackageClicked($event)"
     (stateLinkClicked)="openStateLink($event)"
-    class="work-packages-split-view--tabletimeline-content">
-  </wp-table>
+    class="work-packages-split-view--tabletimeline-content" />
 }
 
 <!-- GRID representation of the WP -->
@@ -27,8 +24,7 @@
       (itemClicked)="handleWorkPackageCardClicked($event)"
       (stateLinkClicked)="openStateLink($event)"
       resizerClass="work-packages-partitioned-page--content-right"
-      resizerStorageKey="openProject-splitViewFlexBasis">
-    </wp-grid>
+      resizerStorageKey="openProject-splitViewFlexBasis" />
   </div>
 }
 
@@ -36,6 +32,6 @@
 @if (tableInformationLoaded) {
   <div class="work-packages-split-view--tabletimeline-footer hide-when-print"
     >
-    <wp-table-pagination></wp-table-pagination>
+    <wp-table-pagination />
   </div>
 }

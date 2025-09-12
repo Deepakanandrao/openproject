@@ -24,8 +24,7 @@
         [cdkDragDisabled]="isMobileDevice || !drag.isDraggable">
         <ndc-dynamic [ndcDynamicComponent]="widgetComponent(area)"
           [ndcDynamicInputs]="widgetComponentInput(area)"
-          [ndcDynamicOutputs]="widgetComponentOutput(area)">
-        </ndc-dynamic>
+          [ndcDynamicOutputs]="widgetComponentOutput(area)" />
       </div>
       @if (resize.isResizable) {
         <op-resizer

@@ -12,13 +12,12 @@
       [label]="text.project.label"
       required
       >
-      <op-project-autocompleter
-        slot="input"
+      <op-project-autocompleter slot="input"
         formControlName="project"
         [filters]="APIFiltersForProjects"
         [mapResultsFn]="projectFilterFn.bind(this)"
         appendTo=".spot-modal-overlay"
-      ></op-project-autocompleter>
+       />
 
       @if (projectControl.errors?.lackingPermission) {
         <div
@@ -48,11 +47,10 @@
     </spot-form-field>
 
     <spot-form-field>
-      <op-option-list
-        [options]="typeOptions"
+      <op-option-list [options]="typeOptions"
         formControlName="type"
         slot="input"
-      ></op-option-list>
+       />
 
       @if (projectAndTypeForm?.dirty && typeControl?.invalid) {
         <div

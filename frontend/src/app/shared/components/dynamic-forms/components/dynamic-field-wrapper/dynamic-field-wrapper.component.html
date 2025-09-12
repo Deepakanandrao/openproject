@@ -10,18 +10,16 @@
     [showValidationErrorOn]="to?.showValidationErrorOn || dynamicFormComponent?.showValidationErrorsOn"
     [attr.data-qa-field-name]="to?.property"
     >
-    <ng-container #fieldComponent slot="input"></ng-container>
-    <attribute-help-text
-      slot="help-text"
+    <ng-container #fieldComponent slot="input" />
+    <attribute-help-text slot="help-text"
       class="spot-form-field--help-text"
       [attribute]="to?.property"
       [attributeScope]="to?.helpTextAttributeScope || dynamicFormComponent?.helpTextAttributeScope"
-    ></attribute-help-text>
-    <formly-validation-message
-      class="spot-form-field--error"
+     />
+    <formly-validation-message class="spot-form-field--error"
       [field]="field"
       slot="errors"
-    ></formly-validation-message>
+     />
   </spot-form-field>
 }
 
@@ -34,17 +32,15 @@
     [showValidationErrorOn]="to?.showValidationErrorOn || dynamicFormComponent?.showValidationErrorsOn"
     [attr.data-qa-field-name]="to?.property"
     >
-    <ng-container #fieldComponent slot="input"></ng-container>
-    <attribute-help-text
-      slot="help-text"
+    <ng-container #fieldComponent slot="input" />
+    <attribute-help-text slot="help-text"
       class="spot-form-field--help-text"
       [attribute]="to?.property"
       [attributeScope]="to?.helpTextAttributeScope || dynamicFormComponent?.helpTextAttributeScope"
-    ></attribute-help-text>
-    <formly-validation-message
-      class="spot-form-field--error"
+     />
+    <formly-validation-message class="spot-form-field--error"
       [field]="field"
       slot="errors"
-    ></formly-validation-message>
+     />
   </spot-selector-field>
 }

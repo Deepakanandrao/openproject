@@ -12,22 +12,19 @@
       [ngClass]="{'-read-only': !allowedToRemove}">
 
       @for (watcher of watching; track watcher.href) {
-        <op-wp-watcher-entry
-          [watcher]="watcher">
-        </op-wp-watcher-entry>
+        <op-wp-watcher-entry [watcher]="watcher" />
       }
     </div>
     <div class="work-package--watchers-lookup hide-when-print"
       [hidden]="!allowedToAdd">
       <form name="watcherForm" novalidate>
-        <op-user-autocompleter
-          (change)="addWatcher($event)"
+        <op-user-autocompleter (change)="addWatcher($event)"
           [url]="availableWatchersPath"
           [resetOnChange]="true"
           [focusDirectly]="false"
           appendTo="body"
           class="wp-watcher--autocomplete"
-        ></op-user-autocompleter>
+         />
       </form>
     </div>
   </div>

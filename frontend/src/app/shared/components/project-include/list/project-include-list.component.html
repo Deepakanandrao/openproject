@@ -22,14 +22,13 @@
           [attr.data-list-selector]="projectListActionIdentifier"
           [attr.data-list-disabled]="project.disabled || undefined"
           >
-          <spot-checkbox
-            [tabindex]="-1"
+          <spot-checkbox [tabindex]="-1"
             [checked]="isChecked(project.href) || (includeSubprojects && parentChecked)"
             (change)="changeSelected(project)"
             [disabled]="project.disabled"
             [attr.data-qa-project-include-id]="project.id"
             [attr.data-qa-project-include-checked]="(isChecked(project.href) || (includeSubprojects && parentChecked))  ? 1 : 0"
-          ></spot-checkbox>
+           />
           <div
             class="spot-list--item-title spot-list--item-title_ellipse-text"
             data-test-selector="op-project-include-list--item-title"

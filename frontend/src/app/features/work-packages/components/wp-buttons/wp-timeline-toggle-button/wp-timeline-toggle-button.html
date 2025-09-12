@@ -8,7 +8,7 @@
         [ngClass]="getAutoZoomToggleClass()"
         [attr.title]="text.zoomAuto"
         (click)="enableAutoZoom()">
-        <op-icon icon-classes="icon-zoom-auto button--icon"></op-icon>
+        <op-icon icon-classes="icon-zoom-auto button--icon" />
       </button>
     </li>
   }
@@ -20,7 +20,7 @@
         [attr.title]="text.zoomOut"
         [disabled]="isMaxLevel"
         (click)="updateZoomWithDelta(1)">
-        <op-icon icon-classes="icon-zoom-out button--icon"></op-icon>
+        <op-icon icon-classes="icon-zoom-out button--icon" />
       </button>
     </li>
   }
@@ -32,7 +32,7 @@
         [attr.title]="text.zoomIn"
         [disabled]="isMinLevel"
         (click)="updateZoomWithDelta(-1)">
-        <op-icon icon-classes="icon-zoom-in button--icon"></op-icon>
+        <op-icon icon-classes="icon-zoom-in button--icon" />
       </button>
     </li>
   }

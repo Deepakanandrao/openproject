@@ -19,11 +19,10 @@
       class="hide-when-print"
       >
       @if (!!filters) {
-        <op-query-filters
-          [filters]="filters"
+        <op-query-filters [filters]="filters"
           [showCloseFilter]="true"
           (filtersChanged)="replaceIfComplete($event)"
-        ></op-query-filters>
+         />
       }
     </div>
   }

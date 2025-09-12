@@ -25,7 +25,7 @@
           data-test-selector="op-wp-single-card--details-button"
           [title]="text.detailsView"
           (click)="emitStateLinkClicked($event, workPackage, true)">
-          <op-icon icon-classes="icon3 icon-info2"></op-icon>
+          <op-icon icon-classes="icon3 icon-info2" />
         </button>
       }
 
@@ -36,17 +36,15 @@
           [class.-show]="isNewResource(workPackage)"
           [title]="text.removeCard"
           (click)="onRemoved(workPackage)">
-          <op-icon icon-classes="icon-context icon-close"></op-icon>
+          <op-icon icon-classes="icon-context icon-close" />
         </button>
       }
 
       @if (disabledInfo && disabledInfo.text.length > 0) {
-        <op-icon
-          [attr.data-tooltip]="disabledInfo.text"
+        <op-icon [attr.data-tooltip]="disabledInfo.text"
           class="-multiline op-wp-single-card--card-action op-wp-single-card--card-action_closed"
           [ngClass]="'tooltip--' + disabledInfo.orientation"
-          icon-classes="icon-context icon-not-supported">
-        </op-icon>
+          icon-classes="icon-context icon-not-supported" />
       }
     </div>
   </div>
@@ -59,12 +57,10 @@
         <op-editable-attribute-field [resource]="workPackage"
           [wrapperClasses]="'work-packages--type-selector'"
           [fieldName]="'type'"
-          class="op-wp-single-card-content--type">
-        </op-editable-attribute-field>
+          class="op-wp-single-card-content--type" />
         <op-editable-attribute-field [resource]="workPackage"
           fieldName="subject"
-          class="op-wp-single-card-content--subject -bold">
-        </op-editable-attribute-field>
+          class="op-wp-single-card-content--subject -bold" />
       </div>
     </edit-form>
   }
@@ -90,12 +86,10 @@
           <span
             class="op-wp-single-card--content-inline-date"
             >
-            <display-field
-              [resource]="workPackage"
+            <display-field [resource]="workPackage"
               [displayFieldOptions]="{ writable: false, dateFormat: 'MMM DD, YYYY', placeholder: '' }"
               fieldName="startDate"
-              containerType="single-view">
-            </display-field>
+              containerType="single-view" />
             -
           </span>
         }
@@ -117,12 +111,10 @@
             class="op-wp-single-card--content-inline-date"
             >
             -
-            <display-field
-              [resource]="workPackage"
+            <display-field [resource]="workPackage"
               [displayFieldOptions]="{ writable: false, dateFormat: 'MMM DD, YYYY', placeholder: '' }"
               fieldName="dueDate"
-              containerType="single-view">
-            </display-field>
+              containerType="single-view" />
           </span>
         }
       </span>
@@ -133,12 +125,10 @@
       }
       <div class="op-wp-single-card--content-status-baseline">
         @if (showStatusButton) {
-          <wp-status-button
-            [workPackage]="workPackage"
+          <wp-status-button [workPackage]="workPackage"
             [small]="true"
             class="op-wp-single-card--content-status"
-            >
-          </wp-status-button>
+             />
         }
         @if (baselineIcon(workPackage) !== null) {
           <span
@@ -150,24 +140,21 @@
         }
       </div>
       @if (workPackage.assignee) {
-        <op-principal
-          [principal]="workPackage.assignee"
+        <op-principal [principal]="workPackage.assignee"
           [hideName]="true"
           [link]="false"
           size="mini"
           class="op-wp-single-card--content-assignee"
           data-test-selector="op-wp-single-card--content-assignee"
-        ></op-principal>
+         />
       }
       @if (!showAsInlineCard && (workPackage.startDate || workPackage.dueDate)) {
-        <display-field
-          [resource]="workPackage"
+        <display-field [resource]="workPackage"
           [displayFieldOptions]="{ writable: false, dateFormat: 'MMM DD, YYYY', placeholder: '' }"
           [displayClass]="combinedDateDisplayField"
           fieldName="dueDate"
           class="op-wp-single-card--content-dates"
-          containerType="single-view">
-        </display-field>
+          containerType="single-view" />
       }
     </div>
   }

@@ -12,16 +12,13 @@
       [configuration]="wpTableConfiguration"
       (itemClicked)="handleWorkPackageClicked($event)"
       (stateLinkClicked)="openStateLink($event)"
-      class="work-packages-split-view--tabletimeline-content">
-    </wp-table>
+      class="work-packages-split-view--tabletimeline-content" />
   </div>
 }
 
 @if (showResizer) {
-  <wp-resizer
-    elementClass="work-packages-partitioned-page--content-right"
-    localStorageKey="openProject-splitViewFlexBasis">
-  </wp-resizer>
+  <wp-resizer elementClass="work-packages-partitioned-page--content-right"
+    localStorageKey="openProject-splitViewFlexBasis" />
 }
 
 <!-- GRID representation of the WP -->
@@ -32,8 +29,7 @@
     <wp-grid [configuration]="wpTableConfiguration"
       [showResizer]="false"
       (itemClicked)="handleWorkPackageClicked($event)"
-      (stateLinkClicked)="openStateLink($event)">
-    </wp-grid>
+      (stateLinkClicked)="openStateLink($event)" />
   </div>
 }
 
@@ -41,6 +37,6 @@
 @if (tableInformationLoaded) {
   <div class="work-packages-split-view--tabletimeline-footer hide-when-print"
     >
-    <wp-table-pagination></wp-table-pagination>
+    <wp-table-pagination />
   </div>
 }

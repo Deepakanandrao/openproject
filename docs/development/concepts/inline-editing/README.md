@@ -234,8 +234,7 @@ On the example of a work package, this following code snippet would create an ed
 ```html
 @if (workPackage) {
   <edit-form [resource]="workPackage">
-      <op-editable-attribute-field [resource]="workPackage" fieldName="subject">
-      </op-editable-attribute-field>
+      <op-editable-attribute-field [resource]="workPackage" fieldName="subject"/>
   </edit-form>
 }
 ```

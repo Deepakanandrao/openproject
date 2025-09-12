@@ -4,10 +4,9 @@
   [attr.data-indicator-name]="'table'">
   @if ((calendarOptions$ | async); as calendarOptions) {
     @if (calendarOptions) {
-      <full-calendar
-        #ucCalendar
+      <full-calendar #ucCalendar
         [options]="calendarOptions"
-      ></full-calendar>
+       />
     }
   }
   @if (static) {

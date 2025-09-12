@@ -4,19 +4,15 @@
 
   <attribute-help-text slot="prepend"
     attribute="members"
-  [attributeScope]="'Project'"></attribute-help-text>
+  [attributeScope]="'Project'" />
 
-  <widget-menu
-    slot="menu"
-    [resource]="resource">
-  </widget-menu>
+  <widget-menu slot="menu"
+    [resource]="resource" />
 </widget-header>
 
 <div class="op-widget-box--body">
   @if (noMembers) {
-    <op-no-results
-      [title]="text.noResults">
-    </op-no-results>
+    <op-no-results [title]="text.noResults" />
   }
   <div class="op-members-widget--attributes-map -minimal-keys">
     @for (usersByRole of usersByRole; track usersByRole) {
@@ -25,10 +21,9 @@
       </div>
       <div class="attributes-map--value">
         @for (principal of usersByRole.users; track principal; let last = $last) {
-          <op-principal
-            [principal]="principal"
+          <op-principal [principal]="principal"
             size="mini"
-          ></op-principal>
+           />
           @if (!last) {
             ,
           }

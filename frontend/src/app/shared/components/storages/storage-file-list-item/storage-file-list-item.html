@@ -15,11 +15,10 @@
     }"
     >
     @if (!!content.checkbox) {
-      <spot-checkbox
-        [checked]="content.disabled || content.checkbox.selected"
+      <spot-checkbox [checked]="content.disabled || content.checkbox.selected"
         (checkedChange)="content.checkbox.changeSelection()"
         [disabled]="content.disabled"
-      ></spot-checkbox>
+       />
     }
 
     <div class="spot-list--item-title op-file-list--item-title">
@@ -104,13 +103,12 @@
     }
 
     @if (!content.isDirectory) {
-      <op-principal
-        class="op-file-list--item-avatar"
+      <op-principal class="op-file-list--item-avatar"
         [principal]="principal"
         [hideName]="true"
         [size]="'mini'"
         [link]="false"
-      ></op-principal>
+       />
     }
 
     @if (content.isDirectory) {

@@ -6,13 +6,12 @@
     @if (last && actors.length > 1 && actors.length < 4) {
       <span textContent=" {{ text.and }} "></span>
     }
-    <op-principal
-      class="op-ian-item--actors"
+    <op-principal class="op-ian-item--actors"
       [principal]="actor"
       [hideName]="false"
       [hideAvatar]="true"
       [link]="!deviceService.isMobile"
-    ></op-principal>
+     />
     @if ((idx === 0 && actors.length > 2) || (idx === 1 && actors.length > 3)) {
       <span [textContent]="', '"></span>
     }

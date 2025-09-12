@@ -15,10 +15,9 @@
   </spot-selector-field>
 
   @if ((enabled$ | async)) {
-    <op-basic-range-date-picker
-      [required]="enabled$ | async"
+    <op-basic-range-date-picker [required]="enabled$ | async"
       [value]="selectedDates$ | async"
       (valueChange)="setDates($event)"
-    ></op-basic-range-date-picker>
+     />
   }
 </div>

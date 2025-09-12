@@ -16,19 +16,18 @@
               > *</span>
             }
           </wp-replacement-label>
-          <attribute-help-text [attribute]="descriptor.name" [attributeScope]="'WorkPackage'"></attribute-help-text>
+          <attribute-help-text [attribute]="descriptor.name" [attributeScope]="'WorkPackage'" />
         </div>
       }
       @if (!descriptor.multiple && descriptor.field) {
         <div
           class="wp-attribute-group--attribute-value-container attributes-key-value--value-container"
           >
-          <op-editable-attribute-field
-            [ngClass]="{'wp-edit-formattable-field': descriptor.field!.isFormattable }"
+          <op-editable-attribute-field [ngClass]="{'wp-edit-formattable-field': descriptor.field!.isFormattable }"
             [resource]="workPackage"
             [isDropTarget]="descriptor.field!.isFormattable"
             [fieldName]="descriptor.field!.name"
-          ></op-editable-attribute-field>
+           />
         </div>
       }
     }

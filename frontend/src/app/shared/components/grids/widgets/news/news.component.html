@@ -3,17 +3,14 @@
   [editable]="isEditable"
   >
 
-  <widget-menu
-    slot="menu"
-    [resource]="resource">
-  </widget-menu>
+  <widget-menu slot="menu"
+    [resource]="resource" />
 
 </widget-header>
 <div class="op-widget-box--body">
   @if (noEntries) {
-    <op-no-results
-      [title]="text.noResults"
-    ></op-no-results>
+    <op-no-results [title]="text.noResults"
+     />
   }
   <ul class="widget-box--arrow-links">
     @for (news of entries; track news) {
@@ -21,11 +18,10 @@
         class="widget-box--arrow-multiline"
         >
         @if (news.author) {
-          <op-principal
-            [principal]="news.author"
+          <op-principal [principal]="news.author"
             [hideName]="true"
             class="widget-box--avatar news-author-avatar hidden-for-mobile"
-          ></op-principal>
+           />
         }
         <div class="widget-box--project">
           <a

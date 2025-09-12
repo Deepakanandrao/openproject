@@ -19,7 +19,7 @@
       @if (!parent) {
         <span [textContent]="text.set_parent"></span>
       }
-      <op-icon icon-classes="icon-small {{ parent ? 'icon-edit icon5 icon-no-color' : 'icon-add icon4' }}"></op-icon>
+      <op-icon icon-classes="icon-small {{ parent ? 'icon-edit icon5 icon-no-color' : 'icon-add icon4' }}" />
     </button>
   }
   @if (canModifyParent() && parent) {
@@ -29,18 +29,16 @@
       [title]="text.remove_parent"
       (click)="updateParent(null)"
       >
-      <op-icon icon-classes="icon-small icon-no-color icon-remove icon4"></op-icon>
+      <op-icon icon-classes="icon-small icon-no-color icon-remove icon4" />
     </button>
   }
 }
 
 @if (active) {
-  <wp-relations-autocomplete
-    [placeholder]="text.set_or_remove_parent"
+  <wp-relations-autocomplete [placeholder]="text.set_or_remove_parent"
     [workPackage]="workPackage"
     (cancel)="close()"
     (change)="updateParent($event)"
     data-test-selector="wp-relations-autocomplete"
-    filterCandidatesFor="parent">
-  </wp-relations-autocomplete>
+    filterCandidatesFor="parent" />
 }

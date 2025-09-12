@@ -9,16 +9,14 @@
   <div class="spot-modal--body spot-container">
 
     @if (!!prependModalComponent) {
-      <ng-container *ngComponentOutlet="prependModalComponent; injector: injector"></ng-container>
+      <ng-container *ngComponentOutlet="prependModalComponent; injector: injector" />
     }
 
     @if (tabPortalHost) {
-      <op-scrollable-tabs
-        [tabs]="availableTabs"
+      <op-scrollable-tabs [tabs]="availableTabs"
         [currentTabId]="tabPortalHost.currentTab?.id"
         (tabSelected)="switchTo($event)"
-        >
-      </op-scrollable-tabs>
+         />
     }
     <div class="tab-content" #tabContentOutlet></div>
   </div>

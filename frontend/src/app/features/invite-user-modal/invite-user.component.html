@@ -4,8 +4,7 @@
   ></div>
 }
 @if (!loading && step === Steps.ProjectSelection) {
-  <op-ium-project-selection
-    [project]="project"
+  <op-ium-project-selection [project]="project"
     [type]="type"
     (save)="onProjectSelectionSave($event)"
     (close)="closeMe()"
@@ -13,12 +12,11 @@
     cdkFocusInitial
     cdkTrapFocus
     [cdkTrapFocusAutoCapture]="true"
-  ></op-ium-project-selection>
+   />
 }
 
 @if (!loading && step === Steps.Principal) {
-  <op-ium-principal
-    [project]="project"
+  <op-ium-principal [project]="project"
     [roleData]="role"
     [messageData]="message"
     [principalData]="principalData"
@@ -30,12 +28,11 @@
     cdkFocusInitial
     cdkTrapFocus
     [cdkTrapFocusAutoCapture]="true"
-  ></op-ium-principal>
+   />
 }
 
 @if (!loading && step === Steps.Summary) {
-  <op-ium-summary
-    [project]="project"
+  <op-ium-summary [project]="project"
     [principalData]="principalData"
     [type]="type"
     [role]="role"
@@ -47,12 +44,11 @@
     cdkFocusInitial
     cdkTrapFocus
     [cdkTrapFocusAutoCapture]="true"
-  ></op-ium-summary>
+   />
 }
 
 @if (!loading && step === Steps.Success) {
-  <op-ium-success
-    [principal]="principalData.principal"
+  <op-ium-success [principal]="principalData.principal"
     [project]="project"
     [type]="type"
     [createdNewPrincipal]="createdNewPrincipal"
@@ -62,5 +58,5 @@
     cdkFocusInitial
     cdkTrapFocus
     [cdkTrapFocusAutoCapture]="true"
-  ></op-ium-success>
+   />
 }

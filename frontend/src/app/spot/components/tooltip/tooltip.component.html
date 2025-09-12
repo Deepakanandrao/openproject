@@ -1,8 +1,8 @@
-<ng-content select="[slot=trigger]"></ng-content>
+<ng-content select="[slot=trigger]" />
 @if (!disabled) {
   <div
     [ngClass]="['spot-tooltip--body', 'spot-container', alignmentClass]"
     >
-    <ng-content select="[slot=body]"></ng-content>
+    <ng-content select="[slot=body]" />
   </div>
 }

@@ -90,10 +90,9 @@
         let-index="index"
         let-search="searchTerm"
       >
-        <ng-container
-          [ngTemplateOutlet]="headerTemplate || projectedHeaderTemplate"
+        <ng-container [ngTemplateOutlet]="headerTemplate || projectedHeaderTemplate"
           [ngTemplateOutletContext]="{$implicit:item, search:search, index:index }"
-        ></ng-container>
+         />
       </ng-template>
     }
 
@@ -105,10 +104,9 @@
         let-search="searchTerm"
         let-clear="clear"
       >
-        <ng-container
-          [ngTemplateOutlet]="projectedLabelTemplate || labelTemplate || defaultLabel"
+        <ng-container [ngTemplateOutlet]="projectedLabelTemplate || labelTemplate || defaultLabel"
           [ngTemplateOutletContext]="{$implicit:item, search:search, index:index, clear:clear }"
-        ></ng-container>
+         />
       </ng-template>
     }
 
@@ -118,10 +116,9 @@
       let-index="index"
       let-search="searchTerm"
     >
-      <ng-container
-        [ngTemplateOutlet]="projectedOptionTemplate || optionTemplate || defaultOption"
+      <ng-container [ngTemplateOutlet]="projectedOptionTemplate || optionTemplate || defaultOption"
         [ngTemplateOutletContext]="{$implicit:item, search:search, index:index }"
-      ></ng-container>
+       />
     </ng-template>
 
     @if (footerTemplate || projectedFooterTemplate) {
@@ -131,10 +128,9 @@
         let-index="index"
         let-search="searchTerm"
       >
-        <ng-container
-          [ngTemplateOutlet]="footerTemplate || projectedFooterTemplate"
+        <ng-container [ngTemplateOutlet]="footerTemplate || projectedFooterTemplate"
           [ngTemplateOutletContext]="{$implicit:item, search:search, index:index }"
-        ></ng-container>
+         />
       </ng-template>
     }
   </ng-select>
@@ -152,11 +148,10 @@
     @case (resource === 'work_packages' || resource === 'parent-child') {
       <div class="op-autocompleter--option-wrapper" title="{{ item.subject }}">
         @if (item.author && item.author.href) {
-          <op-principal
-            class="op-autocompleter--option-principal"
+          <op-principal class="op-autocompleter--option-principal"
             [principal]="item.author"
             [hideName]="true"
-          ></op-principal>
+           />
         }
         <span
           class="op-autocompleter--wp-subject"
@@ -193,12 +188,11 @@
     }
     @case (resource ==='users' || resource ==='assignee' || resource === 'principals') {
       @if (item && item.href) {
-        <op-principal
-          [principal]="item"
+        <op-principal [principal]="item"
           [hideName]="true"
           class="op-autocompleter--option-principal-avatar"
           size="mini"
-        ></op-principal>
+         />
       }
       <span
         [attr.data-hover-card-trigger-target]="getHoverCardTriggerTarget(item)"

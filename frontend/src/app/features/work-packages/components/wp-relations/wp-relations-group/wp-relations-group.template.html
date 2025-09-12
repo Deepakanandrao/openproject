@@ -27,11 +27,10 @@
     class="relation-container"
     >
     @for (relatedWorkPackage of relatedWorkPackages; track relatedWorkPackage) {
-      <wp-relation-row
-        [workPackage]="workPackage"
+      <wp-relation-row [workPackage]="workPackage"
         [groupByWorkPackageType]="groupByWorkPackageType"
         [relatedWorkPackage]="relatedWorkPackage"
-      ></wp-relation-row>
+       />
     }
   </div>
 }

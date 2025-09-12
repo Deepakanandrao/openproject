@@ -41,12 +41,10 @@
               @if (data && data.length > 0) {
                 <ul class="op-toast--uploads">
                   @for (upload of data; track upload) {
-                    <op-toasters-upload-progress
-                      [file]="upload[0]"
+                    <op-toasters-upload-progress [file]="upload[0]"
                       [upload]="upload[1]"
                       (uploadSuccess)="onUploadSuccess()"
-                      (uploadError)="remove()">
-                    </op-toasters-upload-progress>
+                      (uploadError)="remove()" />
                   }
                 </ul>
               }

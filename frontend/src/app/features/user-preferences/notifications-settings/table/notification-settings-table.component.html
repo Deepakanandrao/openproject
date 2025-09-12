@@ -270,10 +270,9 @@
 }
 
 @if (userId) {
-  <op-notification-setting-inline-create
-    [userId]="userId"
+  <op-notification-setting-inline-create [userId]="userId"
     [settings]="settings"
     (selected)="addProjectSettings($event)"
     data-test-selector="notification-setting-inline-create"
-  ></op-notification-setting-inline-create>
+   />
 }

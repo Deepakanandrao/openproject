@@ -9,7 +9,7 @@
       [ngClass]="{ 'spot-selector-field--input_reversed': reverseLabel }"
       [attr.aria-describedby]="describedByID"
       >
-      <ng-content select="[slot=input]"></ng-content>
+      <ng-content select="[slot=input]" />
     </div>
     @if (label) {
       <div
@@ -27,7 +27,7 @@
         @if (required) {
           <span class="spot-form-field--label-indicator">*</span>
         }
-        <ng-content select="[slot=help-text]"></ng-content>
+        <ng-content select="[slot=help-text]" />
       </div>
     }
   </label>
@@ -35,14 +35,14 @@
     class="spot-form-field--description"
     [id]="descriptionID"
     >
-    <ng-content select="[slot=description]"></ng-content>
+    <ng-content select="[slot=description]" />
   </div>
   @if (showErrorMessage) {
     <div
       class="spot-form-field--errors"
       [id]="errorsID"
       >
-      <ng-content select="[slot=errors]"></ng-content>
+      <ng-content select="[slot=errors]" />
     </div>
   }
 }

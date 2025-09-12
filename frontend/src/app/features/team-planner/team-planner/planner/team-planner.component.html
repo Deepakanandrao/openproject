@@ -11,18 +11,16 @@
       data-test-selector="op-team-planner--add-existing-toggle"
       data-tour-selector="op-team-planner--add-existing-toggle"
       (click)="toggleAddExistingPane()">
-      <op-icon icon-classes="icon-add button--icon"></op-icon>
+      <op-icon icon-classes="icon-add button--icon" />
       <span
         class="button--text"
         [textContent]="text.add_existing">
       </span>
     </button>
     @if ((showAddExistingPane | async)) {
-      <op-add-existing-pane
-        class="op-team-planner--add-existing-pane"
+      <op-add-existing-pane class="op-team-planner--add-existing-pane"
         data-test-selector="add-existing-pane"
-        >
-      </op-add-existing-pane>
+         />
     }
     <button
       type="button"
@@ -35,7 +33,7 @@
       <span class="button--text ellipsis"
         [textContent]="currentViewTitle"
       aria-hidden="true"></span>
-      <op-icon icon-classes="button--icon icon-small icon-pulldown hidden-for-mobile"></op-icon>
+      <op-icon icon-classes="button--icon icon-small icon-pulldown hidden-for-mobile" />
     </button>
   }
 
@@ -57,11 +55,10 @@
               <div
                 class="tp-assignee"
                 >
-                <op-principal
-                  [principal]="resource.extendedProps.principal"
+                <op-principal [principal]="resource.extendedProps.principal"
                   class="tp-assignee--principal op-principal_wrapped"
                   [hideName]="isMobile"
-                ></op-principal>
+                 />
                 <button
                   type="button"
                   class="tp-assignee--remove"
@@ -69,31 +66,27 @@
                   [attr.aria-label]="text.remove_assignee"
                   [attr.data-qa-remove-assignee]="resource.extendedProps.principal.id"
                   >
-                  <op-icon icon-classes="icon-remove"></op-icon>
+                  <op-icon icon-classes="icon-remove" />
                 </button>
               </div>
             }
             @if (resource && !resource.extendedProps.principal && resource.id.startsWith('skeleton')) {
-              <op-principal-loading-skeleton
-              ></op-principal-loading-skeleton>
+              <op-principal-loading-skeleton />
             }
             @if (resource && !resource.extendedProps.principal && !resource.id.startsWith('skeleton')) {
-              <op-tp-add-assignee
-                (selectAssignee)="addAssignee($event)"
+              <op-tp-add-assignee (selectAssignee)="addAssignee($event)"
                 [alreadySelected]="principalIds$ | async"
-              ></op-tp-add-assignee>
+               />
             }
           </ng-template>
           <ng-template #eventContent let-event="$implicit.event">
             @if (event.source && event.source.id === 'skeleton') {
-              <op-wp-loading-skeleton
-                [viewBox]="event.extendedProps.viewBox"
+              <op-wp-loading-skeleton [viewBox]="event.extendedProps.viewBox"
                 class="op-team-planner--wp-loading-skeleton"
-              ></op-wp-loading-skeleton>
+               />
             }
             @if ((!event.source || event.source.id === 'work_packages') && event.extendedProps.workPackage; as wp) {
-              <wp-single-card
-                [workPackage]="wp"
+              <wp-single-card [workPackage]="wp"
                 [selectedWhenOpen]="true"
                 [orientation]="'horizontal'"
                 [highlightingMode]="'type'"
@@ -108,7 +101,7 @@
                 (cardClicked)="workPackagesCalendar.onCardClicked($event)"
                 (cardDblClicked)="workPackagesCalendar.onCardDblClicked($event)"
                 (cardContextMenu)="workPackagesCalendar.showEventContextMenu($event)"
-              ></wp-single-card>
+               />
             }
           </ng-template>
         </full-calendar>
@@ -128,7 +121,7 @@
             data-test-selector="op-team-planner--empty-state-button"
             (click)="showAssigneeAddRow()"
             >
-            <op-icon icon-classes="icon-add button--icon"></op-icon>
+            <op-icon icon-classes="icon-add button--icon" />
             <span
               class="button--text"
               [textContent]="text.add_assignee">
@@ -150,7 +143,7 @@
             data-test-selector="tp-assignee-add-button"
             data-tour-selector="tp-assignee-add-button"
             >
-            <op-icon icon-classes="icon-add button--icon"></op-icon>
+            <op-icon icon-classes="icon-add button--icon" />
             <span
               class="button--text"
               [textContent]="text.add_assignee">

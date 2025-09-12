@@ -36,7 +36,7 @@ import { IfcModelsDataService } from 'core-app/features/bim/ifc_models/pages/vie
       <a
         class="button"
         [href]="manageIFCPath">
-        <op-icon icon-classes="button--icon icon-settings2"></op-icon>
+        <op-icon icon-classes="button--icon icon-settings2" />
         <span class="button--text"
           [textContent]="text.manage"
         aria-hidden="true"></span>

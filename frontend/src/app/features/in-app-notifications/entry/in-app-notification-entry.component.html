@@ -8,7 +8,7 @@
       class="op-ian-item--top-line"
       >
       <div class="op-ian-item--status">
-        <op-in-app-notification-status [status]="workPackage.status"></op-in-app-notification-status>
+        <op-in-app-notification-status [status]="workPackage.status" />
       </div>
       <a
         class="op-ian-item--work-package-id-link spot-link"
@@ -89,15 +89,13 @@
   }
   @if (!hasReminderAlert) {
     @if (showDateAlert) {
-      <op-in-app-notification-date-alert
-        [aggregatedNotifications]="aggregatedNotifications"
-      ></op-in-app-notification-date-alert>
+      <op-in-app-notification-date-alert [aggregatedNotifications]="aggregatedNotifications"
+       />
     }
     @if (!showDateAlert) {
-      <op-in-app-notification-actors-line
-        [notification]="notification"
+      <op-in-app-notification-actors-line [notification]="notification"
         [aggregatedNotifications]="aggregatedNotifications"
-      ></op-in-app-notification-actors-line>
+       />
     }
   }
 </div>

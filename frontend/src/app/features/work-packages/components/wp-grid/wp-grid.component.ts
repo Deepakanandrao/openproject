@@ -56,14 +56,13 @@ import { WorkPackageViewOutputs } from 'core-app/features/work-packages/routing/
       (stateLinkClicked)="stateLinkClicked.emit($event)"
       [showEmptyResultsBox]="true"
       [showInfoButton]="true"
-      [shrinkOnMobile]="true">
-    </wp-card-view>
+      [shrinkOnMobile]="true" />
     
     @if (showResizer) {
       <div
         class="hidden-for-mobile hide-when-print">
         <wp-resizer [elementClass]="resizerClass"
-        [localStorageKey]="resizerStorageKey"></wp-resizer>
+        [localStorageKey]="resizerStorageKey" />
       </div>
     }
     `,

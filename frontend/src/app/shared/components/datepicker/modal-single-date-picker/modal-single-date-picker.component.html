@@ -3,10 +3,9 @@
   (closed)="opened = false"
   data-test-selector="opce-modal-single-date-picker"
   >
-  <ng-content
-    slot="trigger"
+  <ng-content slot="trigger"
     select="[slot=trigger]"
-  ></ng-content>
+   />
   @if (useDefaultTrigger) {
     <ng-template slot="trigger">
       <input
@@ -37,30 +36,28 @@
           [reverseLabel]="true"
           [label]="text.ignoreNonWorkingDays.title"
           >
-          <spot-switch
-            slot="input"
+          <spot-switch slot="input"
             name="ignoreNonWorkingDays"
             [(ngModel)]="ignoreNonWorkingDays"
             (ngModelChange)="changeNonWorkingDays()"
             data-test-selector="op-datepicker-modal--include-non-working-days"
-          ></spot-switch>
+           />
         </spot-selector-field>
       }
 
-      <ng-content select="[slot=extra-fields]"></ng-content>
+      <ng-content select="[slot=extra-fields]" />
 
       <spot-form-field
         [label]="text.date"
         [required]="required"
         >
-        <spot-text-field
-          slot="input"
+        <spot-text-field slot="input"
           name="date"
           [ngModel]="workingValue"
           [required]="required"
           (ngModelChange)="writeWorkingValue($event)"
           [showClearButton]="true"
-        ></spot-text-field>
+         />
         <button
           slot="action"
           type="button"

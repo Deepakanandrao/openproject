@@ -15,11 +15,10 @@
           <span class="op-tab-content--header-text" [textContent]="text.attachments.label"></span>
         </div>
       }
-      <op-attachments
-        [resource]="workPackage"
+      <op-attachments [resource]="workPackage"
         (attachmentRemoved)="attachmentRemoved()"
         (attachmentAdded)="attachmentAdded()"
-      ></op-attachments>
+       />
     </section>
   }
 
@@ -28,14 +27,13 @@
       data-test-selector="op-tab-content--tab-section"
       class="op-tab-content--tab-section"
       >
-      <op-storage
-        [resource]="workPackage"
+      <op-storage [resource]="workPackage"
         [projectStorage]="storage"
         [allowUploading]="allowManageFileLinks$ | async"
         [allowLinking]="allowManageFileLinks$ | async"
         (fileRemoved)="attachmentRemoved()"
         (fileAdded)="attachmentAdded()"
-      ></op-storage>
+       />
     </section>
   }
 </div>

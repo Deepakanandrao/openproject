@@ -30,10 +30,9 @@
   </ng-template>
   @if (showAddNewUserButton) {
     <ng-template ng-footer-tmp>
-      <op-invite-user-button
-        [projectId]="resource.project?.id"
+      <op-invite-user-button [projectId]="resource.project?.id"
         (invited)="selectedOption = $event"
-      ></op-invite-user-button>
+       />
     </ng-template>
   }
 </ng-select>
@@ -43,6 +42,5 @@
     (onSave)="handler.handleUserSubmit()"
     (onCancel)="handler.handleUserCancel()"
     [saveTitle]="text.save"
-    [cancelTitle]="text.cancel">
-  </edit-field-controls>
+    [cancelTitle]="text.cancel" />
 }

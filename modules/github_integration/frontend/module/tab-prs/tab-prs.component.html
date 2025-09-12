@@ -6,7 +6,6 @@
 }
 
 @for (pullRequest of (pullRequests$ | async); track pullRequest) {
-  <op-github-pull-request
-    [pullRequest]="pullRequest"
-  ></op-github-pull-request>
+  <op-github-pull-request [pullRequest]="pullRequest"
+   />
 }

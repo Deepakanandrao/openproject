@@ -25,10 +25,9 @@
   <ng-container slot="body">
     <div class="op-project-list-modal--header op-project-include--header">
       <h1 class="op-project-list-modal--title">{{ text.title }}</h1>
-      <spot-toggle
-        [options]="displayModeOptions"
+      <spot-toggle [options]="displayModeOptions"
         [(ngModel)]="displayMode"
-      ></spot-toggle>
+       />
     </div>
     @if (projects$ | async; as projects) {
       <form
@@ -74,20 +73,18 @@
             </span>
           }
         } @else {
-          <op-loading-project-list
-            class="op-project-list-modal--loading"
+          <op-loading-project-list class="op-project-list-modal--loading"
             data-test-selector="op-project-include--loading"
-          ></op-loading-project-list>
+           />
         }
         <div class="spot-action-bar">
           <div class="spot-action-bar--left">
             <!-- eslint-disable-next-line @angular-eslint/template/label-has-associated-control -->
             <label class="op-project-include--include-all spot-action-bar--action">
-              <spot-checkbox
-                [(ngModel)]="includeSubprojects"
+              <spot-checkbox [(ngModel)]="includeSubprojects"
                 [ngModelOptions]="{standalone: true}"
                 data-qa-project-include-all-subprojects="1"
-              ></spot-checkbox>
+               />
               <span class="op-project-include--include-all-text">{{ text.include_subprojects }}</span>
             </label>
           </div>

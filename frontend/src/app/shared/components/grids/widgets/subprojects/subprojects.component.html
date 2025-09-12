@@ -2,17 +2,13 @@
   [name]="widgetName"
   [editable]="isEditable">
 
-  <widget-menu
-    slot="menu"
-    [resource]="resource">
-  </widget-menu>
+  <widget-menu slot="menu"
+    [resource]="resource" />
 </widget-header>
 
 <div class="op-widget-box--body">
   @if (noEntries) {
-    <op-no-results
-      [title]="text.noResults">
-    </op-no-results>
+    <op-no-results [title]="text.noResults" />
   }
   @for (project of projects; track project; let last = $last) {
     <span>
