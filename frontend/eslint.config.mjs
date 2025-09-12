@@ -146,6 +146,12 @@ export default defineConfig([
       ...angular.configs.templateRecommended,
       ...angular.configs.templateAccessibility,
     ],
+    rules: {
+      '@angular-eslint/template/elements-content': [
+        'error',
+        { 'allowList': ['textContent'] }
+      ]
+    }
   },
   {
     files: ['**/*.d.ts'],
