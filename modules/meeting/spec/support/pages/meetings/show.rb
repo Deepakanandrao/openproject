@@ -225,6 +225,9 @@ module Pages::Meetings
 
     def select_action(item, action)
       open_menu(item) do
+        if action.downcase.include?("move")
+          click_on "Move"
+        end
         click_on action
       end
     end
@@ -644,6 +647,8 @@ module Pages::Meetings
 
     def expect_backlog_actions(item, series: false)
       open_menu(item) do
+        click_on "Move"
+
         expect(page).to have_css(".ActionListItem-label", text: "Edit")
         expect(page).to have_css(".ActionListItem-label", text: "Add notes")
         expect(page).to have_css(".ActionListItem-label", text: "Move to current meeting")
@@ -651,6 +656,7 @@ module Pages::Meetings
 
         expect(page).to have_no_css(".ActionListItem-label", text: "Move to backlog")
         expect(page).to have_no_css(".ActionListItem-label", text: "Add outcome")
+
         if series
           expect(page).to have_no_css(".ActionListItem-label", text: "Move to next meeting")
         end
@@ -663,8 +669,11 @@ module Pages::Meetings
 
     def expect_non_backlog_actions(item, series: false)
       open_menu(item) do
+        click_on "Move"
+
         expect(page).to have_css(".ActionListItem-label", text: "Move to backlog")
         expect(page).to have_no_css(".ActionListItem-label", text: "Move to current meeting")
+
         if series
           expect(page).to have_css(".ActionListItem-label", text: "Move to next meeting")
         end

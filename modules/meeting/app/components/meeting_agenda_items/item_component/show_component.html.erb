@@ -75,12 +75,24 @@
             add_outcome_action_item(menu) if add_outcome_action?
           end
 
-          with_item_group(menu) { move_actions(menu) } unless first? && last?
-
           with_item_group(menu) do
-            move_to_current_meeting_action_item(menu) if in_backlog?
-            move_to_backlog_action_item(menu) if !in_template? && !in_backlog?
-            move_to_next_meeting_action_item(menu) if move_to_next_meeting_enabled?
+            menu.with_sub_menu_item(label: "Move") do |submenu|
+              with_item_group(submenu) { move_actions(submenu) } unless first? && last?
+
+              with_item_group(submenu) do
+                if !in_template? && !in_backlog?
+                  move_to_backlog_action_item(submenu)
+                end
+
+                move_to_section_action_item(submenu)
+              end
+
+              with_item_group(submenu) do
+                move_to_next_meeting_action_item(submenu) if move_to_next_meeting_enabled?
+              end
+
+              submenu.with_divider if move_to_different_section_or_meeting_action_added?
+            end
           end
 
           with_item_group(menu) { delete_action_item(menu) }
