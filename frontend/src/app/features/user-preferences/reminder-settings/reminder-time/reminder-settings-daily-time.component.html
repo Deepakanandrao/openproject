@@ -15,7 +15,7 @@
         formControlName="enabled"
         />
     </spot-selector-field>
-    @for (time of selectedTimes; track index(i, time); let i = $index) {
+    @for (time of selectedTimes; track i; let i = $index) {
       <div
         class="op-reminder-settings-daily-time--row"
         >
