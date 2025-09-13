@@ -196,8 +196,8 @@ zh-TW:
     sync_failed: "LDAP同步失敗：%{message} 。"
     back_to_index: "按一下此處返回連線清單。"
     technical_warning: |
-      This LDAP form requires technical knowledge of your LDAP / Active Directory setup.
-      [Please visit our documentation for detailed instructions](docs_url).
+      此 LDAP 表單需要具備您 LDAP / Active Directory 設定的技術知識。
+      [請參閱我們的文件以取得詳細操作說明](docs_url)。
     attribute_texts:
       name: LDAP 連線名稱
       host: LDAP 主機名稱或 IP 位址
@@ -438,7 +438,7 @@ zh-TW:
     lists:
       active: "啟用中的專案"
       my: "我的專案"
-      favorited: "Favorite projects"
+      favorited: "收藏的專案"
       archived: "封存專案"
       shared: "共享專案清單"
       my_lists: "我的專案列表"
@@ -1013,7 +1013,7 @@ zh-TW:
       enterprise_trial:
         company: "公司"
       favorite:
-        favorited: "Item"
+        favorited: "項目"
       grids/grid:
         page: "頁面"
         row_count: "列數"
@@ -1374,7 +1374,7 @@ zh-TW:
           unreadable: "無法讀取，確定是一個 support token?"
           already_added: "此令牌已經新增過。"
         favorite:
-          already_favorited: "has already been favorited."
+          already_favorited: "已收藏。"
         grids/grid:
           overlaps: "重疊"
           outside: "不在網格(grid)內。"
@@ -1734,7 +1734,7 @@ zh-TW:
     attachments: "附加檔"
     actor: "行動者"
     action: "動作"
-    api_key: "API key"
+    api_key: "API 金鑰"
     author: "工作套件發起者"
     avatar: "大頭貼"
     base: "一般錯誤:"
@@ -2607,7 +2607,7 @@ zh-TW:
         static_token_name: "API 令牌(Token)"
       ical:
         title: "iCalendar "
-        text_hint_link: 'iCalendar tokens allow users to [subscribe to OpenProject calendars](docs_url) and view up-to-date work package information from external clients.'
+        text_hint_link: 'iCalendar 權杖可讓使用者[訂閱 OpenProject 行事曆](docs_url)，並在外部用戶端中檢視最新的工作套件資訊。'
         disabled_text: "管理員未啟用 iCalendar 訂閱。 請聯絡您的管理員以使用此功能。"
         empty_text_hint: "新增 iCalendar 令牌(Token)，可訂閱各專案裡面的日曆( 需擁有相關權限)。"
       oauth:
