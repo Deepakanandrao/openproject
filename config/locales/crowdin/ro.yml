@@ -301,7 +301,7 @@ ro:
         placeholder:
           label: "Etichetă element"
           short: "Nume scurt"
-          score: "Score"
+          score: "Scor"
       notice:
         remember_items_and_projects: "Remember to set items and projects in the respective tabs for this custom field."
       hierarchy:
@@ -370,9 +370,9 @@ ro:
       blueprint: "Pattern blueprint"
   global_search:
     title:
-      all_projects: 'Search for "%{search_term}" in all projects'
-      current_project: 'Search for "%{search_term}" in %{project_name}'
-      project_and_subprojects: 'Search for "%{search_term}" in %{project_name} and all subprojects'
+      all_projects: 'Caută "%{search_term}" în toate proiectele'
+      current_project: 'Caută "%{search_term}" în %{project_name}'
+      project_and_subprojects: 'Caută "%{search_term}" în %{project_name} și toate subproiectele'
     placeholder: "Caută în %{app_title}"
     overwritten_tabs:
       all: "Toate"
@@ -773,7 +773,7 @@ ro:
           manual_overlap_with_predecessors: "Overlaps with at least one predecessor."
           manual_with_children: "This has child work packages but their start dates are ignored."
         title:
-          automatic_mobile: "Automatically scheduled."
+          automatic_mobile: "Programat automat."
           automatic_with_children: "The dates are determined by child work packages."
           automatic_with_predecessor: "The start date is set by a predecessor."
           manual_mobile: "Manually scheduled."
@@ -800,7 +800,7 @@ ro:
             title: "Fără predecesori"
             description: "This work package does not have any predecessors."
           successors:
-            title: "No successors"
+            title: "Niciun succesor"
             description: "This work package does not have any successors."
           children:
             title: "Fără copii"
@@ -965,7 +965,7 @@ ro:
       attachment:
         attachment_content: "Conținutul anexei"
         attachment_file_name: "Numele fișierului atașat"
-        content_type: "Content-type"
+        content_type: "Tip conținut"
         downloads: "Descărcări"
         file: "Fișier"
         filename: "Fișier"
@@ -974,7 +974,7 @@ ro:
         attribute_name: "Atribut"
         help_text: "Text de ajutor"
       auth_provider:
-        scim_clients: "SCIM clients"
+        scim_clients: "Clienți SCIM"
       capability:
         context: "Context"
       changeset:
@@ -988,7 +988,7 @@ ro:
         default_value: "Valoare implicită"
         editable: "Editabil"
         field_format: "Format"
-        formula: "Formula"
+        formula: "Formulă"
         is_filter: "Folosit ca filtru"
         is_for_all: "Pentru toate proiectele"
         is_required: "Obligatoriu"
@@ -1122,7 +1122,7 @@ ro:
         display_representation: "Mod afişare"
         show_hierarchies: "Mod afişare"
         starred: "Favorit"
-        hidden: "Hidden"
+        hidden: "Ascuns"
         manual_sorting: "Manual sort order"
         ordered_work_packages: "Work packages order"
         include_subprojects: "Include subproiecte"
@@ -1131,7 +1131,7 @@ ro:
         lag: "Întârziere"
         from: "Pachet de lucru asociat"
         to: "Pachet de lucru asociat"
-        relation_type: "Relation type"
+        relation_type: "Tip relație"
       reminder:
         remindable: "Reminded object"
         remind_at: "Remind at"
@@ -1159,7 +1159,7 @@ ro:
         hours: "Ore"
         spent_on: "Dată"
         type: "Tip"
-        ongoing: "Ongoing"
+        ongoing: "În desfășurare"
       type:
         description: "Text implicit pentru descriere"
         attribute_groups: "Configurare formular"
@@ -1236,7 +1236,7 @@ ro:
           false: "doar zile lucrătoare"
           true: "include zile nelucrătoare"
         journal_internal: Internal Journal
-        notify: "Notify" #used in custom actions
+        notify: "Notifică" #used in custom actions
         parent: "Părinte"
         parent_issue: "Părinte"
         parent_work_package: "Părinte"
@@ -1458,8 +1458,8 @@ ro:
               forbidden: "Timestamps contain forbidden values: %{values}"
               format: "%{message}"
             selects:
-              name_not_included: "The 'Name' column needs to be included"
-              nonexistent: "The column '%{column}' does not exist."
+              name_not_included: "Coloana \"Nume\" trebuie să fie inclusă"
+              nonexistent: "Coloana '%{column}' nu există."
               format: "%{message}"
           group_by_hierarchies_exclusive: "se exclude reciproc cu grupul de \"%{group_by}\". Nu le puteți activa pe amândouă."
           can_only_be_modified_by_owner: "The query can only be modified by its owner."
@@ -1629,7 +1629,7 @@ ro:
           attributes:
             roles:
               ungrantable: "are un rol neatribuit."
-              more_than_one: "has more than one role."
+              more_than_one: "are mai mult de un rol."
             principal:
               unassignable: "nu poate fi atribuit unui proiect."
         version:
@@ -1667,8 +1667,8 @@ ro:
       group: "Grup"
       issue_priority:
         one: "Prioritate"
-        few: "Priorities"
-        other: "Priorities"
+        few: "Priorități"
+        other: "Priorități"
       member: "Membru"
       news: "Noutăţi"
       notification:
@@ -1691,9 +1691,9 @@ ro:
         few: "Roluri"
         other: "Roluri"
       scim_client:
-        one: "SCIM client"
-        few: "SCIM clients"
-        other: "SCIM clients"
+        one: "Client SCIM"
+        few: "Clienți SCIM"
+        other: "Clienți SCIM"
       status: "Stare pachet de lucru"
       token/api:
         one: Token acces
@@ -2157,7 +2157,7 @@ ro:
         few: "ore"
         other: "ore"
       day:
-        one: "day"
+        one: "zi"
         few: "zile"
         other: "zile"
   description_active: "Activ?"
@@ -2200,7 +2200,7 @@ ro:
       custom_actions: Custom Actions
       custom_field_hierarchies: Custom fields of type hierarchy
       customize_life_cycle: Personalizează ciclul de viață
-      date_alerts: Date Alerts
+      date_alerts: Alerte dată
       define_custom_style: Custom theme and logo
       edit_attribute_groups: Edit Attribute Groups
       gantt_pdf_export: Gantt PDF Export
@@ -2242,7 +2242,7 @@ ro:
         premium_features: "Enterprise add-on-uri"
         premium_features_text: "Tablouri agile, temă și logo personalizate, grafice, fluxuri de lucru inteligente cu acțiuni personalizate, căutare în text complet pentru atașamentele pachetelor de lucru și câmpuri personalizate cu selectare multiplă."
         professional_support: "Suport profesional"
-        professional_support_text: "Beneficiați de asistență fiabilă, de înaltă calitate, din partea unor ingineri de asistență seniori cu cunoștințe de specialitate în ceea ce privește utilizarea OpenProject în medii critice pentru afaceri."
+        professional_support_text: "Beneficiază de asistență fiabilă, de înaltă calitate, din partea unor ingineri de asistență seniori cu, cunoștințe de specialitate în ceea ce privește utilizarea OpenProject în medii critice pentru afaceri."
       work_package_subject_generation:
         description: "Create automatically generated subjects using referenced attributes and text."
       customize_life_cycle:
@@ -2311,7 +2311,7 @@ ro:
       request_again: "Request again"
       resend_action: "Resend confirmation email"
       welcome_title: "Quick feature overview"
-      welcome_description: "Obțineți o imagine de ansamblu rapidă a gestionării proiectelor și a colaborării în echipă cu OpenProject Enterprise edition."
+      welcome_description: "Obține o imagine de ansamblu rapidă a gestionării proiectelor și a colaborării în echipă cu OpenProject Enterprise edition."
       confirmation_info: >
         We sent you an email on %{date} to %{email} with all the information to start the free trial of OpenProject Enterprise. Please check your inbox and click the confirmation link provided to start your 14-day free trial.
       confirmation_subline: >
@@ -2413,7 +2413,7 @@ ro:
       save_export_settings:
         label: "Save settings"
       format:
-        label: "File format"
+        label: "Format fișier"
         options:
           csv:
             label: "CSV"
@@ -2424,7 +2424,7 @@ ro:
       columns:
         input_label_report: "Adaugă coloane la tabelul de atribute"
         input_caption_report: "În mod implicit, sunt selectate toate atributele adăugate ca și coloane în lista pachetelor de lucru. Câmpurile lungi de text nu sunt disponibile in tabelul atributului, dar pot fi afișate mai jos."
-        input_caption_table: "By default all attributes added as columns in the work package list are selected. Long text fields are not available in table based exports."
+        input_caption_table: "În mod implicit, sunt selectate toate atributele adăugate ca și coloane în lista pachetelor de lucru. Câmpurile lungi de text nu sunt disponibile in tabelul atributului, dar pot fi afișate mai jos."
         input_caption_required: "It is not possible to export the view without any column. Please add at least one column."
       pdf:
         export_type:
@@ -2432,13 +2432,13 @@ ro:
           options:
             table:
               label: "Tabel"
-              caption: "Export the work packages list in a table with the desired columns."
+              caption: "Exportă lista pachetelor de lucru într-un tabel cu coloanele dorite."
             report:
               label: "Raportare"
-              caption: "Export the work package on a detailed report of all work packages in the list."
+              caption: "Exportă pachetul de lucru pe un raport detaliat al tuturor pachetelor de lucru din listă."
             gantt:
               label: "Grafic Gantt"
-              caption: "Export the work packages list in a Gantt diagram view."
+              caption: "Exportă lista pachetelor de lucru într-o vizualizare Gantt diagramă."
         include_images:
           label: "Include images"
           caption: "Exclude images to reduce the size of the PDF export."
@@ -2463,7 +2463,7 @@ ro:
         long_text_fields:
           input_caption: "By default all long text fields are selected."
           input_label: "Add long text fields"
-          input_placeholder: "Search for long text fields"
+          input_placeholder: "Caută după câmpuri lungi cu text"
           drag_area_label: "Manage long text fields"
       xls:
         include_relations:
@@ -3519,7 +3519,7 @@ ro:
           since: "since"
           summary: "There is a problem with your %{storage_name} storage integration"
           troubleshooting:
-            text: "For more information, check file storages"
+            text: "Pentru mai multe informații, verifică fișierele de stocare"
             link_text: "troubleshooting documentation"
   mail_body_account_activation_request: "A fost înregistrat un nou user (%{value}). Activarea este în așteptarea aprobării:"
   mail_body_account_information: "Informații despre contul dumneavoastră"
@@ -4316,13 +4316,13 @@ ro:
   label_custom_export_images_instructions: >
     Upload and manage custom image files used in your PDF exports.
   text_custom_export_font_regular_instructions: >
-    This is the font file for regular text. It needs to be in TTF format and is required.
+    Acesta este fișierul de font pentru textul obișnuit. Acesta trebuie să fie în format TTF și este necesar.
   text_custom_export_font_bold_instructions: >
-    This is the font file for bold text. It needs to be in TTF format.
+    Acesta este fișierul font pentru text îngroșat. Trebuie să fie în format TTF.
   text_custom_export_font_italic_instructions: >
-    This is the font file for italic text. It needs to be in TTF format.
+    Acesta este fișierul de font pentru textul italic. Trebuie să fie în format TTF.
   text_custom_export_font_bold_italic_instructions: >
-    This is the font file for bold and italic text. It needs to be in TTF format.
+    Acesta este fișierul font pentru text îngroșat și italic. Trebuie să fie în format TTF.
   text_custom_favicon_instructions: >
     Această pictogramă este afișată în fereastra/fila browserului lângă titlul site-ului. Aceasta trebuie să aibă dimensiunea de 32px pe 32px, să fie în format PNG și fundalul să fie transparent.
   text_custom_touch_icon_instructions: >
@@ -4442,8 +4442,8 @@ ro:
       heading: Configurează vizualizarea
       columns:
         input_label: "Adaugă coloane"
-        input_placeholder: "Select a column"
-        drag_area_label: "Manage and reorder columns"
+        input_placeholder: "Selectează o coloană"
+        drag_area_label: "Gestionează și reordonează coloanele"
       sort_by:
         automatic:
           heading: "Automat"
