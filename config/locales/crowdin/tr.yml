@@ -195,9 +195,10 @@ tr:
     ldap_auth_failed: "LDAP sunucusunda kimlik doğrulaması yapılamadı."
     sync_failed: "LDAP'den senkronizasyon başarısız oldu: %{message}."
     back_to_index: "Bağlantı listesine geri dönmek için buraya tıklayın."
-    technical_warning: |
+    technical_warning_html: |
       This LDAP form requires technical knowledge of your LDAP / Active Directory setup.
-      [Please visit our documentation for detailed instructions](docs_url).
+      <br>
+      <a href="https://www.openproject.org/help/administration/manage-ldap-authentication/">Please visit our documentation for detailed instructions</a>.
     attribute_texts:
       name: LDAP bağlantısının keyfi adı
       host: LDAP ana bilgisayar adı veya IP adresi
@@ -334,49 +335,38 @@ tr:
       no_results_content_text: Yeni bir özel alan oluştur
   concatenation:
     single: "ya da"
-  op_dry_validation:
-    or: "or"
+  dry_validation:
     errors:
-      array?: "must be an array."
-      decimal?: "must be a decimal."
       defined: "must not be defined."
-      eql?: "must be equal to %{left}."
-      filled?: "must be filled."
-      greater_or_equal_zero: "must be greater or equal to 0."
-      gteq?: "must be greater than or equal to %{num}."
-      hash?: "must be a hash."
-      included_in?:
-        arg:
-          default: "must be one of: %{list}."
-          range: "must be one of: %{list_left} - %{list_right}."
-      int?: "must be an integer."
+      int?: "bir tamsayı olmalıdır."
+      decimal?: "must be a decimal."
+      filled?: "doldurulmalı."
       key?: "is missing."
-      not_found: "not found."
+      greater_or_equal_zero: "sıfıra eşit ya da büyük olmalı."
+      not_found: "bulunamadı."
       rules:
         copy_workflow_from:
           workflow_missing: "has no own workflow."
         custom_field:
           format_not_supported: "format '%{field_format}' is unsupported."
         item:
-          root_item: "cannot be a root item."
-          not_persisted: "must be an already existing item."
+          root_item: "bir kök öğe olamaz."
+          not_persisted: "zaten var olan bir öğe olmalıdır."
         label:
-          not_unique: "must be unique within the same hierarchy level."
+          not_unique: "aynı hiyerarşi seviyesi içinde benzersiz olmalıdır."
         short:
-          not_unique: "must be unique within the same hierarchy level."
+          not_unique: "aynı hiyerarşi seviyesi içinde benzersiz olmalıdır."
         parent:
           not_descendant: "must be a descendant of the hierarchy root."
-      str?: "must be a string."
-      type?: "must be %{type}."
     rules:
       copy_workflow_from: "Type for workflow copy"
-      enabled: "Enabled"
-      depth: "Depth"
-      item: "Item"
-      label: "Label"
+      enabled: "Etkin"
+      depth: "Derinlik"
+      item: "Öğe"
+      label: "Etiket"
       score: "Score"
-      short: "Short name"
-      parent: "Parent"
+      short: "Kısa adı"
+      parent: "Üst"
       blueprint: "Pattern blueprint"
   global_search:
     title:
@@ -439,7 +429,7 @@ tr:
     lists:
       active: "Aktif projeler"
       my: "Projelerim"
-      favorited: "Favorite projects"
+      favored: "Favori projeler"
       archived: "Arşivlenmiş projeler"
       shared: "Paylaşılan proje listeleri"
       my_lists: "Proje listem"
@@ -605,6 +595,9 @@ tr:
         token/api:
           title: "The API token has been generated"
           warning: "This is the only time you will see this token. Make sure to copy it now."
+      errors:
+        token_name_blank: "Lütfen API anahtarı için bir ad girin"
+        token_name_in_use: "Bu API anahtarı adı kullanılmaktadır, lütfen başka bir tane seçin"
       failed_to_reset_token: "Erişim anahtarı sıfırlaması başarısız oldu: %{error}"
       failed_to_create_token: "Erişim anahtarı oluşturması başarısız oldu: %{error}"
       failed_to_revoke_token: "Failed to revoke access token: %{error}"
@@ -1023,8 +1016,6 @@ tr:
         active_user_count_restriction: "Active users"
       enterprise_trial:
         company: "Şirket"
-      favorite:
-        favorited: "Item"
       grids/grid:
         page: "Sayfa"
         row_count: "Satır sayısı"
@@ -1151,8 +1142,6 @@ tr:
         is_readonly: "İş paketi salt okunur"
         excluded_from_totals: "Hiyerarşideki toplamların hesaplanmasından hariç tut"
         default_done_ratio: "Tamamlanma yüzdesi"
-      token/named:
-        token_name: "Token name"
       token/ical:
         calendar: "Takvim"
         ical_token_query_assignment: "Sorgu ataması"
@@ -1385,8 +1374,6 @@ tr:
           only_one_trial: "Only one trial token can be active. Please delete the previous trial token before adding another."
           unreadable: "okunamıyor. Desteklenen bir destek anahtarı olduğuna emin misiniz?"
           already_added: "This token has already been added."
-        favorite:
-          already_favorited: "has already been favorited."
         grids/grid:
           overlaps: "üst üste gelmek."
           outside: "Grup dışında görünmektedir."
@@ -1637,11 +1624,9 @@ tr:
         version:
           undeletable_archived_projects: "Eklenmiş iş paketleri olduğu için sürüm silinemez."
           undeletable_work_packages_attached: "Eklenmiş iş paketleri olduğu için sürüm silinemez."
-        token/named:
+        token/api:
           attributes:
             token_name:
-              blank: "Please provide a token name"
-              in_use: "This token name is already in use, please select a different one"
               format: "%{message}"
       template:
         body: "Lütfen aşağıdaki alanları kontrol edin:"
@@ -1761,7 +1746,6 @@ tr:
     attachments: "Ekler"
     actor: "Aktör"
     action: "Eylem"
-    api_key: "API key"
     author: "Sahibi"
     avatar: "Avatar"
     base: "Genel Hata:"
@@ -2303,9 +2287,6 @@ tr:
   enumeration_reported_project_statuses: "Bildirilen proje durumları"
   enumeration_caption_order_changed: "Sıralama başarıyla değiştirildi."
   enumeration_could_not_be_moved: "Numaralandırma taşınamadı."
-  enterprise_trials:
-    dialog_component:
-      title: Enterprise Trial
   error_auth_source_sso_failed: "Çoklu oturum açma (SSO) için kullanıcı '%{value}' başarısız oldu"
   error_can_not_archive_project: "Bu proje arşivlenemiyor: %{errors}"
   error_can_not_delete_entry: "Girdi silinemiyor"
@@ -2557,11 +2538,6 @@ tr:
             line_4: Improved meeting participants dialog.
             line_5: Improved budget handling in project queries and budget planning.
             line_6: Updated Home and Project overview page.
-        "16_5":
-          new_features_title: >
-            The release contains various new features and improvements, such as:
-          new_features_list:
-            line_0: New features and improvements coming soon. Keep checking back!
     links:
       upgrade_enterprise_edition: "Enterprise sürümüne yükseltin"
       postgres_migration: "Kurulumunuzu PostgreSQL'e taşıyın"
@@ -2572,8 +2548,7 @@ tr:
       shortcuts: "Kısayollar"
       blog: "OpenProject blog"
       forums: "Topluluk forumu"
-      security_alerts: "Security alerts"
-      newsletter: "Newsletter"
+      newsletter: "Güvenlik uyarıları / Haber bülteni"
   image_conversion:
     imagemagick: "Resim büyüsü"
   journals:
@@ -2655,7 +2630,7 @@ tr:
         static_token_name: "API anahtarı"
       ical:
         title: "iCalendar"
-        text_hint_link: 'iCalendar tokens allow users to [subscribe to OpenProject calendars](docs_url) and view up-to-date work package information from external clients.'
+        text_hint: 'iCalendar belirteçleri, kullanıcıların <a href="%{path}" target="_blank">OpenProject takvimlerine abone</a> olmalarını ve harici istemcilerden gelen güncel iş paketi bilgilerini görüntülemelerini sağlar.'
         disabled_text: "iCalendar abonelikleri yönetici tarafından etkinleştirilmemiştir. Bu özelliği kullanmak için lütfen yöneticinize başvurun."
         empty_text_hint: "To add an iCalendar token, subscribe to a new or existing calendar from within the Calendar module of a project. You must have the necessary permissions."
       oauth:
@@ -4032,8 +4007,6 @@ tr:
   setting_feeds_limit: "Akış içeriği sınırı"
   setting_file_max_size_displayed: "Satır içi görüntülenen maksimum metin dosyası boyutu"
   setting_host_name: "Ana bilgisayar adı"
-  setting_collaborative_editing_hocuspocus_url: "Hocuspocus server URL"
-  setting_collaborative_editing_hocuspocus_secret: "Hocuspocus server secret"
   setting_hours_per_day: "Gün başına saat"
   setting_hours_per_day_explanation: >-
     Bu, süreyi gün ve saat olarak görüntülerken neyin "gün" olarak kabul edildiğini tanımlar (örneğin, bir gün 8 saat ise, 32 saat 4 gün olacaktır).

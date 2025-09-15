@@ -195,9 +195,10 @@ pt-BR:
     ldap_auth_failed: "Não foi possível autenticar com o servidor LDAP."
     sync_failed: "Não foi possível sincronizar do LDAP: %{message}."
     back_to_index: "Clique aqui para voltar para a lista de conexão."
-    technical_warning: |
-      This LDAP form requires technical knowledge of your LDAP / Active Directory setup.
-      [Please visit our documentation for detailed instructions](docs_url).
+    technical_warning_html: |
+      Este formulário LDAP requer conhecimento técnico da sua configuração LDAP / Active Directory.
+      <br>
+      <a href="https://www.openproject.org/help/administration/manage-ldap-authentication/">Consulte nossa documentação para obter instruções detalhadas</a>.
     attribute_texts:
       name: Nome arbitrário da conexão LDAP
       host: Nome ou endereço IP do host LDAP
@@ -333,50 +334,39 @@ pt-BR:
       no_results_content_text: Criar um novo campo personalizado
   concatenation:
     single: "ou"
-  op_dry_validation:
-    or: "or"
+  dry_validation:
     errors:
-      array?: "must be an array."
-      decimal?: "must be a decimal."
-      defined: "must not be defined."
-      eql?: "must be equal to %{left}."
-      filled?: "must be filled."
-      greater_or_equal_zero: "must be greater or equal to 0."
-      gteq?: "must be greater than or equal to %{num}."
-      hash?: "must be a hash."
-      included_in?:
-        arg:
-          default: "must be one of: %{list}."
-          range: "must be one of: %{list_left} - %{list_right}."
-      int?: "must be an integer."
-      key?: "is missing."
-      not_found: "not found."
+      defined: "não deve ser definido."
+      int?: "deve ser um número inteiro."
+      decimal?: "deve ser um número decimal."
+      filled?: "deve ser preenchido."
+      key?: "está faltando."
+      greater_or_equal_zero: "deve ser maior ou igual a 0."
+      not_found: "não encontrado."
       rules:
         copy_workflow_from:
-          workflow_missing: "has no own workflow."
+          workflow_missing: "não possui fluxo de trabalho próprio."
         custom_field:
-          format_not_supported: "format '%{field_format}' is unsupported."
+          format_not_supported: "o formato \"%{field_format}\" não é compatível."
         item:
-          root_item: "cannot be a root item."
-          not_persisted: "must be an already existing item."
+          root_item: "não pode ser um item raiz."
+          not_persisted: "deve ser um item já existente."
         label:
-          not_unique: "must be unique within the same hierarchy level."
+          not_unique: "deve ser único dentro do mesmo nível hierárquico."
         short:
-          not_unique: "must be unique within the same hierarchy level."
+          not_unique: "deve ser único dentro do mesmo nível hierárquico."
         parent:
-          not_descendant: "must be a descendant of the hierarchy root."
-      str?: "must be a string."
-      type?: "must be %{type}."
+          not_descendant: "deve ser um descendente da raiz da hierarquia."
     rules:
-      copy_workflow_from: "Type for workflow copy"
-      enabled: "Enabled"
-      depth: "Depth"
+      copy_workflow_from: "Tipo de cópia do fluxo de trabalho"
+      enabled: "Habilitado"
+      depth: "Profundidade"
       item: "Item"
-      label: "Label"
-      score: "Score"
-      short: "Short name"
-      parent: "Parent"
-      blueprint: "Pattern blueprint"
+      label: "Rótulo"
+      score: "Pontuação"
+      short: "Nome abreviado"
+      parent: "Pai"
+      blueprint: "Esquema de padrão"
   global_search:
     title:
       all_projects: 'Pesquisar por “%{search_term}” em todos os projetos'
@@ -438,7 +428,7 @@ pt-BR:
     lists:
       active: "Projetos ativos"
       my: "Meus projetos"
-      favorited: "Favorite projects"
+      favored: "Projetos favoritos"
       archived: "Projetos arquivados"
       shared: "Listas de projetos compartilhados"
       my_lists: "Minhas listas de projetos"
@@ -604,6 +594,9 @@ pt-BR:
         token/api:
           title: "O token de API foi gerado"
           warning: "Esta é a única vez que você verá este token. Certifique-se de copiá-lo agora."
+      errors:
+        token_name_blank: "Forneça um nome para o token de API."
+        token_name_in_use: "Este nome de token de API já está em uso, escolha outro."
       failed_to_reset_token: "Falha ao redefinir o token de acesso: %{error}"
       failed_to_create_token: "Falha ao criar o token de acesso: %{error}"
       failed_to_revoke_token: "Falha ao revogar o token de acesso: %{error}"
@@ -1021,8 +1014,6 @@ pt-BR:
         active_user_count_restriction: "Usuários ativos"
       enterprise_trial:
         company: "Empresa"
-      favorite:
-        favorited: "Item"
       grids/grid:
         page: "Página"
         row_count: "Número de linhas"
@@ -1149,8 +1140,6 @@ pt-BR:
         is_readonly: "Pacote de trabalho somente leitura"
         excluded_from_totals: "Excluir do cálculo de totais na hierarquia"
         default_done_ratio: "% de conclusão"
-      token/named:
-        token_name: "Nome do token"
       token/ical:
         calendar: "Calendário"
         ical_token_query_assignment: "Atribuição de consulta"
@@ -1383,8 +1372,6 @@ pt-BR:
           only_one_trial: "Apenas um token de avaliação pode estar ativo. Exclua o token de avaliação anterior antes de adicionar outro."
           unreadable: "não pode ser lido. Tem certeza que é um token de suporte?"
           already_added: "Este token já foi adicionado."
-        favorite:
-          already_favorited: "has already been favorited."
         grids/grid:
           overlaps: "sobreposição."
           outside: "está fora da grade."
@@ -1635,11 +1622,9 @@ pt-BR:
         version:
           undeletable_archived_projects: "A versão não pode ser excluída pois tem pacotes de trabalho anexados a ela."
           undeletable_work_packages_attached: "A versão não pode ser excluída pois tem pacotes de trabalho anexados a ela."
-        token/named:
+        token/api:
           attributes:
             token_name:
-              blank: "Forneça um nome para o token"
-              in_use: "Este nome de token já está em uso, escolha outro"
               format: "%{message}"
       template:
         body: "Por favor, verifique os seguintes campos:"
@@ -1759,7 +1744,6 @@ pt-BR:
     attachments: "Anexos"
     actor: "Ator"
     action: "Ação"
-    api_key: "API key"
     author: "Autor"
     avatar: "Avatar"
     base: "Erro geral:"
@@ -2301,9 +2285,6 @@ pt-BR:
   enumeration_reported_project_statuses: "Situação de projeto comunicada"
   enumeration_caption_order_changed: "Ordem alterada com sucesso."
   enumeration_could_not_be_moved: "Enumeração não pôde ser movida."
-  enterprise_trials:
-    dialog_component:
-      title: Versão de avaliação corporativa
   error_auth_source_sso_failed: "Single Sign-On (SSO) para o usuário '%{value}' falhou"
   error_can_not_archive_project: "Este projeto não pode ser arquivado: %{errors}"
   error_can_not_delete_entry: "Não é possível excluir a entrada"
@@ -2555,11 +2536,6 @@ pt-BR:
             line_4: Diálogo de participantes da reunião aprimorado.
             line_5: Melhoria no gerenciamento de orçamento em consultas de projeto e planejamento orçamentário.
             line_6: Página inicial e visão geral do projeto atualizadas.
-        "16_5":
-          new_features_title: >
-            A versão contém diversos novos recursos e melhorias, como:
-          new_features_list:
-            line_0: Novos recursos e melhorias em breve. Continue conferindo!
     links:
       upgrade_enterprise_edition: "Atualizar para a edição Enterprise"
       postgres_migration: "Migrando sua instalação para PostgreSQL"
@@ -2570,8 +2546,7 @@ pt-BR:
       shortcuts: "Atalhos"
       blog: "Blog do OpenProject"
       forums: "Fórum da Comunidade"
-      security_alerts: "Alertas de segurança"
-      newsletter: "Boletim informativo"
+      newsletter: "Alertas de segurança / Newsletter"
   image_conversion:
     imagemagick: "Imagemagick"
   journals:
@@ -2653,7 +2628,7 @@ pt-BR:
         static_token_name: "Token de API"
       ical:
         title: "iCalendar"
-        text_hint_link: 'iCalendar tokens allow users to [subscribe to OpenProject calendars](docs_url) and view up-to-date work package information from external clients.'
+        text_hint: 'Tokens de iCalendar permitem que os usuários <a href="%{path}" target="_blank">assinem calendários do OpenProject</a> e vejam informações atualizadas dos pacotes de trabalho de clientes externos.'
         disabled_text: "As assinaturas do iCalendar não estão habilitadas pelo administrador. Entre em contato com o administrador para utilizar este recurso."
         empty_text_hint: "Para adicionar um token de iCalendário, assine um calendário novo ou existente no módulo Calendário de um projeto. Você precisa possuir as permissões necessárias."
       oauth:
@@ -4031,8 +4006,6 @@ pt-BR:
   setting_feeds_limit: "Limite de conteúdo de feed"
   setting_file_max_size_displayed: "Tamanho máximo de arquivos de texto exibidos em linha"
   setting_host_name: "Nome do servidor"
-  setting_collaborative_editing_hocuspocus_url: "URL do servidor Hocuspocus"
-  setting_collaborative_editing_hocuspocus_secret: "Segredo do servidor Hocuspocus"
   setting_hours_per_day: "Horas por dia"
   setting_hours_per_day_explanation: >-
     Isso define o que é considerado um "dia" ao exibir a duração em dias e horas (por exemplo, se um dia tem 8 horas, 32 horas serão exibidas como 4 dias).

@@ -195,9 +195,10 @@ lt:
     ldap_auth_failed: "LDAP serveryje autentifikacija nepavyko."
     sync_failed: "Nepavyko sinchronizuoti su LDAP: %{message}."
     back_to_index: "Spauskite čia, kad gryžtumėte į jungčių sąrašą."
-    technical_warning: |
+    technical_warning_html: |
       This LDAP form requires technical knowledge of your LDAP / Active Directory setup.
-      [Please visit our documentation for detailed instructions](docs_url).
+      <br>
+      <a href="https://www.openproject.org/help/administration/manage-ldap-authentication/">Please visit our documentation for detailed instructions</a>.
     attribute_texts:
       name: LDAP prisijungimui suteiktas pavadinimas
       host: LDAP serverio vardas arba IP adresas
@@ -331,23 +332,14 @@ lt:
       no_results_content_text: Sukurti naują pasirinktinį lauką
   concatenation:
     single: "arba"
-  op_dry_validation:
-    or: "or"
+  dry_validation:
     errors:
-      array?: "must be an array."
-      decimal?: "must be a decimal."
       defined: "must not be defined."
-      eql?: "must be equal to %{left}."
-      filled?: "must be filled."
-      greater_or_equal_zero: "must be greater or equal to 0."
-      gteq?: "must be greater than or equal to %{num}."
-      hash?: "must be a hash."
-      included_in?:
-        arg:
-          default: "must be one of: %{list}."
-          range: "must be one of: %{list_left} - %{list_right}."
       int?: "must be an integer."
+      decimal?: "must be a decimal."
+      filled?: "must be filled."
       key?: "is missing."
+      greater_or_equal_zero: "must be greater or equal to 0."
       not_found: "not found."
       rules:
         copy_workflow_from:
@@ -363,17 +355,15 @@ lt:
           not_unique: "must be unique within the same hierarchy level."
         parent:
           not_descendant: "must be a descendant of the hierarchy root."
-      str?: "must be a string."
-      type?: "must be %{type}."
     rules:
       copy_workflow_from: "Type for workflow copy"
-      enabled: "Enabled"
+      enabled: "Įjungtas"
       depth: "Depth"
       item: "Item"
       label: "Label"
       score: "Score"
       short: "Short name"
-      parent: "Parent"
+      parent: "Tėvas"
       blueprint: "Pattern blueprint"
   global_search:
     title:
@@ -436,7 +426,7 @@ lt:
     lists:
       active: "Aktyvūs projektai"
       my: "Mano projektai"
-      favorited: "Favorite projects"
+      favored: "Mėgstami projektai"
       archived: "Archyvuoti projektai"
       shared: "Shared project lists"
       my_lists: "Mano projektų sąrašai"
@@ -614,6 +604,9 @@ lt:
         token/api:
           title: "The API token has been generated"
           warning: "This is the only time you will see this token. Make sure to copy it now."
+      errors:
+        token_name_blank: "Please provide an API token name"
+        token_name_in_use: "This API token name is already in use, please select a different one"
       failed_to_reset_token: "Atpažinimo rakto nepavyko nustatyti iš naujo: %{error}"
       failed_to_create_token: "Failed to create access token: %{error}"
       failed_to_revoke_token: "Failed to revoke access token: %{error}"
@@ -1037,8 +1030,6 @@ lt:
         active_user_count_restriction: "Active users"
       enterprise_trial:
         company: "Kompanija"
-      favorite:
-        favorited: "Item"
       grids/grid:
         page: "Puslapis"
         row_count: "Eilučių skaičius"
@@ -1165,8 +1156,6 @@ lt:
         is_readonly: "Darbų paketas nekeičiamas"
         excluded_from_totals: "Exclude from calculation of totals in hierarchy"
         default_done_ratio: "% Complete"
-      token/named:
-        token_name: "Token name"
       token/ical:
         calendar: "Kalendorius"
         ical_token_query_assignment: "Query assignment"
@@ -1401,8 +1390,6 @@ lt:
           only_one_trial: "Only one trial token can be active. Please delete the previous trial token before adding another."
           unreadable: "neįmanoma perskaityti. Ar tai tikrai yra paramos raktas?"
           already_added: "This token has already been added."
-        favorite:
-          already_favorited: "has already been favorited."
         grids/grid:
           overlaps: "persidengia."
           outside: "yra už tinklelio."
@@ -1655,11 +1642,9 @@ lt:
         version:
           undeletable_archived_projects: "Versija negali būti pašalinta, nes prie jos yra prijungtų darbo paketų."
           undeletable_work_packages_attached: "Versija negali būti pašalinta, nes prie jos yra prijungtų darbo paketų."
-        token/named:
+        token/api:
           attributes:
             token_name:
-              blank: "Please provide a token name"
-              in_use: "This token name is already in use, please select a different one"
               format: "%{message}"
       template:
         body: "Prašome patikrinti šiuos laukelius:"
@@ -1807,7 +1792,6 @@ lt:
     attachments: "Priedai"
     actor: "Actor"
     action: "Veiksmas"
-    api_key: "API key"
     author: "Autorius"
     avatar: "Nuotrauka"
     base: "Bendroji klaida:"
@@ -2391,9 +2375,6 @@ lt:
   enumeration_reported_project_statuses: "Pranešta projekto būsena"
   enumeration_caption_order_changed: "Order successfully changed."
   enumeration_could_not_be_moved: "Enumeration could not be moved."
-  enterprise_trials:
-    dialog_component:
-      title: Enterprise Trial
   error_auth_source_sso_failed: "Bendroji autentifikacija (SSO) vartotojui „%{value}“ nepavyko"
   error_can_not_archive_project: "Projekto negalima suarchyvuoti: %{errors}"
   error_can_not_delete_entry: "Nepavyko ištrinti įrašo"
@@ -2645,11 +2626,6 @@ lt:
             line_4: Improved meeting participants dialog.
             line_5: Improved budget handling in project queries and budget planning.
             line_6: Updated Home and Project overview page.
-        "16_5":
-          new_features_title: >
-            The release contains various new features and improvements, such as:
-          new_features_list:
-            line_0: New features and improvements coming soon. Keep checking back!
     links:
       upgrade_enterprise_edition: "Pagerinti į Enterprise versiją"
       postgres_migration: "Migruojame jūsų instaliaciją į PostgreSQL"
@@ -2660,8 +2636,7 @@ lt:
       shortcuts: "Nuorodos"
       blog: "OpenProject blogas"
       forums: "Bendruomenės forumas"
-      security_alerts: "Security alerts"
-      newsletter: "Newsletter"
+      newsletter: "Saugos įspėjimai / Naujienos"
   image_conversion:
     imagemagick: "Imagemagick"
   journals:
@@ -2743,7 +2718,7 @@ lt:
         static_token_name: "API žetonas"
       ical:
         title: "iCalendar"
-        text_hint_link: 'iCalendar tokens allow users to [subscribe to OpenProject calendars](docs_url) and view up-to-date work package information from external clients.'
+        text_hint: 'iCalendar žetonai leidžia naudotojams <a href="%{path}" target="_blank">prenumeruoti OpenProject kalendorius</a> ir gauti naujausią darbų paketų informaciją išoriniuose klientuose.'
         disabled_text: "Administratorius neįjungė iCalendar prenumeratų. Prašome susisiekti su administratoriumi, kad galėtumėte naudoti šią savybę."
         empty_text_hint: "Norėdami pridėti iCalendar žetoną, prenumeruokite naują ar esamą kalendorių iš projekto kalendoriaus modulio. Jūs turite turėti reikiamas teises."
       oauth:
@@ -4123,8 +4098,6 @@ lt:
   setting_feeds_limit: "Naujienų kanalų turinio limitas"
   setting_file_max_size_displayed: "Maksimalus tekstinių failų dydis rodomas vienoje eilutėje"
   setting_host_name: "Serverio vardas"
-  setting_collaborative_editing_hocuspocus_url: "Hocuspocus server URL"
-  setting_collaborative_editing_hocuspocus_secret: "Hocuspocus server secret"
   setting_hours_per_day: "Hours per day"
   setting_hours_per_day_explanation: >-
     This defines what is considered a "day" when displaying duration in days and hours (for example, if a day is 8 hours, 32 hours would be 4 days).

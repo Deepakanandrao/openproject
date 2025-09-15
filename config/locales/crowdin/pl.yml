@@ -195,9 +195,10 @@ pl:
     ldap_auth_failed: "Nie można uwierzytelnić na serwerze LDAP."
     sync_failed: "Nie udało się zsynchronizować z usługi LDAP: %{message}."
     back_to_index: "Kliknij tutaj, aby wrócić do listy połączeń."
-    technical_warning: |
-      This LDAP form requires technical knowledge of your LDAP / Active Directory setup.
-      [Please visit our documentation for detailed instructions](docs_url).
+    technical_warning_html: |
+      Ten formularz LDAP wymaga wiedzy technicznej na temat Twojej konfiguracji usługi LDAP / Active Directory.
+      <br>
+      <a href="https://www.openproject.org/help/administration/manage-ldap-authentication/">Odwiedź naszą dokumentację, aby uzyskać szczegółowe instrukcje</a>.
     attribute_texts:
       name: Dowolna nazwa połączenia LDAP
       host: Nazwa hosta LDAP lub adres IP
@@ -331,50 +332,39 @@ pl:
       no_results_content_text: Utwórz pole użytkownika
   concatenation:
     single: "lub"
-  op_dry_validation:
-    or: "or"
+  dry_validation:
     errors:
-      array?: "must be an array."
-      decimal?: "must be a decimal."
-      defined: "must not be defined."
-      eql?: "must be equal to %{left}."
-      filled?: "must be filled."
-      greater_or_equal_zero: "must be greater or equal to 0."
-      gteq?: "must be greater than or equal to %{num}."
-      hash?: "must be a hash."
-      included_in?:
-        arg:
-          default: "must be one of: %{list}."
-          range: "must be one of: %{list_left} - %{list_right}."
-      int?: "must be an integer."
-      key?: "is missing."
-      not_found: "not found."
+      defined: "nie może być zdefiniowana."
+      int?: "musi być liczbą całkowitą."
+      decimal?: "musi być liczbą dziesiętną."
+      filled?: "musi być wypełnione."
+      key?: "brakuje."
+      greater_or_equal_zero: "musi mieć wartość większą lub równą 0."
+      not_found: "nie znaleziono."
       rules:
         copy_workflow_from:
-          workflow_missing: "has no own workflow."
+          workflow_missing: "nie ma własnego przepływu pracy."
         custom_field:
-          format_not_supported: "format '%{field_format}' is unsupported."
+          format_not_supported: "format „%{field_format}” nie jest obsługiwany."
         item:
-          root_item: "cannot be a root item."
-          not_persisted: "must be an already existing item."
+          root_item: "nie może być elementem głównym."
+          not_persisted: "musi być już istniejącym elementem."
         label:
-          not_unique: "must be unique within the same hierarchy level."
+          not_unique: "muszą być unikalne na tym samym poziomie hierarchii."
         short:
-          not_unique: "must be unique within the same hierarchy level."
+          not_unique: "muszą być unikalne na tym samym poziomie hierarchii."
         parent:
-          not_descendant: "must be a descendant of the hierarchy root."
-      str?: "must be a string."
-      type?: "must be %{type}."
+          not_descendant: "musi być potomkiem katalogu głównego hierarchii."
     rules:
-      copy_workflow_from: "Type for workflow copy"
-      enabled: "Enabled"
-      depth: "Depth"
-      item: "Item"
-      label: "Label"
-      score: "Score"
-      short: "Short name"
-      parent: "Parent"
-      blueprint: "Pattern blueprint"
+      copy_workflow_from: "Typ kopii przepływu pracy"
+      enabled: "Włączone"
+      depth: "Głębokość"
+      item: "Element"
+      label: "Etykieta"
+      score: "Wynik"
+      short: "Nazwa skrócona"
+      parent: "Element nadrzędny"
+      blueprint: "Plan wzorca"
   global_search:
     title:
       all_projects: 'Wyszukaj „%{search_term}” we wszystkich projektach'
@@ -436,7 +426,7 @@ pl:
     lists:
       active: "Aktywne projekty"
       my: "Moje projekty"
-      favorited: "Favorite projects"
+      favored: "Ulubione projekty"
       archived: "Zarchiwizowane projekty"
       shared: "Udostępnione listy projektów"
       my_lists: "Moje listy projektów"
@@ -614,6 +604,9 @@ pl:
         token/api:
           title: "Token interfejsu API został wygenerowany"
           warning: "Jest to jedyny raz, gdy zobaczysz ten token. Koniecznie skopiuj go teraz."
+      errors:
+        token_name_blank: "Podaj nazwę tokena API"
+        token_name_in_use: "Ta nazwa tokena API jest już używana, wybierz inną"
       failed_to_reset_token: "Nie można zresetować tokena dostępu: %{error}"
       failed_to_create_token: "Nie można utworzyć tokena dostępu: %{error}"
       failed_to_revoke_token: "Nie można unieważnić tokena dostępu: %{error}"
@@ -1036,8 +1029,6 @@ pl:
         active_user_count_restriction: "Aktywni użytkownicy"
       enterprise_trial:
         company: "Firma"
-      favorite:
-        favorited: "Item"
       grids/grid:
         page: "Strona"
         row_count: "Liczba wierszy"
@@ -1164,8 +1155,6 @@ pl:
         is_readonly: "Pakiet roboczy tylko do odczytu"
         excluded_from_totals: "Wyłącz z obliczania sum w hierarchii"
         default_done_ratio: "% ukończenia"
-      token/named:
-        token_name: "Nazwa tokena"
       token/ical:
         calendar: "Kalendarz"
         ical_token_query_assignment: "Przypisanie zapytania"
@@ -1400,8 +1389,6 @@ pl:
           only_one_trial: "Aktywny może być tylko jeden token próbny. Usuń poprzedni token próbny przed dodaniem kolejnego."
           unreadable: "nie można odczytać. Czy na pewno jest to token wsparcia?"
           already_added: "Ten token został już dodany."
-        favorite:
-          already_favorited: "has already been favorited."
         grids/grid:
           overlaps: "nałożenie."
           outside: "jest poza siatką."
@@ -1654,11 +1641,9 @@ pl:
         version:
           undeletable_archived_projects: "Wersji nie można usunąć, ponieważ dołączone są do niej pakiety robocze."
           undeletable_work_packages_attached: "Wersji nie można usunąć, ponieważ dołączone są do niej pakiety robocze."
-        token/named:
+        token/api:
           attributes:
             token_name:
-              blank: "Podaj nazwę tokena"
-              in_use: "Ta nazwa tokena jest już używana, wybierz inną"
               format: "%{message}"
       template:
         body: "Sprawdź następujące pola:"
@@ -1806,7 +1791,6 @@ pl:
     attachments: "Załączniki"
     actor: "Aktor"
     action: "Działanie"
-    api_key: "API key"
     author: "Autor"
     avatar: "Awatar"
     base: "Błąd ogólny:"
@@ -2390,9 +2374,6 @@ pl:
   enumeration_reported_project_statuses: "Status zgłoszonego projektu"
   enumeration_caption_order_changed: "Kolejność została zmieniona."
   enumeration_could_not_be_moved: "Nie można przenieść wyliczenia."
-  enterprise_trials:
-    dialog_component:
-      title: Wersja próbna Enterprise
   error_auth_source_sso_failed: "Pojedyncze logowanie (SSO) dla użytkownika '%{value}' nie powiodło się"
   error_can_not_archive_project: "Tego projektu nie można zarchiwizować: %{errors}"
   error_can_not_delete_entry: "Nie można usunąć wpisu"
@@ -2644,11 +2625,6 @@ pl:
             line_4: Ulepszone okno dialogowe uczestników spotkania.
             line_5: Ulepszona obsługa budżetu w zapytaniach dotyczących projektów i planowanie budżetu.
             line_6: Zaktualizowano stronę główną i stronę Przegląd projektu.
-        "16_5":
-          new_features_title: >
-            Wydanie zawiera różne nowe funkcje i ulepszenia, takie jak:
-          new_features_list:
-            line_0: Nowe funkcje i ulepszenia już wkrótce. Zaglądaj tu!
     links:
       upgrade_enterprise_edition: "Aktualizuj do wersji Enterprise"
       postgres_migration: "Migrowanie instalacji do PostgreSQL"
@@ -2659,8 +2635,7 @@ pl:
       shortcuts: "Podpowiedzi"
       blog: "Blog OpenProject"
       forums: "Forum społeczności"
-      security_alerts: "Alerty zabezpieczeń"
-      newsletter: "Newsletter"
+      newsletter: "Powiadomienia bezpieczeństwa / Newsletter"
   image_conversion:
     imagemagick: "Imagemagick"
   journals:
@@ -2742,7 +2717,7 @@ pl:
         static_token_name: "Token API"
       ical:
         title: "iCalendar"
-        text_hint_link: 'iCalendar tokens allow users to [subscribe to OpenProject calendars](docs_url) and view up-to-date work package information from external clients.'
+        text_hint: 'Tokeny iCalendar pozwalają użytkownikom <a href="%{path}" target="_blank">subskrybować kalendarze OpenProject</a> i przeglądać aktualne informacje o pakietach roboczych z klientów zewnętrznych.'
         disabled_text: "Subskrypcje iCalendar nie zostały włączone przez administratora. Aby użyć tej funkcji, skontaktuj się z administratorem."
         empty_text_hint: "Aby dodać token iCalendar, subskrybuj nowy lub istniejący kalendarz z modułu Kalendarz projektu. Musisz mieć niezbędne uprawnienia."
       oauth:
@@ -4122,8 +4097,6 @@ pl:
   setting_feeds_limit: "Feed content limit"
   setting_file_max_size_displayed: "Maksymalny rozmiar plików tekstowych wyświetlanych w treści"
   setting_host_name: "Nazwa hosta"
-  setting_collaborative_editing_hocuspocus_url: "Adres URL serwera Hocuspocus"
-  setting_collaborative_editing_hocuspocus_secret: "Klucz tajny serwera Hocuspocus"
   setting_hours_per_day: "Liczba godzin dziennie"
   setting_hours_per_day_explanation: >-
     To definiuje, co jest uważane za „dzień” podczas wyświetlania czasu trwania w dniach i godzinach (na przykład, jeśli dzień ma 8 godzin, 32 godziny będą 4 dniami).

@@ -195,9 +195,10 @@
     ldap_auth_failed: "Kan ikke autentisere mot LDAP-Server."
     sync_failed: "Kan ikke synkronisere fra LDAP: %{message}."
     back_to_index: "Klikk her for å gå tilbake til listen over tilkoblinger."
-    technical_warning: |
+    technical_warning_html: |
       This LDAP form requires technical knowledge of your LDAP / Active Directory setup.
-      [Please visit our documentation for detailed instructions](docs_url).
+      <br>
+      <a href="https://www.openproject.org/help/administration/manage-ldap-authentication/">Please visit our documentation for detailed instructions</a>.
     attribute_texts:
       name: Tabellnavn på LDAP-tilkoblingen
       host: LDAP-vertsnavn eller IP-adresse
@@ -334,23 +335,14 @@
       no_results_content_text: Opprett nytt egendefinert felt
   concatenation:
     single: "eller"
-  op_dry_validation:
-    or: "or"
+  dry_validation:
     errors:
-      array?: "must be an array."
-      decimal?: "must be a decimal."
       defined: "must not be defined."
-      eql?: "must be equal to %{left}."
-      filled?: "must be filled."
-      greater_or_equal_zero: "must be greater or equal to 0."
-      gteq?: "must be greater than or equal to %{num}."
-      hash?: "must be a hash."
-      included_in?:
-        arg:
-          default: "must be one of: %{list}."
-          range: "must be one of: %{list_left} - %{list_right}."
       int?: "must be an integer."
+      decimal?: "must be a decimal."
+      filled?: "must be filled."
       key?: "is missing."
+      greater_or_equal_zero: "must be greater or equal to 0."
       not_found: "not found."
       rules:
         copy_workflow_from:
@@ -366,17 +358,15 @@
           not_unique: "must be unique within the same hierarchy level."
         parent:
           not_descendant: "must be a descendant of the hierarchy root."
-      str?: "must be a string."
-      type?: "must be %{type}."
     rules:
       copy_workflow_from: "Type for workflow copy"
-      enabled: "Enabled"
+      enabled: "Aktivert"
       depth: "Depth"
-      item: "Item"
+      item: "Element"
       label: "Label"
       score: "Score"
       short: "Short name"
-      parent: "Parent"
+      parent: "Overordnet"
       blueprint: "Pattern blueprint"
   global_search:
     title:
@@ -439,7 +429,7 @@
     lists:
       active: "Aktive prosjekter"
       my: "Mine prosjekter"
-      favorited: "Favorite projects"
+      favored: "Favorittprosjekter"
       archived: "Arkiverte prosjekter"
       shared: "Offentlige prosjektlister"
       my_lists: "My project lists"
@@ -605,6 +595,9 @@
         token/api:
           title: "The API token has been generated"
           warning: "This is the only time you will see this token. Make sure to copy it now."
+      errors:
+        token_name_blank: "Vennligst oppgi navn på API-token"
+        token_name_in_use: "Dette API-token-navnet er allerede i bruk, velg et annet"
       failed_to_reset_token: "Tilgangstoken kunne ikke tilbakestilles: %{error}"
       failed_to_create_token: "Tilgangsnøkkelen kunne ikke opprettes: %{error}"
       failed_to_revoke_token: "Kunne ikke oppheve tilgangstoken: %{error}"
@@ -1023,8 +1016,6 @@
         active_user_count_restriction: "Active users"
       enterprise_trial:
         company: "Firma"
-      favorite:
-        favorited: "Item"
       grids/grid:
         page: "Side"
         row_count: "Antall rader"
@@ -1151,8 +1142,6 @@
         is_readonly: "Arbeidspakken er skrivebeskyttet"
         excluded_from_totals: "Unnta fra beregning av totaler i hierarki"
         default_done_ratio: "% Ferdig "
-      token/named:
-        token_name: "Token name"
       token/ical:
         calendar: "Kalender"
         ical_token_query_assignment: "Query assignment"
@@ -1385,8 +1374,6 @@
           only_one_trial: "Only one trial token can be active. Please delete the previous trial token before adding another."
           unreadable: "kan ikke leses. Er du sikker på at det er en brukerstøttenøkkel?"
           already_added: "This token has already been added."
-        favorite:
-          already_favorited: "has already been favorited."
         grids/grid:
           overlaps: "overlapp."
           outside: "er utenfor rutenett."
@@ -1637,11 +1624,9 @@
         version:
           undeletable_archived_projects: "Versjonen kan ikke slettes ettersom den har arbeidspakker knyttet til den."
           undeletable_work_packages_attached: "Versjonen kan ikke slettes ettersom den har arbeidspakker knyttet til den."
-        token/named:
+        token/api:
           attributes:
             token_name:
-              blank: "Please provide a token name"
-              in_use: "This token name is already in use, please select a different one"
               format: "%{message}"
       template:
         body: "Kontroller følgende felter:"
@@ -1761,7 +1746,6 @@
     attachments: "Vedlegg"
     actor: "Aktør"
     action: "Handling"
-    api_key: "API key"
     author: "Forfatter"
     avatar: "Profilbilde"
     base: "Generell feil:"
@@ -2303,9 +2287,6 @@
   enumeration_reported_project_statuses: "Rapportert prosjektstatus"
   enumeration_caption_order_changed: "Order successfully changed."
   enumeration_could_not_be_moved: "Enumeration could not be moved."
-  enterprise_trials:
-    dialog_component:
-      title: Enterprise Trial
   error_auth_source_sso_failed: "Single Sign-On (SSO) for bruker '%{value}' mislyktes"
   error_can_not_archive_project: "Prosjektet kan ikke arkiveres: %{errors}"
   error_can_not_delete_entry: "Kan ikke slette oppføring"
@@ -2557,11 +2538,6 @@
             line_4: Improved meeting participants dialog.
             line_5: Improved budget handling in project queries and budget planning.
             line_6: Updated Home and Project overview page.
-        "16_5":
-          new_features_title: >
-            The release contains various new features and improvements, such as:
-          new_features_list:
-            line_0: New features and improvements coming soon. Keep checking back!
     links:
       upgrade_enterprise_edition: "Oppgrader til Enterprise utgaven"
       postgres_migration: "Overføre installasjonen til PostgreSQL"
@@ -2572,8 +2548,7 @@
       shortcuts: "Snarveier"
       blog: "OpenProject blogg"
       forums: "Brukerforum"
-      security_alerts: "Security alerts"
-      newsletter: "Newsletter"
+      newsletter: "Sikkerhetsvarsler / Nyhetsbrev"
   image_conversion:
     imagemagick: "Imagemagick"
   journals:
@@ -2655,7 +2630,7 @@
         static_token_name: "API-token"
       ical:
         title: "iCalendar"
-        text_hint_link: 'iCalendar tokens allow users to [subscribe to OpenProject calendars](docs_url) and view up-to-date work package information from external clients.'
+        text_hint: 'iCalendar nøkler tillater brukere <a href="%{path}" target="_blank"> å abbonnere på OpneProject kalendere og se oppdatert informasjon om arbeidspakker fra eskterne klienter.'
         disabled_text: "iCalendar-abonnement er ikke aktivert av administratoren. Vennligst kontakt systemansvarlig for å bruke denne funksjonen."
         empty_text_hint: "For å legge til et iCalendar-nøkkel, abonnér på en ny eller eksisterende kalender fra kalender-modulen til et prosjekt. Du må ha de nødvendige tillatelsene."
       oauth:
@@ -4034,8 +4009,6 @@
   setting_feeds_limit: "Innholdsgrense for Feed"
   setting_file_max_size_displayed: "Maks størrelse på tekstfiler som vises inline"
   setting_host_name: "Vertsnavn"
-  setting_collaborative_editing_hocuspocus_url: "Hocuspocus server URL"
-  setting_collaborative_editing_hocuspocus_secret: "Hocuspocus server secret"
   setting_hours_per_day: "Timer per dag"
   setting_hours_per_day_explanation: >-
     Dette vil definere hva som anses som en "dag" når varigheten vises i dager og timer (for eksempel hvis dagen er 8 timer, vil 32 timer være 4 dager).

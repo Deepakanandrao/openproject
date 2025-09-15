@@ -88,8 +88,6 @@ sv:
     button_list_view: "Listvy"
     button_show_view: "Helskärmsläge"
     button_log_time: "Logga tid"
-    button_start_timer: "Start timer"
-    button_stop_timer: "Stop timer"
     button_more: "Mer"
     button_open_details: "Öppna detaljvyn"
     button_close_details: "Stäng detaljvyn"
@@ -434,7 +432,7 @@ sv:
     label_sort_lower: "Flytta ned"
     label_sorting: "Sortering"
     label_spent_time: "Förbrukad tid"
-    label_star_query: "Favorited"
+    label_star_query: "Föredragen"
     label_press_enter_to_save: "Tryck på enter för att spara."
     label_public_query: "Offentlig"
     label_sum: "Summa"
@@ -1104,7 +1102,6 @@ sv:
       child_work_packages:
         one: "ett barnarbetspaket"
         other: "%{count} arbetspaket barn"
-      hour_string: "%{hours} h"
       hour:
         one: "1 tim"
         other: "%{count} timmar"
