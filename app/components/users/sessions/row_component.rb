@@ -46,6 +46,10 @@ module Users
         record.is_a?(::Token::AutoLogin)
       end
 
+      def current?
+        (session? && record.current?(current_session)) || (token? && record == current_token)
+      end
+
       def browser
         return I18n.t("users.sessions.unknown_browser") unless session? || token?
 
@@ -72,7 +76,7 @@ module Users
       end
 
       def updated_at
-        if session? && record.current?(current_session)
+        if current?
           I18n.t("users.sessions.current")
         elsif token?
           helpers.format_time(record.created_at)
