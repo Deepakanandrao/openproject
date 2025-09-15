@@ -48,7 +48,7 @@ class Projects::ProjectsFiltersComponent < Filter::FilterComponent
       Queries::Filters::Shared::CustomFields::Base,
       Queries::Projects::Filters::ActiveFilter,
       Queries::Projects::Filters::CreatedAtFilter,
-      Queries::Projects::Filters::FavoredFilter,
+      Queries::Projects::Filters::FavoritedFilter,
       Queries::Projects::Filters::IdFilter,
       Queries::Projects::Filters::LatestActivityAtFilter,
       Queries::Projects::Filters::ProjectPhaseAnyFilter,
