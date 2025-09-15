@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "main": "src/index.ts",
   "scripts": {
-    "start": "node --import=tsx src/index.ts",
+    "start": "node src/index.ts",
     "lint": "eslint . --ext .ts"
   },
   "repository": {
@@ -15,20 +15,22 @@
     "url": "https://github.com/opf/op-blocknote-hocuspocus/issues"
   },
   "homepage": "https://github.com/opf/op-blocknote-hocuspocus#readme",
+  "engines": {
+    "node": ">=22.18"
+  },
   "dependencies": {
-    "@blocknote/server-util": "^0.33.0",
-    "@hocuspocus/extension-sqlite": "^3.2.2",
-    "@hocuspocus/server": "^3.2.0",
+    "@blocknote/server-util": "^0.37.0",
+    "@hocuspocus/extension-sqlite": "^3.2.3",
+    "@hocuspocus/server": "^3.2.3",
     "fast-jwt": "^6.0.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.35.0",
     "@eslint/json": "^0.13.2",
     "@stylistic/eslint-plugin-js": "^4.4.1",
-    "@types/node": "^24.3.1",
+    "@types/node": "^24.4.0",
     "eslint": "^9.35.0",
     "globals": "^16.4.0",
-    "tsx": "^4.20.5",
     "typescript-eslint": "^8.43.0"
   }
 }

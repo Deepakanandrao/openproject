@@ -1,5 +1,5 @@
 import { Server } from "@hocuspocus/server";
-import { createVerifier } from 'fast-jwt'
+import { createVerifier } from 'fast-jwt';
 import { ServerBlockNoteEditor } from "@blocknote/server-util";
 import {
   BlockNoteSchema,
@@ -15,7 +15,7 @@ if (!secret) {
 const verifyToken = createVerifier({
   key: async () => secret,
   algorithms: ['HS256'],
-})
+});
 
 const server = new Server({
   port: 1234,
@@ -45,17 +45,17 @@ const server = new Server({
   async onAuthenticate(data) {
     const { token, documentName } = data;
     if (!token) {
-      throw new Error('Unauthorized: Token missing.')
+      throw new Error('Unauthorized: Token missing.');
     }
     let tokenPayload;
     try {
-      tokenPayload = await verifyToken(token)
+      tokenPayload = await verifyToken(token);
     } catch (err) {
-      throw new Error('Unauthorized: Invalid token.')
+      throw new Error('Unauthorized: Invalid token.');
     }
     console.log('Token payload:', tokenPayload);
     if(documentName != tokenPayload.document_id) {
-      throw new Error('Unauthorized: Invalid token. This document cannot be accessed with this token.')
+      throw new Error('Unauthorized: Invalid token. This document cannot be accessed with this token.');
     }
     data.context.document_text = tokenPayload.document_text;
   },
