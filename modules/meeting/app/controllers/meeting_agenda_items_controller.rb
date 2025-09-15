@@ -249,6 +249,39 @@ class MeetingAgendaItemsController < ApplicationController
     end
   end
 
+  def move_to_section_dialog
+    respond_with_dialog MeetingAgendaItems::MoveToSectionDialogComponent.new(
+      agenda_item: @meeting_agenda_item
+    )
+  end
+
+  def move_to_section
+    meeting_agenda_item_section = @meeting_agenda_item.meeting_section
+    meeting_section = MeetingSection.find_by(id: params[:meeting_agenda_item][:meeting_section_id])
+
+    call = ::MeetingAgendaItems::UpdateService
+             .new(user: current_user, model: @meeting_agenda_item)
+             .call(meeting_section:)
+
+    if call.success?
+      old_section, current_section, section_changed = assign_drop_results(call, meeting_agenda_item_section)
+
+      if section_changed
+        move_item_to_other_section_via_turbo_stream(
+          old_section:,
+          current_section:,
+          collapsed: ActiveModel::Type::Boolean.new.cast(params[:collapsed])
+        )
+      else
+        move_item_within_section_via_turbo_stream
+      end
+    else
+      generic_call_failure_response(call)
+    end
+
+    respond_with_turbo_streams
+  end
+
   private
 
   def init_next_meeting_occurrence

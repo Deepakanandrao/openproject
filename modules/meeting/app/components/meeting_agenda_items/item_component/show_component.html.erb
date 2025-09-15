@@ -84,14 +84,12 @@
                   move_to_backlog_action_item(submenu)
                 end
 
-                move_to_section_action_item(submenu)
+                move_to_section_action_item(submenu) if in_section?
               end
 
               with_item_group(submenu) do
                 move_to_next_meeting_action_item(submenu) if move_to_next_meeting_enabled?
               end
-
-              submenu.with_divider if move_to_different_section_or_meeting_action_added?
             end
           end
 
