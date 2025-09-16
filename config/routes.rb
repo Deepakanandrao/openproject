@@ -209,9 +209,11 @@ Rails.application.routes.draw do
         resources :items, controller: "/admin/custom_fields/hierarchy/items" do
           member do
             get :deletion_dialog
+            get :change_parent_dialog
             get :new_child, action: :new
             post :new_child, action: :create
             post :move
+            post :change_parent
           end
         end
       end
