@@ -26,28 +26,15 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import { Directive, inject } from '@angular/core';
-import { AbstractWidgetComponent } from 'core-app/shared/components/grids/widgets/abstract-widget.component';
-import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
-import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { AbstractTurboWidgetComponent } from 'core-app/shared/components/grids/widgets/abstract-turbo-widget.component';
 
-@Directive()
-export abstract class AbstractTurboWidgetComponent extends AbstractWidgetComponent {
-  protected readonly currentProject = inject(CurrentProjectService);
-  protected readonly pathHelper = inject(PathHelperService);
-
-  abstract readonly frameId:string;
-  abstract readonly name:string;
-
-  protected get src():string {
-    if (this.currentProject.identifier) {
-      return this.pathHelper.projectWidgetPath(this.currentProject.identifier, this.name);
-    } else {
-      return this.pathHelper.widgetPath(this.name);
-    }
-  }
-
-  public override get isEditable():boolean {
-    return false;
-  }
+@Component({
+  templateUrl: './news-beta.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
+})
+export class WidgetNewsBetaComponent extends AbstractTurboWidgetComponent {
+  override frameId = 'grids-widgets-news-component';
+  override name = 'news';
 }
