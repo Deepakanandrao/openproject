@@ -55,7 +55,7 @@ RSpec.describe "API v3 Project favorite resource", content_type: :json do
 
     context "when project is already favorited" do
       before do
-        project.set_favored(user, favored: true)
+        project.set_favorited(user, favorited: true)
         post favorite_path
       end
 
@@ -105,7 +105,7 @@ RSpec.describe "API v3 Project favorite resource", content_type: :json do
 
   describe "DELETE /api/v3/projects/:id/favorite" do
     before do
-      project.set_favored(user, favored: true)
+      project.set_favorited(user, favorited: true)
       delete favorite_path
     end
 
@@ -116,7 +116,7 @@ RSpec.describe "API v3 Project favorite resource", content_type: :json do
 
     context "when project is not favorited" do
       before do
-        project.set_favored(user, favored: false)
+        project.set_favorited(user, favorited: false)
         delete favorite_path
       end
 

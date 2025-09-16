@@ -48,13 +48,13 @@ module API
 
           desc "Mark as favorite"
           post do
-            @favorite_object.set_favored(current_user, favored: true)
+            @favorite_object.set_favorited(current_user, favorited: true)
             status 204
           end
 
           desc "Unmark as favorite"
           delete do
-            @favorite_object.set_favored(current_user, favored: false)
+            @favorite_object.set_favorited(current_user, favorited: false)
             status 204
           end
         end
