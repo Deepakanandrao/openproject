@@ -113,7 +113,7 @@ Rails.application.routes.draw do
         put :move
         get :move_to_next_dialog, action: :move_to_next_meeting_dialog
         post :move_to_next, action: :move_to_next_meeting
-        get :move_to_section_dialog
+        put :move_to_section_dialog
         post :move_to_section
       end
     end

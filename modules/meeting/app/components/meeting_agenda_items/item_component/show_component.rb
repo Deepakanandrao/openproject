@@ -229,12 +229,15 @@ module MeetingAgendaItems
       return unless editable?
 
       menu.with_item(label: I18n.t(:label_agenda_item_move_to_section),
-                     href: move_to_section_dialog_meeting_agenda_item_path(
-                       @meeting_agenda_item.meeting,
-                       @meeting_agenda_item
-                     ),
+                     tag: :button,
                      content_arguments: {
-                       data: { controller: "async-dialog" }
+                       data: {
+                         action: "click->meetings--add-params#interceptMoveTo",
+                         href: move_to_section_dialog_meeting_agenda_item_path(
+                           @meeting_agenda_item.meeting,
+                           @meeting_agenda_item
+                         )
+                       }
                      }) do |item|
         item.with_leading_visual_icon(icon: "op-move")
       end
@@ -268,6 +271,12 @@ module MeetingAgendaItems
 
     def in_section?
       true
+    end
+
+    def visible_sections?
+      return true if @meeting.templated?
+
+      @meeting.sections.many? && @meeting.sections.first.title.blank?
     end
   end
 end

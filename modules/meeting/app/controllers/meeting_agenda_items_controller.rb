@@ -250,8 +250,10 @@ class MeetingAgendaItemsController < ApplicationController
   end
 
   def move_to_section_dialog
+    meeting = params[:current_meeting_id].present? ? Meeting.find(params[:current_meeting_id]) : @meeting_agenda_item.meeting
     respond_with_dialog MeetingAgendaItems::MoveToSectionDialogComponent.new(
-      agenda_item: @meeting_agenda_item
+      agenda_item: @meeting_agenda_item,
+      meeting:
     )
   end
 

@@ -38,6 +38,7 @@ See COPYRIGHT and LICENSE files for more details.
     dialog.with_body do
       render(
         MeetingAgendaItems::MoveToSectionFormComponent.new(
+          meeting: @meeting,
           agenda_item: @agenda_item
         )
       )
