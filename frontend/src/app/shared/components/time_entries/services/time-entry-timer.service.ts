@@ -25,7 +25,7 @@ import { StopExistingTimerModalComponent } from 'core-app/shared/components/time
 import { WorkPackageResource } from 'core-app/features/hal/resources/work-package-resource';
 import { OpModalService } from 'core-app/shared/components/modal/modal.service';
 import { HalResourceService } from 'core-app/features/hal/services/hal-resource.service';
-import { octionElement } from 'core-app/shared/helpers/op-icon-builder';
+import { octiconElement } from 'core-app/shared/helpers/op-icon-builder';
 import { clockIconData } from '@openproject/octicons-angular';
 
 @Injectable()
@@ -118,7 +118,7 @@ export class TimeEntryTimerService {
 
   private renderTimer() {
     const timerElement = document.createElement('span');
-    const icon = octionElement(clockIconData, 'xsmall');
+    const icon = octiconElement(clockIconData, 'xsmall');
     timerElement.classList.add('op-principal--timer');
     timerElement.appendChild(icon);
 

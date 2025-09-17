@@ -16,7 +16,7 @@ export function opIconElement(...classes:string[]) {
  * Return an <i> HTML element with the octicon SVG inside
  * aria-hidden=true is set
  */
-export function octionElement(iconData:any, size:'xsmall'|'small' = 'small', classes = '', title = '') {
+export function octiconElement(iconData:any, size:'xsmall'|'small' = 'small', classes = '', title = '') {
   const iconString:string = toDOMString(
     iconData, // SVG data for the icon.
     size,
