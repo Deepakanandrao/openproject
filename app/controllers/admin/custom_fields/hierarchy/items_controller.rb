@@ -33,6 +33,7 @@ module Admin
     module Hierarchy
       class ItemsController < ApplicationController
         include OpTurbo::ComponentStream
+        include Dry::Monads[:result]
 
         layout :admin_or_frame_layout
         model_object CustomField
@@ -102,12 +103,26 @@ module Admin
           redirect_to(custom_field_item_path(@custom_field, @active_item.parent), status: :see_other)
         end
 
-        def change_parent
-          permitted = params.expect(custom_field_hierarchy_forms_new_parent_form_model: [:new_parent])
-          new_parent = CustomField::Hierarchy::Item.including_children.find(permitted[:new_parent])
-          item_service.move_item(item: @active_item, new_parent:)
+        def change_parent # rubocop:disable Metrics/AbcSize
+          input = params.require(:custom_field_hierarchy_forms_new_parent_form_model).require(:new_parent)
 
-          redirect_to(custom_field_item_path(@custom_field, new_parent), status: :see_other)
+          parse_parent_input(input).bind do |new_parent|
+            validate_new_parent(new_parent).bind do
+              item_service.move_item(item: @active_item, new_parent:)
+            end
+          end.either(
+            ->(result) do
+              redirect_to(
+                custom_field_item_path(@custom_field, result.parent),
+                status: :see_other,
+                notice: I18n.t(:notice_successful_update)
+              )
+            end,
+            ->(error) do
+              render_error_flash_message_via_turbo_stream(message: error)
+              respond_with_turbo_streams(&:html)
+            end
+          )
         end
 
         def destroy
@@ -182,6 +197,24 @@ module Admin
           validation_result.errors(full: true).to_h.each do |attribute, errors|
             @active_item.errors.add(attribute, errors.join(", "))
           end
+        end
+
+        def parse_parent_input(new_parent_input)
+          case new_parent_input
+          in [new_parent]
+            input = MultiJson.load(new_parent, symbolize_keys: true)[:value]
+            new_parent = CustomField::Hierarchy::Item.including_children.find(input)
+            Success(new_parent)
+          else
+            Failure("Invalid input: #{new_parent_input}")
+          end
+        end
+
+        def validate_new_parent(new_parent)
+          return Failure(I18n.t(:notice_change_parent_same_target)) if @active_item.parent.id == new_parent.id
+          return Failure(I18n.t(:notice_change_parent_to_self)) if @active_item.id == new_parent.id
+
+          Success()
         end
 
         def find_model_object
