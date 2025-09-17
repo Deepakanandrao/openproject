@@ -29,6 +29,10 @@
 #++
 
 module Grids
+  ##
+  # An abstract base class for all Rails-rendered grid widgets.
+  #
+  # @abstract Subclass and implement {#title} to create a new widget.
   class WidgetComponent < Primer::BaseComponent
     extend Dry::Initializer
 
@@ -37,8 +41,10 @@ module Grids
 
     option :current_user, default: -> { User.current }
 
+    # @abstract Subclasses must implement this method.
+    # @return [String] a title suitable for display to users.
     def title
-      raise NotImplementedError
+      raise NotImplementedError, "#{self.class} must implement #{__method__}"
     end
 
     def widget_wrapper(**, &)
