@@ -69,7 +69,7 @@ export class FogUploadService extends OpUploadService {
 
   private prepareUpload(href:string, uploadFile:AttachmentUploadFile):Observable<PrepareUploadData> {
     const fileName = uploadFile.file.name;
-    const contentType = (uploadFile.file.type || (fileName && mime.getType(fileName)) || '' as string);
+    const contentType = uploadFile.file.type ?? (fileName && mime.getType(fileName)) ?? '';
     const metadata = {
       fileName,
       contentType,
