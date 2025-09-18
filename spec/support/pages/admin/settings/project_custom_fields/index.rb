@@ -46,10 +46,7 @@ module Pages
 
             expect(page).to have_test_selector("add-project-custom-field-attribute")
 
-            if close_dialog
-              element_in_dialog = find_test_selector("add-project-custom-field-section")
-              element_in_dialog.send_keys :escape
-            end
+            click_button "Add" if close_dialog
           end
 
           def expect_no_add_project_attribute_submenu(close_dialog: true)
@@ -59,10 +56,7 @@ module Pages
 
             expect(page).not_to have_test_selector("add-project-custom-field-attribute")
 
-            if close_dialog
-              element_in_dialog = find_test_selector("add-project-custom-field-section")
-              element_in_dialog.send_keys :escape
-            end
+            click_button "Add" if close_dialog
           end
 
           def click_to_create_new_custom_field(type)
