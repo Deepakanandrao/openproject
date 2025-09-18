@@ -28,40 +28,10 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require "spec_helper"
+class Queries::Projects::Orders::UpdatedAtOrder < Queries::Orders::Base
+  self.model = Project
 
-RSpec.describe Queries::Projects::Filters::CreatedAtFilter do
-  it_behaves_like "basic query filter" do
-    let(:class_key) { :created_at }
-    let(:type) { :datetime_past }
-    let(:model) { Project }
-    let(:attribute) { :created_at }
-    let(:values) { ["3"] }
-    let(:admin) { build_stubbed(:admin) }
-    let(:user) { build_stubbed(:user) }
-
-    describe "#available?" do
-      context "for an admin" do
-        before do
-          login_as admin
-        end
-
-        it "is true" do
-          expect(instance)
-            .to be_available
-        end
-      end
-
-      context "for non admin" do
-        before do
-          login_as user
-        end
-
-        it "is true" do
-          expect(instance)
-            .to be_available
-        end
-      end
-    end
+  def self.key
+    :updated_at
   end
 end
