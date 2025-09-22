@@ -30,7 +30,7 @@
 
 require "rails_helper"
 
-RSpec.describe Grids::Widgets::NewsComponent, type: :component do
+RSpec.describe Overviews::Widgets::NewsComponent, type: :component do
   include Rails.application.routes.url_helpers
 
   def render_component(...)
