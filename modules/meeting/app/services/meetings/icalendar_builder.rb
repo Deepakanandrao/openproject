@@ -32,11 +32,11 @@ require "icalendar/tzinfo"
 
 module Meetings
   class IcalendarBuilder
-    attr_reader :build_timezone, :calendar, :all_times, :calendar_generated_for_user
+    attr_reader :builder_internal_timezone, :calendar, :all_times, :calendar_generated_for_user
 
     def initialize(timezone:, user: User.current)
       @calendar_generated_for_user = user
-      @build_timezone = timezone
+      @builder_internal_timezone = timezone
       @calendar = build_icalendar
       @all_times = Hash.new { |hash, key| hash[key] = Array.new }
       @excluded_dates_cache = {}
@@ -230,7 +230,7 @@ module Meetings
       calendar_generated_for_user == user && @action_needed_from_user_as_attendee
     end
 
-    def ical_datetime(time, timezone: build_timezone)
+    def ical_datetime(time, timezone: builder_internal_timezone)
       tzid = timezone.tzinfo.canonical_identifier
 
       time_in_time_zone = time.in_time_zone(timezone)
