@@ -96,8 +96,8 @@ module Meetings
         e.sequence = recurring_meeting.template.lock_version
 
         e.rrule = recurring_meeting.schedule.rrules.first.to_ical # We currently only have one recurrence rule
-        e.dtstart = ical_datetime(recurring_meeting.template.start_time)
-        e.dtend = ical_datetime(recurring_meeting.template.end_time)
+        e.dtstart = ical_datetime(recurring_meeting.template.start_time, timezone: recurring_meeting.time_zone)
+        e.dtend = ical_datetime(recurring_meeting.template.end_time, timezone: recurring_meeting.time_zone)
         e.location = recurring_meeting.template.location.presence
         e.status = if cancelled
                      "CANCELLED"
@@ -108,7 +108,9 @@ module Meetings
         add_attendees(event: e, meeting: recurring_meeting.template)
 
         # Add all occurence dates to the dates set, so that we bake in all timezone rules correcly
-        all_times[build_timezone].push(recurring_meeting.schedule.all_occurrences.max)
+        all_times[recurring_meeting.time_zone].push(
+          recurring_meeting.schedule.all_occurrences.max.in_time_zone(recurring_meeting.time_zone)
+        )
 
         # Add exceptions for all cancelled recurrences
         set_excluded_recurrence_dates(event: e, recurring_meeting: recurring_meeting)
@@ -137,9 +139,9 @@ module Meetings
         e.last_modified = meeting.updated_at.utc
         e.sequence = meeting.lock_version
 
-        e.recurrence_id = ical_datetime(scheduled_meeting.start_time)
-        e.dtstart = ical_datetime(meeting.start_time)
-        e.dtend = ical_datetime(meeting.end_time)
+        e.recurrence_id = ical_datetime(scheduled_meeting.start_time, timezone: recurring_meeting.time_zone)
+        e.dtstart = ical_datetime(meeting.start_time, timezone: recurring_meeting.time_zone)
+        e.dtend = ical_datetime(meeting.end_time, timezone: recurring_meeting.time_zone)
         e.location = meeting.location.presence
 
         add_attendees(event: e, meeting: meeting)
@@ -228,7 +230,7 @@ module Meetings
       calendar_generated_for_user == user && @action_needed_from_user_as_attendee
     end
 
-    def ical_datetime(time, timezone = build_timezone)
+    def ical_datetime(time, timezone: build_timezone)
       tzid = timezone.tzinfo.canonical_identifier
 
       time_in_time_zone = time.in_time_zone(timezone)
@@ -290,7 +292,7 @@ module Meetings
                          .scheduled_meetings
                          .cancelled
                          .pluck(:start_time)
-                         .map { ical_datetime(it) }
+                         .map { ical_datetime(it, timezone: recurring_meeting.time_zone) }
                      end
     end
 

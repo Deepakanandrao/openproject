@@ -387,6 +387,55 @@ RSpec.describe Meetings::IcalendarBuilder,
     end
   end
 
+  context "with recurring meetings in multiple timezones" do
+    subject(:builder) { described_class.new(timezone:) }
+
+    let(:parsed_calendar) { Icalendar::Calendar.parse(builder.to_ical).first }
+
+    let(:recurring_meeting) do
+      create(:recurring_meeting,
+             start_time: Time.zone.parse("2025-08-25 09:00"),
+             iterations: 10,
+             end_after: :iterations,
+             time_zone: "Europe/Paris")
+    end
+
+    let(:other_recurring_meeting) do
+      create(:recurring_meeting,
+             start_time: Time.zone.parse("2025-08-25 09:00"),
+             iterations: 10,
+             end_after: :iterations,
+             time_zone: "America/New_York")
+    end
+
+    before do
+      builder.add_series_event(recurring_meeting: recurring_meeting)
+      builder.add_series_event(recurring_meeting: other_recurring_meeting)
+    end
+
+    it "adds timezone definitions for both timezones of recurring meetings, but not builder timezone" do
+      expect(parsed_calendar.timezones.size).to eq(2)
+      tzids = parsed_calendar.timezones.map(&:tzid)
+      expect(tzids).to contain_exactly("Europe/Paris", "America/New_York")
+      # Berlin is not included because there is no event in that timezone
+      # We only have recurring meetings, and those are not converted to the builder timezone
+    end
+
+    context "when adding another single meeting" do
+      let(:single_meeting) { create(:meeting, start_time: Time.zone.parse("2025-10-01 10:00")) }
+
+      before do
+        builder.add_single_meeting_event(meeting: single_meeting)
+      end
+
+      it "also adds the builder timezone because single meetings are converted" do
+        expect(parsed_calendar.timezones.size).to eq(3)
+        tzids = parsed_calendar.timezones.map(&:tzid)
+        expect(tzids).to contain_exactly("Europe/Paris", "America/New_York", timezone.tzinfo.canonical_identifier)
+      end
+    end
+  end
+
   context "for timezone transitions across multiple years" do
     subject(:builder) { described_class.new(timezone:) }
 
