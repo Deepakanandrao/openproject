@@ -54,6 +54,7 @@ Rails.application.configure do
       c.resource = OpenTelemetry::SDK::Resources::Resource.create(
         {
           OpenTelemetry::SemConv::Incubating::DEPLOYMENT::DEPLOYMENT_ENVIRONMENT => Rails.env,
+          OpenTelemetry::SemConv::Incubating::HOST::HOST_NAME => Socket.gethostname,
           OpenTelemetry::SemConv::Incubating::SERVICE::SERVICE_INSTANCE_ID => SecureRandom.uuid,
           OpenTelemetry::SemConv::Incubating::SERVICE::SERVICE_NAME => OpenProject::OpenTelemetry.process_type,
           OpenTelemetry::SemConv::Incubating::SERVICE::SERVICE_NAMESPACE => "openproject",
