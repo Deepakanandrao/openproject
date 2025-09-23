@@ -482,4 +482,59 @@ RSpec.describe Meetings::IcalendarBuilder,
       expect(parsed_calendar.timezones.size).to eq(1)
     end
   end
+
+  context "with mutlipple recurring meetings in different timezones" do
+    let(:project) { create(:project) }
+    let(:user) do
+      create(:user, firstname: "John", lastname: "Doe", member_with_permissions: { project => [:view_meetings] })
+    end
+
+    let(:recurring_new_york) do
+      create(:recurring_meeting,
+             uid: "ny-series-uid",
+             start_time: ActiveSupport::TimeZone["America/New_York"].parse("2025-08-25 09:00"),
+             iterations: 10,
+             project: project,
+             end_after: :iterations,
+             time_zone: "America/New_York").tap do |recurring_meeting|
+        create(:meeting_participant, :invitee, meeting: recurring_meeting.template, user: user)
+      end
+    end
+
+    let(:recurring_tokyo) do
+      create(:recurring_meeting,
+             uid: "tokyo-series-uid",
+             start_time: ActiveSupport::TimeZone["Asia/Tokyo"].parse("2025-08-25 09:00"),
+             iterations: 10,
+             project: project,
+             end_after: :iterations,
+             time_zone: "Asia/Tokyo").tap do |recurring_meeting|
+        create(:meeting_participant, :invitee, meeting: recurring_meeting.template, user: user)
+      end
+    end
+
+    subject(:builder) { described_class.new(timezone:) }
+
+    before do
+      builder.add_series_event(recurring_meeting: recurring_new_york)
+      builder.add_series_event(recurring_meeting: recurring_tokyo)
+    end
+
+    it "builds the meetings with their respective timezones" do
+      parsed_calendar = Icalendar::Calendar.parse(builder.to_ical).first
+      expect(parsed_calendar.events.size).to eq(2)
+
+      ny_event = parsed_calendar.events.find { |e| e.uid == "ny-series-uid" }
+      tokyo_event = parsed_calendar.events.find { |e| e.uid == "tokyo-series-uid" }
+
+      expect(ny_event).to be_present
+      expect(tokyo_event).to be_present
+
+      expect(ny_event.dtstart.ical_params["tzid"].first).to eq("America/New_York")
+      expect(ny_event.dtstart.value).to eq(ActiveSupport::TimeZone["America/New_York"].parse("2025-08-25 09:00"))
+
+      expect(tokyo_event.dtstart.ical_params["tzid"].first).to eq("Asia/Tokyo")
+      expect(tokyo_event.dtstart.value).to eq(ActiveSupport::TimeZone["Asia/Tokyo"].parse("2025-08-25 09:00"))
+    end
+  end
 end
