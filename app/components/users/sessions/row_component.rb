@@ -69,7 +69,7 @@ module Users
           expires = record.expires_on || (record.created_at + Setting.autologin.days)
           render(OpPrimer::RelativeTimeComponent.new(datetime: user_time_zone(expires), prefix: I18n.t(:label_on)))
         else
-          I18n.t("users.sessions.unknown")
+          I18n.t("users.sessions.browser_session")
         end
       end
 
