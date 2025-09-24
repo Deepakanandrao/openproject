@@ -125,6 +125,10 @@ class Member < ApplicationRecord
     ALLOWED_ENTITIES.include?(checked_class)
   end
 
+  def self.newest_first
+    order "#{table_name}.created_at DESC"
+  end
+
   protected
 
   attr_accessor :prune_watchers_on_destruction
