@@ -59,6 +59,11 @@ export default class InternalCommentController extends BaseController {
     this.restoreInternalState();
   }
 
+  disconnect():void {
+    super.disconnect();
+    this.rescueInternalState();
+  }
+
   onSubmitEnd(_event:CustomEvent):void {
     if (this.hasInternalCheckboxTarget) {
       this.toggleInternal();
@@ -161,6 +166,12 @@ export default class InternalCommentController extends BaseController {
     }
   }
 
+  private rescueInternalState():void {
+    if (!this.hasInternalCheckboxTarget) return;
+
+    this.persistInternalState(this.internalCheckboxTarget.checked);
+  }
+
   private restoreInternalState():void {
     if (!this.hasInternalCheckboxTarget) return;
 
@@ -170,6 +181,10 @@ export default class InternalCommentController extends BaseController {
         const isChecked = JSON.parse(storedState) as boolean;
         this.internalCheckboxTarget.checked = isChecked;
         this.setInternalStateWithoutPersistence(isChecked);
+        // Remove the stored state after restoration to ensure the internal comment state
+        // is only persisted temporarily (e.g., across a single navigation or reload).
+        // This prevents stale state from being applied unintentionally in future sessions.
+        localStorage.removeItem(this.storageKey);
       }
     } catch (error) {
       console.warn('Failed to restore internal comment state:', error);
