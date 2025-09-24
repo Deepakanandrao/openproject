@@ -32,8 +32,11 @@ module Token
   class AutoLogin < HashedToken
     include ExpirableToken
 
-    has_many :autologin_session_links, class_name: "Sessions::AutologinSessionLink", foreign_key: "token_id",
-                                       dependent: :delete_all
+    has_many :autologin_session_links,
+             class_name: "Sessions::AutologinSessionLink",
+             foreign_key: "token_id",
+             dependent: :destroy,
+             inverse_of: :token
 
     ##
     # Set validity time for autologin tokens
