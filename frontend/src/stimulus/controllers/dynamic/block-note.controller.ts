@@ -71,10 +71,10 @@ export default class extends Controller {
     return React.createElement(OpBlockNoteContainer, {
       inputField: this.blockNoteInputFieldTarget,
       inputText: this.inputTextValue,
-      users: this.usersValue,
-      activeUser: this.activeUserValue,
       hocuspocusUrl: this.hocuspocusUrlValue,
       hocuspocusAccessToken: this.hocuspocusAccessTokenValue,
+      users: this.usersValue,
+      activeUser: this.activeUserValue,
       documentName: this.documentNameValue,
       documentId: this.documentIdValue,
       openProjectUrl: this.openProjectUrlValue,

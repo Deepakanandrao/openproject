@@ -29,11 +29,7 @@
  */
 
 import { BlockNoteSchema, defaultBlockSpecs, filterSuggestionItems } from '@blocknote/core';
-import {
-    DefaultThreadStoreAuth,
-    User,
-    YjsThreadStore,
-} from '@blocknote/core/comments';
+import { User } from '@blocknote/core/comments';
 import { BlockNoteView } from '@blocknote/mantine';
 import { getDefaultReactSlashMenuItems, SuggestionMenuController, useCreateBlockNote } from '@blocknote/react';
 import { HocuspocusProvider } from '@hocuspocus/provider';
@@ -65,10 +61,10 @@ const detectTheme = ():OpColorMode => { return window.OpenProject.theme.detectOp
 
 export default function OpBlockNoteContainer({ inputField,
                                                inputText,
-                                               users,
-                                               activeUser,
                                                hocuspocusUrl,
                                                hocuspocusAccessToken,
+                                               users,
+                                               activeUser,
                                                documentName,
                                                openProjectUrl }:OpBlockNoteContainerProps) {
   const [isLoading, setIsLoading] = useState(true);
@@ -76,7 +72,6 @@ export default function OpBlockNoteContainer({ inputField,
   initOpenProjectApi({ baseUrl: openProjectUrl});
 
   let collaboration:any;
-  let comments:any;
   const collaborationEnabled = Boolean(hocuspocusUrl && documentName && hocuspocusAccessToken && activeUser);
   let hocuspocusProvider:HocuspocusProvider | null = null;
   let threadStore:any;
@@ -99,14 +94,6 @@ export default function OpBlockNoteContainer({ inputField,
       },
       showCursorLabels: 'activity'
     };
-    threadStore = new YjsThreadStore(
-      activeUser.id,
-      doc.getMap('threads'),
-      new DefaultThreadStoreAuth(activeUser.id, 'editor'),
-    );
-    comments = {
-      threadStore: threadStore,
-    };
   }
 
   let editor:any;
@@ -120,7 +107,6 @@ export default function OpBlockNoteContainer({ inputField,
         resolveUsers,
         collaboration,
         schema,
-        comments
       },
       [activeUser, threadStore]
     );
