@@ -28,23 +28,21 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require "spec_helper"
+module Sessions
+  class AutologinSessionLink < ApplicationRecord
+    belongs_to :token, class_name: "Token::AutoLogin"
+    belongs_to :session, class_name: "Sessions::UserSession"
 
-RSpec.describe Token::Base do
-  let(:user) { build(:user) }
+    before_destroy :delete_sessions
 
-  subject { described_class.new user: }
+    private
 
-  it "creates" do
-    subject.save!
-    expect(subject.value.length).to eq(64)
-  end
-
-  it "create_should_remove_existing_tokenses" do
-    subject.save!
-    t2 = described_class.create(user:)
-    expect(subject.value).not_to eq(t2.value)
-    expect(described_class.exists?(subject.id)).to be false
-    expect(described_class.exists?(t2.id)).to be true
+    ##
+    # When the session link is destroyed (because the autologin token got destroyed),
+    # linked sessions should be destroyed. As the sessions table is unlogged for performance reasons,
+    # we cannot use a foreign key on_delete constraint but have to do it manually here.
+    def delete_sessions
+      Sessions::UserSession.where(id: session_id).delete_all
+    end
   end
 end
