@@ -50,9 +50,12 @@ class EnterpriseTokensController < ApplicationController
     saved_encoded_token = @token.encoded_token
     @token.encoded_token = params[:enterprise_token][:encoded_token]
     if @token.save
-      flash[:notice] = t(:notice_successful_update)
       respond_to do |format|
-        format.html { redirect_to action: :index, status: :see_other }
+        format.html do
+          flash[:notice] = t(:notice_successful_update)
+          token_saved_flash if EnterpriseToken.one?
+          redirect_to action: :index, status: :see_other
+        end
         format.json { head :no_content }
       end
     else
