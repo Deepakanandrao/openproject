@@ -65,14 +65,19 @@ export default class InternalCommentController extends BaseController {
   }
 
   onSubmitEnd(_event:CustomEvent):void {
-    if (this.hasInternalCheckboxTarget) {
-      this.toggleInternal();
-    }
+    this.updateInternalState({ persist: false });
   }
 
-  toggleInternal():void {
+  updateInternalState({ persist = true } = {}):void {
+    if (!this.hasInternalCheckboxTarget) return;
+
     const isChecked = this.internalCheckboxTarget.checked;
-    this.setInternalStateWithPersistence(isChecked);
+
+    if (persist) {
+      this.setInternalStateWithPersistence(isChecked);
+    } else {
+      this.setInternalStateWithoutPersistence(isChecked);
+    }
 
     if (isChecked) {
       void this.sanitizeInternalMentions();
