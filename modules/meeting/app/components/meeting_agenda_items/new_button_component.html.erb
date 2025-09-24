@@ -10,7 +10,7 @@
         label: t("activerecord.models.meeting_agenda_item"),
         tag: :a,
         content_arguments: {
-          href: new_meeting_agenda_item_path(@meeting, type: "simple", meeting_section_id: @meeting_section&.id),
+          href: new_meeting_agenda_item_path(@meeting, type: "simple", meeting_section_id: @meeting_section&.id, current_occurrence: @current_occurrence),
           data: { "turbo-stream": true }
         }
       )
@@ -18,7 +18,7 @@
         label: t("activerecord.models.work_package"),
         tag: :a,
         content_arguments: {
-          href: new_meeting_agenda_item_path(@meeting, type: "work_package", meeting_section_id: @meeting_section&.id),
+          href: new_meeting_agenda_item_path(@meeting, type: "work_package", meeting_section_id: @meeting_section&.id, current_occurrence: @current_occurrence),
           data: { "turbo-stream": true }
         }
       )

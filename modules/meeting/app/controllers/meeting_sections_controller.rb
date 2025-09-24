@@ -171,6 +171,7 @@ class MeetingSectionsController < ApplicationController
   end
 
   def clear_backlog
+    current_occurrence = Meeting.find_by(id: params[:current_occurrence])
     errors = []
     meeting_section = @meeting.backlog
     @meeting.backlog.agenda_items.each do |item|
@@ -181,14 +182,15 @@ class MeetingSectionsController < ApplicationController
       errors << call.errors unless call.success?
     end
 
-    update_section_via_turbo_stream(collapsed: true, meeting_section:)
+    update_section_via_turbo_stream(collapsed: true, meeting_section:, current_occurrence: current_occurrence)
     render_error_flash_message_via_turbo_stream(message: t("text_backlog_clear_error")) if errors.any?
 
     respond_with_turbo_streams
   end
 
   def clear_backlog_dialog
-    respond_with_dialog MeetingSections::Backlogs::ClearBacklogDialogComponent.new(@meeting)
+    current_occurrence = Meeting.find_by(id: params[:current_occurrence])
+    respond_with_dialog MeetingSections::Backlogs::ClearBacklogDialogComponent.new(@meeting, current_occurrence:)
   end
 
   private

@@ -36,13 +36,14 @@ module MeetingAgendaItems
     include OpPrimer::ComponentHelpers
     include Redmine::I18n
 
-    def initialize(meeting_agenda_item:, first_and_last: [])
+    def initialize(meeting_agenda_item:, first_and_last: [], current_occurrence: nil)
       super
 
       @meeting_agenda_item = meeting_agenda_item
       @meeting = meeting_agenda_item.meeting
       @series = @meeting.recurring_meeting
       @first_and_last = first_and_last
+      @current_occurrence = current_occurrence
     end
 
     def wrapper_uniq_by
@@ -101,7 +102,8 @@ module MeetingAgendaItems
       return unless editable?
 
       menu.with_item(label: t("label_edit"),
-                     href: edit_meeting_agenda_item_path(@meeting_agenda_item.meeting, @meeting_agenda_item),
+                     href: edit_meeting_agenda_item_path(@meeting_agenda_item.meeting, @meeting_agenda_item,
+                                                         current_occurrence: @current_occurrence),
                      content_arguments: {
                        data: { "turbo-stream": true }
                      }) do |item|
@@ -112,7 +114,7 @@ module MeetingAgendaItems
     def add_note_action_item(menu)
       menu.with_item(label: t("label_agenda_item_add_notes"),
                      href: edit_meeting_agenda_item_path(@meeting_agenda_item.meeting, @meeting_agenda_item,
-                                                         display_notes_input: true),
+                                                         display_notes_input: true, current_occurrence: @current_occurrence),
                      content_arguments: {
                        data: { "turbo-stream": true }
                      }) do |item|
@@ -123,7 +125,8 @@ module MeetingAgendaItems
     def add_outcome_action_item(menu)
       menu.with_item(label: t("label_agenda_item_add_outcome"),
                      href: new_meeting_outcome_path(@meeting_agenda_item.meeting,
-                                                    meeting_agenda_item_id: @meeting_agenda_item&.id),
+                                                    meeting_agenda_item_id: @meeting_agenda_item&.id,
+                                                    current_occurrence: @current_occurrence),
                      content_arguments: {
                        data: { "turbo-stream": true }
                      }) do |item|
@@ -151,8 +154,8 @@ module MeetingAgendaItems
       menu.with_item(
         label: t(:label_agenda_item_move_to_next),
         href: move_to_next_dialog_meeting_agenda_item_path(@meeting_agenda_item.meeting,
-                                                    @meeting_agenda_item,
-                                                    datetime: next_date.iso8601),
+                                                           @meeting_agenda_item,
+                                                           datetime: next_date.iso8601),
         content_arguments: {
           data: { controller: "async-dialog" }
         }
@@ -176,7 +179,8 @@ module MeetingAgendaItems
       label = @meeting_agenda_item.work_package_id.present? ? wp_agenda_item_delete_label : t(:text_destroy)
       menu.with_item(label:,
                      scheme: :danger,
-                     href: meeting_agenda_item_path(@meeting_agenda_item.meeting, @meeting_agenda_item),
+                     href: meeting_agenda_item_path(@meeting_agenda_item.meeting, @meeting_agenda_item,
+                                                    current_occurrence: @current_occurrence),
                      form_arguments: {
                        method: :delete, data: { turbo_confirm: t(:text_are_you_sure), "turbo-stream": true }
                      }) do |item|
@@ -190,8 +194,12 @@ module MeetingAgendaItems
 
     def move_action_item(menu, move_to, label_text, icon)
       menu.with_item(label: label_text,
-                     href: move_meeting_agenda_item_path(@meeting_agenda_item.meeting, @meeting_agenda_item,
-                                                         move_to:),
+                     href: move_meeting_agenda_item_path(
+                       @meeting_agenda_item.meeting,
+                       @meeting_agenda_item,
+                       move_to:,
+                       current_occurrence: @current_occurrence
+                     ),
                      form_arguments: {
                        method: :put, data: { "turbo-stream": true }
                      }) do |item|
