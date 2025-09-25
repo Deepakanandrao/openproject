@@ -5,8 +5,8 @@ export interface Document {
 }
 
 export interface OpenProjectApiConfiguration {
-  apiUrl: string;
-  token: string;
+  apiUrl?: string;
+  token?: string;
 }
 
 export interface ApiResponseDocument {
