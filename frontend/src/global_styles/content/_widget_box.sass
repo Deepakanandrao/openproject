@@ -42,6 +42,9 @@ $widget-box--enumeration-width: 20px
       display: flex
       flex-direction: column
 
+      &_full-width
+        flex-basis: 100%
+
     .widget-box--enumeration,
     .widget-box--arrow-links,
     .widget-box--feature-list
@@ -119,6 +122,11 @@ $widget-box--enumeration-width: 20px
     overflow-y: hidden
     display: block
 
+  &.-no-padding
+    padding-right: 0
+    padding-bottom: 0
+    padding-left: 0
+
   &.-allow-inner-overflow
     .wiki
       overflow-y: auto
@@ -183,6 +191,21 @@ $widget-box--enumeration-width: 20px
 
   .toolbar--editable-toolbar
     height: 20px
+
+.op-widget-box--rows
+  margin: 0
+
+.op-widget-box--row
+  padding: var(--stack-padding-normal)
+  list-style-type: none /* To account for applying Box component to a list */
+  border-top: var(--borderWidth-thin) solid var(--borderColor-muted)
+
+  &:first-of-type
+    border-top: none
+
+  &:last-of-type
+    border-bottom-right-radius: var(--borderRadius-medium)
+    border-bottom-left-radius: var(--borderRadius-medium)
 
 .widget-box--arrow-links
   list-style: none
