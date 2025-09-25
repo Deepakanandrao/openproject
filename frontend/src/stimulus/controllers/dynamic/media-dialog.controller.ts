@@ -43,6 +43,9 @@ export default class MediaDialogController extends Controller<HTMLDialogElement>
         console.error('Video failed to load in dialog context:', event);
       });
 
+      // Try setting autoplay now
+      target.autoplay = true;
+
       // Force reload the video source to work around Firefox dialog issues
       target.load();
     });
