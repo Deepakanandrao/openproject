@@ -1,7 +1,7 @@
 import { Extension } from "@hocuspocus/server";
 import { createVerifier } from 'fast-jwt';
 import type { onAuthenticatePayload, onLoadDocumentPayload, onStoreDocumentPayload } from "@hocuspocus/server";
-import type { OpenProjectApiConfiguration } from "../types";
+import type { ApiResponseDocument, OpenProjectApiConfiguration } from "../types";
 import * as Y from "yjs";
 
 const secret = process.env.SECRET;
@@ -13,7 +13,7 @@ if (!secret) {
 const verifyToken = createVerifier({ key: async () => secret, algorithms: ['HS256'] });
 
 // my local dev env key, it's not a leak :)
-const RAW_KEY = "cf58c5077dc4e3b36c474e59711f069f2d52e940c2fd1999ad073fa36e6693ca";
+const RAW_KEY = "9e4cb47e0b0dbe407dddd6d022314ee3f9ac147856a15cc3d6d55b2e54fd2fa6";
 const API_KEY = Buffer.from(`apikey:${RAW_KEY}`, "utf-8").toString("base64");
 
 export class OpenProjectApi implements Extension {
@@ -52,12 +52,13 @@ export class OpenProjectApi implements Extension {
   async onLoadDocument(data: onLoadDocumentPayload) {
     const { documentId } = data.context;
 
-    const targetUrl = `${this.configuration.apiUrl}/api/v3/documents/${documentId}/content_binary`;
+    const targetUrl = `${this.configuration.apiUrl}/api/v3/documents/${documentId}`;
     console.log(`GET ${targetUrl}`);
+
     const response = await fetch(targetUrl, {
       method: "GET",
       headers: {
-        "Content-Type": "application/octet-stream",
+        "Content-Type": "application/json",
         "Authorization": `Basic ${API_KEY}`,
       },
     });
@@ -67,8 +68,11 @@ export class OpenProjectApi implements Extension {
       return;
     }
 
-    const update = new Uint8Array(await response.arrayBuffer());
-    Y.applyUpdate(data.document, update);
+    const jsonData = await response.json() as ApiResponseDocument;
+    if (jsonData.contentBinary) {
+      const update = new Uint8Array(Buffer.from(jsonData.contentBinary, 'base64'));
+      Y.applyUpdate(data.document, update);
+    }
   }
 
   /**
@@ -77,15 +81,20 @@ export class OpenProjectApi implements Extension {
   async onStoreDocument(data: onStoreDocumentPayload): Promise<void> {
     const { documentId } = data.context;
 
-    const targetUrl = `${this.configuration.apiUrl}/api/v3/documents/${documentId}/content_binary`;
-    console.log(`PUT ${targetUrl}`);
+    const targetUrl = `${this.configuration.apiUrl}/api/v3/documents/${documentId}`;
+    console.log(`PATCH ${targetUrl}`);
+
+    const base64Data = Buffer.from(Y.encodeStateAsUpdate(data.document)).toString("base64");
+
     const response = await fetch(targetUrl, {
-      method: "PUT",
+      method: "PATCH",
       headers: {
-        "Content-Type": "application/octet-stream",
+        "Content-Type": "application/json",
         "Authorization": `Basic ${API_KEY}`,
       },
-      body: Buffer.from(Y.encodeStateAsUpdate(data.document)),
+      body: JSON.stringify({
+        content_binary: base64Data
+      }),
     });
 
     if (!response.ok) {

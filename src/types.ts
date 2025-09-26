@@ -22,6 +22,7 @@ export interface ApiResponseDocument {
     raw: string,
     html: string,
   },
+  contentBinary: string,
   createdAt: string,
   updatedAt: string,
 }

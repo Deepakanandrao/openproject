@@ -93,12 +93,14 @@ describe("OpenProjectApi", () => {
       const sourceDoc = new Y.Doc();
       const text = sourceDoc.getText('content');
       text.insert(0, 'test content');
-      const validUpdate = Y.encodeStateAsUpdate(sourceDoc);
+      const base64Update = Buffer.from(Y.encodeStateAsUpdate(sourceDoc)).toString('base64');
 
       fetchMock.mockResolvedValueOnce({
         ok: true,
         status: 200,
-        arrayBuffer: () => Promise.resolve(validUpdate.buffer),
+        json: () => Promise.resolve({
+          contentBinary: base64Update
+        }),
       });
 
       const document = new Y.Doc();
@@ -111,11 +113,11 @@ describe("OpenProjectApi", () => {
       await api.onLoadDocument(data);
 
       expect(fetchMock).toHaveBeenCalledWith(
-        "https://test.api/api/v3/documents/121/content_binary",
+        "https://test.api/api/v3/documents/121",
         {
           method: "GET",
           headers: {
-            "Content-Type": "application/octet-stream",
+            "Content-Type": "application/json",
             "Authorization": expect.stringContaining("Basic "),
           },
         }
@@ -180,14 +182,16 @@ describe("OpenProjectApi", () => {
       await api.onStoreDocument(data);
 
       expect(fetchMock).toHaveBeenCalledWith(
-        "https://test.api/api/v3/documents/121/content_binary",
+        "https://test.api/api/v3/documents/121",
         {
-          method: "PUT",
+          method: "PATCH",
           headers: {
-            "Content-Type": "application/octet-stream",
+            "Content-Type": "application/json",
             "Authorization": expect.stringContaining("Basic "),
           },
-          body: Buffer.from(Y.encodeStateAsUpdate(data.document)),
+          body: JSON.stringify({
+            content_binary: Buffer.from(Y.encodeStateAsUpdate(data.document)).toString("base64")
+          }),
         }
       );
     });
