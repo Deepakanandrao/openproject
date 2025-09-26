@@ -50,8 +50,8 @@ $widget-box--enumeration-width: 20px
     .widget-box--feature-list
       flex-grow: 2
 
-  &.-vertical
-    flex-flow: column wrap
+    &.-align-boxes-start
+      align-items: start
 
   .icon-context:before
     padding-right: 5px
@@ -67,7 +67,6 @@ $widget-box--enumeration-width: 20px
   .widget-box
     position: relative
     @include widget-box--style
-    min-height: 250px
     word-wrap: break-word
     overflow: hidden
 

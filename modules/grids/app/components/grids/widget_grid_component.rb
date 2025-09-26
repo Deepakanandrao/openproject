@@ -34,7 +34,7 @@ module Grids
       build_widget(widget_class, *widget_args, **system_arguments)
     }
 
-    def initialize(**system_arguments)
+    def initialize(align_boxes_start: false, **system_arguments)
       super()
 
       @system_arguments = system_arguments
@@ -42,7 +42,8 @@ module Grids
       @system_arguments[:classes] = class_names(
         @system_arguments[:classes],
         "widget-boxes",
-        "-flex"
+        "-flex",
+        "-align-boxes-start" => align_boxes_start
       )
     end
 
