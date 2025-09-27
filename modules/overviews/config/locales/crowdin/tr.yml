@@ -1,12 +1,15 @@
 tr:
   overviews:
-    label_home: "%{workspace_type} home"
-    label_dashboard: "Dashboard"
-    label_overview: 'Overview'
+    label_home: "%{workspace_type} ev"
+    label_dashboard: "Gösterge paneli"
+    label_overview: 'Genel Bakış'
     widgets:
       subitems:
-        in_this_portfolio: "In this portfolio"
-        in_this_program: "In this program"
-        in_this_project: "In this project"
-        no_visible_children: "There are no visible children."
+        in_this_portfolio: "Bu portföyde"
+        in_this_program: "Bu programda"
+        in_this_project: "Bu projede"
+        no_visible_children: "Görünürde hiç çocuk yok."
+      members:
+        title: "Latest members"
+        view_all_members: "View all members"
   permission_manage_overview: 'Genel bakış sayfasını yönet'
