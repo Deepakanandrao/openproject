@@ -10,6 +10,6 @@ tr:
         in_this_project: "Bu projede"
         no_visible_children: "Görünürde hiç çocuk yok."
       members:
-        title: "Latest members"
+        title: "Son üyeler"
         view_all_members: "View all members"
   permission_manage_overview: 'Genel bakış sayfasını yönet'
