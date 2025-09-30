@@ -123,7 +123,7 @@ Rails.application.routes.draw do
         get :clear_backlog_dialog
       end
       member do
-        get :cancel_edit
+        post :cancel_edit
         put :drop
         put :move
       end

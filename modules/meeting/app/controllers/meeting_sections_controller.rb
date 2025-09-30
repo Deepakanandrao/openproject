@@ -35,6 +35,7 @@ class MeetingSectionsController < ApplicationController
   before_action :set_meeting
   before_action :set_meeting_section,
                 except: %i[create clear_backlog clear_backlog_dialog]
+  before_action :set_collapsed_state, only: %i[create cancel_edit destroy]
   before_action :authorize
 
   def create # rubocop:disable Metrics/AbcSize
@@ -54,6 +55,8 @@ class MeetingSectionsController < ApplicationController
       update_section_via_turbo_stream(force_wrapper: true, state: :edit)
       # update the section header of the previously last section in order to ensure the action menu move options are updated
       update_section_header_via_turbo_stream(meeting_section: @meeting.sections.last(2).first) if @meeting.sections.count > 1
+      # update backlog to ensure move actions match meeting content
+      update_backlog_via_turbo_stream(meeting: @meeting, collapsed: @collapsed)
       update_new_button_via_turbo_stream(disabled: true)
       update_header_component_via_turbo_stream
     else
@@ -82,6 +85,9 @@ class MeetingSectionsController < ApplicationController
       update_section_header_via_turbo_stream(state: :show)
       update_new_button_via_turbo_stream(disabled: false)
     end
+
+    # update backlog to ensure move actions match meeting content
+    update_backlog_via_turbo_stream(meeting: @meeting, collapsed: @collapsed)
 
     respond_with_turbo_streams
   end
@@ -119,6 +125,8 @@ class MeetingSectionsController < ApplicationController
       update_new_button_via_turbo_stream(disabled: false)
       # update all section headers in order to ensure the action menu move options are updated
       update_section_headers_via_turbo_stream
+      # update backlog to ensure move actions match meeting content
+      update_backlog_via_turbo_stream(meeting: @meeting, collapsed: @collapsed)
       update_header_component_via_turbo_stream
     else
       generic_call_failure_response(call)
@@ -212,6 +220,10 @@ class MeetingSectionsController < ApplicationController
 
   def set_meeting_section
     @meeting_section = MeetingSection.find(params[:id])
+  end
+
+  def set_collapsed_state
+    @collapsed = ActiveModel::Type::Boolean.new.cast(params[:collapsed])
   end
 
   def meeting_section_params
