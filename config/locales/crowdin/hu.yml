@@ -642,6 +642,7 @@ hu:
       title: "Munkamenet-kezelés"
       instructions: "You are logged in to your account through the following devices. Revoke sessions that you do not recognise or from devices you do not control."
       may_not_delete_current: "Az aktuális munkamenetet nem törölheti."
+      deletion_warning: "Are you sure you want to revoke this session? You will be logged out on this device."
     groups:
       member_in_these_groups: "A felhasználó a következő csoportoknak a tagja:"
       no_results_title_text: A falhasználó egyik csoportnak se a tagja
@@ -1037,7 +1038,7 @@ hu:
       enterprise_trial:
         company: "Cég"
       favorite:
-        favorited: "Item"
+        favorited: "Favorited"
       grids/grid:
         page: "Oldal"
         row_count: "Sorok száma"

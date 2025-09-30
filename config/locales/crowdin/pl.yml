@@ -652,6 +652,7 @@ pl:
       title: "Zarządzanie sesją"
       instructions: "You are logged in to your account through the following devices. Revoke sessions that you do not recognise or from devices you do not control."
       may_not_delete_current: "Nie możesz usunąć bieżącej sesji."
+      deletion_warning: "Are you sure you want to revoke this session? You will be logged out on this device."
     groups:
       member_in_these_groups: "Ten użytkownik jest obecnie członkiem następujących grup:"
       no_results_title_text: Ten użytkownik nie jest obecnie członkiem żadnej grupy.
@@ -1050,7 +1051,7 @@ pl:
       enterprise_trial:
         company: "Firma"
       favorite:
-        favorited: "Item"
+        favorited: "Favorited"
       grids/grid:
         page: "Strona"
         row_count: "Liczba wierszy"

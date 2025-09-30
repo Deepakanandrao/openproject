@@ -652,6 +652,7 @@ uk:
       title: "Керування сеансами"
       instructions: "You are logged in to your account through the following devices. Revoke sessions that you do not recognise or from devices you do not control."
       may_not_delete_current: "Ви не можете видалити поточний сеанс."
+      deletion_warning: "Are you sure you want to revoke this session? You will be logged out on this device."
     groups:
       member_in_these_groups: "Зараз цей користувач — учасник таких груп:"
       no_results_title_text: Цей користувач зараз не належить до жодної групи.
@@ -1048,7 +1049,7 @@ uk:
       enterprise_trial:
         company: "Компанія"
       favorite:
-        favorited: "Item"
+        favorited: "Favorited"
       grids/grid:
         page: "Сторінка"
         row_count: "Кількість рядків"

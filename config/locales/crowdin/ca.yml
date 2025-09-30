@@ -640,6 +640,7 @@ ca:
       title: "Gestió de sessions"
       instructions: "You are logged in to your account through the following devices. Revoke sessions that you do not recognise or from devices you do not control."
       may_not_delete_current: "No pots eliminar la sessió actual."
+      deletion_warning: "Are you sure you want to revoke this session? You will be logged out on this device."
     groups:
       member_in_these_groups: "Aquest usuari és actualment membre dels següents grups:"
       no_results_title_text: Aquest usuari no és actualment membre de cap grup.
@@ -1035,7 +1036,7 @@ ca:
       enterprise_trial:
         company: "Empresa"
       favorite:
-        favorited: "Item"
+        favorited: "Favorited"
       grids/grid:
         page: "Pàgina"
         row_count: "Nombre de files"

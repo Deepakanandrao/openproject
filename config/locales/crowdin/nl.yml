@@ -640,6 +640,7 @@ nl:
       title: "Sessiebeheer"
       instructions: "You are logged in to your account through the following devices. Revoke sessions that you do not recognise or from devices you do not control."
       may_not_delete_current: "Je kan je huidige sessie niet verwijderen."
+      deletion_warning: "Are you sure you want to revoke this session? You will be logged out on this device."
     groups:
       member_in_these_groups: "Deze gebruiker is momenteel lid van de volgende groepen:"
       no_results_title_text: Deze gebruiker is momenteel geen lid in een groep.
@@ -1034,7 +1035,7 @@ nl:
       enterprise_trial:
         company: "Bedrijfsnaam"
       favorite:
-        favorited: "Item"
+        favorited: "Favorited"
       grids/grid:
         page: "Pagina"
         row_count: "Aantal rijen"

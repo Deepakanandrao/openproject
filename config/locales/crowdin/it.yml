@@ -641,6 +641,7 @@ it:
       title: "Gestione sessione"
       instructions: "You are logged in to your account through the following devices. Revoke sessions that you do not recognise or from devices you do not control."
       may_not_delete_current: "Non è possibile eliminare la sessione attuale."
+      deletion_warning: "Are you sure you want to revoke this session? You will be logged out on this device."
     groups:
       member_in_these_groups: "Questo utente è attualmente membro dei seguenti gruppi:"
       no_results_title_text: Questo utente al momento non è un membro di alcun gruppo.
@@ -1035,7 +1036,7 @@ it:
       enterprise_trial:
         company: "Azienda"
       favorite:
-        favorited: "Item"
+        favorited: "Favorited"
       grids/grid:
         page: "Pagina"
         row_count: "Numero di righe"

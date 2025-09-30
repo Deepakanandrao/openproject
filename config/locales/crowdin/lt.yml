@@ -652,6 +652,7 @@ lt:
       title: "Sesijos valdymas"
       instructions: "You are logged in to your account through the following devices. Revoke sessions that you do not recognise or from devices you do not control."
       may_not_delete_current: "Jūs negalite ištrinti savo dabartinės sesijos."
+      deletion_warning: "Are you sure you want to revoke this session? You will be logged out on this device."
     groups:
       member_in_these_groups: "Šis naudotojas šiuo metu yra šių grupių narys:"
       no_results_title_text: Šis naudotojas nėra jokios grupės narys.
@@ -1051,7 +1052,7 @@ lt:
       enterprise_trial:
         company: "Kompanija"
       favorite:
-        favorited: "Item"
+        favorited: "Favorited"
       grids/grid:
         page: "Puslapis"
         row_count: "Eilučių skaičius"

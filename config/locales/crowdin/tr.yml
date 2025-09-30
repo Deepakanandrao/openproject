@@ -644,6 +644,7 @@ tr:
       title: "Oturum yönetimi"
       instructions: "You are logged in to your account through the following devices. Revoke sessions that you do not recognise or from devices you do not control."
       may_not_delete_current: "Şuanki oturumunuzu silemezsiniz."
+      deletion_warning: "Are you sure you want to revoke this session? You will be logged out on this device."
     groups:
       member_in_these_groups: "Bu kullanıcı şu anda aşağıdaki grupların bir üyesidir:"
       no_results_title_text: Bu kullanıcı şu anda hiçbir gruba üye değil.
@@ -1038,7 +1039,7 @@ tr:
       enterprise_trial:
         company: "Şirket"
       favorite:
-        favorited: "Öğe"
+        favorited: "Favorited"
       grids/grid:
         page: "Sayfa"
         row_count: "Satır sayısı"

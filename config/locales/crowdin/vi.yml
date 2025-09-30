@@ -637,6 +637,7 @@ vi:
       title: "Quản lý phiên"
       instructions: "You are logged in to your account through the following devices. Revoke sessions that you do not recognise or from devices you do not control."
       may_not_delete_current: "Bạn không thể xóa phiên hiện tại của mình."
+      deletion_warning: "Are you sure you want to revoke this session? You will be logged out on this device."
     groups:
       member_in_these_groups: "Người dùng này hiện là thành viên của các nhóm sau:"
       no_results_title_text: Người dùng này hiện không phải là thành viên của nhóm nào.
@@ -1030,7 +1031,7 @@ vi:
       enterprise_trial:
         company: "Công ty"
       favorite:
-        favorited: "Item"
+        favorited: "Favorited"
       grids/grid:
         page: "Trang"
         row_count: "Số dòng"

@@ -634,6 +634,7 @@ zh-CN:
       title: "登录设备管理"
       instructions: "您已经通过以下设备登录到您的帐户。请撤销您无法识别或无法控制的设备的会话。"
       may_not_delete_current: "您不能删除当前会话。"
+      deletion_warning: "Are you sure you want to revoke this session? You will be logged out on this device."
     groups:
       member_in_these_groups: "此用户当前是以下组的成员："
       no_results_title_text: 此用户当前不是任何组的成员。
@@ -1026,7 +1027,7 @@ zh-CN:
       enterprise_trial:
         company: "公司"
       favorite:
-        favorited: "条目"
+        favorited: "Favorited"
       grids/grid:
         page: "页"
         row_count: "行数"

@@ -649,6 +649,7 @@ ro:
       title: "Gestionarea sesiunii"
       instructions: "You are logged in to your account through the following devices. Revoke sessions that you do not recognise or from devices you do not control."
       may_not_delete_current: "Nu poți șterge sesiunea curentă."
+      deletion_warning: "Are you sure you want to revoke this session? You will be logged out on this device."
     groups:
       member_in_these_groups: "Acest utilizator este în prezent membru al următoarelor grupuri:"
       no_results_title_text: Acest utilizator nu este în prezent membru în niciun grup.
@@ -1046,7 +1047,7 @@ ro:
       enterprise_trial:
         company: "Companie"
       favorite:
-        favorited: "Element"
+        favorited: "Favorited"
       grids/grid:
         page: "Pagină"
         row_count: "Număr de rânduri"

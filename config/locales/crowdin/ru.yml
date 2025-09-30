@@ -654,6 +654,7 @@ ru:
       title: "Управление сессиями"
       instructions: "You are logged in to your account through the following devices. Revoke sessions that you do not recognise or from devices you do not control."
       may_not_delete_current: "Вы не можете удалить ваш текущий сеанс."
+      deletion_warning: "Are you sure you want to revoke this session? You will be logged out on this device."
     groups:
       member_in_these_groups: "Этот пользователь в настоящее время является членом следующих групп:"
       no_results_title_text: Этот пользователь в настоящее время не является членом какой-либо группы.
@@ -1052,7 +1053,7 @@ ru:
       enterprise_trial:
         company: "Компания"
       favorite:
-        favorited: "Элемент"
+        favorited: "Favorited"
       grids/grid:
         page: "Страница"
         row_count: "Количество строк"
