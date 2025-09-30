@@ -22,7 +22,7 @@ module Saml
         format.turbo_stream do
           component = Saml::Providers::ViewComponent.new(@provider,
                                                          view_mode: :edit,
-                                                         edit_mode: @edit_mode,
+                                                         new_mode: @new_mode,
                                                          edit_state: @edit_state)
           update_via_turbo_stream(component:)
           scroll_into_view_via_turbo_stream("saml-providers-edit-form", behavior: :instant)
@@ -53,10 +53,10 @@ module Saml
       @provider = call.result
 
       if call.success?
-        if @edit_mode || @provider.last_metadata_update.present?
+        if @new_mode || @provider.last_metadata_update.present?
           redirect_to edit_saml_provider_path(@provider,
                                               anchor: "saml-providers-edit-form",
-                                              edit_mode: @edit_mode,
+                                              new_mode: @new_mode,
                                               edit_state: :configuration)
         else
           redirect_to saml_provider_path(@provider)
@@ -90,7 +90,7 @@ module Saml
         .call(update_params)
 
       if call.success?
-        flash[:notice] = I18n.t(:notice_successful_update) unless @edit_mode
+        flash[:notice] = I18n.t(:notice_successful_update) unless @new_mode
         successful_save_response
       else
         @provider = call.result
@@ -122,7 +122,7 @@ module Saml
           update_via_turbo_stream(
             component: Saml::Providers::ViewComponent.new(
               @provider,
-              edit_mode: @edit_mode,
+              new_mode: @new_mode,
               edit_state: @next_edit_state,
               view_mode: :show
             )
@@ -130,10 +130,10 @@ module Saml
           render turbo_stream: turbo_streams
         end
         format.html do
-          if @edit_mode && @next_edit_state
+          if @new_mode && @next_edit_state
             redirect_to edit_saml_provider_path(@provider,
                                                 anchor: "saml-providers-edit-form",
-                                                edit_mode: true,
+                                                new_mode: @new_mode,
                                                 edit_state: @next_edit_state)
           else
             redirect_to saml_provider_path(@provider)
@@ -187,7 +187,7 @@ module Saml
 
     def set_edit_state
       @edit_state = params[:edit_state].to_sym if params.key?(:edit_state)
-      @edit_mode = ActiveRecord::Type::Boolean.new.cast(params[:edit_mode])
+      @new_mode = ActiveRecord::Type::Boolean.new.cast(params[:new_mode])
       @next_edit_state = params[:next_edit_state].to_sym if params.key?(:next_edit_state)
     end
   end
