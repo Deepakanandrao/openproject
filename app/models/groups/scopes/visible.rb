@@ -33,12 +33,24 @@ module Groups::Scopes
     extend ActiveSupport::Concern
 
     class_methods do
-      def visible(current_user = User.current)
-        if current_user.allowed_in_any_project?(:view_all_principals)
-          Group.all
+      ##
+      # Returns the groups visible to the given user.
+      # which is either all groups (if the user has the `view_all_principals` permission)
+      # or the following conditions:
+      # - groups that are members of a project the user can view members of
+      # - groups that the user themselves is a member of
+      def visible(user = User.current)
+        if user.allowed_globally?(:view_all_principals)
+          all
         else
-          Group
-            .in_project(Project.allowed_to(current_user, :view_members))
+          # Always use subqueries with unscoped to avoid join conflicts
+          where(
+            id: Group.unscoped.in_visible_project(user).select(:id)
+          ).or(
+            where(
+              id: Group.unscoped.containing_user(user).select(:id)
+            )
+          )
         end
       end
     end
