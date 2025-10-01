@@ -1029,7 +1029,7 @@ ja:
       enterprise_trial:
         company: "会社"
       favorite:
-        favorited: "Favorited"
+        favorited: "Item"
       grids/grid:
         page: "ページ"
         row_count: "行数"

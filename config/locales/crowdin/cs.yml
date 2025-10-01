@@ -1055,7 +1055,7 @@ cs:
       enterprise_trial:
         company: "Společnost"
       favorite:
-        favorited: "Favorited"
+        favorited: "Item"
       grids/grid:
         page: "Stránka"
         row_count: "Počet řádků"

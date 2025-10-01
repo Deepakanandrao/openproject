@@ -1047,7 +1047,7 @@ ro:
       enterprise_trial:
         company: "Companie"
       favorite:
-        favorited: "Favorited"
+        favorited: "Element"
       grids/grid:
         page: "Pagină"
         row_count: "Număr de rânduri"

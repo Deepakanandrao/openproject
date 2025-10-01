@@ -1027,7 +1027,7 @@ zh-CN:
       enterprise_trial:
         company: "公司"
       favorite:
-        favorited: "Favorited"
+        favorited: "条目"
       grids/grid:
         page: "页"
         row_count: "行数"

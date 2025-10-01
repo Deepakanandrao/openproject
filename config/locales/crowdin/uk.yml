@@ -1049,7 +1049,7 @@ uk:
       enterprise_trial:
         company: "Компанія"
       favorite:
-        favorited: "Favorited"
+        favorited: "Item"
       grids/grid:
         page: "Сторінка"
         row_count: "Кількість рядків"

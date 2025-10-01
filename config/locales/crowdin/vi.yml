@@ -1031,7 +1031,7 @@ vi:
       enterprise_trial:
         company: "Công ty"
       favorite:
-        favorited: "Favorited"
+        favorited: "Item"
       grids/grid:
         page: "Trang"
         row_count: "Số dòng"

@@ -1027,7 +1027,7 @@ zh-TW:
       enterprise_trial:
         company: "公司"
       favorite:
-        favorited: "Favorited"
+        favorited: "項目"
       grids/grid:
         page: "頁面"
         row_count: "列數"

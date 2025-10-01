@@ -335,7 +335,7 @@ de:
     errors:
       unknown: "Ein unbekannter Fehler ist aufgetreten. Bitte überprüfen Sie die Formel für diesen berechneten Wert."
       mathematical: "Bei der Berechnung ist ein mathematischer Fehler aufgetreten."
-      missing_value: Das Attribut "%{custom_field_name}" wird für diesen Berechneten Wert benötigt, ist aber leer.
+      missing_value: Das Attribut "%{custom_field_name}" wird für diesen berechneten Wert benötigt, ist aber leer.
       disabled_value: Das Attribut "%{custom_field_name}" wird für diesen berechneten Wert benötigt, ist aber leer.
   concatenation:
     single: "oder"
@@ -640,7 +640,7 @@ de:
       title: "Sitzungsverwaltung"
       instructions: "Sie sind über die folgenden Geräte bei Ihrem Konto angemeldet. Widerrufen Sie Sitzungen, die Sie nicht kennen oder von Geräten, die Sie nicht kontrollieren."
       may_not_delete_current: "Sie können Ihre aktuelle Sitzung nicht löschen."
-      deletion_warning: "Are you sure you want to revoke this session? You will be logged out on this device."
+      deletion_warning: "Sind Sie sicher, dass Sie diese Sitzung widerrufen möchten? Sie werden auf diesem Gerät abgemeldet."
     groups:
       member_in_these_groups: "Dieser Benutzer ist Mitglied der folgenden Gruppen:"
       no_results_title_text: Dieser Benutzer ist derzeit kein Mitglied in einer Gruppe.
@@ -1031,7 +1031,7 @@ de:
       enterprise_trial:
         company: "Unternehmen"
       favorite:
-        favorited: "Favorited"
+        favorited: "Favorisiert"
       grids/grid:
         page: "Seite"
         row_count: "Anzahl der Zeilen"
@@ -2578,11 +2578,11 @@ de:
           new_features_title: >
             Dieses Release enthält verschiedene neue Funktionen und Verbesserungen, wie z. B:
           new_features_list:
-            line_0: Add work packages to a meeting section in the Meetings tab.
-            line_1: Choose color mode more conveniently with “Increase contrast” checkboxes.
-            line_2: Filter projects by last update.
-            line_3: Jump to highlighted target elements from deep links.
-            line_4: Confirm critical actions with more accessible danger dialogs.
+            line_0: Fügen Sie Arbeitspakete zu einem Besprechungsabschnitt auf der Registerkarte Besprechungen hinzu.
+            line_1: Wählen Sie den Farbmodus bequemer mit den Kontrollkästchen "Kontrast erhöhen".
+            line_2: Filtern Sie Projekte nach letzter Aktualisierung.
+            line_3: Springen Sie von Deep Links zu markierten Zielelementen.
+            line_4: Bestätigen Sie kritische Aktionen mit besser zugänglichen Gefahrendialogen.
     links:
       upgrade_enterprise_edition: "Auf Enterprise Edition upgraden"
       postgres_migration: "Migration Ihrer Installation zu PostgreSQL"
