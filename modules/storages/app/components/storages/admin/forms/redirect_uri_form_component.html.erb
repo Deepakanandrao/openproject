@@ -37,7 +37,7 @@
               storage:,
               submit_button_options: {
                 disabled: submit_button_disabled? || @options[:is_complete],
-                label: I18n.t('storages.buttons.done_complete_setup'),
+                label: I18n.t(:button_finish_setup),
                 data: { turbo: false },
                 test_selector: 'storage-oauth-client-submit-button'
               },
