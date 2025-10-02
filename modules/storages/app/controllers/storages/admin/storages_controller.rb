@@ -176,7 +176,7 @@ module Storages
       end
 
       def confirm_destroy
-        @storage_to_destroy = @storage
+        respond_with_dialog Storages::DestroyConfirmationDialogComponent.new(storage: @storage)
       end
 
       def destroy
