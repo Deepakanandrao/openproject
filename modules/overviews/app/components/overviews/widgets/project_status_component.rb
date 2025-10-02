@@ -39,12 +39,6 @@ module Overviews
       def title
         Project.human_attribute_name(:status_code)
       end
-
-      private
-
-      def edit_enabled?
-        current_user.allowed_in_project?(:edit_project, project)
-      end
     end
   end
 end
