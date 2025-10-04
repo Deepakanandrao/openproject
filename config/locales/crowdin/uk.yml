@@ -1722,6 +1722,7 @@ uk:
         few: "Пріоритети"
         many: "Пріоритети"
         other: "Пріоритети"
+      meeting_participant: "Meeting participant"
       member: "Учасник"
       news: "Новини"
       notification:

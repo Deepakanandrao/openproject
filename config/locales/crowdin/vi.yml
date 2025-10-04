@@ -1686,6 +1686,7 @@ vi:
       group: "Nhóm"
       issue_priority:
         other: "Priorities"
+      meeting_participant: "Meeting participant"
       member: "Thành viên"
       news: "Tin tức"
       notification:

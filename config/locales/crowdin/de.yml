@@ -1692,6 +1692,7 @@ de:
       issue_priority:
         one: "Priorität"
         other: "Prioritäten"
+      meeting_participant: "Meeting participant"
       member: "Mitglied"
       news: "Neuigkeiten"
       notification:

@@ -1685,6 +1685,7 @@ ja:
       group: "グループ"
       issue_priority:
         other: "優先度"
+      meeting_participant: "Meeting participant"
       member: "メンバー"
       news: "ニュース"
       notification:

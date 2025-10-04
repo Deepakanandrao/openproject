@@ -1697,6 +1697,7 @@ es:
       issue_priority:
         one: "Prioridad"
         other: "Prioridades"
+      meeting_participant: "Meeting participant"
       member: "Miembro"
       news: "Noticias"
       notification:

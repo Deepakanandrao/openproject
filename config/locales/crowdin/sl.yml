@@ -1727,6 +1727,7 @@ sl:
         two: "Priorities"
         few: "Priorities"
         other: "Priorities"
+      meeting_participant: "Meeting participant"
       member: "Član"
       news: "Novice"
       notification:

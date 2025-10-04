@@ -1686,6 +1686,7 @@ ko:
       group: "그룹"
       issue_priority:
         other: "우선 순위"
+      meeting_participant: "Meeting participant"
       member: "멤버"
       news: "뉴스"
       notification:

@@ -1714,6 +1714,7 @@ ro:
         one: "Prioritate"
         few: "Priorități"
         other: "Priorități"
+      meeting_participant: "Meeting participant"
       member: "Membru"
       news: "Noutăţi"
       notification:

@@ -1682,6 +1682,7 @@ zh-CN:
       group: "组"
       issue_priority:
         other: "优先事项"
+      meeting_participant: "Meeting participant"
       member: "成员"
       news: "新闻"
       notification:
