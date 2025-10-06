@@ -58,10 +58,6 @@ class CustomValue::HierarchyStrategy < CustomValue::ARObjectStrategy
     CustomField::Hierarchy::Item
   end
 
-  def ar_object(value)
-    CustomField::Hierarchy::Item.find_by(id: value.to_s)
-  end
-
   def persistence_service
     @persistence_service ||= CustomFields::Hierarchy::HierarchicalItemService.new
   end

@@ -47,11 +47,10 @@ class CustomValue::ListStrategy < CustomValue::ARObjectStrategy
   end
 
   def ar_object(value)
-    option = CustomOption.find_by(id: value.to_s)
-    if option.nil?
-      "#{value} #{I18n.t(:label_not_found)}"
-    else
+    if (option = super)
       option.value
+    else
+      "#{value} #{I18n.t(:label_not_found)}"
     end
   end
 end

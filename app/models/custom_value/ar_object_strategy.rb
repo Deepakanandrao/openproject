@@ -71,7 +71,7 @@ class CustomValue::ARObjectStrategy < CustomValue::FormatStrategy
     raise NotImplementedError
   end
 
-  def ar_object(_value)
-    raise NotImplementedError
+  def ar_object(value)
+    ar_class.find_by(id: value)
   end
 end
