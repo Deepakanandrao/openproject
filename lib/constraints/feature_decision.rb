@@ -28,43 +28,14 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Overviews
-  class PageHeaderComponent < ApplicationComponent
-    extend Dry::Initializer
-
-    include ApplicationHelper
-    include Redmine::I18n
-
-    option :project
-    option :current_user, default: -> { User.current }
-
-    private
-
-    def breadcrumb_items
-      [
-        { href: project_path(project), text: project.name, skip_for_mobile: true },
-        page_title
-      ]
+module Constraints
+  class FeatureDecision
+    def initialize(flag_name)
+      @flag_name = flag_name
     end
 
-    def page_title
-      if OpenProject::FeatureDecisions.new_project_overview_active?
-        I18n.t("overviews.label_home", workspace_type: project.workspace_label)
-      else
-        I18n.t("overviews.label_overview")
-      end
-    end
-
-    def favorited?
-      project.favorited_by?(current_user)
-    end
-
-    def allowed_to_select_project_custom_fields?
-      current_user.allowed_in_project?(:select_project_custom_fields, project)
-    end
-
-    def allowed_to_archive?
-      current_user.allowed_in_project?(:archive_project, project)
+    def matches?(...)
+      OpenProject::FeatureDecisions.public_send(:"#{@flag_name}_active?")
     end
   end
 end
