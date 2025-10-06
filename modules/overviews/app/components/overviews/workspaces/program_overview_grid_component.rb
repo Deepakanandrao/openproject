@@ -29,14 +29,20 @@
 #++
 
 module Overviews
-  class OverviewGridComponent < ApplicationComponent
-    include ApplicationHelper
-    include OpPrimer::ComponentHelpers
+  module Workspaces
+    class ProgramOverviewGridComponent < ApplicationComponent
+      include ApplicationHelper
+      include OpPrimer::ComponentHelpers
 
-    def initialize(project:)
-      super
+      def initialize(program:)
+        super
 
-      @project = project
+        @program = program
+      end
+
+      def render?
+        @program.program?
+      end
     end
   end
 end

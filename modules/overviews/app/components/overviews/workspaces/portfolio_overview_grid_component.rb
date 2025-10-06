@@ -29,14 +29,20 @@
 #++
 
 module Overviews
-  class OverviewGridComponent < ApplicationComponent
-    include ApplicationHelper
-    include OpPrimer::ComponentHelpers
+  module Workspaces
+    class PortfolioOverviewGridComponent < ApplicationComponent
+      include ApplicationHelper
+      include OpPrimer::ComponentHelpers
 
-    def initialize(project:)
-      super
+      def initialize(portfolio:)
+        super
 
-      @project = project
+        @portfolio = portfolio
+      end
+
+      def render?
+        @portfolio.portfolio?
+      end
     end
   end
 end
