@@ -40,7 +40,7 @@ class WorkPackages::ActivitiesTabController < ApplicationController
   before_action :find_journal, only: %i[edit cancel_edit update toggle_reaction]
   before_action :set_filter
   before_action :authorize
-  before_action :initialize_pagination, only: %i[index page_streams update_filter update_sorting]
+  before_action :initialize_pagination, only: %i[index page_streams]
 
   def index
     render(
@@ -378,6 +378,7 @@ class WorkPackages::ActivitiesTabController < ApplicationController
   end
 
   def replace_whole_tab
+    initialize_pagination # re-initialize pagination to pick up changes to sorting/filtering
     replace_via_turbo_stream(
       component: WorkPackages::ActivitiesTab::IndexComponent.new(
         work_package: @work_package,
@@ -390,6 +391,7 @@ class WorkPackages::ActivitiesTabController < ApplicationController
   end
 
   def update_index_component
+    initialize_pagination # re-initialize pagination to pick up changes to sorting/filtering
     update_via_turbo_stream(
       component: WorkPackages::ActivitiesTab::Journals::IndexComponent.new(
         work_package: @work_package,
