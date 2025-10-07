@@ -3,14 +3,14 @@ sidebar_navigation:
   title: PM² Project Management Methodology Guide - OpenProject
   priority: 954
 description: Additional information and application guidelines for using OpenProject in PM² projects.
-keywords: PM² 
+keywords: PM²
 ---
 
-# PM² Project Management Methodology 
+# PM² Project Management Methodology
 
 Version 3.1, December 2023.
 
-![PM² Open Project Management Methodology](pm²-opmm.png)
+![PM² Open Project Management Methodology](pm2-opmm.png)
 
 Additional information and hands-on application guidelines for using OpenProject in PM² projects.
 
