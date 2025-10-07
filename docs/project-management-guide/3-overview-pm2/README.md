@@ -2,10 +2,10 @@
 sidebar_navigation:
   title: 3 Overview of the PM² Methodology
   priority: 850
-description: Presents the House of PM² framework and explains its four pillars: Governance, Lifecycle, Processes, and Artefacts, all supported by PM² Mindsets. It introduces the four project lifecycle phases (Initiating, Planning, Executing, Closing) and explains tailoring to different project contexts.
+description: "Presents the House of PM² framework and explains its four pillars: Governance, Lifecycle, Processes, and Artefacts, all supported by PM² Mindsets. It introduces the four project lifecycle phases (Initiating, Planning, Executing, Closing) and explains tailoring to different project contexts."
 ---
 
-# 3 Overview of the PM² Methodology 
+# 3 Overview of the PM² Methodology
 
 ## 3.1 The House of PM²
 
@@ -59,7 +59,7 @@ The Business Case and Project Charter define the project's scope and direction. 
 
 At the end of the Initiating Phase, the Project Steering Committee (PSC) or other Appropriate Governance Body (AGB) reviews the above documents and decides whether to allow the project to move forward.
 
-### 3.2.2 Planning Phase 
+### 3.2.2 Planning Phase
 
 ![Planning Phase](03.02.02.png)
 
@@ -100,7 +100,7 @@ The following activities are part of the Executing Phase:
 
 Once the project deliverables have been accepted by the Project Owner (PO), the Project Manager (PM) can request approval to move on to the Closing Phase. This decision to move on is taken by the Project Steering Committee (PSC).
 
-### 3.2.4 Closing Phase 
+### 3.2.4 Closing Phase
 
 ![Closing Phase](03.02.04.png)
 
@@ -128,7 +128,7 @@ Monitor \& Control activities run throughout the project's lifecycle. During Mon
 
 
 
-### 3.2.6 Phase Gates and Approvals 
+### 3.2.6 Phase Gates and Approvals
 
 At the end of each phase, the project passes through a review and approval gate. This ensures that the project is reviewed by the appropriate people (i.e. the Project Manager (PM), Project Owner (PO), the Project Steering Committee (PSC) or other delegated role) before it moves on to the next phase. These checkpoints contribute to the overall project management quality and allow the project to proceed in a more controlled way.
 
@@ -162,7 +162,7 @@ Finally, the Closing Phase is driven by the stakeholders who evaluate the projec
 | Project Deliverables | Lists the complete set of project deliverables as defined in the Project <br> Charter and Project Work Plan. |
 | Project-End Report | Summarises the project experience, project performance and Lessons <br> Learned (successful project practices and potential pitfalls). |
 
-## 3.4 What is a PM² Project 
+## 3.4 What is a PM² Project
 
 Many PM² best practices can be applied to any type of project or work activity. However, to be able to apply the whole PM² Methodology, a project must have certain characteristics.
 
@@ -183,7 +183,7 @@ Thus, a PM² project:
 
 The number of the above characteristics, apparent in a project, drive the tailoring and customization that will have to be applied to the PM² methodology.
 
-## 3.5 PM² Mindsets 
+## 3.5 PM² Mindsets
 
 The PM² processes, artefacts, tools and techniques help project teams make decisions on trade-offs between a project's time, cost, scope and quality dimensions.
 
@@ -227,7 +227,7 @@ The PM² Mindsets:
 - are useful reminders of effective attitudes and behaviours.
 
 
-## 3.6 Tailoring and Customisation 
+## 3.6 Tailoring and Customisation
 
 To ensure that the PM² Methodology effectively serves an organisation's and a project's needs, some level of tailoring or/and customisation may be required.
 
