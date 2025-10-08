@@ -35,9 +35,13 @@ module WorkPackage::Exports
       end
 
       def format_value(value, _options = {})
-        return "" if value.nil?
+        return if value.nil?
 
-        "#{value}%"
+        (value.to_f / 100).ceil(2)
+      end
+
+      def format_options
+        { number_format: percentage_format }
       end
     end
   end

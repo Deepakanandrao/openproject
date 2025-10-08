@@ -30,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe WorkPackage::Exports::Formatters::WorkHours do
+RSpec.describe WorkPackage::Exports::Formatters::HoursXls do
   let(:formatter_instance) { described_class.new(:estimated_hours) }
 
   describe ".apply?" do
@@ -38,12 +38,20 @@ RSpec.describe WorkPackage::Exports::Formatters::WorkHours do
       expect(described_class.apply?(:estimated_hours, :csv)).to be true
     end
 
+    it "returns true for derived_estimated_hours and csv format" do
+      expect(described_class.apply?(:derived_estimated_hours, :csv)).to be true
+    end
+
     it "returns true for remaining_hours and csv format" do
       expect(described_class.apply?(:remaining_hours, :csv)).to be true
     end
 
-    it "returns false for spent_hours and csv format" do
-      expect(described_class.apply?(:spent_hours, :csv)).to be false
+    it "returns true for derived_remaining_hours and csv format" do
+      expect(described_class.apply?(:derived_remaining_hours, :csv)).to be true
+    end
+
+    it "returns true for spent_hours and csv format" do
+      expect(described_class.apply?(:spent_hours, :csv)).to be true
     end
 
     it "returns false for estimated_hours and pdf format" do
@@ -57,7 +65,7 @@ RSpec.describe WorkPackage::Exports::Formatters::WorkHours do
 
   describe "#format_options" do
     it "returns number format for hours" do
-      expect(formatter_instance.format_options).to eq({ number_format: "0.00" })
+      expect(formatter_instance.format_options).to eq({ number_format: '0.00"h"' })
     end
   end
 end

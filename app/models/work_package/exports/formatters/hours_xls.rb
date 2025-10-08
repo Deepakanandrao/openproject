@@ -30,13 +30,21 @@
 
 module WorkPackage::Exports
   module Formatters
-    class WorkHours < ::Exports::Formatters::Default
+    class HoursXls < ::Exports::Formatters::Default
+      HOUR_FIELDS = %i[estimated_hours derived_estimated_hours remaining_hours derived_remaining_hours spent_hours]
+
       def self.apply?(name, export_format)
-        %i[estimated_hours remaining_hours].include?(name.to_sym) && export_format == :csv
+        HOUR_FIELDS.include?(name.to_sym) && export_format == :csv
+      end
+
+      def format_value(value, _options)
+        # Note: Keep the value as a float, without converting it to a string. Otherwise the formatting
+        # decimal formatting will be ignored and the column will be exported as string.
+        value
       end
 
       def format_options
-        { number_format: }
+        { number_format: "#{number_format}\"h\"" } # 0.00"h"
       end
     end
   end
