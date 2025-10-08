@@ -39,19 +39,29 @@ class WorkPackages::ActivitiesTabController < ApplicationController
   before_action :find_journal, only: %i[edit cancel_edit update toggle_reaction]
   before_action :set_filter
   before_action :authorize
-  before_action :initialize_pagination, only: %i[index page_streams]
+  before_action :initialize_pagination, only: %i[page_streams]
 
   def index
-    render(
-      WorkPackages::ActivitiesTab::IndexComponent.new(
-        work_package: @work_package,
-        journals: @paginated_journals,
-        paginator: @paginator,
-        filter: @filter,
-        last_server_timestamp: get_current_server_timestamp
-      ),
-      layout: false
-    )
+    index_component =
+      if OpenProject::FeatureDecisions.wp_activity_tab_lazy_pagination_active?
+        initialize_pagination
+        WorkPackages::ActivitiesTab::LazyIndexComponent.new(
+          work_package: @work_package,
+          journals: @paginated_journals,
+          paginator: @paginator,
+          filter: @filter,
+          last_server_timestamp: get_current_server_timestamp
+        )
+      else
+        WorkPackages::ActivitiesTab::IndexComponent.new(
+          work_package: @work_package,
+          filter: @filter,
+          last_server_timestamp: get_current_server_timestamp,
+          deferred: ActiveRecord::Type::Boolean.new.cast(params[:deferred])
+        )
+      end
+
+    render(index_component, layout: false)
   end
 
   def page_streams
@@ -301,28 +311,37 @@ class WorkPackages::ActivitiesTabController < ApplicationController
   end
 
   def replace_whole_tab
-    initialize_pagination # re-initialize pagination to pick up changes to sorting/filtering
-    replace_via_turbo_stream(
-      component: WorkPackages::ActivitiesTab::IndexComponent.new(
-        work_package: @work_package,
-        journals: @paginated_journals,
-        paginator: @paginator,
-        filter: @filter,
-        last_server_timestamp: get_current_server_timestamp
-      )
-    )
+    component =
+      if OpenProject::FeatureDecisions.wp_activity_tab_lazy_pagination_active?
+        initialize_pagination # re-initialize pagination to pick up changes to sorting/filtering
+        WorkPackages::ActivitiesTab::LazyIndexComponent.new(
+          work_package: @work_package,
+          journals: @paginated_journals,
+          paginator: @paginator,
+          filter: @filter,
+          last_server_timestamp: get_current_server_timestamp
+        )
+      else
+        WorkPackages::ActivitiesTab::IndexComponent.new(
+          work_package: @work_package,
+          filter: @filter,
+          last_server_timestamp: get_current_server_timestamp
+        )
+      end
+    replace_via_turbo_stream(component:)
   end
 
   def update_index_component
-    initialize_pagination # re-initialize pagination to pick up changes to sorting/filtering
-    update_via_turbo_stream(
-      component: WorkPackages::ActivitiesTab::Journals::IndexComponent.new(
-        work_package: @work_package,
-        journals: @paginated_journals,
-        paginator: @paginator,
-        filter: @filter
-      )
-    )
+    component =
+      if OpenProject::FeatureDecisions.wp_activity_tab_lazy_pagination_active?
+        initialize_pagination # re-initialize pagination to pick up changes to sorting/filtering
+        WorkPackages::ActivitiesTab::Journals::LazyIndexComponent
+        .new(work_package: @work_package, journals: @paginated_journals, paginator: @paginator, filter: @filter)
+      else
+        WorkPackages::ActivitiesTab::Journals::IndexComponent
+          .new(work_package: @work_package, filter: @filter)
+      end
+    update_via_turbo_stream(component:)
   end
 
   def create_journal_service_call
@@ -426,12 +445,20 @@ class WorkPackages::ActivitiesTabController < ApplicationController
   end
 
   def insert_latest_journals_via_turbo_stream(journals, last_update_timestamp, emoji_reactions)
-    target_component = WorkPackages::ActivitiesTab::Journals::IndexComponent.new(
-      work_package: @work_package,
-      journals: Journal.none, # we do not need to pass any journals here since we just want the component key
-      paginator: nil,
-      filter: @filter
-    )
+    target_component =
+      if OpenProject::FeatureDecisions.wp_activity_tab_lazy_pagination_active?
+        WorkPackages::ActivitiesTab::Journals::LazyIndexComponent.new(
+          work_package: @work_package,
+          journals: Journal.none, # we do not need to pass any journals here since we just want the component key
+          paginator: nil,
+          filter: @filter
+        )
+      else
+        WorkPackages::ActivitiesTab::Journals::IndexComponent.new(
+          work_package: @work_package,
+          filter: @filter
+        )
+      end
 
     journals.where("created_at > ?", last_update_timestamp).find_each do |journal|
       insert_via_turbo_stream(
