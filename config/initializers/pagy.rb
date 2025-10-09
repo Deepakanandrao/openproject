@@ -105,7 +105,7 @@ require "pagy/extras/array"
 
 # Keyset extra: Paginate with the Pagy keyset pagination technique
 # See https://ddnexus.github.io/pagy/docs/extras/keyset
-require "pagy/extras/keyset"
+# require "pagy/extras/keyset"
 
 # Meilisearch extra: Paginate `Meilisearch` result objects
 # See https://ddnexus.github.io/pagy/docs/extras/meilisearch
