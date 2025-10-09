@@ -30,6 +30,7 @@
 
 class MembersController < ApplicationController
   include MemberHelper
+
   model_object Member
   before_action :find_model_object_and_project, except: %i[autocomplete_for_member destroy_by_principal]
   before_action :find_project_by_project_id, only: %i[autocomplete_for_member destroy_by_principal]

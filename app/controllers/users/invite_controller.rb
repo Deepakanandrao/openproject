@@ -29,6 +29,7 @@
 #++
 class Users::InviteController < ApplicationController
   include OpTurbo::ComponentStream
+  include MemberHelper
 
   authorize_with_permission :manage_members, global: true
 
@@ -75,17 +76,7 @@ class Users::InviteController < ApplicationController
   end
 
   def create_invitation
-    project = Project.find_by(id: form_model.project_id)
-
-    call = Members::BulkCreateService
-      .new(user: current_user)
-      .call(
-        project:,
-        user_id: form_model.id_or_email,
-        role_ids: [form_model.role_id],
-        notification_message: form_model.message,
-        send_notification: true
-      )
+    call = create_member_call
 
     if call.success?
       close_dialog_via_turbo_stream("##{Users::Invitation::DialogComponent::DIALOG_ID}",
@@ -95,6 +86,25 @@ class Users::InviteController < ApplicationController
     end
 
     respond_with_turbo_streams
+  end
+
+  def create_member_call
+    # Invite new user by email if needed, or use existing user ID
+    user_id = invite_new_user(form_model.id_or_email, send_notification: true)
+
+    # Create member for the user
+    if user_id.present?
+      Members::CreateService
+        .new(user: current_user)
+        .call(
+          project_id: form_model.project_id,
+          user_id:,
+          role_ids: [form_model.role_id],
+          notification_message: form_model.message
+        )
+    else
+      render_error_flash_message_via_turbo_stream(message: I18n.t("activerecord.errors.models.member.principal_blank"))
+    end
   end
 
   def form_model
