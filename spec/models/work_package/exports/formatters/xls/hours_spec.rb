@@ -63,6 +63,13 @@ RSpec.describe WorkPackage::Exports::Formatters::XLS::Hours do
     end
   end
 
+  describe "#format" do
+    it "returns the number of hours as a float" do
+      work_package = build_stubbed(:work_package, estimated_hours: 1.2)
+      expect(formatter_instance.format(work_package)).to eq(1.2)
+    end
+  end
+
   describe "#format_options" do
     it "returns number format for hours" do
       expect(formatter_instance.format_options).to eq({ number_format: '0.00"h"' })
