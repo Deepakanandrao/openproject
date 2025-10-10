@@ -11,7 +11,7 @@ import { OpenprojectModalModule } from 'core-app/shared/components/modal/modal.m
 import { InviteUserButtonModule } from 'core-app/features/invite-user-modal/button/invite-user-button.module';
 import { DynamicFormsModule } from 'core-app/shared/components/dynamic-forms/dynamic-forms.module';
 import { OpSharedModule } from 'core-app/shared/shared.module';
-import { OpInviteUserModalService } from 'core-app/features/invite-user-modal/invite-user-modal.service';
+import { OpInviteUserDialogService } from 'core-app/features/invite-user-modal/invite-user-dialog.service';
 import { InviteUserModalComponent } from './invite-user.component';
 import { ProjectSelectionComponent } from './project-selection/project-selection.component';
 import { PrincipalComponent } from './principal/principal.component';
@@ -46,7 +46,7 @@ import { SuccessComponent } from './success/success.component';
     SummaryComponent,
   ],
   providers: [
-    OpInviteUserModalService,
+    OpInviteUserDialogService,
   ],
 })
 export class OpenprojectInviteUserModalModule {

@@ -46,7 +46,7 @@ import {
   NG_VALUE_ACCESSOR,
 } from '@angular/forms';
 import { ID } from '@datorama/akita';
-import { OpInviteUserModalService } from 'core-app/features/invite-user-modal/invite-user-modal.service';
+import { OpInviteUserDialogService } from 'core-app/features/invite-user-modal/invite-user-dialog.service';
 import { HalResource } from 'core-app/features/hal/resources/hal-resource';
 import { InjectField } from 'core-app/shared/helpers/angular/inject-field.decorator';
 import { IHALCollection } from 'core-app/core/apiv3/types/hal-collection.type';
@@ -79,7 +79,7 @@ export interface IUserAutocompleteItem {
     },
     // Provide a new version of the modal invite service,
     // as otherwise the close event will be shared across all instances
-    OpInviteUserModalService,
+    OpInviteUserDialogService,
   ],
   styleUrls: ['./user-autocompleter.component.sass'],
   encapsulation: ViewEncapsulation.None,
@@ -97,7 +97,7 @@ export class UserAutocompleterComponent extends OpAutocompleterComponent<IUserAu
 
   @Output() public userInvited = new EventEmitter<HalResource>();
 
-  @InjectField(OpInviteUserModalService) opInviteUserModalService:OpInviteUserModalService;
+  @InjectField(OpInviteUserDialogService) opInviteUserDialogService:OpInviteUserDialogService;
 
   getOptionsFn = this.getAvailableUsers.bind(this);
 
@@ -111,7 +111,7 @@ export class UserAutocompleterComponent extends OpAutocompleterComponent<IUserAu
     });
 
     this
-      .opInviteUserModalService
+      .opInviteUserDialogService
       .close
       .pipe(
         this.untilDestroyed(),

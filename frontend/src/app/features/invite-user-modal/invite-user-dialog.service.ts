@@ -26,35 +26,54 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import { Injectable, EventEmitter } from '@angular/core';
+import { EventEmitter, inject, Injectable, OnDestroy } from '@angular/core';
 import { HalResource } from 'core-app/features/hal/resources/hal-resource';
 import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
-import { OpModalService } from 'core-app/shared/components/modal/modal.service';
-import { InviteUserModalComponent } from './invite-user.component';
+import { TurboRequestsService } from 'core-app/core/turbo/turbo-requests.service';
+import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
+import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
 
 /**
  * This service triggers user-invite modals to clicks on elements
  * with the attribute [invite-user-modal-augment] set.
  */
 @Injectable()
-export class OpInviteUserModalService {
+export class OpInviteUserDialogService implements OnDestroy {
   public close = new EventEmitter<HalResource|HalResource[]>();
 
-  constructor(
-    protected opModalService:OpModalService,
-    protected currentProjectService:CurrentProjectService,
-  ) {
+  protected currentProjectService = inject(CurrentProjectService);
+  turboRequests = inject(TurboRequestsService);
+  pathHelper = inject(PathHelperService);
+  apiV3Service = inject(ApiV3Service);
+
+  private closeDialogHandler:EventListener = this.handleDialogClose.bind(this);
+
+  constructor() {
+    document.addEventListener('dialog:close', this.closeDialogHandler);
+  }
+
+  ngOnDestroy():void {
+    document.removeEventListener('dialog:close', this.closeDialogHandler);
   }
 
   public open(projectId:string|null = this.currentProjectService.id) {
-    this.opModalService.show(
-      InviteUserModalComponent,
-      'global',
-      { projectId },
-    ).subscribe((modal) => modal
-      .closingEvent
-      .subscribe((modal:InviteUserModalComponent) => {
-        this.close.emit(modal.data);
-      }));
+    void this.turboRequests.request(
+      this.pathHelper.inviteUserPath(projectId),
+      { method: 'GET' },
+    );
+  }
+
+  private handleDialogClose(event:CustomEvent):void {
+    const {
+      detail: { dialog, submitted, additional },
+    } = event as { detail:{ dialog:HTMLDialogElement; submitted:boolean, additional:{ user_id:number } } };
+    if (dialog.id === 'user-invitation-dialog' && submitted) {
+      this
+        .apiV3Service
+        .principals
+        .id(additional.user_id)
+        .get()
+        .subscribe((user) => this.close.emit(user));
+    }
   }
 }

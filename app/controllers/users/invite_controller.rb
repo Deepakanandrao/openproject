@@ -83,7 +83,7 @@ class Users::InviteController < ApplicationController
     end
   end
 
-  def create_invitation
+  def create_invitation # rubocop:disable Metrics/AbcSize
     call = create_member_call
 
     if call.success?
@@ -92,7 +92,7 @@ class Users::InviteController < ApplicationController
                         project: form_model.project.name)
       )
       close_dialog_via_turbo_stream("##{Users::Invitation::DialogComponent::DIALOG_ID}",
-                                    additional: {})
+                                    additional: { user_id: call.result.user_id })
     else
       replace_via_turbo_stream(component: Users::Invitation::PrincipalStep::FormComponent.new(form_model))
     end
