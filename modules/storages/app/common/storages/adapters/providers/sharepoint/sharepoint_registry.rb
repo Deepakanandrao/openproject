@@ -81,6 +81,7 @@ module Storages
             register(:open_storage, Queries::OpenStorageQuery)
             register(:upload_link, Queries::UploadLinkQuery)
             register(:user, OneDrive::Queries::UserQuery)
+            register(:file_path_to_id_map, Queries::FilePathToIdMapQuery)
           end
         end
       end
