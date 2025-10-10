@@ -142,7 +142,13 @@ module WorkPackages::Scopes
              project_member_projects:,
              entity_member_projects_without_duplicates:,
              allowed_by_projects_and_work_packages:)
-          .from("allowed_by_projects_and_work_packages work_packages")
+          .where(<<~SQL.squish)
+            EXISTS (
+              SELECT 1
+              FROM allowed_by_projects_and_work_packages
+              WHERE work_packages.id = allowed_by_projects_and_work_packages.id
+            )
+          SQL
       end
 
       def allowed_to_admin_relation(permissions)
