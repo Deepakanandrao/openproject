@@ -44,14 +44,8 @@ module Meetings
     def show_page_data_attributes
       {
         turbo: true,
-        controller: "meetings--check-unsaved",
-        "meetings--check-unsaved-unsaved-changes-confirmation-message-value": unsaved_changes_confirmation_message
-      }
-    end
-
-    def main_content_data_attributes
-      {
-        controller: "meetings--drag-and-drop meetings--add-params"
+        controller: "meetings--drag-and-drop meetings--submit",
+        "meetings--submit-unsaved-changes-confirmation-message-value": unsaved_changes_confirmation_message
       }
     end
 

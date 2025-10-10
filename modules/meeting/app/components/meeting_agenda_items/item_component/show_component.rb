@@ -196,7 +196,7 @@ module MeetingAgendaItems
       menu.with_item(label: label_text,
                      tag: :button,
                      content_arguments: { data: {
-                       action: "click->meetings--add-params#intercept",
+                       action: "click->meetings--submit#intercept",
                        href: move_meeting_agenda_item_path(
                          @meeting_agenda_item.meeting,
                          @meeting_agenda_item,
@@ -214,7 +214,7 @@ module MeetingAgendaItems
       menu.with_item(label: I18n.t(:label_agenda_item_move_to_backlog),
                      tag: :button,
                      content_arguments: { data: {
-                       action: "click->meetings--add-params#intercept",
+                       action: "click->meetings--submit#intercept",
                        href: drop_meeting_agenda_item_path(
                          @meeting_agenda_item.meeting,
                          @meeting_agenda_item,
@@ -233,7 +233,7 @@ module MeetingAgendaItems
       menu.with_item(label: I18n.t(:label_agenda_item_move_to_current_meeting),
                      tag: :button,
                      content_arguments: { data: {
-                       action: "click->meetings--add-params#intercept",
+                       action: "click->meetings--submit#intercept",
                        href: drop_meeting_agenda_item_path(
                          @meeting_agenda_item.meeting,
                          @meeting_agenda_item,
@@ -252,7 +252,7 @@ module MeetingAgendaItems
       menu.with_item(label: I18n.t(:label_agenda_item_move_to_section),
                      tag: :button,
                      content_arguments: { data: {
-                       action: "click->meetings--add-params#intercept",
+                       action: "click->meetings--submit#intercept",
                        href: move_to_section_dialog_meeting_agenda_item_path(
                          @meeting_agenda_item.meeting,
                          @meeting_agenda_item,
