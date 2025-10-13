@@ -60,49 +60,6 @@ class Journable::HistoricActiveRecordRelation < ActiveRecord::Relation
     readonly!
   end
 
-  def add_wp_cte(arel)
-    # TODO: turn wp agnostic
-    # Add interval check into here
-    # Remove
-
-    relation = Journal
-                 .joins(<<-SQL.squish)
-                   INNER JOIN #{model.journal_class.table_name}
-                   ON "journals"."data_type" = '#{model.journal_class.name}'
-                   AND "journals"."data_id" = "#{model.journal_class.table_name}"."id"
-                 SQL
-                 .joins(<<-SQL.squish)
-                   INNER JOIN #{model.table_name}
-                   ON #{model.table_name}.id = "#{Journal.table_name}"."journable_id"
-                 SQL
-                  .select(
-                    "journals.journable_id AS id",
-                    "journals.id AS journal_id",
-                    "#{model.table_name}.created_at",
-                    "journals.updated_at",
-                    "CASE #{timestamp_case_when_statements} END as timestamp",
-                    *model.journal_class.column_names
-                          .reject { it == "id" }
-                          .map { |c| "#{model.journal_class.table_name}.#{c}" },
-                    *model.column_names_missing_in_journal.map do |missing_column_name|
-                      "null as #{missing_column_name}"
-                    end
-                  )
-
-    relation = add_timestamp_condition(relation)
-
-    work_packages_cte = Arel::Table.new(model.table_name)
-    work_packages_cte = Arel::Nodes::As.new(work_packages_cte, relation.arel)
-
-    if arel.ast.with
-      arel.ast.with.expr.unshift(work_packages_cte)
-    else
-      arel.ast.with = Arel::Nodes::With.new([work_packages_cte])
-    end
-
-    arel
-  end
-
   # Patch the `pluck` method of an active-record relation
   # so that columns callers might expect but that do not exist on the journals table are ignored.
   def pluck(*column_names)
@@ -124,6 +81,28 @@ class Journable::HistoricActiveRecordRelation < ActiveRecord::Relation
   # Patch the arel object, which is used to construct the sql query, in order
   # to modify the query to search for historic data.
   #
+  # The way this is done is by prepending a CTE to the list of possible already defined CTEs
+  # under the name of the model the historic data is queried on. The CTE will then be on the
+  # join of:
+  # * the model's data journal (for the property values at the time)
+  # * the journals table itself (for the update timestamp)
+  # * the model table (for the creation timestamp)
+  # The result is that all later statements, including later CTEs, will pick up data from that
+  # first CTE. This makes the fact that data is fetched not from the model but from the journals
+  # transparent so most queries that work on the model table just continue to work on the journals
+  # join. The only currently known exceptions to this are conditions on custom fields. That is
+  # because those should also work on the historic data and not the current one, so the statement
+  # needs to be rewritten.
+  #
+  # A statement on work packages might then look like this:
+  #
+  # WITH work_packages AS (
+  #     [SQL join on work_package_journals, journals and work_packages]
+  #   ),
+  #   other_cte AS ([...with a FROM work_packages...])
+  #
+  # SELECT * from work_packages
+
   def build_arel(connection, aliases = nil)
     relation = self
 
@@ -132,7 +111,7 @@ class Journable::HistoricActiveRecordRelation < ActiveRecord::Relation
     # Based on the previous modifications, build the algebra object.
     arel = relation.call_original_build_arel(connection, aliases)
 
-    add_wp_cte(arel)
+    add_historic_model_cte(arel)
   end
 
   def call_original_build_arel(connection, aliases = nil)
@@ -140,6 +119,57 @@ class Journable::HistoricActiveRecordRelation < ActiveRecord::Relation
   end
 
   private
+
+  def add_historic_model_cte(arel)
+    historic_models_cte = Arel::Nodes::As.new(Arel::Table.new(model.table_name),
+                                              historic_models_statement.arel)
+
+    if arel.ast.with
+      arel.ast.with.expr.unshift(historic_models_cte)
+    else
+      arel.ast.with = Arel::Nodes::With.new([historic_models_cte])
+    end
+
+    arel
+  end
+
+  def historic_models_statement
+    relation = Journal
+                 .joins(historic_models_data_journals_join)
+                 .joins(historic_models_original_models_join)
+                 .select(historic_models_selects)
+
+    add_timestamp_condition(relation)
+  end
+
+  def historic_models_data_journals_join
+    <<-SQL.squish
+      INNER JOIN #{model.journal_class.table_name}
+      ON "journals"."data_type" = '#{model.journal_class.name}'
+      AND "journals"."data_id" = "#{model.journal_class.table_name}"."id"
+    SQL
+  end
+
+  def historic_models_original_models_join
+    <<-SQL.squish
+      INNER JOIN #{model.table_name}
+      ON #{model.table_name}.id = "#{Journal.table_name}"."journable_id"
+    SQL
+  end
+
+  def historic_models_selects
+    ["journals.journable_id AS id",
+     "journals.id AS journal_id",
+     "#{model.table_name}.created_at",
+     "journals.updated_at",
+     "CASE #{timestamp_case_when_statements} END as timestamp",
+     *model.journal_class.column_names
+           .reject { it == "id" }
+           .map { |c| "#{model.journal_class.table_name}.#{c}" },
+     *model.column_names_missing_in_journal.map do |missing_column_name|
+       "null as #{missing_column_name}"
+     end]
+  end
 
   # Additional table joins can appear in the where clause, such as the custom_values table join.
   # We need to substitute the table name ("custom_values") with the journalized table name
