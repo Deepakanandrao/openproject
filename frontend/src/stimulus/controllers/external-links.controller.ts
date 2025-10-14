@@ -29,61 +29,90 @@
 import { ApplicationController } from 'stimulus-use';
 import { useMutation } from 'stimulus-use';
 
-const BLANK_LINK_QUERY = 'a[target="_blank"]';
 const BLANK_LINK_DESCRIPTION_ID = 'open-blank-target-link-description';
+const LINK_SELECTOR = 'a[href]';
 
 const isElement = (node:Node):node is Element => node.nodeType === Node.ELEMENT_NODE;
-const isBlankLink = (elem:Element):elem is HTMLAnchorElement => elem.matches(BLANK_LINK_QUERY);
+const isLink = (elem:Element):elem is HTMLAnchorElement => elem.tagName === 'A' && elem.hasAttribute('href');
 
 /**
- * Observes all external links and sets their ARIA `describedby` attribute to
- * {BLANK_LINK_DESCRIPTION_ID} - this element should exist in the DOM and
- * provide localized text content along the lines of "Open link in a new tab".
+ * Dynamically observes all links in the page, including those added later via Turbo frames or DOM mutations.
  *
- * The goal is to make users of Assistive Technology aware that they may have to
- * switch tabs on clicking a link.
+ * For external links (pointing to a different domain than the current page):
+ *   - Sets `target="_blank"` to open in a new tab.
+ *   - Sets `rel="noopener noreferrer"` for security and performance.
+ *   - Adds `aria-describedby` pointing to a description element (`BLANK_LINK_DESCRIPTION_ID`) to inform
+ *     users of assistive technologies that the link opens in a new tab.
  *
- * We consider links with a `target` attribute set to "_blank" as "external".
+ * For internal links (same domain):
+ *   - Ensures `target="_top"` and removes the `rel` attribute to keep default behavior.
+ *
+ * This ensures accessibility, security, and consistent behavior for all links, including dynamically
+ * loaded content.
  */
 export default class ExternalLinksController extends ApplicationController {
   connect() {
-    useMutation(this, { attributes: true, childList: true, subtree: true, attributeFilter: ['target'] });
+    useMutation(this, {
+      attributes: true,
+      childList: true,
+      subtree: true,
+      attributeFilter: ['target', 'href'],
+    });
 
-    // initial pass
-    document.querySelectorAll(BLANK_LINK_QUERY).forEach(applyLinkDescription);
+    // initial pass: process all links already in the DOM
+    document.querySelectorAll<HTMLAnchorElement>(LINK_SELECTOR).forEach(this.processLink);
   }
 
   mutate(mutations:MutationRecord[]) {
     mutations.forEach((mutation) => {
       mutation.addedNodes.forEach((node) => {
         if (isElement(node)) {
-          // added element itself is a blank link
-          if (isBlankLink(node)) {
-            applyLinkDescription(node);
-          }
-          // added sub-trees
-          node.querySelectorAll(BLANK_LINK_QUERY).forEach(applyLinkDescription);
+          // added node itself is a link
+          if (isLink(node)) this.processLink(node);
+          // process links in its subtree
+          node.querySelectorAll<HTMLAnchorElement>(LINK_SELECTOR).forEach(this.processLink);
         }
       });
 
-      // attribute changes
+      // process attribute changes
       if (
         mutation.type === 'attributes' &&
-        mutation.attributeName === 'target' &&
+        (mutation.attributeName === 'target' || mutation.attributeName === 'href') &&
         isElement(mutation.target) &&
-        isBlankLink(mutation.target)
+        isLink(mutation.target)
       ) {
-        applyLinkDescription(mutation.target);
+        this.processLink(mutation.target);
       }
     });
   }
-}
 
-function applyLinkDescription(link:HTMLAnchorElement) {
-  const existingValue = link.getAttribute('aria-describedby');
-  if (!existingValue) {
-    link.setAttribute('aria-describedby', BLANK_LINK_DESCRIPTION_ID);
-  } else if (!existingValue.split(/\s+/).includes(BLANK_LINK_DESCRIPTION_ID)) {
-    link.setAttribute('aria-describedby', existingValue + ' ' + BLANK_LINK_DESCRIPTION_ID);
+  private processLink = (link:HTMLAnchorElement) => {
+    if (!link.href) return;
+
+    const isExternal = (() => {
+      try {
+        return new URL(link.href, window.location.href).hostname !== window.location.hostname;
+      } catch {
+        return false; // invalid URLs are treated as internal
+      }
+    })();
+
+    if (isExternal) {
+      if (link.target !== '_blank') link.target = '_blank';
+      if (link.rel !== 'noopener noreferrer') link.rel = 'noopener noreferrer';
+      this.applyLinkDescription(link);
+    } else {
+      if (link.target !== '_top') link.target = '_top';
+      link.removeAttribute('rel');
+    }
+  };
+
+  private applyLinkDescription(link:HTMLAnchorElement) {
+    const existingValue = link.getAttribute('aria-describedby');
+    if (!existingValue) {
+      link.setAttribute('aria-describedby', BLANK_LINK_DESCRIPTION_ID);
+    } else if (!existingValue.split(/\s+/).includes(BLANK_LINK_DESCRIPTION_ID)) {
+      link.setAttribute('aria-describedby', `${existingValue} ${BLANK_LINK_DESCRIPTION_ID}`);
+    }
   }
 }
