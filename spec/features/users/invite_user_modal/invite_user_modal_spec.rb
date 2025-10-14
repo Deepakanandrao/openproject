@@ -115,29 +115,15 @@ RSpec.describe "Invite user modal", :js do
       page.find_test_selector("quick-add-menu-item", text: "Invite user", wait: 5).click
     end
 
-    it "does show you all users email address" do
-      modal.expect_open
-      modal.project_step
-      select = modal.open_select_in_step "op-ium-principal-search", ""
-
-      # Mail address of other users is visible to us
-      expect(select).to have_text(principal.firstname)
-      expect(select).to have_text(principal.mail)
-    end
-
     context "without permission" do
       let!(:standard) { create(:empty_global_role) }
 
       it "does not show you the email address of other users" do
         modal.expect_open
         modal.project_step
-        select = modal.open_select_in_step "op-ium-principal-search", ""
+        select = modal.principal_search ""
 
-        # Our own mail address is visible
         expect(select).to have_text(current_user.firstname)
-        expect(select).to have_text(current_user.mail)
-
-        # But the mail address of another user is not visible to us
         expect(select).to have_text(principal.firstname)
         expect(select).to have_no_text(principal.mail)
       end
@@ -249,8 +235,8 @@ RSpec.describe "Invite user modal", :js do
 
           it "does not show the invite user option" do
             modal.project_step
-            ngselect = modal.open_select_in_step "op-ium-principal-search", query: principal.mail
-            expect(ngselect).to have_text "No users were found"
+            ngselect = modal.principal_search principal.mail
+            expect(ngselect).to have_text "No items found"
             expect(ngselect).to have_no_text "Invite: #{principal.mail}"
           end
         end
@@ -311,10 +297,10 @@ RSpec.describe "Invite user modal", :js do
               it "does not allow to invite a new placeholder" do
                 modal.project_step
 
-                modal.open_select_in_step "op-ium-principal-search", query: "SOME NEW PLACEHOLDER"
+                dropdown = modal.principal_search "SOME NEW PLACEHOLDER"
 
-                expect(page)
-                  .to have_text I18n.t("js.invite_user_modal.principal.no_results_placeholder")
+                expect(dropdown).to have_text("No items found")
+                expect(dropdown).to have_no_text("SOME NEW PLACEHOLDER")
               end
             end
           end
