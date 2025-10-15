@@ -29,10 +29,8 @@
  */
 
 import { TurboRequestsService } from 'core-app/core/turbo/turbo-requests.service';
-import type { TurboBeforeStreamRenderEvent } from 'core-typings/turbo';
 import { useIntersection } from 'stimulus-use';
 import BaseController from './base.controller';
-import { DomHelpers } from './services/dom_helpers';
 
 export default class LazyPageController extends BaseController {
   static values = {
@@ -50,8 +48,6 @@ export default class LazyPageController extends BaseController {
   declare loadDelayMsValue:number;
 
   private turboRequests:TurboRequestsService;
-  private abortController = new AbortController();
-  private pageStreamHandler?:(_event:TurboBeforeStreamRenderEvent) => void;
   private stopObserving?:() => void;
   private loadTimeout?:number;
 
@@ -61,12 +57,10 @@ export default class LazyPageController extends BaseController {
     super.connect();
     void this.initializeTurboRequestService();
     this.startObserving();
-    this.setupScrollPreservation();
   }
 
   disconnect() {
     super.disconnect();
-    this.tearDownScrollPreservation();
     this.cancelPendingLoad();
     this.stopObserving?.();
   }
@@ -89,32 +83,6 @@ export default class LazyPageController extends BaseController {
     this.cancelPendingLoad(); // Cancel load if element leaves viewport before delay expires
   }
 
-  private setupScrollPreservation() {
-    if (this.pageStreamHandler) return;
-
-    const { signal } = this.abortController;
-    const scrollContainer = this.scrollableContainer;
-
-    this.pageStreamHandler = (event:TurboBeforeStreamRenderEvent) => {
-      event.preventDefault();
-
-      const stream = event.detail.newStream;
-      const insertTargetId = this.insertTargetIdValue;
-
-      if (scrollContainer && insertTargetId && stream.target.includes(insertTargetId)) {
-        const isPrepending = this.indexOutlet.sortingAscending; // Newest at the bottom sorting order
-        void DomHelpers.keepScroll(scrollContainer, isPrepending, () => {
-          event.detail.render(stream);
-          return Promise.resolve();
-        });
-      } else {
-        event.detail.render(stream);
-      }
-    };
-
-    document.addEventListener('turbo:before-stream-render', this.pageStreamHandler as EventListener, { signal });
-  }
-
   private startObserving(root = this.scrollableContainer) {
     if (!root) return;
 
@@ -125,11 +93,6 @@ export default class LazyPageController extends BaseController {
     });
 
     this.stopObserving = unobserve;
-  }
-
-  private tearDownScrollPreservation() {
-    this.abortController.abort();
-    if (this.pageStreamHandler) this.pageStreamHandler = undefined;
   }
 
   private fetchPageStream():Promise<{ html:string, headers:Headers }> {
