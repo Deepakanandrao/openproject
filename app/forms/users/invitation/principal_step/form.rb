@@ -89,10 +89,14 @@ module Users::Invitation::PrincipalStep
     end
 
     def selected_principal # rubocop:disable Metrics/AbcSize
-      principal = model.principal
-      return if principal.nil?
+      return if model.id_or_email.blank?
 
-      { name: principal.name, id: principal.id }
+      if EmailValidator.valid?(model.id_or_email)
+        { name: I18n.t("members.invite_by_mail", mail: model.id_or_email), id: model.id_or_email }
+      else
+        principal = Principal.visible.find_by(id: model.id_or_email)
+        { name: principal&.name || "User #{id_or_email}", id: principal.id }
+      end
     end
 
     def name_label

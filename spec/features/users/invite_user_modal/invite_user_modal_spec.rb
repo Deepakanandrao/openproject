@@ -142,6 +142,28 @@ RSpec.describe "Invite user modal", :js do
         modal.click_continue(label: "Invite")
         modal.expect_invited_successfully
       end
+
+      context "with invite permission, but not selecting the role" do
+        let(:global_permissions) { %i[create_user] }
+
+        it "does not yet invite the user" do
+          modal.expect_open
+          modal.project_step
+          modal.principal_autocomplete "foobar@example.com"
+
+          modal.click_continue(label: "Invite")
+          modal.expect_error_displayed "Role can't be blank."
+
+          expect(User.find_by_mail("foobar@example.com")).to be_nil
+
+          modal.role_autocomplete
+          modal.click_continue(label: "Invite")
+          modal.expect_invited_successfully
+
+          user = User.find_by_mail("foobar@example.com")
+          expect(user).to be_invited
+        end
+      end
     end
   end
 
@@ -308,16 +330,16 @@ RSpec.describe "Invite user modal", :js do
               expect(dropdown).to have_no_text("SOME NEW PLACEHOLDER")
             end
           end
-        end
 
-        context "with an existing placeholder" do
-          let(:principal) { create(:placeholder_user, name: "EXISTING PLACEHOLDER") }
-          let(:global_permissions) { %i[] }
+          context "with an existing placeholder" do
+            let(:principal) { create(:placeholder_user, name: "EXISTING PLACEHOLDER") }
+            let(:global_permissions) { %i[] }
 
-          it_behaves_like "invites the principal to the project" do
-            let(:added_principal) { principal }
-            # Placeholders get no invite mail
-            let(:mail_membership_recipients) { [] }
+            it_behaves_like "invites the principal to the project" do
+              let(:added_principal) { principal }
+              # Placeholders get no invite mail
+              let(:mail_membership_recipients) { [] }
+            end
           end
         end
 

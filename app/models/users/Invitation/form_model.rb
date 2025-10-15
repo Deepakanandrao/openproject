@@ -55,12 +55,6 @@ module Users::Invitation
       end
     end
 
-    def principal
-      return if id_or_email.blank?
-
-      Principal.visible.find_by(id: id_or_email)
-    end
-
     def project_name
       project&.name || project_id
     end

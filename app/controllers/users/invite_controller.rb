@@ -33,7 +33,6 @@ class Users::InviteController < ApplicationController
 
   authorize_with_permission :manage_members, global: true
   before_action :set_project, only: :start_dialog
-  before_action :invite_user, only: :step, if: -> { params[:step] == "principal" }
 
   def start_dialog
     respond_with_dialog(
@@ -102,6 +101,9 @@ class Users::InviteController < ApplicationController
   end
 
   def create_member_call
+    # The form validation worked, now is the time to invite the user
+    invite_user!
+
     Members::CreateService
       .new(user: current_user)
       .call(
@@ -112,7 +114,7 @@ class Users::InviteController < ApplicationController
       )
   end
 
-  def invite_user
+  def invite_user!
     # Invite new user by email if needed, or use existing user ID
     form_model.id_or_email = invite_new_user(form_model.id_or_email, send_notification: true)
   end
