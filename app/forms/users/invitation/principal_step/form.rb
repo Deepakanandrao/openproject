@@ -56,7 +56,7 @@ module Users::Invitation::PrincipalStep
         name: :role_id,
         required: true,
         include_blank: false,
-        input_width: :meidum,
+        input_width: :medium,
         label: Role.model_name.human,
         caption: link_translate("users.invite_user_modal.role.description",
                                 links: { docs_link: %i[sysadmin_docs roles_and_permissions] }),
