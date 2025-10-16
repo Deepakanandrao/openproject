@@ -40,9 +40,11 @@ export default class HighlightTargetElementController extends ApplicationControl
 
     if (hash?.startsWith('#')) {
       try {
-        const el = document.querySelector(hash);
-        el?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        this.addOutsideClickHandler();
+        const el = document.querySelector<HTMLElement>(hash);
+        if (el) {
+          this.scrollIntoView(el);
+          this.addOutsideClickHandler();
+        }
       } catch (e) {
         // This is very likely an invalid selector such as a Google Analytics tag.
         // We can safely ignore this and just not scroll in this case.
@@ -52,6 +54,12 @@ export default class HighlightTargetElementController extends ApplicationControl
         }
       }
     }
+  }
+
+  private scrollIntoView(el:HTMLElement) {
+    setTimeout(() => {
+      el?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 25);
   }
 
   private addOutsideClickHandler() {
