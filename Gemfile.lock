@@ -1500,8 +1500,9 @@ GEM
       anyway_config (>= 1.0, < 3)
       concurrent-ruby
       dry-initializer
-    yabeda-activerecord (0.1.1)
+    yabeda-activerecord (0.1.2)
       activerecord (>= 6.0)
+      anyway_config (>= 1.3, < 3.0)
       yabeda (~> 0.6)
     yabeda-prometheus-mmap (0.4.0)
       prometheus-client-mmap
@@ -2273,7 +2274,7 @@ CHECKSUMS
   with_advisory_lock (7.0.2) sha256=df4485bb456115a13d28342b086a01f810de7726acf77f89b3c8863626d73a00
   xpath (3.2.0) sha256=6dfda79d91bb3b949b947ecc5919f042ef2f399b904013eb3ef6d20dd3a4082e
   yabeda (0.14.0) sha256=bc517bf22d692ebd80a29fc9fd2246c257aaf92d10b2735a775e2419351a43bf
-  yabeda-activerecord (0.1.1) sha256=ae338213c264f20d8642e8bf47ac6058c49a6f7c8c00c892cd5765332914f45f
+  yabeda-activerecord (0.1.2) sha256=1dd281a64e5742445a6718aa05e799ea08a397e9ab9c0d254ece447635a3e0e2
   yabeda-prometheus-mmap (0.4.0) sha256=1a66120756d6f931f03a7784e08e79060d71681ff83a9f5287df2ff756e9e2c9
   yabeda-puma-plugin (0.8.0) sha256=91ec807106058551860260a638d1de21fbf22ce5c12847b08401840e68092c86
   yabeda-rails (0.10.0) sha256=0a85bd829961494f66241d20192368e5d042f836f91986a1eac02f8dcb04237c
