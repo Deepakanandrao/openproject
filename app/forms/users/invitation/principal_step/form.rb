@@ -60,7 +60,7 @@ module Users::Invitation::PrincipalStep
         input_width: :medium,
         label: Role.model_name.human,
         caption: link_translate("users.invite_user_modal.role.description",
-                                links: { docs_link: %i[sysadmin_docs roles_and_permissions] }),
+                                links: { docs_url: %i[sysadmin_docs roles_and_permissions] }),
         autocomplete_options: {
           multiple: false,
           decorated: true,
