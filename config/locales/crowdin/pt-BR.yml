@@ -162,6 +162,11 @@ pt-BR:
         expired: "Expirado em %{date}"
         revoked: "Revogado em  %{date}"
         title: "Tabela de tokens de acesso"
+    workflows:
+      tabs:
+        default_transitions: "Default transitions"
+        user_author: "User is author"
+        user_assignee: "User is assignee"
   authentication:
     login_and_registration: "Entrar e cadastrar"
   announcements:
@@ -1700,6 +1705,7 @@ pt-BR:
       issue_priority:
         one: "Prioridade"
         other: "Prioridades"
+      meeting_participant: "Participante da reunião"
       member: "Membro"
       news: "Notícias"
       notification:
@@ -2556,6 +2562,9 @@ pt-BR:
       selected: "Selecionado"
     include_sub_items: "Incluir subitens"
     no_results_text: "Sem resultados"
+  toggle_switch:
+    label_on: "On"
+    label_off: "Off"
   general_csv_decimal_separator: "."
   general_csv_encoding: "UTF-8"
   general_csv_separator: ","
