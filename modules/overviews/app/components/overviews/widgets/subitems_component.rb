@@ -73,13 +73,14 @@ module Overviews
       end
 
       def view_all_subitems_path
-        @view_all_subitems_path ||= projects_path(::API::Decorators::QueryParamsRepresenter.new(project_query).to_h)
+        @view_all_subitems_path ||= projects_path(filters: project_query_filters)
       end
 
-      def project_query
-        ProjectQuery.new
-          .where("active", "=", "t")
-          .where("parent_id", "=", project.id)
+      def project_query_filters
+        [
+          { active: { operator: "=", values: ["t"] } },
+          { parent_id: { operator: "=", values: [project.id] } }
+        ].to_json
       end
     end
   end

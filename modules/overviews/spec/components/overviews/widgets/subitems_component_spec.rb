@@ -89,7 +89,7 @@ RSpec.describe Overviews::Widgets::SubitemsComponent, type: :component do
             expect(uri.path).to eq projects_path
             expect(uri.query_values["filters"]).to be_json_eql %{[
               {"active":{"operator":"=","values":["t"]}},
-              {"parent":{"operator":"=","values":["#{project.id}"]}}
+              {"parent_id":{"operator":"=","values":[#{project.id}]}}
             ]}
           end
         end
