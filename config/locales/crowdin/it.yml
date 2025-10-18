@@ -526,6 +526,8 @@ it:
       versions:
         no_results_title_text: Al momento non esistono versioni per il progetto.
         no_results_content_text: Crea una nuova versione
+        work_packages_graph: Work packages graph
+        show_work_packages: Show work packages
       storage:
         no_results_title_text: Nessuno spazio su disco registrato aggiuntivo consumato da questo progetto.
       work_package_priorities:

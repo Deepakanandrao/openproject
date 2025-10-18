@@ -528,6 +528,8 @@ vi:
       versions:
         no_results_title_text: Hiện đang có phiên bản dự án.
         no_results_content_text: Tạo ra một phiên bản mới
+        work_packages_graph: Work packages graph
+        show_work_packages: Show work packages
       storage:
         no_results_title_text: Không có không gian đĩa bổ sung nào được ghi nhận bởi dự án này.
       work_package_priorities:

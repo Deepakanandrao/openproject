@@ -527,6 +527,8 @@ ms:
       versions:
         no_results_title_text: Tiada versi untuk projek tersebut buat masa ini.
         no_results_content_text: Cipta versi baharu
+        work_packages_graph: Work packages graph
+        show_work_packages: Show work packages
       storage:
         no_results_title_text: Tiada ruang cakera terekod tambahan yang digunakan untuk projek ini.
       work_package_priorities:

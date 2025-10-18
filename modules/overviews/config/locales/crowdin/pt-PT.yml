@@ -9,6 +9,7 @@ pt-PT:
         in_this_program: "Neste programa"
         in_this_project: "Neste projeto"
         no_visible_children: "Não há filhos visíveis."
+        view_all_subitems: "View all subitems"
       members:
         title: "Membros mais recentes"
         view_all_members: "Ver todos os membros"

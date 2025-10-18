@@ -528,6 +528,8 @@ ro:
       versions:
         no_results_title_text: În acest moment nu există versiuni pentru acest proiect.
         no_results_content_text: Creează versiune nouă
+        work_packages_graph: Work packages graph
+        show_work_packages: Show work packages
       storage:
         no_results_title_text: Acest proiect nu consumă spațiu suplimentar pe disc.
       work_package_priorities:

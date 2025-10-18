@@ -529,6 +529,8 @@ tr:
       versions:
         no_results_title_text: Şu anda proje için sürüm mevcut değil.
         no_results_content_text: Yeni bir sürüm oluştur
+        work_packages_graph: Work packages graph
+        show_work_packages: Show work packages
       storage:
         no_results_title_text: Bu proje tarafından tüketilen ek kayıtlı disk alanı yoktur.
       work_package_priorities:

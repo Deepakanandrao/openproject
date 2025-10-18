@@ -528,6 +528,8 @@ ko:
       versions:
         no_results_title_text: 프로젝트에 버전이 없습니다.
         no_results_content_text: 새 버전 생성
+        work_packages_graph: Work packages graph
+        show_work_packages: Show work packages
       storage:
         no_results_title_text: 이 프로젝트에서 사용하는 추가 기록 디스크 공간이 없습니다.
       work_package_priorities:

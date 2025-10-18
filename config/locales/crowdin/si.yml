@@ -528,6 +528,8 @@ si:
       versions:
         no_results_title_text: ව්යාපෘතිය සඳහා දැනට අනුවාදයක් නොමැත.
         no_results_content_text: නව අනුවාදයක් සාදන්න
+        work_packages_graph: Work packages graph
+        show_work_packages: Show work packages
       storage:
         no_results_title_text: There is no additional recorded disk space consumed by this project.
       work_package_priorities:

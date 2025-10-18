@@ -9,6 +9,7 @@ zh-CN:
         in_this_program: "此计划中"
         in_this_project: "此项目中"
         no_visible_children: "没有可见的子级。"
+        view_all_subitems: "View all subitems"
       members:
         title: "最新成员"
         view_all_members: "查看所有成员"

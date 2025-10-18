@@ -525,6 +525,8 @@ pl:
       versions:
         no_results_title_text: Nie ma innych wersji tego projektu.
         no_results_content_text: Utwórz nową wersję projektu
+        work_packages_graph: Work packages graph
+        show_work_packages: Show work packages
       storage:
         no_results_title_text: Nie ma dodatkowego zarejestrowanego miejsca na dysku zużytego przez ten projekt.
       work_package_priorities:

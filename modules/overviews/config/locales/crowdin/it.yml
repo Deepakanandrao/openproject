@@ -9,6 +9,7 @@ it:
         in_this_program: "In questo programma"
         in_this_project: "In questo progetto"
         no_visible_children: "Non ci sono elementi figli visibili."
+        view_all_subitems: "View all subitems"
       members:
         title: "Ultimi membri"
         view_all_members: "Visualizza tutti i membri"

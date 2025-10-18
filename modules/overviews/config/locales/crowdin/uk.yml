@@ -9,6 +9,7 @@ uk:
         in_this_program: "У цій програмі"
         in_this_project: "У цьому проєкті"
         no_visible_children: "Немає видимих дочірніх об’єктів."
+        view_all_subitems: "View all subitems"
       members:
         title: "Останні учасники"
         view_all_members: "Переглянути всіх учасників"

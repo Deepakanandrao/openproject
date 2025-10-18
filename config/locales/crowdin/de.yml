@@ -525,6 +525,8 @@ de:
       versions:
         no_results_title_text: Derzeit gibt es keine Versionen für das Projekt.
         no_results_content_text: Neue Version erstellen
+        work_packages_graph: Work packages graph
+        show_work_packages: Show work packages
       storage:
         no_results_title_text: Durch dieses Projekt wird kein zusätzlicher erfasster Speicherplatz verbraucht.
       work_package_priorities:

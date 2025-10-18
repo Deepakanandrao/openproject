@@ -527,6 +527,8 @@ ru:
       versions:
         no_results_title_text: На данный момент этапы в проекте отсутствуют.
         no_results_content_text: Создать новую версию
+        work_packages_graph: Work packages graph
+        show_work_packages: Show work packages
       storage:
         no_results_title_text: Для этого проекта дополнительного дискового пространства не требуется.
       work_package_priorities:
@@ -914,11 +916,11 @@ ru:
       parent: "Родитель"
       parent_description: "Делает связанный с этим пакет работ родителем (потомка) пакета работ"
       label_closest: "Ближайший"
-      label_blocks_singular: "блокирует"
-      label_blocks_plural: "блокирует"
+      label_blocks_singular: "заблокирован"
+      label_blocks_plural: "заблокированы"
       blocks_description: "Связанный пакет работ не может быть закрыт до тех пор, пока не будет закрыт этот пакет"
-      label_blocked_singular: "блокируется"
-      label_blocked_plural: "блокируется"
+      label_blocked_singular: "блокирует"
+      label_blocked_plural: "блокируют"
       label_blocked_by_singular: "блокируется"
       label_blocked__by_plural: "блокируется"
       blocked_description: "Связанный пакет работ не может быть закрыт до тех пор, пока не будет закрыт связанный пакет"
@@ -933,7 +935,7 @@ ru:
       duplicated_by_description: "Связанный пакет работ является копией этого"
       duplicated_description: "Связанный пакет работ является копией этого"
       label_includes_singular: "включает"
-      label_includes_plural: "включает"
+      label_includes_plural: "включает в себя"
       includes_description: "Отмечает связанный пакет работ как включающий этот пакет без дополнительного эффекта"
       label_partof_singular: "является частью"
       label_partof_plural: "является частью"
@@ -2003,7 +2005,7 @@ ru:
   button_delete_watcher: "Удаление наблюдателя %{name}"
   button_download: "Скачать"
   button_duplicate: "Дублировать"
-  button_duplicate_and_follow: "Скопировать и продолжить"
+  button_duplicate_and_follow: "Скопировать и наблюдать"
   button_edit: "Правка"
   button_edit_associated_wikipage: "Edit associated wiki page: %{page_title}"
   button_expand_all: "Развернуть все"

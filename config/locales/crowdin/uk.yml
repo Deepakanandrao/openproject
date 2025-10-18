@@ -525,6 +525,8 @@ uk:
       versions:
         no_results_title_text: Наразі не існує версій для проекту.
         no_results_content_text: Створіть нову версію
+        work_packages_graph: Work packages graph
+        show_work_packages: Show work packages
       storage:
         no_results_title_text: Цей проєкт не потребує додаткового дискового простору.
       work_package_priorities:

@@ -525,6 +525,8 @@ lt:
       versions:
         no_results_title_text: Projektas neturi jokių laidų.
         no_results_content_text: Sukurti naują versiją
+        work_packages_graph: Work packages graph
+        show_work_packages: Show work packages
       storage:
         no_results_title_text: Šis projektas papildomos vietos diske nenaudoja.
       work_package_priorities:
