@@ -28,35 +28,8 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class CustomValue::HierarchyStrategy < CustomValue::ARObjectStrategy
-  def formatted_value
-    item = cached_ar_object
-
-    if item
-      item.to_s
-    else
-      "#{value} #{I18n.t(:label_not_found)}"
-    end
-  end
-
-  def validate_type_of_value
-    item = ar_object(value)
-    return :invalid unless item
-
-    parent = custom_field.hierarchy_root
-
-    if persistence_service.descendant_of?(item:, parent:).failure?
-      :inclusion
-    end
-  end
-
-  private
-
-  def ar_class
-    CustomField::Hierarchy::Item
-  end
-
-  def persistence_service
-    @persistence_service ||= CustomFields::Hierarchy::HierarchicalItemService.new
+class CustomValue::ScoredListStrategy < CustomValue::HierarchyStrategy
+  def typed_value
+    cached_ar_object&.score
   end
 end
