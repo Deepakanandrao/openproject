@@ -9,40 +9,40 @@ export class OpenProjectApi implements Extension {
     */
   async onAuthenticate(data: onAuthenticatePayload) {
     const { token, documentName, requestParameters } = data;
-    const documentId = requestParameters.get("documentId");
-    const returnUrl = requestParameters.get("returnUrl");
+    const documentId = requestParameters.get("document_id");
+    const opBasePath = requestParameters.get("openproject_base_path");
 
     if (!token) {
       throw new Error('Unauthorized: Token missing.');
     }
 
-    if (!returnUrl) {
-      throw new Error('Unauthorized: Return URL missing.');
+    if (!opBasePath) {
+      throw new Error('Unauthorized: Base URL missing.');
     }
 
-    // Validate returnUrl against allowed domains
+    // Validate opBasePath against allowed domains
     const allowedDomains = process.env.ALLOWED_DOMAINS?.split(',') || [];
     if (allowedDomains.length <= 0) {
       throw new Error('Unauthorized: No allowed domains configured.');
     }
     
     try {
-      const url = new URL(returnUrl);
+      const url = new URL(opBasePath);
       const isAllowed = allowedDomains.some(domain =>
         url.hostname === domain.trim() || url.hostname.endsWith('.' + domain.trim())
       );
 
       if (!isAllowed) {
-        throw new Error('Unauthorized: Invalid return URL domain.');
+        throw new Error('Unauthorized: Invalid base URL domain.');
       }
     } catch (error) {
       if (error instanceof TypeError) {
-        throw new Error('Unauthorized: Invalid return URL format.');
+        throw new Error('Unauthorized: Invalid base URL format.');
       }
       throw error;
     }
 
-    const targetUrl = `${returnUrl}/api/v3/documents/${documentId}`;
+    const targetUrl = `${opBasePath}/api/v3/documents/${documentId}`;
     const response = await fetch(targetUrl, {
       method: "GET",
       headers: {
@@ -63,16 +63,16 @@ export class OpenProjectApi implements Extension {
     data.documentName = jsonData.title;
     data.context.documentId = documentId;
     data.context.token = token;
-    data.context.returnUrl = returnUrl;
+    data.context.opBasePath = opBasePath;
   }
 
   /**
     * Retrieve data from the API. This should return the YDoc data
     */
   async onLoadDocument(data: onLoadDocumentPayload) {
-    const { documentId, returnUrl } = data.context;
+    const { documentId, opBasePath } = data.context;
 
-    const targetUrl = `${returnUrl}/api/v3/documents/${documentId}`;
+    const targetUrl = `${opBasePath}/api/v3/documents/${documentId}`;
     console.log(`GET ${targetUrl}`);
 
     const response = await fetch(targetUrl, {
@@ -99,9 +99,9 @@ export class OpenProjectApi implements Extension {
     * Store data to the API. The data is a YDoc update
     */
   async onStoreDocument(data: onStoreDocumentPayload): Promise<void> {
-    const { documentId, returnUrl } = data.context;
+    const { documentId, opBasePath } = data.context;
 
-    const targetUrl = `${returnUrl}/api/v3/documents/${documentId}`;
+    const targetUrl = `${opBasePath}/api/v3/documents/${documentId}`;
     console.log(`PATCH ${targetUrl}`);
 
     const base64Data = Buffer.from(Y.encodeStateAsUpdate(data.document)).toString("base64");
