@@ -43,12 +43,12 @@ module Groups::Scopes
         if user.allowed_globally?(:view_all_principals)
           all
         else
-          # Always use subqueries with unscoped to avoid join conflicts
           where(
-            id: Group.unscoped.in_visible_project(user).select(:id)
-          ).or(
-            where(
-              id: Group.unscoped.containing_user(user).select(:id)
+            Group.arel_table[:id].in(
+              Arel::Nodes::UnionAll.new(
+                Group.unscoped.containing_user(user).select(:id).arel,
+                Group.unscoped.in_visible_project(user).select(:id).arel
+              )
             )
           )
         end
