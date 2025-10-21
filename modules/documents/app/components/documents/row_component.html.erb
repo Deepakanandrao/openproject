@@ -30,31 +30,28 @@
 %>
 
 <%=
-  render(Primer::OpenProject::PageHeader.new) do |header|
-    header.with_title { t("documents.page_header.heading") }
-    header.with_breadcrumbs(
-      [{ href: project_overview_path(@project.id), text: @project.name },
-       t(:label_document_plural)]
-    )
-  end
-%>
-
-<% if authorize_for(:documents, :new) %>
-  <%=
-    render(Primer::OpenProject::SubHeader.new) do |subheader|
-      subheader.with_action_button(
-        scheme: :primary,
-        leading_icon: :plus,
-        label: I18n.t(:label_document_new),
-        tag: :a,
-        href: url_for({ controller: "/documents", action: "new", project_id: @project })
+  grid_layout("op-documents-list--row", tag: :div, align_items: :center) do |grid|
+    grid.with_area(:name, tag: :div, mr: 3, classes: "ellipsis") do
+      render(
+        Primer::Beta::Link.new(
+          href: document_path(document),
+          font_weight: :bold,
+          mr: 1,
+          data: { test_selector: "document-name" }
+        )
       ) do
-        t("activerecord.models.document")
+        document.title
       end
     end
-  %>
-<% end %>
 
-<%= render(Documents::ListComponent.new(@documents, project: @project)) %>
+    if document.category.present?
+      grid.with_area(:type, tag: :div, color: :subtle, mr: 3, hide: :sm, data: { test_selector: "document-type" }) do
+        render(Primer::Beta::Truncate.new(font_weight: :normal)) { document.category.name }
+      end
+    end
 
-<% html_title(t(:label_document_plural)) %>
+    grid.with_area(:updated_at, tag: :div, color: :subtle) do
+      render(Primer::Beta::Text.new(font_weight: :light)) { updated_at_time(document) }
+    end
+  end
+%>
