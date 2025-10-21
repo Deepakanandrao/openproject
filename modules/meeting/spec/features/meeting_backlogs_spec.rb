@@ -504,7 +504,7 @@ RSpec.describe "Meeting Backlogs", :js do
   describe "outcomes" do
     let!(:meeting_agenda_item) { create(:meeting_agenda_item, meeting:) }
     let(:field) do
-      TextEditorField.new(page, "Outcome", selector: test_selector("meeting-outcome-input"))
+      TextEditorField.new(page, "New outcome", selector: test_selector("meeting-outcome-input"))
     end
 
     before do

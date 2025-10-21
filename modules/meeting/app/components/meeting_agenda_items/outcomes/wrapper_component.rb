@@ -48,7 +48,11 @@ module MeetingAgendaItems::Outcomes
     end
 
     def render?
-      meeting.in_progress? || meeting.closed?
+      outcomes.any? || meeting.in_progress? || meeting.closed?
+    end
+
+    def can_add_outcomes?
+      meeting.in_progress?
     end
 
     delegate :outcomes, to: :meeting_agenda_item

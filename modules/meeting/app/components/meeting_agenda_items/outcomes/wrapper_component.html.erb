@@ -7,8 +7,10 @@
         end
       end
 
-      flex.with_row do
-        render(MeetingAgendaItems::Outcomes::NewButtonComponent.new(meeting: meeting, meeting_agenda_item: meeting_agenda_item))
+      if can_add_outcomes?
+        flex.with_row do
+          render(MeetingAgendaItems::Outcomes::NewButtonComponent.new(meeting: meeting, meeting_agenda_item: meeting_agenda_item))
+        end
       end
     end
   end
