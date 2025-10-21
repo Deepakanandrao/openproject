@@ -36,13 +36,13 @@ module Members
       @current_user = current_user
     end
 
-    def call(user_id:, role_id:, project_id:, send_notifications: true)
-      member = Member.find_by(user_id:, project_id:)
+    def call(user_id:, role_id:, project_id:, entity: nil, send_notifications: true)
+      member = Member.find_by(user_id:, project_id:, entity:)
 
       if member.nil?
         Members::CreateService
           .new(user: current_user)
-          .call(send_notifications:, user_id:, project_id:, role_ids: [role_id])
+          .call(send_notifications:, user_id:, project_id:, entity:, role_ids: [role_id])
       else
         Members::UpdateService
           .new(model: member, user: current_user)

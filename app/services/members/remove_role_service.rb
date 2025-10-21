@@ -36,8 +36,8 @@ module Members
       @current_user = current_user
     end
 
-    def call(user_id:, role_id:, project_id:, send_notifications: true)
-      member = Member.find_by(user_id:, project_id:)
+    def call(user_id:, role_id:, project_id:, entity: nil, send_notifications: true)
+      member = Member.find_by(user_id:, project_id:, entity:)
       return ServiceResult.success if member.nil?
 
       if member.role_ids == [role_id]
