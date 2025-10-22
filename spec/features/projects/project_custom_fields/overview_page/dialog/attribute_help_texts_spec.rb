@@ -87,7 +87,6 @@ RSpec.describe "Edit project custom fields on project overview page", "attribute
             click_on "Close"
           end
           expect(page).to have_no_modal "Date field"
-          edit_dialog.close
         end
       end
 
@@ -120,7 +119,6 @@ RSpec.describe "Edit project custom fields on project overview page", "attribute
             click_on "Close"
           end
           expect(page).to have_no_modal "Integer field"
-          edit_dialog.close
         end
       end
     end
@@ -165,7 +163,6 @@ RSpec.describe "Edit project custom fields on project overview page", "attribute
           click_on "Close"
         end
         expect(page).to have_no_modal "User field"
-        edit_dialog.close
       end
     end
   end
@@ -215,7 +212,6 @@ RSpec.describe "Edit project custom fields on project overview page", "attribute
           click_on "Close"
         end
         expect(page).to have_no_modal "Multi list field"
-        edit_dialog.close
       end
     end
   end
