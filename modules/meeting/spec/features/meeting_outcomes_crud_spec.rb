@@ -60,8 +60,9 @@ RSpec.describe "Meeting Outcomes CRUD", :js do
   let(:current_user) { user }
   let(:state) { :in_progress }
   let(:show_page) { Pages::Meetings::Show.new(meeting) }
-  let(:field) do
-    TextEditorField.new(page, "Outcome", selector: test_selector("meeting-outcome-input"))
+
+  def outcome_field_for(agenda_item)
+    TextEditorField.new(page, "Outcome", selector: test_selector("meeting-outcome-input-for-#{agenda_item.id}"))
   end
 
   context "when a user has the necessary 'manage_outcomes' permission" do
@@ -73,6 +74,7 @@ RSpec.describe "Meeting Outcomes CRUD", :js do
     context "when the meeting is 'in progress'" do
       it "can view outcomes and do all actions" do
         item = MeetingAgendaItem.find(meeting_agenda_item.id)
+        field = outcome_field_for(item)
 
         show_page.visit!
 
@@ -92,6 +94,7 @@ RSpec.describe "Meeting Outcomes CRUD", :js do
         end
 
         wp_item = MeetingAgendaItem.find(wp_agenda_item.id)
+        field = outcome_field_for(wp_item)
 
         show_page.add_outcome(wp_item) do
           field.expect_active!
@@ -113,6 +116,7 @@ RSpec.describe "Meeting Outcomes CRUD", :js do
 
       it "can add multiple outcomes" do
         item = MeetingAgendaItem.find(meeting_agenda_item.id)
+        field = outcome_field_for(item)
 
         show_page.visit!
 
