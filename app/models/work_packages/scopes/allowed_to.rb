@@ -128,7 +128,7 @@ module WorkPackages::Scopes
         # ```
         # Postgresql however sometimes turns to a sequential scan with the query above.
         allowed_by_projects_and_work_packages = Arel.sql(<<~SQL.squish)
-          SELECT * from work_packages
+          SELECT id from work_packages
           WHERE project_id in (SELECT id FROM member_projects)
           AND NOT EXISTS (
             SELECT 1 FROM entity_member_projects_without_duplicates
