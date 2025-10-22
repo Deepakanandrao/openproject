@@ -41,9 +41,10 @@ class MeetingParticipant < ApplicationRecord
     needs_action: "needs-action",
     accepted: "accepted",
     declined: "declined",
-    tentative: "tentativ",
-    delegated: "delegated"
-  }, default: :needs_action, validate: { allow_nil: true }
+    tentative: "tentative",
+    delegated: "delegated",
+    unknown: "unknown" # this is the default in the DB for all old entries
+  }, default: :needs_action
 
   def name
     user.present? ? user.name : I18n.t("user.deleted")
