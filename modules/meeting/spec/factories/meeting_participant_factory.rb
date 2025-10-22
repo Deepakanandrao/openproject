@@ -40,5 +40,7 @@ FactoryBot.define do
     trait :attendee do
       attended { true }
     end
+
+    traits_for_enum(:participation_status)
   end
 end

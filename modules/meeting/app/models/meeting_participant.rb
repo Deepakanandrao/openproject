@@ -37,6 +37,14 @@ class MeetingParticipant < ApplicationRecord
   scope :invited, -> { where(invited: true) }
   scope :attended, -> { where(attended: true) }
 
+  enum :participation_status, {
+    needs_action: "needs-action",
+    accepted: "accepted",
+    declined: "declined",
+    tentative: "tentativ",
+    delegated: "delegated"
+  }, default: :needs_action, validate: { allow_nil: true }
+
   def name
     user.present? ? user.name : I18n.t("user.deleted")
   end
@@ -53,6 +61,6 @@ class MeetingParticipant < ApplicationRecord
 
   def copy_attributes
     # create a clean attribute set allowing to attach participants to different meetings
-    attributes.reject { |k, _v| ["id", "meeting_id", "attended", "created_at", "updated_at"].include?(k) }
+    attributes.except("id", "meeting_id", "attended", "created_at", "updated_at")
   end
 end
