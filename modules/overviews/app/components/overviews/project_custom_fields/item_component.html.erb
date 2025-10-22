@@ -36,6 +36,4 @@
   end
 %>
 
-<% if @tooltip %>
-  <%= render @tooltip %>
-<% end %>
+<%= render_calculated_value_tooltip if calculated_value? %>

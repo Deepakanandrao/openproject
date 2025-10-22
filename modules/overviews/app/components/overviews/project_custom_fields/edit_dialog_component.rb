@@ -40,6 +40,12 @@ module Overviews
         @project = project
         @project_custom_field = project_custom_field
       end
+
+      private
+
+      def dialog_id
+        "edit-project-custom-field-dialog-#{@project_custom_field.id}"
+      end
     end
   end
 end
