@@ -67,7 +67,7 @@ class Journable::HistoricActiveRecordRelation < ActiveRecord::Relation
       if model.column_names_missing_in_journal.include?(column_name.to_s)
         Rails.logger.warn "Cannot pluck column `#{column_name}` because this attribute is not journalized," \
                           "i.e. it is missing in the #{journal_class.table_name} table."
-        Arel.sql("null as #{column_name}")
+        Arel::Nodes::SqlLiteral.new("NULL").as(column_name.to_s)
       else
         column_name
       end
