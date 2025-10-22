@@ -28,20 +28,44 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 #
-
 module Documents
-  class ListComponent < ApplicationComponent
-    include OpPrimer::ComponentHelpers
-    include OpTurbo::Streamable
+  class SubHeaderComponent < ApplicationComponent
+    alias_method :project, :model
 
-    alias_method :documents, :model
+    def initialize(query:, project:)
+      super(project)
+      @query = query
+    end
 
-    options :project
+    def filter_input_value
+      @query.find_active_filter(:title)&.values&.first
+    end
 
-    private
+    def sub_header_data_attributes
+      {
+        controller: "filter--filters-form",
+        "filter--filters-form-perform-turbo-requests-value": true,
+        "filter--filters-form-output-format-value": "json",
+        "filter--filters-form-clear-button-id-value": clear_button_id,
+        test_selector: "documents-sub-header"
+      }
+    end
 
-    def document_row_css_id(document)
-      helpers.dom_id document
+    def filter_input_data_attributes
+      {
+        "filter-name": "title",
+        "filter-type": "string",
+        "filter-operator": "~",
+        "filter--filters-form-target": "simpleFilter filterValueContainer simpleValue"
+      }
+    end
+
+    def clear_button_id
+      "documents-filters-form-clear-button"
+    end
+
+    def can_add_document?
+      User.current.allowed_in_project?(:manage_documents, project)
     end
   end
 end

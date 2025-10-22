@@ -27,21 +27,22 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
-#
 
-module Documents
-  class ListComponent < ApplicationComponent
-    include OpPrimer::ComponentHelpers
-    include OpTurbo::Streamable
+require "spec_helper"
 
-    alias_method :documents, :model
+RSpec.describe Queries::Documents::Filters::TitleFilter do
+  include_context "filter tests"
+  let(:values) { ["A title"] }
+  let(:model) { Document }
 
-    options :project
+  it_behaves_like "basic query filter" do
+    let(:class_key) { :title }
+    let(:human_name) { "Title" }
+    let(:type) { :string }
+    let(:model) { Document }
 
-    private
-
-    def document_row_css_id(document)
-      helpers.dom_id document
+    describe "#allowed_values" do
+      it { expect(instance.allowed_values).to be_nil }
     end
   end
 end

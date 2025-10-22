@@ -27,21 +27,43 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
-#
 
-module Documents
-  class ListComponent < ApplicationComponent
-    include OpPrimer::ComponentHelpers
-    include OpTurbo::Streamable
+class Queries::Documents::Filters::TitleFilter < Queries::Documents::Filters::DocumentFilter
+  def type
+    :string
+  end
 
-    alias_method :documents, :model
+  def where
+    case operator
+    when "="
+      ["LOWER(documents.title) IN (?)", sql_value]
+    when "!"
+      ["LOWER(documents.title) NOT IN (?)", sql_value]
+    when "~", "**"
+      ["LOWER(documents.title) LIKE ?", "%#{sql_value}%"]
+    when "!~"
+      ["LOWER(documents.title) NOT LIKE ?", "%#{sql_value}%"]
+    else
+      raise "Unsupported operator #{operator}"
+    end
+  end
 
-    options :project
+  def human_name
+    Document.human_attribute_name(:title)
+  end
 
-    private
+  def self.key
+    :title
+  end
 
-    def document_row_css_id(document)
-      helpers.dom_id document
+  private
+
+  def sql_value
+    case operator
+    when "=", "!"
+      values.map { self.class.connection.quote_string(it.downcase) }.join(",")
+    when "**", "~", "!~"
+      values.first.downcase
     end
   end
 end
