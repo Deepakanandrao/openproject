@@ -319,6 +319,7 @@ zh-CN:
     reorder_alphabetical: "按字母顺序重新排序"
     reorder_confirmation: "警告：可用值的当前顺序将丢失。是否继续？"
     placeholder_version_select: "需要先选择工作包或项目"
+    calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     instructions:
       is_required: "将自定义字段标记为必填项。这将使在创建新资源或更新现有资源时，填写该字段成为强制要求。"
       is_required_for_project: "选中可启用此属性，并使其成为所有项目的必选项。单个项目不能停用该属性。"
@@ -2880,6 +2881,7 @@ zh-CN:
   label_duplicate: "重复"
   label_duplicates: "复制"
   label_edit: "编辑"
+  label_edit_attribute: "Edit attribute"
   label_edit_x: "编辑：%{x}"
   label_enable_multi_select: "切换多选"
   label_enabled_project_custom_fields: "启用自定义字段"
@@ -3306,6 +3308,7 @@ zh-CN:
   label_user_search: "搜索用户"
   label_user_settings: "用户设置"
   label_users_settings: "用户设置"
+  label_value_x: "Value: %{x}"
   label_version_new: "新版本"
   label_version_edit: "编辑版本"
   label_version_plural: "版本"

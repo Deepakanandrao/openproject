@@ -322,6 +322,7 @@ sk:
     reorder_alphabetical: "Reorder values alphabetically"
     reorder_confirmation: "Warning: The current order of available values will be lost. Continue?"
     placeholder_version_select: "Work package or project selection is required first"
+    calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     instructions:
       is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new or updating existing resources."
       is_required_for_project: "Check to enable this attribute and make it required in all projects. It cannot be deactived for individual projects."
@@ -3019,6 +3020,7 @@ sk:
   label_duplicate: "skopírovať"
   label_duplicates: "duplikáty"
   label_edit: "Upraviť"
+  label_edit_attribute: "Edit attribute"
   label_edit_x: "Edit: %{x}"
   label_enable_multi_select: "Prepnúť multiselect"
   label_enabled_project_custom_fields: "Povolené vlastné polia"
@@ -3445,6 +3447,7 @@ sk:
   label_user_search: "Hľadať používateľa"
   label_user_settings: "User settings"
   label_users_settings: "Users settings"
+  label_value_x: "Value: %{x}"
   label_version_new: "Nová verzia"
   label_version_edit: "Edit version"
   label_version_plural: "Verzie"

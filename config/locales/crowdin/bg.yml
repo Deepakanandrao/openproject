@@ -322,6 +322,7 @@ bg:
     reorder_alphabetical: "Пренареждане на стойностите по азбучен ред"
     reorder_confirmation: "Внимание: Текущият ред на наличните стойности ще бъде загубен. Желаете ли да продължите?"
     placeholder_version_select: "Work package or project selection is required first"
+    calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     instructions:
       is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new or updating existing resources."
       is_required_for_project: "Check to enable this attribute and make it required in all projects. It cannot be deactived for individual projects."
@@ -2929,6 +2930,7 @@ bg:
   label_duplicate: "дубликат"
   label_duplicates: "дублирания"
   label_edit: "Редактиране"
+  label_edit_attribute: "Edit attribute"
   label_edit_x: "Редактиране: %{x}"
   label_enable_multi_select: "Превключване към множествен избор"
   label_enabled_project_custom_fields: "Разрешени потребителски полета"
@@ -3355,6 +3357,7 @@ bg:
   label_user_search: "Търсене на потребител"
   label_user_settings: "Потребителски настройки"
   label_users_settings: "Потребителски настройки"
+  label_value_x: "Value: %{x}"
   label_version_new: "Нова версия"
   label_version_edit: "Edit version"
   label_version_plural: "Версии"

@@ -319,6 +319,7 @@ de:
     reorder_alphabetical: "Alphabetisch umsortieren"
     reorder_confirmation: "Warnung: Die aktuelle Reihenfolge der verfügbaren Werte geht verloren. Fortfahren?"
     placeholder_version_select: "Zunächst muss ein Arbeitspaket oder ein Projekt ausgewählt werden"
+    calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     instructions:
       is_required: "Markieren Sie das benutzerdefinierte Feld als erforderlich. Dies macht es zwingend erforderlich, das Feld auszufüllen, wenn neue oder aktualisierte Ressourcen erstellt werden."
       is_required_for_project: "Das Attribut in allen Projekten erforderlich machen. Es kann dann nicht für einzelne Projekte deaktiviert werden."
@@ -2921,6 +2922,7 @@ de:
   label_duplicate: "Duplikat"
   label_duplicates: "Duplikat von"
   label_edit: "Bearbeiten"
+  label_edit_attribute: "Edit attribute"
   label_edit_x: "Bearbeiten: %{x}"
   label_enable_multi_select: "Mehrfachauswahl umschalten"
   label_enabled_project_custom_fields: "Aktivierte benutzerdefinierte Felder"
@@ -3347,6 +3349,7 @@ de:
   label_user_search: "Nach Benutzer suchen"
   label_user_settings: "Benutzereinstellungen"
   label_users_settings: "Benutzereinstellungen"
+  label_value_x: "Value: %{x}"
   label_version_new: "Neue Version"
   label_version_edit: "Version bearbeiten"
   label_version_plural: "Versionen"

@@ -321,6 +321,7 @@ hu:
     reorder_alphabetical: "Név szerinti sorrendbe rendezés"
     reorder_confirmation: "Figyelmeztetés: A rendelkezésre álló értékek jelenlegi sorrendje elveszik. Folytatni akarod?\n"
     placeholder_version_select: "Work package or project selection is required first"
+    calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     instructions:
       is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new or updating existing resources."
       is_required_for_project: "Check to enable this attribute and make it required in all projects. It cannot be deactived for individual projects."
@@ -2928,6 +2929,7 @@ hu:
   label_duplicate: "duplikált"
   label_duplicates: "Ismétlődések"
   label_edit: "Szerkesztés"
+  label_edit_attribute: "Edit attribute"
   label_edit_x: "Szerkesztés: %{x}"
   label_enable_multi_select: "Multiselect ki-/ bekapcsolása"
   label_enabled_project_custom_fields: "Egyéni mezők engedélyezve"
@@ -3354,6 +3356,7 @@ hu:
   label_user_search: "Felhasználó keresése"
   label_user_settings: "Felhasználói beállítások"
   label_users_settings: "Users settings"
+  label_value_x: "Value: %{x}"
   label_version_new: "Új verzió"
   label_version_edit: "Módosított verzió"
   label_version_plural: "Verzió"

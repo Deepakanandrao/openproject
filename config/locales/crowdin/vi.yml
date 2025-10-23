@@ -322,6 +322,7 @@ vi:
     reorder_alphabetical: "Sắp xếp lại giá trị theo thứ tự bảng chữ cái"
     reorder_confirmation: "Cảnh báo: Thứ tự hiện tại của các giá trị sẽ bị mất. Tiếp tục?"
     placeholder_version_select: "Work package or project selection is required first"
+    calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     instructions:
       is_required: "Đánh dấu trường tùy chỉnh là bắt buộc. Điều này sẽ làm cho việc điền vào trường là bắt buộc khi tạo mới hoặc cập nhật tài nguyên hiện có."
       is_required_for_project: "Tích để bật thuộc tính này và yêu cầu nó trong tất cả các dự án. Không thể hủy kích hoạt nó cho từng dự án."
@@ -2884,6 +2885,7 @@ vi:
   label_duplicate: "Nhân đôi"
   label_duplicates: "Nhân đôi"
   label_edit: "Chỉnh sửa"
+  label_edit_attribute: "Edit attribute"
   label_edit_x: "Chỉnh sửa: %{x}"
   label_enable_multi_select: "Bật/tắt đa lựa chọn"
   label_enabled_project_custom_fields: "Các trường tùy chỉnh đã bật"
@@ -3310,6 +3312,7 @@ vi:
   label_user_search: "Tìm kiếm người dùng"
   label_user_settings: "Cài đặt người dùng"
   label_users_settings: "Cài đặt người dùng"
+  label_value_x: "Value: %{x}"
   label_version_new: "Phiên bản mới"
   label_version_edit: "Chỉnh sửa phiên bản"
   label_version_plural: "Các phiên bản"

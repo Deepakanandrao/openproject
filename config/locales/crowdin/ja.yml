@@ -320,6 +320,7 @@ ja:
     reorder_alphabetical: "値をアルファベット順に並べ替える"
     reorder_confirmation: "警告：利用可能な値の現在の順序は失われます。続行しますか？"
     placeholder_version_select: "最初にワークパッケージまたはプロジェクトの選択が必要です"
+    calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     instructions:
       is_required: "必要に応じてカスタムフィールドをマークします。新規または既存のリソースを作成する際にフィールドを入力することが必須になります。"
       is_required_for_project: "この属性を有効にし、すべてのプロジェクトで必要にする場合チェックします。個々のプロジェクトでは無効にすることはできません。"
@@ -2883,6 +2884,7 @@ ja:
   label_duplicate: "重複"
   label_duplicates: "次と重複"
   label_edit: "編集"
+  label_edit_attribute: "Edit attribute"
   label_edit_x: "編集: %{x}"
   label_enable_multi_select: "複数選択の切り替え"
   label_enabled_project_custom_fields: "有効なカスタム フィールド"
@@ -3309,6 +3311,7 @@ ja:
   label_user_search: "ユーザーを検索:"
   label_user_settings: "ユーザー設定"
   label_users_settings: "ユーザー設定"
+  label_value_x: "Value: %{x}"
   label_version_new: "新しいバージョン"
   label_version_edit: "バージョンを編集"
   label_version_plural: "バージョン"

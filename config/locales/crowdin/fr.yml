@@ -322,6 +322,7 @@ fr:
     reorder_alphabetical: "Réorganiser les valeurs par ordre alphabétique"
     reorder_confirmation: "Attention : l'ordre actuel des valeurs disponibles sera perdu. Continuer ?"
     placeholder_version_select: "La sélection d'un lot de travaux ou d'un projet est requise en premier lieu"
+    calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     instructions:
       is_required: "Marquer le champ personnalisé comme requis. Cela rendra obligatoire de remplir le champ lors de la création ou de la mise à jour des ressources existantes."
       is_required_for_project: "Cocher pour activer cet attribut et le rendre nécessaire dans tous les projets. Il ne peut pas être désactivé pour certains projets."
@@ -2927,6 +2928,7 @@ fr:
   label_duplicate: "dupliquer"
   label_duplicates: "Doublons"
   label_edit: "Éditer"
+  label_edit_attribute: "Edit attribute"
   label_edit_x: "Modifier : %{x}"
   label_enable_multi_select: "Basculer multisélection"
   label_enabled_project_custom_fields: "Champs personnalisés activés"
@@ -3353,6 +3355,7 @@ fr:
   label_user_search: "Recherche d'Utilisateurs"
   label_user_settings: "Paramètres de l'utilisateur"
   label_users_settings: "Paramètres des utilisateurs"
+  label_value_x: "Value: %{x}"
   label_version_new: "Nouvelle version"
   label_version_edit: "Modifier la version"
   label_version_plural: "Versions"

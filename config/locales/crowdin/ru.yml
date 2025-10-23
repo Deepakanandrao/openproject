@@ -321,6 +321,7 @@ ru:
     reorder_alphabetical: "Переупорядочить значения по алфавиту"
     reorder_confirmation: "Внимание: Текущий порядок доступных значений будет утерян. Продолжить?"
     placeholder_version_select: "Сначала необходимо выбрать пакет работ или проект"
+    calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     instructions:
       is_required: "Пометить пользовательское поле как обязательное. Это сделает заполнение поля обязательным при создании новых или обновлении существующих ресурсов."
       is_required_for_project: "Установите флажок, чтобы включить этот атрибут и сделать его обязательным для всех проектов. Он не может быть отключен для отдельных проектов."
@@ -3017,6 +3018,7 @@ ru:
   label_duplicate: "дублировать"
   label_duplicates: "Дублирует"
   label_edit: "Правка"
+  label_edit_attribute: "Edit attribute"
   label_edit_x: "Правка: %{x}"
   label_enable_multi_select: "Разрешен множественный выбор"
   label_enabled_project_custom_fields: "Доступные настраиваемые поля"
@@ -3443,6 +3445,7 @@ ru:
   label_user_search: "Найти пользователя"
   label_user_settings: "Настройки пользователя"
   label_users_settings: "Настройки пользователей"
+  label_value_x: "Value: %{x}"
   label_version_new: "Новый этап"
   label_version_edit: "Изменить версию"
   label_version_plural: "Этапы"

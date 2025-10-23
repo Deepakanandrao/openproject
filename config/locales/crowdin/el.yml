@@ -318,6 +318,7 @@ el:
     reorder_alphabetical: "Αναδιάταξη τιμών αλφαβητικά"
     reorder_confirmation: "Warning: The current order of available values will be lost. Continue?"
     placeholder_version_select: "Work package or project selection is required first"
+    calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     instructions:
       is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new or updating existing resources."
       is_required_for_project: "Check to enable this attribute and make it required in all projects. It cannot be deactived for individual projects."
@@ -2925,6 +2926,7 @@ el:
   label_duplicate: "αντιγραφή"
   label_duplicates: "αντίγραφα"
   label_edit: "Επεξεργασία"
+  label_edit_attribute: "Edit attribute"
   label_edit_x: "Επεξεργασία: %{x}"
   label_enable_multi_select: "Ενεργοποίηση πολλαπλής επιλογής"
   label_enabled_project_custom_fields: "Ενεργοποίηση προσαρμοσμένων πεδίων"
@@ -3351,6 +3353,7 @@ el:
   label_user_search: "Αναζήτηση για χρήστη"
   label_user_settings: "Ρυθμίσεις χρήστη"
   label_users_settings: "Users settings"
+  label_value_x: "Value: %{x}"
   label_version_new: "Νέα έκδοση"
   label_version_edit: "Επεξεργασία έκδοσης"
   label_version_plural: "Εκδόσεις"

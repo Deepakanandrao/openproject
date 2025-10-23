@@ -319,6 +319,7 @@ ca:
     reorder_alphabetical: "Reorganitza els valors alfabèticament"
     reorder_confirmation: "Alerta: L'ordre actual dels valors disponibles es perdran. Vols continuar?"
     placeholder_version_select: "Work package or project selection is required first"
+    calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     instructions:
       is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new or updating existing resources."
       is_required_for_project: "Check to enable this attribute and make it required in all projects. It cannot be deactived for individual projects."
@@ -2926,6 +2927,7 @@ ca:
   label_duplicate: "duplicats"
   label_duplicates: "duplicats"
   label_edit: "Editar"
+  label_edit_attribute: "Edit attribute"
   label_edit_x: "Edita: %{x}"
   label_enable_multi_select: "Activa/desactiva selecció múltiple"
   label_enabled_project_custom_fields: "Habilita camps personalitzats"
@@ -3352,6 +3354,7 @@ ca:
   label_user_search: "Cercar per usuari"
   label_user_settings: "Configuració de l'usuari"
   label_users_settings: "Configuració d'usuaris"
+  label_value_x: "Value: %{x}"
   label_version_new: "Nova versió"
   label_version_edit: "Edita la versió"
   label_version_plural: "Versions"

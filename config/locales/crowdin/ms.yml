@@ -321,6 +321,7 @@ ms:
     reorder_alphabetical: "Susun semula nilai mengikut abjad"
     reorder_confirmation: "Amaran: Susunan semasa nilai yang sedia ada akan hilang. Teruskan?"
     placeholder_version_select: "Work package or project selection is required first"
+    calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     instructions:
       is_required: "Tandakan ruang yang tersuai seperti yang diperlukan. Ini akan buatkan ia wajib untuk isikan ruang tersebut apabila membuat sumber yang baharu atau kemas kini sumber sedia ada."
       is_required_for_project: "Semak untuk mendayakan atribut ini dan jadikan ia diperlukan dalam semua projek. Ia tidak boleh dinyahaktifkan untuk projek individu."
@@ -2882,6 +2883,7 @@ ms:
   label_duplicate: "duplikasi"
   label_duplicates: "pendua"
   label_edit: "Edit"
+  label_edit_attribute: "Edit attribute"
   label_edit_x: "Edit: %{x}"
   label_enable_multi_select: "Tukar pilihan berganda"
   label_enabled_project_custom_fields: "Ruang tersuai yang diaktifkan"
@@ -3308,6 +3310,7 @@ ms:
   label_user_search: "Cari pengguna"
   label_user_settings: "Tetapan pengguna"
   label_users_settings: "Tetapan pengguna"
+  label_value_x: "Value: %{x}"
   label_version_new: "Versi baharu"
   label_version_edit: "Versi edit"
   label_version_plural: "Versi-versi"

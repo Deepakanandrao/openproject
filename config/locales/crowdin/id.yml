@@ -318,6 +318,7 @@ id:
     reorder_alphabetical: "Susun ulang nilai menurut abjad"
     reorder_confirmation: "Peringatan: Urutan nilai yang tersedia saat ini akan hilang.  Melanjutkan?"
     placeholder_version_select: "Work package or project selection is required first"
+    calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     instructions:
       is_required: "Tandai bidang khusus sesuai kebutuhan. Ini akan membuatnya wajib diisi saat membuat sumber daya baru atau memperbarui sumber daya yang sudah ada."
       is_required_for_project: "Check to enable this attribute and make it required in all projects. It cannot be deactived for individual projects."
@@ -2880,6 +2881,7 @@ id:
   label_duplicate: "duplicate"
   label_duplicates: "duplikat"
   label_edit: "Edit"
+  label_edit_attribute: "Edit attribute"
   label_edit_x: "Edit: %{x}"
   label_enable_multi_select: "Beralih ke multiselect"
   label_enabled_project_custom_fields: "Enabled custom fields"
@@ -3306,6 +3308,7 @@ id:
   label_user_search: "Cari user"
   label_user_settings: "User settings"
   label_users_settings: "Users settings"
+  label_value_x: "Value: %{x}"
   label_version_new: "Versi baru"
   label_version_edit: "Ubah versi"
   label_version_plural: "Versi"

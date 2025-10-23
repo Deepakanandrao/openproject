@@ -322,6 +322,7 @@ ro:
     reorder_alphabetical: "Reordonează valorile alfabetic"
     reorder_confirmation: "Avertisment: Ordinea curentă a valorilor disponibile se va pierde. Continuați?"
     placeholder_version_select: "Work package or project selection is required first"
+    calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     instructions:
       is_required: "Marchează câmpul personalizat ca obligatoriu. Acest lucru va face obligatorie completarea câmpului atunci când se creează resurse noi sau se actualizează resursele existente."
       is_required_for_project: "Bifează pentru a activa acest atribut și a-l face obligatoriu în toate proiectele. Nu poate fi dezactivat pentru proiecte individuale."
@@ -2974,6 +2975,7 @@ ro:
   label_duplicate: "duplicat"
   label_duplicates: "dublează"
   label_edit: "Editare"
+  label_edit_attribute: "Edit attribute"
   label_edit_x: "Editare: %{x}"
   label_enable_multi_select: "Comutare selecție multiplă"
   label_enabled_project_custom_fields: "Câmpuri personalizate activate"
@@ -3400,6 +3402,7 @@ ro:
   label_user_search: "Căutare utilizator"
   label_user_settings: "Setări utilizator"
   label_users_settings: "Setări utilizatori"
+  label_value_x: "Value: %{x}"
   label_version_new: "Versiune nouă"
   label_version_edit: "Editați versiunea"
   label_version_plural: "Versiuni"

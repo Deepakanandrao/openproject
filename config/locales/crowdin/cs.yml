@@ -322,6 +322,7 @@ cs:
     reorder_alphabetical: "Změnit pořadí abecedně"
     reorder_confirmation: "Varování: Aktuální pořadí dostupných hodnot bude ztraceno. Pokračovat?"
     placeholder_version_select: "Nejprve je nutné vybrat pracovní balíček nebo projekt"
+    calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     instructions:
       is_required: "Označit vlastní pole jako povinné. Bude povinné vyplnit pole při vytváření nových nebo aktualizaci existujících zdrojů."
       is_required_for_project: "Zaškrtnutím tento atribut povolíte a bude vyžadován ve všech projektech. U jednotlivých projektů jej nelze zrušit."
@@ -3019,6 +3020,7 @@ cs:
   label_duplicate: "duplikovat"
   label_duplicates: "duplikovaů"
   label_edit: "Upravit"
+  label_edit_attribute: "Edit attribute"
   label_edit_x: "Edit: %{x}"
   label_enable_multi_select: "Přepnout multiselect"
   label_enabled_project_custom_fields: "Povoleno volitelné pole"
@@ -3445,6 +3447,7 @@ cs:
   label_user_search: "Vyhledat uživatele"
   label_user_settings: "Uživatelská nastavení"
   label_users_settings: "Uživatelská nastavení"
+  label_value_x: "Value: %{x}"
   label_version_new: "Nová verze"
   label_version_edit: "Upravit verzi"
   label_version_plural: "Verze"

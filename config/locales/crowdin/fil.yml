@@ -322,6 +322,7 @@ fil:
     reorder_alphabetical: "Reorder values alphabetically"
     reorder_confirmation: "Warning: The current order of available values will be lost. Continue?"
     placeholder_version_select: "Work package or project selection is required first"
+    calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     instructions:
       is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new or updating existing resources."
       is_required_for_project: "Check to enable this attribute and make it required in all projects. It cannot be deactived for individual projects."
@@ -2929,6 +2930,7 @@ fil:
   label_duplicate: "gayahin"
   label_duplicates: "mga ginaya"
   label_edit: "I-edit"
+  label_edit_attribute: "Edit attribute"
   label_edit_x: "Edit: %{x}"
   label_enable_multi_select: "Toggle multi select"
   label_enabled_project_custom_fields: "Pinagana ang mga custom na patlang"
@@ -3355,6 +3357,7 @@ fil:
   label_user_search: "Maghanap para sa gumagamit"
   label_user_settings: "User settings"
   label_users_settings: "Users settings"
+  label_value_x: "Value: %{x}"
   label_version_new: "Bagong bersyon"
   label_version_edit: "Edit version"
   label_version_plural: "Mga bersyon"

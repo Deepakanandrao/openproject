@@ -322,6 +322,7 @@
     reorder_alphabetical: "Omorganiser verdier alfabetisk"
     reorder_confirmation: "Advarsel: Gjeldende rekkefølge for tilgjengelige verdier vil gå tapt. Vil du fortsette?"
     placeholder_version_select: "Work package or project selection is required first"
+    calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     instructions:
       is_required: "Marker det egendefinerte feltet som påkrevd. Dette vil gjøre det obligatorisk å fylle ut feltet når du oppretter nye eller oppdaterer eksisterende ressurser."
       is_required_for_project: "Marker for å aktivere denne attributten og gjøre den påkrevd i alle prosjekter. Det kan ikke deaktiveres for enkeltprosjekter."
@@ -2928,6 +2929,7 @@
   label_duplicate: "duplikat"
   label_duplicates: "duplikater"
   label_edit: "Rediger"
+  label_edit_attribute: "Edit attribute"
   label_edit_x: "Rediger: %{x}"
   label_enable_multi_select: "Veksle multivalg"
   label_enabled_project_custom_fields: "Aktiverte egendefinerte felt"
@@ -3354,6 +3356,7 @@
   label_user_search: "Søk etter bruker"
   label_user_settings: "Brukerinnstillinger"
   label_users_settings: "Brukerinnstillinger"
+  label_value_x: "Value: %{x}"
   label_version_new: "Ny versjon"
   label_version_edit: "Rediger versjon"
   label_version_plural: "Versjoner"

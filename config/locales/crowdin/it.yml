@@ -320,6 +320,7 @@ it:
     reorder_alphabetical: "Riordina i valori alfabeticamente"
     reorder_confirmation: "Attenzione: l'ordine corrente dei valori disponibili sarà perso. Continuare?"
     placeholder_version_select: "Prima è necessario selezionare la macro-attività o il progetto"
+    calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     instructions:
       is_required: "Contrassegna il campo personalizzato come obbligatorio. Ciò renderà obbligatorio compilare il campo durante la creazione di nuove risorse o l'aggiornamento di risorse esistenti."
       is_required_for_project: "Spunta la casella per abilitare questo attributo e renderlo necessario in tutti i progetti. Non può essere disattivato per i singoli progetti."
@@ -2926,6 +2927,7 @@ it:
   label_duplicate: "duplica"
   label_duplicates: "duplica"
   label_edit: "Modifica"
+  label_edit_attribute: "Edit attribute"
   label_edit_x: "Modifica: %{x}"
   label_enable_multi_select: "Attiva/disattiva multiselezione"
   label_enabled_project_custom_fields: "Campi personalizzati abilitati"
@@ -3352,6 +3354,7 @@ it:
   label_user_search: "Cerca per utente"
   label_user_settings: "Impostazioni utente"
   label_users_settings: "Impostazioni utenti"
+  label_value_x: "Value: %{x}"
   label_version_new: "Nuova versione"
   label_version_edit: "Modifica versione"
   label_version_plural: "Versioni"

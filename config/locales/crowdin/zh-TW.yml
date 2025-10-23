@@ -321,6 +321,7 @@ zh-TW:
     reorder_alphabetical: "按字母順序重新排列"
     reorder_confirmation: "警告：目前可用值的順序將會遺失。繼續嗎？"
     placeholder_version_select: "需要先選擇工作套件或專案"
+    calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     instructions:
       is_required: "將此欄位定義成必填。\n"
       is_required_for_project: "勾選以啟用此屬性，並使其成為所有專案的必要屬性。個別專案無法停用。"
@@ -2880,6 +2881,7 @@ zh-TW:
   label_duplicate: "重複"
   label_duplicates: "重複"
   label_edit: "編輯"
+  label_edit_attribute: "Edit attribute"
   label_edit_x: "編輯：%{x}"
   label_enable_multi_select: "取用複選"
   label_enabled_project_custom_fields: "開啟客製欄位"
@@ -3306,6 +3308,7 @@ zh-TW:
   label_user_search: "搜尋使用者"
   label_user_settings: "使用者設定"
   label_users_settings: "使用者設定"
+  label_value_x: "Value: %{x}"
   label_version_new: "新增版本"
   label_version_edit: "編輯版本"
   label_version_plural: "版本"
