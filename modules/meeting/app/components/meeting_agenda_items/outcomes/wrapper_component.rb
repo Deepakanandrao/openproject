@@ -28,38 +28,33 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module MeetingAgendaItems
-  class Outcomes::BaseComponent < ApplicationComponent
+module MeetingAgendaItems::Outcomes
+  class WrapperComponent < ApplicationComponent
+    include ApplicationHelper
     include OpTurbo::Streamable
     include OpPrimer::ComponentHelpers
 
-    def initialize(meeting:, meeting_agenda_item:, meeting_outcome:, edit:)
+    attr_reader :meeting_agenda_item, :meeting
+
+    def initialize(meeting_agenda_item:)
       super
 
-      @meeting = meeting
       @meeting_agenda_item = meeting_agenda_item
-      @meeting_outcome = meeting_outcome.presence || override
-      @edit = edit
+      @meeting = meeting_agenda_item.meeting
     end
 
     def wrapper_uniq_by
-      @meeting_agenda_item.id
+      meeting_agenda_item.id
     end
 
-    private
-
-    def override
-      if @meeting_agenda_item.outcomes.exists?
-        @meeting_outcome = @meeting_agenda_item.outcomes.information_kind.last
-      end
+    def render?
+      outcomes.any? || meeting.in_progress? || meeting.closed?
     end
 
-    def show_outcome?
-      @meeting.in_progress? || @meeting_outcome.present?
+    def can_add_outcomes?
+      meeting.in_progress?
     end
 
-    def margin_top
-      @meeting_agenda_item.notes.present? ? 3 : 2
-    end
+    delegate :outcomes, to: :meeting_agenda_item
   end
 end
