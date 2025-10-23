@@ -13,16 +13,8 @@ zh-TW:
           no_results: '尚未有文檔。'
         members:
           title: '成員'
-          no_results: '無可見成員。'
-          view_all_members: '查看所有成員'
-          add: '成員'
-          too_many: '顯示 %{count} 名成員，共 %{total} 名。'
         news:
           title: '最新消息'
-          at: '在'
-          no_results: '沒有新消息可報告'
-        news_beta:
-          title: '公告 (BETA)'
         project_description:
           title: '專案描述'
           no_results: "尚未寫入任何描述。可以在「項目設置」中新增。"
@@ -38,8 +30,7 @@ zh-TW:
         project_status_beta:
           title: '專案狀態 (BETA)'
         subprojects:
-          title: '子專案'
-          no_results: '無子專案'
+          title: '子項目'
         project_favorites:
           title: '收藏的專案'
           no_results: '您目前沒有收藏的專案。點擊項目儀表板中的星形圖示將其新增到您的收藏夾中。'

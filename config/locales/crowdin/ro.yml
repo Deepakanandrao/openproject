@@ -162,6 +162,11 @@ ro:
         expired: "Expired on %{date}"
         revoked: "Revoked on %{date}"
         title: "Access token table"
+    workflows:
+      tabs:
+        default_transitions: "Default transitions"
+        user_author: "User is author"
+        user_assignee: "User is assignee"
   authentication:
     login_and_registration: "Login and registration"
   announcements:
@@ -317,6 +322,7 @@ ro:
     reorder_alphabetical: "Reordonează valorile alfabetic"
     reorder_confirmation: "Avertisment: Ordinea curentă a valorilor disponibile se va pierde. Continuați?"
     placeholder_version_select: "Work package or project selection is required first"
+    calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     instructions:
       is_required: "Marchează câmpul personalizat ca obligatoriu. Acest lucru va face obligatorie completarea câmpului atunci când se creează resurse noi sau se actualizează resursele existente."
       is_required_for_project: "Bifează pentru a activa acest atribut și a-l face obligatoriu în toate proiectele. Nu poate fi dezactivat pentru proiecte individuale."
@@ -523,6 +529,8 @@ ro:
       versions:
         no_results_title_text: În acest moment nu există versiuni pentru acest proiect.
         no_results_content_text: Creează versiune nouă
+        work_packages_graph: Work packages graph
+        show_work_packages: Show work packages
       storage:
         no_results_title_text: Acest proiect nu consumă spațiu suplimentar pe disc.
       work_package_priorities:
@@ -1717,6 +1725,7 @@ ro:
         one: "Prioritate"
         few: "Priorități"
         other: "Priorități"
+      meeting_participant: "Meeting participant"
       member: "Membru"
       news: "Noutăţi"
       notification:
@@ -2604,6 +2613,9 @@ ro:
       selected: "Selected"
     include_sub_items: "Include sub-items"
     no_results_text: "No results"
+  toggle_switch:
+    label_on: "On"
+    label_off: "Off"
   general_csv_decimal_separator: ","
   general_csv_encoding: "UTF-8"
   general_csv_separator: ";"
@@ -2962,7 +2974,8 @@ ro:
   label_duplicated_by: "dublat de"
   label_duplicate: "duplicat"
   label_duplicates: "dublează"
-  label_edit: "Editează"
+  label_edit: "Editare"
+  label_edit_attribute: "Edit attribute"
   label_edit_x: "Editare: %{x}"
   label_enable_multi_select: "Comutare selecție multiplă"
   label_enabled_project_custom_fields: "Câmpuri personalizate activate"
@@ -3019,7 +3032,7 @@ ro:
   label_global_roles: "Roluri globale"
   label_git_path: "Calea catre directorul .git"
   label_greater_or_equal: ">="
-  label_group_by: "Grupează după"
+  label_group_by: "Grupare după"
   label_group_new: "Grupare nouă"
   label_group: "Grup"
   label_group_named: "Grup %{name}"
@@ -3389,6 +3402,7 @@ ro:
   label_user_search: "Căutare utilizator"
   label_user_settings: "Setări utilizator"
   label_users_settings: "Setări utilizatori"
+  label_value_x: "Value: %{x}"
   label_version_new: "Versiune nouă"
   label_version_edit: "Editați versiunea"
   label_version_plural: "Versiuni"

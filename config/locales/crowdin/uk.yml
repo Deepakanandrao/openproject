@@ -162,6 +162,11 @@ uk:
         expired: "Термін дії минув %{date}"
         revoked: "Анульовано %{date}"
         title: "Таблиця маркерів доступу"
+    workflows:
+      tabs:
+        default_transitions: "Default transitions"
+        user_author: "User is author"
+        user_assignee: "User is assignee"
   authentication:
     login_and_registration: "Вхід і реєстрація"
   announcements:
@@ -314,6 +319,7 @@ uk:
     reorder_alphabetical: "Перевпорядкувати значення за алфавітом"
     reorder_confirmation: "Увага! Поточний порядок доступних значень буде втрачено. Продовжити?"
     placeholder_version_select: "Спочатку потрібно вибрати пакет робіт або проєкт"
+    calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     instructions:
       is_required: "Позначте користувацьке поле як обов’язкове. Так його потрібно буде заповнювати під час створення нових або оновлення наявних ресурсів."
       is_required_for_project: "Установіть прапорець, щоб увімкнути цей атрибут і зробити його обов’язковим в усіх проєктах. Його не можна деактивувати для окремих проєктів."
@@ -520,6 +526,8 @@ uk:
       versions:
         no_results_title_text: Наразі не існує версій для проекту.
         no_results_content_text: Створіть нову версію
+        work_packages_graph: Work packages graph
+        show_work_packages: Show work packages
       storage:
         no_results_title_text: Цей проєкт не потребує додаткового дискового простору.
       work_package_priorities:
@@ -1725,6 +1733,7 @@ uk:
         few: "Пріоритети"
         many: "Пріоритети"
         other: "Пріоритети"
+      meeting_participant: "Учасник наради"
       member: "Учасник"
       news: "Новини"
       notification:
@@ -2643,6 +2652,9 @@ uk:
       selected: "Вибрано"
     include_sub_items: "Включити піделементи"
     no_results_text: "Немає результатів"
+  toggle_switch:
+    label_on: "On"
+    label_off: "Off"
   general_csv_decimal_separator: "."
   general_csv_encoding: "UTF-8"
   general_csv_separator: ","
@@ -3002,6 +3014,7 @@ uk:
   label_duplicate: "Дублювати"
   label_duplicates: "Дублікати"
   label_edit: "Редагувати"
+  label_edit_attribute: "Edit attribute"
   label_edit_x: "Редагувати: %{x}"
   label_enable_multi_select: "Перемкнути мультиселекцію"
   label_enabled_project_custom_fields: "Увімкнено спеціальні поля"
@@ -3085,7 +3098,7 @@ uk:
   label_index_by_title: "Індекс за назвою"
   label_information: "Інформація"
   label_information_plural: "Інформація"
-  label_installation_guides: "Інструкції із встановлення"
+  label_installation_guides: "Інструкції зі встановлення"
   label_integer: "Ціле число"
   label_interface: "Інтерфейс"
   label_internal: "Власне"
@@ -3428,6 +3441,7 @@ uk:
   label_user_search: "Знайти користувача:"
   label_user_settings: "Налаштування користувача"
   label_users_settings: "Налаштування користувачів"
+  label_value_x: "Value: %{x}"
   label_version_new: "Нова версія"
   label_version_edit: "Редагувати версію"
   label_version_plural: "Версії"

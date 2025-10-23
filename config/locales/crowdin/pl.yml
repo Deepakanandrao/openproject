@@ -162,6 +162,11 @@ pl:
         expired: "Wygasł %{date}"
         revoked: "Unieważniono %{date}"
         title: "Tabela tokenów dostępu"
+    workflows:
+      tabs:
+        default_transitions: "Default transitions"
+        user_author: "User is author"
+        user_assignee: "User is assignee"
   authentication:
     login_and_registration: "Logowanie i rejestracja"
   announcements:
@@ -314,6 +319,7 @@ pl:
     reorder_alphabetical: "Ustaw kolejność wartości alfabetycznie"
     reorder_confirmation: "Ostrzeżenie: Bieżąca kolejność dostępnych wartości zostanie utracona. Kontynuować?"
     placeholder_version_select: "W pierwszej kolejności wymagany jest wybór pakietu roboczego lub projektu"
+    calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     instructions:
       is_required: "Oznacz pole niestandardowe jako wymagane. To spowoduje obowiązkowe wypełnianie pola podczas tworzenia nowych lub aktualizacji istniejących zasobów."
       is_required_for_project: "Zaznacz, aby włączyć ten atrybut i uczynić go wymaganym we wszystkich projektach. Nie można go wyłączyć dla poszczególnych projektów."
@@ -520,6 +526,8 @@ pl:
       versions:
         no_results_title_text: Nie ma innych wersji tego projektu.
         no_results_content_text: Utwórz nową wersję projektu
+        work_packages_graph: Work packages graph
+        show_work_packages: Show work packages
       storage:
         no_results_title_text: Nie ma dodatkowego zarejestrowanego miejsca na dysku zużytego przez ten projekt.
       work_package_priorities:
@@ -1727,6 +1735,7 @@ pl:
         few: "Priorytety"
         many: "Priorytety"
         other: "Priorytety"
+      meeting_participant: "Uczestnik spotkania"
       member: "Członek"
       news: "Aktualności"
       notification:
@@ -2645,6 +2654,9 @@ pl:
       selected: "Wybrany"
     include_sub_items: "Uwzględnij elementy podrzędne"
     no_results_text: "Brak wyników"
+  toggle_switch:
+    label_on: "On"
+    label_off: "Off"
   general_csv_decimal_separator: ","
   general_csv_encoding: "UTF-8"
   general_csv_separator: "."
@@ -3004,6 +3016,7 @@ pl:
   label_duplicate: "duplikat"
   label_duplicates: "Duplikaty"
   label_edit: "Edytuj"
+  label_edit_attribute: "Edit attribute"
   label_edit_x: "Edytuj: %{x}"
   label_enable_multi_select: "Włącz wybór wielokrotny"
   label_enabled_project_custom_fields: "Aktywne pola niestandardowe"
@@ -3430,6 +3443,7 @@ pl:
   label_user_search: "Szukaj użytkownika"
   label_user_settings: "Ustawienia użytkownika"
   label_users_settings: "Ustawienia użytkowników"
+  label_value_x: "Value: %{x}"
   label_version_new: "Nowa wersja"
   label_version_edit: "Edytuj wersję"
   label_version_plural: "Wersje"

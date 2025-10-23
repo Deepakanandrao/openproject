@@ -162,6 +162,11 @@ bg:
         expired: "Expired on %{date}"
         revoked: "Revoked on %{date}"
         title: "Access token table"
+    workflows:
+      tabs:
+        default_transitions: "Default transitions"
+        user_author: "User is author"
+        user_assignee: "User is assignee"
   authentication:
     login_and_registration: "Login and registration"
   announcements:
@@ -317,6 +322,7 @@ bg:
     reorder_alphabetical: "Пренареждане на стойностите по азбучен ред"
     reorder_confirmation: "Внимание: Текущият ред на наличните стойности ще бъде загубен. Желаете ли да продължите?"
     placeholder_version_select: "Work package or project selection is required first"
+    calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     instructions:
       is_required: "Mark the custom field as required. This will make it mandatory to fill in the field when creating new or updating existing resources."
       is_required_for_project: "Check to enable this attribute and make it required in all projects. It cannot be deactived for individual projects."
@@ -523,6 +529,8 @@ bg:
       versions:
         no_results_title_text: В момента няма версии за проекта.
         no_results_content_text: Създаване на нова версия
+        work_packages_graph: Work packages graph
+        show_work_packages: Show work packages
       storage:
         no_results_title_text: There is no additional recorded disk space consumed by this project.
       work_package_priorities:
@@ -1703,6 +1711,7 @@ bg:
       issue_priority:
         one: "Приоритет"
         other: "Priorities"
+      meeting_participant: "Meeting participant"
       member: "Член"
       news: "Новини"
       notification:
@@ -2559,6 +2568,9 @@ bg:
       selected: "Selected"
     include_sub_items: "Include sub-items"
     no_results_text: "No results"
+  toggle_switch:
+    label_on: "On"
+    label_off: "Off"
   general_csv_decimal_separator: "."
   general_csv_encoding: "UTF-8"
   general_csv_separator: ","
@@ -2918,6 +2930,7 @@ bg:
   label_duplicate: "дубликат"
   label_duplicates: "дублирания"
   label_edit: "Редактиране"
+  label_edit_attribute: "Edit attribute"
   label_edit_x: "Редактиране: %{x}"
   label_enable_multi_select: "Превключване към множествен избор"
   label_enabled_project_custom_fields: "Разрешени потребителски полета"
@@ -3344,6 +3357,7 @@ bg:
   label_user_search: "Търсене на потребител"
   label_user_settings: "Потребителски настройки"
   label_users_settings: "Потребителски настройки"
+  label_value_x: "Value: %{x}"
   label_version_new: "Нова версия"
   label_version_edit: "Edit version"
   label_version_plural: "Версии"

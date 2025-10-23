@@ -162,6 +162,11 @@ ru:
         expired: "Истекает %{date}"
         revoked: "Отменено %{date}"
         title: "Таблица токенов доступа"
+    workflows:
+      tabs:
+        default_transitions: "Default transitions"
+        user_author: "User is author"
+        user_assignee: "User is assignee"
   authentication:
     login_and_registration: "Войти и зарегистрироваться"
   announcements:
@@ -316,6 +321,7 @@ ru:
     reorder_alphabetical: "Переупорядочить значения по алфавиту"
     reorder_confirmation: "Внимание: Текущий порядок доступных значений будет утерян. Продолжить?"
     placeholder_version_select: "Сначала необходимо выбрать пакет работ или проект"
+    calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
     instructions:
       is_required: "Пометить пользовательское поле как обязательное. Это сделает заполнение поля обязательным при создании новых или обновлении существующих ресурсов."
       is_required_for_project: "Установите флажок, чтобы включить этот атрибут и сделать его обязательным для всех проектов. Он не может быть отключен для отдельных проектов."
@@ -522,6 +528,8 @@ ru:
       versions:
         no_results_title_text: На данный момент этапы в проекте отсутствуют.
         no_results_content_text: Создать новую версию
+        work_packages_graph: Work packages graph
+        show_work_packages: Show work packages
       storage:
         no_results_title_text: Для этого проекта дополнительного дискового пространства не требуется.
       work_package_priorities:
@@ -1729,6 +1737,7 @@ ru:
         few: "Приоритеты"
         many: "Приоритеты"
         other: "Приоритеты"
+      meeting_participant: "Meeting participant"
       member: "Участник"
       news: "Новости"
       notification:
@@ -2647,6 +2656,9 @@ ru:
       selected: "Selected"
     include_sub_items: "Include sub-items"
     no_results_text: "No results"
+  toggle_switch:
+    label_on: "On"
+    label_off: "Off"
   general_csv_decimal_separator: "."
   general_csv_encoding: "UTF-8"
   general_csv_separator: ","
@@ -3006,6 +3018,7 @@ ru:
   label_duplicate: "дублировать"
   label_duplicates: "Дублирует"
   label_edit: "Правка"
+  label_edit_attribute: "Edit attribute"
   label_edit_x: "Правка: %{x}"
   label_enable_multi_select: "Разрешен множественный выбор"
   label_enabled_project_custom_fields: "Доступные настраиваемые поля"
@@ -3432,6 +3445,7 @@ ru:
   label_user_search: "Найти пользователя"
   label_user_settings: "Настройки пользователя"
   label_users_settings: "Настройки пользователей"
+  label_value_x: "Value: %{x}"
   label_version_new: "Новый этап"
   label_version_edit: "Изменить версию"
   label_version_plural: "Этапы"

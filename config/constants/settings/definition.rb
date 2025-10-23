@@ -575,14 +575,6 @@ module Settings
           development: "wss://hocuspocus.local"
         }
       },
-      collaborative_editing_hocuspocus_secret: {
-        format: :string,
-        default: nil,
-        default_by_env: {
-          development: "secret12345"
-        },
-        description: "The secret used for generating access tokens to access documents on hocuspocus server."
-      },
       hours_per_day: {
         description: "This will define what is considered a “day” when displaying duration in a more natural way " \
                      "(for example, if a day is 8 hours, 32 hours would be 4 days).",
@@ -1142,6 +1134,17 @@ module Settings
         default: {
           "host" => nil,
           "port" => 8125
+        },
+        writable: false
+      },
+      metrics: {
+        description: "
+          Publish a reduced set of puma metrics on a separate port for Prometheus consumption,
+          providing autoscaling hints
+        ".squish,
+        default: {
+          "enabled" => false,
+          "port" => 9394
         },
         writable: false
       },

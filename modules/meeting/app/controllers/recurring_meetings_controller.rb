@@ -285,7 +285,7 @@ class RecurringMeetingsController < ApplicationController
     @direction = params.fetch(:direction, "upcoming")
   end
 
-  def build_meeting_limits
+  def build_meeting_limits # rubocop:disable Metrics/AbcSize
     @max_count =
       if @direction == "past"
         @recurring_meeting.scheduled_instances(upcoming: false).count
@@ -296,7 +296,7 @@ class RecurringMeetingsController < ApplicationController
         [total, 0].max
       end
 
-    @count = [show_more_limit_param, @max_count].compact.min
+    @count = [show_more_limit_param(limit: params[:limit]), @max_count].compact.min
   end
 
   def scheduled_meeting(start_time)
@@ -307,10 +307,6 @@ class RecurringMeetingsController < ApplicationController
     @scheduled_meeting = @recurring_meeting.scheduled_meetings.find_or_initialize_by(start_time: params[:start_time])
 
     render_400 unless @scheduled_meeting.meeting_id.nil?
-  end
-
-  def find_optional_project
-    @project = Project.find(params[:project_id]) if params[:project_id].present?
   end
 
   def find_meeting
