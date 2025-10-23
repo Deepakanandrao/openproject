@@ -85,10 +85,10 @@ ENTRYPOINT ["./docker/prod/entrypoint-slim.sh"]
 VOLUME ["$APP_DATA_PATH"]
 
 # -------------------------------------
-# bim (public)
+# slim-bim (public)
 # same as slim but with BIM support enabled
 # -------------------------------------
-FROM base AS bim
+FROM base AS slim-bim
 
 USER $APP_USER
 EXPOSE 8080
