@@ -51,7 +51,7 @@ pt-BR:
       type: "Type"
       updated_at: "Last edited"
     menu:
-      all: "All documents"
+      all: "Todos os documentos"
       types: "Types"
     label_attachment_author: "Autor do anexo"
     label_categories: "Categorias"

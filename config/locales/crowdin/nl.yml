@@ -4442,10 +4442,10 @@ nl:
   time:
     am: "am"
     formats:
-      default: "%m/%d/%Y %I:%M %p"
+      default: "%d-%m-%Y %H:%M"
       long: "%B %d, %Y %H:%M"
       short: "%d %b %H:%M"
-      time: "%I:%M %p"
+      time: "%H:%M"
     pm: "PM"
   timeframe:
     show: "Toon tijdschema"
