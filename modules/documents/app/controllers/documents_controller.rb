@@ -30,6 +30,7 @@
 
 class DocumentsController < ApplicationController
   include AttachableServiceCall
+  include FlashMessagesOutputSafetyHelper
   include PaginationHelper
   include OpTurbo::ComponentStream
 
@@ -99,8 +100,13 @@ class DocumentsController < ApplicationController
   end
 
   def destroy
-    @document.destroy
-    redirect_to controller: "/documents", action: "index", project_id: @project, status: :see_other
+    if @document.destroy
+      flash[:notice] = I18n.t(:notice_successful_delete)
+    else
+      flash[:error] = join_flash_messages(@document.errors.full_messages)
+    end
+
+    redirect_to project_documents_path(@project), status: :see_other
   end
 
   private
