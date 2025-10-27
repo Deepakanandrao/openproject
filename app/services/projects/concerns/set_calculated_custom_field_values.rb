@@ -32,23 +32,13 @@ module Projects::Concerns
   module SetCalculatedCustomFieldValues
     private
 
-    def set_attributes(params)
-      super(params_except_calculated_fields(params)).tap do
-        update_calculated_value_custom_fields
+    def before_perform(service_call)
+      super.tap do |super_call|
+        update_calculated_value_custom_fields(super_call.result)
       end
     end
 
-    def params_except_calculated_fields(params)
-      custom_field_value_params = params[:custom_field_values]
-      return params unless custom_field_value_params
-
-      calculated_field_ids = model.all_available_custom_fields.field_format_calculated_value.pluck(:id)
-      custom_field_value_params = custom_field_value_params.reject { |id, _| id.to_s.to_i.in?(calculated_field_ids) }
-
-      params.merge(custom_field_values: custom_field_value_params)
-    end
-
-    def update_calculated_value_custom_fields
+    def update_calculated_value_custom_fields(model)
       changed_cf_ids = model.custom_values.select(&:changed?).map(&:custom_field_id)
 
       # Using unscope(where: :admin_only) to fix an issue when non admin user

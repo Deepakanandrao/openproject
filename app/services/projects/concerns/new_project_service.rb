@@ -32,7 +32,7 @@ module Projects::Concerns
   module NewProjectService
     private
 
-    def after_validate(service_call)
+    def before_perform(service_call)
       super.tap do |super_call|
         build_missing_project_custom_field_project_mappings(super_call.result)
       end

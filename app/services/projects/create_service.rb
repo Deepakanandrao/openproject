@@ -31,5 +31,6 @@
 module Projects
   class CreateService < ::BaseServices::Create
     include Projects::Concerns::NewProjectService
+    include Projects::Concerns::SetCalculatedCustomFieldValues
   end
 end
