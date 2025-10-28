@@ -74,9 +74,6 @@ RSpec.describe "External links", :js do
       document.body.appendChild(downloadLink);
     JS
 
-    # Ensure mutation observer had time to process
-    sleep 0.5
-
     empty_link = find_link("Empty link", href: "", match: :first)
     download_link = find_link("Download PDF", href: "/files/sample.pdf", match: :first)
 
@@ -88,5 +85,22 @@ RSpec.describe "External links", :js do
     expect(download_link[:target]).to be_in([nil, ""])
     expect(download_link[:rel]).to be_nil.or eq("")
     expect(download_link[:"aria-describedby"]).to be_nil.or eq("")
+  end
+
+  it 'adds aria-describedby to links with target="_blank"' do
+    visit "/"
+
+    page.execute_script <<~JS
+      const blankLink = document.createElement('a');
+      blankLink.href = '/internal-page';
+      blankLink.target = '_blank';
+      blankLink.textContent = 'Opens in new tab';
+      document.body.appendChild(blankLink);
+    JS
+
+    link = find_link("Opens in new tab", href: "/internal-page")
+
+    expect(link[:target]).to eq("_blank")
+    expect(link[:"aria-describedby"]).to include("open-blank-target-link-description")
   end
 end
