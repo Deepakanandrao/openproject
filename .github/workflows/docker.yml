@@ -12,6 +12,22 @@ on:
         description: "The main docker tag to use (e.g., 'dev' or '16.3.0')"
         required: true
         type: string
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: "The branch or tag to checkout and build"
+        required: true
+        type: string
+      tag:
+        description: "The main docker tag to use (e.g., 'dev' or '16.3.0')"
+        required: true
+        type: string
+      use_test_registry:
+        description: "Use openproject/openproject-test registry instead (for testing)"
+        required: false
+        type: boolean
+        default: false
+
 
 permissions:
   contents: read # to fetch code (actions/checkout)
@@ -34,6 +50,13 @@ jobs:
           echo "Processing tag: ${{ inputs.tag }}"
           ./script/gh/docker-tags.rb "${{ inputs.tag }}" --version
           ./script/gh/docker-tags.rb "${{ inputs.tag }}" --format-for-docker
+
+          # Determine registry image based on workflow_dispatch input
+          if [ "${{ inputs.use_test_registry }}" = "true" ]; then
+            echo "registry_image=openproject/openproject-test" >> "$GITHUB_OUTPUT"
+          else
+            echo "registry_image=${{ env.REGISTRY_IMAGE }}" >> "$GITHUB_OUTPUT"
+          fi
       - name: Verify outputs
         run: |
           if [ -z "${{ steps.extract_version.outputs.version }}" ]; then
@@ -44,8 +67,13 @@ jobs:
             echo "Error: docker_tags output is empty"
             exit 1
           fi
+          if [ -z "${{ steps.extract_version.outputs.registry_image }}" ]; then
+            echo "Error: registry_image output is empty"
+            exit 1
+          fi
           echo "✓ version: ${{ steps.extract_version.outputs.version }}"
           echo "✓ docker_tags: ${{ steps.extract_version.outputs.docker_tags }}"
+          echo "✓ registry_image: ${{ steps.extract_version.outputs.registry_image }}"
       - name: Cache NPM
         uses: runs-on/cache@v4
         with:
@@ -86,6 +114,7 @@ jobs:
     outputs:
       version: ${{ steps.extract_version.outputs.version }}
       docker_tags: ${{ steps.extract_version.outputs.docker_tags }}
+      registry_image: ${{ steps.extract_version.outputs.registry_image }}
   build:
     if: github.repository == 'opf/openproject'
     needs:
@@ -176,7 +205,7 @@ jobs:
           tags: |
             ${{ needs.setup.outputs.docker_tags }}
           images: |
-            ${{ env.REGISTRY_IMAGE }}
+            ${{ needs.setup.outputs.registry_image }}
       - name: Restore vendor/bundle
         id: restore-vendor-bundle
         uses: actions/cache/restore@v4
@@ -254,7 +283,7 @@ jobs:
             DEBIAN_BASE=${{ matrix.debian_base }}
             BIM_SUPPORT=${{ matrix.bim_support }}
           labels: ${{ steps.meta.outputs.labels }}
-          outputs: type=image,name=${{ env.REGISTRY_IMAGE }},push-by-digest=true,name-canonical=true,push=true
+          outputs: type=image,name=${{ needs.setup.outputs.registry_image }},push-by-digest=true,name-canonical=true,push=true
           cache-from: type=s3,blobs_prefix=cache/${{ github.repository }}/${{ matrix.debian_base }},manifests_prefix=cache/${{ github.repository }}/${{ matrix.debian_base }},region=${{ env.RUNS_ON_AWS_REGION }},bucket=${{ env.RUNS_ON_S3_BUCKET_CACHE }}
           cache-to: type=s3,blobs_prefix=cache/${{ github.repository }}/${{ matrix.debian_base }},manifests_prefix=cache/${{ github.repository }}/${{ matrix.debian_base }},region=${{ env.RUNS_ON_AWS_REGION }},bucket=${{ env.RUNS_ON_S3_BUCKET_CACHE }},mode=max
       - name: Export digest
@@ -301,7 +330,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY_IMAGE }}
+          images: ${{ needs.setup.outputs.registry_image }}
           labels: |
             io.artifacthub.package.readme-url=https://raw.githubusercontent.com/opf/openproject/refs/heads/dev/docker/prod/README.md
             io.artifacthub.package.logo-url=https://raw.githubusercontent.com/opf/openproject/refs/heads/dev/docker/prod/logo.png
@@ -322,10 +351,10 @@ jobs:
         working-directory: /tmp/digests
         run: |
           docker buildx imagetools create $(jq -cr '.tags | map("-t " + .) | join(" ")' <<< "$DOCKER_METADATA_OUTPUT_JSON") \
-            $(printf '${{ env.REGISTRY_IMAGE }}@sha256:%s ' *)
+            $(printf '${{ needs.setup.outputs.registry_image }}@sha256:%s ' *)
       - name: Inspect image
         run: |
-          docker buildx imagetools inspect ${{ env.REGISTRY_IMAGE }}:${{ steps.meta.outputs.version }}
+          docker buildx imagetools inspect ${{ needs.setup.outputs.registry_image }}:${{ steps.meta.outputs.version }}
   notify:
     needs: [setup, build, merge]
     if: ${{ always() && contains(needs.*.result, 'failure') }}
