@@ -164,9 +164,9 @@ fr:
         title: "Tableau des jetons d'accès"
     workflows:
       tabs:
-        default_transitions: "Default transitions"
-        user_author: "User is author"
-        user_assignee: "User is assignee"
+        default_transitions: "Transitions par défaut"
+        user_author: "L'utilisateur est l'auteur"
+        user_assignee: "L'utilisateur est assigné"
   authentication:
     login_and_registration: "Connexion et inscription"
   announcements:
@@ -322,7 +322,7 @@ fr:
     reorder_alphabetical: "Réorganiser les valeurs par ordre alphabétique"
     reorder_confirmation: "Attention : l'ordre actuel des valeurs disponibles sera perdu. Continuer ?"
     placeholder_version_select: "La sélection d'un lot de travaux ou d'un projet est requise en premier lieu"
-    calculated_field_not_editable: "Non-editable attribute. This value is calculated automatically."
+    calculated_field_not_editable: "Attribut non modifiable. Cette valeur est calculée automatiquement."
     instructions:
       is_required: "Marquer le champ personnalisé comme requis. Cela rendra obligatoire de remplir le champ lors de la création ou de la mise à jour des ressources existantes."
       is_required_for_project: "Cocher pour activer cet attribut et le rendre nécessaire dans tous les projets. Il ne peut pas être désactivé pour certains projets."
@@ -529,8 +529,8 @@ fr:
       versions:
         no_results_title_text: Aucune version du projet pour le moment.
         no_results_content_text: Créer une nouvelle version
-        work_packages_graph: Work packages graph
-        show_work_packages: Show work packages
+        work_packages_graph: Graphique des lots de travaux
+        show_work_packages: Afficher tous les lots de travaux
       storage:
         no_results_title_text: Il n'y a pas d'espace disque supplémentaire utilisé par ce projet.
       work_package_priorities:
@@ -2597,13 +2597,13 @@ fr:
         #We need to include the version to invalidate outdated translations in other locales
         "16_6":
           new_features_title: >
-            The release contains various new features and improvements, such as:
+            Cette version contient plusieurs nouvelles fonctionnalités et améliorations, telles que
           new_features_list:
-            line_0: Calculated values for project evaluation and scoring (Enterprise add-on).
-            line_1: Project attributes type hierarchy.
-            line_2: Performance updates with great impact.
-            line_3: New index page for Documents module.
-            line_4: Possibility to change parent of a custom field item.
+            line_0: Valeurs calculées pour l'évaluation et la notation des projets (Enterprise add-on).
+            line_1: Hiérarchie des types d'attributs du projet.
+            line_2: Des mises à jour de performance avec un impact important.
+            line_3: Nouvelle page d'index pour le module Documents.
+            line_4: Possibilité de changer le parent d'un champ personnalisé.
     links:
       upgrade_enterprise_edition: "Passer à la version Entreprise"
       postgres_migration: "Migration de votre installation vers PostgreSQL"
@@ -2928,7 +2928,7 @@ fr:
   label_duplicate: "dupliquer"
   label_duplicates: "Doublons"
   label_edit: "Éditer"
-  label_edit_attribute: "Edit attribute"
+  label_edit_attribute: "Modifier l'attribut"
   label_edit_x: "Modifier : %{x}"
   label_enable_multi_select: "Basculer multisélection"
   label_enabled_project_custom_fields: "Champs personnalisés activés"
@@ -3355,7 +3355,7 @@ fr:
   label_user_search: "Recherche d'Utilisateurs"
   label_user_settings: "Paramètres de l'utilisateur"
   label_users_settings: "Paramètres des utilisateurs"
-  label_value_x: "Value: %{x}"
+  label_value_x: "Valeur : %{x}"
   label_version_new: "Nouvelle version"
   label_version_edit: "Modifier la version"
   label_version_plural: "Versions"
