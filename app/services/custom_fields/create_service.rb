@@ -70,7 +70,7 @@ module CustomFields
     private
 
     def add_cf_to_visible_columns(custom_field)
-      Setting.enabled_projects_columns = (Setting.enabled_projects_columns + [custom_field.column_name]).uniq
+      Setting.enabled_projects_columns |= [custom_field.column_name]
     end
   end
 end
