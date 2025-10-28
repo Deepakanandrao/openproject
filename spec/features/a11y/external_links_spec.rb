@@ -57,4 +57,36 @@ RSpec.describe "External links", :js do
     # Wait for mutation observer to detect and update the link
     expect(page).to have_link("External Example", href: "https://example.com", target: "_blank")
   end
+
+  it "does not modify links with empty href or download attribute" do
+    visit "/"
+
+    page.execute_script <<~JS
+      const emptyLink = document.createElement('a');
+      emptyLink.href = '';
+      emptyLink.textContent = 'Empty link';
+      document.body.appendChild(emptyLink);
+
+      const downloadLink = document.createElement('a');
+      downloadLink.href = '/files/sample.pdf';
+      downloadLink.download = 'sample.pdf';
+      downloadLink.textContent = 'Download PDF';
+      document.body.appendChild(downloadLink);
+    JS
+
+    # Ensure mutation observer had time to process
+    sleep 0.5
+
+    empty_link = find_link("Empty link", href: "", match: :first)
+    download_link = find_link("Download PDF", href: "/files/sample.pdf", match: :first)
+
+    # The controller should NOT modify these links
+    expect(empty_link[:target]).to be_in([nil, ""])
+    expect(empty_link[:rel]).to be_nil.or eq("")
+    expect(empty_link[:"aria-describedby"]).to be_nil.or eq("")
+
+    expect(download_link[:target]).to be_in([nil, ""])
+    expect(download_link[:rel]).to be_nil.or eq("")
+    expect(download_link[:"aria-describedby"]).to be_nil.or eq("")
+  end
 end
