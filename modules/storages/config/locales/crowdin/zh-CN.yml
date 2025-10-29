@@ -32,7 +32,7 @@ zh-CN:
         drive: 驱动器 ID
         host: 主机
         name: 名称
-        password: 应用密码
+        password: 应用程序密码
         provider_type: 提供商类型
         tenant: 目录 (租户) ID
     errors:
@@ -497,7 +497,7 @@ zh-CN:
         name_placeholder: 例如OneDrive
       sharepoint:
         drive_description: OpenProject access-managed document library
-        label_oauth_client_id: Azure OAuth 应用程序 (客户端) ID
+        label_oauth_client_id: Azure OAuth 应用程序（客户端）ID
         label_oauth_client_secret: Azure OAuth 客户端密钥值
         name: SharePoint
         name_placeholder: 例如 SharePoint

@@ -32,7 +32,7 @@ ja:
         drive: ドライブID
         host: ホスト
         name: 名称
-        password: Application password
+        password: アプリケーションのパスワード
         provider_type: プロバイダー・タイプ
         tenant: ディレクトリ（テナント）ID
     errors:
@@ -275,7 +275,7 @@ ja:
           drive_id_exists: ドライブは存在する
           drive_id_format: ドライブIDフォーマット
           header: 構成
-          host: Host URL
+          host: ホスト URL
           host_url_accessible: アクセス可能なホストURL
           storage_configured: 設定完了
           tenant_id: テナントID

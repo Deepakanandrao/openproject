@@ -352,7 +352,7 @@ lv:
     confirmation_live_message_checked: "The button to proceed is now active."
     confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
   op_dry_validation:
-    or: "or"
+    or: "vai"
     errors:
       array?: "must be an array."
       decimal?: "must be a decimal."
@@ -649,7 +649,7 @@ lv:
     sessions:
       session_name: "%{browser_name} %{browser_version} on %{os_name}"
       browser: "Browser"
-      expires: "Expires"
+      expires: "Termiņš izbeidzas"
       last_connection: "Last connection"
       device: "Device / OS"
       unknown_browser: "unknown browser"
@@ -2139,15 +2139,15 @@ lv:
     distance_in_words:
       about_x_hours:
         zero: "aptuveni %{count} stundām"
-        one: "aptuveni 1 stundas"
+        one: "aptuveni %{count} stundas"
         other: "aptuveni %{count} stundām"
       about_x_months:
         zero: "aptuveni %{count} mēnešiem"
-        one: "aptuveni 1 mēneša"
+        one: "aptuveni %{count} mēneša"
         other: "aptuveni %{count} mēnešiem"
       about_x_years:
         zero: "%{count} gadiem"
-        one: "1 gada"
+        one: "%{count} gada"
         other: "%{count} gadiem"
       almost_x_years:
         zero: "gandrīz %{count} gadi"
@@ -2156,19 +2156,19 @@ lv:
       half_a_minute: "half a minute"
       less_than_x_minutes:
         zero: "mazāk nekā %{count} minūtēm"
-        one: "mazāk par minūti"
+        one: "mazāk nekā %{count} minūtes"
         other: "mazāk nekā %{count} minūtēm"
       less_than_x_seconds:
         zero: "mazāk nekā %{count} sekundēm"
-        one: "mazāk nekā 1 sekundes"
+        one: "mazāk nekā %{count} sekundes"
         other: "mazāk nekā %{count} sekundēm"
       over_x_years:
         zero: "senāk kā %{count} gadiem"
-        one: "senāk kā 1 gada"
+        one: "senāk kā %{count} gada"
         other: "senāk kā %{count} gadiem"
       x_days:
         zero: "%{count} dienām"
-        one: "1 dienas"
+        one: "%{count} dienas"
         other: "%{count} dienām"
       x_minutes:
         zero: "%{count} minūtēm"
@@ -2180,7 +2180,7 @@ lv:
         other: "%{count} mins"
       x_hours:
         zero: "%{count} stundas"
-        one: "1 stunda"
+        one: "%{count} stunda"
         other: "%{count} stundas"
       x_hours_abbreviated:
         zero: "%{count} hrs"
@@ -2192,7 +2192,7 @@ lv:
         other: "%{count} weeks"
       x_months:
         zero: "%{count} mēnešiem"
-        one: "1 mēneša"
+        one: "%{count} mēneša"
         other: "%{count} mēnešiem"
       x_years:
         zero: "%{count} years"
@@ -2886,7 +2886,7 @@ lv:
   label_required_disk_storage: "Nepieciešamā diska krātuve"
   label_send_invitation: Nosūtīt ielūgumu
   label_calculated_value: "Calculated Value"
-  label_change_parent: "Change parent"
+  label_change_parent: "Mainīt vecāku"
   label_change_plural: "Changes"
   label_change_properties: "Change properties"
   label_change_status: "Change status"
@@ -3108,7 +3108,7 @@ lv:
   label_custom_export_footer: "Custom export footer image"
   label_custom_export_font_regular: "Regular"
   label_custom_export_font_bold: "Bold"
-  label_custom_export_font_italic: "Italic"
+  label_custom_export_font_italic: "Slīps"
   label_custom_export_font_bold_italic: "Bold Italic"
   label_custom_export_cover_overlay: "Custom export cover background overlay"
   label_custom_export_cover_text_color: "Text color"
@@ -3459,15 +3459,15 @@ lv:
   label_workflow_summary: "Kopsavilkums"
   label_working_days_and_hours: "Working days and hours"
   label_x_closed_work_packages_abbr:
-    one: "1 slēgts"
+    one: "%{count} slēgts"
     other: "%{count} slēgti"
     zero: "0 closed"
   label_x_comments:
-    one: "1 komentārs"
+    one: "%{count} komentārs"
     other: "%{count} komentāri"
     zero: "no comments"
   label_x_open_work_packages_abbr:
-    one: "1 atvērts"
+    one: "%{count} atvērts"
     other: "%{count} atvērti"
     zero: "0 open"
   label_x_work_packages:
@@ -3475,7 +3475,7 @@ lv:
     other: "%{count} work packages"
     zero: "No work packages"
   label_x_projects:
-    one: "1 projekts"
+    one: "%{count} projekts"
     other: "%{count} projekti"
     zero: "no projects"
   label_x_files:
@@ -3883,7 +3883,7 @@ lv:
       archived: "Archived"
     count:
       zero: "0 projects"
-      one: "1 projekts"
+      one: "%{count} projekts"
       other: "%{count} projekti"
     destroy:
       title: "Delete project"

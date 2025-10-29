@@ -32,7 +32,7 @@ nl:
         drive: Drive ID
         host: Host
         name: Naam
-        password: Application password
+        password: App wachtwoord
         provider_type: Type provider
         tenant: Directory (tenant) ID
     errors:

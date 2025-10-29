@@ -526,7 +526,7 @@ uk:
       versions:
         no_results_title_text: Наразі не існує версій для проекту.
         no_results_content_text: Створіть нову версію
-        work_packages_graph: Work packages graph
+        work_packages_graph: Графік робочих пакетів
         show_work_packages: Show work packages
       storage:
         no_results_title_text: Цей проєкт не потребує додаткового дискового простору.
@@ -764,7 +764,7 @@ uk:
           label_with_context: "%{attribute_context}: %{attribute_label}"
           context:
             work_package: "Робочий пакет"
-            parent: "Батьківський"
+            parent: "Батьківський об’єкт"
             project: "Проєкт"
         pattern:
           label: "Шаблон теми"
@@ -910,7 +910,7 @@ uk:
       new_child_description: "Створює звʼязаний пакет робіт як піделемент поточного (батьківського) пакета робіт"
       child: "Дочірній"
       child_description: "Вкладає звʼязаний пакет робіт як піделемент поточного (батьківського) пакета робіт"
-      parent: "Батьківський"
+      parent: "Батьківський об’єкт"
       parent_description: "Установлює звʼязаний пакет робіт батьківським відносно поточного (дочірнього) пакета робіт"
       label_closest: "Найближчі"
       label_blocks_singular: "блоки"
@@ -1283,8 +1283,8 @@ uk:
         journal_internal: Внутрішній журнал
         notify: "Сповіщати" #used in custom actions
         parent: "Джерело"
-        parent_issue: "Батьківський"
-        parent_work_package: "Батьківський"
+        parent_issue: "Батьківський об’єкт"
+        parent_work_package: "Батьківський об’єкт"
         priority: "Пріоритет"
         progress: "% завершення"
         readonly: "Лише читання"
@@ -2683,7 +2683,7 @@ uk:
         #We need to include the version to invalidate outdated translations in other locales
         "16_6":
           new_features_title: >
-            The release contains various new features and improvements, such as:
+            Випуск включає різноманітні нові функції і покращення, такі як:
           new_features_list:
             line_0: Calculated values for project evaluation and scoring (Enterprise add-on).
             line_1: Project attributes type hierarchy.
@@ -2872,7 +2872,7 @@ uk:
   label_ical_access_key_not_present: "Немає маркерів iCalendar."
   label_ical_access_key_generation_hint: "Автоматично створено під час оформлення підписки на календар."
   label_ical_access_key_latest: "останні"
-  label_ical_access_key_revoke: "Відкликати"
+  label_ical_access_key_revoke: "Анулювати"
   label_add_column: "Додати стовпець"
   label_applied_status: "Застосовний статус"
   label_archive_project: "Архівний проект"
@@ -3235,7 +3235,7 @@ uk:
   label_operator_none: "не вказано"
   label_operator_equals_or: "є (АБО)"
   label_operator_equals_all: "є (І)"
-  label_operator_shared_with_user_any: "будь-який"
+  label_operator_shared_with_user_any: "усі"
   label_open: "відкрити"
   label_closed: "зачинено"
   label_open_menu: "Відкрити меню"
@@ -4386,7 +4386,7 @@ uk:
   status_archived: "в архіві"
   status_blocked: "заблоковано"
   status_invited: запрошені
-  status_locked: Заблоковано
+  status_locked: заблоковано
   status_registered: Зареєстровано
   status_deleted: видалено
   #Used in array.to_sentence.

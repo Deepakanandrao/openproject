@@ -527,7 +527,7 @@ it:
       versions:
         no_results_title_text: Al momento non esistono versioni per il progetto.
         no_results_content_text: Crea una nuova versione
-        work_packages_graph: Work packages graph
+        work_packages_graph: Grafico delle macro-attività
         show_work_packages: Show work packages
       storage:
         no_results_title_text: Nessuno spazio su disco registrato aggiuntivo consumato da questo progetto.
@@ -2596,7 +2596,7 @@ it:
         #We need to include the version to invalidate outdated translations in other locales
         "16_6":
           new_features_title: >
-            The release contains various new features and improvements, such as:
+            Questa versione contiene diverse nuove funzionalità e miglioramenti, come ad esempio:
           new_features_list:
             line_0: Calculated values for project evaluation and scoring (Enterprise add-on).
             line_1: Project attributes type hierarchy.
@@ -3694,7 +3694,7 @@ it:
   #Default format for numbers
   number:
     format:
-      delimiter: "."
+      delimiter: ","
       precision: 3
       separator: "."
     human:

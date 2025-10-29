@@ -615,7 +615,7 @@ fr:
     access_token:
       dialog:
         token/api:
-          dialog_title: "Créer un nouveau jeton API"
+          dialog_title: "Créer un nouveau jeton d'API"
           attention_text: "Traitez les jetons API comme des mots de passe. Toute personne possédant ce jeton aura accès aux informations de cette instance. Partagez-le uniquement avec des utilisateurs de confiance."
           dialog_body: "Ce jeton permettra aux applications tierces de communiquer avec votre instance. Pour différencier le nouveau jeton d'API, veuillez lui donner un nom."
           create_button: "Créer"
@@ -1831,7 +1831,7 @@ fr:
     due_date: "Date de fin"
     estimated_hours: "Travail"
     estimated_time: "Travail"
-    email: "E-mail"
+    email: "Adresse e-mail"
     entity_type: "Entité"
     expires_at: "Expire le"
     firstname: "Prénom"
@@ -2234,7 +2234,7 @@ fr:
     upsell:
       buy_now_button: "Acheter maintenant"
       plans_title: "Formules d'abonnement Enterprise"
-      title: "Add-on Enterprise"
+      title: "Module Enterprise"
       plan_title: "Add-on Enterprise %{plan}"
       plan_name: "Abonnement Enterprise %{plan}"
       plan_text_html: "Disponible à partir de l'abonnement %{plan_name}."
@@ -2561,7 +2561,7 @@ fr:
       tesseract: "Tesseract disponible (optionnel)"
   filterable_tree_view:
     filter_mode:
-      all: "Tout"
+      all: "Tous"
       label: "Mode de filtrage"
       selected: "Sélectionné"
     include_sub_items: "Inclure les sous-projets"
@@ -2597,7 +2597,7 @@ fr:
         #We need to include the version to invalidate outdated translations in other locales
         "16_6":
           new_features_title: >
-            Cette version contient plusieurs nouvelles fonctionnalités et améliorations, telles que
+            Cette version contient plusieurs nouvelles fonctionnalités et améliorations, telles que :
           new_features_list:
             line_0: Valeurs calculées pour l'évaluation et la notation des projets (Enterprise add-on).
             line_1: Hiérarchie des types d'attributs du projet.
@@ -2605,7 +2605,7 @@ fr:
             line_3: Nouvelle page d'index pour le module Documents.
             line_4: Possibilité de changer le parent d'un champ personnalisé.
     links:
-      upgrade_enterprise_edition: "Passer à la version Entreprise"
+      upgrade_enterprise_edition: "Passer à la version Enterprise"
       postgres_migration: "Migration de votre installation vers PostgreSQL"
       user_guides: "Guides d'utilisation"
       faq: "FAQ"
@@ -3169,7 +3169,7 @@ fr:
   label_password_rule_special: "Caractères spéciaux"
   label_password_rule_uppercase: "Majuscules"
   label_path_encoding: "Encodage du chemin d'accès"
-  label_per_page: "Par page :"
+  label_per_page: "Par page:"
   label_people: "Participants"
   label_permissions: "Autorisations"
   label_permissions_report: "Rapport d'autorisations"
@@ -3695,7 +3695,7 @@ fr:
   #Default format for numbers
   number:
     format:
-      delimiter: ","
+      delimiter: "."
       precision: 3
       separator: ","
     human:

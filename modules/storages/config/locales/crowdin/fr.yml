@@ -395,7 +395,7 @@ fr:
       setting_up_storages_non_admin: Les administrateurs peuvent configurer des espaces de stockage de fichiers dans Administration - Espaces de stockage de fichiers.
       sharepoint:
         application_link_text: Site SharePoint
-        integration: Administration SharePoint / OpenProject
+        integration: Administration SharePoint/OpenProject
         oauth_configuration: Copiez ces valeurs de l'application souhaitée dans %{application_link_text}.
         provider_configuration: Veuillez vous assurer que vous disposez des privilèges d'administration dans le %{application_link_text} ou contactez votre administrateur Microsoft avant de procéder à l'installation. Dans le portail, vous devez également enregistrer une application Azure ou utiliser une application existante pour l'authentification.
       type: 'Veuillez vous assurer que vous avez les privilèges d''administration dans votre instance Nextcloud et que l''application suivante est installée avant de procéder à l''installation :'
@@ -501,7 +501,7 @@ fr:
         drive_description: Bibliothèque de documents à accès géré OpenProject
         label_oauth_client_id: ID de l'application Azure OAuth (client)
         label_oauth_client_secret: Clé secrète du client OAuth Azure
-        name: SharePoint
+        name: Microsoft Office SharePoint Online
         name_placeholder: par exemple SharePoint
     show_attachments_toggle:
       description: Si vous désactivez cette option, la liste des pièces jointes dans l'onglet des fichiers des lots de travaux sera masquée. Les fichiers joints dans la description d'un lot de travaux seront toujours téléversés dans l'espace de stockage interne des pièces jointes.
