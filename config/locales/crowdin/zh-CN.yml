@@ -352,28 +352,28 @@ zh-CN:
     or: "或"
     errors:
       array?: "必须为一个数组。"
-      decimal?: "必须为一个小数。"
-      defined: "不可被定义。"
+      decimal?: "必须为小数。"
+      defined: "不得定义。"
       eql?: "必须等于 %{left}。"
-      filled?: "必须填写。"
-      greater_or_equal_zero: "必须大于或等于 0。"
+      filled?: "必须填写"
+      greater_or_equal_zero: "必须大于或等于 0"
       gteq?: "必须大于或等于 %{num}。"
       hash?: "必须是一个哈希值。"
       included_in?:
         arg:
           default: "必须是其中之一： %{list}。"
           range: "必须是其中之一： %{list_left} - %{list_right}。"
-      int?: "必须为一个整数。"
-      key?: "已缺失。"
+      int?: "必须为整数"
+      key?: "缺失。"
       not_found: "未找到。"
       rules:
         copy_workflow_from:
           workflow_missing: "没有自己的工作流。"
         custom_field:
-          format_not_supported: "不支持 '%{field_format}' 格式。"
+          format_not_supported: "格式 '%{field_format}' 不受支持。"
         item:
-          root_item: "不能为根项。"
-          not_persisted: "必须是已存在的项。"
+          root_item: "不能为根项目"
+          not_persisted: "必须是已存在的项目"
         label:
           not_unique: "在同一层级内必须是唯一的。"
         short:
@@ -385,13 +385,13 @@ zh-CN:
     rules:
       copy_workflow_from: "工作流副本的类型"
       enabled: "已启用"
-      depth: "深度"
+      depth: "深"
       item: "条目"
       label: "标签"
       score: "分数"
       short: "简称"
       parent: "父级"
-      blueprint: "模式蓝图"
+      blueprint: "图案蓝图"
   global_search:
     title:
       all_projects: '在所有项目中搜索“%{search_term}”'
@@ -526,7 +526,7 @@ zh-CN:
       versions:
         no_results_title_text: 目前这个项目没有版本。
         no_results_content_text: 创建一个新的版本
-        work_packages_graph: 工作包图表
+        work_packages_graph: 工作包图
         show_work_packages: 显示工作包
       storage:
         no_results_title_text: 此项目没有已记录的额外磁盘空间消耗。
@@ -659,8 +659,8 @@ zh-CN:
       invite: "邀请"
       title:
         invite: "邀请用户"
-        invite_to_project: "邀请 %{type} 到 %{project}"
-        invite_principal_to_project: "邀请 %{principal} 到 %{project}"
+        invite_to_project: "邀请%{type}加入 %{project}"
+        invite_principal_to_project: "邀请 %{principal} 加入 %{project}"
       project:
         label: "项目"
         required: "请选择一个项目"
@@ -677,19 +677,19 @@ zh-CN:
           description: "基于所选项目中指定角色的权限"
         placeholder_user:
           title: "Add placeholder user to %{project_name}"
-          title_no_ee: "Placeholder user (Enterprise edition only add-on)"
-          description: "没有访问此项目的权限，也没有邮件被发送。"
+          title_no_ee: "占位符用户（Enterprise edition 附加功能）"
+          description: "无法访问该项目并且未发送电子邮件。"
         already_member_message: "已经是 %{project} 的成员"
       principal:
         no_results_user: "没有找到用户"
         invite_user: "邀请："
-        no_results_placeholder: "No placeholders were found"
-        create_new_placeholder: "Create new placeholder:"
-        no_results_group: "没有找到群组"
+        no_results_placeholder: "没有找到占位符"
+        create_new_placeholder: "创建新的占位符："
+        no_results_group: "没有找到组"
         invite_to_project: "邀请访问 %{project_name}"
         required:
           user: "请选择一个用户"
-          placeholder: "Please select a placeholder"
+          placeholder: "请选择一个占位符"
           group: "请选择一个组"
       role:
         label: "%{project} 中的角色"
@@ -704,8 +704,8 @@ zh-CN:
         next_button: "发送邀请"
       success_message:
         user: "该用户现在可以登录以访问 %{project}。同时，您已经可以与该用户一起制定计划并分配工作包等。"
-        placeholder_user: "The placeholder can now be used in %{project}. Meanwhile you can already plan with that user and assign work packages for instance."
-        group: "The group is now a part of %{project}. Meanwhile you can already plan with that group and assign work packages for instance."
+        placeholder_user: "现在可以在 %{project} 中使用占位符。同时，您已经可以与该用户一起制定计划并分配工作包等。"
+        group: "该组现已加入 %{project}。同时，您已经可以与该组一起制定计划并分配工作包等。"
   page:
     text: "文本"
   placeholder_users:
@@ -1285,7 +1285,7 @@ zh-CN:
         workdays: "工作日"
       users/invitation/form_model:
         principal_type: "Invitation type"
-        id_or_email: "Name or email address"
+        id_or_email: "用户名或电子邮件地址"
       version:
         effective_date: "完成日期"
         sharing: "共享"

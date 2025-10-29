@@ -120,9 +120,9 @@ fr:
         remote_folders: 'Lire le contenu du dossier du groupe :'
         rename_project_folder: 'Renommer le dossier du projet géré :'
       sharepoint_sync_service:
-        create_folder: 'Création de dossiers de projets gérés :'
+        create_folder: 'Création du dossier du projet géré :'
         ensure_root_folder_permissions: 'Définir les autorisations du dossier de base :'
-        hide_inactive_folders: 'Masquer les dossiers inactifs Étape :'
+        hide_inactive_folders: 'Masquer l''étape des dossiers inactifs :'
         remote_folders: 'Lire le contenu du dossier du groupe :'
         rename_project_folder: 'Renommer le dossier du projet géré :'
     errors:
@@ -194,7 +194,7 @@ fr:
             hide_inactive_folders:
               permission_not_set: n'a pas pu définir les permissions sur %{path}.
             rename_project_folder:
-              conflict: OpenProject n'a pas pu renommer le dossier %{current_path} en %{project_folder_name}, car un dossier portant le même nom existe déjà
+              conflict: OpenProject n'a pas pu renommer le dossier %{current_path} en %{project_folder_name}, car un dossier portant le même nom existe déjà.
               forbidden: OpenProject n'a pas accès à %{current_path} pour le renommer.
               not_found: "%{current_path} n'a pas été trouvé."
             set_folders_permissions:
@@ -419,7 +419,7 @@ fr:
       setting_up_storages_non_admin: Les administrateurs peuvent configurer des espaces de stockage de fichiers dans Administration - Espaces de stockage de fichiers.
       sharepoint:
         application_link_text: Site SharePoint
-        integration: Administration SharePoint / OpenProject
+        integration: Administration SharePoint/OpenProject
         oauth_configuration: Copiez ces valeurs de l'application souhaitée dans %{application_link_text}.
         provider_configuration: Veuillez vous assurer que vous disposez des privilèges d'administration dans le %{application_link_text} ou contactez votre administrateur Microsoft avant de procéder à l'installation. Dans le portail, vous devez également enregistrer une application Azure ou utiliser une application existante pour l'authentification.
       type: 'Veuillez vous assurer que vous avez les privilèges d''administration dans votre instance Nextcloud et que l''application suivante est installée avant de procéder à l''installation :'
@@ -525,7 +525,7 @@ fr:
         drive_description: Bibliothèque de documents à accès géré OpenProject
         label_oauth_client_id: ID de l'application Azure OAuth (client)
         label_oauth_client_secret: Clé secrète du client OAuth Azure
-        name: SharePoint
+        name: Microsoft Office SharePoint Online
         name_placeholder: par exemple SharePoint
     show_attachments_toggle:
       description: Si vous désactivez cette option, la liste des pièces jointes dans l'onglet des fichiers des lots de travaux sera masquée. Les fichiers joints dans la description d'un lot de travaux seront toujours téléversés dans l'espace de stockage interne des pièces jointes.

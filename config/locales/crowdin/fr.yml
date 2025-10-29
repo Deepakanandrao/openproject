@@ -615,7 +615,7 @@ fr:
     access_token:
       dialog:
         token/api:
-          dialog_title: "Créer un nouveau jeton API"
+          dialog_title: "Créer un nouveau jeton d'API"
           attention_text: "Traitez les jetons API comme des mots de passe. Toute personne possédant ce jeton aura accès aux informations de cette instance. Partagez-le uniquement avec des utilisateurs de confiance."
           dialog_body: "Ce jeton permettra aux applications tierces de communiquer avec votre instance. Pour différencier le nouveau jeton d'API, veuillez lui donner un nom."
           create_button: "Créer"
@@ -665,17 +665,17 @@ fr:
       no_results_title_text: Cet utilisateur n'est membre d'aucun projet pour le moment.
     open_profile: "Ouvrir le profil"
     invite_user_modal:
-      invite: "Invite"
+      invite: "invite"
       title:
-        invite: "Utilisateur invité"
-        invite_to_project: "Invitez %{type} à rejoindre %{project}"
-        invite_principal_to_project: "Invitez %{principal} à rejoindre %{project}"
+        invite: "Inviter utilisateur"
+        invite_to_project: "Inviter %{type} à %{project}"
+        invite_principal_to_project: "Inviter %{principal} à %{project}"
       project:
         label: "Projet"
         required: "Veuillez sélectionner un projet"
-        next_button: "Suivant"
+        next_button: "Suivante"
         no_results: "Aucun projet trouvé"
-        no_invite_rights: "Vous n'êtes pas autorisé à inviter des membres dans ce projet"
+        no_invite_rights: "Vous n'êtes pas autorisé à inviter des membres à ce projet"
       type:
         required: "Veuillez sélectionner le type d'invité"
         user:
@@ -686,14 +686,14 @@ fr:
           description: "Permissions basées sur le rôle assigné dans le projet sélectionné"
         placeholder_user:
           title: "Ajouter un espace réservé utilisateur à %{project_name}"
-          title_no_ee: "Utilisateur substitutif (édition Entreprise uniquement)"
+          title_no_ee: "Utilisateur fictif (add-on de la version Entreprise uniquement)"
           description: "N'a pas d'accès au projet et aucun e-mail n'est envoyé."
         already_member_message: "Déjà membre de %{project}"
       principal:
         no_results_user: "Aucun utilisateur n'a été trouvé"
         invite_user: "Invité :"
         no_results_placeholder: "Aucuns utilisateurs fictifs n'a été trouvé"
-        create_new_placeholder: "Créer un nouvel utilisateur fictif :"
+        create_new_placeholder: "Créer un nouveau utilisateur fictif :"
         no_results_group: "Aucun groupe n'a été trouvé"
         invite_to_project: "Inviter à rejoindre %{project_name}"
         required:
@@ -702,9 +702,9 @@ fr:
           group: "Veuillez sélectionner un groupe"
       role:
         label: "Rôle dans %{project}"
-        no_roles_found: "Aucun rôle n'a été trouvé"
+        no_roles_found: "Aucun rôle trouvé."
         description: >
-          This is the role that the user will receive when they join your project. The role defines which actions they are allowed to take and which information they are allowed to see. [Learn more about roles and permissions.](docs_url)
+
         required: "Veuillez sélectionner un rôle"
       message:
         label: "Message d'invitation"
@@ -712,9 +712,9 @@ fr:
       summary:
         next_button: "Envoyer une invitation"
       success_message:
-        user: "The user can now log in to access %{project}. Meanwhile you can already plan with that user and assign work packages for instance."
-        placeholder_user: "The placeholder can now be used in %{project}. Meanwhile you can already plan with that user and assign work packages for instance."
-        group: "The group is now a part of %{project}. Meanwhile you can already plan with that group and assign work packages for instance."
+        user: "L'utilisateur peut maintenant se connecter pour accéder à %{project}. En attendant, vous pouvez déjà planifier avec cet utilisateur et assigner des lots de travaux par exemple."
+        placeholder_user: "Le utilisateur fictif peut maintenant être utilisé dans %{project}. En attendant, vous pouvez déjà planifier des taches avec cet utilisateur et l'assigner à des lots de travaux par exemple."
+        group: "Le groupe fait maintenant partie du %{project}. Entre-temps, vous pouvez déjà planifier avec ce groupe et l'assigner des lots de travaux par exemple."
   page:
     text: "Texte"
   placeholder_users:
@@ -1885,7 +1885,7 @@ fr:
     due_date: "Date de fin"
     estimated_hours: "Travail"
     estimated_time: "Travail"
-    email: "E-mail"
+    email: "Adresse e-mail"
     entity_type: "Entité"
     expires_at: "Expire le"
     firstname: "Prénom"
@@ -2288,7 +2288,7 @@ fr:
     upsell:
       buy_now_button: "Acheter maintenant"
       plans_title: "Formules d'abonnement Enterprise"
-      title: "Add-on Enterprise"
+      title: "Module Enterprise"
       plan_title: "Add-on Enterprise %{plan}"
       plan_name: "Abonnement Enterprise %{plan}"
       plan_text_html: "Disponible à partir de l'abonnement %{plan_name}."
@@ -2615,7 +2615,7 @@ fr:
       tesseract: "Tesseract disponible (optionnel)"
   filterable_tree_view:
     filter_mode:
-      all: "Tout"
+      all: "Tous"
       label: "Mode de filtrage"
       selected: "Sélectionné"
     include_sub_items: "Inclure les sous-projets"
@@ -2651,7 +2651,7 @@ fr:
         #We need to include the version to invalidate outdated translations in other locales
         "16_6":
           new_features_title: >
-            Cette version contient plusieurs nouvelles fonctionnalités et améliorations, telles que
+            Cette version contient plusieurs nouvelles fonctionnalités et améliorations, telles que :
           new_features_list:
             line_0: Valeurs calculées pour l'évaluation et la notation des projets (Enterprise add-on).
             line_1: Hiérarchie des types d'attributs du projet.
@@ -2659,7 +2659,7 @@ fr:
             line_3: Nouvelle page d'index pour le module Documents.
             line_4: Possibilité de changer le parent d'un champ personnalisé.
     links:
-      upgrade_enterprise_edition: "Passer à la version Entreprise"
+      upgrade_enterprise_edition: "Passer à la version Enterprise"
       postgres_migration: "Migration de votre installation vers PostgreSQL"
       user_guides: "Guides d'utilisation"
       faq: "FAQ"
@@ -3223,7 +3223,7 @@ fr:
   label_password_rule_special: "Caractères spéciaux"
   label_password_rule_uppercase: "Majuscules"
   label_path_encoding: "Encodage du chemin d'accès"
-  label_per_page: "Par page :"
+  label_per_page: "Par page:"
   label_people: "Participants"
   label_permissions: "Autorisations"
   label_permissions_report: "Rapport d'autorisations"
@@ -3749,7 +3749,7 @@ fr:
   #Default format for numbers
   number:
     format:
-      delimiter: ","
+      delimiter: "."
       precision: 3
       separator: ","
     human:
