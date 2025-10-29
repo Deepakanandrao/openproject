@@ -8,14 +8,45 @@
       data: { turbo: true, turbo_stream: true, "test-selector": "async-dialog-content" },
       url: project_custom_field_path(project_id: @project.id, id: @project_custom_field.id)
     ) do |f|
-      render(
-        Projects::CustomFields::Form.new(
-          f,
-          project: @project,
-          custom_field: @project_custom_field,
-          wrapper_id:
+      if @project_custom_field.hierarchical_list?
+        render(
+          Primer::OpenProject::FilterableTreeView.new(
+            form_arguments: { builder: f, name: "custom_field_values" },
+            include_sub_items_check_box_arguments: { hidden: true },
+            filter_mode_control_arguments: { hidden: true }
+          )
+        ) do |tree_view|
+          current_value = @project.custom_value_for(@project_custom_field)
+          checked_fn = lambda do |item|
+            case current_value
+            when Array
+              current_value.map(&:value).include?(item.id.to_s)
+            when CustomValue
+              current_value.value == item.id.to_s
+            else
+              false
+            end
+          end
+
+          opts = {
+            show_root: false,
+            expanded_fn: ->(*) { true },
+            checked_fn:,
+            select_variant: @project_custom_field.multi_value? ? :multiple : :single
+          }
+
+          render_tree(@project_custom_field, tree_view, opts)
+        end
+      else
+        render(
+          Projects::CustomFields::Form.new(
+            f,
+            project: @project,
+            custom_field: @project_custom_field,
+            wrapper_id:
+          )
         )
-      )
+      end
     end
   end
 %>
