@@ -2193,15 +2193,15 @@ lv:
     distance_in_words:
       about_x_hours:
         zero: "aptuveni %{count} stundām"
-        one: "aptuveni %{count} stundas"
+        one: "aptuveni 1 stundas"
         other: "aptuveni %{count} stundām"
       about_x_months:
         zero: "aptuveni %{count} mēnešiem"
-        one: "aptuveni %{count} mēneša"
+        one: "aptuveni 1 mēneša"
         other: "aptuveni %{count} mēnešiem"
       about_x_years:
         zero: "%{count} gadiem"
-        one: "%{count} gada"
+        one: "1 gada"
         other: "%{count} gadiem"
       almost_x_years:
         zero: "gandrīz %{count} gadi"
@@ -2210,19 +2210,19 @@ lv:
       half_a_minute: "half a minute"
       less_than_x_minutes:
         zero: "mazāk nekā %{count} minūtēm"
-        one: "mazāk nekā %{count} minūtes"
+        one: "mazāk par minūti"
         other: "mazāk nekā %{count} minūtēm"
       less_than_x_seconds:
         zero: "mazāk nekā %{count} sekundēm"
-        one: "mazāk nekā %{count} sekundes"
+        one: "mazāk nekā 1 sekundes"
         other: "mazāk nekā %{count} sekundēm"
       over_x_years:
         zero: "senāk kā %{count} gadiem"
-        one: "senāk kā %{count} gada"
+        one: "senāk kā 1 gada"
         other: "senāk kā %{count} gadiem"
       x_days:
         zero: "%{count} dienām"
-        one: "%{count} dienas"
+        one: "1 dienas"
         other: "%{count} dienām"
       x_minutes:
         zero: "%{count} minūtēm"
@@ -2234,7 +2234,7 @@ lv:
         other: "%{count} mins"
       x_hours:
         zero: "%{count} stundas"
-        one: "%{count} stunda"
+        one: "1 stunda"
         other: "%{count} stundas"
       x_hours_abbreviated:
         zero: "%{count} hrs"
@@ -2246,7 +2246,7 @@ lv:
         other: "%{count} weeks"
       x_months:
         zero: "%{count} mēnešiem"
-        one: "%{count} mēneša"
+        one: "1 mēneša"
         other: "%{count} mēnešiem"
       x_years:
         zero: "%{count} years"
@@ -3513,15 +3513,15 @@ lv:
   label_workflow_summary: "Kopsavilkums"
   label_working_days_and_hours: "Working days and hours"
   label_x_closed_work_packages_abbr:
-    one: "%{count} slēgts"
+    one: "1 slēgts"
     other: "%{count} slēgti"
     zero: "0 closed"
   label_x_comments:
-    one: "%{count} komentārs"
+    one: "1 komentārs"
     other: "%{count} komentāri"
     zero: "no comments"
   label_x_open_work_packages_abbr:
-    one: "%{count} atvērts"
+    one: "1 atvērts"
     other: "%{count} atvērti"
     zero: "0 open"
   label_x_work_packages:
@@ -3529,7 +3529,7 @@ lv:
     other: "%{count} work packages"
     zero: "No work packages"
   label_x_projects:
-    one: "%{count} projekts"
+    one: "1 projekts"
     other: "%{count} projekti"
     zero: "no projects"
   label_x_files:
@@ -3943,7 +3943,7 @@ lv:
       archived: "Archived"
     count:
       zero: "0 projects"
-      one: "%{count} projekts"
+      one: "1 projekts"
       other: "%{count} projekti"
     destroy:
       title: "Delete project"

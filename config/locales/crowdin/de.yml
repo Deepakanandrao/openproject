@@ -701,7 +701,7 @@ de:
         label: "Rolle in %{project}"
         no_roles_found: "Keine Rollen gefunden"
         description: >
-          Dies ist die Rolle, die %{principal} beim Beitritt zum Projekt erhalten wird. Die Rolle legt fest, welche Aktionen sie durchführen dürfen und welche Informationen sie sehen dürfen. [Erfahren Sie mehr über Rollen und Berechtigungen](docs_url).
+          Dies ist die Rolle, die der Nutzer beim Beitritt zum Projekt erhält. Die Rolle legt fest, welche Aktionen er durchführen darf und welche Informationen er sehen darf. [Erfahren Sie mehr über Rollen und Berechtigungen](docs_url)
         required: "Bitte eine Rolle auswählen"
       message:
         label: "Einladungsnachricht"

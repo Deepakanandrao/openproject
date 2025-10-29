@@ -1713,7 +1713,7 @@
               numeric: "numerisk (f.eks. \"1\")"
               special: "spesialtegn (f.eks. \"%\")"
               reused:
-                one: "har blitt brukt tidligere. Vennligst velg en som er forskjellig fra den forrige %{count}."
+                one: "har blitt brukt tidligere. Vennligst velg en som er forskjellig fra den forrige."
                 other: "har blitt brukt tidligere. Vennligst velg et som er forskjellig fra dine siste %{count}."
               match:
                 confirm: "Bekreft nytt passord."
@@ -3471,11 +3471,11 @@
     other: "%{count} stengt"
     zero: "0 lukket"
   label_x_comments:
-    one: "%{count} kommentar"
+    one: "1 kommentar"
     other: "%{count} kommentarer"
     zero: "ingen kommentarer"
   label_x_open_work_packages_abbr:
-    one: "%{count} åpen"
+    one: "1 åpen"
     other: "%{count} åpne"
     zero: "0 åpen"
   label_x_work_packages:
@@ -3483,7 +3483,7 @@
     other: "%{count} arbeidspakker"
     zero: "Ingen arbeidspakker"
   label_x_projects:
-    one: "%{count} prosjekt"
+    one: "1 prosjekt"
     other: "%{count} prosjekter"
     zero: "ingen prosjekter"
   label_x_files:
@@ -3895,7 +3895,7 @@
       archived: "Arkivert"
     count:
       zero: "0 projects"
-      one: "%{count} prosjekt"
+      one: "1 prosjekt"
       other: "%{count} prosjekter"
     destroy:
       title: "Slett prosjekt"
@@ -4554,7 +4554,7 @@
     assign_random_password: "Tilordne et tilfeldig passord (sendt til brukeren via e-post)"
     blocked: "midlertidig låst"
     blocked_num_failed_logins:
-      one: "midlertidig utesteng (%{count} mislykkede pålogginger)"
+      one: "midlertidig utesteng (ett mislykkede pålogginger)"
       other: "midlertidig låst (%{count} mislykkede innloggingsforsøk)"
     confirm_status_change: "Du er i ferd med å endre status for '%{name}'. Er du sikker på at du vil fortsette?"
     deleted: "Slettet bruker"

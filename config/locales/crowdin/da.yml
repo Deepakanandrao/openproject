@@ -3894,7 +3894,7 @@ da:
       archived: "Archived"
     count:
       zero: "0 projects"
-      one: "%{count} projekter"
+      one: "1 projekt"
       other: "%{count} projekter"
     destroy:
       title: "Delete project"

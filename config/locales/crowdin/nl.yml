@@ -1710,7 +1710,7 @@ nl:
               numeric: "numerieke (bijvoorbeeld ' 1')"
               special: "speciale (bijvoorbeeld ' %')"
               reused:
-                one: "is reeds eerder gebruikt. Kies er één die verschilt van uw laatste %{count}."
+                one: "is reeds eerder gebruikt. Kies er één die verschilt van uw vorige."
                 other: "is reeds eerder gebruikt. Kies er één die verschilt van uw laatste %{count}."
               match:
                 confirm: "Bevestig nieuw wachtwoord."
@@ -2164,29 +2164,29 @@ nl:
   datetime:
     distance_in_words:
       about_x_hours:
-        one: "ongeveer %{count} uur"
+        one: "ongeveer 1 uur"
         other: "ongeveer %{count} uren"
       about_x_months:
-        one: "ongeveer %{count} maand"
+        one: "ongeveer 1 maand"
         other: "ongeveer %{count} maanden"
       about_x_years:
-        one: "ongeveer %{count} jaar"
+        one: "ongeveer 1 jaar"
         other: "ongeveer %{count} jaren"
       almost_x_years:
-        one: "bijna %{count} jaar"
+        one: "bijna 1 jaar"
         other: "bijna %{count} jaren"
       half_a_minute: "een halve minuut"
       less_than_x_minutes:
-        one: "minder dan %{count} minuut"
+        one: "minder dan 1 minuut"
         other: "minder dan %{count} minuten"
       less_than_x_seconds:
-        one: "minder dan %{count} seconde"
+        one: "minder dan 1 seconde"
         other: "minder dan %{count} seconden"
       over_x_years:
-        one: "meer dan %{count} jaar"
+        one: "meer dan 1 jaar"
         other: "meer dan %{count} jaren"
       x_days:
-        one: "%{count} dag"
+        one: "1 dag"
         other: "%{count} dagen"
       x_minutes:
         one: "1 minuut"
@@ -2195,7 +2195,7 @@ nl:
         one: "1 min."
         other: "%{count} minuten"
       x_hours:
-        one: "%{count} uur"
+        one: "1 uur"
         other: "%{count} uren"
       x_hours_abbreviated:
         one: "1 uur"
@@ -2204,7 +2204,7 @@ nl:
         one: "1 week"
         other: "%{count} weken"
       x_months:
-        one: "%{count} maand"
+        one: "1 maand"
         other: "%{count} maanden"
       x_years:
         one: "1 jaar"
@@ -3468,7 +3468,7 @@ nl:
     other: "%{count} gesloten"
     zero: "0 gesloten"
   label_x_comments:
-    one: "%{count} reactie"
+    one: "1 reactie"
     other: "%{count} reacties"
     zero: "geen reacties"
   label_x_open_work_packages_abbr:
