@@ -513,7 +513,7 @@ fr:
         label: Utiliser le jeton d'accès obtenu lors de la connexion de l'utilisateur
       manual:
         helptext: OpenProject échangera un jeton avec le fournisseur d'identité pour l'audience donnée.
-        label: Spécifiez manuellement l'audience pour laquelle échanger le jeton d'accès
+        label: Manually specify audience for which to exchange access token (Recommended)
     storage_list_blank_slate:
       description: Ajoutez un stockage pour les voir ici.
       heading: Vous n'avez pas encore d'espace de stockage.

@@ -518,7 +518,7 @@ uk:
         label: Використовувати маркер доступу, отриманий під час входу користувача
       manual:
         helptext: OpenProject отримає маркер у постачальника ідентифікаційних даних для визначеної аудиторії.
-        label: Вручну вказати аудиторію, для якої потрібно отримати маркер доступу
+        label: Manually specify audience for which to exchange access token (Recommended)
     storage_list_blank_slate:
       description: Додайте сховище, щоб воно з’явилося тут.
       heading: У вас ще немає жодного сховища.

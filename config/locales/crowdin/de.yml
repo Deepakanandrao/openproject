@@ -1703,7 +1703,7 @@ de:
       issue_priority:
         one: "Priorität"
         other: "Prioritäten"
-      meeting_participant: "Meeting participant"
+      meeting_participant: "Besprechungsteilnehmer"
       member: "Mitglied"
       news: "Neuigkeiten"
       notification:
@@ -2561,8 +2561,8 @@ de:
     include_sub_items: "Unterelemente einbeziehen"
     no_results_text: "Keine Ergebnisse"
   toggle_switch:
-    label_on: "On"
-    label_off: "Off"
+    label_on: "Ein"
+    label_off: "Aus"
   general_csv_decimal_separator: ","
   general_csv_encoding: "UTF-8"
   general_csv_separator: ","
@@ -2594,7 +2594,7 @@ de:
             Dieses Release enthält verschiedene neue Funktionen und Verbesserungen, wie z. B:
           new_features_list:
             line_0: Berechnete Werte für Projektbewertung und Scoring (Enterprise Add-on).
-            line_1: Project attributes type hierarchy.
+            line_1: Projektattribute vom Typ Hierarchie.
             line_2: Verbesserte Performance in vielen Bereichen.
             line_3: Neue Übersichtsseite für das Dokumente-Modul.
             line_4: Möglichkeit, das übergeordnete Element eines benutzerdefinierten Feldes zu ändern.
@@ -2922,7 +2922,7 @@ de:
   label_duplicate: "Duplikat"
   label_duplicates: "Duplikat von"
   label_edit: "Bearbeiten"
-  label_edit_attribute: "Edit attribute"
+  label_edit_attribute: "Attribut bearbeiten"
   label_edit_x: "Bearbeiten: %{x}"
   label_enable_multi_select: "Mehrfachauswahl umschalten"
   label_enabled_project_custom_fields: "Aktivierte benutzerdefinierte Felder"
@@ -3349,7 +3349,7 @@ de:
   label_user_search: "Nach Benutzer suchen"
   label_user_settings: "Benutzereinstellungen"
   label_users_settings: "Benutzereinstellungen"
-  label_value_x: "Value: %{x}"
+  label_value_x: "Wert: %{x}"
   label_version_new: "Neue Version"
   label_version_edit: "Version bearbeiten"
   label_version_plural: "Versionen"

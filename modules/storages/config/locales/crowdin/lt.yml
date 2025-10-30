@@ -517,7 +517,7 @@ lt:
         label: Use access token obtained during user log in
       manual:
         helptext: OpenProject will exchange a token with the identity provider for the given audience.
-        label: Manually specify audience for which to exchange access token
+        label: Manually specify audience for which to exchange access token (Recommended)
     storage_list_blank_slate:
       description: Pridėkite saugyklą, kad matytumėte ją čia.
       heading: Jūs dar neturite jokių saugyklų.

@@ -2552,11 +2552,11 @@ zh-CN:
           new_features_title: >
             此版本包含各种新功能和改进，例如：
           new_features_list:
-            line_0: Calculated values for project evaluation and scoring (Enterprise add-on).
-            line_1: Project attributes type hierarchy.
-            line_2: Performance updates with great impact.
-            line_3: New index page for Documents module.
-            line_4: Possibility to change parent of a custom field item.
+            line_0: 项目评估和评分的计算值（Enterprise 附加组件）。
+            line_1: 项目特性类型层次结构。
+            line_2: 可以产生重大影响的性能更新。
+            line_3: '“文档”模块的新索引页面。'
+            line_4: 可以更改自定义字段条目的父项。
     links:
       upgrade_enterprise_edition: "升级到企业版"
       postgres_migration: "将您的安装迁移到 PostgreSQL"

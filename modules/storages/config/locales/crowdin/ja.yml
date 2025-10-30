@@ -512,7 +512,7 @@ ja:
         label: ユーザーログイン時に取得したアクセストークンを使用する
       manual:
         helptext: OpenProjectは、指定されたオーディエンスのIDプロバイダとトークンを交換します。
-        label: アクセストークンを交換する対象者を手動で指定する
+        label: Manually specify audience for which to exchange access token (Recommended)
     storage_list_blank_slate:
       description: ストレージを追加して、ここで見ることができる。
       heading: あなたはまだ倉庫を持っていない。

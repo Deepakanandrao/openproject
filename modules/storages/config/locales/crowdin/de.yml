@@ -203,7 +203,7 @@ de:
     delete_warning:
       project_storage_delete_result_1: Entfernen Sie alle Links von Arbeitspaketen dieses Projekts zu Dateien und Ordnern dieses Speichers.
       project_storage_delete_result_2: Falls dieser Speicher einen automatisch verwalteten Projektordner hat, werden dieser und seine Dateien unwiderbringlich gelöscht.
-      storage: 'Are you sure you want to delete %{file_storage}? This will:'
+      storage: 'Sind Sie sicher, dass Sie %{file_storage} löschen möchten? Dies wird:'
       storage_delete_result_1: Alle eingerichteten Projektdateispeicher, die diesen Dateispeicher verwenden, werden gelöscht.
       storage_delete_result_2: Alle Dateiverknüpfungen aus Arbeitspaketen sämtlicher Projekte zu Dateien und Ordnern auf diesem Dateispeicher werden gelöscht.
       storage_delete_result_3: Hat dieser Dateispeicher automatisch verwaltete Projektordner, so werden diese und die enthaltenen Dateien permanent gelöscht.
@@ -498,7 +498,7 @@ de:
         name: OneDrive
         name_placeholder: z.B. OneDrive
       sharepoint:
-        drive_description: OpenProject access-managed document library
+        drive_description: OpenProject zugriffsverwaltete Dokumentenbibliothek
         label_oauth_client_id: Azure OAuth Anwendungs-ID (Client)
         label_oauth_client_secret: Azure OAuth Client-Geheimwert
         name: SharePoint
@@ -513,7 +513,7 @@ de:
         label: Das beim Benutzer-Login erhaltene Access Token verwenden
       manual:
         helptext: OpenProject tauscht ein Token mit dem Identity Provider für die angegebene Audience aus.
-        label: Manuell die Audience angeben, für die das Access Token eingetauscht werden soll
+        label: Manually specify audience for which to exchange access token (Recommended)
     storage_list_blank_slate:
       description: Fügen Sie einen Dateispeicher hinzu, um ihn hier zu sehen.
       heading: Sie haben noch keine Dateispeicher.
