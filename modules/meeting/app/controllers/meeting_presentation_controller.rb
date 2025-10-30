@@ -41,7 +41,10 @@ class MeetingPresentationController < ApplicationController
 
   layout "meetings/presentation"
 
-  def show; end
+  def show
+    @started_at = params[:started_at].present? ? Time.zone.parse(params[:started_at]) : Time.current
+    @current_id = params[:current_id]
+  end
 
   def check_for_updates
     if params[:reference] == @meeting_agenda_item.updated_at.iso8601

@@ -3,6 +3,7 @@
 <%=
   render Meetings::PresentationComponent.new(
     meeting: @meeting,
-    current_id: params[:current_id]
+    current_id: @current_id,
+    started_at: @started_at
   )
 %>

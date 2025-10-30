@@ -6,7 +6,8 @@
         poll_for_changes_url_value: check_for_updates_project_meeting_presentation_path(
           @meeting.project,
           @meeting,
-          meeting_agenda_item_id: current_item.id
+          meeting_agenda_item_id: current_item.id,
+          started_at: started_at_param
         ),
         poll_for_changes_interval_value: check_for_updates_interval,
       }
@@ -53,7 +54,7 @@
       <%= render(Primer::Beta::Button.new(
         tag: :a,
         scheme: :link,
-        href: project_meeting_presentation_path(@project, @meeting, current_id: previous_id),
+        href: project_meeting_presentation_path(@project, @meeting, current_id: previous_id, started_at: started_at_param),
         data: { "meetings--presentation-target": "previousButton" },
         disabled: !has_previous?
       )) do |button| %>
@@ -63,14 +64,19 @@
     </div>
 
     <div class="op-meeting-presentation--progress">
-      <%= progress_text %>
+      <div class="op-meeting-presentation--progress-text">
+        <%= progress_text %>
+      </div>
+      <div class="op-meeting-presentation--timer">
+        <%= running_time %>
+      </div>
     </div>
 
     <div class="op-meeting-presentation--footer-right">
       <%= render(Primer::Beta::Button.new(
         tag: :a,
         scheme: :link,
-        href: project_meeting_presentation_path(@project, @meeting, current_id: next_id),
+        href: project_meeting_presentation_path(@project, @meeting, current_id: next_id, started_at: started_at_param),
         data: { "meetings--presentation-target": "nextButton" },
         disabled: !has_next?
       )) do |button| %>

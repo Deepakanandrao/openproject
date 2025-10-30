@@ -34,11 +34,12 @@ module Meetings
     include OpTurbo::Streamable
     include OpPrimer::ComponentHelpers
 
-    def initialize(meeting:, current_id: nil)
+    def initialize(meeting:, current_id: nil, started_at: nil)
       super
 
       @meeting = meeting
       @project = meeting.project
+      @started_at = started_at || Time.current
       @agenda_item_ids = sorted_agenda_item_ids
       @current_item = current_id.nil? ? @agenda_item_ids.first : current_id.to_i
       @current_index = sorted_agenda_item_ids.index(@current_item)
@@ -56,7 +57,7 @@ module Meetings
     end
 
     def total_items
-      @agenda_item_ids.size
+      @total_items ||= @agenda_item_ids.size
     end
 
     def has_previous?
@@ -101,6 +102,16 @@ module Meetings
       return nil unless has_next?
 
       @agenda_item_ids[@current_index + 1]
+    end
+
+    def started_at_param
+      @started_at.iso8601
+    end
+
+    def running_time
+      render(OpPrimer::RelativeTimeComponent.new(datetime: helpers.in_user_zone(@started_at),
+                                                 format: :elapsed,
+                                                 prefix: nil))
     end
 
     private
