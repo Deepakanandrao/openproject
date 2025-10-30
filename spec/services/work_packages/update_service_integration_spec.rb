@@ -33,7 +33,11 @@ require "spec_helper"
 RSpec.describe WorkPackages::UpdateService, "integration", type: :model do
   shared_let(:type) { create(:type_standard) }
   shared_let(:milestone_type) { create(:type_milestone) }
-  shared_let(:project_types) { [type, milestone_type] }
+  shared_let(:autosubject_type) do
+    create(:type, name: "Autosubject",
+                  patterns: { subject: { blueprint: "\#{{id}} by {{author}} - {{status}}", enabled: true } })
+  end
+  shared_let(:project_types) { [type, milestone_type, autosubject_type] }
   shared_let(:project) do
     create(:project, types: project_types)
   end
@@ -1173,6 +1177,7 @@ RSpec.describe WorkPackages::UpdateService, "integration", type: :model do
       end
     end
 
+    # TODO: TODO: TODO: write the same test, but with automatically generated subjects
     context "when the work package is automatically scheduled, has a child and no dates" do
       let_work_packages(<<~TABLE)
         hierarchy              | MTWTFSS        | scheduling mode | predecessors
@@ -1227,14 +1232,8 @@ RSpec.describe WorkPackages::UpdateService, "integration", type: :model do
     end
 
     context "with work packages having automatically generated subjects" do
-      shared_let(:type_autosubject) do
-        create(:type,
-               name: "Autosubject",
-               patterns: { subject: { blueprint: "{{author}} {{start_date}} - {{finish_date}}", enabled: true } })
-      end
-
       before_all do
-        set_factory_default(:type, type_autosubject)
+        set_factory_default(:type, autosubject_type)
       end
 
       let_work_packages(<<~TABLE)
@@ -1708,6 +1707,25 @@ RSpec.describe WorkPackages::UpdateService, "integration", type: :model do
           work_package   |    XXX  | manual
         TABLE
       end
+    end
+  end
+
+  context "with work packages having automatically generated subjects" do
+    before_all do
+      set_factory_default(:type, autosubject_type)
+    end
+
+    shared_let(:work_package, reload: true) { create(:work_package, type: autosubject_type) }
+    let(:attributes) { { description: "new description" } }
+
+    it "updates the subject along with the requested updates" do
+      expect(subject).to be_success
+      expect(subject.result).to eq(work_package)
+
+      expect(work_package.reload).to have_attributes(
+        description: "new description",
+        subject: "##{work_package.id} by #{user.name} - #{default_status.name}"
+      )
     end
   end
 

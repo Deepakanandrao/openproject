@@ -68,9 +68,9 @@ class WorkPackages::UpdateAncestorsService < BaseServices::BaseCallable
     WorkPackages::UpdateAncestors::Loader
       .new(initiator_work_package, include_former_ancestors)
       .select do |ancestor, loader|
-        changes?(ancestor) do
-          derive_attributes(ancestor, loader, attributes)
-        end
+        derive_attributes(ancestor, loader, attributes)
+
+        ancestor.changed?
       end
   end
 

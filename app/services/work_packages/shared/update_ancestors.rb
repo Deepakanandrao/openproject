@@ -31,8 +31,8 @@
 module WorkPackages
   module Shared
     module UpdateAncestors
-      def update_ancestors(changed_work_packages)
-        changes = changed_work_packages
+      def update_ancestors(changed_work_packages, changes = nil)
+        changes ||= changed_work_packages
                   .map { |wp| wp.previous_changes.keys }
                   .flatten
                   .uniq

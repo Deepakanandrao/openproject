@@ -53,7 +53,7 @@ RSpec.describe WorkPackages::UpdateAncestorsService,
   end
 
   def call_update_ancestors_service(work_package)
-    changed_attributes = work_package.changes.keys.map(&:to_sym)
+    changed_attributes = work_package.changed_attribute_keys
     described_class.new(user:, work_package:)
                     .call(changed_attributes)
   end
