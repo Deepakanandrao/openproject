@@ -145,8 +145,10 @@ export default function OpBlockNoteContainer({ inputField,
       const result = await service.addAttachments('documents', attachmentsUploadUrl, [iUploadFile]).toPromise();
 
       return result?.[0]._links.downloadLocation.href ?? '';
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch(error:any) {
       const toastService = pluginContext.services.notifications;
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       toastService.addError(error);
 
       return '';
