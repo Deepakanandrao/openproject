@@ -96,7 +96,7 @@ module Meetings::PDF::Common::Agenda
 
   def write_outcome_title(index, multiple_outcomes)
     text = I18n.t("label_agenda_outcome")
-    text = "#{text} #{(index + 1).to_s}" if multiple_outcomes
+    text = "#{text} #{index + 1}" if multiple_outcomes
     with_vertical_margin(styles.outcome_title_margins) do
       style = styles.outcome_title
       pdf.formatted_text([

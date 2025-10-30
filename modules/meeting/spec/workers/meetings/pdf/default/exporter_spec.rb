@@ -173,9 +173,8 @@ RSpec.describe Meetings::PDF::Default::Exporter do
           footer_text: "Custom Footer Text"
         }
       end
-
-      it "renders the expected document" do
-        expected_document = [
+      let(:expected_document) do
+        [
           *expected_cover_page,
           *meeting_head,
           "Participants (2)",
@@ -208,7 +207,9 @@ RSpec.describe Meetings::PDF::Default::Exporter do
           export_time_formatted,
           "Custom Footer Text"
         ].join(" ")
+      end
 
+      it "renders the expected document" do
         expect(subject).to eq expected_document
       end
     end
