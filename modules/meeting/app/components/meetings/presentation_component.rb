@@ -34,8 +34,8 @@ module Meetings
     include OpTurbo::Streamable
     include OpPrimer::ComponentHelpers
 
-    def initialize(meeting:, current_id: nil, started_at: nil)
-      super
+    def initialize(meeting:, sorted_agenda_item_ids:, current_id: nil, started_at: nil)
+      super()
 
       @meeting = meeting
       @project = meeting.project
@@ -68,18 +68,6 @@ module Meetings
       @current_index < total_items - 1
     end
 
-    def previous
-      return nil unless has_previous?
-
-      @agenda_item_ids[@current_index - 1]
-    end
-
-    def next
-      return nil unless has_next?
-
-      @agenda_item_ids[@current_index + 1]
-    end
-
     def progress_text
       if total_items.zero?
         t("meeting.presentation_mode.no_items")
@@ -92,18 +80,6 @@ module Meetings
       project_meeting_path(@project, @meeting)
     end
 
-    def previous_id
-      return nil unless has_previous?
-
-      @agenda_item_ids[@current_index - 1]
-    end
-
-    def next_id
-      return nil unless has_next?
-
-      @agenda_item_ids[@current_index + 1]
-    end
-
     def started_at_param
       @started_at.iso8601
     end
@@ -112,15 +88,6 @@ module Meetings
       render(OpPrimer::RelativeTimeComponent.new(datetime: helpers.in_user_zone(@started_at),
                                                  format: :elapsed,
                                                  prefix: nil))
-    end
-
-    private
-
-    def sorted_agenda_item_ids
-      @meeting.sections
-              .includes(:agenda_items)
-              .order(:position)
-              .flat_map { |section| section.agenda_items.order(:position).pluck(:id) }
     end
   end
 end

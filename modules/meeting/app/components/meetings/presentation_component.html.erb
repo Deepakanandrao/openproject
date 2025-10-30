@@ -54,7 +54,7 @@
       <%= render(Primer::Beta::Button.new(
         tag: :a,
         scheme: :link,
-        href: project_meeting_presentation_path(@project, @meeting, current_id: previous_id, started_at: started_at_param),
+        href: project_meeting_presentation_path(@project, @meeting, current_id: @current_item, action_type: "previous", started_at: started_at_param),
         data: { "meetings--presentation-target": "previousButton" },
         disabled: !has_previous?
       )) do |button| %>
@@ -76,7 +76,7 @@
       <%= render(Primer::Beta::Button.new(
         tag: :a,
         scheme: :link,
-        href: project_meeting_presentation_path(@project, @meeting, current_id: next_id, started_at: started_at_param),
+        href: project_meeting_presentation_path(@project, @meeting, current_id: @current_item, action_type: "next", started_at: started_at_param),
         data: { "meetings--presentation-target": "nextButton" },
         disabled: !has_next?
       )) do |button| %>

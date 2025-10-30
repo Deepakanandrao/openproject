@@ -43,7 +43,7 @@ class MeetingPresentationController < ApplicationController
 
   def show
     @started_at = params[:started_at].present? ? Time.zone.parse(params[:started_at]) : Time.current
-    @current_id = params[:current_id]
+    @current_id = determine_current_id
   end
 
   def check_for_updates
@@ -77,5 +77,43 @@ class MeetingPresentationController < ApplicationController
     unless OpenProject::FeatureDecisions.meetings_presentation_mode_active?
       render_404
     end
+  end
+
+  def determine_current_id
+    return sorted_agenda_item_ids.first if params[:current_id].blank?
+
+    current_id = params[:current_id].to_i
+    return current_id if params[:action_type].blank?
+
+    navigate_from_current_id(current_id)
+  end
+
+  def navigate_from_current_id(current_id)
+    current_index = sorted_agenda_item_ids.index(current_id)
+    return current_id if current_index.nil?
+
+    case params[:action_type]
+    when "next"
+      navigate_next(current_index, current_id)
+    when "previous"
+      navigate_previous(current_index, current_id)
+    else
+      current_id
+    end
+  end
+
+  def navigate_next(current_index, fallback_id)
+    current_index < sorted_agenda_item_ids.size - 1 ? sorted_agenda_item_ids[current_index + 1] : fallback_id
+  end
+
+  def navigate_previous(current_index, fallback_id)
+    current_index.positive? ? sorted_agenda_item_ids[current_index - 1] : fallback_id
+  end
+
+  def sorted_agenda_item_ids
+    @sorted_agenda_item_ids ||= @meeting.sections
+            .includes(:agenda_items)
+            .order(:position)
+            .flat_map { |section| section.agenda_items.order(:position).pluck(:id) }
   end
 end
