@@ -41,16 +41,18 @@
         end
       end
 
-      header.with_action_button(
-        tag: :a,
-        scheme: :secondary,
-        mobile_label: I18n.t("meeting.presentation_mode.button_present"),
-        mobile_icon: :play,
-        size: :medium,
-        href: project_meeting_presentation_path(@project, @meeting)
-      ) do |button|
-        button.with_leading_visual_icon(icon: :play)
-        I18n.t("meeting.presentation_mode.button_present")
+      if OpenProject::FeatureDecisions.meetings_presentation_mode_active?
+        header.with_action_button(
+          tag: :a,
+          scheme: :secondary,
+          mobile_label: I18n.t("meeting.presentation_mode.button_present"),
+          mobile_icon: :play,
+          size: :medium,
+          href: project_meeting_presentation_path(@project, @meeting)
+        ) do |button|
+          button.with_leading_visual_icon(icon: :play)
+          I18n.t("meeting.presentation_mode.button_present")
+        end
       end
 
       header.with_action_menu(

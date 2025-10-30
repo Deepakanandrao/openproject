@@ -31,6 +31,8 @@
 class MeetingPresentationController < ApplicationController
   include OpTurbo::ComponentStream
 
+  before_action :check_feature_flag
+
   before_action :find_meeting
 
   load_and_authorize_with_permission_in_optional_project :view_meetings,
@@ -45,5 +47,11 @@ class MeetingPresentationController < ApplicationController
   def find_meeting
     @meeting = Meeting.find(params[:meeting_id])
     @project = @meeting.project
+  end
+
+  def check_feature_flag
+    unless OpenProject::FeatureDecisions.meetings_presentation_mode_active?
+      render_404
+    end
   end
 end
