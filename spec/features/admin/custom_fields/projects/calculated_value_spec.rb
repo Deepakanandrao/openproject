@@ -187,7 +187,9 @@ RSpec.describe "Edit project custom field calculated value", :js,
 
           new_formula = calculated_value.reload.formula_string
           expect(new_formula)
-            .to eq("#{integer_project_custom_field} * 2 + #{float_project_custom_field} / #{weighted_item_list_project_custom_field}")
+            .to eq(
+              "#{integer_project_custom_field} * 2 + #{float_project_custom_field} / #{weighted_item_list_project_custom_field}"
+            )
         end
       end
     end
