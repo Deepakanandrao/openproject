@@ -541,7 +541,7 @@ pl:
         label: Użyj tokena dostępu uzyskanego podczas logowania użytkownika
       manual:
         helptext: OpenProject wymieni token z dostawcą tożsamości danej grupy odbiorców.
-        label: Ręcznie określ odbiorców, których token dostępu chcesz wymienić
+        label: Manually specify audience for which to exchange access token (Recommended)
     storage_list_blank_slate:
       description: Dodaj magazyn, aby zobaczyć go tutaj.
       heading: Nie masz jeszcze żadnych magazynów.

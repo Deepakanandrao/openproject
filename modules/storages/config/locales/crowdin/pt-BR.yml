@@ -537,7 +537,7 @@ pt-BR:
         label: Usar token de acesso obtido durante o login do usuário
       manual:
         helptext: O OpenProject trocará um token com o provedor de identidade para o público-alvo especificado.
-        label: Especificar manualmente o público-alvo para o qual trocar o token de acesso
+        label: Manually specify audience for which to exchange access token (Recommended)
     storage_list_blank_slate:
       description: Adicione um armazenamento para vê-lo aqui.
       heading: Ainda não tem nenhum armazenamento.

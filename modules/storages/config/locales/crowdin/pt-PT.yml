@@ -537,7 +537,7 @@ pt-PT:
         label: Utilizar o token de acesso obtido durante o início de sessão do utilizador
       manual:
         helptext: O OpenProject trocará um token com o fornecedor de identidade para a audiência em causa.
-        label: Especificar manualmente a audiência com que fazer intercâmbio do token de acesso
+        label: Manually specify audience for which to exchange access token (Recommended)
     storage_list_blank_slate:
       description: Adicione um armazenamento para vê-lo aqui.
       heading: Ainda não tem nenhum armazenamento.

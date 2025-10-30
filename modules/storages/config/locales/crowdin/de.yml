@@ -537,7 +537,7 @@ de:
         label: Das beim Benutzer-Login erhaltene Access Token verwenden
       manual:
         helptext: OpenProject tauscht ein Token mit dem Identity Provider für die angegebene Audience aus.
-        label: Manuell die Audience angeben, für die das Access Token eingetauscht werden soll
+        label: Manually specify audience for which to exchange access token (Recommended)
     storage_list_blank_slate:
       description: Fügen Sie einen Dateispeicher hinzu, um ihn hier zu sehen.
       heading: Sie haben noch keine Dateispeicher.

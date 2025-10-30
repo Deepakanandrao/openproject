@@ -535,7 +535,7 @@ vi:
         label: Use access token obtained during user log in
       manual:
         helptext: OpenProject will exchange a token with the identity provider for the given audience.
-        label: Manually specify audience for which to exchange access token
+        label: Manually specify audience for which to exchange access token (Recommended)
     storage_list_blank_slate:
       description: Thêm một lưu trữ để thấy chúng ở đây.
       heading: Bạn chưa có lưu trữ nào.
