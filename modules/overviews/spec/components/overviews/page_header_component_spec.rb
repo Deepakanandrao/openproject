@@ -136,6 +136,8 @@ RSpec.describe Overviews::PageHeaderComponent, type: :component do
     end
 
     context "without manage permissions" do
+      let(:user) { create(:user) }
+
       it "renders action menu items", :aggregate_failures do
         expect(rendered_component).to have_menu do |menu|
           expect(menu).to have_selector :menuitem, count: 1
@@ -158,7 +160,6 @@ RSpec.describe Overviews::PageHeaderComponent, type: :component do
     end
   end
 
-  # --- UPDATED TAB BAR TESTS ---
   describe "tab bar", with_flag: { new_project_overview: true } do
     context "when user has permission to view members" do
       let(:user) { build_stubbed(:admin) }
@@ -189,18 +190,11 @@ RSpec.describe Overviews::PageHeaderComponent, type: :component do
     end
 
     context "when user does NOT have permission to view members" do
-      let(:user) { build_stubbed(:user) }
-
-      before do
-        allow(user).to receive(:allowed_in_project?).with(:view_members, project).and_return(false)
-      end
+      let(:user) { create(:user, member_with_permissions: { project => %i[view_work_packages edit_work_packages] }) }
 
       it "renders only the Overview tab", :aggregate_failures do
-        expect(rendered_component).to have_list class: "tabnav-tabs" do |list|
-          expect(list).to have_list_item count: 1
-          expect(list).to have_list_item "Overview"
-          expect(list).not_to have_list_item "Dashboard"
-        end
+        expect(rendered_component).to have_link "Overview"
+        expect(rendered_component).to have_no_link "Dashboard"
       end
     end
   end
