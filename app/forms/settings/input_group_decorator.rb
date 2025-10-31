@@ -34,25 +34,18 @@
 # It automatically sets the label, value, and disabled properties from the
 # setting name and its definition attributes.
 module Settings
-  class InputGroupDecorator
+  class InputGroupDecorator < SimpleDelegator
     include ::ApplicationHelper
     include InputMethods
 
-    attr_reader :object
+    # @!attribute [r] object
+    #   @return [Primer::Forms::Dsl::InputGroup] the original input group
+    alias object __getobj__
 
-    # Initializes a new Settings::InputGroupDecorator
+    # @!method initialize(object)
+    #   Initializes a new {Settings::InputGroupDecorator}
     #
-    # @param object [Primer::Forms::Dsl::InputGroup] The input group to be decorated
-    def initialize(object)
-      @object = object
-    end
-
-    def method_missing(method, ...)
-      object.send(method, ...)
-    end
-
-    def respond_to_missing?(method, include_private = false)
-      object.respond_to?(method, include_private)
-    end
+    #   @param object [Primer::Forms::Dsl::InputGroup] The input group to be decorated
+    #   @return [InputGroupDecorator]
   end
 end

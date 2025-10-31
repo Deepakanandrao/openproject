@@ -34,26 +34,19 @@
 # It automatically sets the label, value, and disabled properties from the
 # setting name and its definition attributes.
 module Settings
-  class FormObjectDecorator
+  class FormObjectDecorator < SimpleDelegator
     include ::ApplicationHelper
     include InputMethods
 
-    attr_reader :object
+    # @!attribute [r] object
+    #   @return [Primer::Forms::Dsl::FormObject] the original form object
+    alias object __getobj__
 
-    # Initializes a new Settings::FormObjectDecorator
+    # @!method initialize(object)
+    #   Initializes a new {Settings::FormObjectDecorator}
     #
-    # @param object [Primer::Forms::Dsl::FormObject] The form object to be decorated
-    def initialize(object)
-      @object = object
-    end
-
-    def method_missing(method, ...)
-      object.send(method, ...)
-    end
-
-    def respond_to_missing?(method, include_private = false)
-      object.respond_to?(method, include_private)
-    end
+    #   @param object [Primer::Forms::Dsl::FormObject] The form object to be decorated
+    #   @return [FormObjectDecorator]
 
     # Creates a group for a setting
     #
