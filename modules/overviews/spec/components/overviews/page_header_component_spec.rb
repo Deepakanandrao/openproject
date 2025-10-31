@@ -37,7 +37,7 @@ RSpec.describe Overviews::PageHeaderComponent, type: :component do
 
   let(:workspace_type) { :project }
   let(:project) { build_stubbed(:project, name: "Too big to fail", workspace_type:) }
-  let(:user) { build_stubbed(:user) }
+  let(:user) { build_stubbed(:admin) }
 
   current_user { user }
 
@@ -158,28 +158,49 @@ RSpec.describe Overviews::PageHeaderComponent, type: :component do
     end
   end
 
+  # --- UPDATED TAB BAR TESTS ---
   describe "tab bar", with_flag: { new_project_overview: true } do
-    it "renders a tab bar" do
-      expect(rendered_component).to have_css ".PageHeader-tabNavBar"
-    end
+    context "when user has permission to view members" do
+      let(:user) { build_stubbed(:admin) }
 
-    it "renders 2 tabs", :aggregate_failures do
-      expect(rendered_component).to have_list class: "tabnav-tabs" do |list|
-        expect(list).to have_list_item count: 2
-        expect(list).to have_list_item "Overview"
-        expect(list).to have_list_item "Dashboard"
+      it "renders a tab bar" do
+        expect(rendered_component).to have_css ".PageHeader-tabNavBar"
+      end
+
+      it "renders 2 tabs", :aggregate_failures do
+        expect(rendered_component).to have_list class: "tabnav-tabs" do |list|
+          expect(list).to have_list_item count: 2
+          expect(list).to have_list_item "Overview"
+          expect(list).to have_list_item "Dashboard"
+        end
+      end
+
+      it "renders Overview tab link", :aggregate_failures do
+        expect(rendered_component).to have_link "Overview" do |link|
+          expect(link).to have_octicon :"op-view-split"
+        end
+      end
+
+      it "renders Dashboard tab link", :aggregate_failures do
+        expect(rendered_component).to have_link "Dashboard" do |link|
+          expect(link).to have_octicon :"op-view-list"
+        end
       end
     end
 
-    it "renders Overview tab link", :aggregate_failures do
-      expect(rendered_component).to have_link "Overview" do |link|
-        expect(link).to have_octicon :"op-view-split"
-      end
-    end
+    context "when user does NOT have permission to view members" do
+      let(:user) { build_stubbed(:user) }
 
-    it "renders Dashboard tab link", :aggregate_failures do
-      expect(rendered_component).to have_link "Dashboard" do |link|
-        expect(link).to have_octicon :"op-view-list"
+      before do
+        allow(user).to receive(:allowed_in_project?).with(:view_members, project).and_return(false)
+      end
+
+      it "renders only the Overview tab", :aggregate_failures do
+        expect(rendered_component).to have_list class: "tabnav-tabs" do |list|
+          expect(list).to have_list_item count: 1
+          expect(list).to have_list_item "Overview"
+          expect(list).not_to have_list_item "Dashboard"
+        end
       end
     end
   end
