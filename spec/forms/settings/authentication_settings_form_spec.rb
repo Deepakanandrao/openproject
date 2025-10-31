@@ -27,30 +27,49 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
+#
+require "spec_helper"
 
-class ApplicationForm < Primer::Forms::Base
-  include AttributeHelpTexts::FormHelper
+RSpec.describe Settings::AuthenticationSettingsForm, type: :forms do
+  include ViewComponent::TestHelpers
 
-  def self.settings_form
-    form do |f|
-      yield Settings::FormObjectDecorator.new(f)
+  def render_form
+    render_in_view_context(described_class) do |described_class|
+      primer_form_with(url: "/foo") do |f|
+        render(described_class.new(f))
+      end
     end
   end
 
-  def url_helpers
-    Rails.application.routes.url_helpers
+  before do
+    render_form
   end
 
-  # @return [ActiveRecord::Base] the model instance given to the form builder
-  def model
-    @builder.object
+  it "renders 'Autologin' select list" do
+    expect(page).to have_select "Autologin"
   end
 
-  # Forwards all arguments to ActiveRecord's human_attribute_name.
-  #
-  # @param args [Array] Arguments to pass to human_attribute_name (e.g., attribute name, options)
-  # @return [String] The human-readable name of the specified attribute
-  def attribute_name(...)
-    model.class.human_attribute_name(...)
+  it "renders 'Session expires' checkbox" do
+    expect(page).to have_unchecked_field "Session expires"
+  end
+
+  it "renders 'Session expiry time after inactivity' number field" do
+    expect(page).to have_field "Session expiry time after inactivity", type: "number"
+  end
+
+  it "renders 'Log user login, name, and mail address for all requests' checkbox" do
+    expect(page).to have_unchecked_field "Log user login, name, and mail address for all requests"
+  end
+
+  it "renders 'First login redirect' text field" do
+    expect(page).to have_field "First login redirect"
+  end
+
+  it "renders 'After login redirect' text field" do
+    expect(page).to have_field "After login redirect"
+  end
+
+  it "renders Save button" do
+    expect(page).to have_button "Save", class: "Button--primary"
   end
 end

@@ -28,7 +28,14 @@
 
 export const getNodeIndex = (element:Element) => Array.from(element.parentNode!.children).indexOf(element);
 
-export const toggleElement = (element:HTMLElement, value?:boolean) => {
+/**
+ * Toggles the visibility of an HTMLElement using `hidden` property.
+ *
+ * @note This is the recommended, modern approach. It is also accessible.
+ * @param element the element to be toggled.
+ * @param value force visibility (optional): `true` to show the element/`false` to hide the element.
+ */
+export function toggleElement(element:HTMLElement, value?:boolean) {
   if (typeof value === 'undefined') {
     element.hidden = !element.hidden;
   } else {
@@ -39,6 +46,35 @@ export const toggleElement = (element:HTMLElement, value?:boolean) => {
 export const showElement = (element:HTMLElement) => toggleElement(element, true);
 
 export const hideElement = (element:HTMLElement) => toggleElement(element, false);
+
+/**
+ * Toggles the visibility of an Element using a CSS class.
+ * Also takes care of setting `aria-hidden` attribute for accessibility.
+ *
+ * @param element the element to be toggled.
+ * @param className the CSS class name to use.
+ * @param value force visibility (optional): `true` to show the element/`false` to hide the element.
+ */
+export function toggleElementByClass(element:Element, className:string, value?:boolean) {
+  let hiddenValue:boolean;
+  if (typeof value === 'undefined') {
+    hiddenValue = element.classList.toggle(className);
+  } else {
+    hiddenValue = element.classList.toggle(className, !value);
+  }
+  element.setAttribute('aria-hidden', hiddenValue.toString());
+};
+
+/**
+ * Toggles the visibility of an HTMLElement using `visibility` style property.
+ *
+ * @param element the element to be toggled.
+ * @param value force visibility (optional): `true` to show the element/`false` to hide the element.
+ */
+export function toggleElementByVisibility(element:HTMLElement, value?:boolean) {
+  value ??= element.style.getPropertyValue('visibility') !== 'visible';
+  element.style.setProperty('visibility', value ? 'visible' : 'hidden');
+};
 
 /**
  * Mimics jQuery(':visible')

@@ -28,29 +28,24 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class ApplicationForm < Primer::Forms::Base
-  include AttributeHelpTexts::FormHelper
+# Decorates an input group to provide a more convenient interface for
+# rendering settings.
+#
+# It automatically sets the label, value, and disabled properties from the
+# setting name and its definition attributes.
+module Settings
+  class InputGroupDecorator < SimpleDelegator
+    include ::ApplicationHelper
+    include InputMethods
 
-  def self.settings_form
-    form do |f|
-      yield Settings::FormObjectDecorator.new(f)
-    end
-  end
+    # @!attribute [r] object
+    #   @return [Primer::Forms::Dsl::InputGroup] the original input group
+    alias object __getobj__
 
-  def url_helpers
-    Rails.application.routes.url_helpers
-  end
-
-  # @return [ActiveRecord::Base] the model instance given to the form builder
-  def model
-    @builder.object
-  end
-
-  # Forwards all arguments to ActiveRecord's human_attribute_name.
-  #
-  # @param args [Array] Arguments to pass to human_attribute_name (e.g., attribute name, options)
-  # @return [String] The human-readable name of the specified attribute
-  def attribute_name(...)
-    model.class.human_attribute_name(...)
+    # @!method initialize(object)
+    #   Initializes a new {Settings::InputGroupDecorator}
+    #
+    #   @param object [Primer::Forms::Dsl::InputGroup] The input group to be decorated
+    #   @return [InputGroupDecorator]
   end
 end
