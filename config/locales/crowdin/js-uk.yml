@@ -1144,7 +1144,7 @@ uk:
       timeline: "Таблиця"
     invite_user_modal:
       invite: "Запросити"
-      placeholder_add_tag: "Create placeholder user"
+      placeholder_add_tag: "Створити прототип користувача"
     exclusion_info:
       modal:
         title: "Статус виключено з підсумків ієрархії"

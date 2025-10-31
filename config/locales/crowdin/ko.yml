@@ -350,7 +350,7 @@ ko:
     single: "또는"
   danger_dialog:
     confirmation_live_message_checked: "진행 버튼이 이제 활성화되었습니다."
-    confirmation_live_message_unchecked: "계속 버튼이 이제 비활성화되었습니다. 계속하려면 확인란을 선택해야 합니다."
+    confirmation_live_message_unchecked: "진행 버튼이 이제 비활성화되었습니다. 계속하려면 확인란을 선택해야 합니다."
   op_dry_validation:
     or: "또는"
     errors:

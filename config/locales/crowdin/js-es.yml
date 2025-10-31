@@ -1136,7 +1136,7 @@ es:
       timeline: "Gantt"
     invite_user_modal:
       invite: "Invitar"
-      placeholder_add_tag: "Create placeholder user"
+      placeholder_add_tag: "Crear usuario de marcador de posición"
     exclusion_info:
       modal:
         title: "Estado excluido de los totales de jerarquía"

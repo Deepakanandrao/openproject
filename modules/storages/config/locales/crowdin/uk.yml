@@ -177,12 +177,12 @@ uk:
             remote_folders:
               request_error: OpenProject не вдалося отримати доступ до вашого диска %{drive_id}. Перевірте правильність конфігурації свого сховища.
             rename_project_folder:
-              conflict: OpenProject could not rename the folder %{current_path} to %{project_folder_name} as a folder with the same name already exists.
+              conflict: OpenProject не вдалося змінити назву папки «%{current_path}» на «%{project_folder_name}», оскільки папка з такою назвою вже існує.
               forbidden: OpenProject не має дозволу на перейменування папки %{current_path}.
               not_found: "%{current_path} не знайдено."
             set_folders_permissions:
               permission_not_set: не вдалося встановити дозволи за шляхом %{path}.
-          error: An unexpected error occurred. Please ensure that OneDrive is reachable and check OpenProject worker logs for more information.
+          error: Сталася неочікувана помилка. Переконайтеся, що є доступ до OneDrive, і перевірте журнали працівників OpenProject, щоб дізнатися більше.
           not_allowed: OpenProject не має дозволу на доступ до вашого диска OneDrive. Перевірте дозволи, установлені в програмі Azure.
           unauthorized: Не вдалося синхронізувати OpenProject із OneDrive. Перевірте конфігурацію свого сховища й додатку Azure.
           user_does_not_exist: "%{user} не існує в Nextcloud."
@@ -201,7 +201,7 @@ uk:
               permission_not_set: не вдалося встановити дозволи за шляхом %{path}.
           error: Сталася неочікувана помилка. Переконайтеся, що є доступ до OneDrive, і перевірте журнали працівників OpenProject, щоб дізнатися більше.
           not_allowed: OpenProject не має дозволу на доступ до вашого диска OneDrive. Перевірте дозволи, установлені в програмі Azure.
-          not_found: OpenProject could not access your library %{drive_name}. Please check you Sharepoint site document libraries.
+          not_found: OpenProject не вдалось отримати доступ до вашої бібліотеки «%{drive_name}». Перевірте бібліотеки документів свого сайту SharePoint.
           unauthorized: Не вдалося синхронізувати OpenProject із OneDrive. Перевірте конфігурацію свого сховища й додатку Azure.
           user_does_not_exist: "%{user} не існує в Nextcloud."
         upload_link_service:
@@ -273,10 +273,10 @@ uk:
         ampf_configuration:
           client_folder_creation: Автоматичне створення папки
           client_folder_removal: Автоматичне видалення папки
-          drive_contents: Drive content
+          drive_contents: Вміст диска
           files_request: Отримання файлів із папок групи
           group_folder_app: 'Залежність: папки групи'
-          group_folder_contents: Group folder content
+          group_folder_contents: Вміст папки групи
           group_folder_presence: Папка групи вже існує
           header: Папки проєкту з автоматичним керуванням
           userless_access: Автентифікація запиту на стороні сервера
@@ -527,7 +527,7 @@ uk:
         name: OneDrive
         name_placeholder: напр. OneDrive
       sharepoint:
-        drive_description: OpenProject access-managed document library
+        drive_description: Бібліотека документів OpenProject із керуванням на основі доступу
         label_oauth_client_id: Ідентифікатор (клієнт) додатка Azure OAuth
         label_oauth_client_secret: Значення секрету клієнта Azure OAuth
         name: SharePoint
@@ -542,7 +542,7 @@ uk:
         label: Використовувати маркер доступу, отриманий під час входу користувача
       manual:
         helptext: OpenProject отримає маркер у постачальника ідентифікаційних даних для визначеної аудиторії.
-        label: Manually specify audience for which to exchange access token (Recommended)
+        label: Вручну вказувати аудиторію, для якої потрібно отримати маркер доступу (рекомендовано)
     storage_list_blank_slate:
       description: Додайте сховище, щоб воно з’явилося тут.
       heading: У вас ще немає жодного сховища.

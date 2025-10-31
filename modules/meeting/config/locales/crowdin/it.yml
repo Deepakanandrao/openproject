@@ -62,7 +62,7 @@ it:
       meeting_participant:
         invited: "Invitato"
         attended: "Ha partecipato"
-        participation_status: "Participation status"
+        participation_status: "Stato di partecipazione"
     errors:
       models:
         meeting_participant:
@@ -218,7 +218,7 @@ it:
       open_my_meetings_link: "Vai alle mie riunioni"
       series:
         title: "[%{project_name}] Serie di riunioni \"%{title}\""
-        summary: "%{actor} has invited you to a new meeting series '%{title}'"
+        summary: "%{actor} ti ha invitato a una nuova serie di riunioni \"%{title}\""
       series_updated:
         title: "[%{project_name}] Serie di riunioni \"%{title}\" aggiornata"
         summary: "La serie di riunioni \"%{title}\" è stata aggiornata da %{actor}"
@@ -499,7 +499,7 @@ it:
   label_agenda_item_work_package: "Macro-attività nei punti all'ordine del giorno"
   label_section_rename: "Rinomina sezione"
   label_agenda_outcome: "Risultato"
-  label_agenda_new_outcome: "New outcome"
+  label_agenda_new_outcome: "Nuovo risultato"
   label_agenda_outcome_actions: "Azioni di risultato dell'ordine del giorno"
   label_agenda_outcome_edit: "Modifica risultato"
   label_agenda_outcome_delete: "Rimuovi risultato"

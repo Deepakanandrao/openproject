@@ -177,12 +177,12 @@ es:
             remote_folders:
               request_error: OpenProject no ha podido acceder a su unidad %{drive_id}. Compruebe si su configuración de almacenamiento es correcta.
             rename_project_folder:
-              conflict: OpenProject could not rename the folder %{current_path} to %{project_folder_name} as a folder with the same name already exists.
+              conflict: OpenProject no ha podido renombrar la carpeta %{current_path} a %{project_folder_name} puesto que ya existe una carpeta con el mismo nombre.
               forbidden: OpenProject no tiene acceso a %{current_path} para cambiarle el nombre.
               not_found: "No se encontró %{current_path}."
             set_folders_permissions:
               permission_not_set: no se han podido establecer permisos en %{path}.
-          error: An unexpected error occurred. Please ensure that OneDrive is reachable and check OpenProject worker logs for more information.
+          error: Se ha producido un error inesperado. Asegúrese de que se puede acceder a OneDrive y compruebe los registros del trabajador de OpenProject para obtener más información.
           not_allowed: OpenProject no tenía permiso para acceder a su unidad OneDrive. Compruebe los permisos establecidos en la aplicación Azure.
           unauthorized: OpenProject no pudo sincronizarse con OneDrive. Compruebe su almacenamiento y la configuración de la aplicación Azure.
           user_does_not_exist: "%{user} no existe en Nextcloud."
@@ -201,7 +201,7 @@ es:
               permission_not_set: no se han podido establecer permisos en %{path}.
           error: Se ha producido un error inesperado. Asegúrese de que se puede acceder a OneDrive y compruebe los registros del trabajador de OpenProject para obtener más información
           not_allowed: OpenProject no tenía permiso para acceder a su unidad OneDrive. Compruebe los permisos establecidos en la aplicación Azure.
-          not_found: OpenProject could not access your library %{drive_name}. Please check you Sharepoint site document libraries.
+          not_found: OpenProject no pudo acceder a su biblioteca %{drive_name}. Compruebe las bibliotecas de documentos de su sitio de Sharepoint.
           unauthorized: OpenProject no pudo sincronizarse con OneDrive. Compruebe su almacenamiento y la configuración de la aplicación Azure.
           user_does_not_exist: "%{user} no existe en Nextcloud."
         upload_link_service:
@@ -273,10 +273,10 @@ es:
         ampf_configuration:
           client_folder_creation: Creación automática de carpetas
           client_folder_removal: Eliminación automática de carpetas
-          drive_contents: Drive content
+          drive_contents: Contenido de la unidad
           files_request: Obteniendo archivos de carpetas de grupo
           group_folder_app: 'Dependencia: Carpetas de grupo'
-          group_folder_contents: Group folder content
+          group_folder_contents: Contenido de la carpeta de grupo
           group_folder_presence: La carpeta del grupo existe
           header: Carpetas de proyecto gestionadas automáticamente
           userless_access: Autenticación de solicitudes del lado del servidor
@@ -522,7 +522,7 @@ es:
         name: OneDrive
         name_placeholder: ej. OneDrive
       sharepoint:
-        drive_description: OpenProject access-managed document library
+        drive_description: Biblioteca de documentos con gestión de acceso de OpenProject
         label_oauth_client_id: Identificador de la aplicación Azure OAuth (cliente)
         label_oauth_client_secret: Valor secreto del cliente de Azure OAuth
         name: SharePoint
@@ -537,7 +537,7 @@ es:
         label: Usar token de acceso obtenido durante el inicio de sesión del usuario
       manual:
         helptext: OpenProject intercambiará un token con el proveedor de identidad para la audiencia dada.
-        label: Manually specify audience for which to exchange access token (Recommended)
+        label: Especificar manualmente la audiencia con la que intercambiar el token de acceso (recomendado)
     storage_list_blank_slate:
       description: Añade un almacenamiento para verlos aquí.
       heading: Aún no tiene ningún almacenamiento.

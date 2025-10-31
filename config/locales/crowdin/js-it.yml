@@ -1136,7 +1136,7 @@ it:
       timeline: "Gantt"
     invite_user_modal:
       invite: "Invita"
-      placeholder_add_tag: "Create placeholder user"
+      placeholder_add_tag: "Crea un utente segnaposto"
     exclusion_info:
       modal:
         title: "Stato escluso dai totali della gerarchia"

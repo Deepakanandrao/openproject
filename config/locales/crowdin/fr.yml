@@ -166,7 +166,7 @@ fr:
       tabs:
         default_transitions: "Transitions par défaut"
         user_author: "L'utilisateur est l'auteur"
-        user_assignee: "L'utilisateur est assigné"
+        user_assignee: "L'utilisateur est la personne assignée"
   authentication:
     login_and_registration: "Connexion et inscription"
   announcements:
@@ -397,9 +397,9 @@ fr:
       blueprint: "Modèle de plan"
   global_search:
     title:
-      all_projects: 'Recherche de "%{search_term}" dans tous les projets'
-      current_project: 'Recherche de "%{search_term}" dans %{project_name}'
-      project_and_subprojects: 'Recherche de "%{search_term}" dans %{project_name} et tous les sous-projets'
+      all_projects: 'Recherche de « %{search_term} » dans tous les projets'
+      current_project: 'Recherche de « %{search_term} » dans %{project_name}'
+      project_and_subprojects: 'Recherche de « %{search_term} » dans %{project_name} et tous les sous-projets'
     placeholder: "Rechercher dans %{app_title}"
     overwritten_tabs:
       all: "Tous"
@@ -530,7 +530,7 @@ fr:
         no_results_title_text: Aucune version du projet pour le moment.
         no_results_content_text: Créer une nouvelle version
         work_packages_graph: Graphique des lots de travaux
-        show_work_packages: Afficher tous les lots de travaux
+        show_work_packages: Afficher les lots de travaux
       storage:
         no_results_title_text: Il n'y a pas d'espace disque supplémentaire utilisé par ce projet.
       work_package_priorities:
@@ -622,7 +622,7 @@ fr:
           name_label: "Nom du jeton"
       created_dialog:
         token/api:
-          title: "Un jeton a été généré"
+          title: "Le jeton d'API a été généré"
           warning: "Note : Ceci est la seule fois où vous verrez ce jeton, veuillez le copier maintenant."
       failed_to_reset_token: "Impossible de réinitialiser le jeton d’accès : %{error}"
       failed_to_create_token: "Impossible de créer le jeton d'accès : %{error}"
@@ -665,19 +665,19 @@ fr:
       no_results_title_text: Cet utilisateur n'est membre d'aucun projet pour le moment.
     open_profile: "Ouvrir le profil"
     invite_user_modal:
-      invite: "invite"
+      invite: "Inviter"
       title:
-        invite: "Inviter utilisateur"
-        invite_to_project: "Inviter %{type} à %{project}"
-        invite_principal_to_project: "Inviter %{principal} à %{project}"
+        invite: "Inviter un utilisateur"
+        invite_to_project: "Inviter %{type} à rejoindre %{project}"
+        invite_principal_to_project: "Inviter %{principal} à rejoindre %{project}"
       project:
         label: "Projet"
         required: "Veuillez sélectionner un projet"
-        next_button: "Suivante"
+        next_button: "Suivant"
         no_results: "Aucun projet trouvé"
-        no_invite_rights: "Vous n'êtes pas autorisé à inviter des membres à ce projet"
+        no_invite_rights: "Vous n'avez pas l'autorisation d'inviter des membres dans ce projet"
       type:
-        required: "Veuillez sélectionner le type d'invité"
+        required: "Veuillez sélectionner le type à inviter"
         user:
           title: "Inviter un utilisateur dans %{project_name}"
           description: "Permissions basées sur le rôle assigné dans le projet sélectionné"
@@ -685,14 +685,14 @@ fr:
           title: "Inviter un groupe à rejoindre %{project_name}"
           description: "Permissions basées sur le rôle assigné dans le projet sélectionné"
         placeholder_user:
-          title: "Ajouter un espace réservé utilisateur à %{project_name}"
-          title_no_ee: "Utilisateur fictif (add-on de la version Entreprise uniquement)"
+          title: "Ajouter un utilisateur fictif à %{project_name}"
+          title_no_ee: "Utilisateur fictif (add-on de la version Enterprise uniquement)"
           description: "N'a pas d'accès au projet et aucun e-mail n'est envoyé."
         already_member_message: "Déjà membre de %{project}"
       principal:
         no_results_user: "Aucun utilisateur n'a été trouvé"
         invite_user: "Invité :"
-        no_results_placeholder: "Aucuns utilisateurs fictifs n'a été trouvé"
+        no_results_placeholder: "Aucun utilisateur fictif n'a été trouvé"
         create_new_placeholder: "Créer un nouveau utilisateur fictif :"
         no_results_group: "Aucun groupe n'a été trouvé"
         invite_to_project: "Inviter à rejoindre %{project_name}"
@@ -702,19 +702,19 @@ fr:
           group: "Veuillez sélectionner un groupe"
       role:
         label: "Rôle dans %{project}"
-        no_roles_found: "Aucun rôle trouvé."
+        no_roles_found: "Aucun rôle n'a été trouvé"
         description: >
 
         required: "Veuillez sélectionner un rôle"
       message:
         label: "Message d'invitation"
-        description: "Nous enverrons un e-mail à l'utilisateur, auquel vous pourrez ajouter un message personnel ici. Une explication concernant l'invitation pourrait être utile, ou peut-être quelques informations concernant le projet pour les aider à démarrer."
+        description: "Nous enverrons un e-mail à l'utilisateur, auquel vous pourrez ajouter un message personnel ici. Une explication concernant l'invitation pourrait être utile ou peut-être quelques informations concernant le projet pour l'aider à démarrer."
       summary:
         next_button: "Envoyer une invitation"
       success_message:
-        user: "L'utilisateur peut maintenant se connecter pour accéder à %{project}. En attendant, vous pouvez déjà planifier avec cet utilisateur et assigner des lots de travaux par exemple."
-        placeholder_user: "Le utilisateur fictif peut maintenant être utilisé dans %{project}. En attendant, vous pouvez déjà planifier des taches avec cet utilisateur et l'assigner à des lots de travaux par exemple."
-        group: "Le groupe fait maintenant partie du %{project}. Entre-temps, vous pouvez déjà planifier avec ce groupe et l'assigner des lots de travaux par exemple."
+        user: "L'utilisateur peut maintenant se connecter pour accéder à %{project}. En attendant, vous pouvez déjà compter sur cet utilisateur et l'assigner à des lots de travaux, par exemple."
+        placeholder_user: "L'utilisateur fictif peut maintenant être utilisé dans %{project}. En attendant, vous pouvez déjà planifier des taches avec cet utilisateur et l'assigner à des lots de travaux, par exemple."
+        group: "Le groupe fait maintenant partie du projet %{project}. En attendant, vous pouvez déjà compter sur ce groupe et l'assigner à des lots de travaux, par exemple."
   page:
     text: "Texte"
   placeholder_users:
@@ -724,7 +724,7 @@ fr:
     deletion_info:
       heading: "Supprimer l’utilisateur fictif %{name}"
       data_consequences: >
-        Toutes les occurrences de l'utilisateur de remplacement (par exemple, en tant que responsable ou autre valeur utilisateur) seront réaffectées à un compte appelé « Utilisateur supprimé ». Comme les données de chaque compte supprimé sont réaffectées à ce compte, il ne sera pas possible de distinguer les données que l'utilisateur a créées des données d'un autre compte supprimé.
+        Toutes les occurrences de l'utilisateur fictif (par exemple, en tant que responsable ou autre valeur utilisateur) seront réaffectées à un compte appelé « Utilisateur supprimé ». Comme les données de chaque compte supprimé sont réaffectées à ce compte, il ne sera pas possible de distinguer les données que l'utilisateur a créées des données d'un autre compte supprimé.
       irreversible: "Cette action est irréversible"
       confirmation: "Saisissez le nom d'utilisateur fictif %{name} pour confirmer ça suppression."
   priorities:
@@ -1769,7 +1769,7 @@ fr:
       notification:
         one: "Notification"
         other: "Notifications"
-      placeholder_user: "Utilisateur de remplacement"
+      placeholder_user: "Utilisateur fictif"
       project:
         one: "Projet"
         other: "Projets"
@@ -2275,7 +2275,7 @@ fr:
       ldap_groups: Synchronisation des utilisateurs LDAP et des groupes
       nextcloud_sso: Authentification unique pour le stockage Nextcloud
       one_drive_sharepoint_file_storage: Stockage de fichiers OneDrive/SharePoint
-      placeholder_users: Utilisateurs de remplacement
+      placeholder_users: Utilisateurs fictifs
       project_list_sharing: Partage de liste de projets
       readonly_work_packages: Lots de travaux en lecture seule
       scim_api: API du serveur SCIM
@@ -2356,7 +2356,7 @@ fr:
       virus_scanning:
         description: "Assurez-vous que les fichiers téléversés dans OpenProject sont analysés pour détecter les virus avant d'être accessibles aux autres utilisateurs."
       placeholder_users:
-        title: Utilisateurs de remplacement
+        title: Utilisateurs fictifs
         description: >
           Les utilisateurs fictifs sont un moyen d'attribuer des lots de travaux à des utilisateurs qui ne font pas partie de votre projet. Ils peuvent être utiles dans une série de scénarios ; par exemple, si vous avez besoin de suivre des tâches pour une ressource qui n'est pas encore nommée ou disponible, ou si vous ne voulez pas donner à cette personne l'accès à OpenProject mais voulez quand même suivre les tâches qui lui sont assignées.
       internal_comments:
@@ -2621,7 +2621,7 @@ fr:
     include_sub_items: "Inclure les sous-projets"
     no_results_text: "Aucun résultat"
   toggle_switch:
-    label_on: "Activer"
+    label_on: "Activé"
     label_off: "Désactiver"
   general_csv_decimal_separator: ","
   general_csv_encoding: "UTF-8"
@@ -2653,7 +2653,7 @@ fr:
           new_features_title: >
             Cette version contient plusieurs nouvelles fonctionnalités et améliorations, telles que :
           new_features_list:
-            line_0: Valeurs calculées pour l'évaluation et la notation des projets (Enterprise add-on).
+            line_0: Valeurs calculées pour l'évaluation et la notation des projets (add-on Enterprise).
             line_1: Hiérarchie des types d'attributs du projet.
             line_2: Des mises à jour de performance avec un impact important.
             line_3: Nouvelle page d'index pour le module Documents.
@@ -2746,7 +2746,7 @@ fr:
         title: "API"
         text_hint: "Les jetons d'API permettent aux applications tierces de communiquer avec cette instance OpenProject via les API REST."
         disabled_text: "Les jetons d'API ne sont pas activés par l'administrateur. Veuillez contacter votre administrateur pour utiliser cette fonctionnalité."
-        add_button: "Jeton API"
+        add_button: "Jeton d'API"
       api:
         static_token_name: "Jeton d'API"
       ical:
@@ -3223,14 +3223,14 @@ fr:
   label_password_rule_special: "Caractères spéciaux"
   label_password_rule_uppercase: "Majuscules"
   label_path_encoding: "Encodage du chemin d'accès"
-  label_per_page: "Par page:"
+  label_per_page: "Par page :"
   label_people: "Participants"
   label_permissions: "Autorisations"
   label_permissions_report: "Rapport d'autorisations"
   label_personalize_page: "Personaliser cette page"
-  label_placeholder_user: "Utilisateur de remplacement"
-  label_placeholder_user_new: "Nouvel utilisateur de remplacement"
-  label_placeholder_user_plural: "Utilisateurs de remplacement"
+  label_placeholder_user: "Utilisateur fictif"
+  label_placeholder_user_new: "Nouvel utilisateur fictif"
+  label_placeholder_user_plural: "Utilisateurs fictifs"
   label_planning: "Planification"
   label_please_login: "Veuillez vous connecter"
   label_plugins: "Plugins"
@@ -3823,9 +3823,9 @@ fr:
   permission_edit_wiki_pages: "Éditer les pages wiki"
   permission_export_work_packages: "Exporter les lots de travaux"
   permission_export_wiki_pages: "Exporter les pages wiki"
-  permission_invite_members_by_email: "Invitez les membres par courrier électronique"
+  permission_invite_members_by_email: "Inviter des membres par e-mail"
   permission_invite_members_by_email_explanation: >
-    Permet aux utilisateurs d'inviter de nouveaux membres par courrier électronique. Les utilisateurs invités recevront un courriel contenant un lien leur permettant de définir leur mot de passe et d'activer leur compte. Dépend de l'autorisation de gérer les membres
+    Permet aux utilisateurs d'inviter de nouveaux membres par e-mail. Les utilisateurs invités recevront un e-mail contenant un lien leur permettant de définir leur mot de passe et d'activer leur compte. Cela dépend de l'autorisation de gérer les membres
   permission_list_attachments: "Lister les pièces jointes"
   permission_log_own_time: "Enregistrer son propre temps"
   permission_log_time: "Saisir le temps pour d'autres utilisateurs"
