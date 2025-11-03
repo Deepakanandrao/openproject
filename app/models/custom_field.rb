@@ -232,7 +232,7 @@ class CustomField < ApplicationRecord
       value.to_f
     when "user", "version"
       field_format.classify.constantize.find_by(id: value.to_i)
-    when "hierarchy", "scored_list"
+    when "hierarchy", "weighted_item_list"
       CustomField::Hierarchy::Item.find_by(id: value.to_i)
     end
   end

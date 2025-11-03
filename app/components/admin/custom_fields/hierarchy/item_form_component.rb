@@ -63,7 +63,7 @@ module Admin
           when "hierarchy"
             :short
           when "weighted_item_list"
-            :score
+            :weight
           else
             raise ArgumentError, "Unsupported field format: #{field_format}"
           end

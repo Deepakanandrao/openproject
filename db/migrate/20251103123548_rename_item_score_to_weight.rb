@@ -23,13 +23,13 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class CustomValue::ScoredListStrategy < CustomValue::HierarchyStrategy
-  def typed_value
-    cached_ar_object&.score
+class RenameItemScoreToWeight < ActiveRecord::Migration[8.0]
+  def change
+    rename_column :hierarchical_items, :score, :weight
   end
 end

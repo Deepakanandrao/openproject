@@ -861,15 +861,15 @@ RSpec.describe "Show project custom fields on project overview page", :js do
       end
     end
 
-    describe "with scored list CF" do
+    describe "with weighted item list CF" do
       let!(:weighted_item_list) do
         create(:weighted_item_list_project_custom_field,
                projects: [project],
-               name: "Scored List",
+               name: "Weighted item list",
                project_custom_field_section: section_for_input_fields,
                possible_values: %w[Ten])
       end
-      let!(:item) { create(:hierarchy_item, score: 10, label: "Ten") }
+      let!(:item) { create(:hierarchy_item, weight: 10, label: "Ten") }
 
       before do
         create(:custom_value, :skip_validations, customized: project, custom_field: weighted_item_list, value: item.id.to_s)

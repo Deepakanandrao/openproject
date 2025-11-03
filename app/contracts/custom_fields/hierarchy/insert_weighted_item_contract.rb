@@ -34,7 +34,7 @@ module CustomFields
       params do
         required(:parent).filled(type?: CustomField::Hierarchy::Item)
         required(:label).filled(:string)
-        required(:score).filled(:decimal)
+        required(:weight).filled(:decimal)
       end
 
       rule(:parent) do
