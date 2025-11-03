@@ -216,14 +216,17 @@ export class SingleRowBuilder {
 
   protected buildEmptyRow(workPackage:WorkPackageResource, row:HTMLTableRowElement):[HTMLTableRowElement, boolean] {
     const change = this.workPackageTable.editing.change(workPackage);
-    const cells:{ [attribute:string]:HTMLTableCellElement } = {};
+    const cells:Record<string, HTMLTableCellElement> = {};
 
     if (change && !change.isEmpty()) {
       // Try to find an old instance of this row
-      const oldRow = locateTableRowByIdentifier(this.classIdentifier(workPackage))!;
+      const oldRow = locateTableRowByIdentifier(this.classIdentifier(workPackage));
 
       change.changedAttributes.forEach((attribute:string) => {
-        cells[attribute] = oldRow.querySelector(`.${tdClassName}.${attribute}`)!;
+        const oldCell = oldRow?.querySelector<HTMLTableCellElement>(`.${tdClassName}.${attribute}`);
+        if (oldCell) {
+          cells[attribute] = oldCell;
+        }
       });
     }
 
