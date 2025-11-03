@@ -59,17 +59,17 @@ RSpec.describe Projects::Settings::CustomFieldsForm, type: :forms, with_flag: { 
 
   let(:custom_field_values) do
     {
-      "#{string_project_custom_field.id}": "str_val",
-      "#{boolean_project_custom_field.id}": true,
-      "#{integer_project_custom_field.id}": 43,
-      "#{float_project_custom_field.id}": 78.23,
-      "#{date_project_custom_field.id}": Date.civil(2024, 0o3, 20),
-      "#{link_project_custom_field.id}": "https://rubygems.org/",
-      "#{list_project_custom_field.id}": list_project_custom_field.possible_values.first.id,
-      "#{multi_list_project_custom_field.id}": multi_list_project_custom_field.possible_values.last(2).map(&:id),
-      "#{version_project_custom_field.id}": version,
-      "#{user_project_custom_field.id}": user
-    }
+      string_project_custom_field => "str_val",
+      boolean_project_custom_field => true,
+      integer_project_custom_field => 43,
+      float_project_custom_field => 78.23,
+      date_project_custom_field => Date.civil(2024, 0o3, 20),
+      link_project_custom_field => "https://rubygems.org/",
+      list_project_custom_field => list_project_custom_field.possible_values.first.id,
+      multi_list_project_custom_field => multi_list_project_custom_field.possible_values.last(2).map(&:id),
+      version_project_custom_field => version,
+      user_project_custom_field => user
+    }.transform_keys { it.id.to_s }
   end
 
   let(:model) { build(:project, custom_field_values:) }

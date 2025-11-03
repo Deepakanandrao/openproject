@@ -102,7 +102,7 @@ module Projects::Concerns
       # have a value provided by the user, but no mapping exists.
 
       custom_field_ids = project.custom_values
-        .select { |cv| cv.value.present? || cv.required? }
+        .select { |cv| cv.value? || cv.required? }
         .pluck(:custom_field_id).uniq
       activated_custom_field_ids = project.project_custom_field_project_mappings.pluck(:custom_field_id).uniq
 

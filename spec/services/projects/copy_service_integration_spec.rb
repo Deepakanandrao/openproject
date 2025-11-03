@@ -211,11 +211,12 @@ RSpec.describe(
         end
 
         context "with calculated custom fields", with_flag: { calculated_value_project_attribute: true } do
+          using CustomFieldFormulaReferencing
           let(:integer_custom_field) { create(:integer_project_custom_field, projects: [source]) }
           let(:calculated_custom_field) do
             create(:calculated_value_project_custom_field, :skip_validations,
                    projects: [source],
-                   formula: "{{cf_#{integer_custom_field.id}}} * 2")
+                   formula: "#{integer_custom_field} * 2")
           end
 
           before do
@@ -243,7 +244,7 @@ RSpec.describe(
             let(:calculated_custom_field) do
               create(:calculated_value_project_custom_field, :skip_validations,
                      projects: [source],
-                     formula: "{{cf_#{integer_custom_field.id}}} / 0")
+                     formula: "#{integer_custom_field.id} / 0")
             end
 
             it "copies the custom fields and errors are recreated during recalculation" do

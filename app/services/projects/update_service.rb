@@ -48,7 +48,7 @@ module Projects
 
     def before_perform(service_call)
       super.tap do |super_call|
-        update_calculated_value_custom_fields(super_call.result)
+        update_calculated_value_custom_fields
       end
     end
 
@@ -88,7 +88,7 @@ module Projects
       WorkPackage.update_versions_from_hierarchy_change(model)
     end
 
-    def update_calculated_value_custom_fields(model)
+    def update_calculated_value_custom_fields
       changed_cf_ids = model.custom_values.select(&:changed?).map(&:custom_field_id)
 
       # Using unscope(where: :admin_only) to fix an issue when non admin user
