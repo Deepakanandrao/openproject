@@ -180,7 +180,9 @@ export class WorkPackageWatchersTabComponent extends UntilDestroyedMixin impleme
   }
 
   public updateCounter() {
-    const url = this.pathHelper.workPackageUpdateCounterPath(this.workPackageId, 'watchers');
-    void this.turboRequests.request(url);
+    if (this.workPackageId !== undefined) {
+      const url = this.pathHelper.workPackageUpdateCounterPath(this.workPackageId, 'watchers');
+      void this.turboRequests.request(url);
+    }
   }
 }
