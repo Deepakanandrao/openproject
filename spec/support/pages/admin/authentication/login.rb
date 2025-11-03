@@ -28,29 +28,22 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class ApplicationForm < Primer::Forms::Base
-  include AttributeHelpTexts::FormHelper
+require "support/pages/page"
 
-  def self.settings_form
-    form do |f|
-      yield Settings::FormObjectDecorator.new(f)
+module Pages
+  module Admin
+    module Authentication
+      class Login < ::Pages::Page
+        def path
+          admin_settings_authentication_path(tab: "login")
+        end
+
+        def save
+          click_button "Save"
+          # wait for the save to be processed
+          expect_and_dismiss_flash(message: "Successful update.")
+        end
+      end
     end
-  end
-
-  def url_helpers
-    Rails.application.routes.url_helpers
-  end
-
-  # @return [ActiveRecord::Base] the model instance given to the form builder
-  def model
-    @builder.object
-  end
-
-  # Forwards all arguments to ActiveRecord's human_attribute_name.
-  #
-  # @param args [Array] Arguments to pass to human_attribute_name (e.g., attribute name, options)
-  # @return [String] The human-readable name of the specified attribute
-  def attribute_name(...)
-    model.class.human_attribute_name(...)
   end
 end

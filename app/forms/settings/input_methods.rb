@@ -28,33 +28,10 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-# Decorates a form object to provide a more convenient interface for
-# rendering settings.
-#
-# It automatically sets the label, value, and disabled properties from the
-# setting name and its definition attributes.
 module Settings
-  class FormDecorator
+  module InputMethods
     include ::SettingsHelper
-    include ::ApplicationHelper
     include FormHelper
-
-    attr_reader :form
-
-    # Initializes a new Settings::FormDecorator
-    #
-    # @param form [Object] The form object to be decorated
-    def initialize(form)
-      @form = form
-    end
-
-    def method_missing(method, ...)
-      form.send(method, ...)
-    end
-
-    def respond_to_missing?(method, include_private = false)
-      form.respond_to?(method, include_private)
-    end
 
     # Creates a text field input for a setting.
     #
@@ -71,7 +48,7 @@ module Settings
         value: setting_value(name),
         disabled: setting_disabled?(name)
       )
-      form.text_field(name:, **options)
+      object.text_field(name:, **options)
     end
 
     # Creates a check box input for a setting.
@@ -83,13 +60,13 @@ module Settings
     # @param name [Symbol] The name of the setting
     # @param options [Hash] Additional options for the check box
     # @return [Object] The check box input
-    def check_box(name:, **options)
+    def check_box(name:, **options, &)
       options.reverse_merge!(
         label: setting_label(name),
         checked: setting_value(name),
         disabled: setting_disabled?(name)
       )
-      form.check_box(name:, **options)
+      object.check_box(name:, **options, &)
     end
 
     # Creates a radio button group for a setting.
@@ -119,7 +96,7 @@ module Settings
         label: setting_label(name),
         disabled: disabled || setting_disabled?(name)
       )
-      form.radio_button_group(
+      object.radio_button_group(
         name:,
         **radio_group_options
       ) do |radio_group|
@@ -151,7 +128,7 @@ module Settings
 
     def multi_language_text_select(name:, current_language: I18n.locale.to_s)
       # Add select list to switch
-      form.select_list(
+      object.select_list(
         name: :"#{name}_lang", # Should be excluded by settings params
         input_width: :small,
         id: "lang-for-#{name}",
@@ -169,7 +146,7 @@ module Settings
         end
       end
 
-      form.fields_for(name) do |builder|
+      object.fields_for(name) do |builder|
         MultiLangForm.new(builder, name:, current_language:)
       end
     end
@@ -178,9 +155,9 @@ module Settings
     #
     # @return [Object] The submit button
     def submit
-      form.submit(name: "submit",
-                  label: I18n.t("button_save"),
-                  scheme: :primary)
+      object.submit(name: "submit",
+                    label: I18n.t("button_save"),
+                    scheme: :primary)
     end
   end
 end
