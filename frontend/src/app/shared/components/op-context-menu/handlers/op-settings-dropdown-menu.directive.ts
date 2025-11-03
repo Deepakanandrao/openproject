@@ -256,7 +256,7 @@ export class OpSettingsMenuDirective extends OpContextMenuTrigger {
         icon: 'icon-edit',
         onClick: (event:MouseEvent) => {
           if (this.allowQueryAction(event, 'update')) {
-            document.querySelector(`${selectableTitleIdentifier}`)?.dispatchEvent(new CustomEvent(triggerEditingEvent));
+            document.querySelector(`${selectableTitleIdentifier}`)?.dispatchEvent(new CustomEvent(triggerEditingEvent, { bubbles: true }));
           }
 
           return true;
