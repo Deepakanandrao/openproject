@@ -81,18 +81,10 @@ class MeetingsController < ApplicationController
   end
 
   def check_for_updates
-    respond_to do |format|
-      format.html do
-        if params[:reference] == @meeting.changed_hash
-          head :no_content
-        else
-          respond_with_flash(Meetings::UpdateFlashComponent.new(@meeting))
-        end
-      end
-      format.json do
-        needs_refresh = params[:reference] != @meeting.changed_hash
-        render json: { needs_refresh: needs_refresh }
-      end
+    if params[:reference] == @meeting.changed_hash
+      head :no_content
+    else
+      respond_with_flash(Meetings::UpdateFlashComponent.new(@meeting))
     end
   end
 
