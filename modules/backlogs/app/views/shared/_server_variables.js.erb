@@ -58,7 +58,7 @@ RB.urlFor = (function () {
   };
 
   return function (routeName, options) {
-    route = routes[routeName];
+    var route = routes[routeName];
 
     if (options){
       if (options.id) {
