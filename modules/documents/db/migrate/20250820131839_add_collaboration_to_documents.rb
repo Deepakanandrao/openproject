@@ -34,19 +34,35 @@ class AddCollaborationToDocuments < ActiveRecord::Migration[8.0]
 
     reversible do |dir|
       dir.up do
-        set_existing_documents_to_classic_kind
+        set_existing_documents_kind
         change_title_string_size limit: 255
       end
     end
+
+    change_column_default :documents, :kind, "collaborative"
   end
 
   private
 
-  def set_existing_documents_to_classic_kind
-    say_with_time "setting existing documents to 'classic' kind" do
+  def set_existing_documents_kind
+    say_with_time "setting existing documents to appropriate kinds" do
+      # Set all existing documents to classic kind
       execute <<~SQL.squish
-        UPDATE documents SET kind = 'classic'
+        UPDATE documents
+        SET kind = 'classic'
       SQL
+
+      # Reset documents with "Experimental" type to collaborative kind
+      # These were likely created when OPENPROJECT_FEATURE_BLOCK_NOTE_EDITOR was enabled
+      if OpenProject::FeatureDecisions.block_note_editor_active?
+        execute <<~SQL.squish
+          UPDATE documents
+          SET kind = 'collaborative'
+          FROM document_types
+          WHERE documents.type_id = document_types.id
+          AND LOWER(document_types.name) = LOWER('Experimental')
+        SQL
+      end
     end
   end
 

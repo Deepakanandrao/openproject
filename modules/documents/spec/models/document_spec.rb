@@ -64,6 +64,10 @@ RSpec.describe Document do
 
   describe "Database constraints" do
     it { is_expected.to have_db_column(:title).of_sql_type("character varying(255)") }
+
+    it "defaults to 'collaborative' kind" do
+      expect(described_class.new).to be_collaborative
+    end
   end
 
   describe "create with a valid document" do
