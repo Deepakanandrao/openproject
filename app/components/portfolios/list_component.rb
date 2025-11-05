@@ -27,54 +27,21 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 # ++
-module Queries
-  module Loading
-    private
 
-    def load_query(duplicate:)
-      ::Queries::Factory.find(params[:query_id],
-                              query_class:,
-                              params: permitted_query_params,
-                              user: current_user,
-                              duplicate:)
+module Portfolios
+  class ListComponent < ApplicationComponent
+    include ApplicationHelper
+    include OpPrimer::ComponentHelpers
+    include OpTurbo::Streamable
+
+    def initialize(query:, current_user:)
+      super
+      @query = query
+      @current_user = current_user
     end
 
-    def load_query_or_deny_access
-      @query = load_query(duplicate: false)
-
-      render_403 unless @query
-    end
-
-    def build_query_or_deny_access
-      @query = load_query(duplicate: true)
-
-      render_403 unless @query
-    end
-
-    def permitted_query_params
-      query_params = {}
-
-      if params[:query]
-        query_params.merge!(params.require(:query).permit(:name))
-      end
-
-      query_params.merge!(::Queries::ParamsParser.parse(params))
-
-      query_params.with_indifferent_access
-    end
-
-    def query_class
-      controller_name = self.class.name.demodulize
-
-      model_name = if controller_name == "QueriesController"
-                     self.class.name.deconstantize
-                   else
-                     controller_name.chomp("Controller")
-                   end
-
-      model_name = "Projects" if model_name == "Portfolios"
-
-      "#{model_name.singularize}Query".constantize
+    def portfolios
+      @query.default_scope
     end
   end
 end

@@ -494,6 +494,8 @@ Rails.application.routes.draw do
             defaults: { workspace_type: "portfolio" },
             controller: "projects"
 
+  resources :portfolios, only: %i[index]
+
   resources :programs,
             only: %i[new],
             defaults: { workspace_type: "program" },

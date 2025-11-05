@@ -27,54 +27,52 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 # ++
-module Queries
-  module Loading
-    private
 
-    def load_query(duplicate:)
-      ::Queries::Factory.find(params[:query_id],
-                              query_class:,
-                              params: permitted_query_params,
-                              user: current_user,
-                              duplicate:)
+module Portfolios
+  # rubocop:disable OpenProject/AddPreviewForViewComponent
+  class IndexSubHeaderComponent < ApplicationComponent
+    # rubocop:enable OpenProject/AddPreviewForViewComponent
+    include ApplicationHelper
+    include OpTurbo::Streamable
+
+    def initialize(query:, current_user:, disable_buttons: nil)
+      super
+      @query = query
+      @current_user = current_user
+      @disable_buttons = disable_buttons
     end
 
-    def load_query_or_deny_access
-      @query = load_query(duplicate: false)
-
-      render_403 unless @query
+    def self.wrapper_key
+      "portfolios-index-sub-header"
     end
 
-    def build_query_or_deny_access
-      @query = load_query(duplicate: true)
-
-      render_403 unless @query
+    def filter_input_value
+      @query.find_active_filter(:name_and_identifier)&.values&.first
     end
 
-    def permitted_query_params
-      query_params = {}
-
-      if params[:query]
-        query_params.merge!(params.require(:query).permit(:name))
-      end
-
-      query_params.merge!(::Queries::ParamsParser.parse(params))
-
-      query_params.with_indifferent_access
+    def sub_header_data_attributes
+      {
+        controller: "filter--filters-form",
+        "filter--filters-form-perform-turbo-requests-value": true,
+        "filter--filters-form-clear-button-id-value": clear_button_id
+      }
     end
 
-    def query_class
-      controller_name = self.class.name.demodulize
+    def filter_input_data_attributes
+      {
+        "filter-name": "name_and_identifier",
+        "filter-type": "string",
+        "filter-operator": "~",
+        "filter--filters-form-target": "simpleFilter filterValueContainer simpleValue"
+      }
+    end
 
-      model_name = if controller_name == "QueriesController"
-                     self.class.name.deconstantize
-                   else
-                     controller_name.chomp("Controller")
-                   end
+    def clear_button_id
+      "portfolio-filters-form-clear-button"
+    end
 
-      model_name = "Projects" if model_name == "Portfolios"
-
-      "#{model_name.singularize}Query".constantize
+    def new_portfolio_label
+      I18n.t(:label_portfolio)
     end
   end
 end
