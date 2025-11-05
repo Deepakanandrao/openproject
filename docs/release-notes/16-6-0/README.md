@@ -67,7 +67,7 @@ To do so, administrators need to navigate to *Administration → Custom fields*,
 
 ![OpenProject 16.6: Custom field type hierarchy in the administration, tab 'Items', one item is selected with the 'More' menu and the option to change parent is higlighted](openproject-16-6-custom-field-hierarchy-change-parent.png)
 
-### Updated 'More' menu of meetings with an 'Add to section' option
+### Updated 'More' menu of meetings with a 'Move to section' option
 
 In the Meetings module, the *More (three dots) menu* for agenda items has been improved to make it easier to move items between sections. Moderators can now directly move an item to another section without manually reordering it step by step. 
 
@@ -181,7 +181,7 @@ Autoscaling can be configured through the Helm chart, allowing system administra
 
 ## Contributions
 
-A very special thank you goes to Helmholtz-Zentrum Berlin, City of Cologne, Deutsche Bahn and ZenDiS for sponsoring released or upcoming features. Your support, alongside the efforts of our amazing Community, helps drive these innovations. Also a big thanks to our Community members for reporting bugs and helping us identify and provide fixes. Special thanks for reporting and finding bugs go to Sven Kunze, Stefan Weiberg, Александр Татаринцев, Gábor Alexovics, Alexander Aleschenko, Tobias Nowakow.
+A very special thank you goes to Helmholtz-Zentrum Berlin, City of Cologne, Deutsche Bahn and ZenDiS for sponsoring released or upcoming features. Your support, alongside the efforts of our amazing Community, helps drive these innovations. Also a big thanks to our Community members for reporting bugs and helping us identify and provide fixes. Special thanks for reporting and finding bugs go to Sven Kunze, Stefan Weiberg, Gábor Alexovics, Alexander Aleschenko, Tobias Nowakow.
 
 This release, we specifically want to thank Emon for reporting a security vulnerability on our website. Reports and feedback like this are one of the reasons we love OSS and appreciate being part of such an amazing community.
 
