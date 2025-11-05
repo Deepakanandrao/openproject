@@ -7,12 +7,12 @@ de:
         no_results: "Es gibt keine sichtbaren Kinder."
         view_all_subitems: "Alle Unterelemente anzeigen"
       members:
-        title: "Members"
+        title: "Mitglieder"
         no_results: "Kein sichtbaren Mitglieder."
         view_all_members: "Alle Mitglieder anzeigen"
-        show_members_count: "Show all %{count} members"
+        show_members_count: "Alle %{count} Mitglieder anzeigen"
         x_more:
-          one: "and one more member."
+          one: "und ein weiteres Mitglied."
           other: "and %{count} more members."
       news:
         no_results: "Nichts Neues zu berichten."

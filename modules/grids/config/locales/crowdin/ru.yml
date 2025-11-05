@@ -7,15 +7,15 @@ ru:
         no_results: "Нет видимых потомков."
         view_all_subitems: "Отобразить все подпункты"
       members:
-        title: "Members"
+        title: "Участники"
         no_results: "Нет видимых участников."
         view_all_members: "Просмотреть всех участников"
-        show_members_count: "Show all %{count} members"
+        show_members_count: "Показать всех %{count} участников"
         x_more:
-          one: "and one more member."
+          one: "и еще один участник."
           few: "and %{count} more members."
           many: "and %{count} more members."
-          other: "and %{count} more members."
+          other: "и еще %{count} участников."
       news:
         no_results: "Ничего нового для отчета."
   activerecord:
