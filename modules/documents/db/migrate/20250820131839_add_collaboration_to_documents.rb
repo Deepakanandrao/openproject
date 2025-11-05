@@ -28,20 +28,46 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-FactoryBot.define do
-  factory :document do
-    project
-    category factory: :document_category
-    type factory: :document_type
-    sequence(:description) { |n| "I am a document's description  No. #{n}" }
-    sequence(:title) { |n| "I am the document No. #{n}" }
+class AddCollaborationToDocuments < ActiveRecord::Migration[8.0]
+  def change
+    add_column :documents, :kind, :string
 
-    trait :collaborative do
-      kind { "collaborative" }
+    reversible do |dir|
+      dir.up do
+        set_existing_documents_kind
+        change_title_string_size limit: 255
+      end
     end
 
-    trait :legacy do
-      kind { "legacy" }
+    change_column_default :documents, :kind, "collaborative"
+  end
+
+  private
+
+  def set_existing_documents_kind
+    say_with_time "setting existing documents to appropriate kinds" do
+      # Set all existing documents to classic kind
+      execute <<~SQL.squish
+        UPDATE documents
+        SET kind = 'classic'
+      SQL
+
+      # Reset documents with "Experimental" type to collaborative kind
+      # These were likely created when OPENPROJECT_FEATURE_BLOCK_NOTE_EDITOR was enabled
+      if OpenProject::FeatureDecisions.block_note_editor_active?
+        execute <<~SQL.squish
+          UPDATE documents
+          SET kind = 'collaborative'
+          FROM document_types
+          WHERE documents.type_id = document_types.id
+          AND LOWER(document_types.name) = LOWER('Experimental')
+        SQL
+      end
     end
+  end
+
+  def change_title_string_size(limit:)
+    change_column(:documents, :title, :string, limit:)
+    change_column(:document_journals, :title, :string, limit:)
   end
 end

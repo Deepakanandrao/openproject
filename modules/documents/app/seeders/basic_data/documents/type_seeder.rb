@@ -28,20 +28,41 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-FactoryBot.define do
-  factory :document do
-    project
-    category factory: :document_category
-    type factory: :document_type
-    sequence(:description) { |n| "I am a document's description  No. #{n}" }
-    sequence(:title) { |n| "I am the document No. #{n}" }
+module BasicData
+  module Documents
+    class TypeSeeder < ModelSeeder
+      self.model_class = DocumentType
+      self.seed_data_model_key = "document_types"
+      self.attribute_names_for_lookups = %i[name]
 
-    trait :collaborative do
-      kind { "collaborative" }
-    end
+      def applicable?
+        # The previous version of the seeder seeded 3 document types (Documentation, Specification, Other).
+        # We only want to seed if the default number of document types has not been changed significantly.
+        # If there are 3 or fewer document types, we can assume that no custom types have been added.
+        DocumentType.count <= 3
+      end
 
-    trait :legacy do
-      kind { "legacy" }
+      def create_model!(model_data)
+        attributes = model_attributes(model_data)
+        model_class
+          .find_or_create_by!(name: attributes[:name]) { it.is_default = defaultable?(attributes[:is_default]) }
+          .tap { seed_data.store_reference(model_data["reference"], it) }
+      end
+
+      def model_attributes(model_data)
+        {
+          name: model_data["name"],
+          is_default: model_data["is_default"]
+        }
+      end
+
+      private
+
+      def defaultable?(maybe_default)
+        return false if DocumentType.exists?(is_default: true)
+
+        maybe_default.present? && maybe_default
+      end
     end
   end
 end

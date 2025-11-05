@@ -28,20 +28,44 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-FactoryBot.define do
-  factory :document do
-    project
-    category factory: :document_category
-    type factory: :document_type
-    sequence(:description) { |n| "I am a document's description  No. #{n}" }
-    sequence(:title) { |n| "I am the document No. #{n}" }
+require "spec_helper"
+require_module_spec_helper
 
-    trait :collaborative do
-      kind { "collaborative" }
+RSpec.describe DocumentType do
+  describe "Associations" do
+    it do
+      expect(subject).to have_many(:documents)
+        .dependent(:nullify)
+        .with_foreign_key(:type_id)
+    end
+  end
+
+  describe "Normalizations" do
+    it { is_expected.to normalize(:name).from("  reImburseMEnt RequeSt  ").to("Reimbursement request") }
+  end
+
+  describe "Validations" do
+    it { is_expected.to validate_presence_of(:name) }
+    it { is_expected.to validate_uniqueness_of(:name).case_insensitive }
+  end
+
+  describe "Database constraints" do
+    it { is_expected.to have_db_index(:name).unique(true) }
+  end
+
+  describe ".default" do
+    it "returns the default document type when one is marked as default" do
+      default_type = create(:document_type, is_default: true)
+      create(:document_type, is_default: false)
+
+      expect(described_class.default).to eq default_type
     end
 
-    trait :legacy do
-      kind { "legacy" }
+    it "returns the first document type when none is marked as default" do
+      first_type = create(:document_type, is_default: false)
+      create(:document_type, is_default: false)
+
+      expect(described_class.default).to eq first_type
     end
   end
 end

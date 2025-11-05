@@ -28,20 +28,19 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-FactoryBot.define do
-  factory :document do
-    project
-    category factory: :document_category
-    type factory: :document_type
-    sequence(:description) { |n| "I am a document's description  No. #{n}" }
-    sequence(:title) { |n| "I am the document No. #{n}" }
+class DocumentType < ApplicationRecord
+  default_scope { order(:position) }
+  acts_as_list
 
-    trait :collaborative do
-      kind { "collaborative" }
-    end
+  has_many :documents, foreign_key: :type_id,
+                       dependent: :nullify,
+                       inverse_of: :type
 
-    trait :legacy do
-      kind { "legacy" }
-    end
+  normalizes :name, with: ->(name) { name.strip.capitalize }
+
+  validates :name, presence: true, uniqueness: { case_sensitive: false }
+
+  def self.default
+    where(is_default: true).first || first
   end
 end
