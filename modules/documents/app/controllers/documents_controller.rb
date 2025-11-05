@@ -99,6 +99,25 @@ class DocumentsController < ApplicationController
     end
   end
 
+  def update_type
+    service_call = Documents::UpdateService
+      .new(user: current_user, model: @document)
+      .call(type_id: params[:type_id])
+
+    if service_call.success?
+      update_via_turbo_stream(
+        component: Documents::ShowEditView::PageHeader::InfoLineComponent.new(@document)
+      )
+    else
+      render_error_flash_message_via_turbo_stream(
+        message: service_call.errors.full_messages
+      )
+      @turbo_status = :unprocessable_entity
+    end
+
+    respond_with_turbo_streams
+  end
+
   def destroy
     if @document.destroy
       flash[:notice] = I18n.t(:notice_successful_delete)
