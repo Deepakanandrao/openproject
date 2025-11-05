@@ -6,11 +6,15 @@ import { ServerBlockNoteEditor } from "@blocknote/server-util";
 import { BlockNoteSchema } from "@blocknote/core";
 import { openProjectWorkPackageStaticBlockSpec } from "op-blocknote-extensions";
 
-const schema = BlockNoteSchema.create().extend({
+export const editorSchema = BlockNoteSchema.create().extend({
   blockSpecs: {
     "openProjectWorkPackage": openProjectWorkPackageStaticBlockSpec(),
   },
 });
+
+export function createEditor() {
+  return ServerBlockNoteEditor.create({ schema: editorSchema });
+}
 
 export class OpenProjectApi implements Extension {
   /**
@@ -73,6 +77,11 @@ export class OpenProjectApi implements Extension {
     data.context.documentId = documentId;
     data.context.token = token;
     data.context.opBasePath = opBasePath;
+    if (!jsonData._links?.update) {
+      // https://tiptap.dev/docs/hocuspocus/guides/auth#read-only-mode
+      data.connectionConfig.readOnly = true;
+      data.context.readonly = true;
+    }
   }
 
   /**
@@ -108,10 +117,14 @@ export class OpenProjectApi implements Extension {
     * Store data to the API. The data is a YDoc update
     */
   async onStoreDocument(data: onStoreDocumentPayload): Promise<void> {
-    const { documentId, opBasePath } = data.context;
+    const { documentId, opBasePath, readonly } = data.context;
 
     if (!documentId || !opBasePath) {
       console.warn("Missing documentId or opBasePath in context. Skipping store.");
+      return;
+    }
+    if (readonly) {
+      console.warn("Readonly user cannot make requests to store the document");
       return;
     }
 
@@ -121,7 +134,7 @@ export class OpenProjectApi implements Extension {
     const base64Data = Buffer.from(Y.encodeStateAsUpdate(data.document)).toString("base64");
 
     // Create a copy of the document to avoid side effects
-    const editor = ServerBlockNoteEditor.create({ schema });
+    const editor = createEditor();
     const tempYdoc = new Y.Doc();
     Y.applyUpdate(tempYdoc, Y.encodeStateAsUpdate(data.document));
     const tempFragment = tempYdoc.getXmlFragment("document-store");
