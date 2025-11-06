@@ -29,8 +29,5 @@
   ++#
 %>
 
-<% if @document.collaborative? %>
-  <%= render Documents::ShowEditViewComponent.new(@document, project: @project) %>
-<% else %>
-  <%= render partial: "classic_show", locals: { document: @document, project: @project, attachments: @attachments } %>
-<% end %>
+<%= render Documents::ShowEditView::PageHeaderComponent.new(document, project:) %>
+<%= render Documents::ShowEditView::BlockNoteEditorComponent.new(document, project:) %>
