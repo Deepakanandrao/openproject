@@ -71,19 +71,6 @@ RSpec.describe Exports::PDF::Common::Macro do
       custom_field_values: { project_custom_field.id => "Project custom value 2" }
     )
   end
-  shared_let(:work_package) do
-    create(
-      :work_package,
-      subject: "Work package 1",
-      type: type_task,
-      status: create(:status, name: "In Progress"),
-      project: project,
-      custom_field_values: {
-        custom_field.id => "Custom value 1",
-        formatted_custom_field.id => "**Formatted** _text_ content"
-      }
-    )
-  end
   shared_let(:other_work_package) do
     create(
       :work_package,
@@ -116,6 +103,19 @@ RSpec.describe Exports::PDF::Common::Macro do
     )
   end
   shared_let(:formatter) { Class.new { extend Exports::PDF::Common::Macro } }
+  let(:work_package) do
+    create(
+      :work_package,
+      subject: "Work package 1",
+      type: type_task,
+      status: create(:status, name: "In Progress"),
+      project: project,
+      custom_field_values: {
+        custom_field.id => "Custom value 1",
+        formatted_custom_field.id => formatted_custom_field_value
+      }
+    )
+  end
   let(:additional_permissions) { [] }
   let(:user) do
     create(
@@ -127,6 +127,7 @@ RSpec.describe Exports::PDF::Common::Macro do
     )
   end
   let(:markdown) { "" }
+  let(:formatted_custom_field_value) { "**Formatted** _text_ content" }
 
   before do
     User.current = user
@@ -135,7 +136,7 @@ RSpec.describe Exports::PDF::Common::Macro do
   subject(:formatted) do
     formatter
       .apply_markdown_field_macros(markdown, { work_package: work_package, project: project, user: })
-      .sub("\n", "")
+      .chomp
   end
 
   describe "empty text" do
@@ -160,13 +161,11 @@ RSpec.describe Exports::PDF::Common::Macro do
 
       it "loops the tag through" do
         # note: escaped backslash in the tag text for correct markdown rendering
-        expect(formatted).to eq(
-          "<mention class=\"mention\" data-id=\"#{
-                                 work_package.id
-                               }\" data-type=\"work_package\" data-text=\"##{
-                                 work_package.id
-                               }\">\\##{work_package.id}</mention>"
-        )
+        expect(formatted).to eq("<mention class=\"mention\" data-id=\"#{
+          work_package.id
+        }\" data-type=\"work_package\" data-text=\"##{
+          work_package.id
+        }\">\\##{work_package.id}</mention>")
       end
     end
 
@@ -329,10 +328,7 @@ RSpec.describe Exports::PDF::Common::Macro do
     end
 
     describe "with nested formatted custom field" do
-      before do
-        work_package.custom_field_values[1].value = "a complicated **formatted** _text_ with <table></table>"
-        work_package.save
-      end
+      let(:formatted_custom_field_value) { "a complicated **formatted** _text_ with <table></table>" }
 
       describe "with relative work package" do
         let(:markdown) { '<table><tr><td>workPackageValue:"Custom Formatted Field"</td></tr></table>' }
@@ -398,6 +394,46 @@ RSpec.describe Exports::PDF::Common::Macro do
 
       it "processes the macro inside HTML" do
         expect(formatted).to eq("<table><tr><td>Work package 1</td></tr></table>")
+      end
+    end
+
+    describe "with formatted custom field used mid-line and markdown structures" do
+      # Ensure that when a formatted custom field contains markdown that MUST start at BOL
+      # and the macro appears mid-line, a line break is inserted before the markdown.
+      context "with unordered list item" do
+        let(:markdown) { "\nPrefix workPackageValue:\"Custom Formatted Field\"" }
+        let(:formatted_custom_field_value) { "* list item" }
+
+        it "inserts a newline before the list to keep structure" do
+          expect(formatted).to eq("Prefix \n* list item")
+        end
+      end
+
+      context "with blockquote" do
+        let(:markdown) { "\nIntro workPackageValue:\"Custom Formatted Field\"" }
+        let(:formatted_custom_field_value) { "> quoted" }
+
+        it "inserts a newline before the blockquote to keep structure" do
+          expect(formatted).to eq("Intro \n> quoted")
+        end
+      end
+
+      context "with heading" do
+        let(:markdown) { "\nText workPackageValue:\"Custom Formatted Field\"" }
+        let(:formatted_custom_field_value) { "# Heading" }
+
+        it "inserts a newline before the header to keep structure" do
+          expect(formatted).to eq("Text \n# Heading")
+        end
+      end
+
+      context "with fenced code block" do
+        let(:markdown) { "\nPreamble workPackageValue:\"Custom Formatted Field\"" }
+        let(:formatted_custom_field_value) { "```\ncode\n```" }
+
+        it "inserts a newline before the fenced code block to keep structure" do
+          expect(formatted).to eq("Preamble \n```\ncode\n```")
+        end
       end
     end
   end
