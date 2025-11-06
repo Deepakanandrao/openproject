@@ -41,6 +41,10 @@ class PortfoliosController < ApplicationController
 
   before_action :load_query_or_deny_access, only: %i[index]
 
+  current_menu_item :index do
+    :portfolios
+  end
+
   def index # rubocop:disable Metrics/AbcSize
     respond_to do |format|
       format.html do
@@ -50,16 +54,17 @@ class PortfoliosController < ApplicationController
       end
 
       format.turbo_stream do
-        replace_via_turbo_stream(
-          component: Projects::IndexPageHeaderComponent.new(query: @query, current_user:, state: :show, params:)
-        )
-        update_via_turbo_stream(
-          component: Filter::FilterButtonComponent.new(query: @query, disable_buttons: false)
-        )
-        replace_via_turbo_stream(component: Projects::TableComponent.new(query: @query, current_user:, params:))
+        # replace_via_turbo_stream(
+        #   component: Projects::IndexPageHeaderComponent.new(query: @query, current_user:, state: :show, params:)
+        # )
+        # update_via_turbo_stream(
+        #   component: Filter::FilterButtonComponent.new(query: @query, disable_buttons: false)
+        # )
+        # replace_via_turbo_stream(component: Projects::TableComponent.new(query: @query, current_user:, params:))
 
         current_url = url_for(params.permit(:controller, :action, :query_id, :filters, :columns, :sortBy, :page, :per_page))
         turbo_streams << turbo_stream.push_state(current_url)
+        # TODO:
         turbo_streams << turbo_stream.turbo_frame_set_src(
           "projects_sidemenu",
           projects_menu_url(query_id: @query.id, controller_path: "projects")

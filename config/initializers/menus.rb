@@ -31,6 +31,15 @@
 require "redmine/menu_manager"
 
 Redmine::MenuManager.map :top_menu do |menu|
+  menu.push :portfolios,
+            { controller: "/portfolios", action: "index" },
+            context: :modules,
+            caption: I18n.t("label_portfolio_plural"),
+            icon: "briefcase",
+            if: ->(_) {
+              User.current.logged? || !Setting.login_required?
+            }
+
   # projects menu will be added by
   # Redmine::MenuManager::TopMenuHelper#render_projects_top_menu_node
   menu.push :projects,
@@ -178,12 +187,21 @@ Redmine::MenuManager.map :global_menu do |menu|
             icon: "person",
             caption: I18n.t("my_page.label")
 
+  menu.push :portfolios,
+            { controller: "/portfolios", action: "index" },
+            caption: I18n.t("label_portfolio_plural"),
+            icon: "briefcase",
+            after: :my_page,
+            if: ->(_) {
+              User.current.logged? || !Setting.login_required?
+            }
+
   # Projects
   menu.push :projects,
             { controller: "/projects", project_id: nil, action: "index" },
             caption: I18n.t("label_projects_menu"),
             icon: "project",
-            after: :my_page,
+            after: :portfolios,
             if: ->(_) {
               User.current.logged? || !Setting.login_required?
             }
