@@ -48,7 +48,6 @@ module Queries::Projects
     filter Filters::ParentFilter
     filter Filters::PrincipalFilter
     filter Filters::ProjectStatusFilter
-    filter Filters::ProjectWorkspaceTypeFilter
     filter Filters::PublicFilter
     filter Filters::TemplatedFilter
     filter Filters::TypeFilter

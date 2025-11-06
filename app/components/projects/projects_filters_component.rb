@@ -57,7 +57,6 @@ class Projects::ProjectsFiltersComponent < Filter::FilterComponent
       Queries::Projects::Filters::MemberOfFilter,
       Queries::Projects::Filters::NameAndIdentifierFilter,
       Queries::Projects::Filters::ProjectStatusFilter,
-      Queries::Projects::Filters::ProjectWorkspaceTypeFilter,
       Queries::Projects::Filters::PublicFilter,
       Queries::Projects::Filters::TemplatedFilter,
       Queries::Projects::Filters::TypeFilter,
