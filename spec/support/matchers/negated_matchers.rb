@@ -28,21 +28,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module CustomFields
-  class UpdateContract < BaseContract
-    include CustomFields::EnterpriseGuard
-
-    validate :unique_job, if: -> { model.field_format_calculated_value? }
-
-    private
-
-    def unique_job
-      CustomFields::RecalculateValuesJob.new(
-        user: user,
-        custom_field_id: model.id
-      ).check_concurrency do
-        errors.add :base, :previous_custom_field_recalculation_unprocessed
-      end
-    end
-  end
-end
+# Define negated matchers for common RSpec expectations
+RSpec::Matchers.define_negated_matcher :not_change, :change
+RSpec::Matchers.define_negated_matcher :not_start_with, :start_with
+RSpec::Matchers.define_negated_matcher :not_be_default, :be_default

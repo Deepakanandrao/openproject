@@ -29,19 +29,33 @@
 #++
 
 module CustomFields
-  class UpdateContract < BaseContract
-    include CustomFields::EnterpriseGuard
+  class RecalculateValuesJob < ApplicationJob
+    include JobConcurrency
 
-    validate :unique_job, if: -> { model.field_format_calculated_value? }
+    queue_with_priority :default
+
+    good_job_control_concurrency_with(
+      total_limit: 1,
+      key: -> { "CustomFieldRecalculateValuesJob-#{arguments.first}" }
+    )
+
+    def perform(user:, custom_field_id:)
+      custom_field = CustomField.find_by(id: custom_field_id)
+      return unless custom_field&.field_format_calculated_value?
+
+      User.execute_as(user) { recalculate_values(custom_field) }
+    end
 
     private
 
-    def unique_job
-      CustomFields::RecalculateValuesJob.new(
-        user: user,
-        custom_field_id: model.id
-      ).check_concurrency do
-        errors.add :base, :previous_custom_field_recalculation_unprocessed
+    def recalculate_values(custom_field)
+      customized_class = custom_field.class.customized_class
+
+      customized_class.find_each do |customized|
+        affected_cfs = customized.available_custom_fields.affected_calculated_fields([custom_field.id])
+
+        customized.calculate_custom_fields(affected_cfs)
+        customized.save if customized.changed_for_autosave?
       end
     end
   end
