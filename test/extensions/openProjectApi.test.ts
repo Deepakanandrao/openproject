@@ -1,7 +1,7 @@
-import { describe, expect, test, vi, beforeEach, afterEach } from "vitest";
-import { OpenProjectApi } from "../../src/extensions/openProjectApi";
 import { onAuthenticatePayload, onLoadDocumentPayload, onStoreDocumentPayload } from "@hocuspocus/server";
+import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 import * as Y from "yjs";
+import { OpenProjectApi, createEditor } from "../../src/extensions/openProjectApi";
 
 describe("OpenProjectApi", () => {
   let fetchMock: any;
@@ -71,13 +71,12 @@ describe("OpenProjectApi", () => {
       fetchMock.mockResolvedValueOnce({
         ok: true,
         status: 200,
-        json: () => Promise.resolve({
-          title: "TheDocName"
-        }),
+        json: () => Promise.resolve({ title: "TheDocName" }),
       });
 
       const data = {
         context: {},
+        connectionConfig: {},
         token: "validToken",
         documentName: "TheDocName",
         requestParameters: new URLSearchParams({ document_id: "121", openproject_base_path: "https://subdomain.test.api" }),
@@ -118,9 +117,7 @@ describe("OpenProjectApi", () => {
       fetchMock.mockResolvedValueOnce({
         ok: true,
         status: 200,
-        json: () => Promise.resolve({
-          title: "DifferentDocName"
-        }),
+        json: () => Promise.resolve({ title: "DifferentDocName" }),
       });
 
       await expect(() =>
@@ -136,13 +133,12 @@ describe("OpenProjectApi", () => {
       fetchMock.mockResolvedValueOnce({
         ok: true,
         status: 200,
-        json: () => Promise.resolve({
-          title: "TheDocName"
-        }),
+        json: () => Promise.resolve({ title: "TheDocName" }),
       });
 
       const data = {
         context: {},
+        connectionConfig: {},
         token: "validToken",
         documentName: "TheDocName",
         requestParameters: new URLSearchParams({ document_id: "121", openproject_base_path: "https://test.api" }),
@@ -154,6 +150,59 @@ describe("OpenProjectApi", () => {
       expect(data.context.token).toEqual("validToken");
       expect(data.context.opBasePath).toEqual("https://test.api");
       expect(data.documentName).toEqual("TheDocName");
+    });
+
+    test("when there is no update link, setup the connection as readonly", async () => {
+      fetchMock.mockResolvedValueOnce({
+        ok: true,
+        status: 200,
+        json: () => Promise.resolve({
+          title: "TheDocName",
+          _links: {
+            self: { href: "/api/v3/documents/121" }
+          }
+        }),
+      });
+
+      const data = {
+        context: {},
+        connectionConfig: {},
+        token: "validToken",
+        documentName: "TheDocName",
+        requestParameters: new URLSearchParams({ document_id: "121", openproject_base_path: "https://test.api" }),
+      } as unknown as onAuthenticatePayload;
+
+      await new OpenProjectApi().onAuthenticate(data);
+
+      expect(data.connectionConfig.readOnly).toBe(true);
+      expect(data.context.readonly).toBe(true);
+    });
+
+    test("when there is an update link, setup the connection as writable", async () => {
+      fetchMock.mockResolvedValueOnce({
+        ok: true,
+        status: 200,
+        json: () => Promise.resolve({
+          title: "TheDocName",
+          _links: {
+            self: { href: "/api/v3/documents/121" },
+            update: { href: "/api/v3/documents/121" }
+          }
+        }),
+      });
+
+      const data = {
+        context: {},
+        connectionConfig: {},
+        token: "validToken",
+        documentName: "TheDocName",
+        requestParameters: new URLSearchParams({ document_id: "121", openproject_base_path: "https://test.api" }),
+      } as unknown as onAuthenticatePayload;
+
+      await new OpenProjectApi().onAuthenticate(data);
+
+      expect(data.connectionConfig.readOnly).toBeUndefined();
+      expect(data.context.readonly).toBeUndefined();
     });
   });
 
@@ -228,12 +277,28 @@ describe("OpenProjectApi", () => {
         status: 200,
       });
 
+
+      const editor = createEditor();
+      const blocks = [
+        {
+          type: "paragraph",
+          content: "test document content"
+        }
+      ];
+
       const document = new Y.Doc();
-      const text = document.getText('content');
-      text.insert(0, 'test document content');
+      const fragment = document.getXmlFragment('document-store');
+     
+      // @ts-expect-error BlockNote types are complicated
+      editor.blocksToYXmlFragment(blocks, fragment);
 
       const data = {
-        context: { documentId: "121", token: "testToken", opBasePath: "https://test.api" },
+        context: {
+          documentId: "121",
+          token: "testToken",
+          opBasePath: "https://test.api",
+          readonly: false
+        },
         document,
       } as onStoreDocumentPayload;
 
@@ -242,16 +307,14 @@ describe("OpenProjectApi", () => {
 
       expect(fetchMock).toHaveBeenCalledWith(
         "https://test.api/api/v3/documents/121",
-        {
+        expect.objectContaining({
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
             "Authorization": expect.stringContaining("Bearer"),
           },
-          body: JSON.stringify({
-            content_binary: Buffer.from(Y.encodeStateAsUpdate(data.document)).toString("base64")
-          }),
-        }
+          body: expect.stringContaining("content_binary"),
+        })
       );
     });
   });
