@@ -1,9 +1,16 @@
 <%=
   flex_layout do |flex|
-    flex.with_row do
+    flex.with_row(mb: 2) do
       flex_layout do |header|
         header.with_column do
-          render(Primer::Beta::Link.new(href: project_overview_path(@portfolio), font_weight: :bold)) { @portfolio.name }
+          render(
+            Primer::Beta::Link.new(
+              href: project_overview_path(@portfolio),
+              font_weight: :bold
+            )
+          ) do
+            @portfolio.name
+          end
         end
 
         # TODO: render status_code
@@ -12,13 +19,13 @@
       end
     end
 
-    flex.with_row do
+    flex.with_row(mb: 2) do
       @portfolio.description
     end
 
     flex.with_row do
-      flex_layout do |footer|
-        footer.with_column do
+      flex_layout(align_items: :center) do |footer|
+        footer.with_column(mr: 3) do
           render(
             Primer::Beta::IconButton.new(
               icon: currently_favorited? ? "star-fill" : "star",
@@ -37,7 +44,7 @@
           )
         end
 
-        footer.with_column do
+        footer.with_column(mr: 3) do
           render(
             Primer::Beta::Octicon.new(
               icon: workspace_icon("program"),
@@ -48,7 +55,7 @@
           ) + content_tag(:span, program_count_label)
         end
 
-        footer.with_column do
+        footer.with_column(mr: 3) do
           render(
             Primer::Beta::Octicon.new(
               icon: workspace_icon("project"),
@@ -59,7 +66,7 @@
           ) + content_tag(:span, project_count_label)
         end
 
-        footer.with_column do
+        footer.with_column(mr: 3) do
           render(
             Primer::Beta::Octicon.new(
               icon: "op-budget",
