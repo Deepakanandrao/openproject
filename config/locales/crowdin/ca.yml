@@ -1433,6 +1433,7 @@ ca:
               minimum: "necessita d'incloure almenys un filtre per a principal, a context o id amb l'operador '='."
         custom_field:
           at_least_one_custom_option: "Al menys hi ha d'haver una opció disponible."
+          previous_custom_field_recalculation_unprocessed: "The recalculation of previous changes for this custom field have not been applied yet, please try again in a few minutes."
           referenced_in_other_fields_html:
             one: "%{name} is used in project attribute calculation %{links}."
             other: "%{name} is used in project attribute calculations: %{links}."

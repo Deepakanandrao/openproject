@@ -1433,6 +1433,7 @@ pt-BR:
               minimum: "precisa incluir pelo menos um filtro para principal, contexto ou id com o operador '='."
         custom_field:
           at_least_one_custom_option: "Pelo menos uma opção precisa estar disponível."
+          previous_custom_field_recalculation_unprocessed: "The recalculation of previous changes for this custom field have not been applied yet, please try again in a few minutes."
           referenced_in_other_fields_html:
             one: "%{name} é usado no cálculo do atributo do projeto %{links}."
             other: "%{name} é usado nos cálculos de atributos do projeto: %{links}."

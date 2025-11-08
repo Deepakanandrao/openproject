@@ -1432,6 +1432,7 @@ nl:
               minimum: "moet ten minste één filter bevatten voor opdrachtgever, context of id met de '=' operator."
         custom_field:
           at_least_one_custom_option: "Ten minste één optie moet beschikbaar zijn."
+          previous_custom_field_recalculation_unprocessed: "The recalculation of previous changes for this custom field have not been applied yet, please try again in a few minutes."
           referenced_in_other_fields_html:
             one: "%{name} is used in project attribute calculation %{links}."
             other: "%{name} is used in project attribute calculations: %{links}."

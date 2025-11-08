@@ -1448,6 +1448,7 @@ pl:
               minimum: "musi zawierać co najmniej jeden filtr nazwy głównej, kontekstu lub identyfikatora z operatorem „=”."
         custom_field:
           at_least_one_custom_option: "Przynajmniej jedna opcja musi być dostępna."
+          previous_custom_field_recalculation_unprocessed: "The recalculation of previous changes for this custom field have not been applied yet, please try again in a few minutes."
           referenced_in_other_fields_html:
             one: "%{name} jest używany w obliczeniach atrybutów projektu %{links}."
             few: "%{name} jest używany w obliczeniach atrybutów projektu %{links}."

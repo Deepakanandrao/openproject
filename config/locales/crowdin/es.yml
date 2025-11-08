@@ -1433,6 +1433,7 @@ es:
               minimum: "necesita incluir como mínimo un filtro de entidad de seguridad, contexto o identificador con el operador «=»."
         custom_field:
           at_least_one_custom_option: "Como mínimo, tiene que estar disponible una opción."
+          previous_custom_field_recalculation_unprocessed: "The recalculation of previous changes for this custom field have not been applied yet, please try again in a few minutes."
           referenced_in_other_fields_html:
             one: "%{name} se utiliza en el cálculo de atributos del proyecto %{links}."
             other: "%{name} se utiliza en los cálculos de atributos del proyecto: %{links}."

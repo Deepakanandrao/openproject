@@ -1450,6 +1450,7 @@ ru:
               minimum: "необходимо включить хотя бы один фильтр для основного, контекста или id с оператором '='."
         custom_field:
           at_least_one_custom_option: "По крайней мере один параметр должен быть доступен."
+          previous_custom_field_recalculation_unprocessed: "The recalculation of previous changes for this custom field have not been applied yet, please try again in a few minutes."
           referenced_in_other_fields_html:
             one: "%{name} используется для расчета атрибута проекта %{links}."
             few: "%{name} is used in project attribute calculations: %{links}."

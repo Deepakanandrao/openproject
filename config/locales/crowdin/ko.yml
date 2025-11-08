@@ -1428,6 +1428,7 @@ ko:
               minimum: "'=' 연산자를 사용하여 주체, 컨텍스트 또는 ID에 대해 하나 이상의 필터를 포함시켜야 합니다."
         custom_field:
           at_least_one_custom_option: "하나 이상의 옵션을 사용할 수 있어야 합니다."
+          previous_custom_field_recalculation_unprocessed: "The recalculation of previous changes for this custom field have not been applied yet, please try again in a few minutes."
           referenced_in_other_fields_html:
             other: "%{name}은(는) 프로젝트 특성 계산에 사용됩니다: %{links}."
           attributes:

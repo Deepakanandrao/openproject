@@ -1428,6 +1428,7 @@ th:
               minimum: "ต้องมีตัวกรองอย่างน้อยหนึ่งตัวสำหรับตัวการ บริบท หรือรหัสที่มีตัวดำเนินการ '=' "
         custom_field:
           at_least_one_custom_option: "At least one option needs to be available."
+          previous_custom_field_recalculation_unprocessed: "The recalculation of previous changes for this custom field have not been applied yet, please try again in a few minutes."
           referenced_in_other_fields_html:
             other: "%{name} is used in project attribute calculations: %{links}."
           attributes:

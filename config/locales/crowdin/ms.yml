@@ -1426,6 +1426,7 @@ ms:
               minimum: "perlu sertakan sekurang-kurangnya satu saringan utama, konteks, atau id dengan operator '='."
         custom_field:
           at_least_one_custom_option: "Sekurang-kurangnya satu pilihan perlu tersedia."
+          previous_custom_field_recalculation_unprocessed: "The recalculation of previous changes for this custom field have not been applied yet, please try again in a few minutes."
           referenced_in_other_fields_html:
             other: "%{name} is used in project attribute calculations: %{links}."
           attributes:

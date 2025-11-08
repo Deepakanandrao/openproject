@@ -1446,6 +1446,7 @@ uk:
               minimum: "має містити принаймні один фільтр для адміністратора доступу, контексту або адміністратора з оператором «=»."
         custom_field:
           at_least_one_custom_option: "Необхідно мати принаймні один варіант."
+          previous_custom_field_recalculation_unprocessed: "The recalculation of previous changes for this custom field have not been applied yet, please try again in a few minutes."
           referenced_in_other_fields_html:
             one: "%{name} використовується при обчисленні атрибутів проєкту %{links}."
             few: "%{name} використовується при обчисленнях атрибутів проєкту: %{links}."

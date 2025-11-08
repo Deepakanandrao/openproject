@@ -1427,6 +1427,7 @@ ja:
               minimum: "プリンシパル、コンテキスト、または '= ' 演算子の id に少なくとも 1 つのフィルタを含める必要があります。"
         custom_field:
           at_least_one_custom_option: "少なくとも 1 つオプションが有効である必要があります。"
+          previous_custom_field_recalculation_unprocessed: "The recalculation of previous changes for this custom field have not been applied yet, please try again in a few minutes."
           referenced_in_other_fields_html:
             other: "%{name}はプロジェクト属性の計算に使用されます：%{links}。"
           attributes:
