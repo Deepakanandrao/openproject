@@ -27,20 +27,24 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
-#
-module OpPrimer
-  class RelativeTimeComponent < Primer::Component
-    def initialize(datetime:, **system_arguments)
-      super()
-      @system_arguments = deny_tag_argument(**system_arguments)
 
-      @system_arguments[:datetime] = datetime
-      @system_arguments[:lang] ||= I18n.locale
-      @system_arguments[:prefix] = I18n.t(:label_on) unless @system_arguments.key?(:prefix)
-    end
+module Meetings
+  module PresentationMode
+    class HeaderComponent < ApplicationComponent
+      include OpTurbo::Streamable
 
-    def call
-      render(Primer::Beta::RelativeTime.new(**@system_arguments))
+      attr_reader :meeting, :current_item
+
+      def initialize(meeting:, current_item:)
+        super()
+
+        @meeting = meeting
+        @current_item = current_item
+      end
+
+      def current_section
+        current_item&.meeting_section
+      end
     end
   end
 end

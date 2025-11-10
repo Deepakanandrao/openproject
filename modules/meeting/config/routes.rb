@@ -54,6 +54,15 @@ Rails.application.routes.draw do
         get :exit_draft_mode_dialog
         post :exit_draft_mode
       end
+
+      resource :presentation,
+               only: %i[show edit],
+               controller: "meeting_presentation" do
+        collection do
+          get :check_for_updates
+          post :start
+        end
+      end
     end
 
     resources :recurring_meetings do
