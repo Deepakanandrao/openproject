@@ -38,6 +38,7 @@ import { OpColorMode } from 'core-app/core/setup/globals/theme-utils';
 import { IUploadFile } from 'core-app/core/upload/upload.service';
 import { initOpenProjectApi, openProjectWorkPackageBlockSpec, openProjectWorkPackageSlashMenu } from 'op-blocknote-extensions';
 import { useEffect, useState } from 'react';
+import { firstValueFrom } from 'rxjs';
 import * as Y from 'yjs';
 
 export interface OpBlockNoteContainerProps {
@@ -158,7 +159,9 @@ export default function OpBlockNoteContainer({ inputField,
     try {
       const service = pluginContext.services.attachmentsResourceService;
       const iUploadFile = fileToIUploadFile(file);
-      const result = await service.addAttachments(attachmentsCollectionKey, attachmentsUploadUrl, [iUploadFile]).toPromise();
+      const result = await firstValueFrom(
+        service.addAttachments(attachmentsCollectionKey, attachmentsUploadUrl, [iUploadFile])
+      );
 
       return result?.[0]._links.staticDownloadLocation.href ?? '';
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
