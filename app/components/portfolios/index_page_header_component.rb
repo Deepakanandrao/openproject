@@ -60,26 +60,6 @@ module Portfolios
       query.name || t(:label_portfolio_plural)
     end
 
-    def may_save_as? = false
-
-    def can_save_as? = false
-
-    def can_save? = false
-
-    def can_rename? = false
-
-    def show_state?
-      state == :show
-    end
-
-    def can_access_shares?
-      query.persisted?
-    end
-
-    def can_toggle_favorite? = query.persisted?
-
-    def currently_favorited? = query.favorited_by?(current_user)
-
     def breadcrumb_items
       [
         { href: portfolios_path, text: t(:label_portfolio_plural), skip_for_mobile: first_menu_item? },
