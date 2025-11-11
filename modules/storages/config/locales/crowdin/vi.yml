@@ -159,6 +159,7 @@ vi:
           group_does_not_exist: "%{group} không tồn tại. Kiểm tra cấu hình phiên bản Nextcloud của bạn."
           insufficient_privileges: OpenProject không có đủ quyền để thêm %{user} vào %{group}. Kiểm tra cài đặt nhóm của bạn trong Nextcloud.
           not_allowed: Nextcloud chặn yêu cầu.
+          not_found: OpenProject could not find the file on the Nextcloud Storage Provider. Please check if it wasn't deleted.
           unauthorized: OpenProject không thể đồng bộ với Nextcloud. Hãy kiểm tra cấu hình lưu trữ và Nextcloud.
           user_does_not_exist: "%{user} không tồn tại trong Nextcloud."
         one_drive_sync_service:
@@ -178,6 +179,7 @@ vi:
               permission_not_set: không thể thiết lập quyền trên %{path}.
           error: An unexpected error occurred. Please ensure that OneDrive is reachable and check OpenProject worker logs for more information
           not_allowed: OpenProject không được phép truy cập ổ đĩa OneDrive của bạn. Vui lòng kiểm tra các quyền được thiết lập trên Ứng dụng Azure.
+          not_found: OpenProject could not find the file on the OneDrive Storage Provider. Please check if it wasn't deleted.
           unauthorized: OpenProject không thể đồng bộ với OneDrive. Hãy kiểm tra cấu hình lưu trữ và ứng dụng Azure..
           user_does_not_exist: "%{user} không tồn tại trong Nextcloud."
         upload_link_service:

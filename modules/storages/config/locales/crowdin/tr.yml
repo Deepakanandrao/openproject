@@ -159,6 +159,7 @@ tr:
           group_does_not_exist: "%{group} mevcut değil. Nextcloud yapılandırmanızı kontrol edin."
           insufficient_privileges: OpenProject does not have enough privileges to add %{user} to %{group}. Check you group settings in Nextcloud.
           not_allowed: Nextcloud isteği engeller.
+          not_found: OpenProject could not find the file on the Nextcloud Storage Provider. Please check if it wasn't deleted.
           unauthorized: OpenProject Nextcloud ile senkronize edilemedi. Lütfen depolama alanınızı ve Nextcloud yapılandırmanızı kontrol edin.
           user_does_not_exist: "%{user} does not exist in Nextcloud."
         one_drive_sync_service:
@@ -178,6 +179,7 @@ tr:
               permission_not_set: '%{path} üzerinde izinler ayarlanamadı.'
           error: An unexpected error occurred. Please ensure that OneDrive is reachable and check OpenProject worker logs for more information
           not_allowed: OpenProject'in OneDrive sürücünüze erişmesine izin verilmedi. Lütfen Azure Uygulamasında ayarlanan izinleri kontrol edin.
+          not_found: OpenProject could not find the file on the OneDrive Storage Provider. Please check if it wasn't deleted.
           unauthorized: OpenProject OneDrive ile eşitlenemedi. Lütfen depolama alanınızı ve Azure Uygulaması yapılandırmanızı kontrol edin.
           user_does_not_exist: "%{user} does not exist in Nextcloud."
         upload_link_service:

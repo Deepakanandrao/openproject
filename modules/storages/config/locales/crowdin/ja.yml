@@ -159,6 +159,7 @@ ja:
           group_does_not_exist: "%{group} は存在しません。Nextcloudインスタンスの設定を確認してください。"
           insufficient_privileges: OpenProjectには、 %{group}に %{user} を追加するのに十分な権限がありません。Nextcloudのグループ設定を確認してください。
           not_allowed: ネクストクラウドはリクエストをブロックする。
+          not_found: OpenProject could not find the file on the Nextcloud Storage Provider. Please check if it wasn't deleted.
           unauthorized: OpenProjectがNextcloudと同期できませんでした。ストレージとNextcloudの設定を確認してください。
           user_does_not_exist: "%{user} はNextcloudには存在しません。"
         one_drive_sync_service:
@@ -178,6 +179,7 @@ ja:
               permission_not_set: '%{path} に権限を設定できませんでした。'
           error: 予期しないエラーが発生しました。OneDrive に到達できることを確認し、OpenProject ワーカーのログを確認してください。
           not_allowed: OpenProject は、OneDrive ドライブにアクセスすることができませんでした。Azure アプリケーションの権限設定を確認してください。
+          not_found: OpenProject could not find the file on the OneDrive Storage Provider. Please check if it wasn't deleted.
           unauthorized: OpenProjectがOneDriveと同期できませんでした。ストレージとAzureアプリケーションの設定を確認してください。
           user_does_not_exist: "Nextcloudには%{user} は存在しません。"
         upload_link_service:

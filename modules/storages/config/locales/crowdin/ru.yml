@@ -159,6 +159,7 @@ ru:
           group_does_not_exist: "%{group} не существует. Проверьте конфигурацию Nextcloud."
           insufficient_privileges: OpenProject не имеет достаточных прав для добавления %{user} в %{group}. Проверьте настройки группы в Nextcloud.
           not_allowed: Nextcloud блокирует запрос.
+          not_found: OpenProject could not find the file on the Nextcloud Storage Provider. Please check if it wasn't deleted.
           unauthorized: OpenProject не смог синхронизироваться с Nextcloud. Пожалуйста, проверьте конфигурацию хранилища и Nextcloud.
           user_does_not_exist: "%{user} не существует в Nextcloud."
         one_drive_sync_service:
@@ -178,6 +179,7 @@ ru:
               permission_not_set: не удалось установить разрешения на %{path}.
           error: Произошла непредвиденная ошибка. Пожалуйста, убедитесь, что OneDrive доступен и проверьте журналы работы OpenProject для дополнительной информации
           not_allowed: OpenProject не был разрешен доступ к OneDrive. Пожалуйста, проверьте разрешения, установленные в приложении Azure.
+          not_found: OpenProject could not find the file on the OneDrive Storage Provider. Please check if it wasn't deleted.
           unauthorized: OpenProject не удалось синхронизировать с OneDrive. Пожалуйста, проверьте конфигурацию хранилища и приложения Azure.
           user_does_not_exist: "%{user} не существует в Nextcloud."
         upload_link_service:
