@@ -64,7 +64,7 @@ class PortfoliosController < ApplicationController
         update_via_turbo_stream(
           component: Projects::ProjectFilterButtonComponent.new(query: @query, disable_buttons: false)
         )
-        replace_via_turbo_stream(component: Portfolios::ListComponent.new(query: @query, current_user:))
+        replace_via_turbo_stream(component: Portfolios::IndexComponent.new(query: @query, current_user:))
 
         current_url = url_for(params.permit(:controller, :action, :query_id, :filters, :sortBy, :page, :per_page))
         turbo_streams << turbo_stream.push_state(current_url)

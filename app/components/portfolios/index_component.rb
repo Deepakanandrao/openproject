@@ -29,7 +29,7 @@
 # ++
 
 module Portfolios
-  class ListComponent < ApplicationComponent
+  class IndexComponent < ApplicationComponent
     include ApplicationHelper
     include OpPrimer::ComponentHelpers
     include OpTurbo::Streamable

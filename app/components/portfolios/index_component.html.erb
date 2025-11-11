@@ -26,7 +26,7 @@
 
           portfolios.each do |portfolio|
             component.with_row do
-              render(Portfolios::PreviewComponent.new(portfolio:, current_user: @current_user))
+              render(Portfolios::DetailsComponent.new(portfolio:, current_user: @current_user))
             end
           end
         end

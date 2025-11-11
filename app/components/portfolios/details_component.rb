@@ -29,7 +29,7 @@
 # ++
 
 module Portfolios
-  class PreviewComponent < ApplicationComponent
+  class DetailsComponent < ApplicationComponent
     include ApplicationHelper
     include OpPrimer::ComponentHelpers
     include WorkspaceHelper
