@@ -38,7 +38,9 @@ Redmine::MenuManager.map :top_menu do |menu|
             icon: "briefcase",
             if: ->(_) {
               OpenProject::FeatureDecisions.portfolio_models_active? &&
-                (User.current.logged? || !Setting.login_required?)
+                (User.current.logged? || !Setting.login_required?) &&
+                (User.current.allowed_globally?(:add_project) ||
+                  Project.active.portfolio.allowed_to(User.current, :view_project).any?)
             }
 
   # projects menu will be added by
@@ -195,7 +197,9 @@ Redmine::MenuManager.map :global_menu do |menu|
             after: :my_page,
             if: ->(_) {
               OpenProject::FeatureDecisions.portfolio_models_active? &&
-                (User.current.logged? || !Setting.login_required?)
+                (User.current.logged? || !Setting.login_required?) &&
+                (User.current.allowed_globally?(:add_project) ||
+                  Project.active.portfolio.allowed_to(User.current, :view_project).any?)
             }
 
   menu.push :portfolios_query_select,
