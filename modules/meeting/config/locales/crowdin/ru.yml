@@ -516,7 +516,7 @@ ru:
   label_agenda_outcome_edit: "Редактировать итог"
   label_agenda_outcome_delete: "Удалить итог"
   text_outcome_not_editable_anymore: "Этот итог недоступен для редактирования."
-  text_outcome_cannot_be_added: "Нельзя добавить итог."
+  text_outcome_cannot_be_added: "Итог больше нельзя добавить."
   label_backlog_clear: "Очистить бэклог"
   label_backlog_clear_button: "Очистить все"
   text_backlog_clear_error: "При попытке очистить бэклог произошла одна или несколько ошибок."
