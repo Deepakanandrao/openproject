@@ -216,6 +216,8 @@ class CustomField < ApplicationRecord
   end
 
   def custom_field_hierarchy_items
+    return [] if hierarchy_root.nil?
+
     items = CustomFields::Hierarchy::HierarchicalItemService
               .new
               .get_descendants(item: hierarchy_root, include_self: false)
