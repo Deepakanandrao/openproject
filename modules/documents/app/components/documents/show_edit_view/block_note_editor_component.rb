@@ -39,27 +39,9 @@ module Documents
 
       alias_method :document, :model
 
-      options :project
-
-      def initialize(document, **options)
-        super
-        @oauth_token = generate_oauth_token
-      end
+      options :project, :oauth_token
 
       private
-
-      def generate_oauth_token
-        return unless current_user.allowed_in_project?(:manage_documents, project)
-
-        token_service = Documents::OAuth::GenerateTokenService.new(user: current_user).call
-
-        if token_service.success?
-          token_service.result.plaintext_token
-        else
-          Rails.logger.error { "Failed to generate OAuth token for document #{document.id}: #{token_service.errors}" }
-          nil
-        end
-      end
 
       def current_user
         User.current
