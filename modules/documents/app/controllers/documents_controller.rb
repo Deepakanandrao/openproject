@@ -64,12 +64,10 @@ class DocumentsController < ApplicationController
   def new
     @document = @project.documents.build
     @document.attributes = document_params
-    generate_oauth_token
   end
 
   def edit
     @categories = DocumentCategory.all
-    generate_oauth_token
   end
 
   def create
@@ -140,22 +138,5 @@ class DocumentsController < ApplicationController
     @query.order(updated_at: :desc) unless params[:sortBy]
 
     @query.results
-  end
-
-  def generate_oauth_token
-    # do not generate a token if the user is not allowed to manage documents
-    if !current_user.allowed_in_project?(:manage_documents, @project)
-      return
-    end
-
-    result = Documents::OAuth::GenerateTokenService
-      .new(user: current_user)
-      .call
-
-    if result.success?
-      @oauth_token = result.result.plaintext_token
-    else
-      Rails.logger.error("Failed to generate OAuth token for document #{@document.id}: #{result.errors}")
-    end
   end
 end
