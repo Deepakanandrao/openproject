@@ -146,7 +146,7 @@ RSpec.describe Overviews::PageHeaderComponent, type: :component do
       end
     end
 
-    context "with view project permissions" do
+    context "with manage permissions" do
       let(:user) { build_stubbed(:admin) }
 
       it "renders action menu items", :aggregate_failures do
