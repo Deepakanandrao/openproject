@@ -167,7 +167,7 @@ module Redmine
 
           values = custom_field_values.select { |v| v.custom_field_id == custom_field.id }
 
-          if values.size > 1 && custom_field.multi_value?
+          if custom_field.multi_value?
             values.sort_by { |v| v.id.to_i } # need to cope with nil
           else
             values.first

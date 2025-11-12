@@ -75,10 +75,8 @@ RSpec.describe WorkPackage do
     let(:work_package) { create(:work_package, project:, type:) }
 
     it "returns nil properly" do
-      # I suspect this should rather be
-      # expect(values.map(&:value)).to eq([nil])
-      expect(values.value).to be_nil
-      expect(typed_values).to be_nil
+      expect(values.map(&:value)).to eq([nil])
+      expect(typed_values).to eq([nil])
     end
   end
 
