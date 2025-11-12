@@ -2709,6 +2709,8 @@ en:
     units:
       hours: h
       days: d
+    project_initiation:
+      title: "Project initiation request"
   pdf_generator:
     page_nr_footer: "Page %{page} of %{total}"
     template_attributes:
@@ -2994,6 +2996,7 @@ en:
   label_add_column: "Add column"
   label_applied_status: "Applied status"
   label_archive_project: "Archive project"
+  label_project_initiation_pdf: "Export PDF for project initiation request"
   label_ascending: "Ascending"
   label_assigned_to_me_work_packages: "Work packages assigned to me"
   label_associated_revisions: "Associated revisions"

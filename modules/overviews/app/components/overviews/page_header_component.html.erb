@@ -30,6 +30,14 @@
         end
       end
 
+      menu.with_item(
+        label: t(:label_project_initiation_pdf),
+        href: helpers.export_project_Initiation_project_path(project, format: :pdf),
+        data: { turbo: false }
+      ) do |item|
+        item.with_leading_visual_icon(icon: :download)
+      end
+
       if allowed_to_archive?
         menu.with_item(
           label: t(:label_archive_project),
