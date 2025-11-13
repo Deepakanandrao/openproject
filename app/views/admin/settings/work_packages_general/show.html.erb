@@ -44,7 +44,7 @@ See COPYRIGHT and LICENSE files for more details.
   styled_form_tag(
     { action: :update },
     method: :patch,
-    data: { controller: "admin--work-packages-general-form show-when-value-selected" }
+    data: { controller: "show-when-value-selected" }
   ) do
 %>
   <section class="form--section">
@@ -88,7 +88,7 @@ See COPYRIGHT and LICENSE files for more details.
         <%= setting_multiselect(
               :work_package_list_default_highlighted_attributes,
               Query.available_columns(nil).select(&:highlightable).map do |column|
-                [column.caption, column.name.to_s, { data: { admin__work_packages_general_form_target: "highlightedAttribute" }}]
+                [column.caption, column.name.to_s]
               end
             ) %>
       </div>
