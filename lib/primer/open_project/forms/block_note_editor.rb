@@ -38,18 +38,12 @@ module Primer
         attr_reader :input,
                     :value,
                     :active_user,
-                    :hocuspocus_url,
-                    :open_project_url,
-                    :document_name,
-                    :document_id,
-                    :oauth_token,
                     :attachments_upload_url,
                     :attachments_collection_key
 
         delegate :name, to: :@input
 
-        def initialize(input:, value:, document_name:, document_id:, attachments_upload_url: "",
-                       attachments_collection_key: "", oauth_token: nil)
+        def initialize(input:, value:, attachments_upload_url: "", attachments_collection_key: "")
           super()
           @input = input
           @value = value
@@ -57,11 +51,6 @@ module Primer
             id: User.current.id,
             username: User.current.name
           }
-          @document_id = document_id
-          @document_name = document_name
-          @oauth_token = oauth_token
-          @hocuspocus_url = Setting.collaborative_editing_hocuspocus_url
-          @open_project_url = root_url
           @attachments_upload_url = attachments_upload_url
           @attachments_collection_key = attachments_collection_key
         end

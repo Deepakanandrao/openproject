@@ -36,19 +36,21 @@ import { getDefaultReactSlashMenuItems, SuggestionMenuController, useCreateBlock
 import { HocuspocusProvider } from '@hocuspocus/provider';
 import { OpColorMode } from 'core-app/core/setup/globals/theme-utils';
 import { IUploadFile } from 'core-app/core/upload/upload.service';
+import { LiveCollaborationManager } from 'core-stimulus/helpers/live-collaboration-helpers';
 import { initOpenProjectApi, openProjectWorkPackageBlockSpec, openProjectWorkPackageSlashMenu } from 'op-blocknote-extensions';
 import { useEffect, useState } from 'react';
 import { firstValueFrom } from 'rxjs';
 import * as Y from 'yjs';
 
+interface CollaborativeUser {
+  name:string;
+  color:string;
+}
+
 export interface OpBlockNoteContainerProps {
   inputField:HTMLInputElement;
   inputText?:string;
-  hocuspocusUrl:string;
-  oauthToken:string,
   activeUser:User;
-  documentName:string;
-  documentId:string;
   openProjectUrl:string;
   attachmentsUploadUrl:string;
   attachmentsCollectionKey:string;
@@ -64,11 +66,7 @@ const detectTheme = ():OpColorMode => { return window.OpenProject.theme.detectOp
 
 export default function OpBlockNoteContainer({ inputField,
                                                inputText,
-                                               hocuspocusUrl,
-                                               oauthToken,
                                                activeUser,
-                                               documentName,
-                                               documentId,
                                                openProjectUrl,
                                                attachmentsUploadUrl,
                                                attachmentsCollectionKey }:OpBlockNoteContainerProps) {
@@ -81,23 +79,15 @@ export default function OpBlockNoteContainer({ inputField,
   const blockNoteLocaleString = Object.keys(blockNoteLocales).includes(userLocale) ? userLocale : 'en';
   const blockNoteLocale = blockNoteLocales[blockNoteLocaleString as keyof typeof blockNoteLocales];
 
-  let doc = new Y.Doc();
+  let doc = LiveCollaborationManager.ydoc;
 
-  const collaborationEnabled = Boolean(hocuspocusUrl && documentName && oauthToken && activeUser);
+  // this should come from a system setting;
+  const collaborationEnabled = true;
   let hocuspocusProvider:HocuspocusProvider | null = null;
 
   let editorParams:Partial<BlockNoteEditorOptions<typeof schema.blockSchema, typeof schema.inlineContentSchema, typeof schema.styleSchema>>;
   if(collaborationEnabled) {
-    const url = new URL(hocuspocusUrl);
-    url.searchParams.set('document_id', documentId);
-    url.searchParams.set('openproject_base_path', openProjectUrl);
-
-    hocuspocusProvider = new HocuspocusProvider({
-      url: url.toString(),
-      name: documentName,
-      token: oauthToken,
-      document: doc
-    });
+    hocuspocusProvider = LiveCollaborationManager.yjsProvider;
 
     editorParams = {
       schema,
@@ -105,9 +95,10 @@ export default function OpBlockNoteContainer({ inputField,
         provider: hocuspocusProvider,
         fragment: doc.getXmlFragment('document-store'),
         user: {
+          id: activeUser.id,
           name: activeUser.username,
           color: '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0'),
-        },
+        } as unknown as CollaborativeUser,
         showCursorLabels: 'activity'
       },
       dictionary: blockNoteLocale,

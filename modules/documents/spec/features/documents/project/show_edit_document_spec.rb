@@ -51,6 +51,12 @@ RSpec.describe "Show/Edit Document View",
 
     expect(page).to have_content("Collaborative document")
 
+    aggregate_failures "can see live users" do
+      within_test_selector("live-users") do
+        expect(page).to have_content("1 active editors")
+      end
+    end
+
     aggregate_failures "can edit document title" do
       within_test_selector("document-page-header") do
         click_button accessible_name: "Document actions"
