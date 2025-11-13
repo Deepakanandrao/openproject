@@ -27,7 +27,13 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
 
-<%= form_tag({ controller: "/repositories", action: "diff", project_id: @project, repo_path: to_path_param(path) }, method: :get) do %>
+<%=
+  form_tag(
+    { controller: "/repositories", action: "diff", project_id: @project, repo_path: to_path_param(path) },
+    method: :get,
+    data: { controller: "repositories--revisions-form" }
+  ) do
+%>
   <div class="generic-table--container">
     <div class="generic-table--results-container">
       <table class="generic-table changesets">
@@ -119,12 +125,8 @@ See COPYRIGHT and LICENSE files for more details.
                 <%= radio_button_tag "rev",
                                      changeset.identifier,
                                      (line_num == 1),
-                                     id: "cb-#{line_num}" %>
-                <% csp_onclick(
-                     "document.getElementById('cbto-#{line_num + 1}').checked = true;",
-                     "#cb-#{line_num}",
-                     prevent_default: false
-                   ) %>
+                                     id: "cb-#{line_num}",
+                                     data: { repositories__revisions_form_target: "rev" } %>
                 <% end %>
               </td>
               <td class="checkbox">
@@ -133,12 +135,8 @@ See COPYRIGHT and LICENSE files for more details.
                 <%= radio_button_tag "rev_to",
                                      changeset.identifier,
                                      (line_num == 2),
-                                     id: "cbto-#{line_num}" %>
-                  <% csp_onclick(
-                       "if (document.getElementById('cb-#{line_num}')?.checked) {document.getElementById('cb-#{line_num - 1}').checked = true;}",
-                       "#cbto-#{line_num}",
-                       prevent_default: false
-                     ) %>
+                                     id: "cbto-#{line_num}",
+                                     data: { repositories__revisions_form_target: "revTo" } %>
                 <% end %>
               </td>
               <td class="committed_on">
