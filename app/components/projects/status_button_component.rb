@@ -48,6 +48,10 @@ class Projects::StatusButtonComponent < ApplicationComponent
     @status = find_status(project.status_code)
   end
 
+  def wrapper_uniq_by
+    project
+  end
+
   private
 
   def edit_enabled?
