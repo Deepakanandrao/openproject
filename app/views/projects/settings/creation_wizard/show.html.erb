@@ -27,22 +27,8 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
 
-<%=
-  render Projects::Settings::CreationWizard::PageHeaderComponent.new(
-    project: @project
-  )
-%>
+<%= render Projects::Settings::CreationWizard::PageHeaderComponent.new(project: @project) %>
 
-<%= error_messages_for(@project) %>
-
-<%= labelled_tabular_form_for @project,
-                              url: project_settings_creation_wizard_path(@project) do |form| %>
-
-  <fieldset class="form--fieldset">
-    <div class="form--field">
-      <%= form.check_box :project_creation_wizard_enabled, label: "Enable project wizard" %>
-    </div>
-  </fieldset>
-
-  <p><%= form.button t(:button_save), class: "button -primary -with-icon icon-checkmark" %></p>
+<% unless @project.project_creation_wizard_enabled %>
+ <%= render Projects::Settings::CreationWizard::BlankSlateComponent.new(project: @project) %>
 <% end %>

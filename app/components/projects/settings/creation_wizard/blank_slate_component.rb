@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#-- copyright
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,26 +26,28 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
-class Projects::Settings::CreationWizardController < Projects::SettingsController
-  menu_item :settings_creation_wizard
+class Projects::Settings::CreationWizard::BlankSlateComponent < ApplicationComponent
+  include OpPrimer::ComponentHelpers
 
-  before_action :check_feature_flag
+  def initialize(project:)
+    super
 
-  def show; end
-
-  def toggle
-    # TODO: confirmation dialog when disabling the wizard
-    @project.update(project_creation_wizard_enabled: !@project.project_creation_wizard_enabled)
-    redirect_to project_settings_creation_wizard_path(@project, tab: params[:tab]), status: :see_other
+    @project = project
   end
 
   private
 
-  def check_feature_flag
-    unless OpenProject::FeatureDecisions.project_initiation_active?
-      render_404
-    end
+  def title
+    I18n.t("settings.project_initiation_request.blankslate.title")
+  end
+
+  def description
+    I18n.t("settings.project_initiation_request.blankslate.description")
+  end
+
+  def label
+    I18n.t(:button_enable)
   end
 end
