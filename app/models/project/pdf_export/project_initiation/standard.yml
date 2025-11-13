@@ -24,7 +24,7 @@ page_logo:
 page_heading:
   size: 14
   styles: [ "bold" ]
-  margin_bottom: 10
+  margin_bottom: 20
 
 cover:
   header:
@@ -64,8 +64,18 @@ cover:
       color: '414d5f'
       size: 10
 
+section:
+  margin_bottom: 8
+  title:
+    size: 12
+    color: "000000"
+    margin_bottom: 8
+    styles: [ "bold" ]
+    hr:
+      color: "1F2328"
+      height: 0.25
+
 project:
-  margin_bottom: 20
   title:
     size: 12
     color: "000000"

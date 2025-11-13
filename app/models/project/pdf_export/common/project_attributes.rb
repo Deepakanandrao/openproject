@@ -29,6 +29,8 @@
 #++
 
 module Project::PDFExport::Common::ProjectAttributes
+  EMPTY_VALUE_PLACEHOLDER = "–"
+
   def write_project_detail_content(project, export_fields)
     return if export_fields.empty?
 
@@ -156,20 +158,18 @@ module Project::PDFExport::Common::ProjectAttributes
   end
 
   def write_project_markdown(project, value, caption)
-    return if hide_empty_attributes? && value.blank?
+    if value.blank?
+      return if hide_empty_attributes?
 
+      value = EMPTY_VALUE_PLACEHOLDER
+    end
     write_markdown_label(caption)
-    value = Prawn::Text::NBSP if value.blank?
     with_margin(styles.project_markdown_margins) do
       write_markdown!(
         apply_markdown_field_macros(value, { project:, user: User.current }),
         styles.project_markdown_styling_yml
       )
     end
-  end
-
-  def hide_empty_attributes?
-    true
   end
 
   def write_markdown_label(caption)
@@ -196,7 +196,11 @@ module Project::PDFExport::Common::ProjectAttributes
 
   def table_entry(project, value_name, caption)
     value = format_attribute(project, value_name, :pdf)
-    return nil if hide_empty_attributes? && value.blank?
+    if value.blank?
+      return nil if hide_empty_attributes?
+
+      value = EMPTY_VALUE_PLACEHOLDER
+    end
 
     if value.is_a?(::Exports::Formatters::LinkFormatter)
       value = get_cf_link_cell(value)

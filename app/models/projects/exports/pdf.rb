@@ -117,6 +117,10 @@ module Projects::Exports
       true
     end
 
+    def hide_empty_attributes?
+      true
+    end
+
     def render_projects_report_pdf(flat_list, filename)
       render_projects_report(flat_list)
       file = Tempfile.new(filename)

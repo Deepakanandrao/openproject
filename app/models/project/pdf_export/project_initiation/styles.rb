@@ -37,16 +37,23 @@ module Project::PDFExport::ProjectInitiation::Styles
     include Exports::PDF::Components::CoverStyles
     include Project::PDFExport::Common::ProjectAttributesStyles
 
-    def project_title
-      resolve_font(@styles.dig(:project, :title))
+    def section_title
+      resolve_font(@styles.dig(:section, :title))
     end
 
-    def project_title_margins
-      resolve_margin(@styles.dig(:project, :title))
+    def section_title_hr
+      {
+        color: @styles.dig(:section, :title, :hr, :color),
+        height: resolve_pt(@styles.dig(:section, :title, :hr, :height), 1)
+      }
     end
 
-    def project_margins
-      resolve_margin(@styles[:project])
+    def section_title_margins
+      resolve_margin(@styles.dig(:section, :title))
+    end
+
+    def section_margins
+      resolve_margin(@styles[:section])
     end
   end
 

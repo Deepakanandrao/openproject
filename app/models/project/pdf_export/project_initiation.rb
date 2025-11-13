@@ -86,8 +86,13 @@ class Project::PDFExport::ProjectInitiation < Exports::Exporter
 
   def render_project_initiation
     write_cover_page! if with_cover?
+    write_title!
     write_project_initiation
-    write_headers!
+    write_headers_footers
+  end
+
+  def write_headers_footers
+    write_logo!
     write_footers!
   end
 
@@ -104,20 +109,20 @@ class Project::PDFExport::ProjectInitiation < Exports::Exporter
   end
 
   def cover_page_heading
-    I18n.t(:"export.project_initiation.title")
+    heading
   end
 
   def heading
-    "#{project.name} | #{cover_page_heading}"
+    I18n.t(:"export.project_initiation.title")
   end
 
   def footer_title
-    ""
+    "#{project.name} | #{cover_page_heading}"
   end
 
   def title
-    # <project>_initialization<YYYY-MM-DD>_<HH-MM>.pdf
-    build_pdf_filename([project.name, "initialization"].join("_"))
+    # <project>_<project_initialization>_<YYYY-MM-DD>_<HH-MM>.pdf
+    build_pdf_filename([project.name, heading].join("_"))
   end
 
   def with_images?
@@ -132,11 +137,59 @@ class Project::PDFExport::ProjectInitiation < Exports::Exporter
     true
   end
 
+  def hide_empty_attributes?
+    false
+  end
+
+  def collect_custom_fields_data
+    project.available_custom_fields
+           .group_by(&:project_custom_field_section)
+           .map do |section, custom_fields|
+      {
+        caption: section.name,
+        fields: custom_fields.map { |cf| { key: "cf_#{cf.id}", caption: cf.name } }
+      }
+    end
+  end
+
+  def collect_base_data
+    [
+      # { caption: I18n.t(:label_project),
+      #   fields: %i[name description].map { |key| { key:, caption: Project.human_attribute_name(key) } }
+      # }
+    ]
+  end
+
+  def collect_sections_data
+    collect_base_data.concat collect_custom_fields_data
+  end
+
+  def write_section_title_hr
+    hr_style = styles.section_title_hr
+    write_horizontal_line(pdf.cursor, hr_style[:height], hr_style[:color])
+  end
+
+  def write_section_title(text)
+    with_margin(styles.section_title_margins) do
+      style = styles.section_title
+      pdf.formatted_text([style.merge({ text: })], style)
+      write_section_title_hr
+    end
+  end
+
+  def write_section(section)
+    with_margin(styles.section_margins) do
+      write_section_title(section[:caption])
+      write_project_detail_content(project, section[:fields])
+    end
+  end
+
   def write_project_initiation
-    keys = %i[name description].freeze
-    fields = keys.map { |key| { key:, caption: Project.human_attribute_name(key) } }
-    custom_fields = project.available_custom_fields.pluck(:id, :name)
-                      .map { |id, name| { key: "cf_#{id}", caption: name } }
-    write_project_detail_content(project, fields + custom_fields)
+    collect_sections_data.each do |section|
+      next if section[:fields].empty?
+
+      write_optional_page_break
+      write_section(section)
+    end
   end
 end

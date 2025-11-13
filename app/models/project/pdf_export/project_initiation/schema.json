@@ -21,6 +21,9 @@
     "cover": {
       "$ref": "#/$defs/cover"
     },
+    "section": {
+      "$ref": "#/$defs/section"
+    },
     "project": {
       "$ref": "#/$defs/project"
     }
@@ -457,6 +460,63 @@
             }
           },
           "allOf": [
+            {
+              "$ref": "#/$defs/margin"
+            }
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "$ref": "#/$defs/margin"
+        }
+      ]
+    },
+    "section": {
+      "title": "Section",
+      "description": "Styling for a section in the PDF report export",
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "object",
+          "title": "Section title",
+          "description": "Default styling for the section title.",
+          "x-example": {
+            "item": {
+              "size": 14,
+              "color": "000000",
+              "margin_bottom": 4
+            }
+          },
+          "properties": {
+            "hr": {
+              "type": "object",
+              "title": "Horizontal rule for section title",
+              "x-example": {
+                "border": {
+                  "color": "d3dee3",
+                  "height": 1
+                }
+              },
+              "properties": {
+                "height": {
+                  "title": "Line height of the horizontal rule",
+                  "examples": [
+                    1
+                  ],
+                  "$ref": "#/$defs/measurement"
+                },
+                "color": {
+                  "title": "Line color of the horizontal rule",
+                  "$ref": "#/$defs/color"
+                }
+              }
+            }
+          },
+          "allOf": [
+            {
+              "$ref": "#/$defs/font"
+            },
             {
               "$ref": "#/$defs/margin"
             }
