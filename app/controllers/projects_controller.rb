@@ -181,7 +181,7 @@ class ProjectsController < ApplicationController
   end
 
   def export_project_initiation_pdf
-    export = Project::PDFExport::ProjectCreation.new(@project).export!
+    export = Project::PDFExport::ProjectInitiation.new(@project).export!
     send_data(export.content, type: export.mime_type, filename: export.title)
   rescue ::Exports::ExportError => e
     redirect_to project_path(@project), flash: { error: e.message }
