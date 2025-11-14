@@ -1,0 +1,122 @@
+# frozen_string_literal: true
+
+#-- copyright
+# OpenProject is an open source project management software.
+# Copyright (C) the OpenProject GmbH
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License version 3.
+#
+# OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
+# Copyright (C) 2006-2013 Jean-Philippe Lang
+# Copyright (C) 2010-2013 the ChiliProject Team
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+#
+# See COPYRIGHT and LICENSE files for more details.
+#++
+
+module Projects
+  module Settings
+    module CreationWizard
+      class SubmissionForm < ApplicationForm
+        form do |f|
+          f.select_list(
+            name: :submission_work_package_type_id,
+            label: I18n.t("settings.project_initiation_request.submission.work_package_type"),
+            caption: I18n.t("settings.project_initiation_request.submission.work_package_type_caption"),
+            required: true,
+            input_width: :large,
+            data: {
+              action: "change->refresh-on-form-changes#triggerTurboStream"
+            }
+          ) do |list|
+            model.types.each do |type|
+              list.option(
+                value: type.id,
+                label: type.name,
+                selected: type.id == model.submission_work_package_type_id
+              )
+            end
+          end
+
+          f.select_list(
+            name: :submission_status_when_submitted_id,
+            label: I18n.t("settings.project_initiation_request.submission.status_when_submitted"),
+            caption: I18n.t("settings.project_initiation_request.submission.status_when_submitted_caption"),
+            required: true,
+            input_width: :large
+          ) do |list|
+            # Statuses of the selected WP type
+            type_id = model.submission_work_package_type_id || model.types.first&.id
+
+            if type_id.present?
+              type = Type.find_by(id: type_id)
+              type&.statuses&.each do |status|
+                list.option(
+                  value: status.id,
+                  label: status.name,
+                  selected: status.id == model.submission_status_when_submitted_id
+                )
+              end
+            end
+          end
+
+          f.check_box(
+            name: :submission_send_confirmation_email,
+            label: I18n.t("settings.project_initiation_request.submission.send_confirmation_email"),
+            checked: model.submission_send_confirmation_email
+          )
+
+          f.autocompleter(
+            name: :submission_assignee_ids,
+            label: I18n.t("settings.project_initiation_request.submission.assignee"),
+            caption: I18n.t("settings.project_initiation_request.submission.assignee_caption"),
+            required: true,
+            input_width: :large,
+            autocomplete_options: {
+              component: "opce-user-autocompleter",
+              hideSelected: true,
+              defaultData: true,
+              placeholder: I18n.t(:label_user_search),
+              url: ::API::V3::Utilities::PathHelper::ApiV3Path.principals,
+              filters: [
+                { name: "type", operator: "=", values: ["User"] }
+              ],
+              searchKey: "any_name_attribute",
+              multiple: true
+            }
+          )
+
+          f.rich_text_area(
+            name: :submission_notification_text,
+            label: I18n.t("settings.project_initiation_request.submission.notification_text"),
+            required: true,
+            rich_text_options: {
+              showAttachments: false,
+              editorType: "constrained"
+            }
+          )
+
+          f.submit(
+            name: :submit,
+            label: I18n.t("button_save"),
+            scheme: :primary
+          )
+        end
+      end
+    end
+  end
+end
