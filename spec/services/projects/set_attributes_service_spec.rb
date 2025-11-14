@@ -37,7 +37,7 @@ RSpec.describe Projects::SetAttributesService, type: :model do
 
     allow(contract)
       .to receive(:new)
-      .with(project, user, options: {})
+      .with(project, user, options: contract_options)
       .and_return(contract_instance)
 
     contract
@@ -50,10 +50,12 @@ RSpec.describe Projects::SetAttributesService, type: :model do
     instance_double(ActiveModel::Errors)
   end
   let(:project_valid) { true }
+  let(:contract_options) { {} }
   let(:instance) do
     described_class.new(user:,
                         model: project,
-                        contract_class:)
+                        contract_class:,
+                        contract_options:)
   end
   let(:call_attributes) { {} }
   let(:project) do
@@ -309,6 +311,30 @@ RSpec.describe Projects::SetAttributesService, type: :model do
 
           include_examples "setting status attributes"
         end
+      end
+    end
+
+    context "when skip_custom_field_validation is true" do
+      let(:contract_options) { { skip_custom_field_validation: true } }
+      let(:project) { create(:project) }
+
+      it "deactivates custom field validations" do
+        allow(project).to receive(:deactivate_custom_field_validations!)
+        subject
+
+        expect(project).to have_received(:deactivate_custom_field_validations!)
+      end
+    end
+
+    context "when skip_custom_field_validation is false" do
+      let(:contract_options) { { skip_custom_field_validation: false } }
+      let(:project) { create(:project) }
+
+      it "does not deactivate custom field validations" do
+        allow(project).to receive(:deactivate_custom_field_validations!)
+        subject
+
+        expect(project).not_to have_received(:deactivate_custom_field_validations!)
       end
     end
   end

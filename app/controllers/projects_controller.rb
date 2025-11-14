@@ -233,6 +233,7 @@ class ProjectsController < ApplicationController
       .call(
         target_project_params:,
         only: @copy_options.dependencies,
+        skip_custom_field_validation: true,
         send_notifications: @copy_options.send_notifications
       )
 
