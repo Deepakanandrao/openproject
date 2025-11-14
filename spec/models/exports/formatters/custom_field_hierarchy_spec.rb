@@ -63,7 +63,7 @@ RSpec.describe Exports::Formatters::CustomField, with_ee: [:custom_field_hierarc
       end
 
       it "returns the label and short" do
-        expect(subject.format_for_export(work_package, custom_field)).to eq("Homer (HS) / Bart (BS)")
+        expect(subject.format_for_export(work_package, custom_field)).to eq("Homer / Bart (BS)")
       end
     end
 
@@ -73,7 +73,7 @@ RSpec.describe Exports::Formatters::CustomField, with_ee: [:custom_field_hierarc
       end
 
       it "returns the label and short" do
-        expect(subject.format_for_export(work_package, custom_field)).to eq("Homer (HS) / Lisa")
+        expect(subject.format_for_export(work_package, custom_field)).to eq("Homer / Lisa")
       end
     end
 
@@ -89,7 +89,7 @@ RSpec.describe Exports::Formatters::CustomField, with_ee: [:custom_field_hierarc
 
       it "returns multiple comma-separated values" do
         expect(subject.format_for_export(work_package, custom_field))
-          .to eq("Homer (HS), Homer (HS) / Bart (BS), Homer (HS) / Lisa, Homer (HS) / Lisa / Zia")
+          .to eq("Homer (HS), Homer / Bart (BS), Homer / Lisa, Homer / Lisa / Zia")
       end
     end
   end
