@@ -74,7 +74,7 @@ class Projects::StatusButtonComponent < ApplicationComponent
       icon: status.icon,
       item_id: status.id,
       tag: :a,
-      href: project_status_path(project, status_code: status.value),
+      href: project_status_path(project, status_code: status.value, status_size: @size),
       content_arguments: {
         data: { turbo_method: status.value ? :put : :delete },
         aria: { current: (true if status == @status) }
