@@ -37,7 +37,8 @@ See COPYRIGHT and LICENSE files for more details.
 <%=
   render Projects::TemplateSelectComponent.new(
     template: @template,
-    parent: @parent
+    parent: @parent,
+    current_user:
   )
 %>
 
