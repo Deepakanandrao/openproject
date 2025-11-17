@@ -29,12 +29,11 @@
 #++
 
 module WorkspaceHelper
-  WORKSPACE_ICON_MAPPING = Hash.new(:project)
-    .with_indifferent_access
-    .merge(
-      portfolio: :briefcase,
-      program: :"project-roadmap"
-    )
+  WORKSPACE_ICON_MAPPING = {
+    project: :project,
+    portfolio: :briefcase,
+    program: :"project-roadmap"
+  }.with_indifferent_access.freeze
 
   def new_workspace_title(workspace)
     return unless Project.workspace_types.key?(workspace.workspace_type)
