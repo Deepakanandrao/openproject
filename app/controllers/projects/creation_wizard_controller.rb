@@ -36,8 +36,10 @@ class Projects::CreationWizardController < ApplicationController
   before_action :load_sections_and_fields, only: %i[show update]
   before_action :find_current_section, only: %i[show update]
 
+  layout "no_menu"
+
   def show
-    render layout: "no_menu", locals: { menu_name: :none }
+    render locals: { menu_name: :none }
   end
 
   def help_text
@@ -60,7 +62,9 @@ class Projects::CreationWizardController < ApplicationController
     else
       @project = service_call.result
       @errors = service_call.errors
-      render :show, status: :unprocessable_entity
+      render :show,
+             locals: { menu_name: :none },
+             status: :unprocessable_entity
     end
   end
 

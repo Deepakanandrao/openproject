@@ -10,7 +10,7 @@
       helpers.settings_primer_form_with(
         model: project,
         method: :patch,
-        url: project_creation_wizard_path(project),
+        url: project_creation_wizard_path(project, section: @section.id),
         html: { id: "project-wizard-form" }
       ) do |f|
         render(
