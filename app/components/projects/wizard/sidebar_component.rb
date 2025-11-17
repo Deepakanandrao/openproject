@@ -50,9 +50,9 @@ module Projects
       end
 
       def section_completed?(section)
-        custom_fields_by_section[section].all? do |custom_field|
-          project.typed_custom_value_for(custom_field).present?
-        end
+        custom_fields_by_section[section]
+          .reject(&:boolean?)
+          .all? { |custom_field| project.typed_custom_value_for(custom_field).present? }
       end
 
       def section_current?(section)
