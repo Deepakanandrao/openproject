@@ -81,31 +81,8 @@ module Pages
         expect(page).to have_css('[data-test-selector="portfolio-query-name"]', text: name)
       end
 
-      def expect_filter_available(filter_name)
-        expect(page).to have_select("add_filter_select", with_options: [filter_name])
-      end
-
-      def expect_filter_not_available(filter_name)
-        expect(page).to have_no_select("add_filter_select", with_options: [filter_name])
-      end
-
       def filter_by_active(value)
         set_filter("active", "Active", "is", [value])
-        wait_for_reload
-      end
-
-      def filter_by_public(value)
-        set_filter("public", "Public", "is", [value])
-        wait_for_reload
-      end
-
-      def filter_by_favorited(value)
-        set_filter("favorited", "Favorite", "is", [value])
-        wait_for_reload
-      end
-
-      def filter_by_membership(value)
-        set_filter("member_of", "I am member", "is", [value])
         wait_for_reload
       end
 
@@ -114,30 +91,18 @@ module Pages
         wait_for_reload
       end
 
-      def set_advanced_filter(name, human_name, human_operator = nil, values = [], send_keys: false)
-        selected_filter = select_filter(name, human_name)
+      def open_more_menu
+        wait_for_network_idle
+        page.find('[data-test-selector="portfolio-more-dropdown-menu"]').click
+      end
 
-        within(selected_filter) do
-          apply_operator(name, human_operator)
-
-          return unless values.any?
-
-          if boolean_filter?(name)
-            set_toggle_filter(values)
-          elsif autocomplete_filter?(selected_filter)
-            select(human_operator, from: "operator")
-            set_autocomplete_filter(values)
-          elsif date_filter?(selected_filter) || date_time_filter?(selected_filter)
-            select(human_operator, from: "operator")
-            wait_for_network_idle
-            set_created_at_filter(human_operator, values, send_keys:)
-          end
-        end
+      def expect_more_menu_item(item)
+        open_more_menu
+        expect(page).to have_css(".ActionListItem", text: item, exact_text: true)
       end
 
       def click_more_menu_item(item)
-        wait_for_network_idle
-        page.find('[data-test-selector="portfolio-more-dropdown-menu"]').click
+        open_more_menu
         page.find(".ActionListItem", text: item, exact_text: true).click
         wait_for_network_idle
       end

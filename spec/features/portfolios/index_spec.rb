@@ -138,6 +138,12 @@ RSpec.describe "Portfolios", "index", :js do
       portfolios_page.expect_portfolios_not_listed(portfolio_a, portfolio_favorited)
     end
 
+    context "when using the more menu" do
+      it "offers the zen mode" do
+        portfolios_page.expect_more_menu_item("Zen mode")
+      end
+    end
+
     context "without the necessary permissions to see portfolios" do
       current_user { create(:user) }
 
