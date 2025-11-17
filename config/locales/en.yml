@@ -2224,6 +2224,18 @@ en:
     blank_description_html: >
       No description provided.
 
+  create_portfolio:
+    blank_template:
+      label: "Blank portfolio"
+      description_html: >
+        Start from scratch. Manually add portfolio attributes, members and modules.
+
+  create_program:
+    blank_template:
+      label: "Blank program"
+      description_html: >
+        Start from scratch. Manually add program attributes, members and modules.
+
   create_wiki_page: "Create new wiki page"
   create_wiki_page_button: "Wiki page"
 

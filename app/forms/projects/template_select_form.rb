@@ -38,6 +38,7 @@ module Projects
 
     option :template_id
     option :parent_id, optional: true
+    option :workspace_type
     option :current_user, default: -> { User.current }
 
     delegate :strip_tags, to: :@view_context
@@ -54,9 +55,9 @@ module Projects
       ) do |group|
         group.radio_button(
           value: BLANK_VALUE,
-          label: I18n.t("create_project.blank_template.label"),
+          label: blank_template_label,
           id: "template_id_blank",
-          caption: I18n.t("create_project.blank_template.description_html").html_safe,
+          caption: blank_template_caption,
           icon: blank_image,
           checked: template_id.blank?
         )
@@ -94,6 +95,18 @@ module Projects
       render(Primer::Beta::Text.new(classes: %w[line-clamp-3 lh-default])) do
         strip_tags(format_text(text))
       end
+    end
+
+    def blank_template_label
+      return unless Project.workspace_types.key?(workspace_type)
+
+      I18n.t("create_#{workspace_type}.blank_template.label")
+    end
+
+    def blank_template_caption
+      return unless Project.workspace_types.key?(workspace_type)
+
+      I18n.t("create_#{workspace_type}.blank_template.description_html").html_safe
     end
   end
 end

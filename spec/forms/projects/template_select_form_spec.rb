@@ -34,7 +34,7 @@ RSpec.describe Projects::TemplateSelectForm, type: :forms do
   include_context "with rendered form"
 
   let(:model) { create(:project) }
-  let(:params) { { template_id:, parent_id:, current_user: } }
+  let(:params) { { template_id:, parent_id:, current_user:, workspace_type: model.workspace_type } }
   let(:current_user) { create(:admin) }
 
   let(:template_id) { nil }
@@ -46,11 +46,17 @@ RSpec.describe Projects::TemplateSelectForm, type: :forms do
   end
 
   context "with no templates" do
-    it "renders Blank Project radio button only" do
-      expect(rendered_form).to have_field type: :radio, count: 1, fieldset: "Use template"
-      expect(rendered_form).to have_field "Blank project",
-                                          type: :radio,
-                                          described_by: /^Start from scratch/
+    %i[project portfolio program].each do |workspace_type|
+      context "when workspace_type is #{workspace_type}" do
+        let(:model) { create(:project, workspace_type:) }
+
+        it "renders Blank #{workspace_type.to_s.capitalize} radio button only" do
+          expect(rendered_form).to have_field type: :radio, count: 1, fieldset: "Use template"
+          expect(rendered_form).to have_field "Blank #{workspace_type}",
+                                              type: :radio,
+                                              described_by: /^Start from scratch.*#{workspace_type}/
+        end
+      end
     end
   end
 
@@ -67,7 +73,7 @@ RSpec.describe Projects::TemplateSelectForm, type: :forms do
       expect(rendered_form).to have_field type: :radio, count: 4, fieldset: "Use template"
       expect(rendered_form).to have_field "Blank project",
                                           type: :radio,
-                                          described_by: /^Start from scratch/
+                                          described_by: /^Start from scratch.*project/
       expect(rendered_form).to have_field "Agile",
                                           type: :radio,
                                           described_by: /^Great for beginners\.$/
