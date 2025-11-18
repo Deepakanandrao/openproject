@@ -29,15 +29,27 @@
 # ++
 module Portfolios
   class MenusController < ApplicationController
-    # No authorize as every user (or logged in user)
-    # is allowed to see the menu.
-    no_authorization_required! :show
+    authorization_checked! :show
+
+    before_action :not_authorized_on_feature_flag_inactive
+    before_action :authorize_portfolio_access, only: %i[show]
 
     def show
       portfolios_menu = Portfolios::Menu.new(controller_path: params[:controller_path], params:, current_user:)
       @sidebar_menu_items = portfolios_menu.menu_items
 
       render layout: nil
+    end
+
+    private
+
+    def authorize_portfolio_access
+      render_403 unless User.current.allowed_globally?(:add_portfolios) ||
+                        Project.portfolio.allowed_to(User.current, :view_project).any?
+    end
+
+    def not_authorized_on_feature_flag_inactive
+      render_403 unless OpenProject::FeatureDecisions.portfolio_models_active?
     end
   end
 end
