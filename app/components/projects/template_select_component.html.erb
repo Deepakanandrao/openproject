@@ -33,12 +33,15 @@ See COPYRIGHT and LICENSE files for more details.
       url: new_workspace_path,
       method: :get
     ) do |f|
-      render(
-        Primer::Forms::FormList.new(
-          Projects::TemplateSelectForm.new(f, template_id:, parent_id:, workspace_type: project.workspace_type, current_user:),
-          Projects::StepForm.new(f, step: 2)
-        )
-      )
+      flex_layout do |container|
+        container.with_row(mb: 3) do
+          render Projects::TemplateSelectForm.new(f, template_id:, parent_id:, workspace_type: project.workspace_type, current_user:)
+        end
+
+        container.with_row(mb: 3) do
+          render Projects::StepForm.new(f, step: 2)
+        end
+      end
     end
   end
 %>
