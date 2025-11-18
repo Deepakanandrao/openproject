@@ -267,7 +267,7 @@ module Pages
 
         not_protected_columns = Regexp.new("^(?!#{(columns + ['Name']).join('$|')}$).*$")
 
-        while (items = page.all(".op-draggable-autocomplete--item", text: not_protected_columns)[0]) # rubocop:disable Capybara/FindAllFirst
+        while (items = page.first(".op-draggable-autocomplete--item", text: not_protected_columns))
           items.find(".op-draggable-autocomplete--remove-item").click
         end
 
@@ -316,6 +316,12 @@ module Pages
         page.find('[data-test-selector="project-more-dropdown-menu"]').click
         page.find(".ActionListItem", text: item, exact_text: true).click
         wait_for_network_idle
+      end
+
+      def expect_no_more_menu_item(item)
+        wait_for_network_idle
+        page.find('[data-test-selector="project-more-dropdown-menu"]').click
+        expect(page).to have_no_css(".ActionListItem", text: item, exact_text: true)
       end
 
       def click_menu_item_of(title, project)
