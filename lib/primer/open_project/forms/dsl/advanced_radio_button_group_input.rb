@@ -28,18 +28,48 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module WorkspaceHelper
-  WORKSPACE_ICON_MAPPING = {
-    project: :project,
-    portfolio: :briefcase,
-    program: :"project-roadmap"
-  }.with_indifferent_access.freeze
+module Primer
+  module OpenProject
+    module Forms
+      module Dsl
+        # :nodoc:
+        class AdvancedRadioButtonGroupInput < Primer::Forms::Dsl::Input
+          attr_reader :name, :label, :radio_buttons
 
-  def new_workspace_title(workspace)
-    return unless Project.workspace_types.key?(workspace.workspace_type)
+          def initialize(name:, label: nil, **system_arguments)
+            @name = name
+            @label = label
+            @radio_buttons = []
 
-    I18n.t(:"label_#{workspace.workspace_type}_new")
+            super(**system_arguments)
+
+            yield(self) if block_given?
+          end
+
+          def to_component
+            AdvancedRadioButtonGroup.new(input: self)
+          end
+
+          def type
+            :radio_button_group
+          end
+
+          def autofocus!
+            @radio_buttons.first&.autofocus!
+          end
+
+          def focusable?
+            true
+          end
+
+          def radio_button(**system_arguments, &)
+            @radio_buttons << AdvancedRadioButtonInput.new(
+              builder: @builder, form: @form, name: @name, disabled: disabled?,
+              **system_arguments, &
+            )
+          end
+        end
+      end
+    end
   end
-
-  def workspace_icon(type) = WORKSPACE_ICON_MAPPING[type]
 end

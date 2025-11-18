@@ -28,18 +28,13 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module WorkspaceHelper
-  WORKSPACE_ICON_MAPPING = {
-    project: :project,
-    portfolio: :briefcase,
-    program: :"project-roadmap"
-  }.with_indifferent_access.freeze
-
-  def new_workspace_title(workspace)
-    return unless Project.workspace_types.key?(workspace.workspace_type)
-
-    I18n.t(:"label_#{workspace.workspace_type}_new")
+module Primer
+  module OpenProject
+    module Forms
+      # :nodoc:
+      class AdvancedCheckBox < Primer::Forms::CheckBox
+        include InlineSvg::ActionView::Helpers
+      end
+    end
   end
-
-  def workspace_icon(type) = WORKSPACE_ICON_MAPPING[type]
 end

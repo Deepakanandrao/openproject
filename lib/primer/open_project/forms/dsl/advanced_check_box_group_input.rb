@@ -28,18 +28,60 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module WorkspaceHelper
-  WORKSPACE_ICON_MAPPING = {
-    project: :project,
-    portfolio: :briefcase,
-    program: :"project-roadmap"
-  }.with_indifferent_access.freeze
+module Primer
+  module OpenProject
+    module Forms
+      module Dsl
+        # :nodoc:
+        class AdvancedCheckBoxGroupInput < Primer::Forms::Dsl::Input
+          attr_reader :name, :label, :check_boxes
 
-  def new_workspace_title(workspace)
-    return unless Project.workspace_types.key?(workspace.workspace_type)
+          def initialize(name: nil, label: nil, **system_arguments)
+            @name = name
+            @label = label
+            @check_boxes = []
 
-    I18n.t(:"label_#{workspace.workspace_type}_new")
+            super(**system_arguments)
+
+            yield(self) if block_given?
+          end
+
+          def to_component
+            AdvancedCheckBoxGroup.new(input: self)
+          end
+
+          def type
+            :check_box_group
+          end
+
+          def focusable?
+            true
+          end
+
+          def autofocus!
+            @check_boxes.first&.autofocus!
+          end
+
+          def check_box(**system_arguments, &)
+            args = {
+              name: @name,
+              builder: @builder,
+              form: @form,
+              scheme: scheme,
+              disabled: disabled?,
+              **system_arguments
+            }
+
+            @check_boxes << AdvancedCheckBoxInput.new(**args, &)
+          end
+
+          private
+
+          def scheme
+            @name ? :array : :boolean
+          end
+        end
+      end
+    end
   end
-
-  def workspace_icon(type) = WORKSPACE_ICON_MAPPING[type]
 end

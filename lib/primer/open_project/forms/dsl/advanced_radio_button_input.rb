@@ -28,18 +28,51 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module WorkspaceHelper
-  WORKSPACE_ICON_MAPPING = {
-    project: :project,
-    portfolio: :briefcase,
-    program: :"project-roadmap"
-  }.with_indifferent_access.freeze
+module Primer
+  module OpenProject
+    module Forms
+      module Dsl
+        # :nodoc:
+        class AdvancedRadioButtonInput < Primer::Forms::Dsl::Input
+          attr_reader :name, :value, :label, :icon
 
-  def new_workspace_title(workspace)
-    return unless Project.workspace_types.key?(workspace.workspace_type)
+          def initialize(name:, value:, label:, icon: nil, **system_arguments)
+            @name = name
+            @value = value
+            @label = label
+            @icon = icon
 
-    I18n.t(:"label_#{workspace.workspace_type}_new")
+            super(**system_arguments)
+
+            yield(self) if block_given?
+          end
+
+          # radio buttons cannot be invalid, as both selected and unselected are valid states
+          # :nocov:
+          def valid?
+            true
+          end
+          # :nocov:
+
+          def to_component
+            AdvancedRadioButton.new(input: self)
+          end
+
+          # :nocov:
+          def type
+            :radio_button
+          end
+          # :nocov:
+
+          def supports_validation?
+            false
+          end
+
+          def values_disambiguate_template_names?
+            true
+          end
+        end
+      end
+    end
   end
-
-  def workspace_icon(type) = WORKSPACE_ICON_MAPPING[type]
 end

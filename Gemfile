@@ -232,6 +232,8 @@ gem "view_component", "~> 4.1.1"
 # Lookbook
 gem "lookbook", "2.3.13"
 
+gem "inline_svg", "~> 1.10.0"
+
 # Require factory_bot for usage with openproject plugins testing
 gem "factory_bot", "~> 6.5.6", require: false
 # require factory_bot_rails for convenience in core development
