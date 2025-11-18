@@ -267,7 +267,7 @@ module Pages
 
         not_protected_columns = Regexp.new("^(?!#{(columns + ['Name']).join('$|')}$).*$")
 
-        while (items = page.first(".op-draggable-autocomplete--item", text: not_protected_columns))
+        while (items = page.all(".op-draggable-autocomplete--item", text: not_protected_columns)[0]) # rubocop:disable Capybara/FindAllFirst
           items.find(".op-draggable-autocomplete--remove-item").click
         end
 

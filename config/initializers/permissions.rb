@@ -153,7 +153,7 @@ Rails.application.reloader.to_prepare do
                        projects: %i[export_list_modal]
                      },
                      permissible_on: :project,
-                     dependencies: :view_project_attributes
+                     dependencies: :view_project
 
       map.permission :edit_project_attributes,
                      {},
