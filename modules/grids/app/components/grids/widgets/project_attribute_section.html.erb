@@ -28,13 +28,15 @@ See COPYRIGHT and LICENSE files for more details.
 ++#%>
 
 <%=
-  render(Grids::WidgetGridComponent.new(align_boxes_start: true)) do |grid|
-    grid.with_widget(Grids::Widgets::Description, @project)
-    grid.with_widget(Grids::Widgets::ProjectStatus, @project)
-    grid.with_widget(Grids::Widgets::Subitems, @project)
-    grid.with_widget(Grids::Widgets::Members, @project)
-    grid.with_widget(Grids::Widgets::News, @project)
-
-    grid.with_widget(Grids::ProjectAttributeWidgets, @project)
+  widget_wrapper(
+    classes: "op-project-custom-field-section-container",
+    test_selector: "project-custom-field-section-widget-#{section.id}"
+  ) do
+    render(
+      Overviews::ProjectCustomFields::ItemsComponent.new(
+        project_custom_fields:,
+        project:
+      )
+    )
   end
 %>

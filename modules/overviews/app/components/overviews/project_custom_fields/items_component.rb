@@ -28,24 +28,23 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class CustomFieldSection < ApplicationRecord
-  OVERVIEW__SIDEBAR_KEY = "sidebar"
-  OVERVIEW__MAIN_AREA_KEY = "main_area"
-  DEFAULT_OVERVIEW_KEY = OVERVIEW__SIDEBAR_KEY.freeze
+module Overviews
+  module ProjectCustomFields
+    class ItemsComponent < ApplicationComponent
+      include ApplicationHelper
+      include OpPrimer::ComponentHelpers
 
-  acts_as_list scope: [:type]
+      def initialize(project_custom_fields:, project:)
+        super
 
-  validates :name, presence: true
+        @project_custom_fields = project_custom_fields
+        @project = project
+      end
 
-  default_scope { order(:position) }
-
-  store_attribute :display_representation, :overview, :string
-
-  def shown_in_overview_sidebar?
-    overview == OVERVIEW__SIDEBAR_KEY
-  end
-
-  def shown_in_overview_main_area?
-    overview == OVERVIEW__MAIN_AREA_KEY
+      def attribute_load_service
+        @attribute_load_service ||= ::ProjectCustomFields::LoadService.new(project: @project,
+                                                                           project_custom_fields: @project_custom_fields)
+      end
+    end
   end
 end

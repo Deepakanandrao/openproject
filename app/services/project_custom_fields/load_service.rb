@@ -28,24 +28,29 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class CustomFieldSection < ApplicationRecord
-  OVERVIEW__SIDEBAR_KEY = "sidebar"
-  OVERVIEW__MAIN_AREA_KEY = "main_area"
-  DEFAULT_OVERVIEW_KEY = OVERVIEW__SIDEBAR_KEY.freeze
+module ProjectCustomFields
+  class LoadService
+    def initialize(project:, project_custom_fields:)
+      super()
+      @project = project
+      @project_custom_fields = project_custom_fields
+      eager_load_project_custom_field_values
+    end
 
-  acts_as_list scope: [:type]
+    def get_eager_loaded_project_custom_field_values_for(custom_field_id)
+      @eager_loaded_project_custom_field_values.select { |pcfv| pcfv.custom_field_id == custom_field_id }
+    end
 
-  validates :name, presence: true
+    private
 
-  default_scope { order(:position) }
-
-  store_attribute :display_representation, :overview, :string
-
-  def shown_in_overview_sidebar?
-    overview == OVERVIEW__SIDEBAR_KEY
-  end
-
-  def shown_in_overview_main_area?
-    overview == OVERVIEW__MAIN_AREA_KEY
+    def eager_load_project_custom_field_values
+      @eager_loaded_project_custom_field_values = CustomValue
+                                                    .includes(custom_field: :custom_options)
+                                                    .where(
+                                                      custom_field_id: @project_custom_fields.pluck(:id),
+                                                      customized_id: @project.id
+                                                    )
+                                                    .to_a
+    end
   end
 end

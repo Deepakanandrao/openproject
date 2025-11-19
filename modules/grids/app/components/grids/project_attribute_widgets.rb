@@ -28,24 +28,38 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class CustomFieldSection < ApplicationRecord
-  OVERVIEW__SIDEBAR_KEY = "sidebar"
-  OVERVIEW__MAIN_AREA_KEY = "main_area"
-  DEFAULT_OVERVIEW_KEY = OVERVIEW__SIDEBAR_KEY.freeze
+module Grids
+  class ProjectAttributeWidgets < Grids::WidgetComponent
+    include OpTurbo::Streamable
 
-  acts_as_list scope: [:type]
+    renders_many :widgets, Grids::Widgets::ProjectAttributeSection
 
-  validates :name, presence: true
+    param :project
 
-  default_scope { order(:position) }
+    def title
+      ""
+    end
 
-  store_attribute :display_representation, :overview, :string
+    # For each configured section, call the the `with_widget` slot
+    def before_render
+      available_project_attributes_grouped_by_section.each do |section, project_custom_fields|
+        with_widget(section, project_custom_fields, @project)
+      end
+    end
 
-  def shown_in_overview_sidebar?
-    overview == OVERVIEW__SIDEBAR_KEY
-  end
+    private
 
-  def shown_in_overview_main_area?
-    overview == OVERVIEW__MAIN_AREA_KEY
+    def available_project_attributes_grouped_by_section
+      if OpenProject::FeatureDecisions.new_project_overview_active?
+        @available_project_attributes_grouped_by_section ||=
+          @project.available_custom_fields
+                  .group_by(&:project_custom_field_section)
+                  .select { |section, _| section.shown_in_overview_main_area? }
+      else
+        @available_project_attributes_grouped_by_section ||=
+          @project.available_custom_fields
+                  .group_by(&:project_custom_field_section)
+      end
+    end
   end
 end
