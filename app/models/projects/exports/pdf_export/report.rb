@@ -70,7 +70,10 @@ module Projects::Exports::PDFExport
     end
 
     def select_fields
-      selects.map { |select| { key: select.attribute, caption: select.caption } }
+      selects.map do |select|
+        custom_field = select.is_a?(::Queries::Projects::Selects::CustomField) ? select.custom_field : nil
+        { key: select.attribute, caption: select.caption, custom_field: }
+      end
     end
 
     def can_view_attribute?(_project, attribute)

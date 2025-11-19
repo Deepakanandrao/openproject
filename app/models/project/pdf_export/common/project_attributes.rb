@@ -42,7 +42,7 @@ module Project::PDFExport::Common::ProjectAttributes
   end
 
   def process_field(project, field, entries)
-    if custom_field?(field)
+    if field[:custom_field]
       process_custom_attribute_field(project, field, entries)
     elsif project_phase?(field)
       process_project_phase_field(project, field, entries)
@@ -112,14 +112,9 @@ module Project::PDFExport::Common::ProjectAttributes
   end
 
   def process_custom_attribute_field(project, field, entries)
-    id = field[:key].to_s.sub("cf_", "").to_i
-    custom_field = ProjectCustomField.find(id)
-    return entries if custom_field.nil?
-    return entries unless custom_field_active_in_project?(project, custom_field)
-
-    if custom_field.formattable?
+    if field[:custom_field].formattable?
       write_table_entries(entries) unless entries.empty?
-      write_formattable_custom_field(project, custom_field)
+      write_formattable_custom_field(project, field[:custom_field])
       []
     else
       entry = table_entry(project, field[:key], field[:caption])

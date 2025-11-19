@@ -155,7 +155,9 @@ class Project::PDFExport::ProjectInitiation < Exports::Exporter
            .map do |section, custom_fields|
       {
         caption: section.name,
-        fields: custom_fields.map { |cf| { key: "cf_#{cf.id}", caption: cf.name } }
+        fields: custom_fields.map do |custom_field|
+          { key: "cf_#{custom_field.id}", caption: custom_field.name, custom_field: }
+        end
       }
     end
   end
