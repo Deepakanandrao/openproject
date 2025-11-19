@@ -57,9 +57,13 @@ module Projects
       end
 
       def project_autocompleter_url
-        url_str = ::API::V3::Utilities::PathHelper::ApiV3Path.projects_available_parents
-        url_str << "?of=#{model.id}" unless model.new_record?
-        url_str
+        params = if model.new_record?
+                   { workspace_type: model.workspace_type }
+                 else
+                   { of: model.id }
+                 end
+
+        ::API::V3::Utilities::PathHelper::ApiV3Path.projects_available_parents(**params)
       end
     end
   end
