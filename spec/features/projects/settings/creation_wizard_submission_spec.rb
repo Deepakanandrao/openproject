@@ -77,7 +77,7 @@ RSpec.describe "Project creation wizard submission settings", :js,
       expect(page).to have_select("Work package type")
       expect(page).to have_select("Status when submitted")
       expect(page).to have_field("Assignee when submitted")
-      expect(page).to have_field("Send confirmation email to the user that submitted the project initiation request")
+      expect(page).to have_field("Send confirmation email to the user who submitted the project initiation request")
 
       select "Task", from: "Work package type"
 
@@ -90,7 +90,7 @@ RSpec.describe "Project creation wizard submission settings", :js,
 
       comment_field.set_value("A project initiation request has been submitted.")
 
-      check "Send confirmation email to the user that submitted the project initiation request"
+      check "Send confirmation email to the user who submitted the project initiation request"
       notification_field.set_value("Thank you for submitting your project request.")
 
       click_button "Save"
@@ -111,10 +111,10 @@ RSpec.describe "Project creation wizard submission settings", :js,
 
       expect(page).to have_css(".ck-content", visible: :visible, count: 1)
 
-      check "Send confirmation email to the user that submitted the project initiation request"
+      check "Send confirmation email to the user who submitted the project initiation request"
       expect(page).to have_css(".ck-content", visible: :visible, count: 2)
 
-      uncheck "Send confirmation email to the user that submitted the project initiation request"
+      uncheck "Send confirmation email to the user who submitted the project initiation request"
       expect(page).to have_css(".ck-content", visible: :visible, count: 1)
     end
 
@@ -123,7 +123,7 @@ RSpec.describe "Project creation wizard submission settings", :js,
 
       click_button "Save"
 
-      expect(page).to have_text("Submission assignee can't be blank.")
+      expect(page).to have_text("Assignee when submitted can't be blank.")
       expect(page).to have_current_path(project_settings_creation_wizard_path(project, tab: "submission"))
     end
 
