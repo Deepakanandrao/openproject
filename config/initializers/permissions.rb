@@ -112,7 +112,7 @@ Rails.application.reloader.to_prepare do
                      require: :loggedin
 
       map.permission :view_project,
-                     { projects: [:show] },
+                     { projects: %i[show export_project_initiation_pdf] },
                      permissible_on: :project,
                      public: true
 
@@ -127,8 +127,8 @@ Rails.application.reloader.to_prepare do
                        "projects/settings/storage": %i[show],
                        "projects/settings/work_packages": %i[show],
                        "projects/settings/work_packages/internal_comments": %i[show update],
-                       "projects/settings/creation_wizard": %i[show disable_dialog
-                                                               toggle toggle_project_custom_field
+                       "projects/settings/creation_wizard": %i[show disable_dialog toggle refresh_submission_form
+                                                               update_submission_settings toggle_project_custom_field
                                                                disable_all_of_section enable_all_of_section],
                        "projects/templated": %i[create destroy],
                        "projects/identifier": %i[show update],
