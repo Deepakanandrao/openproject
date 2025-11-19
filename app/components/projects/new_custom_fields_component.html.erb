@@ -31,14 +31,26 @@ See COPYRIGHT and LICENSE files for more details.
   component_wrapper(target: "_top") do
     settings_primer_form_with(model: project) do |f|
       flex_layout do |container|
-        container.with_row(mb: 3) do
+        container.with_row(mb: 3, display: :none) do
           template_id = template&.id
           render_inline_form(f) do |form|
-            form.hidden(name: :step, value: 2, scope_name_to_model: false)
+            form.hidden(name: :step, value: 3, scope_name_to_model: false)
             if template_id
               form.hidden name: :template_id, value: template_id, scope_name_to_model: false
             end
           end
+        end
+
+        # Carry the completed input fields from the 2nd step in a hidden container.
+        container.with_row(mb: 3, display: :none) do
+          render(
+            Primer::Forms::FormList.new(
+              Projects::Settings::TypeForm.new(f),
+              Projects::Settings::NameForm.new(f),
+              Projects::Settings::DescriptionForm.new(f),
+              Projects::Settings::RelationsForm.new(f)
+            )
+          )
         end
 
         container.with_row(mb: 3) do

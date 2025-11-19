@@ -31,7 +31,7 @@ See COPYRIGHT and LICENSE files for more details.
   component_wrapper(target: "_top") do
     settings_primer_form_with(model: project) do |f|
       flex_layout do |container|
-        container.with_row(mb: 3) do
+        container.with_row(mb: 3, display: :none) do
           template_id = template&.id
           render_inline_form(f) do |form|
             form.hidden(name: :step, value: 2, scope_name_to_model: false)
@@ -47,8 +47,7 @@ See COPYRIGHT and LICENSE files for more details.
               Projects::Settings::TypeForm.new(f),
               Projects::Settings::NameForm.new(f),
               Projects::Settings::DescriptionForm.new(f),
-              Projects::Settings::RelationsForm.new(f),
-              Projects::Settings::CustomFieldsForm.new(f)
+              Projects::Settings::RelationsForm.new(f)
             )
           )
         end

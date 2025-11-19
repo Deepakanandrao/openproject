@@ -209,7 +209,13 @@ class ProjectsController < ApplicationController
     if service_call.success?
       redirect_to project_path(@new_project), notice: I18n.t(:notice_successful_create)
     else
-      flash.now[:error] = I18n.t(:notice_unsuccessful_create_with_reason, reason: service_call.message)
+      # Do not display custom field errors if the form is submitted from the second page.
+      clear_custom_field_errors!(@new_project) if from_step_2?
+      set_wizard_step!(@new_project)
+
+      if @new_project.errors.any?
+        flash.now[:error] = I18n.t(:notice_unsuccessful_create_with_reason, reason: service_call.message)
+      end
       render action: :new, status: :unprocessable_entity
     end
   end
@@ -232,6 +238,28 @@ class ProjectsController < ApplicationController
       flash.now[:error] = I18n.t(:notice_unsuccessful_create_with_reason, reason: service_call.message)
       render action: :new, status: :unprocessable_entity
     end
+  end
+
+  def set_wizard_step!(project)
+    attributes_with_error = project.errors.attribute_names
+    second_step_attributes = %i[name description identifier]
+    step_2_is_valid = !attributes_with_error.intersect?(second_step_attributes)
+
+    params[:step] = step_2_is_valid ? 3 : 2
+  end
+
+  def clear_custom_field_errors!(project)
+    # Delete custom field errors from project
+    project.errors.attribute_names
+      .select { |key| key.to_s.start_with?("custom_field") }
+      .each { |key| project.errors.delete(key) }
+
+    # Clear errors on custom value objects
+    project.custom_values.each { |cv| cv.errors.clear }
+  end
+
+  def from_step_2?
+    params[:step].to_i == 2
   end
 
   def find_optional_template
