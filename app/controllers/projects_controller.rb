@@ -36,7 +36,8 @@ class ProjectsController < ApplicationController
 
   before_action :find_project, except: %i[index new create export_list_modal]
   before_action :load_query_or_deny_access, only: %i[index export_list_modal]
-  before_action :authorize, only: %i[copy_form copy deactivate_work_package_attachments export_list_modal export_project_initiation_pdf]
+  before_action :authorize,
+                only: %i[copy_form copy deactivate_work_package_attachments export_list_modal export_project_initiation_pdf]
   before_action :authorize_global, only: %i[new create]
   before_action :require_admin, only: %i[destroy destroy_info]
   before_action :not_authorized_on_feature_flag_inactive,
