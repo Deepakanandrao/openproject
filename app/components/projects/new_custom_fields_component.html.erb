@@ -26,36 +26,29 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
-<% html_title new_workspace_title(@new_project) %>
+
 <%=
-  render(Primer::OpenProject::PageHeader.new) do |header|
-    header.with_title { new_workspace_title(@new_project) }
-    header.with_breadcrumbs(nil)
+  component_wrapper(target: "_top") do
+    settings_primer_form_with(model: project) do |f|
+      flex_layout do |container|
+        container.with_row(mb: 3) do
+          template_id = template&.id
+          render_inline_form(f) do |form|
+            form.hidden(name: :step, value: 2, scope_name_to_model: false)
+            if template_id
+              form.hidden name: :template_id, value: template_id, scope_name_to_model: false
+            end
+          end
+        end
+
+        container.with_row(mb: 3) do
+          render(Projects::Settings::CustomFieldsForm.new(f))
+        end
+
+        container.with_row(mb: 3) do
+          render Projects::SubmitOrCancel.new(f)
+        end
+      end
+    end
   end
 %>
-
-<% case params.fetch(:step, 1).to_i %>
-<% when 1 %>
-<%=
-  render Projects::TemplateSelectComponent.new(
-    project: @new_project,
-    template: @template,
-    parent: @parent,
-    current_user:
-  )
-%>
-<% when 2 %>
-<%=
-  render Projects::NewComponent.new(
-    project: @new_project,
-    template: @template
-  )
-%>
-<% when 3 %>
-<%=
-  render Projects::NewCustomFieldsComponent.new(
-    project: @new_project,
-    template: @template
-  )
-%>
-<% end %>
