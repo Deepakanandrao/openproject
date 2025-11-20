@@ -32,9 +32,9 @@ module Projects
   class ProjectCreationFooterComponent < ApplicationComponent
     include OpPrimer::ComponentHelpers
 
-    def initialize(form_identifier:, total_steps:, current_step_index:)
+    def initialize(form_identifier:, project:, current_step_index:)
       @form_identifier = form_identifier
-      @total_steps = total_steps
+      @project = project
       @current_step_index = current_step_index
 
       super
@@ -51,7 +51,7 @@ module Projects
       end
     end
 
-    attr_reader :form_identifier, :total_steps, :current_step_index
+    attr_reader :form_identifier, :project, :current_step_index
 
     private
 
@@ -72,6 +72,10 @@ module Projects
         name: "finish",
         value: "true"
       }
+    end
+
+    def total_steps
+      project.template_id.nil? && project.available_custom_fields.required.any? ? 3 : 2
     end
   end
 end

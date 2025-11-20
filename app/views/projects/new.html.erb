@@ -69,6 +69,6 @@ See COPYRIGHT and LICENSE files for more details.
 
 <%= render Projects::ProjectCreationFooterComponent.new(
       form_identifier: "project-create-form",
-      total_steps: @create_steps,
+      project: @new_project,
       current_step_index: params.fetch(:step, 1).to_i - 1
     ) %>
