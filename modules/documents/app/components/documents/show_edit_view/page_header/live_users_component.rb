@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+#
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -27,40 +28,30 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
+#
 
 module Documents
-  class BlockNoteEditorForm < ApplicationForm
-    form do |f|
-      f.block_note_editor(
-        name: :content_binary,
-        label: I18n.t("label_document_description"),
-        visually_hide_label: true,
-        classes: "document-form--long-description",
-        value: model.content_binary,
-        attachments_upload_url:,
-        attachments_collection_key:
-      )
-    end
+  module ShowEditView
+    module PageHeader
+      class LiveUsersComponent < ApplicationComponent
+        include OpPrimer::ComponentHelpers
+        include OpPrimer::FormHelpers
+        include OpTurbo::Streamable
+        include AvatarHelper
 
-    attr_reader :oauth_token
+        attr_reader :users
 
-    def initialize(oauth_token: nil)
-      super()
-      @oauth_token = oauth_token
-    end
+        def initialize(users: [User.current])
+          super
+          @users = users
+        end
 
-    private
-
-    def attachments_upload_url
-      if OpenProject::Configuration.direct_uploads?
-        ::API::V3::Utilities::PathHelper::ApiV3Path.prepare_attachments_by_document(model.id)
-      else
-        ::API::V3::Utilities::PathHelper::ApiV3Path.attachments_by_document(model.id)
+        def active_editors
+          safe_join [
+            I18n.t("documents.active_editors_count", count: users.count).html_safe
+          ]
+        end
       end
-    end
-
-    def attachments_collection_key
-      ::API::V3::Utilities::PathHelper::ApiV3Path.attachments_by_document(model.id)
     end
   end
 end
