@@ -57,7 +57,7 @@ RSpec.describe AddFromTemplatePermissionsToRolesWithAddPermissions, type: :model
     it "adds the #{new_permissions} permissions for the role" do
       expect { run_migration }.to change { role.reload.permissions }
         .from(match_array(permissions))
-        .to match_array(permissions + new_permissions)
+        .to(match_array(permissions + new_permissions))
     end
 
     it "adds #{new_permissions.size} new permission(s)" do
