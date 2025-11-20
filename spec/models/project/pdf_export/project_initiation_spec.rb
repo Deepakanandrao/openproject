@@ -105,7 +105,7 @@ RSpec.describe Project::PDFExport::ProjectInitiation, with_flag: { project_initi
     end
 
     it "exports a PDF containing project initiation with custom attributes grouped by sections" do
-      heading = I18n.t(:"label_project_initiation_request")
+      heading = I18n.t(:label_project_initiation_request)
 
       expected_document = [
         project.name, heading, export_time_formatted, # cover page

@@ -123,7 +123,7 @@ class Project::PDFExport::ProjectInitiation < Exports::Exporter
   def heading
     @heading ||= I18n.t(
       "settings.project_initiation_request.name.options.#{project.name_artefact_name || 'invalid_key'}",
-      default: I18n.t(:"label_project_initiation_request")
+      default: I18n.t(:label_project_initiation_request)
     )
   end
 
