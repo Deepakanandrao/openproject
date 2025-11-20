@@ -36,7 +36,6 @@ module Projects
 
     form do |f|
       f.hidden(name: :step, value: step, scope_name_to_model: false)
-      f.submit(name: :submit, label: I18n.t(:label_next), scheme: :primary)
     end
   end
 end

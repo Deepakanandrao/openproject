@@ -28,54 +28,66 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Projects
-  module Wizard
-    class FooterComponent < StepWizard::FooterComponent
-      include OpPrimer::ComponentHelpers
+module StepWizard
+  class FooterComponent < ApplicationComponent
+    include OpPrimer::ComponentHelpers
 
-      def initialize(form_identifier:, project:, custom_fields_by_section:, current_step_index:)
-        @project = project
-        @custom_fields_by_section = custom_fields_by_section
-        @current_step_index = current_step_index
+    def initialize(form_identifier:, total_steps:, current_step_index:)
+      super
 
-        super(form_identifier:, total_steps: sections.count, current_step_index:)
-      end
+      @form_identifier = form_identifier
+      @total_steps = total_steps
+      @current_step_index = current_step_index
+    end
 
-      private
+    private
 
-      attr_reader :project, :custom_fields_by_section
+    attr_reader :total_steps, :current_step_index, :form_identifier
 
-      def sections
-        @sections ||= custom_fields_by_section.keys
-      end
+    def progress_percentage
+      return 0 if total_steps.zero?
 
-      def back_button_args
-        {
-          href: project_creation_wizard_path(project, section: sections[previous_step].id)
-        }
-      end
+      ((current_step_index + 1).to_f / total_steps * 100).round
+    end
 
-      def cancel_button_args
-        {
-          href: project_path(project)
-        }
-      end
+    def previous_step
+      return nil if current_step_index.zero?
 
-      def continue_button_args
-        {
-          form: form_identifier,
-          name: "next_section",
-          value: sections[next_step].id
-        }
-      end
+      current_step_index - 1
+    end
 
-      def submit_button_args
-        {
-          form: form_identifier,
-          name: "finish",
-          value: "true"
-        }
-      end
+    def next_step
+      return nil if current_step_index >= total_steps - 1
+
+      current_step_index + 1
+    end
+
+    def first_step?
+      current_step_index.zero?
+    end
+
+    def last_step?
+      current_step_index >= total_steps - 1
+    end
+
+    def progress_bar_args
+      {}
+    end
+
+    def back_button_args
+      {}
+    end
+
+    def cancel_button_args
+      {}
+    end
+
+    def continue_button_args
+      {}
+    end
+
+    def submit_button_args
+      {}
     end
   end
 end

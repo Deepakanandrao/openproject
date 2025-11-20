@@ -29,26 +29,18 @@ See COPYRIGHT and LICENSE files for more details.
 
 <%=
   component_wrapper(target: "_top") do
-    settings_primer_form_with(model: project) do |f|
+    settings_primer_form_with(
+      model: project,
+      html: { id: "project-create-form" }
+    ) do |f|
       flex_layout do |container|
-        container.with_row(mb: 3, display: :none) do
-          template_id = template&.id
-          step_value = step
-          render_inline_form(f) do |form|
-            form.hidden(name: :step, value: step_value, scope_name_to_model: false)
-            if template_id
-              form.hidden name: :template_id, value: template_id, scope_name_to_model: false
-            end
-          end
-        end
-
         container.with_row(mb: 3, **step_2_display) do
           render(
             Primer::Forms::FormList.new(
-              Projects::Settings::TypeForm.new(f),
               Projects::Settings::NameForm.new(f),
               Projects::Settings::DescriptionForm.new(f),
-              Projects::Settings::RelationsForm.new(f)
+              Projects::Settings::RelationsForm.new(f),
+              Projects::Settings::TypeForm.new(f)
             )
           )
         end
@@ -57,8 +49,18 @@ See COPYRIGHT and LICENSE files for more details.
           render(Projects::Settings::CustomFieldsForm.new(f))
         end
 
-        container.with_row(mb: 3) do
-          render Projects::SubmitOrCancel.new(f)
+        container.with_row do
+          template_id = template&.id
+          render_inline_form(f) do |form|
+            if template_id
+              form.hidden name: :template_id, value: template_id, scope_name_to_model: false
+            end
+          end
+        end
+
+        container.with_row do
+          step_value = step
+          render Projects::StepForm.new(f, step: step_value)
         end
       end
     end

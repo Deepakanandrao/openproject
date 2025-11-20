@@ -56,9 +56,10 @@
       page.with_area("footer") do
         render(
           Projects::Wizard::FooterComponent.new(
+            form_identifier: "project-wizard-form",
             project:,
             custom_fields_by_section:,
-            current_section:
+            current_step_index: custom_fields_by_section.keys.index(current_section) || 0
           )
         )
       end

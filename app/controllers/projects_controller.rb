@@ -100,9 +100,12 @@ class ProjectsController < ApplicationController
   end
 
   def new
+    @create_steps = 2
+
     if from_template?
       new_from_template
     else
+      @create_steps = number_of_pages_for_blank_project
       new_blank
     end
   end
@@ -111,6 +114,7 @@ class ProjectsController < ApplicationController
     if from_template?
       create_from_template
     else
+      @create_steps = number_of_pages_for_blank_project
       create_blank
     end
   end
@@ -316,4 +320,8 @@ class ProjectsController < ApplicationController
   end
 
   helper_method :supported_export_formats
+
+  def number_of_pages_for_blank_project
+    ProjectCustomField.visible.required.any? ? 3 : 2
+  end
 end

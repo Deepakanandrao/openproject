@@ -29,53 +29,42 @@
 #++
 
 module Projects
-  module Wizard
-    class FooterComponent < StepWizard::FooterComponent
-      include OpPrimer::ComponentHelpers
+  class ProjectCreationFooterComponent < StepWizard::FooterComponent
+    include OpPrimer::ComponentHelpers
 
-      def initialize(form_identifier:, project:, custom_fields_by_section:, current_step_index:)
-        @project = project
-        @custom_fields_by_section = custom_fields_by_section
-        @current_step_index = current_step_index
+    private
 
-        super(form_identifier:, total_steps: sections.count, current_step_index:)
-      end
+    def progress_bar_args
+      {
+        visibility: current_step_index === 0 ? :hidden : :visible
+      }
+    end
 
-      private
+    def back_button_args
+      {
+        hidden: true
+      }
+    end
 
-      attr_reader :project, :custom_fields_by_section
+    def cancel_button_args
+      {
+        href: projects_path
+      }
+    end
 
-      def sections
-        @sections ||= custom_fields_by_section.keys
-      end
+    def continue_button_args
+      {
+        form: form_identifier,
+        name: "next_section"
+      }
+    end
 
-      def back_button_args
-        {
-          href: project_creation_wizard_path(project, section: sections[previous_step].id)
-        }
-      end
-
-      def cancel_button_args
-        {
-          href: project_path(project)
-        }
-      end
-
-      def continue_button_args
-        {
-          form: form_identifier,
-          name: "next_section",
-          value: sections[next_step].id
-        }
-      end
-
-      def submit_button_args
-        {
-          form: form_identifier,
-          name: "finish",
-          value: "true"
-        }
-      end
+    def submit_button_args
+      {
+        form: form_identifier,
+        name: "finish",
+        value: "true"
+      }
     end
   end
 end
