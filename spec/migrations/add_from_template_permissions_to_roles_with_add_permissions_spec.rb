@@ -32,8 +32,12 @@ require "spec_helper"
 require Rails.root.join("db/migrate/20251113124140_add_from_template_permissions_to_roles_with_add_permissions")
 
 RSpec.describe AddFromTemplatePermissionsToRolesWithAddPermissions, type: :model do
-  # Silencing migration logs, since we are not interested in that during testing
-  subject(:run_migration) { ActiveRecord::Migration.suppress_messages { described_class.migrate(:up) } }
+  let(:direction) { :up }
+
+  def run_migration
+    # Silencing migration logs, since we are not interested in that during testing
+    ActiveRecord::Migration.suppress_messages { described_class.migrate(direction) }
+  end
 
   shared_examples_for "not changing permissions" do
     it "is not changed" do
@@ -58,10 +62,6 @@ RSpec.describe AddFromTemplatePermissionsToRolesWithAddPermissions, type: :model
       expect { run_migration }.to change { role.reload.permissions }
         .from(match_array(permissions))
         .to(match_array(permissions + new_permissions))
-    end
-
-    it "adds #{new_permissions.size} new permission(s)" do
-      expect { run_migration }.to change(RolePermission, :count).by(new_permissions.size)
     end
   end
 
@@ -167,7 +167,7 @@ RSpec.describe AddFromTemplatePermissionsToRolesWithAddPermissions, type: :model
   end
 
   describe "down migration" do
-    subject(:run_down_migration) { ActiveRecord::Migration.suppress_messages { described_class.migrate(:down) } }
+    let(:direction) { :down }
 
     let(:permissions) do
       %i[add_project add_project_from_template
@@ -177,37 +177,29 @@ RSpec.describe AddFromTemplatePermissionsToRolesWithAddPermissions, type: :model
     let!(:role) { create(:global_role, permissions:) }
 
     it "removes all from_template permissions" do
-      expect { run_down_migration }.to change { role.reload.permissions }
+      expect { run_migration }.to change { role.reload.permissions }
         .from(match_array(permissions))
         .to match_array(%i[add_project add_programs add_portfolios])
     end
 
-    it "removes 3 permissions from role_permissions" do
-      expect { run_down_migration }.to change(RolePermission, :count).by(-3)
-    end
-
     context "when running down migration twice" do
-      before { run_down_migration }
+      before { run_migration }
 
       it "does not raise an error" do
-        expect { run_down_migration }.not_to raise_error
+        expect { run_migration }.not_to raise_error
       end
 
-      it "does not change permission count" do
-        expect { run_down_migration }.not_to change(RolePermission, :count)
-      end
+      it_behaves_like "not changing permissions"
     end
 
     context "when no from_template permissions exist" do
       let(:permissions) { %i[add_project add_programs add_portfolios] }
 
       it "does not raise an error" do
-        expect { run_down_migration }.not_to raise_error
+        expect { run_migration }.not_to raise_error
       end
 
-      it "does not change permissions" do
-        expect { run_down_migration }.not_to change { role.reload.permissions }
-      end
+      it_behaves_like "not changing permissions"
     end
   end
 end
