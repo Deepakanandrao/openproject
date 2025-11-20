@@ -34,6 +34,14 @@ module Projects
     include OpPrimer::ComponentHelpers
     include OpTurbo::Streamable
 
-    options :project, :template
+    options :project, :template, :step
+
+    def step_2_display
+      { display: :none } unless step == 2
+    end
+
+    def step_3_display
+      { display: :none } unless step == 3
+    end
   end
 end
