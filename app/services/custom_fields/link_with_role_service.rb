@@ -30,27 +30,51 @@
 
 module CustomFields
   class LinkWithRoleService < ::BaseServices::Update
-    attr_accessor :old_role_id
+    attr_accessor :old_role, :new_role
 
     protected
 
     def after_perform(service_call)
       super.tap do
-        modify_existing_memberships(old_role: old_role_id, new_role: model.role_id)
+        modify_existing_memberships
       end
     end
 
     private
 
     def set_attributes(params)
-      self.old_role_id = model.role_id
+      self.old_role = model.role
+      self.new_role = params[:role_id].present? ? ProjectRole.find(params[:role_id]) : nil
+
       super
     end
 
-    def modify_existing_memberships(old_role:, new_role:)
+    def modify_existing_memberships # rubocop:disable Metrics/AbcSize, Metrics/PerceivedComplexity
       return if old_role == new_role
 
-      model.project_custom_field_mappings.each do |mapping|
+      model.custom_values.group_by(&:customized).each do |project, custom_values|
+        user_ids = custom_values.map { |cv| cv.value.to_i }
+        Principal.includes(:members).where(id: user_ids).find_each do |member_user|
+          user_member = member_user.members.where(project: project, entity: nil).first
+
+          if user_member
+            new_role_ids = (user_member.role_ids + [new_role&.id] - [old_role&.id]).compact.uniq
+
+            if new_role_ids.empty?
+              Members::DeleteService
+               .new(user:, model: user_member, contract_class: EmptyContract)
+               .call
+            else
+              Members::UpdateService
+               .new(user:, model: user_member, contract_class: EmptyContract)
+               .call(role_ids: new_role_ids)
+            end
+          elsif new_role.present?
+            Members::CreateService
+              .new(user:, contract_class: EmptyContract)
+              .call(roles: [new_role], project:, principal: member_user)
+          end
+        end
       end
     end
   end
