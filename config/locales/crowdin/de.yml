@@ -1155,7 +1155,7 @@ de:
         identifier: "Kennung"
         latest_activity_at: "Letzte Aktivität am"
         parent: "Unterprojekt von"
-        project_creation_wizard_enabled: "Project initiation request"
+        project_creation_wizard_enabled: "Projektinitiierungsantrag"
         public_value:
           title: "Sichtbarkeit"
           true: "öffentlich"
@@ -2623,7 +2623,7 @@ de:
       hours: h
       days: d
     project_initiation:
-      title: "Project initiation request"
+      title: "Projektinitiierungsantrag"
   pdf_generator:
     page_nr_footer: "Seite %{page} von %{total}"
     template_attributes:
@@ -3307,7 +3307,7 @@ de:
   label_project_attribute_manage_link: "Projektattribute verwalten"
   label_project_count: "Gesamtzahl der Projekte"
   label_project_copy_notifications: "Sende Mailbenachrichtigungen beim Kopieren des Projekts."
-  label_project_initiation_pdf: "Export PDF for project initiation request"
+  label_project_initiation_pdf: "PDF für Projektinitiationsantrag exportieren"
   label_project_latest: "Neueste Projekte"
   label_project_default_type: "Erlaube leere Typen"
   label_project_hierarchy: "Projekthierarchie"
@@ -3878,7 +3878,7 @@ de:
   permission_edit_timelines: "Zeitplan-Reporte bearbeiten"
   permission_edit_wiki_pages: "Wiki-Seiten bearbeiten"
   permission_export_work_packages: "Arbeitspakete exportieren"
-  permission_export_projects: "Export projects"
+  permission_export_projects: "Projekte exportieren"
   permission_export_wiki_pages: "Wiki-Seiten exportieren"
   permission_invite_members_by_email: "Mitglieder per E-Mail einladen"
   permission_invite_members_by_email_explanation: >
@@ -4500,11 +4500,11 @@ de:
   text_custom_export_font_regular_instructions: >
     Dies ist die Schriftartdatei für normalen Text. Sie muss im TTF-Format vorliegen und ist erforderlich.
   text_custom_export_font_bold_instructions: >
-    Dies ist die Schriftdatei für fetten Text. Sie ist optional, und muss wenn angegeben im TTF-Format vorliegen.
+    Dies ist die Schriftdatei für fetten Text. Sie ist optional. Wenn angegeben, muss sie im TTF-Format vorliegen.
   text_custom_export_font_italic_instructions: >
-    Dies ist die Schriftdatei für kursiven Text. Sie ist optional, und muss wenn angegeben im TTF-Format vorliegen.
+    Dies ist die Schriftdatei für kursiven Text. Sie ist optional. Wenn angegeben, muss sie im TTF-Format vorliegen.
   text_custom_export_font_bold_italic_instructions: >
-    Dies ist die Schriftdatei für fett-kursiven Text. Sie ist optional, und muss wenn angegeben im TTF-Format vorliegen.
+    Dies ist die Schriftdatei für fett-kursiven Text. Sie ist optional. Wenn angegeben, muss sie im TTF-Format vorliegen.
   text_custom_favicon_instructions: >
     Dies ist das kleine Symbol, das in Ihrem Browser-Fenster/Tab neben dem Seitentitel angezeigt wird. Es muss ein quadratisches 32 x 32 Pixel großes PNG mit transparentem Hintergrund sein.
   text_custom_touch_icon_instructions: >
