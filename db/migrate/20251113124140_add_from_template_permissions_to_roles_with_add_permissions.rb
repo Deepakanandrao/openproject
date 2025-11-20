@@ -28,31 +28,23 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require "spec_helper"
+require Rails.root.join("db/migrate/migration_utils/permission_adder")
 
-RSpec.describe "Role updating", :js do
-  let!(:admin) { create(:admin) }
-
-  before do
-    login_as admin
+class AddFromTemplatePermissionsToRolesWithAddPermissions < ActiveRecord::Migration[8.0]
+  def up
+    ::Migration::MigrationUtils::PermissionAdder.add(:add_project, :add_project_from_template)
+    ::Migration::MigrationUtils::PermissionAdder.add(:add_programs, :add_programs_from_template)
+    ::Migration::MigrationUtils::PermissionAdder.add(:add_portfolios, :add_portfolios_from_template)
   end
 
-  context "with a global role" do
-    let!(:role) { create(:global_role, permissions: %i[view_all_principals manage_user add_project]) }
-
-    it "allows removing permissions" do
-      expect do
-        visit edit_role_path(role)
-        uncheck "Create projects", exact: true
-
-        click_button "Save"
-
-        expect_and_dismiss_flash(message: "Successful update.")
-        role.reload
-      end
-        .to change(role, :permissions)
-        .from(%i[view_all_principals manage_user add_project])
-        .to(%i[view_all_principals manage_user])
-    end
+  def down
+    # Remove the permissions that were added
+    RolePermission.delete_by(
+      permission: %w(
+        add_project_from_template
+        add_programs_from_template
+        add_portfolios_from_template
+      )
+    )
   end
 end
