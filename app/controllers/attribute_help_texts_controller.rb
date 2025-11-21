@@ -41,7 +41,10 @@ class AttributeHelpTextsController < ApplicationController
   authorization_checked! :show_dialog
 
   def index
-    @texts_by_type = AttributeHelpText.all_by_scope
+    @texts_by_type = AttributeHelpText
+      .where(type: @attribute_scope)
+      .to_a
+      .sort_by(&:attribute_field_name)
   end
 
   def show_dialog
@@ -102,7 +105,9 @@ class AttributeHelpTextsController < ApplicationController
   private
 
   def permitted_params_with_attachments
-    permitted_params.attribute_help_text.merge(attachment_params)
+    permitted_params
+      .attribute_help_text
+      .merge(attachment_params)
   end
 
   def attachment_params
@@ -120,13 +125,13 @@ class AttributeHelpTextsController < ApplicationController
   end
 
   def find_type_scope
-    name = params.fetch(:name, "WorkPackage")
+    name = params[:tab] || params[:name] || "WorkPackage"
     submodule = AttributeHelpText.available_types.find { |mod| mod == name }
 
     if submodule.nil?
       render_404
     end
 
-    @attribute_scope = AttributeHelpText.const_get(submodule)
+    @attribute_scope = AttributeHelpText.const_get(submodule).to_s
   end
 end
