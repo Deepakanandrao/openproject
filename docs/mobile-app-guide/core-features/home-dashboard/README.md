@@ -29,7 +29,7 @@ The Home Dashboard consists of **modular widgets** that provide snapshots of you
 *   Displays recent notifications, such as mentions, comments, or work package updates.
 *   Enables you to **react quickly** without leaving the dashboard.
 
-![Home dashboard notifications widget](mobile_app_homewidget_notifications.png)
+![Home dashboard notifications widget in the OpenProject mobile app](mobile_app_homewidget_notifications.png)
 
 ### **Favorite Projects**
 
