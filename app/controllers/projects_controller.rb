@@ -207,7 +207,7 @@ class ProjectsController < ApplicationController
     render layout: "no_menu"
   end
 
-  def create_blank
+  def create_blank # rubocop:disable Metrics/AbcSize
     service_call = Projects::CreateService
       .new(user: current_user)
       .call(permitted_params.new_project)
