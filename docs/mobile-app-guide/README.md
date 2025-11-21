@@ -65,7 +65,7 @@ As a Beta user, your feedback is invaluable. If you encounter issues or have sug
 
 *   Using the **flow to provide feedback** directly from the **app** in the user settings.
 ![Entry point for the OpenProject mobile app flow to provide user feedback](mobile_app_feedback_flow_entrypoint.png)
-*   Create a **feedback work package** directly in OpenProject **Community**.
+*   Create a **feedback work package** directly in [OpenProject **Community** instance](https://community.openproject.org/) and assign it to *Stream Mobile App*.
 
 Your input directly helps improve the mobile experience and ensure a stable, feature-rich public release.
 
