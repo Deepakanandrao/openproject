@@ -32,6 +32,7 @@ module OpenProject
   module StepWizard
     # @logical_path OpenProject/StepWizard
     class PageLayoutPreview < Lookbook::Preview
+      # @display min_height 400px
       def default
         render_with_template
       end
