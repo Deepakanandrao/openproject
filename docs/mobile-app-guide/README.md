@@ -7,7 +7,7 @@ keywords: Mobile app guide, mobile, mobile application, iOS, android, app store,
 ---
 # Mobile app guide (Beta)
 
-We are excited to announce the **Beta Release** of the **OpenProject Mobile app** — now available in the **App Store** and **Google Play** Store. This Beta version marks the beginning of our journey to bring **OpenProject** to your mobile devices, enabling you to stay connected and productive wherever you are.
+We are excited to announce the **Beta Release** of the **OpenProject Mobile app** — now available in the **App Store** and **Google Play Store**. This Beta version marks the beginning of our journey to bring **OpenProject** to your mobile devices, enabling you to stay connected and productive wherever you are.
 
 > [!NOTE]
 > The app is currently under active development, and core features are being continuously improved. We invite you to test the app, share feedback, and help shape the future of OpenProject Mobile.
