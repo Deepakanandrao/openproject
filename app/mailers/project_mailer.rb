@@ -84,4 +84,18 @@ class ProjectMailer < ApplicationMailer
       I18n.t("copy_project.succeeded", target_project_name: target_project.name)
     end
   end
+
+  def project_created(project, user:)
+    open_project_headers Project: project.identifier,
+                         Author: user.login
+
+    message_id project, user
+    @project = project
+    @user = user
+    @notification_text = Setting.new_project_notification_text
+
+    send_localized_mail(user) do
+      I18n.t("projects.create.notification_email_subject", project_name: project.name)
+    end
+  end
 end

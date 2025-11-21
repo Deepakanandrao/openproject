@@ -510,12 +510,15 @@ en:
       work_package_categories: "Work packages: categories"
       work_package_file_links: "Work packages: file links"
       work_package_shares: "Work packages: shares"
+    create:
+      notification_email_subject: "Your project '%{project_name}' has been created"
+      open_project_link: "Open project"
     delete:
       scheduled: "Deletion has been scheduled and is performed in the background. You will be notified of the result."
       schedule_failed: "Project cannot be deleted: %{errors}"
-      failed: "Deletion of project %{name} has failed"
-      failed_text: "The request to delete project %{name} has failed. The project was left archived."
-      completed: "Deletion of project %{name} completed"
+      failed: "Deletion of project '%{name}' has failed"
+      failed_text: "The request to delete project '%{name}' has failed. The project was left archived."
+      completed: "Deletion of project '%{name}' completed"
       completed_text: "The request to delete project '%{name}' has been completed."
       completed_text_children: "Additionally, the following subprojects have been deleted:"
     index:
