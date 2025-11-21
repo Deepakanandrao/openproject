@@ -36,7 +36,7 @@ The Home Dashboard consists of **modular widgets** that provide snapshots of you
 *   Displays projects you’ve marked as favorites for **quick access**.
 *   Ideal for prioritizing high-importance projects.
 
-![Home dashboard favorite projects widget](mobile_app_homewidget_favoriteprojects.png)
+![Home dashboard displaying "favorite projects" widget in the OpenProject mobile app](mobile_app_homewidget_favoriteprojects.png)
 
 ### **Time Tracker**
 
