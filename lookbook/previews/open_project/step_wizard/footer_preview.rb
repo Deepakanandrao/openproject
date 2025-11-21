@@ -28,54 +28,32 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Projects
-  class ProjectCreationFooterComponent < ApplicationComponent
-    include OpPrimer::ComponentHelpers
-
-    def initialize(form_identifier:, project:, current_step:)
-      @form_identifier = form_identifier
-      @project = project
-      @current_step = current_step
-
-      super
-    end
-
-    def call
-      render(StepWizard::FooterComponent.new(form_identifier:, total_steps:, current_step:)) do |footer|
-        footer.with_cancel_button(href: projects_path)
-        footer.with_continue_button(**continue_button_args)
-        footer.with_submit_button(**submit_button_args)
-        if show_progress_bar?
-          footer.with_progress_bar
-        end
+module OpenProject
+  module StepWizard
+    # @logical_path OpenProject/StepWizard
+    class FooterPreview < Lookbook::Preview
+      # @label Default
+      def default
+        render_with_template(template: "open_project/step_wizard/footer_preview/playground",
+                             locals: { show_back_button: true, show_cancel_button: true, show_progress_bar: true, total_steps: 6,
+                                       current_step: 3 })
       end
-    end
 
-    attr_reader :form_identifier, :project, :current_step_index
-
-    private
-
-    def show_progress_bar?
-      current_step > 1
-    end
-
-    def continue_button_args
-      {
-        form: form_identifier,
-        name: "next_section"
-      }
-    end
-
-    def submit_button_args
-      {
-        form: form_identifier,
-        name: "finish",
-        value: "true"
-      }
-    end
-
-    def total_steps
-      project.template_id.nil? && project.available_custom_fields.required.any? ? 3 : 2
+      # @label Playground
+      # @param show_back_button [Boolean]
+      # @param show_cancel_button [Boolean]
+      # @param show_progress_bar [Boolean]
+      # @param total_steps [Integer]
+      # @param current_step [Integer]
+      def playground(
+        show_back_button: true,
+        show_cancel_button: true,
+        show_progress_bar: true,
+        total_steps: 6,
+        current_step: 3
+      )
+        render_with_template(locals: { show_back_button:, show_cancel_button:, show_progress_bar:, total_steps:, current_step: })
+      end
     end
   end
 end

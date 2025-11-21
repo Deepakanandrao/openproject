@@ -43,7 +43,7 @@ See COPYRIGHT and LICENSE files for more details.
 
         <%= progress_wrapper.with_column(ml: 2) do %>
           <%= render(Primer::Beta::Text.new(tag: :div, font_size: :small, color: :muted)) do %>
-            <%= I18n.t("projects.wizard.progress_label", current: current_step_index + 1, total: total_steps) %>
+            <%= I18n.t("projects.wizard.progress_label", current: current_step, total: total_steps) %>
           <% end %>
         <% end %>
       <% end %>

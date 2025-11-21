@@ -75,7 +75,7 @@ See COPYRIGHT and LICENSE files for more details.
       render Projects::ProjectCreationFooterComponent.new(
         form_identifier: "project-create-form",
         project: @new_project,
-        current_step_index: params.fetch(:step, 1).to_i - 1
+        current_step: params.fetch(:step, 1).to_i
       )
     end
   %>

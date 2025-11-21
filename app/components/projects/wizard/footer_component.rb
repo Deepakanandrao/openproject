@@ -33,17 +33,17 @@ module Projects
     class FooterComponent < ApplicationComponent
       include OpPrimer::ComponentHelpers
 
-      def initialize(form_identifier:, project:, custom_fields_by_section:, current_step_index:)
+      def initialize(form_identifier:, project:, custom_fields_by_section:, current_step:)
         @form_identifier = form_identifier
         @project = project
         @custom_fields_by_section = custom_fields_by_section
-        @current_step_index = current_step_index
+        @current_step = current_step
 
         super
       end
 
       def call
-        render(StepWizard::FooterComponent.new(form_identifier:, total_steps:, current_step_index:)) do |footer|
+        render(StepWizard::FooterComponent.new(form_identifier:, total_steps:, current_step:)) do |footer|
           footer.with_back_button(href: back_button_href)
           footer.with_cancel_button(href: cancel_button_href)
           footer.with_continue_button(**continue_button_args)
@@ -54,7 +54,7 @@ module Projects
 
       private
 
-      attr_reader :form_identifier, :project, :custom_fields_by_section, :current_step_index
+      attr_reader :form_identifier, :project, :custom_fields_by_section, :current_step
 
       def sections
         @sections ||= custom_fields_by_section.keys
@@ -91,15 +91,15 @@ module Projects
       end
 
       def next_step
-        return nil if current_step_index >= total_steps - 1
+        return nil if current_step >= total_steps
 
-        current_step_index + 1
+        current_step + 1
       end
 
       def previous_step
-        return nil if current_step_index.zero?
+        return nil if current_step == 1
 
-        current_step_index - 1
+        current_step - 1
       end
     end
   end

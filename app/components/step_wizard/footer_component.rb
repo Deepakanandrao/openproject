@@ -77,30 +77,30 @@ module StepWizard
       end
     }
 
-    def initialize(form_identifier:, total_steps:, current_step_index:)
+    def initialize(form_identifier:, total_steps:, current_step:)
       super()
 
       @form_identifier = form_identifier
       @total_steps = total_steps
-      @current_step_index = current_step_index
+      @current_step = current_step
     end
 
     private
 
-    attr_reader :form_identifier, :total_steps, :current_step_index
+    attr_reader :form_identifier, :total_steps, :current_step
 
     def progress_percentage
       return 0 if total_steps.zero?
 
-      ((current_step_index + 1).to_f / total_steps * 100).round
+      (current_step.to_f / total_steps * 100).round
     end
 
     def first_step?
-      current_step_index.zero?
+      current_step == 1
     end
 
     def last_step?
-      current_step_index >= total_steps - 1
+      current_step >= total_steps
     end
   end
 end

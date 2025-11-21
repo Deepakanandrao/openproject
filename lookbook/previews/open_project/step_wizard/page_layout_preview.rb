@@ -28,54 +28,13 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Projects
-  class ProjectCreationFooterComponent < ApplicationComponent
-    include OpPrimer::ComponentHelpers
-
-    def initialize(form_identifier:, project:, current_step:)
-      @form_identifier = form_identifier
-      @project = project
-      @current_step = current_step
-
-      super
-    end
-
-    def call
-      render(StepWizard::FooterComponent.new(form_identifier:, total_steps:, current_step:)) do |footer|
-        footer.with_cancel_button(href: projects_path)
-        footer.with_continue_button(**continue_button_args)
-        footer.with_submit_button(**submit_button_args)
-        if show_progress_bar?
-          footer.with_progress_bar
-        end
+module OpenProject
+  module StepWizard
+    # @logical_path OpenProject/StepWizard
+    class PageLayoutPreview < Lookbook::Preview
+      def default
+        render_with_template
       end
-    end
-
-    attr_reader :form_identifier, :project, :current_step_index
-
-    private
-
-    def show_progress_bar?
-      current_step > 1
-    end
-
-    def continue_button_args
-      {
-        form: form_identifier,
-        name: "next_section"
-      }
-    end
-
-    def submit_button_args
-      {
-        form: form_identifier,
-        name: "finish",
-        value: "true"
-      }
-    end
-
-    def total_steps
-      project.template_id.nil? && project.available_custom_fields.required.any? ? 3 : 2
     end
   end
 end
