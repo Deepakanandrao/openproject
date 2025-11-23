@@ -80,7 +80,7 @@ The Notification Centre collects updates from your projects. Users can:
 *   Mark individual notifications or all notifications as read.
 *   Switch between notification queries to filter by participation, mentions, or other custom inboxes.
 *   Toggle between viewing only unread or all notifications.
-
+ [Learn more about Notifications in OpenProject mobile app](../core-features/notification-centre/).
 ## What settings can I configure in the app?
 
 Through the **User Settings** module, users can:
