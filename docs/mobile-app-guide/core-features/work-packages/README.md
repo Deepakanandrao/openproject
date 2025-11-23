@@ -63,7 +63,7 @@ Time can be logged directly from a work package by opening the **More** menu and
 
 Additionally, you can set reminders from within the **More** menu. By configuring a reminder for a specific date and time, the app will notify you when it’s time to return to that work package or take action on it.
 
-![Mobile app work package details with the more actions menu open](mobile_app_workpackage_moreactions.png)
+![Work package details with the more actions menu open in the OpenProject mobile app](mobile_app_workpackage_moreactions.png)
 
 ## Sharing Work Packages
 
