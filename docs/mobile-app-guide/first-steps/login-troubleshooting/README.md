@@ -43,7 +43,7 @@ The mobile app uses OAuth 2.0 for secure authentication. If the built-in OAuth a
 You know that your instance is running not on the minimum supported version, OpenProject 17.0.0, and the login fails with a browser error such as _“An authorization error has occurred. The client is not authorised to perform this request using this method.”_.
 
 **Cause:**  
-The OpenProject Mobile App requires your instance to be on **OpenProject version 17.0.0 or later**.  
+The OpenProject Mobile App requires your instance to be on **OpenProject version 17.0.0 or higher**.  
 If your instance is running an older version, OAuth authentication may be disabled by default.
 
 **How to Fix:**
