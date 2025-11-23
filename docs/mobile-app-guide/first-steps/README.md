@@ -40,7 +40,7 @@ Search for **“OpenProject”** in your app store, or use the direct links abov
 ## Open the App
 
 After installation, open the app on your device. You’ll be greeted with a **short onboarding** on the app features and then prompted to **log in** to your OpenProject instance.
-![Mobile app initial onboarding page](mobile-app-onboarding.png)
+![Initial onboarding page of the OpenProject mobile app](mobile-app-onboarding.png)
 
 ## Choose Your Instance
 
