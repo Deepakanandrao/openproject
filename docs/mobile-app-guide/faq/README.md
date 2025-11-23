@@ -40,7 +40,7 @@ The Home Dashboard provides a **personalized overview** of your work and include
 *   **Portfolios**: Snapshot of portfolio-level progress.
 *   **Assigned to Me**: List of work packages assigned to you.
 *   **Recently Viewed**: Quick access to recently opened items.
-
+[Learn more about Home Dashboard in the OpenProject mobile app](../core-features/home-dashboard/).
 ## How does the Projects module work?
 
 The Projects module provides an **index of all portfolios, programs, and projects**. Users can:
