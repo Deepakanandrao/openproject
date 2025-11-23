@@ -92,7 +92,7 @@ Through the **User Settings** module, users can:
 *   Configure **notification settings** and deactivate OS-level notifications
 *   Provide **feedback** directly to the OpenProject Community project
  [Learn more about configuring user settings in OpenProject mobile app](../core-features/user-settings/).
-## Are all OpenProject features available on mobile?
+## Are all OpenProject features available in the mobile app?
 
 No. The mobile app is a **companion app** and is currently in Beta. Some advanced features from the web or desktop version are not yet available, including:
 *   Deep-linking to On-Premises instances
