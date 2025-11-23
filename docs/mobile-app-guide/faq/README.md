@@ -50,7 +50,7 @@ The Projects module provides an **index of all portfolios, programs, and project
     *   **Overview tab**: Description, status, and attributes
     *   **Work Packages tab**: List of associated tasks
     *   **Child Projects/Programs tab**: Projects or programs under the selected item
-
+[Learn more about Projects module in the OpenProject mobile app](../core-features/projects/).
 ## What can I do in Work Packages?
 
 The Work Packages module supports:
