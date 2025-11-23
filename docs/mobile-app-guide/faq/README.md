@@ -94,7 +94,7 @@ Through the **User Settings** module, users can:
  [Learn more about configuring user settings in OpenProject mobile app](../core-features/user-settings/).
 ## Are all OpenProject features available in the mobile app?
 
-No. The mobile app is a **companion app** and is currently in Beta. Some advanced features from the web or desktop version are not yet available, including:
+No. The mobile app is a **companion app** and is currently in Beta status. Some advanced features of the web or desktop versions are not yet available, including:
 *   Deep-linking to On-Premises instances
 *   Multi-device UI synchronization
 *   Real-time push notifications
