@@ -29,6 +29,10 @@ en:
       label_add_new: Add new webhook
       label_edit: Edit webhook
       label_event_resources: Event resources
+      label_x_event_resources:
+        one: "1 event resource"
+        other: "%{count} event resources"
+        zero: "No event resources"
       events:
         created: "Created"
         updated: "Updated"

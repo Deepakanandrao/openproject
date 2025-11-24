@@ -4,6 +4,8 @@ module ::Webhooks
       class RowComponent < ::RowComponent
         property :description
 
+        delegate :event_names, to: :webhook
+
         def webhook
           model
         end
@@ -20,40 +22,18 @@ module ::Webhooks
         end
 
         def events
-          selected_events =
-            webhook
-              .events
-              .pluck(:name)
-              .map(&method(:lookup_event_name))
-              .compact
-              .uniq
+          return t(:"webhooks.outgoing.label_x_event_resources", count: 0) if event_names.empty?
 
-          count = selected_events.count
-          if count <= 3
-            selected_events.join(", ")
-          else
-            content_tag("span", count, class: "badge")
-          end
-        end
-
-        def lookup_event_name(name)
-          OpenProject::Webhooks::EventResources.lookup_resource_name(name)
+          event_names
+            .filter_map { OpenProject::Webhooks::EventResources.lookup_resource_name(it) }
+            .uniq
+            .join(", ")
         end
 
         def selected_projects
-          if webhook.all_projects?
-            return "(#{I18n.t(:label_all)})"
-          end
+          return t(:"webhooks.outgoing.form.project_ids.all") if webhook.all_projects?
 
-          selected = webhook.projects.map(&:name)
-
-          if selected.empty?
-            "(#{I18n.t(:label_all)})"
-          elsif selected.size <= 3
-            webhook.projects.pluck(:name).join(", ")
-          else
-            content_tag("span", selected, class: "badge")
-          end
+          t(:label_x_projects, count: webhook.projects.size)
         end
 
         def row_css_class
