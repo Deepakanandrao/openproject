@@ -132,7 +132,8 @@ class AggregatedMigrations < SquashedMigration
          Tables::HierarchicalItemHierarchies,
          Tables::ProjectLifeCycleStepDefinitions,
          Tables::ProjectLifeCycleSteps,
-         Tables::Reminders
+         Tables::Reminders,
+         Tables::ReminderNotifications
 
   # rubocop:disable Metrics/CollectionLiteralLength
   squashed_migrations *%w[
@@ -407,6 +408,7 @@ class AggregatedMigrations < SquashedMigration
     20241119131205_create_reminders
     20241120095318_update_scheduling_mode_and_lags
     20241121094113_migrate_cost_settings_to_regular_settings
+    20241121113638_create_reminder_notifications
   ]
   # rubocop:enable Metrics/CollectionLiteralLength
 end
