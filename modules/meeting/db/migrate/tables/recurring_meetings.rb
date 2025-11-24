@@ -43,6 +43,8 @@ class Tables::RecurringMeetings < Tables::Base
       t.belongs_to :author, foreign_key: { to_table: :users }
 
       t.timestamps
+
+      t.integer :interval, default: 1, null: false
     end
   end
 end

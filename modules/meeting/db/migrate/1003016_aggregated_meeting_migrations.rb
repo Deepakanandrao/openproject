@@ -54,6 +54,7 @@ class AggregatedMeetingMigrations < SquashedMigration
     20240516102219_fix_untitled_meetings
     20250318123314_add_backlog_to_meeting_sections
     20240426073948_create_recurring_meetings
+    20241122143600_add_interval_to_recurring_meeting
   ].freeze
 
   tables Tables::MeetingContents,
