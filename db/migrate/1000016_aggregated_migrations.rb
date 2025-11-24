@@ -135,7 +135,8 @@ class AggregatedMigrations < SquashedMigration
          Tables::Reminders,
          Tables::ReminderNotifications,
          Tables::ProjectLifeCycleStepJournals,
-         Tables::ServiceAccountAssociations
+         Tables::ServiceAccountAssociations,
+         Tables::ExportSettings
 
   # rubocop:disable Metrics/CollectionLiteralLength
   squashed_migrations *%w[
@@ -430,6 +431,7 @@ class AggregatedMigrations < SquashedMigration
     20250227161653_populate_comments_with_restricted_visibility_permissions
     20250324133701_create_service_account_associations
     20250324161229_merge_lifecycle_steps
+    20250326151553_export_settings
   ]
   # rubocop:enable Metrics/CollectionLiteralLength
 end
