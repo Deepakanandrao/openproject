@@ -40,6 +40,8 @@ class Tables::OidcUserTokens < Tables::Base
       t.jsonb :audiences, null: false, default: []
 
       t.timestamps
+
+      t.datetime :expires_at, null: true, precision: 0
     end
   end
 end
