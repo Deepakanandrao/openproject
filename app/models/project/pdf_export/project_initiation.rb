@@ -121,11 +121,7 @@ class Project::PDFExport::ProjectInitiation < Exports::Exporter
   end
 
   def heading
-    @heading ||= if project.name_artefact_name.blank?
-                   I18n.t(:label_project_initiation_request)
-                 else
-                   I18n.t("settings.project_initiation_request.name.options.#{project.name_artefact_name}")
-                 end
+    project.project_creation_wizard_name
   end
 
   def footer_title
