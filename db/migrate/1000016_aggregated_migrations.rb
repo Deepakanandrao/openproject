@@ -415,6 +415,7 @@ class AggregatedMigrations < SquashedMigration
     20241129135602_populate_manage_own_reminders_permission
     20241211152749_introduce_patterns_to_types
     20241217190533_add_uniqueness_index_to_project_life_cycle_step_definitions_name
+    20250102161733_adds_position_cache_to_hierarchy_items
   ]
   # rubocop:enable Metrics/CollectionLiteralLength
 end
