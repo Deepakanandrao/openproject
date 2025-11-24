@@ -30,15 +30,17 @@
 
 require_relative "base"
 
-class Tables::ProjectLifeCycleStepDefinitions < Tables::Base
+class Tables::ProjectPhaseDefinitions < Tables::Base
   def self.table(migration)
     create_table migration do |t|
-      t.string :type
       t.string :name
       t.integer :position, null: true
       t.references :color, foreign_key: true
-
       t.timestamps
+      t.column :start_gate, :boolean, default: false, null: false
+      t.column :start_gate_name, :string
+      t.column :finish_gate, :boolean, default: false, null: false
+      t.column :finish_gate_name, :string
 
       t.index :name, unique: true
     end

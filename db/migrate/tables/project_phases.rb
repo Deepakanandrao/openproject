@@ -30,21 +30,17 @@
 
 require_relative "base"
 
-class Tables::ProjectLifeCycleSteps < Tables::Base
+class Tables::ProjectPhases < Tables::Base
   def self.table(migration)
     create_table migration do |t|
-      t.string :type
       t.date :start_date
-      t.date :end_date
       t.boolean :active, default: false, null: false
       t.references :project, foreign_key: true
       t.references :definition, foreign_key: { to_table: :project_life_cycle_step_definitions }
 
       t.timestamps
 
-      t.index :project_life_cycle_steps,
-              %i[project_id definition_id],
-              unique: true
+      t.index %i[project_id definition_id], unique: true
       t.index :start_date
       t.index :end_date
     end
