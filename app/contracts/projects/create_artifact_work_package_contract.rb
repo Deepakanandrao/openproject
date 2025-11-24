@@ -56,7 +56,7 @@ module Projects
     end
 
     def validate_work_package_status
-      nil unless project.project_creation_wizard_enabled?
+      return unless project.project_creation_wizard_enabled?
 
       if project.project_creation_wizard_status_when_submitted_id.blank?
         errors.add :project_creation_wizard_status_when_submitted_id, :blank

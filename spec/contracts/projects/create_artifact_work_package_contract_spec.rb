@@ -77,6 +77,20 @@ RSpec.describe Projects::CreateArtifactWorkPackageContract, :check_errors_i18n d
     end
 
     it_behaves_like "contract is invalid", base: :project_initiation_request_disabled
+
+    context "without any project initiation request settings set" do
+      before do
+        project.update(project_creation_wizard_work_package_type_id: nil,
+                       project_creation_wizard_status_when_submitted_id: nil,
+                       project_creation_wizard_assignee_custom_field_id: nil)
+      end
+
+      # no other errors than 'project_initiation_request_disabled' are shown
+      it_behaves_like "contract is invalid", base: :project_initiation_request_disabled,
+                                             project_creation_wizard_work_package_type_id: [],
+                                             project_creation_wizard_status_when_submitted_id: [],
+                                             project_creation_wizard_assignee_custom_field_id: []
+    end
   end
 
   context "with unset work package type" do

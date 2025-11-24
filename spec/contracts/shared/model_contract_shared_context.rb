@@ -40,10 +40,10 @@ RSpec.shared_context "ModelContract shared context" do # rubocop:disable RSpec/C
 
     expected_errors = errors.transform_values do |error_symbols|
       case error_symbols
+      when [], nil
+        []
       when Array
         an_array_matching(error_symbols)
-      when nil
-        []
       else
         [error_symbols]
       end
