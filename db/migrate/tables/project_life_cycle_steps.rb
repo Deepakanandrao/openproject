@@ -41,6 +41,10 @@ class Tables::ProjectLifeCycleSteps < Tables::Base
       t.references :definition, foreign_key: { to_table: :project_life_cycle_step_definitions }
 
       t.timestamps
+
+      t.index :project_life_cycle_steps,
+              %i[project_id definition_id],
+              unique: true
     end
   end
 end
