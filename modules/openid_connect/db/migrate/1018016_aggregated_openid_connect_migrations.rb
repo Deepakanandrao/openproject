@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#-- copyright
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,18 +26,19 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
-class AddOidcUserTokens < ActiveRecord::Migration[7.1]
-  def change
-    create_table :oidc_user_tokens do |t|
-      t.references :user, null: false, index: true, foreign_key: { on_delete: :cascade }
+require Rails.root.join("db/migrate/migration_utils/squashed_migration").to_s
+require_relative "tables/oidc_user_session_links"
 
-      t.string :access_token, null: false
-      t.string :refresh_token, null: true
-      t.jsonb :audiences, null: false, default: []
+class AggregatedOpenIDConnectMigrations < SquashedMigration
+  tables Tables::OidcUserSessionLinks,
+         Tables::OidcUserTokens
 
-      t.timestamps
-    end
-  end
+  squashed_migrations *%w[
+    1018015_aggregated_openid_connect_migrations
+    20221122072857_add_oidc_session_link
+    20240829140616_migrate_oidc_settings_to_providers
+    20241212131910_add_oidc_user_tokens
+  ]
 end

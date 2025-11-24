@@ -28,14 +28,18 @@
 # See COPYRIGHT and LICENSE files for more details.
 # ++
 
-require Rails.root.join("db/migrate/migration_utils/squashed_migration").to_s
-require_relative "tables/oidc_user_session_links"
+require Rails.root.join("db/migrate/tables/base").to_s
 
-class AggregatedOpenIDConnectMigrations < SquashedMigration
-  tables Tables::OidcUserSessionLinks
+class Tables::OidcUserTokens < Tables::Base
+  def self.table(migration)
+    create_unlogged_table migration do |t|
+      t.references :user, null: false, index: true, foreign_key: { on_delete: :cascade }
 
-  squashed_migrations *%w[
-    20221122072857_add_oidc_session_link
-    20240829140616_migrate_oidc_settings_to_providers
-  ]
+      t.string :access_token, null: false
+      t.string :refresh_token, null: true
+      t.jsonb :audiences, null: false, default: []
+
+      t.timestamps
+    end
+  end
 end
