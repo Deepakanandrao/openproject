@@ -38,6 +38,7 @@ require_relative "tables/time_entry_journals"
 
 class AggregatedCostsMigrations < SquashedMigration
   squashed_migrations *%w[
+    1009015_aggregated_costs_migrations
     20180323133404_to_v710_aggregated_costs_migrations
     20200327074416_rename_fixed_version_in_cost_query
     20200807083952_rename_time_and_cost_module
@@ -48,6 +49,7 @@ class AggregatedCostsMigrations < SquashedMigration
     20220815072420_add_logged_by_to_time_entries_journals
     20221018160449_add_logged_by_to_cost_entries
     20230622074222_add_ongoing_to_time_entry
+    20241120103858_add_start_end_times_to_time_entries
   ].freeze
 
   tables Tables::CostEntries,
