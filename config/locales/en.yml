@@ -1322,6 +1322,8 @@ en:
       project_custom_field:
         is_required: "Required for all projects"
         custom_field_section: Section
+      subproject_template_assignment:
+        workspace_type: "Workspace type"
       project/phase:
         date_range: "Date range"
         definition: "Definition"
@@ -1973,6 +1975,7 @@ en:
       other: "Additionally, there were problems with the following fields:"
     field_erroneous_label: "This field is invalid: %{full_errors}\nPlease enter a valid value."
     messages:
+      must_be_template: "must be template"
       unsupported_storage_type: "is not a supported storage type."
       storage_error: "There was an error with the storage connection."
       invalid_input: "The input is invalid."
@@ -2106,6 +2109,7 @@ en:
     subject: "Subject"
     slug: "Slug"
     summary: "Summary"
+    template: "Template"
     time_zone: "Time zone"
     text: "Text"
     title: "Title"
@@ -3531,7 +3535,6 @@ en:
   label_project_view_all: "View all projects"
   label_project_show_details: "Show project details"
   label_project_hide_details: "Hide project details"
-  label_project_initiation_request: "Project initiation request"
   label_portfolio: "Portfolio"
   label_portfolio_new: "New portfolio"
   label_program: "Program"
@@ -4702,8 +4705,8 @@ en:
         confirmation_message: "The initiation request wizard will no longer be available to new projects based on this template. Project managers and project owners will need to manually configure and fill out the relevant information in the Project overview."
         checkbox_message: "I understand that this action is not reversible"
       name:
-        artefact_name: "Artefact name"
-        artefact_name_caption: "Choose the name for this artefact that your project management framework recommends."
+        artifact_name: "Artifact name"
+        artifact_name_caption: "Choose the name for this artifact that your project management framework recommends."
         options:
           project_initiation_request: "Project initiation request"
           project_creation_wizard: "Project creation wizard"

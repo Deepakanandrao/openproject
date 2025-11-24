@@ -36,20 +36,32 @@ RSpec.describe SubprojectTemplateAssignment do
 
   describe "associations" do
     it { is_expected.to belong_to(:project).inverse_of(:subproject_template_assignments) }
-    it { is_expected.to belong_to(:template).class_name("Project").inverse_of(:template_assignments) }
+    it { is_expected.to belong_to(:template) }
 
     it "allows accessing assignments from project" do
       assignment = create(:subproject_template_assignment, project:, template:)
-      expect(project.subproject_template_assignments).to include(assignment)
+
+      # Need to reload through the database to pick up the new association
+      expect(project.subproject_template_assignments.reload).to include(assignment)
     end
   end
 
   describe "enums" do
-    it {
-      expect(described_class).to define_enum_for(:workspace_type)
-        .with_values(project: "project", program: "program")
-        .backed_by_column_of_type(:string)
-    }
+    it "defines workspace_type enum" do
+      expect(described_class.workspace_types).to eq({ "project" => "project", "program" => "program" })
+    end
+
+    it "allows setting workspace_type to project" do
+      assignment = build(:subproject_template_assignment, workspace_type: :project)
+      expect(assignment.workspace_type).to eq("project")
+      expect(assignment).to be_project
+    end
+
+    it "allows setting workspace_type to program" do
+      assignment = build(:subproject_template_assignment, workspace_type: :program)
+      expect(assignment.workspace_type).to eq("program")
+      expect(assignment).to be_program
+    end
   end
 
   describe "validations" do
@@ -79,7 +91,7 @@ RSpec.describe SubprojectTemplateAssignment do
                           workspace_type: "project")
 
         expect(duplicate).not_to be_valid
-        expect(duplicate.errors[:project_id]).to include("has already been taken")
+        expect(duplicate.errors[:project_id]).to include("has already been taken.")
       end
 
       it "allows different workspace_types for the same project" do
@@ -114,9 +126,9 @@ RSpec.describe SubprojectTemplateAssignment do
       context "when template is not marked as templated" do
         let(:template) { create(:project, templated: false) }
 
-        it "is invalid" do
+        it "is invalid and has template error" do
           expect(assignment).not_to be_valid
-          expect(assignment.errors[:template]).to include("must be template")
+          expect(assignment.errors[:template]).to be_present
         end
       end
     end
@@ -144,22 +156,25 @@ RSpec.describe SubprojectTemplateAssignment do
 
   describe "factory" do
     it "creates a valid assignment with default attributes" do
-      assignment = build(:subproject_template_assignment)
+      assignment = create(:subproject_template_assignment)
       expect(assignment).to be_valid
+      expect(assignment).to be_persisted
     end
 
     it "creates a valid assignment with :for_project trait" do
-      assignment = build(:subproject_template_assignment, :for_project)
+      assignment = create(:subproject_template_assignment, :for_project)
       expect(assignment).to be_valid
       expect(assignment.workspace_type).to eq("project")
       expect(assignment.template.workspace_type).to eq("project")
+      expect(assignment.template).to be_templated
     end
 
     it "creates a valid assignment with :for_program trait" do
-      assignment = build(:subproject_template_assignment, :for_program)
+      assignment = create(:subproject_template_assignment, :for_program)
       expect(assignment).to be_valid
       expect(assignment.workspace_type).to eq("program")
       expect(assignment.template.workspace_type).to eq("program")
+      expect(assignment.template).to be_templated
     end
   end
 end

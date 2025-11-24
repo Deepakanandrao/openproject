@@ -119,9 +119,6 @@ class Project < ApplicationRecord
            dependent: nil
 
   has_many :subproject_template_assignments,
-           class_name: "SubprojectTemplateAssignment",
-           foreign_key: "template_id",
-           inverse_of: :template,
            dependent: :delete_all
 
   accepts_nested_attributes_for :available_phases

@@ -28,29 +28,20 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class SubprojectTemplateAssignment < ApplicationRecord
-  belongs_to :project, inverse_of: :subproject_template_assignments
-  belongs_to :template, class_name: "Project"
+FactoryBot.define do
+  factory :subproject_template_assignment do
+    project
+    template { association(:project, templated: true) }
+    workspace_type { "project" }
 
-  enum :workspace_type, {
-    project: "project",
-    program: "program"
-  }, validate: true
+    trait :for_project do
+      workspace_type { "project" }
+      template { association(:project, templated: true, workspace_type: :project) }
+    end
 
-  validates :project_id, presence: true
-  validates :template_id, presence: true
-  validates :workspace_type, presence: true
-  validates :project_id, uniqueness: { scope: :workspace_type }
-
-  validate :template_must_be_templated
-
-  private
-
-  def template_must_be_templated
-    return if template.blank?
-
-    unless template.templated?
-      errors.add(:template, :must_be_template)
+    trait :for_program do
+      workspace_type { "program" }
+      template { association(:project, templated: true, workspace_type: :program) }
     end
   end
 end
