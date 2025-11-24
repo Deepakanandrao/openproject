@@ -27,10 +27,10 @@ it:
     errors:
       models:
         document_type:
-          one_or_more_required: "Cannot delete the last document type"
+          one_or_more_required: "Non è possibile eliminare l'ultimo tipo di documento"
     models:
       document: "Documento"
-      documents: "Documents"
+      documents: "Documenti"
     attributes:
       document:
         content_binary: "Contenuto binario"
@@ -45,8 +45,8 @@ it:
     page_header:
       heading: "Tutti i documenti"
       action_menu:
-        document_actions: "Document actions"
-        edit_title: "Edit title"
+        document_actions: "Azioni sul documento"
+        edit_title: "Modifica titolo"
     subheader:
       filter:
         label: "Filtro per nome documento"
@@ -55,13 +55,13 @@ it:
       heading: "Non ci sono ancora documenti"
       description: "Non ci sono documenti in questa vista. Puoi cliccare sul pulsante qui sotto per aggiungerne uno."
     document_categories_deprecation_notice:
-      heading: File categories are now called 'Document types'
+      heading: Le categorie di file sono ora chiamate 'Tipi di documento'
       description: |-
-        Your existing file categories have been converted to document types with the introduction of the new Documents module.
-        All existing documents have also been migrated to these new types.
-      primary_action: Configure document types
-      secondary_action: Learn more about the Documents module
-    document_type_actions: "Document type actions"
+        Le categorie di file esistenti sono state convertite in tipi di documento con l'introduzione del nuovo modulo Documenti.
+        Tutti i documenti esistenti sono stati migrati verso questi nuovi tipi.
+      primary_action: Configura tipi di documento
+      secondary_action: Scopri di più sul modulo Documenti
+    document_type_actions: "Azioni sul tipo di documento"
     index_page:
       name: "Nome"
       type: "Tipo"
@@ -70,7 +70,7 @@ it:
     menu:
       all: "Tutti i documenti"
       types: "Tipi"
-    last_updated_at: "Last updated %{time}."
+    last_updated_at: "Ultimo aggiornamento %{time}."
     active_editors: "Active editors"
     active_editors_count: "%{count} active editors"
     label_attachment_author: "Autore allegato"
