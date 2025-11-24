@@ -406,6 +406,7 @@ class AggregatedMigrations < SquashedMigration
     20241030154245_create_project_life_cycles
     20241119131205_create_reminders
     20241120095318_update_scheduling_mode_and_lags
+    20241121094113_migrate_cost_settings_to_regular_settings
   ]
   # rubocop:enable Metrics/CollectionLiteralLength
 end
