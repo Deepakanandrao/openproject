@@ -370,6 +370,7 @@ ko:
       int?: "- 정수여야 합니다."
       key?: "- 누락되었습니다."
       not_found: "- 찾을 수 없습니다."
+      respond_to?: "does not implement required method."
       rules:
         copy_workflow_from:
           workflow_missing: "- 고유한 워크플로가 없습니다."
@@ -547,10 +548,19 @@ ko:
       work_package_priorities:
         new_label: "새로운 우선 순위"
       creation_wizard:
+        export:
+          description_attachment_export: "The generated artifact will be saved as a PDF attachment to the artifact work package."
+          description_file_link_export: "The artifact work package will have a file link to a PDF stored in an external file storage. Requires a working file storage with automatically-managed project folders. At the moment only Nextcloud file storages are supported."
+          description_file_storage_selection: "Select which of the configured external file storages should be used."
+          external_file_storage: "External file storage"
+          label_artifact_export: "Artifact export"
+          label_attachment_export: "Save as work package file attachment"
+          label_file_link_export: "Upload file to external file storage and add file link to work package"
+          pdf_file_storage: "PDF file storage"
+          unavailable: "unavailable"
+        label_request_submission: "Request submission"
         project_attributes_description: >
           Select which project attributes should be included in the project initiation request. This list only includes [project attributes](project_attributes_url) enabled for for this project.
-        label_request_submission: "Request submission"
-        label_artefact_export: "Artifact export"
     status:
       button_edit: 프로젝트 상태 편집
     wizard:
@@ -1170,12 +1180,12 @@ ko:
           off_track: "비정상 상태"
           finished: "마침"
           discontinued: "중단됨"
-        submission_assignee_custom_field: "Assignee when submitted"
-        submission_notification_text: "Notification text"
-        submission_send_confirmation_email: "Confirmation email"
-        submission_status_when_submitted: "Status when submitted"
-        submission_work_package_comment: "Work package comment"
-        submission_work_package_type: "Work package type"
+        project_creation_wizard_assignee_custom_field: "Assignee when submitted"
+        project_creation_wizard_notification_text: "Notification text"
+        project_creation_wizard_send_confirmation_email: "Confirmation email"
+        project_creation_wizard_status_when_submitted: "Status when submitted"
+        project_creation_wizard_work_package_comment: "Work package comment"
+        project_creation_wizard_work_package_type: "Work package type"
         template: "Template"
         templated: "템플릿 프로젝트"
         templated_value:
@@ -1819,6 +1829,10 @@ ko:
     header_additional_invalid_fields:
       other: "또한 다음 필드에 문제가 있습니다."
     field_erroneous_label: "이 필드는 유효 하지 않습니다: %{full_errors} \n유효한 값을 입력 해 주십시오."
+    messages:
+      unsupported_storage_type: "is not a supported storage type."
+      storage_error: "There was an error with the storage connection."
+      invalid_input: "The input is invalid."
   activity:
     item:
       created_by_on: "%{datetime}, %{user} 님이 생성함"
@@ -2857,7 +2871,6 @@ ko:
   label_add_column: "열 추가"
   label_applied_status: "적용된 상태"
   label_archive_project: "프로젝트 아카이브하기"
-  label_artefact_export: "Artefact export"
   label_ascending: "오름차순"
   label_assigned_to_me_work_packages: "내게 할당된 작업 패키지"
   label_associated_revisions: "연결된 수정"
@@ -3124,7 +3137,8 @@ ko:
   label_lock_user: "사용자 잠금"
   label_logged_as: "로그인한 계정:"
   label_login: "로그인"
-  label_custom_logo: "사용자 정의 로고"
+  label_custom_logo: "Custom logo desktop"
+  label_custom_logo_mobile: "Custom logo mobile"
   label_custom_export_logo: "사용자 지정 내보내기 로고"
   label_custom_export_cover: "사용자 지정 내보내기 커버 배경"
   label_custom_export_footer: "사용자 지정 내보내기 바닥글 이미지"
@@ -3793,6 +3807,9 @@ ko:
   permission_add_project: "프로젝트 만들기"
   permission_add_portfolios: "포트폴리오 만들기"
   permission_add_programs: "프로그램 만들기"
+  permission_add_project_from_template: "Create project from template"
+  permission_add_portfolios_from_template: "Create portfolio from template"
+  permission_add_programs_from_template: "Create program from template"
   permission_add_work_package_attachments: "첨부 파일 추가"
   permission_add_work_package_attachments_explanation: "작업 패키지 편집 권한 없이 첨부 파일 추가를 허용합니다."
   permission_add_internal_comments: "내부 코멘트 작성"
@@ -4355,6 +4372,13 @@ ko:
         heading: "Disable this project initiation request?"
         confirmation_message: "The initiation request wizard will no longer be available to new projects based on this template. Project managers and project owners will need to manually configure and fill out the relevant information in the Project overview."
         checkbox_message: "I understand that this action is not reversible"
+      name:
+        artefact_name: "Artefact name"
+        artefact_name_caption: "Choose the name for this artefact that your project management framework recommends."
+        options:
+          project_initiation_request: "Project initiation request"
+          project_creation_wizard: "Project creation wizard"
+          project_mandate: "Project mandate"
       submission:
         work_package_type: "Work package type"
         work_package_type_caption: "The work package type that should be used to store the completed artefact."

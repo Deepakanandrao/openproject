@@ -367,6 +367,7 @@ de:
       int?: "muss eine ganze Zahl sein."
       key?: "fehlt."
       not_found: "nicht gefunden."
+      respond_to?: "does not implement required method."
       rules:
         copy_workflow_from:
           workflow_missing: "hat keinen eigenen Workflow."
@@ -544,19 +545,28 @@ de:
       work_package_priorities:
         new_label: "Neue Priorität"
       creation_wizard:
+        export:
+          description_attachment_export: "The generated artifact will be saved as a PDF attachment to the artifact work package."
+          description_file_link_export: "The artifact work package will have a file link to a PDF stored in an external file storage. Requires a working file storage with automatically-managed project folders. At the moment only Nextcloud file storages are supported."
+          description_file_storage_selection: "Select which of the configured external file storages should be used."
+          external_file_storage: "External file storage"
+          label_artifact_export: "Artifact export"
+          label_attachment_export: "Save as work package file attachment"
+          label_file_link_export: "Upload file to external file storage and add file link to work package"
+          pdf_file_storage: "PDF file storage"
+          unavailable: "nicht verfügbar"
+        label_request_submission: "Request submission"
         project_attributes_description: >
           Select which project attributes should be included in the project initiation request. This list only includes [project attributes](project_attributes_url) enabled for for this project.
-        label_request_submission: "Request submission"
-        label_artefact_export: "Artifact export"
     status:
       button_edit: Projektstatus bearbeiten
     wizard:
-      sidebar_content_title: "Content"
+      sidebar_content_title: "Inhalt"
       sections: "Sections"
       title: "Project initiation request"
       no_help_text: "This attribute has no help text defined."
       success: "Project attributes have been saved successfully."
-      progress_label: "%{current} of %{total}"
+      progress_label: "%{current} von %{total}"
   lists:
     create:
       success: "Die geänderte Liste wurde als neue Liste gespeichert"
@@ -1170,13 +1180,13 @@ de:
           off_track: "Unplanmäßig"
           finished: "Abgeschlossen"
           discontinued: "Eingestellt"
-        submission_assignee_custom_field: "Assignee when submitted"
-        submission_notification_text: "Notification text"
-        submission_send_confirmation_email: "Confirmation email"
-        submission_status_when_submitted: "Status when submitted"
-        submission_work_package_comment: "Work package comment"
-        submission_work_package_type: "Work package type"
-        template: "Template"
+        project_creation_wizard_assignee_custom_field: "Assignee when submitted"
+        project_creation_wizard_notification_text: "Benachrichtigungstext"
+        project_creation_wizard_send_confirmation_email: "Bestätigungs-E-Mail"
+        project_creation_wizard_status_when_submitted: "Status when submitted"
+        project_creation_wizard_work_package_comment: "Work package comment"
+        project_creation_wizard_work_package_type: "Arbeitspaket-Typ"
+        template: "Vorlage"
         templated: "Projektvorlage"
         templated_value:
           true: "als Vorlage markiert"
@@ -1833,6 +1843,10 @@ de:
       one: "Zusätzlich gab es ein Problem mit dem folgenden Feld:"
       other: "Zusätzlich gab es ein Problem mit den folgenden Feldern:"
     field_erroneous_label: "Dieses Feld ist ungültig: %{full_errors} \nBitte geben Sie einen gültigen Wert ein."
+    messages:
+      unsupported_storage_type: "is not a supported storage type."
+      storage_error: "There was an error with the storage connection."
+      invalid_input: "The input is invalid."
   activity:
     item:
       created_by_on: "erstellt von %{user} am %{datetime}"
@@ -2042,11 +2056,11 @@ de:
   button_delete_permanently: "Endgültig löschen"
   button_delete_watcher: "Lösche Beobachter %{name}"
   button_download: "Download"
-  button_disable: "Disable"
+  button_disable: "Deaktivieren"
   button_duplicate: "Duplizieren"
   button_duplicate_and_follow: "Duplizieren und folgen"
   button_edit: "Bearbeiten"
-  button_enable: "Enable"
+  button_enable: "Aktivieren"
   button_edit_associated_wikipage: "Zugehörige Wikiseite bearbeiten: %{page_title}"
   button_expand_all: "Alle ausklappen"
   button_favorite: "Zu Favoriten hinzufügen"
@@ -2139,14 +2153,14 @@ de:
     blank_template:
       label: "Blank project"
       description: Start from scratch. Manually add project attributes, members and modules.
-    blank_description: No description provided.
+    blank_description: Keine Beschreibung angegeben.
   create_portfolio:
     blank_template:
-      label: "Blank portfolio"
+      label: "Leeres Portfolio"
       description: Start from scratch. Manually add portfolio attributes, members and modules.
   create_program:
     blank_template:
-      label: "Blank program"
+      label: "Leeres Programm"
       description: Start from scratch. Manually add program attributes, members and modules.
   create_wiki_page: "Neue Wikiseite anlegen"
   create_wiki_page_button: "Wiki-Seite"
@@ -2894,7 +2908,6 @@ de:
   label_add_column: "Spalte hinzufügen"
   label_applied_status: "Zugewiesener Status"
   label_archive_project: "Projekt archivieren"
-  label_artefact_export: "Artefact export"
   label_ascending: "Aufsteigend"
   label_assigned_to_me_work_packages: "Mir zugewiesene Arbeitspakete"
   label_associated_revisions: "Zugehörige Revisionen"
@@ -3161,7 +3174,8 @@ de:
   label_lock_user: "Benutzer sperren"
   label_logged_as: "Angemeldet als"
   label_login: "Anmelden"
-  label_custom_logo: "Benutzerdefiniertes Logo"
+  label_custom_logo: "Custom logo desktop"
+  label_custom_logo_mobile: "Custom logo mobile"
   label_custom_export_logo: "Selbstdefiniertes Logo für PDF-Export"
   label_custom_export_cover: "Hintergrund für Export Cover"
   label_custom_export_footer: "Selbstdefiniertes Fußzeilen-Bild für PDF-Export"
@@ -3833,6 +3847,9 @@ de:
   permission_add_project: "Projekte erstellen"
   permission_add_portfolios: "Portfolios erstellen"
   permission_add_programs: "Programme erstellen"
+  permission_add_project_from_template: "Create project from template"
+  permission_add_portfolios_from_template: "Create portfolio from template"
+  permission_add_programs_from_template: "Create program from template"
   permission_add_work_package_attachments: "Anhänge hinzufügen"
   permission_add_work_package_attachments_explanation: "Erlaubt das Hinzufügen von Anhängen ohne die Berechtigung, das Arbeitspaket selbst zu bearbeiten"
   permission_add_internal_comments: "Interne Kommentare schreiben"
@@ -3947,9 +3964,9 @@ de:
     default: "-"
   program:
     count:
-      zero: "0 programs"
-      one: "1 program"
-      other: "%{count} programs"
+      zero: "0 Programme"
+      one: "1 Programm"
+      other: "%{count} Programme"
   project:
     archive:
       title: "Projekt archivieren"
@@ -4383,7 +4400,7 @@ de:
           overview:
             label: "Project attribute shown in:"
             main_area:
-              label: "Main area"
+              label: "Hauptbereich"
               description: "Add all the project attributes as individual widgets in the main section of the project overview."
             side_panel:
               label: "Side panel"
@@ -4397,6 +4414,13 @@ de:
         heading: "Disable this project initiation request?"
         confirmation_message: "The initiation request wizard will no longer be available to new projects based on this template. Project managers and project owners will need to manually configure and fill out the relevant information in the Project overview."
         checkbox_message: "I understand that this action is not reversible"
+      name:
+        artefact_name: "Artefact name"
+        artefact_name_caption: "Choose the name for this artefact that your project management framework recommends."
+        options:
+          project_initiation_request: "Project initiation request"
+          project_creation_wizard: "Project creation wizard"
+          project_mandate: "Project mandate"
       submission:
         work_package_type: "Work package type"
         work_package_type_caption: "The work package type that should be used to store the completed artefact."
@@ -4407,7 +4431,7 @@ de:
         assignee_caption: "The person or group this project initiation request will be assigned to."
         confirmation_email_text: "Confirmation email text"
         confirmation_email_default: "Hello,\n\nYou submitted a project initiation request for **%{project_name}**. It is now awaiting review.\nClick the link below to access the work package with your request."
-        work_package_comment: "Work package comment"
+        work_package_comment: "Arbeitspaket-Kommentar"
         work_package_comment_caption: "The assignee selected above will automatically be @mentioned in the comment."
         work_package_comment_default: "A project initiation request for **%{project_name}** was submitted and is awaiting review."
     project_phase_definitions:

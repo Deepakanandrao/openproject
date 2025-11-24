@@ -367,6 +367,7 @@ lt:
       int?: "must be an integer."
       key?: "is missing."
       not_found: "not found."
+      respond_to?: "does not implement required method."
       rules:
         copy_workflow_from:
           workflow_missing: "has no own workflow."
@@ -544,10 +545,19 @@ lt:
       work_package_priorities:
         new_label: "New priority"
       creation_wizard:
+        export:
+          description_attachment_export: "The generated artifact will be saved as a PDF attachment to the artifact work package."
+          description_file_link_export: "The artifact work package will have a file link to a PDF stored in an external file storage. Requires a working file storage with automatically-managed project folders. At the moment only Nextcloud file storages are supported."
+          description_file_storage_selection: "Select which of the configured external file storages should be used."
+          external_file_storage: "External file storage"
+          label_artifact_export: "Artifact export"
+          label_attachment_export: "Save as work package file attachment"
+          label_file_link_export: "Upload file to external file storage and add file link to work package"
+          pdf_file_storage: "PDF file storage"
+          unavailable: "unavailable"
+        label_request_submission: "Request submission"
         project_attributes_description: >
           Select which project attributes should be included in the project initiation request. This list only includes [project attributes](project_attributes_url) enabled for for this project.
-        label_request_submission: "Request submission"
-        label_artefact_export: "Artifact export"
     status:
       button_edit: Edit project status
     wizard:
@@ -1191,12 +1201,12 @@ lt:
           off_track: "Pasiklydęs"
           finished: "Baigtas"
           discontinued: "Nutrauktas"
-        submission_assignee_custom_field: "Assignee when submitted"
-        submission_notification_text: "Notification text"
-        submission_send_confirmation_email: "Confirmation email"
-        submission_status_when_submitted: "Status when submitted"
-        submission_work_package_comment: "Work package comment"
-        submission_work_package_type: "Work package type"
+        project_creation_wizard_assignee_custom_field: "Assignee when submitted"
+        project_creation_wizard_notification_text: "Notification text"
+        project_creation_wizard_send_confirmation_email: "Confirmation email"
+        project_creation_wizard_status_when_submitted: "Status when submitted"
+        project_creation_wizard_work_package_comment: "Work package comment"
+        project_creation_wizard_work_package_type: "Work package type"
         template: "Template"
         templated: "Šabloninis projektas"
         templated_value:
@@ -1882,6 +1892,10 @@ lt:
       many: "Papildomai buvo problema su šiais laukais:"
       other: "Papildomai buvo problema su šiais laukais:"
     field_erroneous_label: "Šis laukelis netinkamas: %{full_errors}\nPrašome įvesti tinkamą reikšmę."
+    messages:
+      unsupported_storage_type: "is not a supported storage type."
+      storage_error: "There was an error with the storage connection."
+      invalid_input: "The input is invalid."
   activity:
     item:
       created_by_on: "%{datetime} sukūrė %{user}"
@@ -2989,7 +3003,6 @@ lt:
   label_add_column: "Add column"
   label_applied_status: "Taikomoji būsena"
   label_archive_project: "Archyvuoti projektą"
-  label_artefact_export: "Artefact export"
   label_ascending: "Didėjančia tvarka"
   label_assigned_to_me_work_packages: "Man priskirti darbų paketai"
   label_associated_revisions: "Susijusios revizijos"
@@ -3256,7 +3269,8 @@ lt:
   label_lock_user: "Užrakinti vartotoją"
   label_logged_as: "Prisijungęs kaip"
   label_login: "Prisijungti"
-  label_custom_logo: "Savo sukurtas logotipas"
+  label_custom_logo: "Custom logo desktop"
+  label_custom_logo_mobile: "Custom logo mobile"
   label_custom_export_logo: "Savas eksporto logotipas"
   label_custom_export_cover: "Savas eksporto viršelio fonas"
   label_custom_export_footer: "Custom export footer image"
@@ -3931,6 +3945,9 @@ lt:
   permission_add_project: "Kurti projektus"
   permission_add_portfolios: "Create portfolios"
   permission_add_programs: "Create programs"
+  permission_add_project_from_template: "Create project from template"
+  permission_add_portfolios_from_template: "Create portfolio from template"
+  permission_add_programs_from_template: "Create program from template"
   permission_add_work_package_attachments: "Prisegti priedus"
   permission_add_work_package_attachments_explanation: "Leidžia pridėti priedus be darbo paketo keitimo teisių"
   permission_add_internal_comments: "Write internal comments"
@@ -4493,6 +4510,13 @@ lt:
         heading: "Disable this project initiation request?"
         confirmation_message: "The initiation request wizard will no longer be available to new projects based on this template. Project managers and project owners will need to manually configure and fill out the relevant information in the Project overview."
         checkbox_message: "I understand that this action is not reversible"
+      name:
+        artefact_name: "Artefact name"
+        artefact_name_caption: "Choose the name for this artefact that your project management framework recommends."
+        options:
+          project_initiation_request: "Project initiation request"
+          project_creation_wizard: "Project creation wizard"
+          project_mandate: "Project mandate"
       submission:
         work_package_type: "Work package type"
         work_package_type_caption: "The work package type that should be used to store the completed artefact."
