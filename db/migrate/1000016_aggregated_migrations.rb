@@ -423,6 +423,7 @@ class AggregatedMigrations < SquashedMigration
     20250128164217_remove_is_default_for_time_entry_activities
     20250210163523_add_export_templates_to_type
     20250213193012_fix_typo_in_settings_user_format_value
+    20250214162601_add_project_life_cycle_step_date_indices
   ]
   # rubocop:enable Metrics/CollectionLiteralLength
 end

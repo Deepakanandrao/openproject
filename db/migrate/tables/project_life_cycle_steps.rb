@@ -45,6 +45,8 @@ class Tables::ProjectLifeCycleSteps < Tables::Base
       t.index :project_life_cycle_steps,
               %i[project_id definition_id],
               unique: true
+      t.index :start_date
+      t.index :end_date
     end
   end
 end
