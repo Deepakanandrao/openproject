@@ -41,7 +41,7 @@ module Projects::CreationWizard
     store_attribute :settings, :project_creation_wizard_notification_text, :string
     store_attribute :settings, :project_creation_wizard_work_package_comment, :string
     store_attribute :settings, :project_creation_wizard_artifact_work_package_id, :integer
-    store_attribute :settings, :project_creation_wizard_pdf_export_type, :string, default: "attachment"
-    store_attribute :settings, :project_creation_wizard_pdf_export_storage, :string
+    store_attribute :settings, :project_creation_wizard_artifact_export_type, :string, default: "attachment"
+    store_attribute :settings, :project_creation_wizard_artifact_export_storage, :string
   end
 end

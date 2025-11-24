@@ -27,38 +27,15 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
-#
-require "spec_helper"
 
-RSpec.describe Projects::TemplateForm, type: :forms do
-  include ViewComponent::TestHelpers
-
-  def render_form
-    render_in_view_context(
-      model,
-      template,
-      copy_options,
-      described_class
-    ) do |model, template, copy_options, described_class|
-      primer_form_with(url: "/foo", model:) do |f|
-        render(described_class.new(f, template:, copy_options:))
+module OpenProject
+  module StepWizard
+    # @logical_path OpenProject/StepWizard
+    class PageLayoutPreview < Lookbook::Preview
+      # @display min_height 400px
+      def default
+        render_with_template
       end
     end
-  end
-
-  before do
-    render_form
-  end
-
-  let(:model) { build_stubbed(:project) }
-  let(:template) { build_stubbed(:template_project) }
-  let(:copy_options) { Projects::CopyOptions.new }
-
-  it "renders hidden field" do
-    expect(page).to have_field "template_id", type: :hidden, with: template.id
-  end
-
-  it "renders Copy options" do
-    expect(page).to have_selector :fieldset, "Copy from template"
   end
 end
