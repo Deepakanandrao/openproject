@@ -433,6 +433,7 @@ class AggregatedMigrations < SquashedMigration
     20250324161229_merge_lifecycle_steps
     20250326151553_export_settings
     20250327071204_add_dismissed_enterprise_banners_to_user_preference
+    20250402083709_change_remote_identities_foreign_key_indices
   ]
   # rubocop:enable Metrics/CollectionLiteralLength
 end
