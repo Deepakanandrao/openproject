@@ -422,6 +422,7 @@ class AggregatedMigrations < SquashedMigration
     20250117105334_remove_manage_own_reminders_permission
     20250128164217_remove_is_default_for_time_entry_activities
     20250210163523_add_export_templates_to_type
+    20250213193012_fix_typo_in_settings_user_format_value
   ]
   # rubocop:enable Metrics/CollectionLiteralLength
 end
