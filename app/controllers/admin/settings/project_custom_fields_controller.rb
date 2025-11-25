@@ -31,6 +31,7 @@
 module Admin::Settings
   class ProjectCustomFieldsController < ::Admin::SettingsController
     include CustomFields::SharedActions
+    include CustomFields::AttributeHelpTextActions
     include OpTurbo::ComponentStream
     include FlashMessagesOutputSafetyHelper
     include Admin::Settings::ProjectCustomFields::ComponentStreams
@@ -186,22 +187,12 @@ module Admin::Settings
       respond_with_turbo_streams
     end
 
-    def attribute_help_text; end
+    def attribute_help_text
+      render_attribute_help_text_form
+    end
 
     def update_attribute_help_text
-      service_class = @attribute_help_text.persisted? ? ::AttributeHelpTexts::UpdateService : ::AttributeHelpTexts::CreateService
-      call = service_class
-        .new(user: current_user, model: @attribute_help_text)
-        .call(attribute_help_text_params_with_attachments)
-
-      if call.success?
-        flash[:notice] = t(:notice_successful_update)
-        redirect_to attribute_help_text_admin_settings_project_custom_field_path(@custom_field)
-      else
-        @attribute_help_text = call.result
-        flash.now[:error] = call.message || I18n.t("notice_internal_server_error")
-        render :attribute_help_text, status: :unprocessable_entity
-      end
+      update_help_text
     end
 
     private
@@ -287,34 +278,12 @@ module Admin::Settings
       params.expect(custom_field: [:role_id])
     end
 
-    def find_or_initialize_attribute_help_text
-      @attribute_help_text = AttributeHelpText::Project.find_or_initialize_by(
-        attribute_name: "custom_field_#{@custom_field.id}"
-      )
+    def show_path
+      attribute_help_text_admin_settings_project_custom_field_path(@custom_field)
     end
 
-    def attribute_help_text_params
-      params
-        .require(:attribute_help_text)
-        .permit(:help_text, :caption, :type, :attribute_name)
-        .merge(
-          type: "AttributeHelpText::Project",
-          attribute_name: "custom_field_#{@custom_field.id}"
-        )
-    end
-
-    def attribute_help_text_params_with_attachments
-      attribute_help_text_params.merge(attachment_params_for_help_text)
-    end
-
-    def attachment_params_for_help_text
-      attachment_params = permitted_params.attachments.to_h
-
-      if attachment_params.any?
-        { attachment_ids: attachment_params.values.map(&:values).flatten }
-      else
-        {}
-      end
+    def render_attribute_help_text_form(status: :ok)
+      render "custom_fields/attribute_help_texts/show_project", status:
     end
   end
 end
