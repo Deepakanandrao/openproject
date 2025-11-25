@@ -42,7 +42,7 @@ module API
 
           mount ::API::V3::Workspaces::Schemas::WorkspaceSchemaAPI
 
-          route_param :id, type: Integer do
+          route_param :id do
             after_validation do
               @project = if current_user.admin?
                            Project
