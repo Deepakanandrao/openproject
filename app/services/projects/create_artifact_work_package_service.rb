@@ -64,7 +64,6 @@ module Projects
         type_id: project.project_creation_wizard_work_package_type_id,
         status_id: project.project_creation_wizard_status_when_submitted_id,
         subject:,
-        description: "A project submission has been created.",
         assigned_to_id:,
         attachments: [pdf_attachment]
       }
