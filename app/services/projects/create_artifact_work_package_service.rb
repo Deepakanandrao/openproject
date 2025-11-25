@@ -72,8 +72,8 @@ module Projects
     end
 
     def subject
-      I18n.t(project.name_artefact_name,
-             default: :project_initiation_request,
+      I18n.t(project.project_creation_wizard_artifact_name,
+             default: ::Projects::CreationWizard::DEFAULT_ARTIFACT_NAME_OPTION.to_sym,
              scope: "settings.project_initiation_request.name.options")
     end
 

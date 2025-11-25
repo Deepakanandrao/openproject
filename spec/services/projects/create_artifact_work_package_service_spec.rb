@@ -50,7 +50,7 @@ RSpec.describe Projects::CreateArtifactWorkPackageService do
       types: [type],
       project_custom_fields: [user_custom_field],
       # project initiation request settings
-      name_artefact_name: "project_mandate",
+      project_creation_wizard_artifact_name: "project_mandate",
       project_creation_wizard_enabled: true,
       project_creation_wizard_work_package_type_id: type.id,
       project_creation_wizard_status_when_submitted_id: status_new.id,
@@ -119,38 +119,29 @@ RSpec.describe Projects::CreateArtifactWorkPackageService do
       project = result.result
 
       artifact_work_package = WorkPackage.find(project.project_creation_wizard_artifact_work_package_id)
-      expected_name = I18n.t("settings.project_initiation_request.name.options.#{project.name_artefact_name}")
+      expected_name = I18n.t("settings.project_initiation_request.name.options.#{project.project_creation_wizard_artifact_name}")
       expect(artifact_work_package.subject).to eq(expected_name)
     end
 
-    context "when the artifact name is misconfigured (unexisting name key)" do
-      before do
-        project.update(name_artefact_name: "misconfigured")
-      end
+    it "if the artifact name is misconfigured (unexisting name key), " \
+       "sets the subject to the 'project_creation_wizard' artifact name" do
+      project.update(project_creation_wizard_artifact_name: "misconfigured")
+      result = instance.call
+      project = result.result
 
-      it "sets the subject to the 'project_initiation_request' artifact name" do
-        result = instance.call
-        project = result.result
-
-        artifact_work_package = WorkPackage.find(project.project_creation_wizard_artifact_work_package_id)
-        expected_name = I18n.t("settings.project_initiation_request.name.options.project_initiation_request")
-        expect(artifact_work_package.subject).to eq(expected_name)
-      end
+      artifact_work_package = WorkPackage.find(project.project_creation_wizard_artifact_work_package_id)
+      expected_name = I18n.t("settings.project_initiation_request.name.options.project_creation_wizard")
+      expect(artifact_work_package.subject).to eq(expected_name)
     end
 
-    context "when the artifact name is not set" do
-      before do
-        project.update(name_artefact_name: nil)
-      end
+    it "if the artifact name is nil, sets the subject to the 'project_creation_wizard' artifact name" do
+      project.update(project_creation_wizard_artifact_name: nil)
+      result = instance.call
+      project = result.result
 
-      it "sets the subject to the 'project_initiation_request' artifact name" do
-        result = instance.call
-        project = result.result
-
-        artifact_work_package = WorkPackage.find(project.project_creation_wizard_artifact_work_package_id)
-        expected_name = I18n.t("settings.project_initiation_request.name.options.project_initiation_request")
-        expect(artifact_work_package.subject).to eq(expected_name)
-      end
+      artifact_work_package = WorkPackage.find(project.project_creation_wizard_artifact_work_package_id)
+      expected_name = I18n.t("settings.project_initiation_request.name.options.project_creation_wizard")
+      expect(artifact_work_package.subject).to eq(expected_name)
     end
   end
 end

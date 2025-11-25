@@ -30,6 +30,7 @@
 
 module Projects::CreationWizard
   ARTIFACT_NAME_OPTIONS = %w[project_creation_wizard project_initiation_request project_mandate].freeze
+  DEFAULT_ARTIFACT_NAME_OPTION = "project_creation_wizard"
 
   extend ActiveSupport::Concern
 
@@ -49,7 +50,7 @@ module Projects::CreationWizard
     # The store_attribute default cannot be used here, because the default is not returned
     # when the JSON defintion is present but it's nil.
     def project_creation_wizard_artifact_name
-      super.presence || "project_creation_wizard"
+      super.presence || DEFAULT_ARTIFACT_NAME_OPTION
     end
   end
 end
