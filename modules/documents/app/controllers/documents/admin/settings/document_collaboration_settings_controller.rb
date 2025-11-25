@@ -28,53 +28,49 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-Rails.application.routes.draw do
-  resources :projects, only: [] do
-    resources :documents, only: %i[create new index] do
-      collection do
-        get :menu, to: "documents/menus#show"
-        get :search
-      end
-    end
-  end
+module Documents
+  module Admin
+    module Settings
+      class DocumentCollaborationSettingsController < ::Admin::SettingsController
+        include OpTurbo::ComponentStream
 
-  resources :documents, except: %i[create new index] do
-    member do
-      get :edit_title, defaults: { format: :turbo_stream }
-      put :update_title, defaults: { format: :turbo_stream }
-      get :cancel_title_edit, defaults: { format: :turbo_stream }
-      put :update_type, defaults: { format: :turbo_stream }
-      get :delete_dialog
-      get :render_avatars, defaults: { format: :turbo_stream }
-    end
-  end
+        menu_item :document_collaboration_settings
 
-  scope module: :documents do
-    namespace :admin do
-      namespace :settings do
-        resources :document_types, except: [:show] do
-          member do
-            put :move
-            get :delete_dialog, defaults: { format: :turbo_stream }
-          end
+        def create
+          toggle_collaboration(enabled: true)
         end
 
-        resource :document_collaboration_settings, only: %i[show create update] do
-          member do
-            get :delete_dialog, defaults: { format: :turbo_stream }
-            delete :destroy
-          end
+        def delete_dialog
+          respond_with_dialog Documents::Admin::CollaborationSettings::DisableTextCollaborationDialogComponent.new
         end
-      end
-    end
-  end
 
-  namespace :admin do
-    namespace :settings do
-      resources :document_categories, except: [:show] do
-        member do
-          put :move
-          get :reassign
+        def destroy
+          toggle_collaboration(enabled: false)
+        end
+
+        private
+
+        def toggle_collaboration(enabled:)
+          call = update_service
+            .new(user: current_user)
+            .call(real_time_text_collaboration_enabled: enabled.to_s)
+
+          if call.success?
+            flash[:notice] = I18n.t(success_key_for(enabled))
+          else
+            flash[:error] = call.errors.full_messages.to_sentence
+          end
+
+          redirect_to action: :show
+        end
+
+        def success_key_for(enabled)
+          base = "documents.admin"
+          if enabled
+            "#{base}.enable_text_collaboration.success"
+          else
+            "#{base}.disable_text_collaboration_dialog.success"
+          end
         end
       end
     end
