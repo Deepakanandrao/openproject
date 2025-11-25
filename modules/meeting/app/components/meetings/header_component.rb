@@ -63,6 +63,7 @@ module Meetings
     end
 
     def can_start_presentation?
+      OpenProject::FeatureDecisions.meetings_presentation_mode_active? &&
         !@meeting.template? &&
         @meeting.agenda_items.any?
     end
