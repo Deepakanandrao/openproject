@@ -70,6 +70,14 @@ RSpec.describe OpenProject::Common::CheckAllComponent, type: :component do
         expect(button["data-action"]).to include "check-all#uncheckAll:stop"
       end
     end
+
+    it "sets aria-controls attribute on 'Check all'" do
+      expect(rendered_component).to have_button "Check all", aria: { controls: "foo" }
+    end
+
+    it "sets aria-controls attribute on 'Uncheck all'" do
+      expect(rendered_component).to have_button "Uncheck all", aria: { controls: "foo" }
+    end
   end
 
   context "when :checkable_id is nil" do
@@ -92,6 +100,18 @@ RSpec.describe OpenProject::Common::CheckAllComponent, type: :component do
     it "connects Stimulus controller actions for 'Uncheck all'" do
       expect(rendered_component).to have_button "Uncheck all" do |button|
         expect(button["data-action"]).to include "checkable#uncheckAll:stop"
+      end
+    end
+
+    it "does not set aria-controls attribute on 'Check all'" do
+      expect(rendered_component).to have_button "Check all" do |button|
+        expect(button["aria-controls"]).to be_nil
+      end
+    end
+
+    it "does not set aria-controls attribute on 'Uncheck all'" do
+      expect(rendered_component).to have_button "Uncheck all" do |button|
+        expect(button["aria-controls"]).to be_nil
       end
     end
   end
