@@ -38,8 +38,6 @@ class AggregatedOpenIDConnectMigrations < SquashedMigration
 
   squashed_migrations *%w[
     1018015_aggregated_openid_connect_migrations
-    20221122072857_add_oidc_session_link
-    20240829140616_migrate_oidc_settings_to_providers
     20241212131910_add_oidc_user_tokens
     20250218133700_add_expires_at_to_oidc_user_tokens
   ]

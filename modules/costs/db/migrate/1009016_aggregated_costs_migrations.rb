@@ -39,16 +39,6 @@ require_relative "tables/time_entry_journals"
 class AggregatedCostsMigrations < SquashedMigration
   squashed_migrations *%w[
     1009015_aggregated_costs_migrations
-    20180323133404_to_v710_aggregated_costs_migrations
-    20200327074416_rename_fixed_version_in_cost_query
-    20200807083952_rename_time_and_cost_module
-    20210726065912_rename_cost_object_type
-    20201001184404_rename_timestamp_on_time_and_cost_entry
-    20220608213712_add_logged_by_id_to_time_entries
-    20220707192304_backfill_time_entries_with_logged_by_id
-    20220815072420_add_logged_by_to_time_entries_journals
-    20221018160449_add_logged_by_to_cost_entries
-    20230622074222_add_ongoing_to_time_entry
     20241120103858_add_start_end_times_to_time_entries
     20241125104347_add_timezone_identifier_to_time_entry
     20250219103939_make_time_entry_comment_text_field
