@@ -37,6 +37,14 @@ module Project::PDFExport::ProjectInitiation::Styles
     include Exports::PDF::Components::CoverStyles
     include Project::PDFExport::Common::ProjectAttributesStyles
 
+    def page_subheading
+      resolve_font(@styles[:page_subheading])
+    end
+
+    def page_subheading_margins
+      resolve_margin(@styles[:page_subheading])
+    end
+
     def section_title
       resolve_font(@styles.dig(:section, :title))
     end
