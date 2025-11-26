@@ -36,7 +36,7 @@ module API
         include API::Decorators::LinkedResource
 
         def project_link(project, name:, getter: "#{name}_id")
-          if project_visible?(project)
+          if project_invisible?(project)
             {
               href: API::V3::URN_UNDISCLOSED,
               title: I18n.t(:"api_v3.undisclosed.#{name}")
@@ -55,7 +55,7 @@ module API
           end
         end
 
-        def project_visible?(project)
+        def project_invisible?(project)
           # Explicitly check for admin as an archived project
           # will lead to the admin losing permissions in the project.
           project && !project.visible? && !current_user&.admin?
@@ -64,7 +64,7 @@ module API
         class_methods do
           def associated_project(name = :project,
                                  as: name,
-                                 skip_render: ->(*) { project_visible?(represented.public_send(name)) })
+                                 skip_render: ->(*) { project_invisible?(represented.public_send(name)) })
             options = {
               as: as,
               representer: ::API::V3::Projects::ProjectRepresenter,
