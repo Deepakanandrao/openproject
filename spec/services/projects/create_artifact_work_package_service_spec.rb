@@ -297,6 +297,71 @@ RSpec.describe Projects::CreateArtifactWorkPackageService do
         end
       end
     end
+
+    describe "notification email" do
+      context "when confirmation email is enabled" do
+        before do
+          project.update(
+            project_creation_wizard_send_confirmation_email: true,
+            project_creation_wizard_notification_text: "Thank you for submitting your request"
+          )
+        end
+
+        it "sends the creation wizard submitted email" do
+          allow(ProjectArtifactsMailer).to receive(:creation_wizard_submitted).and_call_original
+
+          result = instance.call
+
+          expect(result).to be_success
+          expect(ProjectArtifactsMailer).to have_received(:creation_wizard_submitted)
+        end
+
+        it "sends the email with correct parameters" do
+          mailer_double = instance_double(ActionMailer::MessageDelivery)
+          allow(mailer_double).to receive(:deliver_later)
+
+          allow(ProjectArtifactsMailer)
+            .to receive(:creation_wizard_submitted)
+                  .with(current_user, project, instance_of(WorkPackage))
+                  .and_return(mailer_double)
+
+          instance.call
+
+          expect(mailer_double).to have_received(:deliver_later)
+        end
+
+        it "enqueues the email for delivery" do
+          expect do
+            instance.call
+          end.to have_enqueued_job(Mails::MailerJob)
+                   .with("ProjectArtifactsMailer", "creation_wizard_submitted", "deliver_now",
+                         { args: [current_user, project, instance_of(WorkPackage)] })
+        end
+      end
+
+      context "when confirmation email is disabled" do
+        before do
+          project.update(project_creation_wizard_send_confirmation_email: false)
+        end
+
+        it "does not send the creation wizard submitted email" do
+          allow(ProjectArtifactsMailer).to receive(:creation_wizard_submitted)
+
+          result = instance.call
+
+          expect(result).to be_success
+          expect(ProjectArtifactsMailer).not_to have_received(:creation_wizard_submitted)
+        end
+
+        it "does not enqueue any email delivery job" do
+          expect do
+            instance.call
+          end.not_to have_enqueued_job(Mails::MailerJob)
+                       .with("ProjectArtifactsMailer", "creation_wizard_submitted", "deliver_now", anything)
+        end
+      end
+    end
+
   end
 
   context "when contract is invalid" do
@@ -316,70 +381,6 @@ RSpec.describe Projects::CreateArtifactWorkPackageService do
       project = result.result
       expect(project.project_creation_wizard_artifact_work_package_id).to be_nil
       expect(project.work_packages.count).to be_zero
-    end
-  end
-
-  describe "notification email" do
-    context "when confirmation email is enabled" do
-      before do
-        project.update(
-          project_creation_wizard_send_confirmation_email: true,
-          project_creation_wizard_notification_text: "Thank you for submitting your request"
-        )
-      end
-
-      it "sends the creation wizard submitted email" do
-        allow(ProjectArtifactsMailer).to receive(:creation_wizard_submitted).and_call_original
-
-        result = instance.call
-
-        expect(result).to be_success
-        expect(ProjectArtifactsMailer).to have_received(:creation_wizard_submitted)
-      end
-
-      it "sends the email with correct parameters" do
-        mailer_double = instance_double(ActionMailer::MessageDelivery)
-        allow(mailer_double).to receive(:deliver_later)
-
-        allow(ProjectArtifactsMailer)
-          .to receive(:creation_wizard_submitted)
-                .with(current_user, project, instance_of(WorkPackage))
-                .and_return(mailer_double)
-
-        instance.call
-
-        expect(mailer_double).to have_received(:deliver_later)
-      end
-
-      it "enqueues the email for delivery" do
-        expect do
-          instance.call
-        end.to have_enqueued_job(Mails::MailerJob)
-                 .with("ProjectArtifactsMailer", "creation_wizard_submitted", "deliver_now",
-                       { args: [current_user, project, instance_of(WorkPackage)] })
-      end
-    end
-
-    context "when confirmation email is disabled" do
-      before do
-        project.update(project_creation_wizard_send_confirmation_email: false)
-      end
-
-      it "does not send the creation wizard submitted email" do
-        allow(ProjectArtifactsMailer).to receive(:creation_wizard_submitted)
-
-        result = instance.call
-
-        expect(result).to be_success
-        expect(ProjectArtifactsMailer).not_to have_received(:creation_wizard_submitted)
-      end
-
-      it "does not enqueue any email delivery job" do
-        expect do
-          instance.call
-        end.not_to have_enqueued_job(Mails::MailerJob)
-                     .with("ProjectArtifactsMailer", "creation_wizard_submitted", "deliver_now", anything)
-      end
     end
   end
 end
