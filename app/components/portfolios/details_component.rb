@@ -74,8 +74,8 @@ module Portfolios
 
     def render_sub_status_bar?
       # When none of the descendants have a status set, there's nothing to show and we
-      # will return false.
-      sub_statuses.keys.any?(&:present?)
+      # will return false. Additionally, we won't show the bar for archived portfolios.
+      !archived? && sub_statuses.keys.any?(&:present?)
     end
 
     def sub_statuses_with_percentages

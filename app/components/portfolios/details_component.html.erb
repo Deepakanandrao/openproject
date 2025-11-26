@@ -21,7 +21,7 @@
         end
 
         unless archived?
-          header.with_column(mr: 2) do
+          header.with_column(mr: 2, test_selector: "op-portfolios--status") do
             render(
               Projects::StatusButtonComponent.new(
                 user: @current_user,
@@ -33,7 +33,6 @@
           end
         end
 
-        # TODO: hide when archived
         if render_sub_status_bar?
           header.with_column(classes: "op-portfolios--progress") do
             render(
@@ -183,7 +182,6 @@
     end
 
     # Card that appears when hovering over the progress bar
-    # TODO: hide when archived
     if render_sub_status_bar?
       flex.with_row(classes: "op-portfolios--popover-container") do
         flex_layout(
