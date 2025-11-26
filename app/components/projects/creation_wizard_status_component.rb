@@ -28,11 +28,9 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class Projects::ProjectInitiationStatusComponent < ApplicationComponent
+class Projects::CreationWizardStatusComponent < ApplicationComponent
   include ApplicationHelper
-  include OpTurbo::Streamable
-  include OpPrimer::ComponentHelpers
-  include ProjectStatusHelper
+  include ProjectHelper
 
   attr_reader :project, :current_user,
               :artifact_id, :artifact_work_package
@@ -42,14 +40,40 @@ class Projects::ProjectInitiationStatusComponent < ApplicationComponent
 
     @project = project
     @current_user = current_user
-    @artifact_id = project.project_creation_wizard_artifact_work_package_id
+    @artifact_id = project.project_creation_wizard_artifact_work_package_id.presence
     @artifact_work_package = find_artifact if artifact_id.present?
   end
 
+  def before_render
+    @status_text = set_status_text
+    @status_explanation = set_status_explanation
+  end
+
+  def render?
+    project.project_creation_wizard_enabled
+  end
 
   private
 
+  def set_status_text
+    if artifact_id
+      t("settings.project_initiation_request.status.submitted",
+        wizard_name: project_creation_wizard_name(project))
+    else
+      t("settings.project_initiation_request.status.not_completed",
+        wizard_name: project_creation_wizard_name(project))
+    end
+  end
+
+  def set_status_explanation
+    if artifact_work_package
+      t("settings.project_initiation_request.status.submitted_description")
+    elsif !artifact_id
+      t("settings.project_initiation_request.status.not_completed_description")
+    end
+  end
+
   def find_artifact
-    WorkPackage.visible.find_by(id:)
+    WorkPackage.visible.find_by(id: artifact_id)
   end
 end
