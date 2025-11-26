@@ -22,7 +22,7 @@ export interface IProject {
   name:string;
   public:boolean;
   active:boolean;
-  workspaceType:string;
+  _type:string;
   statusExplanation:IFormattable;
   description:IFormattable;
 

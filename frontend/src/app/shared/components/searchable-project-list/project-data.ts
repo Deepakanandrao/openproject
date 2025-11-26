@@ -5,7 +5,7 @@ export interface IProjectData {
   href:string;
   identifier:string;
   name:string;
-  workspaceType:string;
+  _type:string;
   disabled:boolean;
   children:IProjectData[];
   position:number;

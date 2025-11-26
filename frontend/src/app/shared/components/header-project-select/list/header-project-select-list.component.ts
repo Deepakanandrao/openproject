@@ -128,13 +128,14 @@ export class OpHeaderProjectSelectListComponent implements OnInit, OnChanges {
   }
 
   workspaceTypeIconWithLabel(project:IProjectData):SafeHtml {
-    const iconData = this.workspaceTypeSVGData(project.workspaceType);
+    const workspaceType = project._type.toLowerCase();
+    const iconData = this.workspaceTypeSVGData(workspaceType);
     if (!iconData) {
       return '';
     }
 
     const htmlString = toDOMString(iconData, 'small', { 'aria-hidden': 'true', class: 'octicon' });
-    const translatedTypeName = this.I18n.t(`js.include_workspaces.types.${project.workspaceType}`);
+    const translatedTypeName = this.I18n.t(`js.include_workspaces.types.${workspaceType}`);
     const iconWithText = htmlString + ' ' + translatedTypeName;
     return this.sanitizer.bypassSecurityTrustHtml(iconWithText);
   }

@@ -155,7 +155,7 @@ export class SearchableProjectListService {
         'elements/identifier',
         'elements/self',
         'elements/ancestors',
-        'elements/workspaceType'
+        'elements/_type'
       ],
       sortBy: [['lft', 'asc']],
     };

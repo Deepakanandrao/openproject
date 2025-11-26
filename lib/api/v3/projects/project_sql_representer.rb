@@ -148,8 +148,6 @@ module API
         property :active
 
         property :public
-
-        property :workspaceType, column: :workspace_type
       end
     end
   end
