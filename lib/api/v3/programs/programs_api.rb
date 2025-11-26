@@ -1,4 +1,6 @@
-#-- copyright
+# frozen_string_literal: true
+
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -24,15 +26,34 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
 module API
   module V3
-    module Projects
-      module Schemas
-        class ProjectSchemaAPI < ::API::OpenProjectAPI
-          resources :schema do
-            get &::API::V3::Utilities::Endpoints::Schema.new(model: Project).mount
+    module Programs
+      class ProgramsAPI < ::API::OpenProjectAPI
+        resources :programs do
+          after_validation do
+            guard_feature_flag :portfolio_models
+          end
+
+          get &::API::V3::Utilities::Endpoints::SqlFallbackedIndex.new(model: Project,
+                                                                       scope: -> {
+                                                                         Project
+                                                                           .includes(API::V3::Projects::ProjectRepresenter.to_eager_load)
+                                                                           .program
+                                                                       })
+                                                                  .mount
+          route_param :id do
+            after_validation do
+              @project = if current_user.admin?
+                           Project.program
+                         else
+                           Project.program.visible(current_user)
+                         end.find(params[:id])
+            end
+
+            mount ::API::V3::Workspaces::InstanceApis
           end
         end
       end
