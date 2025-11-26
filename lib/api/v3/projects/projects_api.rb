@@ -35,9 +35,11 @@ module API
         resources :projects do
           get &::API::V3::Utilities::Endpoints::SqlFallbackedIndex.new(model: Project,
                                                                        scope: -> {
+                                                                         # TODO: This should be scoped to only allow actual
+                                                                         # projects. But since it is an established route,
+                                                                         # we keep it intact for all kinds of workspaces for 17.0.
                                                                          Project
                                                                            .includes(ProjectRepresenter.to_eager_load)
-                                                                           .project
                                                                        })
                                                                   .mount
 
