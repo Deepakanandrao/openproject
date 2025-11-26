@@ -59,7 +59,7 @@ describe('APIv3Service', () => {
     const projectIdentifier = 'majora';
 
     it("should provide the project's path", () => {
-      expect(service.projects.id(projectIdentifier).path).toEqual('/api/v3/workspaces/majora');
+      expect(service.projects.id(projectIdentifier).path).toEqual('/api/v3/projects/majora');
     });
 
     it('should provide a path to work package query on subject or ID ', () => {
