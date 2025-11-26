@@ -53,8 +53,8 @@ module Grids
         subitems_with_more.last
       end
 
-      def has_no_subitems?
-        displayed_subitems.empty?
+      def has_subitems?
+        displayed_subitems.any?
       end
 
       def wrapper_arguments
