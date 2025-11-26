@@ -82,6 +82,7 @@ RSpec.describe Project::PDFExport::ProjectInitiation, with_flag: { project_initi
                                     default: :project_initiation_request,
                                     scope: "settings.project_initiation_request.name.options")
       expected_document = [
+        project.name, custom_artefact_name, export_time_formatted, # cover page
         project.name,
         custom_artefact_name,
         "1/1", custom_artefact_name, project.name
@@ -110,6 +111,7 @@ RSpec.describe Project::PDFExport::ProjectInitiation, with_flag: { project_initi
 
     it "exports a PDF containing project initiation with custom attributes grouped by sections" do
       expected_document = [
+        project.name, heading, export_time_formatted, # cover page
         project.name,
         heading,
         "The description of the project",
@@ -140,6 +142,7 @@ RSpec.describe Project::PDFExport::ProjectInitiation, with_flag: { project_initi
 
     it "exports a PDF containing project initiation using the custom defined name" do
       expected_document = [
+        project.name, heading, export_time_formatted, # cover page
         project.name,
         heading, " ", "    Submitted    ",
         "1/1", heading, project.name
@@ -153,6 +156,7 @@ RSpec.describe Project::PDFExport::ProjectInitiation, with_flag: { project_initi
 
     it "exports a PDF containing project initiation using the custom defined name" do
       expected_document = [
+        project.name, heading, export_time_formatted, # cover page
         project.name,
         heading, " ", "    Approved    ",
         "1/1", heading, project.name
