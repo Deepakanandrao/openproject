@@ -28,22 +28,17 @@
 
 module API
   module V3
-    module Queries
-      module Schemas
-        class QueryProjectSchemaAPI < ::API::OpenProjectAPI
-          resource :schema do
-            helpers do
-              def representer
-                ::API::V3::Queries::Schemas::QuerySchemaRepresenter
-              end
-            end
+    module Types
+      class TypesByWorkspaceAPI < ::API::OpenProjectAPI
+        resources :types do
+          after_validation do
+            authorize_in_project %i[view_work_packages manage_types], project: @project
+          end
 
-            get do
-              representer.new(Query.new(project: @project),
-                              self_link: api_v3_paths.query_project_schema(@project.id),
-                              current_user:,
-                              form_embedded: false)
-            end
+          get do
+            TypeCollectionRepresenter.new(@project.types,
+                                          self_link: api_v3_paths.types_by_workspace(@project.id),
+                                          current_user:)
           end
         end
       end

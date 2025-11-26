@@ -1,4 +1,6 @@
-#-- copyright
+# frozen_string_literal: true
+
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -24,35 +26,30 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
-module API
-  module V3
-    module Queries
-      class QueriesByProjectAPI < ::API::OpenProjectAPI
-        namespace :queries do
-          helpers ::API::V3::Queries::Helpers::QueryRepresenterResponse
+require "spec_helper"
 
-          after_validation do
-            authorize_in_any_work_package(:view_work_packages, in_project: @project)
-          end
+RSpec.describe "API::V3::Workspaces::AvailableAssigneesAPI" do
+  include API::V3::Utilities::PathHelper
 
-          mount API::V3::Queries::Schemas::QueryProjectFilterInstanceSchemaAPI
-          mount API::V3::Queries::Schemas::QueryProjectSchemaAPI
+  context "when using the workspaces route" do
+    it_behaves_like "available principals", :assignees do
+      let(:base_permissions) { %i[add_work_packages] }
+      let(:href) { api_v3_paths.available_assignees_in_workspace(project.id) }
+    end
+  end
 
-          namespace :default do
-            params do
-              optional :valid_subset, type: Boolean
-            end
-
-            get do
-              query = Query.new_default(user: current_user,
-                                        project: @project)
-
-              query_representer_response(query, params, params.delete(:valid_subset))
-            end
-          end
-        end
+  context "when using the projects route" do
+    it_behaves_like "available principals", :assignees do
+      let(:base_permissions) { %i[add_work_packages] }
+      let(:href) { api_v3_paths.available_assignees_in_project(project.id) }
+    end
+    context "for a non project" do
+      it_behaves_like "available principals", :assignees do
+        let(:base_permissions) { %i[add_work_packages] }
+        let(:project) { create(:portfolio) }
+        let(:href) { api_v3_paths.available_assignees_in_project(project.id) }
       end
     end
   end

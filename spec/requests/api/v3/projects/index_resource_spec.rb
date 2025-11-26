@@ -36,8 +36,6 @@ RSpec.describe "API v3 Project resource index", content_type: :json do
   include API::V3::Utilities::PathHelper
 
   shared_let(:admin) { create(:admin) }
-  # This portfolio is here as a check to see if only projects are returned via this endpoint.
-  shared_let(:portfolio) { create(:portfolio, public: true) }
 
   let(:project) do
     create(:project, public: false, active: project_active)
@@ -286,6 +284,15 @@ RSpec.describe "API v3 Project resource index", content_type: :json do
     end
   end
 
+  context "with programs and portfolios" do
+    shared_let(:portfolio) { create(:portfolio, public: true) }
+    shared_let(:program) { create(:program, public: true) }
+
+    it_behaves_like "API V3 collection response", 3, 3, "Project" do
+      let(:elements) { [project, program, portfolio] }
+    end
+  end
+
   context "with filtering by visibility" do
     let(:public_project) do
       # Otherwise, the public project is invisible
@@ -385,9 +392,7 @@ RSpec.describe "API v3 Project resource index", content_type: :json do
   context "as project collection" do
     let(:role) { create(:project_role, permissions: %i[view_work_packages]) }
     let(:projects) { [project] }
-    let(:expected) do
-      "#{api_v3_paths.project(project.id)}/work_packages"
-    end
+    let(:expected) { api_v3_paths.work_packages_by_workspace(project.id) }
 
     it "has projects with links to their work packages" do
       expect(last_response.body)

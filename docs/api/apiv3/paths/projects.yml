@@ -9,6 +9,10 @@ get:
     query parameters similar to how work packages are filtered. In addition to the
     provided filter, the result set is always limited to only contain projects the
     client is allowed to see.
+
+    Prior to OpenProject 17.0, only projects existed and the concept of workspaces wasn't implemented in the API.
+    With 17.0 the other workspace types (program and portfolio) exist and will be returned alongside projects by this endpoint.
+    This might surprise typed clients.
   parameters:
     - name: filters
       schema:

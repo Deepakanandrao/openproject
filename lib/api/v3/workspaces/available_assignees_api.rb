@@ -1,4 +1,6 @@
-#-- copyright
+# frozen_string_literal: true
+
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -24,29 +26,23 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
-
-require "api/v3/projects/project_collection_representer"
+# ++
 
 module API
   module V3
-    module Versions
-      class ProjectsByVersionAPI < ::API::OpenProjectAPI
-        resources :projects do
+    module Workspaces
+      class AvailableAssigneesAPI < ::API::OpenProjectAPI
+        resource :available_assignees do
           after_validation do
-            @projects = @version.projects.visible(current_user)
-
-            # Authorization for accessing the version is done in the versions
-            # endpoint into which this endpoint is embedded.
+            authorize_in_project(:add_work_packages, project: @project)
           end
 
-          get do
-            path = api_v3_paths.projects_by_version @version.id
-            Projects::ProjectCollectionRepresenter
-              .new(@projects,
-                   self_link: path,
-                   current_user:)
-          end
+          get &::API::V3::Utilities::Endpoints::Index.new(model: Principal,
+                                                          scope: -> {
+                                                            Principal.possible_assignee(@project).includes(:preference)
+                                                          },
+                                                          render_representer: Users::UnpaginatedUserCollectionRepresenter)
+                                                     .mount
         end
       end
     end
