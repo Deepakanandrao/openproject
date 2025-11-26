@@ -4113,6 +4113,7 @@ ro:
       title: Modificare identificator proiect
     not_available: "Project N/A"
     template:
+      copying_title: "Applying template"
       copying: >
         Proiectul dumneavoastră este creat din proiectul șablon selectat. Veți fi notificat prin e-mail imediat ce proiectul va fi disponibil.
       use_template: "Utilizează șablon"

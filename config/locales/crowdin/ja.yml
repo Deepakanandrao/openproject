@@ -4015,6 +4015,7 @@ ja:
       title: プロジェクトの識別子を変更
     not_available: "プロジェクトなし"
     template:
+      copying_title: "Applying template"
       copying: >
         プロジェクトは選択したテンプレートプロジェクトから作成されています。プロジェクトが利用可能になるとすぐにメールで通知されます。
       use_template: "テンプレートを使用"

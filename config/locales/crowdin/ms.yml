@@ -4013,6 +4013,7 @@ ms:
       title: Ubah pengenal projek
     not_available: "Project N/A"
     template:
+      copying_title: "Applying template"
       copying: >
         Projek anda sedang dicipta dari templat projek yang dipilih. Anda akan dimaklumkan melalui mel sebaik sahaja projek tersebut tersedia.
       use_template: "Guna templat"

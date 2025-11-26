@@ -4011,6 +4011,7 @@ id:
       title: Change the project's identifier
     not_available: "Project N/A"
     template:
+      copying_title: "Applying template"
       copying: >
         Proyek Anda sedang dibuat dari proyek template yang dipilih. Anda akan diberi tahu melalui surat segera setelah proyek tersedia.
       use_template: "Gunakan templat"

@@ -4159,6 +4159,7 @@ lt:
       title: Pakeisti projekto identifikatorių
     not_available: "Project N/A"
     template:
+      copying_title: "Applying template"
       copying: >
         Jūsų projektas šiuo metu yra kuriamas pagal šabloninį projektą. Kai tik naujasis projektas bus pasiekiamas, jums pranešime el. pašto žinute.
       use_template: "Naudoti šabloną"

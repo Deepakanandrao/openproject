@@ -4010,6 +4010,7 @@ zh-TW:
       title: 修改專案的識別
     not_available: "無專案"
     template:
+      copying_title: "Applying template"
       copying: >
         依照專案範本創立專案中.完成後會以電郵通知。
       use_template: "使用範本"

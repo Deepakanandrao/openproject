@@ -4162,6 +4162,7 @@ cs:
       title: Změnit identifikátor projektu
     not_available: "Project N/A"
     template:
+      copying_title: "Applying template"
       copying: >
         Váš projekt se vytváří z vybranéhé šablony. Budete upozorněni e-mailem, jakmile bude projekt k dispozici.
       use_template: "Použít šablonu"

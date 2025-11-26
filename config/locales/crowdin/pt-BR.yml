@@ -4061,6 +4061,7 @@ pt-BR:
       title: Alterar o identificador do projeto
     not_available: "Projeto N/A"
     template:
+      copying_title: "Applying template"
       copying: >
         Seu projeto está sendo criado a partir do modelo selecionado. Você será notificado por e-mail assim que o projeto estiver disponível.
       use_template: "Usar modelo"

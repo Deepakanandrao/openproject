@@ -4063,6 +4063,7 @@ hu:
       title: Módosítsa a projekt azonosítóját
     not_available: "Project N/A"
     template:
+      copying_title: "Applying template"
       copying: >
         A projekt a kiválasztott sablonprojektből jön létre. Amint elérhető a projekt, e-mailen értesítjük.
       use_template: "Sablon használata"

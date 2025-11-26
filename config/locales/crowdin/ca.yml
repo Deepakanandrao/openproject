@@ -4058,6 +4058,7 @@ ca:
       title: Canviar l'identificador del projecte
     not_available: "Project N/A"
     template:
+      copying_title: "Applying template"
       copying: >
         El teu projecte s'ha creat des de la plantilla de projecte seleccionada. Seràs notificat via correu electrònic quan el projecte estigui disponible.
       use_template: "Usar plantilla"

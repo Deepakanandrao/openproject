@@ -4060,6 +4060,7 @@ nl:
       title: Wijzig het identificatienummer van het project
     not_available: "Project N/A"
     template:
+      copying_title: "Applying template"
       copying: >
         Uw project wordt aangemaakt uit het geselecteerde sjabloonproject. U wordt per e-mail op de hoogte gebracht zodra het project beschikbaar is.
       use_template: "Sjabloon gebruiken"

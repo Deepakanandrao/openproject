@@ -4063,6 +4063,7 @@ tr:
       title: Projenin tanımlayıcısını değiştirme
     not_available: "Proje mevcut değil"
     template:
+      copying_title: "Applying template"
       copying: >
         Projeniz seçilen şablon projesinden oluşturuluyor. Proje hazır olur olmaz posta ile bilgilendirileceksiniz.
       use_template: "Şablon kullan"

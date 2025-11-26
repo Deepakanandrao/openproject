@@ -4062,6 +4062,7 @@ it:
       title: Modifica l'identificatore del progetto
     not_available: "Progetto N/A"
     template:
+      copying_title: "Applying template"
       copying: >
         Il tuo progetto è in fase di creazione dal progetto modello selezionato. Sarai avvisato via mail non appena il progetto sarà disponibile.
       use_template: "Utilizza modello"

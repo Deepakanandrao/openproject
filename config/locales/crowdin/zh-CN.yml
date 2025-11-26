@@ -4009,6 +4009,7 @@ zh-CN:
       title: 更改项目的标识符
     not_available: "项目 N/A"
     template:
+      copying_title: "Applying template"
       copying: >
         您的项目正在从选定的模板项目进行创建。一旦项目可用，您将会收到邮件通知。
       use_template: "使用模板"

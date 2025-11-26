@@ -2385,7 +2385,7 @@ de:
       nextcloud_sso: Single Sign-On für Nextcloud-Speicher
       one_drive_sharepoint_file_storage: OneDrive/SharePoint-Datei-Speicher
       placeholder_users: Platzhalter-Benutzer
-      portfolio_management: Portfolio management
+      portfolio_management: Portfolioverwaltung
       project_list_sharing: Projektlistenfreigabe
       readonly_work_packages: Schreibgeschützte Arbeitspakete
       scim_api: SCIM-Server-API
@@ -2479,7 +2479,7 @@ de:
         title: "Interne Kommentare schreiben, die nur für ausgewählte Mitglieder sichtbar ist."
         description: " "
       portfolio_management:
-        description: Organize your work effectively by creating portfolios and programs with the portfolio management module.
+        description: Organisieren Sie Ihre Arbeit effektiv, indem Sie Portfolios und Programme mit dem Portfolio-Management-Modul erstellen.
     teaser:
       title:
         one: "Ein Tag des %{trial_plan} Test-Token verbleibend"
@@ -4057,6 +4057,7 @@ de:
       title: Projektkennung ändern
     not_available: "Projekt N/A"
     template:
+      copying_title: "Vorlage anwenden"
       copying: >
         Ihr Projekt wird aus der ausgewählten Vorlage erstellt. Sie werden per E-Mail benachrichtigt, sobald das Projekt verfügbar ist.
       use_template: "Projektvorlage verwenden"

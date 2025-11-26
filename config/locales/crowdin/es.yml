@@ -4061,6 +4061,7 @@ es:
       title: Cambiar el identificador de proyecto
     not_available: "Proyecto N/D"
     template:
+      copying_title: "Applying template"
       copying: >
         Tu proyecto está siendo creado a partir de la plantilla seleccionada. Serás notificado por correo electrónico tan pronto como el proyecto esté disponible.
       use_template: "Usar plantilla"

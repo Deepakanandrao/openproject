@@ -4060,6 +4060,7 @@ el:
       title: Αλλαγή αναγνωριστικού του έργου
     not_available: "Project N/A"
     template:
+      copying_title: "Applying template"
       copying: >
         Το έργο σας δημιουργείται από το επιλεγμένο πρότυπο. Θα ειδοποιηθείτε μέσω email μόλις το έργο είναι διαθέσιμο.
       use_template: "Χρήση προτύπου"

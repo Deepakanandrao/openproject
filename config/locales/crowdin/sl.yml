@@ -4162,6 +4162,7 @@ sl:
       title: Spremenite identifikator projekta
     not_available: "Project N/A"
     template:
+      copying_title: "Applying template"
       copying: >
         Vaš projekt se ustvarja iz izbrane projektne predloge. Preko e-pošte boste obveščeni, ko bo projekt na voljo.
       use_template: "Uporabi predlogo"

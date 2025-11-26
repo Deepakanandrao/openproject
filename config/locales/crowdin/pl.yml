@@ -4158,6 +4158,7 @@ pl:
       title: Zmień identyfikator projektu
     not_available: "Projekt niedostępny"
     template:
+      copying_title: "Applying template"
       copying: >
         Twój projekt jest tworzony z wybranego projektu wzorcowego. Gdy tylko projekt będzie dostępny, otrzymasz powiadomienie pocztą.
       use_template: "Użyj szablonu"

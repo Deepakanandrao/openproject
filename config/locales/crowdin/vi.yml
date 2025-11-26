@@ -4016,6 +4016,7 @@ vi:
       title: Thay đổi mã định danh của dự án
     not_available: "Project N/A"
     template:
+      copying_title: "Applying template"
       copying: >
         Dự án của bạn đang được tạo từ dự án mẫu đã chọn. Bạn sẽ nhận được thông báo qua email ngay khi dự án có sẵn.
       use_template: "Sử dụng mẫu"

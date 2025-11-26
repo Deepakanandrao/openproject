@@ -4064,6 +4064,7 @@
       title: Endre prosjektets identifikator
     not_available: "Project N/A"
     template:
+      copying_title: "Applying template"
       copying: >
         Ditt prosjekt blir opprettet fra den valgte prosjektmalen, og du vil få beskjed på e-post så snart prosjektet er tilgjengelig.
       use_template: "Bruk mal"

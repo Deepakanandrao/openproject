@@ -4114,6 +4114,7 @@ sr:
       title: Change the project's identifier
     not_available: "Project N/A"
     template:
+      copying_title: "Applying template"
       copying: >
         Your project is being created from the selected template project. You will be notified by mail as soon as the project is available.
       use_template: "Use template"

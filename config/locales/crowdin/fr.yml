@@ -4063,6 +4063,7 @@ fr:
       title: Modifier l'identifiant du projet
     not_available: "Projet N/D"
     template:
+      copying_title: "Applying template"
       copying: >
         Votre projet est en cours de création à partir du modèle de projet sélectionné. Vous serez averti par e-mail dès que le projet sera disponible.
       use_template: "Utiliser le modèle"

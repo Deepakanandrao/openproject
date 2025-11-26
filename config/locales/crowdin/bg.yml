@@ -4065,6 +4065,7 @@ bg:
       title: Промяна на идентификатора на проекта
     not_available: "Project N/A"
     template:
+      copying_title: "Applying template"
       copying: >
         Вашият проект се създава от избрания шаблон на проект. Ще бъдете уведомени по пощата, веднага щом проектът стане наличен.
       use_template: "Използвайте шаблон"
