@@ -82,12 +82,9 @@ RSpec.describe Project::PDFExport::ProjectInitiation, with_flag: { project_initi
                                     default: :project_initiation_request,
                                     scope: "settings.project_initiation_request.name.options")
       expected_document = [
-        project.name, custom_artefact_name, export_time_formatted, # cover page
+        project.name,
         custom_artefact_name,
-        "Project",
-        "Name", project.name,
-        "Description", "–",
-        "1/1", export_time_formatted, "#{project.name} | #{custom_artefact_name}"
+        "1/1", custom_artefact_name, project.name
       ].join(" ")
       expect(subject).to eq expected_document
     end
@@ -113,13 +110,9 @@ RSpec.describe Project::PDFExport::ProjectInitiation, with_flag: { project_initi
 
     it "exports a PDF containing project initiation with custom attributes grouped by sections" do
       expected_document = [
-        project.name, heading, export_time_formatted, # cover page
-
+        project.name,
         heading,
-
-        "Project",
-        "Name", project.name,
-        "Description", "The description of the project",
+        "The description of the project",
 
         "Section A",
         link_cf.name, "https://www.example.com",
@@ -135,7 +128,7 @@ RSpec.describe Project::PDFExport::ProjectInitiation, with_flag: { project_initi
         float_cf.name, "4.5",
         int_cf.name, "5",
 
-        "1/1", export_time_formatted, "#{project.name} | #{heading}"
+        "1/1", heading, project.name
       ].join(" ")
 
       expect(subject).to eq expected_document
@@ -147,12 +140,9 @@ RSpec.describe Project::PDFExport::ProjectInitiation, with_flag: { project_initi
 
     it "exports a PDF containing project initiation using the custom defined name" do
       expected_document = [
-        project.name, heading, export_time_formatted, # cover page
+        project.name,
         heading, " ", "    Submitted    ",
-        "Project",
-        "Name", project.name,
-        "Description", "–",
-        "1/1", export_time_formatted, "#{project.name} | #{heading}"
+        "1/1", heading, project.name
       ].join(" ")
       expect(subject).to eq expected_document
     end
@@ -163,12 +153,9 @@ RSpec.describe Project::PDFExport::ProjectInitiation, with_flag: { project_initi
 
     it "exports a PDF containing project initiation using the custom defined name" do
       expected_document = [
-        project.name, heading, export_time_formatted, # cover page
+        project.name,
         heading, " ", "    Approved    ",
-        "Project",
-        "Name", project.name,
-        "Description", "–",
-        "1/1", export_time_formatted, "#{project.name} | #{heading}"
+        "1/1", heading, project.name
       ].join(" ")
       expect(subject).to eq expected_document
     end

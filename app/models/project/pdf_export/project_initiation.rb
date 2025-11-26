@@ -89,7 +89,9 @@ class Project::PDFExport::ProjectInitiation < Exports::Exporter
   def render_project_initiation
     pdf.title = heading
     write_cover_page! if with_cover?
+    write_project_initiation_heading
     write_project_initiation_title
+    write_project_initiation_description
     write_project_initiation
     write_headers_footers
   end
@@ -104,7 +106,7 @@ class Project::PDFExport::ProjectInitiation < Exports::Exporter
   end
 
   def footer_date
-    format_time(export_datetime)
+    heading
   end
 
   def cover_page_dates
@@ -128,7 +130,7 @@ class Project::PDFExport::ProjectInitiation < Exports::Exporter
   end
 
   def footer_title
-    "#{project.name} | #{cover_page_heading}"
+    project.name
   end
 
   def title
@@ -141,7 +143,7 @@ class Project::PDFExport::ProjectInitiation < Exports::Exporter
   end
 
   def with_cover?
-    true
+    false
   end
 
   def can_view_attribute?(_project, _attribute)
@@ -149,6 +151,10 @@ class Project::PDFExport::ProjectInitiation < Exports::Exporter
   end
 
   def hide_empty_attributes?
+    false
+  end
+
+  def attributes_in_table?
     false
   end
 
@@ -173,17 +179,6 @@ class Project::PDFExport::ProjectInitiation < Exports::Exporter
     end
   end
 
-  def collect_base_data
-    [
-      { caption: I18n.t(:label_project),
-        fields: %i[name description].map { |key| { key:, caption: Project.human_attribute_name(key) } } }
-    ]
-  end
-
-  def collect_sections_data
-    collect_base_data.concat collect_custom_fields_data
-  end
-
   def write_section_title_hr
     hr_style = styles.section_title_hr
     write_horizontal_line(pdf.cursor, hr_style[:height], hr_style[:color])
@@ -206,14 +201,28 @@ class Project::PDFExport::ProjectInitiation < Exports::Exporter
 
   def write_project_initiation_title
     status = project_initiation_status
-    return write_title! if status.nil?
+    return write_subheading if status.nil?
 
-    write_title_with_badge(status.name, status_prawn_color(status))
+    write_subheading_with_badge(status.name, status_prawn_color(status))
   end
 
-  def write_title_with_badge(badge_text, color)
-    offset = styles.status_badge_offset
+  def write_project_initiation_heading
     with_margin(styles.page_heading_margins) do
+      style = styles.page_heading
+      pdf.formatted_text([style.merge({ text: project.name })], style)
+    end
+  end
+
+  def write_subheading
+    with_margin(styles.page_subheading_margins) do
+      style = styles.page_subheading
+      pdf.formatted_text([style.merge({ text: heading })], style)
+    end
+  end
+
+  def write_subheading_with_badge(badge_text, color)
+    offset = styles.status_badge_offset
+    with_margin(styles.page_subheading_margins) do
       pdf.formatted_text(
         title_fragments(badge_text, color, offset),
         title_options(badge_text, offset)
@@ -224,14 +233,21 @@ class Project::PDFExport::ProjectInitiation < Exports::Exporter
   def title_fragments(badge_text, color, offset)
     badge_style = styles.status_badge
     [
-      styles.page_heading.merge(text: heading),
+      styles.page_subheading.merge(text: heading),
       { text: " " },
       prawn_badge(badge_text, color, offset: offset, font_size: badge_style[:size], line_height: badge_style[:size])
     ]
   end
 
   def title_options(badge_text, offset)
-    styles.page_heading.merge(draw_text_callback: prawn_badge_draw_text_callback(badge_text, offset))
+    styles.page_subheading.merge(draw_text_callback: prawn_badge_draw_text_callback(badge_text, offset))
+  end
+
+  def write_project_initiation_description
+    description = project.description
+    return if description.blank?
+
+    write_project_markdown(project, description, nil)
   end
 
   def project_initiation_status
@@ -251,7 +267,7 @@ class Project::PDFExport::ProjectInitiation < Exports::Exporter
   end
 
   def write_project_initiation
-    collect_sections_data.each do |section|
+    collect_custom_fields_data.each do |section|
       next if section[:fields].empty?
 
       write_optional_page_break

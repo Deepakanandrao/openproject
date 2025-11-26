@@ -18,6 +18,9 @@
     "page_heading": {
       "$ref": "#/$defs/page_heading"
     },
+    "page_subheading": {
+      "$ref": "#/$defs/page_heading"
+    },
     "cover": {
       "$ref": "#/$defs/cover"
     },
@@ -359,6 +362,18 @@
         "markdown_label": {
           "type": "object",
           "title": "Project attribute markdown label",
+          "allOf": [
+            {
+              "$ref": "#/$defs/font"
+            },
+            {
+              "$ref": "#/$defs/margin"
+            }
+          ]
+        },
+        "attribute_value": {
+          "type": "object",
+          "title": "Project attribute value",
           "allOf": [
             {
               "$ref": "#/$defs/font"
