@@ -33,7 +33,7 @@ require_relative "base"
 class Tables::RemoteIdentities < Tables::Base
   def self.table(migration)
     create_table migration do |t|
-      t.references :user, null: false, foreign_key: { to_table: :users, on_delete: :cascade }
+      t.references :user, null: false, index: false, foreign_key: { to_table: :users, on_delete: :cascade }
       t.bigint :auth_source_id, null: false
       t.string :origin_user_id, null: false
       t.timestamps
