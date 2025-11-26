@@ -152,6 +152,30 @@ RSpec.describe CustomFields::Hierarchy::HierarchicalItemService, with_ee: [:cust
           expect(result).to be_success
           expect(root.reload.position_cache).to eq(27)
         end
+
+        context "if the item or its descendants were assigned as a custom value" do
+          let(:wp_type) { create(:type_task) }
+          let(:project) { create(:project, types: [wp_type]) }
+          let(:work_package) { create(:work_package, project:, type: wp_type) }
+          let(:work_package_with_another_value) { create(:work_package, project:, type: wp_type) }
+
+          let!(:custom_field) do
+            create(:hierarchy_wp_custom_field, projects: [project], types: [wp_type], hierarchy_root: nil)
+          end
+
+          before do
+            work_package.custom_field_values = { custom_field.id => luke.id }
+            work_package_with_another_value.custom_field_values = { custom_field.id => mara.id }
+          end
+
+          it "removes the custom values from the work package" do
+            result = service.delete_branch(item: luke)
+
+            expect(result).to be_success
+            expect(work_package.reload.custom_value_for(custom_field).value).to be_nil
+            expect(work_package_with_another_value.reload.custom_value_for(custom_field).value).to be_nil
+          end
+        end
       end
 
       context "with root item" do

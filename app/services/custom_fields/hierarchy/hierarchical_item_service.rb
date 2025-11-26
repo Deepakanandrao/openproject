@@ -92,6 +92,7 @@ module CustomFields
         custom_field = item.root&.custom_field
         if item.destroy
           update_calculated_values_for_hierarchy(item_ids:, custom_field:)
+          remove_assigned_custom_values(custom_field_id: custom_field.id, item_ids:)
           Success()
         else
           Failure(item.errors)
@@ -192,6 +193,12 @@ module CustomFields
 
         update_position_cache(item.root)
         Success(item.reload)
+      end
+
+      def remove_assigned_custom_values(custom_field_id:, item_ids:)
+        CustomValue
+          .where(custom_field_id:, value: item_ids)
+          .delete_all
       end
 
       def update_item_attributes(item:, attributes:)
