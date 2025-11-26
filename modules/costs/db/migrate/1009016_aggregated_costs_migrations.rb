@@ -28,10 +28,26 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class IntroducePatternsToTypes < ActiveRecord::Migration[7.1]
-  def change
-    change_table :types do |t|
-      t.text :patterns, null: true
-    end
-  end
+require Rails.root.join("db/migrate/migration_utils/squashed_migration").to_s
+require_relative "tables/cost_entries"
+require_relative "tables/cost_types"
+require_relative "tables/rates"
+require_relative "tables/time_entries"
+require_relative "tables/time_entry_activities_projects"
+require_relative "tables/time_entry_journals"
+
+class AggregatedCostsMigrations < SquashedMigration
+  squashed_migrations *%w[
+    1009015_aggregated_costs_migrations
+    20241120103858_add_start_end_times_to_time_entries
+    20241125104347_add_timezone_identifier_to_time_entry
+    20250219103939_make_time_entry_comment_text_field
+  ].freeze
+
+  tables Tables::CostEntries,
+         Tables::CostTypes,
+         Tables::Rates,
+         Tables::TimeEntries,
+         Tables::TimeEntryActivitiesProjects,
+         Tables::TimeEntryJournals
 end

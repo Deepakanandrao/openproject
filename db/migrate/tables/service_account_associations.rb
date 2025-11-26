@@ -28,14 +28,18 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require Rails.root.join("db/migrate/migration_utils/permission_adder")
+require_relative "base"
 
-class AddProjectLifeCycleStepRoles < ActiveRecord::Migration[7.1]
-  def change
-    ::Migration::MigrationUtils::PermissionAdder
-      .add(:view_project, :view_project_stages_and_gates, force: true)
+class Tables::ServiceAccountAssociations < Tables::Base
+  def self.table(migration)
+    create_table migration do |t|
+      t.belongs_to :service_account, null: false, index: { unique: true }
+      t.belongs_to :service, null: false, index: false # necessary index covered by composite
+      t.string :service_type, null: false
 
-    ::Migration::MigrationUtils::PermissionAdder
-      .add(:edit_project, :edit_project_stages_and_gates, force: true)
+      t.timestamps null: false
+
+      t.index %i[service_type service_id], unique: true
+    end
   end
 end

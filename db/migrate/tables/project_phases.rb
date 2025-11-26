@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#-- copyright
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,14 +26,22 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
-class RemoveIsDefaultForTimeEntryActivities < ActiveRecord::Migration[7.1]
-  def up
-    execute <<~SQL.squish
-      UPDATE "enumerations"
-      SET "is_default" = false
-      WHERE "type" = 'TimeEntryActivity'
-    SQL
+require_relative "base"
+
+class Tables::ProjectPhases < Tables::Base
+  def self.table(migration)
+    create_table migration do |t|
+      t.date :start_date, index: true
+      t.date :finish_date, index: true
+      t.boolean :active, default: false, null: false
+      t.references :project, foreign_key: true
+      t.references :definition, foreign_key: { to_table: :project_phase_definitions }
+
+      t.timestamps
+
+      t.index %i[project_id definition_id], unique: true
+    end
   end
 end

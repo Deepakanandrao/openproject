@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#-- copyright
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,28 +26,25 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
-class AddTimeZoneToRecurringMeetings < ActiveRecord::Migration[7.1]
-  def change
-    add_column :recurring_meetings, :time_zone, :string, null: true
+# ++
 
-    reversible do |dir|
-      dir.up do
-        execute <<-SQL.squish
-          UPDATE recurring_meetings
-          SET time_zone = COALESCE(
-            (
-              SELECT (user_preferences.settings->>'time_zone')
-              FROM user_preferences
-              WHERE user_preferences.user_id = recurring_meetings.author_id
-              LIMIT 1
-            ),
-            'Etc/UTC'
-          )
-        SQL
-      end
+require Rails.root.join("db/migrate/tables/base").to_s
+
+class Tables::ScheduledMeetings < Tables::Base
+  def self.table(migration)
+    create_table migration do |t|
+      t.belongs_to :recurring_meeting,
+                   null: false,
+                   foreign_key: { index: true, on_delete: :cascade }
+
+      t.belongs_to :meeting,
+                   null: true,
+                   foreign_key: { index: true, unique: true, on_delete: :nullify }
+
+      t.datetime :start_time, null: false
+      t.boolean :cancelled, default: false, null: false
+
+      t.timestamps
     end
-
-    change_column_null :recurring_meetings, :time_zone, false
   end
 end

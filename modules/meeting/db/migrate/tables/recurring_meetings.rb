@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#-- copyright
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,10 +26,26 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
-class AddExpiresAtToOidcUserTokens < ActiveRecord::Migration[7.1]
-  def change
-    add_column :oidc_user_tokens, :expires_at, :datetime, null: true, precision: 0
+require Rails.root.join("db/migrate/tables/base").to_s
+
+class Tables::RecurringMeetings < Tables::Base
+  def self.table(migration)
+    create_table migration do |t|
+      t.datetime :start_time
+      t.date :end_date, null: true
+      t.text :title
+      t.integer :frequency, default: 0, null: false
+      t.integer :end_after, default: 0, null: false
+      t.integer :iterations, null: true
+      t.belongs_to :project, foreign_key: true, index: true
+      t.belongs_to :author, foreign_key: { to_table: :users }
+
+      t.timestamps
+
+      t.integer :interval, default: 1, null: false
+      t.string :time_zone, null: false
+    end
   end
 end

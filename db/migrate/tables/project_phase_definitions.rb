@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#-- copyright
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,10 +26,23 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
-class AddExportTemplatesToType < ActiveRecord::Migration[7.1]
-  def change
-    add_column :types, :pdf_export_templates_config, :jsonb, default: {}
+require_relative "base"
+
+class Tables::ProjectPhaseDefinitions < Tables::Base
+  def self.table(migration)
+    create_table migration do |t|
+      t.string :name
+      t.integer :position, null: true
+      t.references :color, foreign_key: true
+      t.timestamps
+      t.column :start_gate, :boolean, default: false, null: false
+      t.column :start_gate_name, :string
+      t.column :finish_gate, :boolean, default: false, null: false
+      t.column :finish_gate_name, :string
+
+      t.index :name, unique: true
+    end
   end
 end

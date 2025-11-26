@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#-- copyright
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,10 +26,19 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
-class AddDismissedEnterpriseBannersToUserPreference < ActiveRecord::Migration[8.0]
-  def change
-    add_column :user_preferences, :dismissed_enterprise_banners, :jsonb, default: {}, null: false
+require_relative "base"
+
+class Tables::ProjectPhaseJournals < Tables::Base
+  def self.table(migration)
+    create_table migration do |t| # rubocop:disable Rails/CreateTableWithTimestamps
+      t.belongs_to :journal, null: false, foreign_key: true
+      t.belongs_to :phase, null: false
+
+      t.date :start_date
+      t.date :finish_date
+      t.boolean :active, default: false, null: false
+    end
   end
 end

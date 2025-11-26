@@ -28,27 +28,19 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class MigrateCostSettingsToRegularSettings < ActiveRecord::Migration[7.1]
-  def up
-    costs_settings = Setting.plugin_costs || {}
-    if costs_settings["costs_currency"]
-      Setting.create(name: "costs_currency", value: costs_settings["costs_currency"])
+require_relative "base"
+
+class Tables::Reminders < Tables::Base
+  def self.table(migration)
+    create_table migration do |t|
+      t.references :remindable, polymorphic: true, null: false
+      t.references :creator, null: false, foreign_key: { to_table: :users }
+      t.datetime :remind_at, null: false
+      t.datetime :completed_at
+      t.string :job_id
+      t.text :note
+
+      t.timestamps
     end
-
-    if costs_settings["costs_currency_format"]
-      Setting.create(name: "costs_currency_format", value: costs_settings["costs_currency_format"])
-    end
-
-    Setting.where(name: "plugin_costs").destroy_all
-  end
-
-  def down
-    costs_settings = {
-      "costs_currency" => Setting.costs_currency,
-      "costs_currency_format" => Setting.costs_currency_format
-    }
-
-    Setting.create(name: "plugin_costs", value: costs_settings)
-    Setting.where(name: ["costs_currency", "costs_currency_format"]).destroy_all
   end
 end

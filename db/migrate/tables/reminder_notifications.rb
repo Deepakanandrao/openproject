@@ -28,17 +28,19 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class CreateReminderNotifications < ActiveRecord::Migration[7.1]
-  def change
-    create_table :reminder_notifications do |t|
+require_relative "base"
+
+class Tables::ReminderNotifications < Tables::Base
+  def self.table(migration)
+    create_table migration do |t|
       t.references :reminder, foreign_key: true
       t.references :notification, foreign_key: true
 
       t.timestamps
-    end
 
-    add_index :reminder_notifications, :notification_id,
+      t.index :notification_id,
               unique: true,
               name: "index_reminder_notifications_unique"
+    end
   end
 end

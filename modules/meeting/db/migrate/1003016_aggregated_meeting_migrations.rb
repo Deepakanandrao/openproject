@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# -- copyright
+#-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,16 +26,42 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-# ++
+#++
 
 require Rails.root.join("db/migrate/migration_utils/squashed_migration").to_s
-require_relative "tables/oidc_user_session_links"
+require Rails.root.join("db/migrate/tables/base").to_s
+Dir[File.join(__dir__, "tables/*.rb")].each { |file| require file }
 
-class AggregatedOpenIDConnectMigrations < SquashedMigration
-  tables Tables::OidcUserSessionLinks
-
+class AggregatedMeetingMigrations < SquashedMigration
   squashed_migrations *%w[
-    20221122072857_add_oidc_session_link
-    20240829140616_migrate_oidc_settings_to_providers
-  ]
+    1003015_aggregated_meeting_migrations
+    20250318123314_add_backlog_to_meeting_sections
+    20240426073948_create_recurring_meetings
+    20241122143600_add_interval_to_recurring_meeting
+    20241128190428_create_scheduled_meetings
+    20250211185841_create_meeting_outcomes
+    20250227140619_change_unique_constraint_on_scheduled_meetings
+    20250304082924_add_time_zone_to_recurring_meetings
+  ].freeze
+
+  tables Tables::MeetingContents,
+         Tables::MeetingParticipants,
+         Tables::Meetings,
+         Tables::MeetingJournals,
+         Tables::MeetingContentJournals,
+         Tables::MeetingSections,
+         Tables::MeetingAgendaItems,
+         Tables::MeetingAgendaItemJournals,
+         Tables::RecurringMeetings,
+         Tables::ScheduledMeetings,
+         Tables::MeetingOutcomes
+
+  modifications do
+    # There's no easy way to express deferrable unique constraints in Rails migrations
+    execute <<~SQL.squish
+      ALTER TABLE scheduled_meetings
+      ADD CONSTRAINT unique_recurring_meeting_start_time
+      UNIQUE (recurring_meeting_id, start_time) DEFERRABLE INITIALLY DEFERRED;
+    SQL
+  end
 end

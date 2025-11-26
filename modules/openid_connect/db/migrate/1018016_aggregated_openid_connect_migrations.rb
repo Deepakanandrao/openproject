@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#-- copyright
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,17 +26,19 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
-class CreateProjectLifeCycleStepJournals < ActiveRecord::Migration[7.1]
-  def change
-    create_table :project_life_cycle_step_journals do |t| # rubocop:disable Rails/CreateTableWithTimestamps
-      t.belongs_to :journal, null: false, foreign_key: true
-      t.belongs_to :life_cycle_step, null: false
+require Rails.root.join("db/migrate/migration_utils/squashed_migration").to_s
+require_relative "tables/oidc_user_session_links"
+require_relative "tables/oidc_user_tokens"
 
-      t.date :start_date
-      t.date :end_date
-      t.boolean :active, default: false, null: false
-    end
-  end
+class AggregatedOpenIDConnectMigrations < SquashedMigration
+  tables Tables::OidcUserSessionLinks,
+         Tables::OidcUserTokens
+
+  squashed_migrations *%w[
+    1018015_aggregated_openid_connect_migrations
+    20241212131910_add_oidc_user_tokens
+    20250218133700_add_expires_at_to_oidc_user_tokens
+  ]
 end

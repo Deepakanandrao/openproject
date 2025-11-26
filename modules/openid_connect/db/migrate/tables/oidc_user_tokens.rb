@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#-- copyright
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,10 +26,22 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
-class AddBacklogToMeetingSections < ActiveRecord::Migration[8.0]
-  def change
-    add_column :meeting_sections, :backlog, :boolean, default: false, null: false
+require Rails.root.join("db/migrate/tables/base").to_s
+
+class Tables::OidcUserTokens < Tables::Base
+  def self.table(migration)
+    create_table migration do |t|
+      t.references :user, null: false, index: true, foreign_key: { on_delete: :cascade }
+
+      t.string :access_token, null: false
+      t.string :refresh_token, null: true
+      t.jsonb :audiences, null: false, default: []
+
+      t.timestamps
+
+      t.datetime :expires_at, null: true, precision: 0
+    end
   end
 end

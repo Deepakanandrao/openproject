@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#-- copyright
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,16 +26,20 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
-class RemoveManageOwnRemindersPermission < ActiveRecord::Migration[7.1]
-  def up
-    execute <<-SQL.squish
-      DELETE FROM role_permissions
-      WHERE permission = 'manage_own_reminders'
-    SQL
+require_relative "base"
+
+class Tables::ExportSettings < Tables::Base
+  def self.table(migration)
+    create_table migration do |t|
+      t.references :query, null: false, foreign_key: true
+      t.string :format, null: false
+      t.jsonb :settings, default: {}, null: false
+
+      t.timestamps
+
+      t.index %i[query_id format], unique: true
+    end
   end
-
-  # No-op
-  def down; end
 end

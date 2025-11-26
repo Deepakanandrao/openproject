@@ -34,28 +34,8 @@ Dir[File.join(__dir__, "tables/*.rb")].each { |file| require file }
 
 class AggregatedStoragesMigrations < SquashedMigration
   squashed_migrations *%w[
-    20220113144323_create_storage
-    20220113144759_create_file_links
-    20220121090847_create_projects_storages
-    20220712165928_add_storages_permissions_to_roles
-    20230123092649_make_containter_id_and_containter_type_optional_for_file_links
-    20230321194150_add_project_folder_to_projects_storages
-    20230420063148_add_provider_fields_to_storages
-    20230420071113_migrate_storages_to_use_provider_type_as_sti_column
-    20230512153303_change_storage_provider_fields_default
-    20230517075214_add_automatic_to_project_folder_modes
-    20230601082746_create_last_project_folders
-    20230713144232_create_storages_file_link_journals
-    20230721123022_remove_project_folder_mode_default
-    20230802085026_rename_projects_storages_table
-    20230824130730_remove_not_null_constraint_for_storage_host
-    20231009135807_remove_renamed_cronjobs
-    20231109080454_add_health_info_to_storages
-    20231208143303_add_health_checked_at_to_storages
-    20240405135016_update_access_management_of_configured_one_drive_storages
-    20240610130953_rename_manage_storages_in_project_permission
-    20230725165505_add_storage_name_to_storages_file_links_journals
-    20230731153909_add_file_link_journals_to_existing_containers
+    1017015_aggregated_storages_migrations
+    20250115100336_set_default_authentication_method
   ].freeze
 
   tables Tables::Storages,
