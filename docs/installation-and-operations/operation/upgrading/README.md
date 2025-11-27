@@ -121,7 +121,7 @@ When using the all-in-one docker container, you need to perform the following st
 
 ```shell
 docker pull openproject/openproject:VERSION
-# e.g. docker pull openproject/openproject:16
+# e.g. docker pull openproject/openproject:17
 ```
 
 Then stop and remove your existing container (we assume that you are running with the recommended production setup here):
