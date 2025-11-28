@@ -46,10 +46,8 @@ module WorkPackages::Scopes
           admin_allowed_to(permissions)
         elsif user.anonymous?
           anonymous_allowed_to(user, permissions)
-        elsif Setting.large_instance_wp_allowed_to_sql?
-          logged_in_non_admin_allowed_to_large_instances(user, permissions)
         else
-          logged_in_non_admin_allowed_to_small_instances(user, permissions)
+          logged_in_non_admin_allowed_to(user, permissions)
         end
       end
 
@@ -63,15 +61,7 @@ module WorkPackages::Scopes
         where(project_id: Project.allowed_to(user, permissions))
       end
 
-      def logged_in_non_admin_allowed_to_small_instances(user, permissions)
-        allowed_via_wp_membership = allowed_to_member_relation(user, permissions)
-        allowed_via_project_membership = Project.unscoped.allowed_to(user, permissions)
-
-        where(project_id: allowed_via_project_membership.select(:id))
-          .or(where(id: allowed_via_wp_membership.select(arel_table[:id])))
-      end
-
-      def logged_in_non_admin_allowed_to_large_instances(user, permissions)
+      def logged_in_non_admin_allowed_to(user, permissions)
         # Get all projects a user has the permissions in.
         # Permissions can come from project memberships as well as entity/work_package memberships, in addition
         # to (UNION) potentially the non-member permissions.
@@ -172,16 +162,6 @@ module WorkPackages::Scopes
           .where(Project.arel_table[:active].eq(true))
       end
 
-      def allowed_to_member_relation(user, permissions)
-        Member
-          .joins(allowed_to_member_in_work_package_join)
-          .joins(active_project_join)
-          .joins(allowed_to_enabled_module_join(permissions))
-          .joins(member_roles: :role)
-          .joins(allowed_to_role_permission_join(permissions))
-          .where(member_conditions(user))
-      end
-
       def allowed_to_enabled_module_join(permissions) # rubocop:disable Metrics/AbcSize
         project_module = permissions.filter_map(&:project_module).uniq
         enabled_module_table = EnabledModule.arel_table
@@ -194,51 +174,6 @@ module WorkPackages::Scopes
                           .and(projects_table[:active].eq(true)))
                     .join_sources
         end
-      end
-
-      def allowed_to_role_permission_join(permissions) # rubocop:disable Metrics/AbcSize
-        return if permissions.all?(&:public?)
-
-        role_permissions_table = RolePermission.arel_table
-        enabled_modules_table = EnabledModule.arel_table
-        roles_table = Role.arel_table
-
-        condition = permissions.inject(Arel::Nodes::False.new) do |or_condition, permission|
-          permission_condition = role_permissions_table[:permission].eq(permission.name)
-
-          if permission.project_module.present?
-            permission_condition = permission_condition.and(enabled_modules_table[:name].eq(permission.project_module))
-          end
-
-          or_condition.or(permission_condition)
-        end
-
-        arel_table
-          .join(role_permissions_table, Arel::Nodes::InnerJoin)
-          .on(roles_table[:id].eq(role_permissions_table[:role_id])
-                              .and(condition))
-          .join_sources
-      end
-
-      def active_project_join
-        projects_table = Project.arel_table
-        arel_table
-          .join(projects_table)
-                  .on(projects_table[:active].eq(true)
-                   .and(projects_table[:id].eq(arel_table[:project_id])))
-                  .join_sources
-      end
-
-      def allowed_to_member_in_work_package_join
-        members_table = Member.arel_table
-        arel_table.join(arel_table)
-        .on(members_table[:entity_id].eq(arel_table[:id]))
-        .join_sources
-      end
-
-      def member_conditions(user)
-        Member.arel_table[:user_id].eq(user.id)
-        .and(Member.arel_table[:entity_type].eq(model_name.name))
       end
     end
   end
