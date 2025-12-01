@@ -231,7 +231,9 @@ module Redmine::MenuManager::MenuHelper
   end
 
   def first_level_menu_items_for(menu, project = nil, &)
-    menu_items_for(Redmine::MenuManager.items(menu, project).root.children, menu, project, &)
+    menu_items_for(Redmine::MenuManager.items(menu, project).root.children, menu, project).tap do |items|
+      items.each(&) if block_given?
+    end
   end
 
   private
