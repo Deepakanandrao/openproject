@@ -220,7 +220,7 @@ RSpec.describe "Upload attachment to documents",
     before do
       DocumentType.destroy_all
       visit document_path(document)
-      expect(page).to have_css(".document-form--long-description") # rubocop:disable RSpec/ExpectInHook
+      expect(page).to have_css("op-block-note") # rubocop:disable RSpec/ExpectInHook
       expect(page).not_to have_element("opce-ckeditor-augmented-textarea") # rubocop:disable RSpec/ExpectInHook
     end
 
