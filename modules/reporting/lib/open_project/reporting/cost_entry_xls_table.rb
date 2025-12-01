@@ -131,14 +131,16 @@ class OpenProject::Reporting::CostEntryXlsTable < OpenProject::XlsExport::XlsVie
     %i[user_id activity_id entity_gid comments project_id]
   end
 
-  # Returns the results of the query sorted by date the time was spent on and by id
+  # Returns the results of the query sorted by date the time was spent on and name
   def sorted_results
     query
       .each_direct_result
       .map(&:itself)
       .group_by { |r| r.fields["spent_on"] }
       .sort
-      .flat_map { |_, date_results| date_results.sort_by { |r| r.fields["id"] } }
+      .flat_map do |_, date_results|
+        date_results.sort_by { |r| User.find_by(id: r.fields["user_id"])&.name&.downcase || "" }
+      end
   end
 
   def labour_query?
