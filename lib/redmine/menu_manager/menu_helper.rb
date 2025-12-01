@@ -339,20 +339,14 @@ module Redmine::MenuManager::MenuHelper
     end
   end
 
-  def menu_items_for(iteratable, menu, project = nil)
-    items = []
-    iteratable.each do |node|
+  def menu_items_for(enumerable, menu, project = nil)
+    user = User.current
+
+    enumerable.select do |node|
       next if node.name == :root
 
-      if allowed_node?(node, User.current, project) && visible_node?(menu, node)
-        items << node
-        if block_given?
-          yield node
-        end
-      end
+      allowed_node?(node, user, project) && visible_node?(menu, node)
     end
-
-    items
   end
 
   # Checks if a user is allowed to access the menu item by:
