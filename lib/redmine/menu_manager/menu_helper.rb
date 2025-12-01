@@ -399,14 +399,15 @@ module Redmine::MenuManager::MenuHelper
     end
   end
 
-  def visible_node?(menu, node)
+  def hidden_menu_items
     @hidden_menu_items ||= OpenProject::Configuration.hidden_menu_items
-    if @hidden_menu_items.length.positive?
-      hidden_nodes = @hidden_menu_items[menu.to_s] || []
-      hidden_nodes.exclude? node.name.to_s
-    else
-      true
-    end
+  end
+
+  def visible_node?(menu, node)
+    return true if hidden_menu_items.blank?
+
+    hidden_nodes = hidden_menu_items[menu.to_s] || []
+    hidden_nodes.exclude? node.name.to_s
   end
 
   def node_engine(node)
