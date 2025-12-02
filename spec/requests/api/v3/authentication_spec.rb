@@ -551,8 +551,7 @@ RSpec.describe "API V3 Authentication" do
 
     context "when aud does not contain client_id" do
       let(:token_aud) { ["Lisa", "Bart"] }
-      # TODO: This contains an escaping error that we didn't notice so far
-      let(:expected_error_description) { 'Invalid audience. Expected https://openproject.local, received ["Lisa", "Bart"]' }
+      let(:expected_error_description) { 'Invalid audience. Expected https://openproject.local, received [\"Lisa\", \"Bart\"]' }
 
       it "fails with HTTP 401 Unauthorized" do
         get resource
