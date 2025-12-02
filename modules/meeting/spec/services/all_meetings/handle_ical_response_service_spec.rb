@@ -55,7 +55,7 @@ RSpec.describe AllMeetings::HandleICalResponseService, type: :model do
     let(:ical_string) do
       <<~ICAL
         BEGIN:VCALENDAR
-        PRODID:-//Google Inc//Google Calendar 70.9054//EN
+        PRODID:-//OpenProject//Test Meeting Responder 1.0//EN
         VERSION:2.0
         CALSCALE:GREGORIAN
         METHOD:#{ical_method}
