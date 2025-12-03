@@ -164,6 +164,8 @@ RSpec.describe "Portfolios", "index", :js, with_ee: :portfolio_management do # T
       portfolios_page.expect_portfolios_not_listed(portfolio_a, portfolio_b, inactive_portfolio)
       page.find_by_id("portfolio-filters-form-clear-button").click
 
+      wait_for_network_idle
+
       portfolios_page.toggle_filters_section
       portfolios_page.filter_by_active("no")
       portfolios_page.expect_portfolios_listed(inactive_portfolio)
