@@ -95,22 +95,21 @@ module Components
         page.find autocompleter_results_selector, wait: 10
       end
 
-      def within_item(project, &)
-        within search_results do
-          within "[data-project-id='#{project.id}']", &
-        end
-      end
-
       def autocompleter
         page.find autocompleter_selector, wait: 10
       end
 
-      def expect_result(name, disabled: false)
+      def expect_result(name, disabled: false, workspace_badge: false)
         within search_results do
-          if disabled
-            page.find(autocompleter_item_disabled_title_selector, text: name)
+          selector = disabled ? autocompleter_item_disabled_title_selector : autocompleter_item_title_selector
+          item = page.find(selector, text: name)
+
+          if workspace_badge
+            expect(item).to have_octicon
+            expect(item).to have_primer_text(workspace_badge, color: :muted)
           else
-            page.find(autocompleter_item_title_selector, text: name)
+            expect(item).to have_no_octicon
+            expect(item).to have_no_primer_text(color: :muted)
           end
         end
       end

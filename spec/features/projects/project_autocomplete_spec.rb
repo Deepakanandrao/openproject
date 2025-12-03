@@ -191,26 +191,9 @@ RSpec.describe "Projects autocomplete page", :js do
       top_menu.toggle unless top_menu.open?
       top_menu.expect_open
 
-      top_menu.expect_result project.name
-      top_menu.expect_result portfolio.name
-      top_menu.expect_result program.name
-    end
-
-    # Check that the portfolio badge is displayed
-    top_menu.within_item(portfolio) do
-      expect(page).to have_text("Test Portfolio")
-      expect(page).to have_css("svg.octicon")
-    end
-
-    # Check that the program badge is displayed
-    top_menu.within_item(program) do
-      expect(page).to have_text("Test Program")
-      expect(page).to have_css("svg.octicon")
-    end
-
-    top_menu.within_item(project) do
-      expect(page).to have_text("Plain project")
-      expect(page).to have_no_css("svg.octicon")
+      top_menu.expect_result portfolio.name, workspace_badge: "Portfolio"
+      top_menu.expect_result program.name, workspace_badge: "Program"
+      top_menu.expect_result project.name, workspace_badge: false
     end
   end
 end
