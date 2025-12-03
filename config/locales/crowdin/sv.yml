@@ -4231,6 +4231,7 @@ sv:
   setting_emails_salutation: "Address user in emails with"
   setting_oauth_allow_remapping_of_existing_users: "Allow remapping of existing users"
   setting_sendmail_location: "Sökväg till sendmail"
+  setting_sendmail_arguments: "Arguments for sendmail"
   setting_smtp_enable_starttls_auto: "Använd STARTTLS om det går"
   setting_smtp_ssl: "Använd SSL-anslutning"
   setting_smtp_address: "SMTP-server"
@@ -4393,6 +4394,9 @@ sv:
   setting_work_package_list_default_highlighted_attributes: "Standardattribut för inline-markering"
   setting_working_days: "Arbetsdagar"
   settings:
+    errors:
+      not_writable: "The setting is not writable and can only be changed by a sysadmin."
+      failed_to_update: "Setting '%{name}' could not be updated: %{message}"
     authentication:
       login: "Användarnamn"
       registration: "Registrering"

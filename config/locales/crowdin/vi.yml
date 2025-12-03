@@ -4184,6 +4184,7 @@ vi:
   setting_emails_salutation: "Chào người dùng trong email với"
   setting_oauth_allow_remapping_of_existing_users: "Allow remapping of existing users"
   setting_sendmail_location: "Vị trí của tệp thực thi sendmail (đường dẫn)"
+  setting_sendmail_arguments: "Arguments for sendmail"
   setting_smtp_enable_starttls_auto: "Tự động sử dụng STARTTLS nếu hiện hữu"
   setting_smtp_ssl: "Sử dụng kết nối SSL"
   setting_smtp_address: "Máy chủ SMTP"
@@ -4346,6 +4347,9 @@ vi:
   setting_work_package_list_default_highlighted_attributes: "Các thuộc tính được tô sáng mặc định trong dòng"
   setting_working_days: "Ngày làm việc"
   settings:
+    errors:
+      not_writable: "The setting is not writable and can only be changed by a sysadmin."
+      failed_to_update: "Setting '%{name}' could not be updated: %{message}"
     authentication:
       login: "Đăng nhập"
       registration: "Registration"

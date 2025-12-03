@@ -4183,6 +4183,7 @@ ja:
   setting_emails_salutation: "メール中のアドレス ユーザー"
   setting_oauth_allow_remapping_of_existing_users: "既存のユーザーの再マッピングを許可する"
   setting_sendmail_location: "Sendmail の実行可能ファイルの場所"
+  setting_sendmail_arguments: "Arguments for sendmail"
   setting_smtp_enable_starttls_auto: "利用可能な場合、STARTTLS を自動的に使用する"
   setting_smtp_ssl: "SSL接続を使用する"
   setting_smtp_address: "SMTPサーバ"
@@ -4345,6 +4346,9 @@ ja:
   setting_work_package_list_default_highlighted_attributes: "デフォルトのインライン強調表示属性"
   setting_working_days: "営業日"
   settings:
+    errors:
+      not_writable: "The setting is not writable and can only be changed by a sysadmin."
+      failed_to_update: "Setting '%{name}' could not be updated: %{message}"
     authentication:
       login: "ログイン"
       registration: "参加登録"

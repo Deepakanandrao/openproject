@@ -4225,6 +4225,7 @@ de:
   setting_emails_salutation: "Anrede der Benutzer in E-Mails"
   setting_oauth_allow_remapping_of_existing_users: "Neuzuordnung von Authentifizierungsprovidern der Benutzer erlauben"
   setting_sendmail_location: "Systempfad zu sendmail"
+  setting_sendmail_arguments: "Arguments for sendmail"
   setting_smtp_enable_starttls_auto: "Automatisch STARTTLS verwenden, falls vorhanden"
   setting_smtp_ssl: "Benutzen Sie eine SSL-Verbindung"
   setting_smtp_address: "SMTP-Server"
@@ -4387,6 +4388,9 @@ de:
   setting_work_package_list_default_highlighted_attributes: "Voreinstellung Inline Hervorherbung"
   setting_working_days: "Arbeitstage"
   settings:
+    errors:
+      not_writable: "The setting is not writable and can only be changed by a sysadmin."
+      failed_to_update: "Setting '%{name}' could not be updated: %{message}"
     authentication:
       login: "Anmelden"
       registration: "Registrierung"

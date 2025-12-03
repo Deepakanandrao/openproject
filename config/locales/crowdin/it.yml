@@ -4230,6 +4230,7 @@ it:
   setting_emails_salutation: "Rivolgiti all'utente nelle e-mail con"
   setting_oauth_allow_remapping_of_existing_users: "Consenti la rimappatura di utenti esistenti"
   setting_sendmail_location: "Percorso dell'eseguibile del programma di invio della posta"
+  setting_sendmail_arguments: "Arguments for sendmail"
   setting_smtp_enable_starttls_auto: "Usa automaticamente, se disponibile, STARTTLS"
   setting_smtp_ssl: "Usa connessione SSL"
   setting_smtp_address: "Server SMTP"
@@ -4392,6 +4393,9 @@ it:
   setting_work_package_list_default_highlighted_attributes: "Attributi evidenziati in linea predefiniti"
   setting_working_days: "Giorni lavorativi"
   settings:
+    errors:
+      not_writable: "The setting is not writable and can only be changed by a sysadmin."
+      failed_to_update: "Setting '%{name}' could not be updated: %{message}"
     authentication:
       login: "Nome Utente"
       registration: "Registrazione"

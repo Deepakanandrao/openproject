@@ -4324,6 +4324,7 @@ pl:
   setting_emails_salutation: "Zwracaj się do użytkownika w wiadomościach e-mail za pomocą"
   setting_oauth_allow_remapping_of_existing_users: "Zezwalaj na zmiany mapowania istniejących użytkowników"
   setting_sendmail_location: "Lokalizacja pliku wykonywalnego sendmail"
+  setting_sendmail_arguments: "Arguments for sendmail"
   setting_smtp_enable_starttls_auto: "Automatycznie użyj STARTTLS, jeśli jest dostępny"
   setting_smtp_ssl: "Użyj połączenia SSL"
   setting_smtp_address: "Serwer SMTP"
@@ -4486,6 +4487,9 @@ pl:
   setting_work_package_list_default_highlighted_attributes: "Domyślnie wyróżniane atrybuty wyświetlane w treści"
   setting_working_days: "Dni robocze"
   settings:
+    errors:
+      not_writable: "The setting is not writable and can only be changed by a sysadmin."
+      failed_to_update: "Setting '%{name}' could not be updated: %{message}"
     authentication:
       login: "Nazwa użytkownika"
       registration: "Rejestracja"

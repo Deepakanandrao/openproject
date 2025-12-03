@@ -4181,6 +4181,7 @@ ko:
   setting_emails_salutation: "이메일의 주소 사용자:"
   setting_oauth_allow_remapping_of_existing_users: "기존 사용자의 다시 매핑 허용"
   setting_sendmail_location: "sendmail 실행 파일의 위치"
+  setting_sendmail_arguments: "Arguments for sendmail"
   setting_smtp_enable_starttls_auto: "사용 가능한 경우 자동으로 STARTTLS 사용"
   setting_smtp_ssl: "SSL 연결 사용"
   setting_smtp_address: "SMTP 서버"
@@ -4343,6 +4344,9 @@ ko:
   setting_work_package_list_default_highlighted_attributes: "기본 인라인 강조 표시 특성"
   setting_working_days: "근무일"
   settings:
+    errors:
+      not_writable: "The setting is not writable and can only be changed by a sysadmin."
+      failed_to_update: "Setting '%{name}' could not be updated: %{message}"
     authentication:
       login: "로그인"
       registration: "등록"
