@@ -131,13 +131,12 @@ RSpec.describe Redmine::MenuManager::MenuHelper, type: :helper do
 
     context "for a node with nested items" do
       let(:item) do
-        node = Redmine::MenuManager::MenuItem.new(:parent_node, "/test", {})
-        node << Redmine::MenuManager::MenuItem.new(:child_one_node, "/test", {})
-        node << Redmine::MenuManager::MenuItem.new(:child_two_node, "/test", {})
-        node << Redmine::MenuManager::MenuItem.new(:child_three_node, "/test", {})
-        node << Redmine::MenuManager::MenuItem.new(:child_three_inner_node, "/test", {})
-
-        node
+        Redmine::MenuManager::MenuItem.new(:parent_node, "/test", {}).tap do |parent|
+          parent << Redmine::MenuManager::MenuItem.new(:child_one_node, "/test", {})
+          parent << Redmine::MenuManager::MenuItem.new(:child_two_node, "/test", {})
+          parent << Redmine::MenuManager::MenuItem.new(:child_three_node, "/test", {})
+          parent << Redmine::MenuManager::MenuItem.new(:child_three_inner_node, "/test", {})
+        end
       end
 
       let(:expected) do
@@ -223,14 +222,12 @@ RSpec.describe Redmine::MenuManager::MenuHelper, type: :helper do
           .new(:parent_node,
                allowed_urls[0],
                children: Proc.new do |_p|
-                 children = []
-                 3.times do |time|
-                   children << Redmine::MenuManager::MenuItem
-                                 .new("test_child_#{time}",
-                                      allowed_urls[0],
-                                      {})
+                 Array.new(3) do |time|
+                   Redmine::MenuManager::MenuItem
+                     .new("test_child_#{time}",
+                          allowed_urls[0],
+                          {})
                  end
-                 children
                end)
       end
 
@@ -288,28 +285,24 @@ RSpec.describe Redmine::MenuManager::MenuHelper, type: :helper do
                         .new(:parent_node,
                              allowed_urls[0],
                              children: Proc.new do |_p|
-                               children = []
-                               3.times do |time|
-                                 children << Redmine::MenuManager::MenuItem
-                                               .new("test_child_#{time}",
-                                                    allowed_urls[0],
-                                                    {})
+                               Array.new(3) do |time|
+                                 Redmine::MenuManager::MenuItem
+                                   .new("test_child_#{time}",
+                                        allowed_urls[0],
+                                        {})
                                end
-                               children
                              end)
 
         parent_node << Redmine::MenuManager::MenuItem
                          .new(:child_node,
                               allowed_urls[0],
                               children: Proc.new do |_p|
-                                children = []
-                                6.times do |time|
-                                  children << Redmine::MenuManager::MenuItem
-                                                .new("test_dynamic_child_#{time}",
-                                                     allowed_urls[0],
-                                                     {})
+                                Array.new(6) do |time|
+                                  Redmine::MenuManager::MenuItem
+                                    .new("test_dynamic_child_#{time}",
+                                         allowed_urls[0],
+                                         {})
                                 end
-                                children
                               end)
         parent_node
       end
