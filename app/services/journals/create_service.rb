@@ -375,8 +375,9 @@ module Journals
           RETURNING updated_at
         SQL
 
+        keep_same_updated_at = journable.updated_at_previously_changed? && !journable.previously_new_record?
         sanitize(sql,
-                 update_timestamp: journable.updated_at_previously_changed? ? journable.updated_at : nil,
+                 update_timestamp: keep_same_updated_at ? journable.updated_at : nil,
                  predecessor_timestamp: predecessor&.updated_at,
                  id: journable.id)
       else
