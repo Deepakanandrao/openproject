@@ -4181,6 +4181,7 @@ ms:
   setting_emails_salutation: "Menggelar pengguna dalam e-mel dengan"
   setting_oauth_allow_remapping_of_existing_users: "Allow remapping of existing users"
   setting_sendmail_location: "Lokasi sendmail boleh dilaksanakan"
+  setting_sendmail_arguments: "Arguments for sendmail"
   setting_smtp_enable_starttls_auto: "Gunakan STARTTLS secara automatik jika tersedia"
   setting_smtp_ssl: "Guna sambungan SSL"
   setting_smtp_address: "Server SMTP"
@@ -4343,6 +4344,9 @@ ms:
   setting_work_package_list_default_highlighted_attributes: "Atribut disorot sebaris default"
   setting_working_days: "Hari bekerja"
   settings:
+    errors:
+      not_writable: "The setting is not writable and can only be changed by a sysadmin."
+      failed_to_update: "Setting '%{name}' could not be updated: %{message}"
     authentication:
       login: "Log masuk"
       registration: "Registration"

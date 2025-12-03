@@ -4228,6 +4228,7 @@ el:
   setting_emails_salutation: "Address user in emails with"
   setting_oauth_allow_remapping_of_existing_users: "Allow remapping of existing users"
   setting_sendmail_location: "Τοποθεσία του εκτελέσιμου sendmail"
+  setting_sendmail_arguments: "Arguments for sendmail"
   setting_smtp_enable_starttls_auto: "Αυτόματη χρήση STARTTLS αν είναι διαθέσιμο"
   setting_smtp_ssl: "Χρήση σύνδεσης SSL"
   setting_smtp_address: "Εξυπηρετητής SMTP"
@@ -4390,6 +4391,9 @@ el:
   setting_work_package_list_default_highlighted_attributes: "Προεπιλεγμένα inline χαρακτηριστικά με επισήμανση"
   setting_working_days: "Working days"
   settings:
+    errors:
+      not_writable: "The setting is not writable and can only be changed by a sysadmin."
+      failed_to_update: "Setting '%{name}' could not be updated: %{message}"
     authentication:
       login: "Σύνδεση"
       registration: "Registration"

@@ -4323,6 +4323,7 @@ uk:
   setting_emails_salutation: "Звертатися до користувача в електронних листах так:"
   setting_oauth_allow_remapping_of_existing_users: "Дозволити повторне зіставлення наявних користувачів"
   setting_sendmail_location: "Розташування виконуваного файлу sendmail"
+  setting_sendmail_arguments: "Arguments for sendmail"
   setting_smtp_enable_starttls_auto: "Автоматично використовуйте STARTTLS, якщо він доступний"
   setting_smtp_ssl: "Використовуйте SSL-з'єднання"
   setting_smtp_address: "Сервер SMTP"
@@ -4485,6 +4486,9 @@ uk:
   setting_work_package_list_default_highlighted_attributes: "Стандартні вбудовані виділені атрибути"
   setting_working_days: "Робочі дні"
   settings:
+    errors:
+      not_writable: "The setting is not writable and can only be changed by a sysadmin."
+      failed_to_update: "Setting '%{name}' could not be updated: %{message}"
     authentication:
       login: "Увійти"
       registration: "Реєстрація"

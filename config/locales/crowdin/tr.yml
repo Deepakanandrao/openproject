@@ -4231,6 +4231,7 @@ tr:
   setting_emails_salutation: "E-postalarda kullanıcıya şu şekilde hitap edin"
   setting_oauth_allow_remapping_of_existing_users: "Allow remapping of existing users"
   setting_sendmail_location: "Çalıştırılabilir sendmail aracının yolu"
+  setting_sendmail_arguments: "Arguments for sendmail"
   setting_smtp_enable_starttls_auto: "STARTTLS varsa otomatik olarak kullan"
   setting_smtp_ssl: "SSL bağlantısı kullan"
   setting_smtp_address: "SMTP sunucusu"
@@ -4393,6 +4394,9 @@ tr:
   setting_work_package_list_default_highlighted_attributes: "Varsayılan satır içi vurgulanan özellikler"
   setting_working_days: "İş günleri"
   settings:
+    errors:
+      not_writable: "The setting is not writable and can only be changed by a sysadmin."
+      failed_to_update: "Setting '%{name}' could not be updated: %{message}"
     authentication:
       login: "Oturum aç"
       registration: "Üye Olma"

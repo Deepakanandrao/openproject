@@ -4224,6 +4224,7 @@ ca:
   setting_emails_salutation: "Address user in emails with"
   setting_oauth_allow_remapping_of_existing_users: "Allow remapping of existing users"
   setting_sendmail_location: "Localització de l'executable de sendmail"
+  setting_sendmail_arguments: "Arguments for sendmail"
   setting_smtp_enable_starttls_auto: "Utilitza STARTTLS automàticament si està disponible"
   setting_smtp_ssl: "Utilitza una connexió SSL"
   setting_smtp_address: "Servidor SMTP"
@@ -4386,6 +4387,9 @@ ca:
   setting_work_package_list_default_highlighted_attributes: "Atributs de destacament en línia per defecte"
   setting_working_days: "Dies laborals"
   settings:
+    errors:
+      not_writable: "The setting is not writable and can only be changed by a sysadmin."
+      failed_to_update: "Setting '%{name}' could not be updated: %{message}"
     authentication:
       login: "Entrar"
       registration: "Registration"

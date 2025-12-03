@@ -4281,6 +4281,7 @@ ro:
   setting_emails_salutation: "Adresează utilizator în e-mailuri cu"
   setting_oauth_allow_remapping_of_existing_users: "Allow remapping of existing users"
   setting_sendmail_location: "Locația executabilului \"sendmail\""
+  setting_sendmail_arguments: "Arguments for sendmail"
   setting_smtp_enable_starttls_auto: "Utilizează automat STARTTLS dacă este disponibil"
   setting_smtp_ssl: "Utilizează conexiunea SSL"
   setting_smtp_address: "Server SMTP"
@@ -4443,6 +4444,9 @@ ro:
   setting_work_package_list_default_highlighted_attributes: "Atributele evidențiate implicit în linie"
   setting_working_days: "Zile lucrătoare"
   settings:
+    errors:
+      not_writable: "The setting is not writable and can only be changed by a sysadmin."
+      failed_to_update: "Setting '%{name}' could not be updated: %{message}"
     authentication:
       login: "Autentificare"
       registration: "Registration"
