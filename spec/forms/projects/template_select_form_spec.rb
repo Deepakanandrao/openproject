@@ -41,7 +41,7 @@ RSpec.describe Projects::TemplateSelectForm, type: :forms do
   let(:parent_id) { nil }
 
   subject(:rendered_form) do
-    render_form
+    vc_render_form
     page
   end
 
