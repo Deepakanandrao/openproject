@@ -28,12 +28,50 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class CustomFields::Inputs::Date < CustomFields::Inputs::Base::Input
-  form do |custom_value_form|
-    custom_value_form.text_field(**input_attributes)
+require "spec_helper"
+
+RSpec.describe "project export", :js do
+  shared_let(:project) { create(:project) }
+
+  let(:wiki_page1) do
+    build(:wiki_page, title: "Some title!")
   end
 
-  def input_attributes
-    super.merge({ input_width: :xsmall, type: "date" })
+  let(:current_user) { create(:admin) }
+
+  before do
+    @download_list = DownloadList.new
+
+    login_as(current_user)
+
+    project.wiki.pages << wiki_page1
+
+    project.wiki.save!
+
+    visit project_wiki_path(project, "Some title!")
+  end
+
+  after do
+    DownloadList.clear
+  end
+
+  subject { @download_list.refresh_from(page).latest_downloaded_content } # rubocop:disable RSpec/InstanceVariable
+
+  it "exports the wiki" do
+    page.find_test_selector("wiki-more-dropdown-menu").click
+    page.find_test_selector("export-button").click
+
+    page.find_test_selector("markdown-export").click
+
+    wait_for_network_idle
+
+    begin
+      perform_enqueued_jobs
+    rescue StandardError
+      # nothing
+    end
+
+    result = expect(subject)
+    result.to have_text(wiki_page1.title)
   end
 end
