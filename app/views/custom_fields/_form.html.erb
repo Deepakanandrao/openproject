@@ -205,7 +205,13 @@ See COPYRIGHT and LICENSE files for more details.
     <div class="form--field">
       <%= f.check_box :is_required %>
       <div class="form--field-instructions">
-        <p><%= t("custom_fields.instructions.is_required_for_project") %></p>
+        <p><%= t("custom_fields.instructions.is_required") %></p>
+      </div>
+    </div>
+    <div class="form--field">
+      <%= f.check_box :is_for_all %>
+      <div class="form--field-instructions">
+        <p><%= t("custom_fields.instructions.is_for_all") %></p>
       </div>
     </div>
     <div class="form--field">
