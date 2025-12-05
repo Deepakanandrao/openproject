@@ -11,7 +11,7 @@
       (click)="clear(item)"
       (keydown.enter)="clear(item)"
     >×</span>
-    <span class="ng-value-label d-flex gap-1">
+    <span class="ng-value-label d-flex gap-2">
       <span class="ellipsis">{{ item.name }}</span>
       @switch (item._type) {
         @case ('Portfolio') {
@@ -40,7 +40,7 @@
     class="ng-option-label"
     [ngStyle]="{ 'padding-left.px': item.numberOfAncestors * 16 }"
   >
-    <span class="d-flex gap-1">
+    <span class="d-flex gap-2">
       <span
         [title]="item.name"
         class="ellipsis"
