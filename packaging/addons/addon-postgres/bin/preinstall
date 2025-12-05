@@ -116,10 +116,9 @@ install_postgres_server() {
 
 			;;
 		"suse")
-			case $(wiz_fact "osversion") in
-        echo "$MSG_UNKNOWN_DISTRIBUTION_VERSION"
-        exit 1
-      ;;
+			echo "$MSG_UNKNOWN_DISTRIBUTION_VERSION"
+			exit 1
+			;;
 	esac
 }
 
