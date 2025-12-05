@@ -32,12 +32,12 @@ require "spec_helper"
 
 RSpec.describe ProjectCustomField do
   describe "activation in projects" do
-    context "when creating a new required project custom field" do
+    context "when creating a new 'is_for_all' project custom field" do
       let!(:project) { create(:project) }
       let!(:another_project) { create(:project) }
 
       it "activates the required project custom fields in all projects" do
-        project_custom_field = create(:project_custom_field, is_required: true)
+        project_custom_field = create(:project_custom_field, is_for_all: true)
 
         expect(ProjectCustomFieldProjectMapping).to exist(custom_field_id: project_custom_field.id,
                                                           project_id: project.id)
@@ -46,20 +46,20 @@ RSpec.describe ProjectCustomField do
       end
     end
 
-    context "when setting an existing project custom field to required" do
+    context "when setting an existing project custom field to is_for_all" do
       let!(:project_custom_field) { create(:string_project_custom_field) } # optional now
       let!(:project) do
         create(:project, custom_field_values: { "#{project_custom_field.id}": "foo" })
       end
       let!(:another_project) { create(:project) } # not using the custom field
 
-      it "activates the required project custom fields in all projects where it is not already activated" do
+      it "activates the mandatory project custom fields in all projects where it is not already activated" do
         expect(ProjectCustomFieldProjectMapping).to exist(custom_field_id: project_custom_field.id,
                                                           project_id: project.id)
         expect(ProjectCustomFieldProjectMapping).not_to exist(custom_field_id: project_custom_field.id,
                                                               project_id: another_project.id)
 
-        project_custom_field.update!(is_required: true) # required now
+        project_custom_field.update!(is_for_all: true) # mandatory now
 
         expect(ProjectCustomFieldProjectMapping).to exist(custom_field_id: project_custom_field.id,
                                                           project_id: project.id)
@@ -67,9 +67,9 @@ RSpec.describe ProjectCustomField do
                                                           project_id: another_project.id)
       end
 
-      it "does not disabled project custom fields when set to optional" do
-        project_custom_field.update!(is_required: true) # required now
-        project_custom_field.update!(is_required: false) # optional again
+      it "does not disable project custom fields when set to optional" do
+        project_custom_field.update!(is_for_all: true) # mandatory now
+        project_custom_field.update!(is_for_all: false) # optional again
 
         expect(ProjectCustomFieldProjectMapping).to exist(custom_field_id: project_custom_field.id,
                                                           project_id: project.id)
@@ -78,7 +78,7 @@ RSpec.describe ProjectCustomField do
       end
 
       it "does not create duplicate mappings" do
-        project_custom_field.update!(is_required: true) # required now
+        project_custom_field.update!(is_for_all: true) # activated now
 
         # mapping existed before, should not be duplicated
         expect(ProjectCustomFieldProjectMapping.where(project_id: project.id,

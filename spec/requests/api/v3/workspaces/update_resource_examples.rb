@@ -90,10 +90,11 @@ RSpec.shared_examples_for "APIv3 workspace update" do
   end
 
   describe "custom fields" do
-    context "with a required custom field" do
+    context "with a required for_all custom field" do
       let!(:required_custom_field) do
         create(:text_project_custom_field,
                name: "Department",
+               is_for_all: true,
                is_required: true)
       end
 

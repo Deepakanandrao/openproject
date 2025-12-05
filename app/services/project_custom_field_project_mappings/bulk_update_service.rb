@@ -84,7 +84,7 @@ module ProjectCustomFieldProjectMappings
     end
 
     def fetch_custom_field_ids
-      # only custom fields which are set "for all projects" can be disabled
+      # only custom fields which are not set "for all projects" can be disabled
       ProjectCustomField
         .visible(@user)
         .where(custom_field_section_id: @project_custom_field_section.id)
