@@ -57,6 +57,6 @@ class CustomField::Hierarchy::Item < ApplicationRecord
   private
 
   def formatter
-    @formatter ||= CustomFields::Hierarchy::HierarchicalItemFormatter.new
+    CustomFields::Hierarchy::HierarchicalItemFormatter.default
   end
 end

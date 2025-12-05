@@ -111,7 +111,7 @@ module CustomFields
       # @param item [CustomField::Hierarchy::Item] the parent of the node
       # @return [Success(Array<CustomField::Hierarchy::Item>)]
       def get_ancestors(item:)
-        Success(item.self_and_ancestors.reverse)
+        Success(item.ancestors.reverse)
       end
 
       # Gets all descendant nodes in a tree starting from the item/node.

@@ -57,9 +57,9 @@ RSpec.describe CustomFields::Hierarchy::HierarchicalItemFormatter,
   let(:vlf) { service.insert_item(contract_class: wil_contract, parent: radio, label: "VLF", weight: 100000).value! }
   # rubocop:enable Layout/LineLength
 
-  subject(:formatter) { described_class.new }
-
   context "with default formatting options" do
+    subject(:formatter) { described_class.default }
+
     it "renders an item without ancestors, but with label and suffix" do
       expect(formatter.format(item: earth)).to eq("Earth (T)")
       expect(formatter.format(item: sol)).to eq("Sol")
@@ -77,10 +77,19 @@ RSpec.describe CustomFields::Hierarchy::HierarchicalItemFormatter,
   end
 
   context "with specific number formatting" do
-    subject(:formatter) { described_class.new(suffix_parentheses: false, number_length_limit: 12, number_precision: 12) }
+    subject(:formatter) { described_class.new(number_length_limit: 12, number_precision: 12) }
 
-    it "renders an item with weight without parentheses and custom precision" do
-      expect(formatter.format(item: x_ray)).to eq("X-Ray 0.00000000001")
+    it "renders an item with weight with custom precision" do
+      expect(formatter.format(item: x_ray)).to eq("X-Ray (0.00000000001)")
+    end
+  end
+
+  context "with only the suffix without parentheses" do
+    subject(:formatter) { described_class.new(label: false, suffix_parentheses: false) }
+
+    it "renders an item with weight without parentheses" do
+      expect(formatter.format(item: x_ray)).to eq("1.0e-11")
+      expect(formatter.format(item: luna)).to eq("Ln")
     end
   end
 end

@@ -33,6 +33,12 @@ module CustomFields
     class HierarchicalItemFormatter
       include NumberFormatHelper
 
+      class << self
+        def default
+          @default ||= new
+        end
+      end
+
       # @param [Boolean] path Show the full item ancestor path if true
       # @param [Boolean] label Show the item label if true
       # @param [Boolean] suffix Show the item short or weight if true
@@ -59,29 +65,24 @@ module CustomFields
       end
 
       def format(item:)
-        parts = []
+        path = []
+        path << ancestors(item) if @path
+        path << item.label if @label
 
-        if @path && @label
-          parts << branch(item)
-        elsif @path
-          parts << ancestors(item)
-        elsif @label
-          parts << item.label
-        end
+        str_parts = []
+        str_parts << path.join(" / ") unless path.empty?
 
         if @suffix
           suffix = format_suffix(item)
-          parts << suffix if suffix.present?
+          str_parts << suffix if suffix.present?
         end
 
-        parts.join(" ")
+        str_parts.join(" ")
       end
 
       private
 
-      def branch(item) = persistence_service.get_branch(item:).value!.filter_map(&:label).join(" / ")
-
-      def ancestors(item) = persistence_service.get_ancestors(item:).value!.filter_map(&:label).join(" / ")
+      def ancestors(item) = persistence_service.get_ancestors(item:).value!.filter_map(&:label)
 
       def format_suffix(item)
         return "" if item.short.nil? && item.weight.nil?
