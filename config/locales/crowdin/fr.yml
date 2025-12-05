@@ -2485,7 +2485,7 @@ fr:
         title: "Écrire des commentaires internes qu'un petit groupe peut voir"
         description: " "
       portfolio_management:
-        description: Organize your work effectively by creating portfolios and programs with the portfolio management module.
+        description: Align your projects to your strategic goals by organizing them into portfolios and programs.
     teaser:
       title:
         one: "Un jour restant pour le jeton d'essai %{trial_plan}"

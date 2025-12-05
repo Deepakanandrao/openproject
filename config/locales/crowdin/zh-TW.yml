@@ -2437,7 +2437,7 @@ zh-TW:
         title: "只讓少數人能看到的內部備註"
         description: " "
       portfolio_management:
-        description: 使用組合管理模組建立組合和程式，有效組織您的工作。
+        description: Align your projects to your strategic goals by organizing them into portfolios and programs.
     teaser:
       title:
         other: "%{count} %{trial_plan} 試用令牌所剩天數"

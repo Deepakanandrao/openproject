@@ -2577,7 +2577,7 @@ ru:
         title: "Напишите внутренние комментарии только небольшой группы"
         description: " "
       portfolio_management:
-        description: Эффективно организуйте свою работу, создавая портфолио и программы с помощью модуля управления портфолио.
+        description: Align your projects to your strategic goals by organizing them into portfolios and programs.
     teaser:
       title:
         one: "Остался день для пробного токена %{trial_plan}"

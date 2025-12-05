@@ -2441,7 +2441,7 @@ ko:
         title: "소규모 그룹만 볼 수 있는 내부 코멘트 작성"
         description: " "
       portfolio_management:
-        description: Organize your work effectively by creating portfolios and programs with the portfolio management module.
+        description: Align your projects to your strategic goals by organizing them into portfolios and programs.
     teaser:
       title:
         other: "%{trial_plan} 평가판 토큰 %{count}일 남음"

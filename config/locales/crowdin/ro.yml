@@ -2533,7 +2533,7 @@ ro:
         title: "Scrie comentarii interne pe care doar un grup restrâns le poate vedea"
         description: " "
       portfolio_management:
-        description: Organize your work effectively by creating portfolios and programs with the portfolio management module.
+        description: Align your projects to your strategic goals by organizing them into portfolios and programs.
     teaser:
       title:
         one: "One day left of %{trial_plan} trial token"

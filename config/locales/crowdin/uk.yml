@@ -2573,7 +2573,7 @@ uk:
         title: "Створюйте внутрішні коментарі лише для учасників невеликої групи"
         description: " "
       portfolio_management:
-        description: Organize your work effectively by creating portfolios and programs with the portfolio management module.
+        description: Align your projects to your strategic goals by organizing them into portfolios and programs.
     teaser:
       title:
         one: "Один день до завершення строку дії пробного маркера %{trial_plan}"

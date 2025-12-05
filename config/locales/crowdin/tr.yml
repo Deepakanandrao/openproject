@@ -2487,7 +2487,7 @@ tr:
         title: "Sadece küçük bir grubun görebileceği iç yorumlar yazın"
         description: " "
       portfolio_management:
-        description: Organize your work effectively by creating portfolios and programs with the portfolio management module.
+        description: Align your projects to your strategic goals by organizing them into portfolios and programs.
     teaser:
       title:
         one: "%{trial_plan} deneme anahtarının son bir günü kaldı"
