@@ -1300,7 +1300,6 @@ en:
         scim_clients: "SCIM clients"
       calculated_value_error:
         error_code: "Error code"
-        customized: "Customized"
         customized_id: "Customized ID"
         customized_type: "Customized type"
       capability:
@@ -2043,6 +2042,7 @@ en:
       comment: "Comment"
       custom_action: "Custom action"
       custom_field: "Custom field"
+      customized: "Customized"
       "doorkeeper/application": "OAuth application"
       enterprise_token:
         one: "Enterprise token"

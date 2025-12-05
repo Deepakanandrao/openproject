@@ -76,6 +76,7 @@ class Project < ApplicationRecord
   has_many :users, through: :members, source: :principal
   has_many :principals, through: :member_principals, source: :principal
   has_many :calculated_value_errors, dependent: :delete_all, as: :customized
+  has_many :custom_comments, dependent: :delete_all, as: :customized
 
   has_many :enabled_modules, dependent: :delete_all
   has_and_belongs_to_many :types, -> {

@@ -53,6 +53,8 @@ class CustomField < ApplicationRecord
 
   has_many :calculated_value_errors, dependent: :delete_all, inverse_of: "custom_field"
 
+  has_many :comments, class_name: "CustomComment", dependent: :delete_all, inverse_of: "custom_field"
+
   scope :hierarchy_root_and_children, -> { includes(hierarchy_root: { children: :children }) }
   scope :required, -> { where(is_required: true).where.not(field_format: "calculated_value") }
 
