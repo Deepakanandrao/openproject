@@ -61,6 +61,7 @@ RSpec.describe IncomingEmails::DispatchService do
   describe ".handlers" do
     it "returns the default handlers" do
       expect(described_class.handlers).to include(
+        IncomingEmails::Handlers::MeetingResponse,
         IncomingEmails::Handlers::MessageReply,
         IncomingEmails::Handlers::WorkPackage
       )

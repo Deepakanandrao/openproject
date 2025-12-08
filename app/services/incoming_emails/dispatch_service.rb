@@ -41,6 +41,7 @@ module IncomingEmails
     # Registry for mail handlers
     def self.handlers
       @handlers ||= [
+        IncomingEmails::Handlers::MeetingResponse,
         IncomingEmails::Handlers::MessageReply,
         IncomingEmails::Handlers::WorkPackage
       ]
