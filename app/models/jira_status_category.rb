@@ -1,0 +1,3 @@
+class JiraStatusCategory < ApplicationRecord
+
+end

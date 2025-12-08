@@ -1,0 +1,3 @@
+class Jira < ApplicationRecord
+
+end

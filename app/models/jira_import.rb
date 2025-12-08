@@ -1,0 +1,3 @@
+class JiraImport < ApplicationRecord
+
+end

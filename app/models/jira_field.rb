@@ -1,0 +1,3 @@
+class JiraField < ApplicationRecord
+
+end

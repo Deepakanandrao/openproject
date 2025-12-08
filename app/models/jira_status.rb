@@ -1,0 +1,3 @@
+class JiraStatus < ApplicationRecord
+
+end

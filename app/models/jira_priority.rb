@@ -1,0 +1,3 @@
+class JiraPriority < ApplicationRecord
+
+end

@@ -1,0 +1,3 @@
+class JiraIssueType < ApplicationRecord
+
+end

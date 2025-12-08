@@ -1,0 +1,3 @@
+class JiraProjectType < ApplicationRecord
+
+end
