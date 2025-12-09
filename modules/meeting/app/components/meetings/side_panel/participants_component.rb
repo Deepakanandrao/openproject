@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -67,10 +68,22 @@ module Meetings
       end
     end
 
-    def render_participant_state(participant, flex)
+    def render_participant_state(participant, flex) # rubocop:disable Metrics/AbcSize
       if participant.attended?
         flex.with_column(ml: 1) do
           render(Primer::Beta::Text.new(font_size: :small, color: :subtle)) { t("description_attended").capitalize }
+        end
+      elsif participant.participation_accepted?
+        flex.with_column(ml: 1) do
+          render(Primer::Beta::Text.new(font_size: :small, color: :success)) { t("meeting_participant.participation_status.accepted").capitalize }
+        end
+      elsif participant.participation_declined?
+        flex.with_column(ml: 1) do
+          render(Primer::Beta::Text.new(font_size: :small, color: :danger)) { t("meeting_participant.participation_status.declined").capitalize }
+        end
+      elsif participant.participation_tentative?
+        flex.with_column(ml: 1) do
+          render(Primer::Beta::Text.new(font_size: :small, color: :attention)) { t("meeting_participant.participation_status.tentative").capitalize }
         end
       end
     end
