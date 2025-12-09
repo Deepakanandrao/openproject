@@ -36,13 +36,31 @@ RSpec.describe ProjectCustomField do
       let!(:project) { create(:project) }
       let!(:another_project) { create(:project) }
 
-      it "activates the required project custom fields in all projects" do
+      it "activates the project custom fields in all projects" do
         project_custom_field = create(:project_custom_field, is_for_all: true)
 
         expect(ProjectCustomFieldProjectMapping).to exist(custom_field_id: project_custom_field.id,
                                                           project_id: project.id)
         expect(ProjectCustomFieldProjectMapping).to exist(custom_field_id: project_custom_field.id,
                                                           project_id: another_project.id)
+      end
+    end
+
+    context "when creating a new project custom field" do
+      let!(:project) { create(:project) }
+      let!(:another_project) { create(:project) }
+
+      it "activates the custom field in projects it is assigned to" do
+        # Same activation rules apply for optional and required custom fields:
+        optional_cf = create(:project_custom_field, projects: [project])
+        required_cf = create(:project_custom_field, is_required: true, projects: [project])
+
+        [optional_cf, required_cf].each do |cf|
+          expect(ProjectCustomFieldProjectMapping).to exist(custom_field_id: cf.id,
+                                                            project_id: project.id)
+          expect(ProjectCustomFieldProjectMapping).not_to exist(custom_field_id: cf.id,
+                                                                project_id: another_project.id)
+        end
       end
     end
 

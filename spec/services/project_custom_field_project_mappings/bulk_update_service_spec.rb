@@ -44,6 +44,14 @@ RSpec.describe ProjectCustomFieldProjectMappings::BulkUpdateService do
              project_custom_field_section:)
     end
 
+    shared_let(:visible_required_project_custom_field) do
+      create(:project_custom_field,
+             name: "Visible required field",
+             admin_only: false,
+             is_required: true,
+             project_custom_field_section:)
+    end
+
     shared_let(:visible_activated_project_custom_field) do
       create(:project_custom_field,
              name: "Visible activated field",
@@ -69,6 +77,7 @@ RSpec.describe ProjectCustomFieldProjectMappings::BulkUpdateService do
 
         expected = [
           visible_activated_project_custom_field,
+          visible_required_project_custom_field,
           visible_project_custom_field,
           invisible_project_custom_field
         ]
@@ -102,6 +111,7 @@ RSpec.describe ProjectCustomFieldProjectMappings::BulkUpdateService do
 
         expected = [
           visible_activated_project_custom_field,
+          visible_required_project_custom_field,
           visible_project_custom_field
         ]
         expect(project.reload.project_custom_fields).to match_array(expected)
