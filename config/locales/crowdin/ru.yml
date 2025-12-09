@@ -459,8 +459,8 @@ ru:
         placeholder: Поиск портфолио
       sub_items_html:
         one: "<strong>1</strong> подпункт"
-        few: "<strong>%{count}</strong> sub-items"
-        many: "<strong>%{count}</strong> sub-items"
+        few: "<strong>%{count}</strong> подпункта"
+        many: "<strong>%{count}</strong> подпунктов"
         other: "<strong>%{count}</strong> подпунктов"
     lists:
       active: "Активные портфолио"
@@ -2577,7 +2577,7 @@ ru:
         title: "Напишите внутренние комментарии только небольшой группы"
         description: " "
       portfolio_management:
-        description: Align your projects to your strategic goals by organizing them into portfolios and programs.
+        description: Приведите Ваши проекты в соответствии с Вашими стратегическими целями, организовав их в портфолио и программы.
     teaser:
       title:
         one: "Остался день для пробного токена %{trial_plan}"
@@ -4326,7 +4326,7 @@ ru:
   setting_emails_salutation: "Адрес пользователя в письмах с"
   setting_oauth_allow_remapping_of_existing_users: "Разрешить перераспределение существующих пользователей"
   setting_sendmail_location: "Расположение исполняемого файла sendmail"
-  setting_sendmail_arguments: "Arguments for sendmail"
+  setting_sendmail_arguments: "Аргументы для sendmail"
   setting_smtp_enable_starttls_auto: "Автоматически использовать STARTTLS, если таковые имеются"
   setting_smtp_ssl: "Использовать SSL-подключение"
   setting_smtp_address: "SMTP сервер"
@@ -4490,8 +4490,8 @@ ru:
   setting_working_days: "Рабочие дни"
   settings:
     errors:
-      not_writable: "The setting is not writable and can only be changed by a sysadmin."
-      failed_to_update: "Setting '%{name}' could not be updated: %{message}"
+      not_writable: "Эта настройка недоступна для записи и может быть изменена только администратором."
+      failed_to_update: "Настройка '%{name}' не может быть обновлена: %{message}"
     authentication:
       login: "Входное имя"
       registration: "Регистрация"
