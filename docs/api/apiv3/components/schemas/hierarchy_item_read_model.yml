@@ -1,6 +1,15 @@
 # Schema: HierarchyItemReadModel
 ---
 type: object
+required:
+  - _type
+  - id
+  - label
+  - short
+  - weight
+  - formattedWeight
+  - depth
+  - _links
 properties:
   _type:
     type: string
@@ -41,6 +50,10 @@ properties:
     description: The hierarchy depth. The root item has a depth of 0.
   _links:
     type: object
+    required:
+      - self
+      - children
+      - branch
     properties:
       self:
         allOf:
@@ -65,3 +78,10 @@ properties:
                 A hierarchy item that is a child of the current hierarchy item
                 
                 **Resource**: HierarchyItem
+      branch:
+        allOf:
+          - $ref: './link.yml'
+          - description: |-
+              The branch of the hierarchy item, ordered from root to node.
+
+              **Resource**: HierarchyItemCollection
