@@ -396,7 +396,7 @@ en:
 
   meeting_participant:
     participation_status:
-      needs_action: "Needs action"
+      needs_action: "No response"
       accepted: "Accepted"
       declined: "Declined"
       tentative: "Maybe"
