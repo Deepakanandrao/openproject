@@ -35,7 +35,7 @@ import { OpBlockNoteEditor } from './components/OpBlockNoteEditor';
 import { useCollaboration } from './hooks/useCollaboration';
 
 export interface OpBlockNoteContainerProps {
-  inputField?:HTMLInputElement;
+  inputField:HTMLInputElement;
   inputText?:string;
   activeUser:User;
   readOnly:boolean;

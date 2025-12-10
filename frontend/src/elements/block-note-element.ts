@@ -75,6 +75,7 @@ class BlockNoteElement extends HTMLElement {
       React.createElement(
         OpBlockNoteContainer,
         {
+          inputField: document.createElement('input'),
           activeUser: this.parseActiveUser()!,
           readOnly: this.getAttribute('read-only') === 'true',
           openProjectUrl: this.getAttribute('open-project-url') ?? '',

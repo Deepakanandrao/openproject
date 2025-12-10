@@ -6,63 +6,52 @@ module FormFields
       include Capybara::DSL
 
       def open_add_image_dialog
-        editor = find_editor
-        editor.send_keys("/image")
-        editor.send_keys(:enter)
+        send_keys_to_editor("/image")
+        send_keys_to_editor(:enter)
       end
 
       def open_command_dialog
-        find_editor.send_keys("/")
+        send_keys_to_editor("/")
       end
 
       def fill_in_with_content(content)
-        editor = find_editor
-        editor.send_keys(content)
+        send_keys_to_editor(content)
       end
 
-      def find_editor
-        # page.find("op-block-note")
-
-        element = page.evaluate_script <<~JS
+      def text
+        page.evaluate_script(<<~JS)
           document.querySelector('op-block-note')
             .shadowRoot.querySelector('div[role="textbox"]')
+            .textContent;
         JS
+      end
 
-        element.click
-        element
+      def content
+        page.evaluate_script(<<~JS)
+          document.querySelector('op-block-note')
+            .shadowRoot
+            .innerHTML;
+        JS
+      end
+
+      private
+
+      def send_keys_to_editor(keys)
+        page.execute_script(<<~JS, keys.to_s)
+          const editor = document.querySelector('op-block-note')
+            .shadowRoot.querySelector('div[role="textbox"]');
+
+          editor.focus();
+
+          const text = arguments[0];
+          if (text === 'enter') {
+            editor.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }))
+          } else {
+            document.execCommand('insertText', false, text);
+            editor.dispatchEvent(new Event('change', {bubbles: true}));
+          }
+        JS
       end
     end
   end
 end
-
-# def open_add_image_dialog
-#   send_keys_to_editor("/image")
-#   send_keys_to_editor(:enter)
-# end
-
-# def open_command_dialog
-#   send_keys_to_editor("/")
-# end
-
-# def fill_in_with_content(content)
-#   send_keys_to_editor(content)
-# end
-
-# private
-
-# def send_keys_to_editor(text)
-#   page.execute_script(<<~JS, text.to_s)
-#     const host = document.querySelector('op-block-note');
-#     const el = host.shadowRoot.querySelector('div[role="textbox"]');
-#     el.focus();
-
-#     const text = arguments[0];
-#     if (text === 'enter') {
-#       el.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', code: 'Enter', bubbles: true }));
-#       el.dispatchEvent(new KeyboardEvent('keypress', { key: 'Enter', code: 'Enter', bubbles: true }));
-#       el.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter', code: 'Enter', bubbles: true }));
-#     } else {
-#       document.execCommand('insertText', false, text);
-#     }
-#   JS
-# end
