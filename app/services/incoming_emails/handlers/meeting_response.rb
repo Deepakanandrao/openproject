@@ -27,21 +27,34 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
-
-FactoryBot.define do
-  factory :meeting_participant do |_mp|
-    user
-    meeting
-    participation_status { "needs-action" }
-
-    trait :invitee do
-      invited { true }
+module IncomingEmails::Handlers
+  class MeetingResponse < Base
+    # Override in subclasses to determine if this handler can process the email
+    def self.handles?(email, **)
+      email.attachments.any? { |a| a.content_type.start_with?("text/calendar") } ||
+          (email.multipart? && email.parts.any? { |part| part.content_type.start_with?("text/calendar") })
     end
 
-    trait :attendee do
-      attended { true }
+    # Override in subclasses to process the email
+    def process
+      ical_string = extract_ical_string
+      if ical_string.blank?
+        return ServiceResult.failure(message: "No iCalendar data found in email from [#{user.mail}]")
+      end
+
+      AllMeetings::HandleICalResponseService.new(user: user).call(ical_string: ical_string)
     end
 
-    traits_for_enum(:participation_status)
+    private
+
+    def extract_ical_string
+      attachment = email.attachments.find { |a| a.content_type.start_with?("text/calendar") }
+      return attachment.decoded if attachment
+
+      calendar_part = email.parts.find { |part| part.content_type.start_with?("text/calendar") }
+      if calendar_part
+        Redmine::CodesetUtil.to_utf8(calendar_part.body.decoded, calendar_part.charset)
+      end
+    end
   end
 end

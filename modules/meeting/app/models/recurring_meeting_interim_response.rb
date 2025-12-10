@@ -28,20 +28,16 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-FactoryBot.define do
-  factory :meeting_participant do |_mp|
-    user
-    meeting
-    participation_status { "needs-action" }
+class RecurringMeetingInterimResponse < ApplicationRecord
+  belongs_to :recurring_meeting
+  belongs_to :user
 
-    trait :invitee do
-      invited { true }
-    end
-
-    trait :attendee do
-      attended { true }
-    end
-
-    traits_for_enum(:participation_status)
-  end
+  enum :participation_status, {
+    needs_action: "needs-action",
+    accepted: "accepted",
+    declined: "declined",
+    tentative: "tentative",
+    # delegated: "delegated", # We currently do not support delegation
+    unknown: "unknown" # this status is used for existing participants when introducing the field
+  }, prefix: :participation
 end
