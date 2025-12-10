@@ -53,7 +53,7 @@ module Portfolios
         controller: "filter--filters-form",
         "filter--filters-form-perform-turbo-requests-value": true,
         "filter--filters-form-clear-button-id-value": clear_button_id,
-        "filter--filters-form-display-filters-value": params[:filters]
+        "filter--filters-form-display-filters-value": filters_expanded?
       }
     end
 
@@ -81,8 +81,12 @@ module Portfolios
       "#{100 + (@query.filters.count * 40)}px"
     end
 
+    def filters_expanded?
+      params[:filters].present?
+    end
+
     def filter_classes
-      "op-filters-form op-filters-form_top-margin #{'-expanded' if params[:filters]}"
+      "op-filters-form op-filters-form_top-margin #{'-expanded' if filters_expanded?}"
     end
   end
 end

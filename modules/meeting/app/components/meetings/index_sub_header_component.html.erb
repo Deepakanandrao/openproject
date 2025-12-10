@@ -3,7 +3,7 @@
         data: {
           controller: "filter--filters-form",
           "filter--filters-form-output-format-value": "json",
-          "filter--filters-form-display-filters-value": params[:filters]
+          "filter--filters-form-display-filters-value": filters_expanded?
         }
       )
     ) do |subheader|
@@ -60,7 +60,12 @@
         end
       end
 
-      subheader.with_bottom_pane_component(mt: 0) do
+      subheader.with_bottom_pane_component(
+        classes: "op-filters-form op-filters-form_top-margin #{"-expanded" if filters_expanded?}",
+        data: {
+          'filter--filters-form-target': 'filterForm',
+        }
+      ) do
         render(Meetings::MeetingFiltersComponent.new(query: @query, project: @project))
       end
     end %>
