@@ -31,13 +31,15 @@
 import { User } from '@blocknote/core/comments';
 import { HocuspocusProvider } from '@hocuspocus/provider';
 import { LiveCollaborationManager } from 'core-stimulus/helpers/live-collaboration-helpers';
+import { ShadowDomWrapper } from 'op-blocknote-extensions';
 import React from 'react';
+import type { Root } from 'react-dom/client';
 import { createRoot } from 'react-dom/client';
 import OpBlockNoteContainer from '../react/OpBlockNoteContainer';
-import { ShadowDomWrapper } from 'op-blocknote-extensions';
 
 class BlockNoteElement extends HTMLElement {
   private mount:HTMLDivElement;
+  private reactRoot:Root|null = null;
 
   constructor() {
     super();
@@ -56,19 +58,26 @@ class BlockNoteElement extends HTMLElement {
   }
 
   connectedCallback() {
-    const root = createRoot(this.mount);
+    this.reactRoot = createRoot(this.mount);
 
     const collaborationEnabled = this.getAttribute('collaboration-enabled') === 'true';
     if (collaborationEnabled) {
-      LiveCollaborationManager.onReady((hocuspocusProvider) => {
-        root.render(this.BlockNoteReactContainer(hocuspocusProvider));
-      });
+      LiveCollaborationManager.onReady((hocuspocusProvider) => 
+        this.reactRoot?.render(this.BlockNoteReactContainer(hocuspocusProvider))
+      );
     } else {
-      root.render(this.BlockNoteReactContainer());
+      this.reactRoot.render(this.BlockNoteReactContainer());
     }
   }
 
-  BlockNoteReactContainer(hocuspocusProvider?:HocuspocusProvider) {
+  disconnectedCallback() {
+    if (this.reactRoot) {
+      this.reactRoot.unmount();
+      this.reactRoot = null;
+    }
+  }
+
+  private BlockNoteReactContainer = (hocuspocusProvider?:HocuspocusProvider) => {
     return React.createElement(
       ShadowDomWrapper,
       { target: this.mount },
@@ -102,4 +111,6 @@ class BlockNoteElement extends HTMLElement {
 
 }
 
-customElements.define('op-block-note', BlockNoteElement);
+if (!customElements.get('op-block-note')) {
+  customElements.define('op-block-note', BlockNoteElement);
+}
