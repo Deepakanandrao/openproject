@@ -12,7 +12,9 @@ allOf:
         enum:
           - User
       avatar:
-        type: [string, null]
+        type:
+          - "string"
+          - "null"
         format: uri
         description: URL to user's avatar
       login:

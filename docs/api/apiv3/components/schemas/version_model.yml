@@ -21,10 +21,14 @@ properties:
     - "$ref": "./formattable.yml"
     - {}
   startDate:
-    type: [string, null]
+    type:
+      - "string"
+      - "null"
     format: date
   endDate:
-    type: [string, null]
+    type:
+      - "string"
+      - "null"
     format: date
   status:
     type: string

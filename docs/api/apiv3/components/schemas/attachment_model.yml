@@ -27,11 +27,11 @@ properties:
   status:
     type: string
     enum:
-    - uploaded
-    - prepared
-    - scanned
-    - quarantined
-    - rescan
+      - uploaded
+      - prepared
+      - scanned
+      - quarantined
+      - rescan
   contentType:
     type: string
     description: The files MIME-Type as determined by the server
