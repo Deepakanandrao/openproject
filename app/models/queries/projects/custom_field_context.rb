@@ -43,7 +43,9 @@ module Queries::Projects::CustomFieldContext
     end
 
     def custom_fields(_context = nil)
-      custom_field_class.visible
+      RequestStore.fetch("#{self}.custom_fields") do
+        custom_field_class.visible
+      end
     end
 
     def find_custom_field(id)
