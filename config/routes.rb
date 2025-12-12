@@ -222,6 +222,7 @@ Rails.application.routes.draw do
             get :change_parent, action: :change_parent_dialog
             post :change_parent, action: :change_parent
             get :delete, action: :deletion_dialog
+            get :item_actions
             post :move
             get :new_child, action: :new
             post :new_child, action: :create
@@ -683,6 +684,7 @@ Rails.application.routes.draw do
             get :change_parent, action: :change_parent_dialog
             post :change_parent, action: :change_parent
             get :delete, action: :deletion_dialog
+            get :item_actions
             post :move
             get :new_child, action: :new
             post :new_child, action: :create
