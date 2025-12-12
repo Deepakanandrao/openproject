@@ -38,7 +38,7 @@ module Queries::Projects::CustomFieldContext
       ::Project
     end
 
-    def custom_fields(_context=nil)
+    def custom_fields(_context = nil)
       custom_field_class.visible
     end
 
@@ -48,7 +48,7 @@ module Queries::Projects::CustomFieldContext
       end
     end
 
-    def preload_custom_fields(ids)
+    def preload_custom_fields(ids) # rubocop:disable Metrics/AbcSize
       ids_to_load = ids.map(&:to_i) - custom_field_cache.keys
 
       if ids_to_load.any?
@@ -57,10 +57,10 @@ module Queries::Projects::CustomFieldContext
                   .index_by(&:id)
         # Iterating over the ids_to_load will also cache missing custom fields
         # as nil, making sure we only try to load them once.
-        ids_to_load.map { |id| custom_field_cache[id] = found[id] }
+        ids_to_load.each { |id| custom_field_cache[id] = found[id] }
       end
 
-      ids.map { |id| custom_field_cache[id.to_i] }.compact
+      ids.filter_map { |id| custom_field_cache[id.to_i] }
     end
 
     def where_subselect_joins(custom_field)
