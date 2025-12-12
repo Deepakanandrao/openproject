@@ -70,13 +70,13 @@ class BlockNoteElement extends HTMLElement {
 
       .block-note-editor-container > .bn-editor {
         height: 100%;
-        max-width: $blocknote-max-width;
+        max-width: 800px;
         min-height: 80vh;
         overflow: auto;
         width: 100%;
         background-color: transparent;
-        padding-top: 10px; // Small padding to display cursor label when at the very top
-        padding-inline: 0; // No inline padding necessary given transparent background
+        padding-top: 10px;
+        padding-inline: 0;
       }
     `;
     shadowRoot.appendChild(style);
@@ -87,7 +87,7 @@ class BlockNoteElement extends HTMLElement {
 
     const collaborationEnabled = this.getAttribute('collaboration-enabled') === 'true';
     if (collaborationEnabled) {
-      LiveCollaborationManager.onReady((hocuspocusProvider) => 
+      LiveCollaborationManager.onReady((hocuspocusProvider) =>
         this.reactRoot?.render(this.BlockNoteReactContainer(hocuspocusProvider))
       );
     } else {
