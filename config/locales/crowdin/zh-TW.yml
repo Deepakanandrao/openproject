@@ -537,13 +537,13 @@ zh-TW:
         portfolio_template_caption: "選擇範本組合，作為此類型新子項的預設值。"
         no_template: "沒有預先定義的範本"
       template:
-        menu_title: "Template"
-        title: "Template settings"
-        enable_failed: "Failed to enable template mode."
+        menu_title: "範本"
+        title: "範本設定"
+        enable_failed: "啟用範本模式失敗。"
         members:
-          excluded_roles_label: "Roles to exclude when template is applied"
+          excluded_roles_label: "套用範本時排除的角色"
           excluded_roles_caption: >
-            When creating a new project from this template, the roles selected above will be omitted. This allows you to select which members will be excluded based on their project roles. Users can then access the template for viewing purposes without being granted access to new projects created from it.
+            從此範本建立新專案時，上面選取的角色將會省略。這可讓您根據專案角色選擇哪些成員將被排除在外。使用者可以為檢視目的存取範本，但不會被允許存取以此範本建立的新專案。
       actions:
         label_enable_all: "全部啟用"
         label_disable_all: "全部停用"
@@ -783,7 +783,7 @@ zh-TW:
         required: "請選擇角色"
       message:
         label: "邀請訊息"
-        description: "我們會寄送一封電子郵件給使用者，您可以在此加入個人訊息。說明邀請的原因或提供一些有關專案的資訊，能夠幫助他們更順利開始使用。"
+        description: "We will send an email to the user, to which you can add a personal message here. An explanation for the invitation could be useful, or perhaps a bit of information regarding the project to help them get started."
       summary:
         next_button: "發送邀請函"
       success_message:
@@ -3885,7 +3885,7 @@ zh-TW:
   permission_comment_news: "在「最新消息」留言"
   permission_commit_access: "讀/寫 權限版本庫 (Commit)"
   permission_copy_projects: "複製專案"
-  permission_copy_projects_explanation: "In template projects, this permission has a secondary function, it allows the creation of new projects derived from the template."
+  permission_copy_projects_explanation: "在範本專案中，此權限具有次要功能，它允許建立源自範本的新專案。"
   permission_copy_work_packages: "複製工作套件"
   permission_create_backup: "建立備份"
   permission_delete_work_package_watchers: "刪除監看者"
@@ -4438,7 +4438,7 @@ zh-TW:
               description: "將所有專案屬性加入專案總覽中右側面板內的區段。"
     project_initiation_request:
       header_description: >
-        OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can choose which project attributes should be included and create a PDF artifact as a result.
+        OpenProject 可以產生逐步操作精靈，協助專案經理填寫專案啟動申請。你可以選擇要包含哪些專案屬性，並產出 PDF 成果檔。
       status:
         submitted: "%{wizard_name} 已提交"
         submitted_description: "請點擊下方的按鈕，以前往提交流程的工作套件。"
