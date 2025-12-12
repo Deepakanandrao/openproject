@@ -184,7 +184,7 @@ ruby --version
 ruby 3.4.7 (2025-10-08 revision 7a5688e2a2) +PRISM [arm64-darwin25]
 
 bundler --version
-Bundler version 2.7.2
+Bundler version 4.0.1
 
 node --version
 v22.21.0
