@@ -66,7 +66,8 @@ jobs:
           WORKFLOW_ID: core_release.yml
           TAG: ${{ needs.compute-inputs.outputs.tag }}
         run: |
+          PAYLOAD=$(jq -n --arg tag "$TAG" '{"ref": "main", "inputs": {"tag": $tag}}')
           curl -i --fail-with-body -H"authorization: Bearer $TOKEN" \
             -XPOST -H"Accept: application/vnd.github.v3+json" \
             https://api.github.com/repos/$REPOSITORY/actions/workflows/$WORKFLOW_ID/dispatches \
-            -d "{\"ref\": \"main\", \"inputs\": { \"tag\" : \"$TAG\" }}"
+            -d "$PAYLOAD"
