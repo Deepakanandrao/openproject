@@ -36,6 +36,10 @@ import React from 'react';
 import type { Root } from 'react-dom/client';
 import { createRoot } from 'react-dom/client';
 import OpBlockNoteContainer from '../react/OpBlockNoteContainer';
+import blockNoteStylesContent from './block-note-element-styles';
+
+const blockNoteStyleSheet = new CSSStyleSheet();
+blockNoteStyleSheet.replaceSync(blockNoteStylesContent);
 
 class BlockNoteElement extends HTMLElement {
   private mount:HTMLDivElement;
@@ -56,30 +60,7 @@ class BlockNoteElement extends HTMLElement {
       shadowRoot.appendChild(link);
     }
 
-    const style = document.createElement('style');
-    style.textContent = `
-      .block-note-editor-container {
-        align-items: center;
-        display: flex;
-        flex-direction: column-reverse;
-        gap: 10px;
-        height: 100%;
-        max-width: none;
-        padding: 0;
-      }
-
-      .block-note-editor-container > .bn-editor {
-        height: 100%;
-        max-width: 800px;
-        min-height: 80vh;
-        overflow: auto;
-        width: 100%;
-        background-color: transparent;
-        padding-top: 10px;
-        padding-inline: 0;
-      }
-    `;
-    shadowRoot.appendChild(style);
+    shadowRoot.adoptedStyleSheets = [blockNoteStyleSheet];
   }
 
   connectedCallback() {
