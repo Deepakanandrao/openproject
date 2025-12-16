@@ -40,7 +40,13 @@ module OpenProject
       formula: [:only, %w[calculated_value]],
       searchable: [:except, %w[bool date float int user version hierarchy calculated_value]],
       textOrientation: [:only, %w[text]],
-      enterpriseBanner: [:only, %w[hierarchy]]
+      enterpriseBanner: [:only, %w[hierarchy]],
+      component: {
+        bool: Admin::CustomFields::Boolean::DetailsComponent,
+        calculated_value: Admin::CustomFields::CalculatedValues::DetailsComponent,
+        hierarchy: CustomFields::DetailsComponent,
+        weighted_item_list: CustomFields::DetailsComponent
+      }.with_indifferent_access
     }.freeze
 
     def self.stimulus_config
@@ -64,6 +70,10 @@ module OpenProject
         data: { "admin--custom-fields-target": target_name },
         hidden: !visible
       )
+    end
+
+    def component
+      CONFIG.dig(:component, format)
     end
   end
 end
