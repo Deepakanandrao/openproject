@@ -61,5 +61,21 @@ RSpec.describe Boards::BoardsController do
         expect(response).to have_http_status(:forbidden)
       end
     end
+
+    context "when not allowed to delete boards in this project, but in others (Regression #69942)" do
+      let(:other_project) { create(:project) }
+      let(:user) do
+        create(:user, member_with_permissions: {
+                 project => %i[view_work_packagess show_board_views],
+                 other_project => %i[view_work_packages manage_board_views]
+               })
+      end
+
+      it "returns 403 forbidden" do
+        delete :destroy, params: { id: board.id }
+
+        expect(response).to have_http_status(:forbidden)
+      end
+    end
   end
 end
