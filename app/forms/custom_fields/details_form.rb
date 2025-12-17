@@ -154,9 +154,7 @@ module CustomFields
     end
 
     def show_is_filter_field?
-      # TODO: the fact that hierarchy and weighted_item_list are the only ProjectCustomFields
-      # allowing to select whether the field is filterable or not seems off.
-      model.is_a?(WorkPackageCustomField) || model.field_format.in?(%w[hierarchy weighted_item_list])
+      model.is_a?(WorkPackageCustomField)
     end
 
     def show_admin_only_field?
