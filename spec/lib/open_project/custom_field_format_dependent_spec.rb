@@ -78,41 +78,39 @@ RSpec.describe OpenProject::CustomFieldFormatDependent do
     end
   end
 
-  describe "#component" do
+  describe "#component?" do
     let(:instance) { described_class.new(format) }
 
-    subject { instance.component }
+    subject { instance.component? }
 
     context "for the 'bool' format" do
       let(:format) { "bool" }
 
-      it "returns a component" do
-        expect(subject).to eql Admin::CustomFields::Boolean::DetailsComponent
-      end
+      it { is_expected.to be_truthy }
     end
 
     context "for the 'calculated_value' format" do
       let(:format) { "calculated_value" }
 
-      it "returns a component" do
-        expect(subject).to eql Admin::CustomFields::CalculatedValues::DetailsComponent
-      end
+      it { is_expected.to be_truthy }
     end
 
     context "for the 'hierarchy' format" do
       let(:format) { "hierarchy" }
 
-      it "returns a component" do
-        expect(subject).to eql CustomFields::DetailsComponent
-      end
+      it { is_expected.to be_truthy }
     end
 
     context "for the 'weighted_item_list' format" do
       let(:format) { "weighted_item_list" }
 
-      it "returns a component" do
-        expect(subject).to eql CustomFields::DetailsComponent
-      end
+      it { is_expected.to be_truthy }
+    end
+
+    context "for the 'int' format" do
+      let(:format) { "int" }
+
+      it { is_expected.to be_falsey }
     end
   end
 end

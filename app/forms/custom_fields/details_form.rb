@@ -48,7 +48,7 @@ module CustomFields
         required: true
       )
 
-      if model.is_a?(ProjectCustomField)
+      if show_section_field?
         details_form.select_list(
           name: :custom_field_section_id,
           label: I18n.t("activerecord.attributes.project_custom_field.custom_field_section"),
@@ -60,7 +60,7 @@ module CustomFields
         end
       end
 
-      if model.multi_value_possible?
+      if show_multi_value_field?
         details_form.check_box(
           name: :multi_value,
           label: I18n.t("activerecord.attributes.custom_field.multi_value"),
@@ -68,25 +68,123 @@ module CustomFields
         )
       end
 
-      details_form.check_box(
-        name: :is_required,
-        label: I18n.t("activerecord.attributes.custom_field.is_required"),
-        caption: I18n.t("custom_fields.instructions.is_required")
-      )
+      if show_formula_field?
+        details_form.pattern_input(
+          name: :formula,
+          value: model.formula_string,
+          suggestions: formula_suggestions,
+          label: I18n.t(:label_formula),
+          required: true,
+          caption: I18n.t("custom_fields.instructions.formula")
+        )
+      end
 
-      details_form.check_box(
-        name: :is_for_all,
-        label: I18n.t("activerecord.attributes.custom_field.is_for_all"),
-        caption: I18n.t("custom_fields.instructions.is_for_all")
-      )
+      if show_default_bool_field?
+        details_form.check_box(
+          name: :default_value,
+          label: I18n.t("activerecord.attributes.custom_field.default_value")
+        )
+      end
 
-      details_form.check_box(
-        name: :is_filter,
-        label: I18n.t("activerecord.attributes.custom_field.is_filter"),
-        caption: I18n.t("custom_fields.instructions.is_filter")
-      )
+      if show_is_required_field?
+        details_form.check_box(
+          name: :is_required,
+          label: I18n.t("activerecord.attributes.custom_field.is_required"),
+          caption: I18n.t("custom_fields.instructions.is_required")
+        )
+      end
+
+      if show_is_for_all_field?
+        details_form.check_box(
+          name: :is_for_all,
+          label: I18n.t("activerecord.attributes.custom_field.is_for_all"),
+          caption: I18n.t("custom_fields.instructions.is_for_all")
+        )
+      end
+
+      if show_is_filter_field?
+        details_form.check_box(
+          name: :is_filter,
+          label: I18n.t("activerecord.attributes.custom_field.is_filter"),
+          caption: I18n.t("custom_fields.instructions.is_filter")
+        )
+      end
+
+      if show_admin_only_field?
+        details_form.check_box(
+          name: :admin_only,
+          label: I18n.t("activerecord.attributes.custom_field.admin_only"),
+          caption: I18n.t("custom_fields.instructions.admin_only")
+        )
+      end
+
+      if show_editable_field?
+        details_form.check_box(
+          name: :editable,
+          label: I18n.t("activerecord.attributes.custom_field.editable"),
+          caption: I18n.t("custom_fields.instructions.editable")
+        )
+      end
 
       details_form.submit(name: :submit, label: I18n.t(:button_save), scheme: :default)
+    end
+
+    def show_section_field?
+      model.is_a?(ProjectCustomField)
+    end
+
+    def show_default_bool_field?
+      %w[bool].include?(model.field_format)
+    end
+
+    def show_is_required_field?
+      %w[calculated_value bool].exclude?(model.field_format)
+    end
+
+    def show_multi_value_field?
+      model.multi_value_possible?
+    end
+
+    def show_formula_field?
+      %w[calculated_value].include?(model.field_format)
+    end
+
+    def show_is_for_all_field?
+      model.is_a?(WorkPackageCustomField) || model.is_a?(ProjectCustomField)
+    end
+
+    def show_is_filter_field?
+      # TODO: the fact that hierarchy and weighted_item_list are the only ProjectCustomFields
+      # allowing to select whether the field is filterable or not seems off.
+      model.is_a?(WorkPackageCustomField) || model.field_format.in?(%w[hierarchy weighted_item_list])
+    end
+
+    def show_admin_only_field?
+      model.is_a?(ProjectCustomField) || model.is_a?(UserCustomField)
+    end
+
+    def show_editable_field?
+      model.is_a?(UserCustomField)
+    end
+
+    def formula_suggestions
+      operators = CustomField::CalculatedValue::MATH_OPERATORS_FOR_FORMULA
+                    # Hide % from the suggestions as it can be used as either modulo or percentage.
+                    .reject { it == "%" }
+                    .map do |op|
+        # Insert operators as plain text nodes instead of tokens, since displaying them as tokens would result
+        # in too much visual clutter. We still want to offer autocompletion for them.
+        { key: op, label: op, insert_as_text: true, enabled: true }
+      end
+
+      custom_fields = model.usable_custom_field_references_for_formula.map do |cf|
+        { key: "cf_#{cf.id}", label: cf.name, enabled: true }
+      end
+
+      {
+        custom_fields: { title: I18n.t("label_custom_field_plural"), tokens: custom_fields },
+        operators: { title: I18n.t("label_mathematical_operators"), tokens: operators }
+      }
     end
   end
 end

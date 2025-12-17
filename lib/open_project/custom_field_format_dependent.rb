@@ -41,17 +41,12 @@ module OpenProject
       searchable: [:except, %w[bool date float int user version hierarchy calculated_value]],
       textOrientation: [:only, %w[text]],
       enterpriseBanner: [:only, %w[hierarchy]],
-      component: {
-        bool: Admin::CustomFields::Boolean::DetailsComponent,
-        calculated_value: Admin::CustomFields::CalculatedValues::DetailsComponent,
-        hierarchy: CustomFields::DetailsComponent,
-        weighted_item_list: CustomFields::DetailsComponent
-      }.with_indifferent_access
+      usesPrimerComponent: [:only, %w[bool calculated_value hierarchy weighted_item_list]]
     }.freeze
 
     def self.stimulus_config
       CONFIG
-        .except(:component)
+        .except(:usesPrimerComponent)
         .map { |target_name, (operator, formats)| [target_name, operator, formats] }.to_json
     end
 
@@ -74,8 +69,8 @@ module OpenProject
       )
     end
 
-    def component
-      CONFIG.dig(:component, format)
+    def component?
+      format.in?(CONFIG[:usesPrimerComponent].last)
     end
   end
 end
