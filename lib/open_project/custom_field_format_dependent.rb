@@ -50,7 +50,9 @@ module OpenProject
     }.freeze
 
     def self.stimulus_config
-      CONFIG.map { |target_name, (operator, formats)| [target_name, operator, formats] }.to_json
+      CONFIG
+        .except(:component)
+        .map { |target_name, (operator, formats)| [target_name, operator, formats] }.to_json
     end
 
     attr_reader :format

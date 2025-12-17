@@ -42,8 +42,10 @@ See COPYRIGHT and LICENSE files for more details.
   end
 %>
 
-<% if @custom_field.hierarchical_list? %>
-  <%= render CustomFields::DetailsComponent.new(@custom_field) %>
+<% format_dependent = OpenProject::CustomFieldFormatDependent.new(@custom_field.field_format) %>
+
+<% if format_dependent.component %>
+  <%= render format_dependent.component.new(@custom_field) %>
 <% else %>
   <%= error_messages_for "custom_field" %>
 
