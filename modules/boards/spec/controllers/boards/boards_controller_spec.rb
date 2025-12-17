@@ -45,7 +45,7 @@ RSpec.describe Boards::BoardsController do
       let(:permissions) { %i[view_work_packagess show_board_views manage_board_views] }
 
       it "returns 200 ok" do
-        delete :destroy, params: { id: board.id }
+        delete :destroy, params: { id: board.id, project_id: project.id }
 
         expect(flash[:notice]).to eq(I18n.t(:notice_successful_delete))
         expect(response).to redirect_to(project_work_package_boards_path(project))
@@ -56,7 +56,7 @@ RSpec.describe Boards::BoardsController do
       let(:permissions) { %i[view_work_packagess show_board_views] }
 
       it "returns 403 forbidden" do
-        delete :destroy, params: { id: board.id }
+        delete :destroy, params: { id: board.id, project_id: project.id }
 
         expect(response).to have_http_status(:forbidden)
       end
@@ -72,7 +72,7 @@ RSpec.describe Boards::BoardsController do
       end
 
       it "returns 403 forbidden" do
-        delete :destroy, params: { id: board.id }
+        delete :destroy, params: { id: board.id, project_id: project.id }
 
         expect(response).to have_http_status(:forbidden)
       end
