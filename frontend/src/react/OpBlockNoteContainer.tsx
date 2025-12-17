@@ -30,9 +30,10 @@
 
 import { User } from '@blocknote/core/comments';
 import { HocuspocusProvider } from '@hocuspocus/provider';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import * as Y from 'yjs';
 import { OpBlockNoteEditor } from './components/OpBlockNoteEditor';
+import { fetchConnectionTemplate } from './helpers/connection-template-fetcher';
 import { useCollaboration } from './hooks/useCollaboration';
 
 export interface OpBlockNoteContainerProps {
@@ -77,15 +78,18 @@ export default function OpBlockNoteContainer({ inputField,
     })();
 
   const { isLoading, connectionError } = useCollaboration(hocuspocusProvider, doc, inputField);
+  const hadErrorRef = useRef(false);
 
-  // Toggle Stimulus controller based on connection error state
+  // Fetch error/recovery template based on connection state
   useEffect(() => {
     if (!errorContainer) return;
 
     if (connectionError) {
-      errorContainer.dataset.controller = 'documents--connection-error-handler';
-    } else {
-      delete errorContainer.dataset.controller;
+      hadErrorRef.current = true;
+      void fetchConnectionTemplate('error', errorContainer);
+    } else if (hadErrorRef.current) {
+      // Only fetch recovery if we previously had an error (avoid fetching on initial render)
+      void fetchConnectionTemplate('recovery', errorContainer);
     }
   }, [connectionError, errorContainer]);
 
@@ -103,7 +107,7 @@ export default function OpBlockNoteContainer({ inputField,
   }
 
   if (connectionError) {
-    // Error UI is rendered by Stimulus controller in errorContainer (outside React tree)
+    // Error UI is rendered in errorContainer via fetchConnectionTemplate (outside React tree)
     return null;
   }
 

@@ -30,31 +30,27 @@
 
 import { User } from '@blocknote/core/comments';
 import { HocuspocusProvider } from '@hocuspocus/provider';
-import { Application } from '@hotwired/stimulus';
-import ConnectionErrorHandlerController from 'core-stimulus/controllers/dynamic/documents/connection-error-handler.controller';
 import { LiveCollaborationManager } from 'core-stimulus/helpers/live-collaboration-helpers';
 import { ShadowDomWrapper } from 'op-blocknote-extensions';
 import React from 'react';
 import type { Root } from 'react-dom/client';
 import { createRoot } from 'react-dom/client';
-import { environment } from '../environments/environment';
 import OpBlockNoteContainer from '../react/OpBlockNoteContainer';
 
 class BlockNoteElement extends HTMLElement {
   private mount:HTMLDivElement;
-  private stimulusMount:HTMLDivElement;
+  private errorContainer:HTMLDivElement;
   private reactRoot:Root|null = null;
-  private stimulusApplication:Application|null = null;
 
   constructor() {
     super();
 
     const shadowRoot = this.attachShadow({ mode: 'open' });
-    this.stimulusMount = document.createElement('div');
-    this.stimulusMount.id = 'documents-show-edit-view-connection-error-notice-component';
-    // Note: data-controller is added/removed by React based on connection error state
+    // Container for connection error/recovery messages (rendered by React via fetchConnectionTemplate)
+    this.errorContainer = document.createElement('div');
+    this.errorContainer.id = 'documents-show-edit-view-connection-error-notice-component';
     this.mount = document.createElement('div');
-    shadowRoot.appendChild(this.stimulusMount);
+    shadowRoot.appendChild(this.errorContainer);
     shadowRoot.appendChild(this.mount);
 
     const blockNoteStylesheetUrl = this.getAttribute('blocknote-stylesheet-url');
@@ -75,13 +71,6 @@ class BlockNoteElement extends HTMLElement {
   }
 
   connectedCallback() {
-    this.stimulusApplication = Application.start(this.stimulusMount);
-    this.stimulusApplication.register('documents--connection-error-handler', ConnectionErrorHandlerController);
-    this.stimulusApplication.debug = !environment.production;
-    this.stimulusApplication.handleError = (error, message, detail) => {
-      console.warn(error, message, detail);
-    };
-
     this.reactRoot = createRoot(this.mount);
 
     const collaborationEnabled = this.getAttribute('collaboration-enabled') === 'true';
@@ -99,11 +88,6 @@ class BlockNoteElement extends HTMLElement {
       this.reactRoot.unmount();
       this.reactRoot = null;
     }
-
-    if (this.stimulusApplication) {
-      this.stimulusApplication.stop();
-      this.stimulusApplication = null;
-    }
   }
 
   private BlockNoteReactContainer = (hocuspocusProvider?:HocuspocusProvider) => {
@@ -120,7 +104,7 @@ class BlockNoteElement extends HTMLElement {
           attachmentsUploadUrl: this.getAttribute('attachments-upload-url') ?? '',
           attachmentsCollectionKey: this.getAttribute('attachments-collection-key') ?? '',
           hocuspocusProvider: hocuspocusProvider,
-          errorContainer: this.stimulusMount,
+          errorContainer: this.errorContainer,
         }
       )
     );
