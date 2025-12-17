@@ -28,28 +28,10 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class CustomField::Hierarchy::Item < ApplicationRecord
-  self.table_name = "hierarchical_items"
-
-  belongs_to :custom_field
-  has_closure_tree order: "sort_order", numeric_order: true, dont_order_roots: true, dependent: :destroy
-  counter_culture :parent, column_name: :children_count
-
-  scope :including_children, -> { includes(children: :children) }
-
-  def to_s = suffix.empty? ? label : "#{label} #{suffix}"
-
-  def ancestry_path(include_shorts_and_weights: false)
-    path = self_and_ancestors.filter_map(&:label).reverse.join(" / ")
-
-    return path unless include_shorts_and_weights
-
-    suffix.empty? ? path : "#{path} #{suffix}"
-  end
-
-  def suffix
-    return "" if short.nil? && weight.nil?
-
-    "(#{short || weight})"
+module CustomFields
+  class UpdateHierarchyItemChildrenCountsJob < ApplicationJob
+    def perform(*)
+      CustomField::Hierarchy::Item.counter_culture_fix_counts
+    end
   end
 end
