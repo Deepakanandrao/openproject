@@ -1,7 +1,7 @@
 /*
  * -- copyright
  * OpenProject is an open source project management software.
- * Copyright (C) 2023 the OpenProject GmbH
+ * Copyright (C) the OpenProject GmbH
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License version 3.
@@ -29,32 +29,14 @@
  */
 
 /**
- * Shadow DOM styles for BlockNote editor
+ * Primer styles for Shadow DOM components
  *
- * Note: These styles are kept in a TypeScript constant to avoid build configuration complexity.
- * Primer component styles (Banner, SkeletonBox, etc.) are loaded via shadow-dom-primer.scss bundle.
+ * This stylesheet is loaded into Shadow DOM components that need Primer styles.
+ * CSS custom properties (design tokens) and CSS rules are both included since
+ * Shadow DOM encapsulation prevents inheritance of rules from the main document.
+ *
+ * Note: This duplicates some styles from the main bundle, but is acceptable
+ * for pages that are not frequently accessed (e.g., document editor).
  */
-const blockNoteStylesContent = `
-.block-note-editor-container {
-  align-items: center;
-  display: flex;
-  flex-direction: column-reverse;
-  gap: 10px;
-  height: 100%;
-  max-width: none;
-  padding: 0;
-}
 
-.block-note-editor-container > .bn-editor {
-  height: 100%;
-  max-width: 800px;
-  min-height: 80vh;
-  overflow: auto;
-  width: 100%;
-  background-color: transparent;
-  padding-top: 10px;
-  padding-inline: 0;
-}
-`;
-
-export default blockNoteStylesContent;
+@import "global_styles/vendor/primer";

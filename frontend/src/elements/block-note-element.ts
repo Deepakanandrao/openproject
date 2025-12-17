@@ -69,6 +69,14 @@ class BlockNoteElement extends HTMLElement {
       shadowRoot.appendChild(link);
     }
 
+    const shadowDomStylesheetUrl = this.getAttribute('shadow-dom-stylesheet-url');
+    if (shadowDomStylesheetUrl) {
+      const link = document.createElement('link');
+      link.setAttribute('rel', 'stylesheet');
+      link.setAttribute('href', shadowDomStylesheetUrl);
+      shadowRoot.appendChild(link);
+    }
+
     shadowRoot.adoptedStyleSheets = [blockNoteStyleSheet];
   }
 
