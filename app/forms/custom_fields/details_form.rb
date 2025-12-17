@@ -63,8 +63,8 @@ module CustomFields
       if show_multi_value_field?
         details_form.check_box(
           name: :multi_value,
-          label: I18n.t("activerecord.attributes.custom_field.multi_value"),
-          caption: I18n.t("custom_fields.instructions.multi_select")
+          label: label(:multi_value),
+          caption: instructions(:multi_select)
         )
       end
 
@@ -75,58 +75,72 @@ module CustomFields
           suggestions: formula_suggestions,
           label: I18n.t(:label_formula),
           required: true,
-          caption: I18n.t("custom_fields.instructions.formula")
+          caption: instructions(:formula)
         )
       end
 
       if show_default_bool_field?
         details_form.check_box(
           name: :default_value,
-          label: I18n.t("activerecord.attributes.custom_field.default_value")
+          label: label(:default_value)
         )
       end
 
       if show_is_required_field?
         details_form.check_box(
           name: :is_required,
-          label: I18n.t("activerecord.attributes.custom_field.is_required"),
-          caption: I18n.t("custom_fields.instructions.is_required")
+          label: label(:is_required),
+          caption: instructions(:is_required)
         )
       end
 
       if show_is_for_all_field?
         details_form.check_box(
           name: :is_for_all,
-          label: I18n.t("activerecord.attributes.custom_field.is_for_all"),
-          caption: I18n.t("custom_fields.instructions.is_for_all")
+          label: label(:is_for_all),
+          caption: instructions(:is_for_all)
         )
       end
 
       if show_is_filter_field?
         details_form.check_box(
           name: :is_filter,
-          label: I18n.t("activerecord.attributes.custom_field.is_filter"),
-          caption: I18n.t("custom_fields.instructions.is_filter")
+          label: label(:is_filter),
+          caption: instructions(:is_filter)
         )
       end
 
       if show_admin_only_field?
         details_form.check_box(
           name: :admin_only,
-          label: I18n.t("activerecord.attributes.custom_field.admin_only"),
-          caption: I18n.t("custom_fields.instructions.admin_only")
+          label: label(:admin_only),
+          caption: instructions(:admin_only)
         )
       end
 
       if show_editable_field?
         details_form.check_box(
           name: :editable,
-          label: I18n.t("activerecord.attributes.custom_field.editable"),
-          caption: I18n.t("custom_fields.instructions.editable")
+          label: label(:editable),
+          caption: instructions(:editable)
         )
       end
 
       details_form.submit(name: :submit, label: I18n.t(:button_save), scheme: :default)
+    end
+
+    def label(field)
+      I18n.t("activerecord.attributes.custom_field.#{field}")
+    end
+
+    def instructions(field)
+      key = if model.is_a?(ProjectCustomField)
+              "custom_fields.instructions.#{field}.project"
+            else
+              "custom_fields.instructions.#{field}.all"
+            end
+
+      I18n.t(key)
     end
 
     def show_section_field?
