@@ -1,9 +1,11 @@
-<%= nonced_javascript_include_tag "openapi-explorer.min.js" %>
+<%= nonced_javascript_include_tag variable_asset_path("openapi-explorer.js"), skip_pipeline: true %>
 
-<%= content_tag(
-      "openapi-explorer",
-      "",
-      "spec-url": api_v3_paths.api_spec,
-      "server-url": api_v3_paths.root_path,
-      "nav-bg-color": color_by_variable("main-menu-bg-color")
-    ) %>
+<%=
+  content_tag(
+    "openapi-explorer",
+    "",
+    "spec-url": api_v3_paths.api_spec,
+    "server-url": api_v3_paths.root_path,
+    "nav-bg-color": color_by_variable("main-menu-bg-color")
+  )
+%>
