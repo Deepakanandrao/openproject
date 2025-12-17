@@ -27,7 +27,7 @@ module ::Webhooks
           event_names
             .filter_map { OpenProject::Webhooks::EventResources.lookup_resource_name(it) }
             .uniq
-            .join(", ")
+            .join(t(:"support.array.words_connector", default: ", "))
         end
 
         def selected_projects
