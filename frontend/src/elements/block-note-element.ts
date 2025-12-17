@@ -39,7 +39,6 @@ import type { Root } from 'react-dom/client';
 import { createRoot } from 'react-dom/client';
 import { environment } from '../environments/environment';
 import OpBlockNoteContainer from '../react/OpBlockNoteContainer';
-import { blockNoteStyleSheet } from './block-note-element-styles';
 
 class BlockNoteElement extends HTMLElement {
   private mount:HTMLDivElement;
@@ -73,8 +72,6 @@ class BlockNoteElement extends HTMLElement {
       link.setAttribute('href', shadowDomStylesheetUrl);
       shadowRoot.appendChild(link);
     }
-
-    shadowRoot.adoptedStyleSheets = [blockNoteStyleSheet];
   }
 
   connectedCallback() {
