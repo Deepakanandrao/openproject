@@ -28,17 +28,20 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module WorkPackageTypes
-  class CreateContract < BaseContract
-    attribute :color_id
-    attribute :description
-    attribute :is_default
-    attribute :is_in_roadmap
-    attribute :is_milestone
-    attribute :name
-    attribute :project_ids
-    attribute :attribute_groups
+class AddUniquenessForStatusNames < ActiveRecord::Migration[8.0]
+  disable_ddl_transaction!
 
-    validates :is_default, :is_milestone, :is_in_roadmap, inclusion: { in: [true, false] }
+  def up
+    execute <<~SQL.squish
+      UPDATE statuses SET name = statuses.name || ' ' || counter.rn
+      FROM (SELECT id, row_number() OVER (PARTITION BY LOWER(name) ORDER BY id) AS rn FROM statuses) AS counter
+      WHERE statuses.id = counter.id AND counter.rn > 1;
+    SQL
+
+    add_index :statuses, "LOWER(name)", unique: true, algorithm: :concurrently
+  end
+
+  def down
+    remove_index :statuses, column: "LOWER(name)", algorithm: :concurrently
   end
 end
