@@ -40,13 +40,11 @@ module OpenProject
       formula: [:only, %w[calculated_value]],
       searchable: [:except, %w[bool date float int user version hierarchy calculated_value]],
       textOrientation: [:only, %w[text]],
-      enterpriseBanner: [:only, %w[hierarchy]],
-      usesPrimerComponent: [:only, %w[bool calculated_value hierarchy weighted_item_list]]
+      enterpriseBanner: [:only, %w[hierarchy]]
     }.freeze
 
     def self.stimulus_config
       CONFIG
-        .except(:usesPrimerComponent)
         .map { |target_name, (operator, formats)| [target_name, operator, formats] }.to_json
     end
 
@@ -67,10 +65,6 @@ module OpenProject
         data: { "admin--custom-fields-target": target_name },
         hidden: !visible
       )
-    end
-
-    def component?
-      format.in?(CONFIG[:usesPrimerComponent].last)
     end
   end
 end

@@ -41,6 +41,12 @@ module CustomFields
       "weighted_item_list" => { key: :weighted_item_lists, image: "enterprise/weighted_item_lists.png" }
     }.freeze
 
+    class << self
+      def supported?(custom_field)
+        custom_field.field_format.in?(%w[bool calculated_value hierarchy weighted_item_list])
+      end
+    end
+
     alias_method :custom_field, :model
 
     def form_url
