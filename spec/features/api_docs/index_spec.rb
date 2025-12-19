@@ -53,11 +53,20 @@ RSpec.describe "REST API docs index page", :js, :selenium do
 
     it "doesn't change the path to base url" do
       visit_docs_page
-
-      # wait for script to complete
       expect(page).to have_text "OpenProject API V3 (Stable)"
 
       expect(page).to have_current_path("#{api_docs_url}#?route=overview") # fragment is added
+    end
+
+    it "allows navigating back to docs" do
+      visit_docs_page
+      expect(page).to have_text "OpenProject API V3 (Stable)"
+
+      click_link "Home"
+      expect(page).to have_no_text "OpenProject API V3 (Stable)"
+
+      page.go_back
+      expect(page).to have_text "OpenProject API V3 (Stable)"
     end
 
     context "when APIv3 documentation is disabled (from Administration > API > Enable docs page)",
