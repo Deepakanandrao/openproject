@@ -230,6 +230,9 @@ ja:
         summary_series: "ミーティングシリーズ '%{title}' は %{actor}によりキャンセルされました。"
         summary: "'%{title}' は %{actor}によってキャンセルされた。"
         date_time: "予定日時"
+      ended:
+        header_series: "Ended: Meeting series '%{title}'"
+        summary_series: "Meeting series '%{title}' has been ended by %{actor}."
       updated:
         header: "ミーティング '%{title}' が更新されました"
         summary: "ミーティング '%{title}' は %{actor} によって更新されました"
