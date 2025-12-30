@@ -27,7 +27,7 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++# %>
 
-<%= render(Primer::BaseComponent.new(tag: :section, mb: 3)) do %>
+<%= render(Primer::BaseComponent.new(tag: :section, mb: 4)) do %>
   <%=
     render(Primer::Beta::Subhead.new) do |component|
       component.with_heading(tag: :h3, size: :medium) { I18n.t("projects.settings.header_details") }
@@ -46,7 +46,7 @@ See COPYRIGHT and LICENSE files for more details.
   %>
 <% end %>
 
-<%= render(Primer::BaseComponent.new(tag: :section, mb: 3)) do %>
+<%= render(Primer::BaseComponent.new(tag: :section, mb: 4)) do %>
   <%=
     render(Primer::Beta::Subhead.new) do |component|
       component.with_heading(tag: :h3, size: :medium) { I18n.t("projects.settings.header_status") }
@@ -66,7 +66,7 @@ See COPYRIGHT and LICENSE files for more details.
 <% end %>
 
 <% if parent_allowed? %>
-  <%= render(Primer::BaseComponent.new(tag: :section, mb: 3)) do %>
+  <%= render(Primer::BaseComponent.new(tag: :section, mb: 4)) do %>
     <%=
       render(Primer::Beta::Subhead.new) do |component|
         component.with_heading(tag: :h3, size: :medium) { I18n.t("projects.settings.header_relations") }
