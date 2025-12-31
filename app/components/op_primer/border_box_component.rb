@@ -125,16 +125,5 @@ module OpPrimer
     def render?
       rows.any? || header.present? || body.present? || footer.present?
     end
-
-    private
-
-    def before_render
-      return unless header
-
-      @list_arguments[:aria] = merge_aria(
-        @list_arguments,
-        { aria: { labelledby: header.id } }
-      )
-    end
   end
 end
