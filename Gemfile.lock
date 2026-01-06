@@ -1508,7 +1508,7 @@ GEM
     yabeda-prometheus-mmap (0.4.0)
       prometheus-client-mmap
       yabeda (~> 0.10)
-    yabeda-puma-plugin (0.8.0)
+    yabeda-puma-plugin (0.9.0)
       json
       puma
       yabeda (~> 0.5)
@@ -2276,7 +2276,7 @@ CHECKSUMS
   yabeda (0.14.0) sha256=bc517bf22d692ebd80a29fc9fd2246c257aaf92d10b2735a775e2419351a43bf
   yabeda-activerecord (0.1.2) sha256=1dd281a64e5742445a6718aa05e799ea08a397e9ab9c0d254ece447635a3e0e2
   yabeda-prometheus-mmap (0.4.0) sha256=1a66120756d6f931f03a7784e08e79060d71681ff83a9f5287df2ff756e9e2c9
-  yabeda-puma-plugin (0.8.0) sha256=91ec807106058551860260a638d1de21fbf22ce5c12847b08401840e68092c86
+  yabeda-puma-plugin (0.9.0) sha256=b78673ecc7ee30bc50691ddc41b7022c1c1801843900d5101418f4a14b550bc8
   yabeda-rails (0.10.0) sha256=0a85bd829961494f66241d20192368e5d042f836f91986a1eac02f8dcb04237c
   yaml (0.4.0) sha256=240e69d1e6ce3584d6085978719a0faa6218ae426e034d8f9b02fb54d3471942
   yard (0.9.38) sha256=721fb82afb10532aa49860655f6cc2eaa7130889df291b052e1e6b268283010f
