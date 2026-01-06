@@ -46,6 +46,8 @@ gem "responders", "~> 3.2"
 
 gem "ffi", "~> 1.15"
 
+gem "connection_pool", "~> 2.5.5"
+
 gem "rdoc", ">= 2.4.2"
 
 gem "doorkeeper", "~> 5.8.0"
@@ -66,7 +68,7 @@ gem "scimitar", "~> 2.13"
 
 gem "acts_as_list", "~> 1.2.6"
 gem "acts_as_tree", "~> 2.9.0"
-gem "awesome_nested_set", "~> 3.8.0"
+gem "awesome_nested_set", "~> 3.9.0"
 gem "closure_tree", "~> 9.3.0"
 gem "rubytree", "~> 2.1.0"
 
@@ -109,7 +111,7 @@ gem "svg-graph", "~> 2.2.0"
 
 gem "date_validator", "~> 0.12.0"
 gem "email_validator", "~> 2.2.3"
-gem "json_schemer", "~> 2.4.0"
+gem "json_schemer", "~> 2.5.0"
 gem "ruby-duration", "~> 3.2.0"
 
 gem "mail", "2.9.0"
@@ -139,7 +141,7 @@ gem "rack-attack", "~> 6.8.0"
 gem "browser", "~> 6.2.0"
 
 # Providing health checks
-gem "okcomputer", "~> 1.19.0"
+gem "okcomputer", "~> 1.19.1"
 
 # Lograge to provide sane and non-verbose logging
 gem "lograge", "~> 0.14.0"
@@ -151,13 +153,15 @@ gem "structured_warnings", "~> 0.5.0"
 # don't require by default, instead load on-demand when actually configured
 gem "airbrake", "~> 13.0.0", require: false
 
-gem "markly", "~> 0.14" # another Markdown parser like commonmarker, but with AST support used in PDF export
+gem "markly", "~> 0.15" # another markdown parser like commonmarker, but with AST support used in PDF export
 gem "md_to_pdf", git: "https://github.com/opf/md-to-pdf", ref: "6c565541bfa390c58d90d49aa9b487777704fc66"
 gem "prawn", "~> 2.4"
 gem "ttfunk", "~> 1.7.0" # remove after https://github.com/prawnpdf/prawn/issues/1346 resolved.
 
 # prawn implicitly depends on matrix gem no longer in ruby core with 3.1
 gem "matrix", "~> 0.4.3"
+
+gem "mcp", "~> 0.4.0"
 
 gem "meta-tags", "~> 2.22.2"
 
@@ -179,7 +183,7 @@ group :production do
 end
 
 gem "i18n-js", "~> 4.2.4"
-gem "rails-i18n", "~> 8.0.0"
+gem "rails-i18n", "~> 8.1.0"
 
 gem "sprockets", "~> 3.7.2" # lock sprockets below 4.0
 gem "sprockets-rails", "~> 3.5.1"
@@ -194,13 +198,13 @@ gem "carrierwave", "~> 1.3.4"
 gem "carrierwave_direct", "~> 2.1.0"
 gem "fog-aws"
 
-gem "aws-sdk-core", "~> 3.239"
+gem "aws-sdk-core", "~> 3.240"
 # File upload via fog + screenshots on travis
-gem "aws-sdk-s3", "~> 1.205"
+gem "aws-sdk-s3", "~> 1.209"
 
-gem "openproject-token", "~> 8.3.0"
+gem "openproject-token", "~> 8.4.0"
 
-gem "plaintext", "~> 0.3.2"
+gem "plaintext", "~> 0.3.7"
 
 gem "ruby-progressbar", "~> 1.13.0", require: false
 
@@ -232,7 +236,7 @@ gem "opentelemetry-sdk", "~> 1.10", require: false
 
 gem "view_component", "~> 4.1.1"
 # Lookbook
-gem "lookbook", "2.3.13"
+gem "lookbook", "2.3.14"
 
 gem "inline_svg", "~> 1.10.0"
 
@@ -358,7 +362,7 @@ group :development, :test do
   gem "rubocop-factory_bot", require: false
   gem "rubocop-openproject", require: false
   gem "rubocop-performance", require: false
-  gem "rubocop-rails", "= 2.33.3", require: false # 2.33.4 has issues with Rails/ActionControllerFlashBeforeRender
+  gem "rubocop-rails", "2.34.2", require: false # 2.33.4 has issues with Rails/ActionControllerFlashBeforeRender
   gem "rubocop-rspec", require: false
   gem "rubocop-rspec_rails", require: false
 
