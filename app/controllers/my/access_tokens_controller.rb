@@ -58,8 +58,6 @@ module My
     end
 
     def index
-      @ical_meeting_tokens = current_user.ical_meeting_tokens
-
       @storage_tokens = OAuthClientToken
                           .preload(:oauth_client)
                           .joins(:oauth_client)
