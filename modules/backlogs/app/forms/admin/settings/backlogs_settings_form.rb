@@ -85,20 +85,17 @@ module Admin
         ) do |group|
           group.radio_button(
             label: I18n.t(:label_points_burn_up),
-            value: "up",
-            checked: Setting.plugin_openproject_backlogs["points_burn_direction"] == "up"
+            value: "up"
           )
           group.radio_button(
             label: I18n.t(:label_points_burn_down),
-            value: "down",
-            checked: Setting.plugin_openproject_backlogs["points_burn_direction"] == "down"
+            value: "down"
           )
         end
 
         f.text_field(
           name: :wiki_template,
           label: I18n.t(:backlogs_wiki_template),
-          value: Setting.plugin_openproject_backlogs["wiki_template"],
           input_width: :medium
         )
 
