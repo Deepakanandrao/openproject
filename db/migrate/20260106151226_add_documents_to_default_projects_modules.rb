@@ -30,6 +30,7 @@
 
 class AddDocumentsToDefaultProjectsModules < ActiveRecord::Migration[8.0]
   def up
+    return unless Setting.exists?(:real_time_text_collaboration_enabled)
     return unless Setting.real_time_text_collaboration_enabled?
 
     # Only update if setting exists in DB (avoid updating on new installations - seeder handles that)

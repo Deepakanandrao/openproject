@@ -101,4 +101,20 @@ RSpec.describe AddDocumentsToDefaultProjectsModules, type: :model do
       expect(Setting.default_projects_modules).to match_array(base_modules)
     end
   end
+
+  context "when real_time_text_collaboration_enabled setting does not exist" do
+    before do
+      Setting.default_projects_modules = base_modules
+      allow(Setting).to receive(:exists?).and_call_original
+      allow(Setting).to receive(:exists?).with(:real_time_text_collaboration_enabled).and_return(false)
+    end
+
+    it "does not modify the default modules" do
+      ActiveRecord::Migration.suppress_messages { described_class.migrate(:up) }
+
+      Setting.clear_cache
+      expect(Setting.default_projects_modules).not_to include("documents")
+      expect(Setting.default_projects_modules).to match_array(base_modules)
+    end
+  end
 end
