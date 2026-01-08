@@ -34,11 +34,13 @@ class Journals::CreateService
       journable.customizable?
     end
 
-    def cleanup_predecessor(predecessor)
+    def cleanup_predecessor(predecessor, notes, cause)
       cleanup_predecessor_for(predecessor,
                               "customizable_journals",
                               :journal_id,
-                              :id)
+                              :id,
+                              notes,
+                              cause)
     end
 
     def insert_sql

@@ -39,7 +39,7 @@ class Journals::CreateService
 
     def journable_class_name = journable.class.base_class.name
 
-    def cleanup_predecessor_for(predecessor, table_name, column, referenced_id)
+    def cleanup_predecessor_for(predecessor, table_name, column, referenced_id, notes, cause)
       return "SELECT 1" unless predecessor
 
       sanitize(<<~SQL.squish, column => predecessor.send(referenced_id))
@@ -48,7 +48,21 @@ class Journals::CreateService
          #{table_name}
         WHERE
          #{column} = :#{column}
+         #{only_on_changed_or_forced_condition_sql(predecessor, notes, cause)}
       SQL
+    end
+
+    def only_on_changed_or_forced_condition_sql(predecessor, notes, cause)
+      # The predecessor part of the condition is in in case the predecessor is being aggregated.
+      # In one of the cases, the change that is being aggregated in nullifies the changes done by the predecessor so
+      # that in effect, there would be no changes any more (compared to the predecessor's predecessor).
+      # With changes being a precondition for journalizing, no journal data would be created and the predecessor
+      # that is aggregated ends up having no data.
+      if notes.blank? && cause.blank? && predecessor.nil?
+        "AND EXISTS (SELECT * FROM changes)"
+      else
+        ""
+      end
     end
 
     def normalize_newlines_sql(column)

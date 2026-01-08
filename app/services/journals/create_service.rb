@@ -198,7 +198,7 @@ module Journals
     #
     def create_journal_sql(predecessor, notes, internal, cause)
       journal_modifications = journal_modification_sql(predecessor, notes, internal, cause)
-      relation_modifications = relation_modifications_sql(predecessor)
+      relation_modifications = relation_modifications_sql(predecessor, notes, cause)
 
       journal_cte_clauses = [journal_modifications]
       journal_cte_clauses << relation_modifications if relation_modifications.any?
@@ -211,12 +211,12 @@ module Journals
 
     def journal_modification_sql(predecessor, notes, internal, cause)
       <<~SQL
-        cleanup_predecessor_data AS (
-          #{cleanup_predecessor_data(predecessor)}
-        ), max_journals AS (
+        max_journals AS (
           #{select_max_journal_sql(predecessor)}
         ), changes AS (
           #{select_changed_sql}
+        ), cleanup_predecessor_data AS (
+          #{cleanup_predecessor_data(predecessor, notes, cause)}
         ), touch_journable AS (
           #{touch_journable_sql(predecessor, notes, cause)}
         ), fetch_time AS (
@@ -231,27 +231,82 @@ module Journals
       SQL
     end
 
-    def relation_modifications_sql(predecessor)
+    def relation_modifications_sql(predecessor, notes, cause)
       associations.map do |association|
-        association_modifications_sql(association, predecessor)
+        association_modifications_sql(association, predecessor, notes, cause)
       end
     end
 
-    def association_modifications_sql(association, predecessor)
+    def association_modifications_sql(association, predecessor, notes, cause)
       <<~SQL
         cleanup_predecessor_#{association.name} AS (
-          #{association.cleanup_predecessor(predecessor)}
+          #{association.cleanup_predecessor(predecessor, notes, cause)}
         ), insert_#{association.name} AS (
           #{association.insert_sql}
         )
       SQL
     end
 
-    def cleanup_predecessor_data(predecessor)
+    def select_max_journal_sql(predecessor)
+      sanitize(<<~SQL, journable_id:, journable_type:)
+        SELECT
+          :journable_id journable_id,
+          :journable_type journable_type,
+          updated_at,
+          COALESCE(journals.version, fallback.version) AS version,
+          COALESCE(journals.id, 0) id,
+          COALESCE(journals.data_id, 0) data_id
+        FROM
+          journals
+        RIGHT OUTER JOIN
+          (SELECT 0 AS version) fallback
+        ON
+          journals.journable_id = :journable_id
+          AND journals.journable_type = :journable_type
+          AND journals.version IN (#{max_journal_sql(predecessor)})
+      SQL
+    end
+
+    def max_journal_sql(_predecessor)
+      sql = <<~SQL
+        SELECT MAX(version)
+        FROM journals
+        WHERE journable_id = :journable_id
+        AND journable_type = :journable_type
+      SQL
+
+      sanitize sql,
+               journable_id:,
+               journable_type:
+    end
+
+    def select_changed_sql
+      sql = <<~SQL
+        SELECT
+           *
+        FROM
+          (#{changes_data_sql}) data_changes
+      SQL
+
+      associations.each do |association|
+        sql += <<~SQL
+          FULL JOIN
+            (#{association.changes_sql}) #{association.name}_changes
+          ON
+            #{association.name}_changes.journable_id = data_changes.journable_id
+        SQL
+      end
+
+      sql
+    end
+
+    def cleanup_predecessor_data(predecessor, notes, cause)
       cleanup_predecessor_for(predecessor,
                               data_table_name,
                               :id,
-                              :data_id)
+                              :data_id,
+                              notes,
+                              cause)
     end
 
     def update_or_insert_journal_sql(predecessor, notes, internal, cause)
@@ -265,11 +320,14 @@ module Journals
     def update_journal_sql(predecessor, notes, cause)
       # If there is a predecessor, we don't want to create a new one, we simply rewrite it.
       # The original data of that predecessor (data e.g. work_package_journals, customizable_journals, attachable_journals)
-      # has been deleted before but the notes need to taken over and the timestamps updated as if the
+      # has been deleted before but the notes need to be taken over and the timestamps updated as if the
       # journal would have been created.
       #
       # A lot of the data does not need to be set anew, since we only aggregate if that data stays the same
       # (e.g. the user_id).
+      #
+      # In case there is no change at all, the journal will not need to be modified. But even
+      # without a change, having notes or a cause will require to have the journal written.
       sql = <<~SQL
         UPDATE
           journals
@@ -280,6 +338,7 @@ module Journals
           cause = :cause
         FROM insert_data
         WHERE journals.id = :predecessor_id
+        #{'AND EXISTS (SELECT 1 from changes)' unless notes.present? || cause.present?}
         RETURNING
           journals.*
       SQL
@@ -416,46 +475,6 @@ module Journals
       SQL
     end
 
-    def select_max_journal_sql(predecessor)
-      sanitize(<<~SQL, journable_id:, journable_type:)
-        SELECT
-          :journable_id journable_id,
-          :journable_type journable_type,
-          updated_at,
-          COALESCE(journals.version, fallback.version) AS version,
-          COALESCE(journals.id, 0) id,
-          COALESCE(journals.data_id, 0) data_id
-        FROM
-          journals
-        RIGHT OUTER JOIN
-          (SELECT 0 AS version) fallback
-        ON
-          journals.journable_id = :journable_id
-          AND journals.journable_type = :journable_type
-          AND journals.version IN (#{max_journal_sql(predecessor)})
-      SQL
-    end
-
-    def select_changed_sql
-      sql = <<~SQL
-        SELECT
-           *
-        FROM
-          (#{changes_data_sql}) data_changes
-      SQL
-
-      associations.each do |association|
-        sql += <<~SQL
-          FULL JOIN
-            (#{association.changes_sql}) #{association.name}_changes
-          ON
-            #{association.name}_changes.journable_id = data_changes.journable_id
-        SQL
-      end
-
-      sql
-    end
-
     def changes_data_sql
       sanitize(<<~SQL, journable_id:)
         SELECT
@@ -473,26 +492,6 @@ module Journals
         WHERE
           #{journable_table_name}.id = :journable_id AND (#{data_changes_condition_sql})
       SQL
-    end
-
-    def max_journal_sql(predecessor)
-      sql = <<~SQL
-        SELECT MAX(version)
-        FROM journals
-        WHERE journable_id = :journable_id
-        AND journable_type = :journable_type
-      SQL
-
-      if predecessor
-        sanitize "#{sql} AND version < :predecessor_version",
-                 journable_id:,
-                 journable_type:,
-                 predecessor_version: predecessor.version
-      else
-        sanitize sql,
-                 journable_id:,
-                 journable_type:
-      end
     end
 
     def data_changes_condition_sql
@@ -513,19 +512,6 @@ module Journals
       end
 
       data_changes.join(" OR ")
-    end
-
-    def only_on_changed_or_forced_condition_sql(predecessor, notes, cause)
-      # The predecessor part of the condition is in in case the predecessor is being aggregated.
-      # In one of the cases, the change that is being aggregated in nullifies the changes done by the predecessor so
-      # that in effect, there would be no changes any more (compared to the predecessor's predecessor).
-      # With changes being a precondition for journalizing, no journal data would be created and the predecessor
-      # that is aggregated ends up having no data.
-      if notes.blank? && cause.blank? && predecessor.nil?
-        "AND EXISTS (SELECT * FROM changes)"
-      else
-        ""
-      end
     end
 
     def data_sink_columns

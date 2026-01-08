@@ -34,11 +34,13 @@ class Journals::CreateService
       journable.respond_to?(:phases)
     end
 
-    def cleanup_predecessor(predecessor)
+    def cleanup_predecessor(predecessor, notes, cause)
       cleanup_predecessor_for(predecessor,
                               "project_phase_journals",
                               :journal_id,
-                              :id)
+                              :id,
+                              notes,
+                              cause)
     end
 
     def insert_sql

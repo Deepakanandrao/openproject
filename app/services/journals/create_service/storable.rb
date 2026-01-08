@@ -34,11 +34,13 @@ class Journals::CreateService
       journable.respond_to?(:file_links)
     end
 
-    def cleanup_predecessor(predecessor)
+    def cleanup_predecessor(predecessor, notes, cause)
       cleanup_predecessor_for(predecessor,
                               "storages_file_links_journals",
                               :journal_id,
-                              :id)
+                              :id,
+                              notes,
+                              cause)
     end
 
     def insert_sql

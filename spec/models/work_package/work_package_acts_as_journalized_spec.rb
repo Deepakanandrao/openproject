@@ -131,6 +131,29 @@ RSpec.describe WorkPackage do
       it "does not update the updated_at time of the work package" do
         expect { work_package.save! }.not_to change(work_package, :updated_at)
       end
+
+      it "does not update the updated_at time on initial journals" do
+        expect { work_package.save! }
+          .not_to change {
+                    work_package.journals.reload.last.updated_at
+                  }
+      end
+
+      it "does not update the updated_at time on non initial journals" do
+        # FIXME: the journal notes should have been saved on the initial journal as well
+        work_package.journal_notes = "Some notes"
+        expect { work_package.save! }.to change {
+          work_package.journals.last.notes
+        }
+        work_package.reload
+        work_package.journal_notes = "Some other notes"
+        work_package.save!
+
+        expect { work_package.reload.save! }
+          .not_to change {
+            work_package.journals.reload.last.updated_at
+          }
+      end
     end
 
     context "for different newlines", with_settings: { journal_aggregation_time_minutes: 0 } do
