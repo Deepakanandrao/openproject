@@ -212,7 +212,7 @@ module Journals
     def journal_modification_sql(predecessor, notes, internal, cause)
       <<~SQL
         max_journals AS (
-          #{select_max_journal_sql(predecessor)}
+          #{select_max_journal_sql}
         ), changes AS (
           #{select_changed_sql}
         ), cleanup_predecessor_data AS (
@@ -247,7 +247,7 @@ module Journals
       SQL
     end
 
-    def select_max_journal_sql(predecessor)
+    def select_max_journal_sql
       sanitize(<<~SQL, journable_id:, journable_type:)
         SELECT
           :journable_id journable_id,
@@ -263,21 +263,13 @@ module Journals
         ON
           journals.journable_id = :journable_id
           AND journals.journable_type = :journable_type
-          AND journals.version IN (#{max_journal_sql(predecessor)})
+          AND journals.version IN (
+            SELECT MAX(version)
+            FROM journals
+            WHERE journable_id = :journable_id
+            AND journable_type = :journable_type
+          )
       SQL
-    end
-
-    def max_journal_sql(_predecessor)
-      sql = <<~SQL
-        SELECT MAX(version)
-        FROM journals
-        WHERE journable_id = :journable_id
-        AND journable_type = :journable_type
-      SQL
-
-      sanitize sql,
-               journable_id:,
-               journable_type:
     end
 
     def select_changed_sql
