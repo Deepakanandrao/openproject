@@ -56,7 +56,8 @@ RSpec.describe WorkPackage do
 
     # The below test was failing with the following error:
     # ERROR:  new row for relation "journals" violates check constraint "journals_validity_period_not_empty" (PG::CheckViolation)
-    # DETAIL:  Failing row contains (1178, WorkPackage, 481, 1252, , 2025-12-04 07:58:21.028586+00, 1, 2025-12-04 07:58:21.028586+00, Journal::WorkPackageJournal, 833, {}, empty, f).
+    # DETAIL:  Failing row contains (1178, WorkPackage, 481, 1252, , 2025-12-04 07:58:21.028586+00, 1,
+    #          2025-12-04 07:58:21.028586+00, Journal::WorkPackageJournal, 833, {}, empty, f).
     it "can add multiple comments right after creation" do
       work_package
       User.execute_as current_user do
