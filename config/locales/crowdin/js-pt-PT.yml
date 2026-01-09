@@ -358,7 +358,7 @@ pt-PT:
     label_expand: "Expandir"
     label_expanded: "expandido"
     label_expand_all: "Expandir Tudo"
-    label_expand_text: "Show full text"
+    label_expand_text: "Mostrar texto completo"
     label_expand_project_menu: "Expandir menu do projeto"
     label_export: "Exportar"
     label_export_preparing: "A exportação está a ser preparada e será descarregada brevemente."
@@ -1126,7 +1126,7 @@ pt-PT:
     global_search:
       all_projects: "Em todos os projetos"
       close_search: "Fechar pesquisa"
-      items_available: "%{count} items available"
+      items_available: "%{count} elementos disponíveis"
       direct_hit_available: "Work package with exact ID found. Press Enter to open it."
       current_project_and_all_descendants: "Neste projeto + subprojetos"
       current_project: "Neste projeto"
@@ -1169,10 +1169,10 @@ pt-PT:
       no_results: "Nenhum projeto corresponde aos seus critérios de pesquisa."
       no_favorite_results: "Nenhum projeto favorito corresponde aos seus critérios de pesquisa."
     include_workspaces:
-      search_placeholder: "Search..."
+      search_placeholder: "Pesquisar..."
       types:
-        program: "Program"
-        portfolio: "Portfolio"
+        program: "Programa"
+        portfolio: "Carteira"
     baseline:
       toggle_title: "Linha de base"
       clear: "Limpar"

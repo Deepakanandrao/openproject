@@ -332,7 +332,7 @@ pl:
             remove_member: Zostanie usunięty jako członek
             gain_and_lose_role: Utraci rolę „%{old_role}” i zyska rolę „%{new_role}”
             gain_role: Zyska rolę „%{new_role}”
-            lose_role: Utraci rolę „%%{old_role}”
+            lose_role: Utraci rolę „%{old_role}”
             no_change: Brak zmian
     text_add_new_custom_field: >
       Aby dodać do projektu nowe pola niestandardowe, najpierw należy je utworzyć.

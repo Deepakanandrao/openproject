@@ -403,9 +403,9 @@ uk:
       label_view_template: "Переглянути шаблон"
       label_edit_template: "Редагувати шаблон"
       banner_html: >
-        You are currently editing a template of a meeting series: %{link}. Every new occurrence of a meeting in the series will use this template. Changes will not affect past or already-created meetings.
+        Ви редагуєте шаблон серії нарад: %{link}. Кожна нова нарада цієї серії створюватиметься на основі цього шаблона. Зміни не вплинуть на завершені або вже створені наради.
       draft_banner_html: >
-        You are currently editing a template of a meeting series: %{link}. Every new occurrence of a meeting in the series will use this template. Changes will not affect past or already-created meetings. No email invites will be sent in this current draft mode until you open the first meeting.
+        Ви редагуєте шаблон серії нарад: %{link}. Кожна нова нарада цієї серії створюватиметься на основі цього шаблона. Зміни не вплинуть на завершені або вже створені наради. Електронні листи із запрошеннями не надсилатимуться в поточному режимі чернетки, доки ви не відкриєте першу нараду.
     frequency:
       x_daily:
         one: "Щодня"
@@ -560,7 +560,7 @@ uk:
   label_meeting_series_details: "Деталі серії нарад"
   label_meeting_details_edit: "Редагувати інформацію про зустріч"
   label_meeting_state: "Статус наради"
-  label_meeting_state_draft: "Draft"
+  label_meeting_state_draft: "Чернетка"
   label_meeting_state_open: "Відкрито"
   label_meeting_state_closed: "Закрито"
   label_meeting_state_agenda_created: "Порядок денний створено"
@@ -571,19 +571,19 @@ uk:
   label_meeting_reopen_action: "Відкрити зустріч знову"
   label_meeting_close_action: "Закрити зустріч"
   label_meeting_in_progress_action: "Почати нараду"
-  label_meeting_open_action: "Open meeting"
-  text_meeting_draft_description: "Prepare your agenda in draft mode. This meeting will not send out any calendar updates or invites, even if you change meeting details or add/remove participants."
+  label_meeting_open_action: "Відкрити нараду"
+  text_meeting_draft_description: "Готуйте порядок денний у режимі чернетки. Для цієї наради не надсилатимуться оновлення або запрошення з календаря, навіть якщо змінити дані наради або додати/видалити учасників."
   text_meeting_open_description: "Ви можете додавати/вилучати пункти порядку денного й учасників. Коли порядок денний буде готовий, позначте його як поточний, щоб задокументувати результати."
   text_meeting_closed_description: "Це закрита нарада. Ви більше не можете додавати або вилучати пункти порядку денного."
   text_meeting_in_progress_description: "Ви можете змінювати порядок денний, документувати результати для кожного пункту й відстежувати відвідування учасниками. Після завершення наради можна позначити її як закриту, щоб заблокувати."
   text_meeting_open_dropdown_description: "Усі наявні результати будуть і надалі доступні, але користувачі не зможуть додавати нові."
   text_meeting_in_progress_dropdown_description: "Результати документа, такі як потреби в інформації або рішення, прийняті під час наради."
   text_meeting_closed_dropdown_description: "Це закрита нарада. Ви більше не можете змінювати пункти порядку денного або результати."
-  text_meeting_draft_banner: "You are currently in draft mode. This meeting will not send out any calendar updates or invites, even if you change meeting details or add/remove participants."
-  text_exit_draft_mode_dialog_title: "Open this meeting and send invites?"
-  text_exit_draft_mode_dialog_subtitle: "You cannot return to draft mode once you schedule a meeting."
-  text_exit_draft_mode_dialog_template_title: "Open the first occurrence of this meeting series?"
-  text_exit_draft_mode_dialog_template_subtitle: "You cannot return to draft mode after this."
+  text_meeting_draft_banner: "Зараз ви працюєте в режимі чернетки. Для цієї наради не надсилатимуться оновлення або запрошення з календаря, навіть якщо змінити дані наради або додати/видалити учасників."
+  text_exit_draft_mode_dialog_title: "Відкрити цю нараду й надіслати запрошення?"
+  text_exit_draft_mode_dialog_subtitle: "Запланувавши нараду, не можна повернутися в режим чернетки."
+  text_exit_draft_mode_dialog_template_title: "Відкрити першу нараду цієї серії?"
+  text_exit_draft_mode_dialog_template_subtitle: "Після цього не можна повернутися в режим чернетки."
   text_meeting_not_editable_anymore: "Цю нараду більше не можна редагувати."
   text_meeting_not_present_anymore: "Цю нараду видалено. Виберіть іншу нараду."
   label_add_work_package_to_meeting_dialog_title: "Вибрати нараду"
