@@ -47,7 +47,6 @@ module RecurringMeetings
 
       if should_reschedule?(recurring_meeting)
         reschedule_future_occurrences(recurring_meeting)
-        update_start_date(recurring_meeting)
         reschedule_init_job(recurring_meeting)
         send_updated_mail(recurring_meeting)
       end
@@ -73,16 +72,6 @@ module RecurringMeetings
       else
         remove_cancelled_schedules(recurring_meeting)
         reschedule_all_occurrences(recurring_meeting)
-      end
-    end
-
-    def update_start_date(recurring_meeting)
-      next_occurrence = recurring_meeting.next_occurrence&.in_time_zone(recurring_meeting.time_zone)
-      return if next_occurrence.nil?
-
-      Meeting.transaction do
-        recurring_meeting.update_column(:start_time, next_occurrence)
-        recurring_meeting.template.update_column(:start_time, next_occurrence)
       end
     end
 
