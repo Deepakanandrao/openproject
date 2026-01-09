@@ -175,6 +175,13 @@ class RecurringMeeting < ApplicationRecord
     end
   end
 
+  def ical_schedule
+    @ical_schedule ||= IceCube::Schedule.new(current_schedule_start, duration: template&.duration).tap do |s|
+      s.add_recurrence_rule count_rule(frequency_rule, only_upcoming_iterations: true)
+      exclude_non_working_days(s) if frequency_working_days?
+    end
+  end
+
   def base_schedule
     case frequency
     when "daily"
@@ -338,12 +345,18 @@ class RecurringMeeting < ApplicationRecord
     end
   end
 
-  def count_rule(rule)
+  def count_rule(rule, only_upcoming_iterations: false)
     case end_after
     when "specific_date"
       rule.until((end_date + 1.day).to_time(:utc))
     when "iterations"
-      rule.count(iterations)
+      if only_upcoming_iterations
+        # For most schedules it would not matter, but counting the occurences that already happened is easier
+        # than calculating the number of upcoming ones manually
+        rule.count(iterations - schedule.occurrences_between(start_time, current_schedule_start).size)
+      else
+        rule.count(iterations)
+      end
     else
       rule
     end
