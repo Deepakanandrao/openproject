@@ -157,6 +157,10 @@ class RecurringMeeting < ApplicationRecord
     super&.in_time_zone(time_zone)
   end
 
+  def current_schedule_end
+    start_time + template.duration.hours
+  end
+
   def time_zone_differs?
     time_zone != User.current.time_zone
   end
@@ -353,7 +357,7 @@ class RecurringMeeting < ApplicationRecord
       if only_upcoming_iterations
         # For most schedules it would not matter, but counting the occurences that already happened is easier
         # than calculating the number of upcoming ones manually
-        rule.count(iterations - schedule.occurrences_between(start_time, current_schedule_start).size)
+        rule.count(iterations - schedule.occurrences_between(start_time, current_schedule_start - 1.minute).size)
       else
         rule.count(iterations)
       end

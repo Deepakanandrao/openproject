@@ -105,7 +105,10 @@ module RecurringMeetings
 
         Meeting.transaction do
           scheduled.update_column(:start_time, new_time)
-          scheduled.meeting.update_column(:start_time, new_time) if scheduled.meeting_id.present?
+          if scheduled.meeting_id.present? && scheduled.meeting.start_time.future?
+            # for past meetings we do not change the time
+            scheduled.meeting.update_column(:start_time, new_time)
+          end
         end
       end
     end
@@ -120,7 +123,7 @@ module RecurringMeetings
     def reschedule_all_occurrences(recurring_meeting)
       # Get all future scheduled meetings that have been instantiated, ordered by start time
       future_meetings = recurring_meeting
-        .scheduled_instances
+        .scheduled_instances(upcoming: true)
         .instantiated
         .not_cancelled
 
