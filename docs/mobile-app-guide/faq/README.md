@@ -74,13 +74,13 @@ The Time Tracking module allows you to monitor and log your work efficiently:
  [Learn more about Time Tracking in OpenProject mobile app](../core-features/time-tracking/).
 ## How do notifications work?
 
-The Notification Centre collects updates from your projects. Users can:
+The Notification Center collects updates from your projects. Users can:
 *   View all new notifications from OpenProject.
 *   Open a notification to see the associated work package in the **Activity tab**.
 *   Mark individual notifications or all notifications as read.
 *   Switch between notification queries to filter by participation, mentions, or other custom inboxes.
 *   Toggle between viewing only unread or all notifications.
- [Learn more about Notifications in OpenProject mobile app](../core-features/notification-centre/).
+ [Learn more about Notifications in OpenProject mobile app](../core-features/notification-center/).
 ## What settings can I configure in the app?
 
 Through the **User Settings** module, users can:
@@ -111,7 +111,7 @@ Check the following:
 *   Your instance meets the **minimum version** requirement (17.0.0), or the OAuth feature flag is enabled.
 *   Ensure your credentials are correct, and you have **API access** enabled on On-Premises instances.
 
-If none of the above solves the problem, check the [Login Troubleshooting Guide](.../first-steps/login-troubleshooting/).
+If none of the above solves the problem, check the [Login Troubleshooting Guide](../first-steps/login-troubleshooting/).
 
 ## How can I provide feedback on the Beta app?
 
