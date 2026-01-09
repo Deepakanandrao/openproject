@@ -48,9 +48,9 @@ module My
                                :generate_rss_key,
                                :revoke_rss_key,
                                :generate_api_key,
+                               :remove_oauth_client_token,
                                :revoke_api_key,
                                :revoke_ical_token,
-                               :revoke_storage_token,
                                :revoke_ical_meeting_token
 
     def dialog
@@ -58,24 +58,18 @@ module My
     end
 
     def index
-      @storage_tokens = OAuthClientToken
-                          .preload(:oauth_client)
-                          .joins(:oauth_client)
-                          .where(user: @user, oauth_client: { integration_type: "Storages::Storage" })
+      @oauth_client_tokens = OAuthClientToken.includes(:oauth_client).where(user: @user)
     end
 
-    def revoke_storage_token
-      token = OAuthClientToken
-                .preload(:oauth_client)
-                .joins(:oauth_client)
-                .where(user: @user, oauth_client: { integration_type: "Storages::Storage" }).find_by(id: params[:access_token_id])
+    def remove_oauth_client_token
+      token = OAuthClientToken.includes(:oauth_client).where(user: @user).find_by(id: params[:access_token_id])
 
       if token&.destroy
-        flash[:info] = I18n.t("my_account.access_tokens.storages.removed")
+        flash[:info] = I18n.t("my_account.access_tokens.oauth_client.removed")
       else
-        flash[:error] = I18n.t("my_account.access_tokens.storages.failed")
+        flash[:error] = I18n.t("my_account.access_tokens.oauth_client.failed")
       end
-      redirect_to action: :index, status: :see_other
+      redirect_to action: :index, tab: :client, status: :see_other
     end
 
     def generate_rss_key # rubocop:disable Metrics/AbcSize

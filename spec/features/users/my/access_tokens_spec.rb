@@ -313,7 +313,7 @@ RSpec.describe "my access tokens", :js do
       it "shows notice about no existing tokens" do
         visit my_access_tokens_path
 
-        within "#oauth-token-section" do
+        within "#oauth-application-token-section" do
           expect(page).to have_content("There is no third-party application access configured and active for you")
         end
       end
@@ -358,7 +358,7 @@ RSpec.describe "my access tokens", :js do
           visit my_access_tokens_path
 
           [app, second_app].each do |app|
-            within "#oauth-token-section" do
+            within "#oauth-application-token-section" do
               accept_confirm do
                 find_test_selector("oauth-token-row-#{app.id}-revoke").click
               end
@@ -370,7 +370,7 @@ RSpec.describe "my access tokens", :js do
           visit my_access_tokens_path
 
           [app, second_app].each do |app|
-            within "#oauth-token-section" do
+            within "#oauth-application-token-section" do
               expect(page).not_to have_test_selector("oauth-token-row-#{app.id}-revoke")
             end
           end
@@ -403,7 +403,7 @@ RSpec.describe "my access tokens", :js do
         it "can revoke mutliple tokens per app" do
           visit my_access_tokens_path
 
-          within "#oauth-token-section" do
+          within "#oauth-application-token-section" do
             accept_confirm do
               find_test_selector("oauth-token-row-#{app.id}-revoke").click
             end
@@ -412,7 +412,7 @@ RSpec.describe "my access tokens", :js do
           User.current.reload
           visit my_access_tokens_path
 
-          within "#oauth-token-section" do
+          within "#oauth-application-token-section" do
             expect(page).not_to have_test_selector("oauth-token-row-#{app.id}-revoke")
           end
         end

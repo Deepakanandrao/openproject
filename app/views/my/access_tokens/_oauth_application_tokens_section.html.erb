@@ -29,13 +29,13 @@ See COPYRIGHT and LICENSE files for more details.
 
 <%# locals: (granted_applications:) -%>
 
-<div id="oauth-token-section" class="mb-4">
+<div id="oauth-application-token-section" class="mb-4">
   <%= render(Primer::Beta::Subhead.new) do |component|
     component.with_heading(tag: :h3, size: :medium) do
-      t("my_account.access_tokens.oauth.title")
+      t("my_account.access_tokens.oauth_application.title")
     end
     component.with_description do
-      t("my_account.access_tokens.oauth.text_hint")
+      t("my_account.access_tokens.oauth_application.text_hint")
     end
   end %>
 

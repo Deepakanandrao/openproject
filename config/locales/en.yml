@@ -3095,14 +3095,25 @@ en:
         table_title: "iCalendar tokens"
         text_hint_link: "iCalendar tokens allow users to [subscribe to OpenProject calendars](docs_url) and view up-to-date work package information from external clients."
         disabled_text: "iCalendar subscriptions are not enabled by the administrator. Please contact your administrator to use this feature."
-      oauth:
+      oauth_application:
         active_tokens: "Active tokens"
-        blank_description: "There is no third-party application access configured and active for you. Please contact your administrator to activate this feature."
-        blank_title: "No OAuth token"
+        blank_description: "There is no third-party application access configured and active for you."
+        blank_title: "No OAuth application token"
         last_used_at: "Last used at"
         title: "OAuth"
-        table_title: "OAuth tokens"
-        text_hint: "OAuth tokens allow third-party applications to connect with this OpenProject instance."
+        table_title: "OAuth application tokens"
+        text_hint: "OAuth application tokens allow third-party applications to connect with this OpenProject instance."
+      oauth_client:
+        blank_description: "There are no OAuth client tokens yet."
+        blank_title: "No OAuth client tokens"
+        failed: "An error occurred and the token couldn't be removed. Please try again later."
+        integration_type: "Integration type"
+        table_title: "OAuth client tokens"
+        text_hint: "OAuth client tokens allow this OpenProject instance to connect with external applications, such as file storages."
+        title: "OAuth"
+        remove_token: "Do you really want to remove this token? You will need to login again on %{integration}."
+        removed: "OAuth client token successfully removed"
+        unknown_integration: "Unknown"
       token/rss:
         add_button: "RSS Token"
         blank_description: "There is no RSS token yet. You can create one using the button below."
@@ -3113,14 +3124,6 @@ en:
         static_token_name: "RSS token"
         disabled_text: "RSS tokens are not enabled by the administrator. Please contact your administrator to use this feature."
       storages:
-        blank_description: "There is no storage access linked to your account."
-        blank_title: "No file storage tokens"
-        title: "File storages"
-        table_title: "File storage tokens"
-        text_hint: "File Storage tokens connect this OpenProject instance with an external File Storage."
-        revoke_token: "Do you really want to remove this token? You will need to login again on %{storage}"
-        removed: "File Storage token successfully removed"
-        failed: "An error occurred and the token couldn't be removed. Please try again later."
         unknown_storage: "Unknown storage"
 
   notifications:

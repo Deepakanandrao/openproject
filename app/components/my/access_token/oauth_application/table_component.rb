@@ -39,13 +39,13 @@ module My
         def headers
           [
             [:name, { caption: I18n.t("attributes.name") }],
-            [:active_tokens, { caption: I18n.t("my_account.access_tokens.oauth.active_tokens") }],
-            [:last_used_at, { caption: I18n.t("my_account.access_tokens.oauth.last_used_at") }]
+            [:active_tokens, { caption: I18n.t("my_account.access_tokens.oauth_application.active_tokens") }],
+            [:last_used_at, { caption: I18n.t("my_account.access_tokens.oauth_application.last_used_at") }]
           ]
         end
 
         def mobile_title
-          I18n.t("my_account.access_tokens.oauth.table_title")
+          I18n.t("my_account.access_tokens.oauth_application.table_title")
         end
 
         def row_class
@@ -57,11 +57,11 @@ module My
         end
 
         def blank_title
-          I18n.t("my_account.access_tokens.oauth.blank_title")
+          I18n.t("my_account.access_tokens.oauth_application.blank_title")
         end
 
         def blank_description
-          I18n.t("my_account.access_tokens.oauth.blank_description")
+          I18n.t("my_account.access_tokens.oauth_application.blank_description")
         end
 
         def blank_icon

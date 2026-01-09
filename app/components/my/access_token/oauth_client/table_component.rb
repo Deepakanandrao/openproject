@@ -23,51 +23,50 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
 module My
   module AccessToken
-    module Storages
-      class RowComponent < OpPrimer::BorderBoxRowComponent
-        def client_token
-          model
+    module OAuthClient
+      class TableComponent < OpPrimer::BorderBoxTableComponent
+        columns :name, :integration_type, :created_at, :expires_on
+        main_column :name
+        mobile_labels :created_at, :expires_on
+
+        def headers
+          [
+            [:name, { caption: I18n.t("attributes.name") }],
+            [:integration_type, { caption: I18n.t("my_account.access_tokens.oauth_client.integration_type") }],
+            [:created_at, { caption: User.human_attribute_name(:created_at) }],
+            [:expires_on, { caption: I18n.t("my_account.access_tokens.headers.expiration") }]
+          ]
         end
 
-        def name
-          client_token.oauth_client.integration.name
+        def mobile_title
+          I18n.t("my_account.access_tokens.oauth_client.table_title")
         end
 
-        def created_at
-          helpers.format_time(client_token.created_at)
+        def row_class
+          RowComponent
         end
 
-        def expires_on
-          helpers.format_time(client_token.updated_at + client_token.expires_in.seconds)
+        def has_actions?
+          true
         end
 
-        def button_links
-          [delete_link].compact
+        def blank_title
+          I18n.t("my_account.access_tokens.oauth_client.blank_title")
         end
 
-        def delete_link
-          render(Primer::Beta::IconButton.new(
-                   icon: :trash,
-                   scheme: :danger,
-                   tag: :a,
-                   href: my_access_token_revoke_storage_token_path(client_token),
-                   "aria-label": t(:button_delete),
-                   test_selector: "storages-token-row-#{client_token.id}-revoke",
-                   data: {
-                     turbo_method: :delete,
-                     turbo_confirm: t(
-                       "my_account.access_tokens.storages.revoke_token",
-                       storage: client_token.oauth_client.integration.name
-                     )
-                   }
-                 ))
+        def blank_description
+          I18n.t("my_account.access_tokens.oauth_client.blank_description")
+        end
+
+        def blank_icon
+          nil
         end
       end
     end

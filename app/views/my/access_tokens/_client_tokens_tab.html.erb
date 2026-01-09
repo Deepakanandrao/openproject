@@ -27,8 +27,8 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
 
-<%# locals: (storage_tokens:) -%>
+<%# locals: (oauth_client_tokens:) -%>
 
 <%= render(Primer::Beta::Text.new(tag: :div, color: :subtle, mb: 3)) { t("my_account.access_tokens.tabs.client.description") } %>
 
-<%= render partial: "storage_tokens_section", locals: { storage_tokens: } %>
+<%= render partial: "oauth_client_tokens_section", locals: { oauth_client_tokens: } %>

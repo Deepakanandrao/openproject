@@ -27,17 +27,18 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
 
-<%# locals: (storage_tokens:) -%>
+<%# locals: (oauth_client_tokens:) -%>
+<!-- TODO: Generalize to client tokens table -->
 
-<div id="storage-token-section" class="mb-4">
+<div id="oauth-client-token-section" class="mb-4">
   <%= render(Primer::Beta::Subhead.new) do |component|
     component.with_heading(tag: :h3, size: :medium) do
-      t("my_account.access_tokens.storages.title")
+      t("my_account.access_tokens.oauth_client.title")
     end
     component.with_description do
-      t("my_account.access_tokens.storages.text_hint")
+      t("my_account.access_tokens.oauth_client.text_hint")
     end
   end %>
 
-  <%= render(My::AccessToken::Storages::TableComponent.new(rows: storage_tokens)) %>
+  <%= render(My::AccessToken::OAuthClient::TableComponent.new(rows: oauth_client_tokens)) %>
 </div>
