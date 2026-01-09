@@ -1,6 +1,6 @@
 ---
 sidebar_navigation:
-  title: First Steps: Access, Download, and Log In
+  title: "First Steps: Access, Download, and Log In"
   priority: 800
 description: Follow these steps to install and start using the OpenProject Mobile App (Beta).
 keywords: mobile app first steps, getting started, log in, log-in, login, mobile log in, openproject mobile app, download, access, install, mobile installation
