@@ -76,7 +76,7 @@ module BaseServices
       return unless custom_field_ids.any?
 
       # Validate the custom values updated via the params only.
-      model.custom_values_to_validate = model.custom_values.filter do |cv|
+      model.custom_values_to_validate = model.custom_field_values.filter do |cv|
         custom_field_ids.include?(cv.custom_field_id)
       end
     end
