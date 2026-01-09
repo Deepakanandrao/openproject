@@ -85,6 +85,12 @@ RSpec.describe "Projects custom fields mapping via project settings", :js do
                                          project_custom_field_section: section_for_input_fields)
   end
 
+  let!(:int_for_all_project_custom_field) do
+    create(:integer_project_custom_field, name: "Int field",
+                                          project_custom_field_section: section_for_input_fields,
+                                          is_for_all: true)
+  end
+
   let!(:list_project_custom_field) do
     create(:list_project_custom_field, name: "List field",
                                        project_custom_field_section: section_for_select_fields,
@@ -206,6 +212,9 @@ RSpec.describe "Projects custom fields mapping via project settings", :js do
         within_custom_field_container(string_project_custom_field) do
           expect_checked_state
         end
+        within_custom_field_container(int_for_all_project_custom_field) do
+          expect_checked_state
+        end
       end
 
       within_custom_field_section_container(section_for_select_fields) do
@@ -228,6 +237,10 @@ RSpec.describe "Projects custom fields mapping via project settings", :js do
         end
         within_custom_field_container(string_project_custom_field) do
           expect_unchecked_state
+        end
+        # "For all projects" field will never be unchecked and stays active
+        within_custom_field_container(int_for_all_project_custom_field) do
+          expect_checked_state
         end
       end
     end
@@ -281,10 +294,11 @@ RSpec.describe "Projects custom fields mapping via project settings", :js do
       within_custom_field_section_container(section_for_input_fields) do
         custom_fields = page.all(".op-project-custom-field")
 
-        expect(custom_fields.size).to eq(2)
+        expect(custom_fields.size).to eq(3)
 
         expect(custom_fields[0].text).to include("Boolean field")
         expect(custom_fields[1].text).to include("String field")
+        expect(custom_fields[2].text).to include("Int field")
       end
 
       boolean_project_custom_field.move_to_bottom
@@ -294,10 +308,11 @@ RSpec.describe "Projects custom fields mapping via project settings", :js do
       within_custom_field_section_container(section_for_input_fields) do
         custom_fields = page.all(".op-project-custom-field")
 
-        expect(custom_fields.size).to eq(2)
+        expect(custom_fields.size).to eq(3)
 
         expect(custom_fields[0].text).to include("String field")
-        expect(custom_fields[1].text).to include("Boolean field")
+        expect(custom_fields[1].text).to include("Int field")
+        expect(custom_fields[2].text).to include("Boolean field")
       end
     end
 
