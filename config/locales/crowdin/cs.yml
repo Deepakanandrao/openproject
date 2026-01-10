@@ -1967,7 +1967,11 @@ cs:
         few: Přístupové tokeny
         many: Přístupové tokeny
         other: Přístupové tokeny
-      type: "Typ"
+      type:
+        one: "Type"
+        few: "Types"
+        many: "Types"
+        other: "Types"
       user: "Uživatel"
       version: "Verze"
       workflow: "Pracovní postup"

@@ -1922,7 +1922,9 @@
       token/api:
         one: Access token
         other: Tilgangsnøkler
-      type: "Type"
+      type:
+        one: "Type"
+        other: "Types"
       user: "Bruker"
       version: "Versjon"
       workflow: "Arbeidsflyt"

@@ -1919,7 +1919,9 @@ el:
       token/api:
         one: Token πρόσβασης
         other: Access tokens
-      type: "Τύπος"
+      type:
+        one: "Type"
+        other: "Types"
       user: "Χρήστης"
       version: "Έκδοση"
       workflow: "Ροή εργασιών"

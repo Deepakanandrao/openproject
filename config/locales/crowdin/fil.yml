@@ -1923,7 +1923,9 @@ fil:
       token/api:
         one: I-access ang token
         other: Access tokens
-      type: "Uri"
+      type:
+        one: "Type"
+        other: "Types"
       user: "Gumagamit"
       version: "Bersyon"
       workflow: "Daloy ng trabaho"

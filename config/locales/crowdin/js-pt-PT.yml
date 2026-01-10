@@ -297,13 +297,13 @@ pt-PT:
       warning: "Não partilhe este URL com outros utilizadores. Qualquer pessoa com este link poderá ver os detalhes do pacote de trabalho sem uma conta ou palavra-passe."
       token_name_label: "Onde irá utilizar isto?"
       token_name_placeholder: 'Escreva um nome, por exemplo, "Telefone"'
-      token_name_description_text: 'If you subscribe to this calendar from multiple devices, this name will help you distinguish between them in your <a href="%{myAccessTokensUrl}" target="_blank">access tokens</a> list.'
+      token_name_description_text: 'Se subscrever este calendário a partir de vários dispositivos, este nome irá ajudar a distinguir entre eles na sua lista de <a href="%{myAccessTokensUrl}" target="_blank">tokens de acesso</a>.'
       copy_url_label: "Copiar URL"
       ical_generation_error_text: "Ocorreu um erro ao gerar o URL do calendário."
       success_message: 'O URL "%{name}" foi copiado com sucesso para a área de transferência. Cole-o no seu cliente de Calendários para concluir a subscrição.'
     label_activate: "Ativar"
     label_assignee: "Responsável"
-    label_assignee_alt_text: "This work package is assigned to %{name}"
+    label_assignee_alt_text: "Este pacote de trabalho é atribuído a %{name}"
     label_add_column_after: "Adicionar coluna após"
     label_add_column_before: "Adicionar coluna antes"
     label_add_columns: "Adicionar colunas"
@@ -345,7 +345,7 @@ pt-PT:
     label_collapse: "Colapso"
     label_collapsed: "oculto"
     label_collapse_all: "Ocultar tudo"
-    label_collapse_text: "Collapse text"
+    label_collapse_text: "Recolher texto"
     label_comment: "Comentario"
     label_committed_at: "%{committed_revision_link} le %{date}"
     label_committed_link: "revisão confirmada %{revision_identifier}"
@@ -557,7 +557,7 @@ pt-PT:
       date_alerts:
         milestone_date: "Data do marco"
         overdue: "Em atraso"
-        overdue_since: "for %{difference_in_days}."
+        overdue_since: "por %{difference_in_days}."
         property_today: "é hoje."
         property_is: "é em %{difference_in_days}."
         property_was: "foi há %{difference_in_days}."
@@ -1124,11 +1124,11 @@ pt-PT:
       all_projects: "Em todos os projetos"
       close_search: "Fechar pesquisa"
       items_available: "%{count} elementos disponíveis"
-      direct_hit_available: "Work package with exact ID found. Press Enter to open it."
+      direct_hit_available: "Foi encontrado um pacote de trabalho com um ID exato. Prima Enter para o abrir."
       current_project_and_all_descendants: "Neste projeto + subprojetos"
       current_project: "Neste projeto"
       recently_viewed: "Visto recentemente"
-      search_placeholder_expanded: "Search work packages by subject, project, type, status or ID"
+      search_placeholder_expanded: "Pesquisar pacotes de trabalho por assunto, projeto, tipo, estado ou ID"
       title:
         all_projects: "todos os projetos"
         project_and_subprojects: "e todos os subprojetos"

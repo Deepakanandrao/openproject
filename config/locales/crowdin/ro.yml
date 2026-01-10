@@ -1945,7 +1945,10 @@ ro:
         one: Token acces
         few: Token-uri de acces
         other: Token-uri de acces
-      type: "Tip"
+      type:
+        one: "Type"
+        few: "Types"
+        other: "Types"
       user: "Utilizator"
       version: "Versiune"
       workflow: "Flux de lucru"

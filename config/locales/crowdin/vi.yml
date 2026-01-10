@@ -1901,7 +1901,8 @@ vi:
       status: "Tình trạng work package"
       token/api:
         other: Mã truy cập
-      type: "Kiểu"
+      type:
+        other: "Types"
       user: "Người dùng"
       version: "Phiên bản"
       workflow: "Quy trình làm việc"

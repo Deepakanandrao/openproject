@@ -1921,7 +1921,9 @@ hi:
       token/api:
         one: Access token
         other: Access tokens
-      type: "प्रकार"
+      type:
+        one: "Type"
+        other: "Types"
       user: "उपयोगकर्ता"
       version: "संस्करण"
       workflow: "कार्यप्रवाह"

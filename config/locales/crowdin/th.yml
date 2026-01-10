@@ -1901,7 +1901,8 @@ th:
       status: "สถานะของชุดภารกิจ"
       token/api:
         other: Access tokens
-      type: "ประเภท"
+      type:
+        other: "Types"
       user: "ผู้ใช้"
       version: "เวอร์ชัน"
       workflow: "กระบวนการทำงาน"

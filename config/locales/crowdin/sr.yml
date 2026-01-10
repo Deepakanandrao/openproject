@@ -1945,7 +1945,10 @@ sr:
         one: Access token
         few: Access tokens
         other: Access tokens
-      type: "Type"
+      type:
+        one: "Type"
+        few: "Types"
+        other: "Types"
       user: "User"
       version: "Verzija"
       workflow: "Workflow"

@@ -1923,7 +1923,9 @@ tr:
       token/api:
         one: Erişim simgesi
         other: Erişim belirteçleri
-      type: "Tür"
+      type:
+        one: "Type"
+        other: "Types"
       user: "Kullanıcı"
       version: "Sürüm"
       workflow: "İş akışı"

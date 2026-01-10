@@ -2011,7 +2011,13 @@ ar:
         few: Access tokens
         many: Access tokens
         other: Access tokens
-      type: "النّوع"
+      type:
+        zero: "Types"
+        one: "Type"
+        two: "Types"
+        few: "Types"
+        many: "Types"
+        other: "Types"
       user: "المستخدم"
       version: "الإصدار"
       workflow: "سير العمل"

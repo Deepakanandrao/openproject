@@ -1923,7 +1923,9 @@ ka:
       token/api:
         one: Access token
         other: წვდომის კოდები
-      type: "ტიპი"
+      type:
+        one: "Type"
+        other: "Types"
       user: "მომხმარებელი"
       version: "ვერსია"
       workflow: "სამუშაო პროცესი"

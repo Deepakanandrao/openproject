@@ -1965,7 +1965,11 @@ ru:
         few: Маркеры доступа
         many: Маркеры доступа
         other: Маркеры доступа
-      type: "Тип"
+      type:
+        one: "Type"
+        few: "Types"
+        many: "Types"
+        other: "Types"
       user: "Пользователь"
       version: "Этапы"
       workflow: "Рабочий поток"

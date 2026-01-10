@@ -1967,7 +1967,11 @@ be:
         few: Access tokens
         many: Access tokens
         other: Access tokens
-      type: "Type"
+      type:
+        one: "Type"
+        few: "Types"
+        many: "Types"
+        other: "Types"
       user: "User"
       version: "Version"
       workflow: "Workflow"

@@ -1899,7 +1899,8 @@ ms:
       status: "Status pakej kerja"
       token/api:
         other: Token akses
-      type: "Jenis"
+      type:
+        other: "Types"
       user: "Pengguna"
       version: "Versi"
       workflow: "Aliran kerja"

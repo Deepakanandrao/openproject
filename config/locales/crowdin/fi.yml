@@ -1923,7 +1923,9 @@ fi:
       token/api:
         one: API-salasana
         other: Access tokens
-      type: "Tyyppi"
+      type:
+        one: "Type"
+        other: "Types"
       user: "Käyttäjä"
       version: "Versio"
       workflow: "Työnkulku"

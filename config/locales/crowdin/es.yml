@@ -1920,7 +1920,9 @@ es:
       token/api:
         one: Token de acceso
         other: Tokens de acceso
-      type: "Tipo"
+      type:
+        one: "Type"
+        other: "Types"
       user: "Usuario"
       version: "Versión"
       workflow: "Flujo de trabajo"

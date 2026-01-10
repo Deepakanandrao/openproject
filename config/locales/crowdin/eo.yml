@@ -1923,7 +1923,9 @@ eo:
       token/api:
         one: Atingoĵetono
         other: Access tokens
-      type: "Tipo"
+      type:
+        one: "Type"
+        other: "Types"
       user: "Uzanto"
       version: "Versio"
       workflow: "Laborfluo"

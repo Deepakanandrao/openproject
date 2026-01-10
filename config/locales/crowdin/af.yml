@@ -1923,7 +1923,9 @@ af:
       token/api:
         one: Access token
         other: Access tokens
-      type: "Soort"
+      type:
+        one: "Type"
+        other: "Types"
       user: "Gebruiker"
       version: "Weergawe"
       workflow: "Werksvloei"

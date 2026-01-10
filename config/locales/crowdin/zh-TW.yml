@@ -1897,7 +1897,8 @@ zh-TW:
       status: "工作套件狀態"
       token/api:
         other: 存取令牌(Token)
-      type: "類型"
+      type:
+        other: "Types"
       user: "使用者"
       version: "版本"
       workflow: "工作流程"

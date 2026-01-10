@@ -1901,7 +1901,8 @@ ko:
       status: "작업 패키지 상태"
       token/api:
         other: 액세스 토큰
-      type: "타입"
+      type:
+        other: "Types"
       user: "사용자"
       version: "버전"
       workflow: "워크플로"

@@ -1964,7 +1964,11 @@ lt:
         few: Prieigos žetonai
         many: Prieigos žetonai
         other: Prieigos žetonai
-      type: "Tipas"
+      type:
+        one: "Type"
+        few: "Types"
+        many: "Types"
+        other: "Types"
       user: "Naudotojas"
       version: "Versija"
       workflow: "Darbų eiga"

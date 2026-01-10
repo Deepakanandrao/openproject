@@ -1923,7 +1923,9 @@ bg:
       token/api:
         one: Маркер за достъп
         other: Токени за достъп
-      type: "Тип"
+      type:
+        one: "Type"
+        other: "Types"
       user: "Потребител"
       version: "Версия"
       workflow: "Работен поток"

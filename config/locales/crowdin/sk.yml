@@ -1967,7 +1967,11 @@ sk:
         few: Access tokens
         many: Access tokens
         other: Access tokens
-      type: "Typ"
+      type:
+        one: "Type"
+        few: "Types"
+        many: "Types"
+        other: "Types"
       user: "Užívateľ(ka)"
       version: "Verzia"
       workflow: "Pracovný postup"

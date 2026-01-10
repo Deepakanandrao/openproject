@@ -1922,7 +1922,9 @@ hu:
       token/api:
         one: Hozzáférési token
         other: Hozzáférési token
-      type: "Típus"
+      type:
+        one: "Type"
+        other: "Types"
       user: "Felhasználó"
       version: "Verzió"
       workflow: "Munkafolyamat"

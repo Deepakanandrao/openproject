@@ -1945,7 +1945,10 @@ lv:
         zero: Access tokens
         one: Piekļuves pilnvara
         other: Access tokens
-      type: "Veids"
+      type:
+        zero: "Types"
+        one: "Type"
+        other: "Types"
       user: "Lietotāji"
       version: "Versija"
       workflow: "Darbplūsma"

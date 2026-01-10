@@ -1963,7 +1963,11 @@ pl:
         few: Tokeny dostępu
         many: Tokenów dostępu
         other: Tokenu dostępu
-      type: "Typ"
+      type:
+        one: "Type"
+        few: "Types"
+        many: "Types"
+        other: "Types"
       user: "Użytkownik"
       version: "Wersja"
       workflow: "Przepływ pracy"

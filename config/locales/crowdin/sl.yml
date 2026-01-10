@@ -1966,7 +1966,11 @@ sl:
         two: Access tokens
         few: Access tokens
         other: Access tokens
-      type: "Vrsta"
+      type:
+        one: "Type"
+        two: "Types"
+        few: "Types"
+        other: "Types"
       user: "Uporabnik"
       version: "Različica"
       workflow: "Potek dela"

@@ -1897,7 +1897,8 @@ zh-CN:
       status: "工作包状态"
       token/api:
         other: 访问令牌
-      type: "类型"
+      type:
+        other: "Types"
       user: "用户"
       version: "版本"
       workflow: "工作流"

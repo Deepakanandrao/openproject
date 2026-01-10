@@ -1923,7 +1923,9 @@ sv:
       token/api:
         one: Åtkomstnyckel
         other: Åtkomstnycklar
-      type: "Typ"
+      type:
+        one: "Type"
+        other: "Types"
       user: "Användare"
       version: "Version"
       workflow: "Arbetsflöde"

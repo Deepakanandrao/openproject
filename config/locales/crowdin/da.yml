@@ -1921,7 +1921,9 @@ da:
       token/api:
         one: Adgangstegn
         other: Access tokens
-      type: "Type"
+      type:
+        one: "Type"
+        other: "Types"
       user: "Bruger"
       version: "Version"
       workflow: "Arbejdsgang"

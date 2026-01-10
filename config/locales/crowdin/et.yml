@@ -1923,7 +1923,9 @@ et:
       token/api:
         one: Access token
         other: Access tokens
-      type: "Tüüp"
+      type:
+        one: "Type"
+        other: "Types"
       user: "Kasutaja"
       version: "Versioon"
       workflow: "Töövoog"

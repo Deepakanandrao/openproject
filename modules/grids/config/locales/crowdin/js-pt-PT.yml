@@ -16,7 +16,7 @@ pt-PT:
         news:
           title: 'Noticias'
         project_description:
-          title: 'Description'
+          title: 'Descrição'
           no_results: "Ainda não foi escrita nenhuma descrição. Uma pode ser fornecida nas 'Definições de Projeto'."
         project_status:
           title: 'Estado'
@@ -52,7 +52,7 @@ pt-PT:
           title: 'Tabela de pacotes de trabalho'
         work_packages_graph:
           title: 'Gráfico de pacotes de trabalho'
-          summary: "%{chartType} chart showing work packages which are %{description}."
+          summary: "%{chartType} gráfico que mostra os pacotes de trabalho que são %{description}."
         work_packages_calendar:
           title: 'Calendário'
         work_packages_overview:

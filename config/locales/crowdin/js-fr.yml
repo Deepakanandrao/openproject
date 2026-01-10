@@ -1123,8 +1123,8 @@ fr:
     global_search:
       all_projects: "Pour tous les projets"
       close_search: "Fermer la recherche"
-      items_available: "%{count} items available"
-      direct_hit_available: "Work package with exact ID found. Press Enter to open it."
+      items_available: "%{count} éléments disponibles"
+      direct_hit_available: "Lot de travaux avec ID exact trouvé. Appuyez sur Entrée pour l'ouvrir."
       current_project_and_all_descendants: "Dans ce projet + sous-projets"
       current_project: "Pour ce projet"
       recently_viewed: "Consultés récemment"

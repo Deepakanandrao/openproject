@@ -1945,7 +1945,10 @@ hr:
         one: Pristupni token
         few: Access tokens
         other: Access tokens
-      type: "Tip"
+      type:
+        one: "Type"
+        few: "Types"
+        other: "Types"
       user: "Korisnik"
       version: "Verzija"
       workflow: "Tijek rada"

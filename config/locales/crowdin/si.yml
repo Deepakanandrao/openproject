@@ -1923,7 +1923,9 @@ si:
       token/api:
         one: ටෝකනය ප්රවේශ
         other: Access tokens
-      type: "වර්ගය"
+      type:
+        one: "Type"
+        other: "Types"
       user: "පරිශීලක"
       version: "අනුවාදය"
       workflow: "කාර්ය ප්රවාහ"

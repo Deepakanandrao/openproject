@@ -1967,7 +1967,11 @@ he:
         two: Access tokens
         many: Access tokens
         other: Access tokens
-      type: "סוג"
+      type:
+        one: "Type"
+        two: "Types"
+        many: "Types"
+        other: "Types"
       user: "משתמש"
       version: "גירסה"
       workflow: "זרימת עבודה"

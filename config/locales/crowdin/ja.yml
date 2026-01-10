@@ -1900,7 +1900,8 @@ ja:
       status: "ステータス名"
       token/api:
         other: アクセストークン
-      type: "タイプ"
+      type:
+        other: "Types"
       user: "ユーザ"
       version: "バージョン"
       workflow: "ワークフロー"

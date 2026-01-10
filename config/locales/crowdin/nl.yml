@@ -1919,7 +1919,9 @@ nl:
       token/api:
         one: Toegangstoken
         other: Toegangs-tokens
-      type: "Type"
+      type:
+        one: "Type"
+        other: "Types"
       user: "Gebruiker"
       version: "Versie"
       workflow: "Werkstroom"

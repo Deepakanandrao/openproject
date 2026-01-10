@@ -1923,7 +1923,9 @@ fa:
       token/api:
         one: Access token
         other: Access tokens
-      type: "نوع"
+      type:
+        one: "Type"
+        other: "Types"
       user: "کاربر"
       version: "نسخه"
       workflow: "Workflow"

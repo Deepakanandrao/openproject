@@ -1920,7 +1920,9 @@ ca:
       token/api:
         one: Token d'accés
         other: Token d'accés
-      type: "Classe"
+      type:
+        one: "Type"
+        other: "Types"
       user: "Usuari"
       version: "Versió"
       workflow: "Flux de treball"
