@@ -191,7 +191,7 @@ fr:
       error_cannot_act_self: "Impossible d'effectuer des actions sur vos propres fichiers envoyés."
   attribute_help_texts:
     caption: "Cette version courte sera affichée comme légende de l'attribut."
-    note_public: "Any text and images you add to this field are publicly visible to all logged in users."
+    note_public: "Le texte et les images que vous ajoutez dans ce champ sont visibles par tous les utilisateurs connectés."
     text_overview: "Dans cette vue, vous pouvez créer des textes d’aide personnalisés pour l'affichage des attributs. Lorsqu'ils sont définis, ces textes peuvent être affichés en cliquant sur l’icône d’aide à côté de l'attribut correspondant."
     show_preview: "Texte d’aperçu"
     add_new: "Ajouter le texte d’aide"
@@ -351,7 +351,7 @@ fr:
     instructions:
       is_required:
         all: "Marquez le champ personnalisé comme obligatoire. Il sera alors obligatoire de remplir le champ lors de la création de nouvelles ressources. Les ressources existantes ne nécessiteront pas de valeur lors de leur mise à jour."
-        project: "Required attributes need to be filled out by the user on project creation if the field is active ('For all projects' set or copying from a project/template in which the field is active). Existing projects will not require a value when being updated."
+        project: "Les attributs obligatoires doivent être remplis par l'utilisateur lors de la création du projet si le champ est actif (« Pour tous les projets » défini ou copie d'un projet/modèle dans lequel le champ est actif). Les projets existants ne nécessitent pas de valeur lors de leur mise à jour."
       is_for_all:
         all: "Marquez le champ personnalisé comme étant disponible dans tous les projets existants et nouveaux."
         project: "Marquez l'attribut comme étant disponible dans tous les projets existants et nouveaux."
@@ -521,7 +521,7 @@ fr:
         text: "Cette action ne supprimera aucun projet contenu dans la liste. Voulez-vous vraiment supprimer cette liste de projets ?"
     settings:
       header_details: Informations de base
-      header_status: Status
+      header_status: Statut
       header_relations: Relations du projet
       button_update_details: Mettre à jour les informations
       button_update_status_description: Mettre à jour la description du statut
@@ -548,13 +548,13 @@ fr:
         program_template_caption: "Sélectionnez un programme modèle à utiliser par défaut pour les nouveaux sous-postes de ce type."
         no_template: "Pas de modèle prédéfini"
       template:
-        menu_title: "Template"
-        title: "Template settings"
-        enable_failed: "Failed to enable template mode."
+        menu_title: "Modèle"
+        title: "Paramètres du modèle"
+        enable_failed: "Échec de l'activation du mode modèle."
         members:
-          excluded_roles_label: "Roles to exclude when template is applied"
+          excluded_roles_label: "Rôles à exclure lors de l'application du modèle"
           excluded_roles_caption: >
-            When creating a new project from this template, the roles selected above will be omitted. This allows you to select which members will be excluded based on their project roles. Users can then access the template for viewing purposes without being granted access to new projects created from it.
+            Lors de la création d'un nouveau projet à partir de ce modèle, les rôles sélectionnés ci-dessus seront omis. Cela vous permet de sélectionner les membres qui seront exclus en fonction de leur rôle dans le projet. Les utilisateurs peuvent alors accéder au modèle à des fins de visualisation sans se voir accorder l'accès aux nouveaux projets créés à partir de ce modèle.
       actions:
         label_enable_all: "Activer tout"
         label_disable_all: "Désactiver tout"
@@ -619,7 +619,7 @@ fr:
         project_attributes_description: >
           Sélectionnez les attributs du projet à inclure dans la demande de lancement du projet. Cette liste ne comprend que les [attributs du projet](project_attributes_url) activés pour ce projet.
     status:
-      button_edit: Edit status
+      button_edit: Modifier le statut
     wizard:
       sidebar_content_title: "Contenu"
       sections: "Sections"
@@ -811,7 +811,7 @@ fr:
         required: "Veuillez sélectionner un rôle"
       message:
         label: "Message d'invitation"
-        description: "We will send an email to the user, to which you can add a personal message here. An explanation for the invitation could be useful, or perhaps a bit of information regarding the project to help them get started."
+        description: "Nous enverrons un e-mail à l'utilisateur, auquel vous pourrez ajouter un message personnel ici. Une explication concernant l'invitation pourrait être utile ou peut-être quelques informations concernant le projet pour l'aider à démarrer."
       summary:
         next_button: "Envoyer une invitation"
       success_message:
@@ -1252,8 +1252,8 @@ fr:
           true: "public"
           false: "privé"
         queries: "Requêtes"
-        status_code: "Status"
-        status_explanation: "Status description"
+        status_code: "Statut"
+        status_explanation: "Description du statut"
         status_codes:
           not_started: "Non démarré"
           on_track: "Sur la bonne voie"
@@ -2559,7 +2559,7 @@ fr:
       enabled: "Désactiver"
   enumeration_activities: "Activités de suivi du temps"
   enumeration_work_package_priorities: "Priorités du Lot de Travaux"
-  enumeration_reported_project_statuses: "Reported status"
+  enumeration_reported_project_statuses: "Statut signalé"
   enumeration_caption_order_changed: "La commande a été modifiée avec succès."
   enumeration_could_not_be_moved: "L'énumération n'a pas pu être déplacée."
   enterprise_trials:
@@ -2812,17 +2812,17 @@ fr:
         #We need to include the version to invalidate outdated translations in other locales
         "17_0":
           new_features_title: >
-            The release contains various new features and improvements, such as:
+            Cette version contient plusieurs nouvelles fonctionnalités et améliorations, telles que :
           new_features_list:
-            line_0: Real-time documents collaboration.
-            line_1: Ability to structure related projects into programs and portfolios to focus them on strategic goals (Enterprise add-on).
-            line_2: Better meeting management with draft mode, presentation mode, enhanced outcomes, and iCal subscription.
-            line_3: Updated SharePoint integration with more restrictive permissions (Enterprise add-on).
-            line_4: Redesigned project overview with new tabs, configurable widgets, and an improved layout.
-            line_5: Option to guard the privacy of users not working in the same project more strictly.
-            line_6: Improved project creation flow with better template selection.
-            line_7: Smarter global search including type and status, improving precision in several autocompleters.
-            line_8: Accessibility improvements with ALT texts and improved chart colors.
+            line_0: Collaboration en temps réel sur les documents.
+            line_1: Possibilité de structurer des projets connexes en programmes et en portefeuilles afin de les axer sur des objectifs stratégiques (add-on Enterprise).
+            line_2: Meilleure gestion des réunions grâce au mode brouillon, au mode présentation, aux résultats améliorés et à l'abonnement iCal.
+            line_3: Mise à jour de l'intégration de SharePoint avec des permissions plus restrictives (add-on Enterprise).
+            line_4: Refonte de la vue d'ensemble du projet avec de nouveaux onglets, des widgets configurables et une mise en page améliorée.
+            line_5: Possibilité de protéger plus strictement la vie privée des utilisateurs qui ne travaillent pas sur le même projet.
+            line_6: Amélioration du flux de création de projets avec une meilleure sélection des modèles.
+            line_7: Recherche globale plus intelligente incluant le type et le statut afin d'améliorer la précision dans plusieurs outils de saisie automatique.
+            line_8: Amélioration de l'accessibilité des textes ALT et des couleurs des graphiques.
     links:
       upgrade_enterprise_edition: "Passer à la version Enterprise"
       postgres_migration: "Migration de votre installation vers PostgreSQL"
@@ -4105,7 +4105,7 @@ fr:
       title: Modifier l'identifiant du projet
     not_available: "Projet N/D"
     template:
-      copying_title: "Applying template"
+      copying_title: "Application du modèle"
       copying: >
         Votre projet est en cours de création à partir du modèle de projet sélectionné. Vous serez averti par e-mail dès que le projet sera disponible.
       use_template: "Utiliser le modèle"
@@ -4269,13 +4269,13 @@ fr:
   setting_apiv3_docs_enabled_instructions_html: >
     Si la page docs est activée, vous pouvez obtenir une vue interactive de la documentation APIv3 à l'adresse <a href="%{link}" target="_blank">%{link}</a>.
   setting_apiv3_docs_enabled_instructions_warning: >
-    Please be aware that enabling the API docs on a production system may expose sensitive information or result in accidental loss of data when not being careful. We recommend to only enable this setting for development purposes.
+    Veuillez noter que l'activation de la documentation de l'API sur un système de production peut exposer des informations sensibles ou entraîner une perte accidentelle de données en l'absence de précaution. Nous vous recommandons d'activer ce paramètre uniquement à des fins de développement.
   setting_attachment_whitelist: "Liste blanche de téléversement des pièces jointes"
   setting_email_delivery_method: "Méthode de livraison d'e-mail"
   setting_emails_salutation: "S'adresser à l'utilisateur dans les e-mails avec"
   setting_oauth_allow_remapping_of_existing_users: "Permettre le remappage des utilisateurs existants"
   setting_sendmail_location: "Emplacement de l’exécutable sendmail"
-  setting_sendmail_arguments: "Arguments for sendmail"
+  setting_sendmail_arguments: "Arguments pour sendmail"
   setting_smtp_enable_starttls_auto: "Utiliser automatiquement STARTTLS si disponible"
   setting_smtp_ssl: "Utiliser la connexion SSL"
   setting_smtp_address: "Serveur SMTP"
@@ -4364,8 +4364,8 @@ fr:
   setting_mail_handler_body_delimiter_regex: "Tronquer les e-mails correspondant à cette expression régulière"
   setting_mail_handler_ignore_filenames: "Pièces jointes du courrier ignorées"
   setting_new_project_user_role_id: "Rôle donné à un utilisateur non administrateur qui crée un projet"
-  setting_new_project_send_confirmation_email: "Send notification to author when creating a new project"
-  setting_new_project_notification_text: "Notification text"
+  setting_new_project_send_confirmation_email: "Envoyer une notification à l'auteur lors de la création d'un nouveau projet"
+  setting_new_project_notification_text: "Texte de la notification"
   setting_password_active_rules: "Les classes de caractère activées"
   setting_password_count_former_banned: "Nombre des plus récent mots des passe utilisé qui sont interdit de réutilisation."
   setting_password_days_valid: "Nombre de jours après lequel le changement de mot de passe est obligatoire"
@@ -4412,7 +4412,7 @@ fr:
   setting_self_registration_manual_activation: "Activation manuelle du compte"
   setting_self_registration_manual_activation_caption: >
     Les utilisateurs peuvent s'inscrire eux-mêmes. Leurs comptes sont placés en attente jusqu'à ce qu'un administrateur ou un utilisateur ayant la permission globale de créer ou de gérer des utilisateurs les active.
-  setting_session_ttl: "Session expiration time after inactivity"
+  setting_session_ttl: "Délai d'expiration de la session après inactivité"
   setting_session_ttl_hint: "Une valeur inférieur à 5 désactive cette fonction"
   setting_session_ttl_enabled: "Session expirée"
   setting_start_of_week: "La semaine commence le"
@@ -4439,8 +4439,8 @@ fr:
   setting_working_days: "Jours ouvrés"
   settings:
     errors:
-      not_writable: "The setting is not writable and can only be changed by a sysadmin."
-      failed_to_update: "Setting '%{name}' could not be updated: %{message}"
+      not_writable: "Ce paramètre n'est pas accessible en écriture et ne peut être modifié que par un administrateur système."
+      failed_to_update: "Le paramètre « %{name} » n'a pas pu être mis à jour : %{message}"
     authentication:
       login: "Connexion"
       registration: "Inscription"
@@ -4501,7 +4501,7 @@ fr:
     passwords: "Mots de passe"
     project_attributes:
       heading: "Attributs du projet"
-      label_for_all_projects: "All projects"
+      label_for_all_projects: "Tous les projets"
       label_new_attribute: "Attribut du projet"
       label_new_section: "Section"
       label_edit_section: "Modifier le titre"
@@ -4517,60 +4517,60 @@ fr:
       sections:
         display_representation:
           overview:
-            label: "Project attribute shown in:"
+            label: "Attribut du projet affiché dans :"
             main_area:
-              label: "Main area"
-              description: "Add all the project attributes as individual widgets in the main section of the project overview."
+              label: "Zone principale"
+              description: "Ajoutez tous les attributs du projet en tant que widgets individuels dans la section principale de la vue d'ensemble du projet."
             side_panel:
-              label: "Side panel"
-              description: "Add all the project attributes in a section inside the right side panel in the project overview."
+              label: "Panneau latéral"
+              description: "Ajoutez tous les attributs du projet dans une section située dans le panneau latéral droit de la vue d'ensemble du projet."
     project_initiation_request:
       header_description: >
-        OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can choose which project attributes should be included and create a PDF artifact as a result.
+        OpenProject peut générer un assistant étape par étape pour aider les chefs de projet à remplir une demande de lancement de projet. Vous pouvez choisir les attributs du projet à inclure et créer un artefact PDF.
       status:
-        submitted: "%{wizard_name} has been submitted"
-        submitted_description: "Click the button below to go to the work package for the submission process."
-        submitted_button: "Open submission request"
-        not_completed: "%{wizard_name} not yet completed"
-        not_completed_description: "Provide the necessary information by filling the attributes and get the project started."
+        submitted: "%{wizard_name} a été envoyé"
+        submitted_description: "Cliquez sur le bouton ci-dessous pour accéder au lot de travaux pour la procédure d'envoi."
+        submitted_button: "Ouvrir la demande d'envoi"
+        not_completed: "%{wizard_name} pas encore terminé"
+        not_completed_description: "Fournissez les informations nécessaires en renseignant les attributs et démarrez le projet."
       wizard_status_button:
-        project_initiation_request: "Open project initiation request"
-        project_creation_wizard: "Open project creation wizard"
-        project_mandate: "Open project mandate"
+        project_initiation_request: "Ouvrir la demande de lancement du projet"
+        project_creation_wizard: "Ouvrir l'assistant de création de projet"
+        project_mandate: "Ouvrir le mandat du projet"
       blankslate:
-        title: "Initiation request not enabled"
-        description: "OpenProject can generate a step-by-step wizard to help project managers fill out a project initiation request. You can choose which project attributes should be included and what to do with the output document. Enable it here to start configuring the wizard."
+        title: "Demande de lancement non activée"
+        description: "OpenProject peut générer un assistant étape par étape pour aider les chefs de projet à remplir une demande de lancement de projet. Vous pouvez choisir les attributs du projet à inclure et ce qu'il faut faire avec le document de sortie. Activez-le ici pour commencer à configurer l'assistant."
       disable_dialog:
-        title: "Disable project initiation request"
-        heading: "Disable this project initiation request?"
-        confirmation_message: "The initiation request wizard will no longer be available to new projects based on this template. Project managers and project owners will need to manually configure and fill out the relevant information in the Project overview."
-        checkbox_message: "I understand that this action is not reversible"
+        title: "Désactiver la demande de lancement de projet"
+        heading: "Désactiver cette demande de lancement de projet ?"
+        confirmation_message: "L'assistant de demande de lancement ne sera plus disponible pour les nouveaux projets basés sur ce modèle. Les chefs de projet et les propriétaires de projet devront configurer et remplir manuellement les informations pertinentes dans la vue d'ensemble du projet."
+        checkbox_message: "Je comprends que cette action n'est pas réversible"
       name:
-        artifact_name: "Artifact name"
-        artifact_name_caption: "Choose the name for this artifact that your project management framework recommends."
+        artifact_name: "Nom de l'artefact"
+        artifact_name_caption: "Choisissez le nom de cet artefact recommandé par votre cadre de gestion de projet."
         options:
-          project_initiation_request: "Project initiation request"
-          project_creation_wizard: "Project creation wizard"
-          project_mandate: "Project mandate"
+          project_initiation_request: "Demande de lancement du projet"
+          project_creation_wizard: "Assistant de création de projet"
+          project_mandate: "Mandat du projet"
       submission:
         description_template: >
-          **This work package was automatically created upon completion of the %{wizard_name} workflow.** A PDF artefact containing all submitted information has been generated and attached to this work package for reference and audit purposes. If you need to update or re-run the initiation steps, you can reopen the wizard at any time by using the link below:
-        description: "When a user submits a project initiation request, a new work package will be created with the request artifact attached as a PDF file. The settings below define the type, status and assignee for this new work package."
-        work_package_type: "Work package type"
-        work_package_type_caption: "The work package type that should be used to store the completed artifact."
-        status_when_submitted: "Status when submitted"
-        status_when_submitted_caption: "The status the generated work package will transition to once the request is submitted."
-        send_confirmation_email: "Send confirmation email to the user who submitted the project initiation request"
-        assignee: "Assignee when submitted"
+          **Ce lot de travaux a été créé automatiquement à l'issue du flux de travail %{wizard_name}.** Un artefact PDF contenant toutes les informations envoyées a été généré et joint à ce lot de travaux à des fins de référence et d'audit. Si vous avez besoin de mettre à jour ou de réexécuter les étapes de lancement, vous pouvez rouvrir l'assistant à tout moment en utilisant le lien ci-dessous :
+        description: "Lorsqu'un utilisateur envoie une demande de lancement de projet, un nouveau lot de travail est créé avec l'artefact de la demande en pièce jointe au format PDF. Les paramètres ci-dessous définissent le type, le statut et le destinataire de ce nouveau lot de travaux."
+        work_package_type: "Type de lot de travaux"
+        work_package_type_caption: "Le type de lot de travaux qui doit être utilisé pour stocker l'artefact terminé."
+        status_when_submitted: "Statut lors de l'envoi"
+        status_when_submitted_caption: "Le statut que le lot de travaux généré prendra une fois la demande envoyée."
+        send_confirmation_email: "Envoyer un e-mail de confirmation à l'utilisateur qui a soumis la demande de lancement du projet"
+        assignee: "Responsable au moment de l'envoi"
         assignee_caption_html: "L'utilisateur ou le groupe affecté à cet attribut de projet deviendra également l'attributaire du nouveau lot de travail. Cette liste comprend les attributs de projet actifs de type <i>Utilisateur</i> uniquement."
-        confirmation_email_text: "Confirmation email text"
-        confirmation_email_default: "Hello,\n\nYou submitted a project initiation request for **%{project_name}**. It is now awaiting review.\nClick the link below to access the work package with your request."
-        work_package_comment: "Work package comment"
-        work_package_comment_caption: "The assignee selected above will automatically be @mentioned in the comment."
-        work_package_comment_default: "A project initiation request for **%{project_name}** was submitted and is awaiting review."
+        confirmation_email_text: "Texte de l'e-mail de confirmation"
+        confirmation_email_default: "Bonjour,\n\nVous avez envoyé une demande de lancement de projet pour **%{project_name}**. Elle est actuellement en attente d'examen.\nCliquez sur le lien ci-dessous pour accéder au lot de travaux contenant votre demande."
+        work_package_comment: "Commentaire du lot de travaux"
+        work_package_comment_caption: "Le responsable sélectionné ci-dessus sera automatiquement @mentionné dans le commentaire."
+        work_package_comment_default: "Une demande de lancement de projet pour **%{project_name}** a été envoyée et est en attente d'examen."
     project_phase_definitions:
       heading: "Cycle de vie du projet"
-      heading_description: "Project life cycle defines the project phases that can be used for your project planning and will appear in the overview page of each project. These attributes can be enabled or disabled but not re-ordered at a project level."
+      heading_description: "Le cycle de vie du projet définit les phases du projet qui peuvent être utilisées pour la planification de votre projet et apparaîtra dans la page d'aperçu de chaque projet. Ces attributs peuvent être activés ou désactivés, mais pas réordonnés au niveau du projet."
       label_add: "Ajouter"
       label_add_description: "Ajouter une définition de phase de projet"
       filter:
@@ -4644,9 +4644,9 @@ fr:
   text_project_custom_field_html: >
     L'édition Entreprise ajoutera ces add-ons supplémentaires pour les champs personnalisés des projets : <br> <ul> <li><b>Ajouter des champs personnalisés pour les projets à votre liste de projets pour créer une vue du portefeuille de projets</b></li> </ul>
   text_custom_logo_instructions: >
-    The logo automatically scales to fit the header. For best results, upload a white logo on a transparent 130×47px image. You can add as much spacing inside that image as you like.
+    Le logo s'adapte automatiquement à l'en-tête. Pour obtenir de meilleurs résultats, téléversez un logo blanc sur une image transparente de 130×47px. Vous pouvez ajouter autant d'espacement que vous le souhaitez à l'intérieur de cette image.
   text_custom_logo_mobile_instructions: >
-    The logo automatically scales to fit the header. For best results, upload a white logo on a transparent 130×33px image. You can add as much spacing inside that image as you like.
+    Le logo s'adapte automatiquement à l'en-tête. Pour obtenir de meilleurs résultats, téléversez un logo blanc sur une image transparente de 130×33px. Vous pouvez ajouter autant d'espacement que vous le souhaitez à l'intérieur de cette image.
   text_custom_export_logo_instructions: >
     Il s'agit du logo qui apparaît dans vos exportations PDF. Il doit s'agir d'un fichier image PNG ou JPEG. Un logo noir ou coloré sur fond transparent ou blanc est recommandé.
   text_custom_export_cover_instructions: >
@@ -5034,7 +5034,7 @@ fr:
       unable_to_create_attachment: "La pièce jointe n’a pas pu être créée"
       unable_to_create_attachment_permissions: "La pièce jointe n'a pas pu être enregistrée en raison de l'absence de permissions du système de fichiers"
       user:
-        name_readonly: "The name attribute is read-only. Changes can be written through the attributes firstname and lastname."
+        name_readonly: "L'attribut name est en lecture seule. Les modifications peuvent être écrites via les attributs firstname et lastname."
       render:
         context_not_parsable: "Le contexte fourni n'est pas un lien vers une ressource."
         unsupported_context: "La ressource donnée n'est pas prise en charge comme contexte."
@@ -5049,10 +5049,10 @@ fr:
     resources:
       schema: "Schéma"
     undisclosed:
-      parent: Undisclosed - The parent is invisible because of lacking permissions.
-      project: Undisclosed - The project is invisible because of lacking permissions.
+      parent: Non divulgué - Le parent est invisible parce qu'il n'a pas les autorisations nécessaires.
+      project: Non divulgué - Le projet est invisible parce qu'il n'a pas les autorisations nécessaires.
       ancestor: Non divulgué - l'ancêtre est invisible en raison d'un manque de permissions.
-      definingProject: Undisclosed - The project is invisible because of lacking permissions.
+      definingProject: Non divulgué - Le projet est invisible parce qu'il n'a pas les autorisations nécessaires.
   doorkeeper:
     pre_authorization:
       status: "Préautorisation"

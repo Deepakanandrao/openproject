@@ -112,33 +112,31 @@ zh-CN:
         page_header:
           description: |-
             启用后，实时协作功能能够允许多个用户同时编辑文档。
-            它需要一个工作的 %{hocuspocus_server_link} 才能运行。
+            它需要一个正在运行的 %{hocuspocus_server_link} 才能运行。
         banner:
           none_writable: 这些值通过环境变量配置，无法在此处编辑。
-          some_unwritable: Some values are configured via environment variables and cannot be edited here.
+          some_unwritable: 一些值通过环境变量配置，无法在此处编辑。
         hocuspocus_server_url:
-          label: "Hocuspocus server URL"
-          caption: "The address of a working Hocuspocus server."
+          label: "Hocuspocus 服务器 URL"
+          caption: "正在运行的 Hocuspocus 服务器地址。"
         hocuspocus_server_secret:
-          label: "Client secret"
-          caption: "Paste the secret provided by the Hocuspocus server."
-        hocuspocus_server: Hocuspocus server
+          label: "客户端密钥"
+          caption: "粘贴 Hocuspocus 服务器提供的密钥。"
+        hocuspocus_server: Hocuspocus 服务器
       enable_text_collaboration:
-        heading: Real-time collaboration is not enabled
+        heading: 实时协作未启用
         description: |-
-          Once enabled, multiple users will be able to work together on a document at the same time.
-          All new documents will be based on a new editor (BlockNote) and will require a working connection to a
-          Hocuspocus server.
-        primary_action: Enable real-time collaboration
-        success: Real-time collaboration has been enabled.
+          启用后，多个用户将能够同时处理一个文档。
+          所有新文档都将基于新的编辑器 (BlockNote)，并需要与 Hocuspocus 服务器建立工作连接。
+        primary_action: 启用实时协作
+        success: 实时协作已启用。
       disable_text_collaboration_dialog:
-        title: Disable real-time collaboration
-        heading: Disable real-time collaboration?
+        title: 禁用实时协作
+        heading: 是否禁用实时协作？
         confirmation_message: |-
-          All existing documents may become inaccessible. Please only do this if you are certain you want to disable
-          real-time collaboration and the BlockNote editor in this instance.
-        confirmation_checkbox_message: I understand that I might permanently lose data
-        success: Real-time collaboration has been disabled.
+          所有现有文档可能无法访问。请仅在确定要禁用实时协作和 BlockNote 编辑器的情况下才执行此操作。
+        confirmation_checkbox_message: 我明白我可能会永久丢失数据
+        success: 实时协作已禁用。
   label_document_added: "文档已添加"
   label_document_new: "新建文档"
   label_document_plural: "文档"
