@@ -125,14 +125,15 @@ RSpec.shared_examples_for "hierarchy custom fields on index page" do |type|
   end
 end
 
-RSpec.shared_examples_for "expected fields for the custom field's format", :aggregate_failures do |type, format|
+RSpec.shared_examples_for "expected fields for the custom field's format", :aggregate_failures do |type_plural, format|
+  let(:type) { type_plural.singularize }
   let(:cf_page) { Pages::CustomFields::Index.new }
   let(:user) { create(:admin) }
 
   current_user { user }
 
   before do
-    cf_page.visit_page type
+    cf_page.visit_page type_plural
   end
 
   def expect_page_to_have(selectors)
