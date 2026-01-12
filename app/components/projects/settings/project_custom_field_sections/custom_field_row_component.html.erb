@@ -31,11 +31,12 @@
           end
         end
       end
+
       # py: 1 quick fix: prevents the row from bouncing as the toggle switch currently changes height while toggling
       custom_field_container.with_column(py: 1, mr: 2) do
-        if toggle_enabled?
+        concat(
           # buggy currently:
-          # small variant +  status_label_position: :start leads to a small bounce while toggling
+          # small variant + status_label_position: :start leads to a small bounce while toggling
           # behavior can be seen on primer's viewbook as well -> https://view-components-storybook.eastus.cloudapp.azure.com/view-components/lookbook/inspect/primer/alpha/toggle_switch/small
           # quick fix: don't display loading indicator which is causing the bounce
           render(
@@ -50,14 +51,34 @@
               classes: "op-primer-adjustments__toggle-switch--hidden-loading-indicator"
             )
           )
-        else
-          render Primer::Beta::Text.new(font_size: :small, color: :muted) do
-            if configured_as_creation_wizard_assignee?
-              "Set as <strong>assignee when submitted</strong> for project initiation requests".html_safe
-            else
-              "Enabled for all projects"
+        )
+
+        # As a courtesy to users, we show a hover card explaining why the toggle is disabled.
+        if toggle_disabled?
+          concat(
+            content_tag(:div, class: "op-hover-card--hidden-container") do
+              flex_layout(
+                id: unique_hovercard_id,
+                classes: "op-project-custom-field--popover",
+                data: {
+                  test_selector: "op-project-custom-field--hover-card-#{@project_custom_field.id}"
+                }
+              ) do |hover_card|
+                hover_card.with_column do
+                  render(Primer::Beta::Text.new) do
+                    if configured_as_creation_wizard_assignee?
+                      t(
+                        "projects.settings.project_custom_fields.enabled_via_assignee_when_submitted_html",
+                        pir_submission_url: project_settings_creation_wizard_url(tab: "submission")
+                      )
+                    else
+                      t("projects.settings.project_custom_fields.is_for_all_blank_slate.description")
+                    end
+                  end
+                end
+              end
             end
-          end
+          )
         end
       end
     end

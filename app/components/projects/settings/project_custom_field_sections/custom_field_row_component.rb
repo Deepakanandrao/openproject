@@ -83,12 +83,22 @@ module Projects
             "turbo-method": :put,
             "turbo-stream": true,
             test_selector: "toggle-project-custom-field-mapping-#{@project_custom_field.id}"
-          }
+          }.tap do |data|
+            if toggle_disabled?
+              # Add hover card that explains why this toggle switch is disabled
+              data[:hover_card_trigger_target] = "trigger"
+              data[:hover_card_popover_id] = unique_hovercard_id
+            end
+          end
         end
 
         def configured_as_creation_wizard_assignee?
           @project.project_creation_wizard_enabled? &&
             @project.project_creation_wizard_assignee_custom_field_id == @project_custom_field.id
+        end
+
+        def unique_hovercard_id
+          "project-custom-field-#{@project_custom_field.id}-disabled-reason"
         end
       end
     end
