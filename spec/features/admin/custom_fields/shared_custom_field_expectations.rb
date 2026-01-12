@@ -146,6 +146,7 @@ RSpec.shared_examples_for "expected fields for the custom field's format", :aggr
 
   # Form element labels, default English translation in the trailing comment:
   let(:label_name) { I18n.t("attributes.name") } # Name
+  let(:label_section) { I18n.t("activerecord.attributes.project_custom_field.custom_field_section") } # Section
   let(:label_min_length) { I18n.t("activerecord.attributes.custom_field.min_length") } # Minimum length
   let(:label_max_length) { I18n.t("activerecord.attributes.custom_field.max_length") } # Maximum length
   let(:label_regexp) { I18n.t("activerecord.attributes.custom_field.regexp") } # Regular expression
@@ -170,6 +171,12 @@ RSpec.shared_examples_for "expected fields for the custom field's format", :aggr
     end
 
     expect(page).to have_field(label_name)
+
+    if type == "Project"
+      expect(page).to have_field(label_section)
+    else
+      expect(page).to have_no_label(label_section)
+    end
 
     if format in "Text" | "Integer" | "Float" | "Long text"
       expect_page_to_have(fields: [
