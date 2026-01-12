@@ -733,9 +733,9 @@ ko:
       matrix_caption: "%{module} 모듈에 대한 권한 매트릭스"
       matrix_checkbox_label: "%{role} 역할에 %{permission} 권한 할당"
       matrix_check_all_label: "모든 역할에 모든 %{module} 권한 할당"
-      matrix_uncheck_all_label: "Unassign all %{module} permissions from all roles"
-      matrix_check_uncheck_all_in_row_label_html: "Toggle <em>%{permission}</em> permission for all roles"
-      matrix_check_uncheck_all_in_col_label_html: "Toggle all %{module} permissions for <em>%{role}</em> role"
+      matrix_uncheck_all_label: "모든 역할에서 모든 %{module} 권한 할당 취소"
+      matrix_check_uncheck_all_in_row_label_html: "<em>%{permission}</em> 모든 역할에 대한 권한 토글"
+      matrix_check_uncheck_all_in_col_label_html: "<em>%{role}</em> 역할에 대한 모든 %{module} 권한 토글"
   users:
     autologins:
       prompt: "%{num_days}일 동안 로그인 상태 유지"
@@ -930,9 +930,9 @@ ko:
       no_results_content_text: 위키 페이지 추가
   workflows:
     form:
-      matrix_caption: "Workflow matrix"
-      matrix_caption_assignee: "Workflow matrix for assignee"
-      matrix_caption_author: "Workflow matrix for author"
+      matrix_caption: "워크플로 매트릭스"
+      matrix_caption_assignee: "담당자에 대한 워크플로 매트릭스"
+      matrix_caption_author: "작성자에 대한 워크플로 매트릭스"
       matrix_checkbox_label: "Allow transition from %{old_status} to %{new_status}"
       matrix_check_all_label: "Allow all transitions"
       matrix_uncheck_all_label: "Disallow all transitions"
