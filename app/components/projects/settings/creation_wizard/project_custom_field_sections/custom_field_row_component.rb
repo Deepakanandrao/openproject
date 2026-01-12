@@ -57,15 +57,21 @@ module Projects
             end
           end
 
-          def toggle_enabled?
-            !@project_custom_field.required?
+          def toggle_disabled?
+            @project_custom_field.required?
           end
 
           def toggle_data_attributes
             {
               "turbo-method": :post,
               test_selector: "toggle-creation-wizard-project-custom-field-#{@project_custom_field.id}"
-            }
+            }.tap do |data|
+              if toggle_disabled?
+                # Add hover card that explains why this toggle switch is disabled
+                data[:hover_card_trigger_target] = "trigger"
+                data[:hover_card_popover_id] = unique_hovercard_id
+              end
+            end
           end
         end
       end

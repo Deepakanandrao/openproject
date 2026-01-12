@@ -668,6 +668,7 @@ en:
         project_attributes_description: >
           Select which project attributes should be included in the project initiation request.
           This list only includes [project attributes](project_attributes_url) enabled for for this project.
+        enabled_because_required_html: This project attribute cannot be disabled for this project initiation request since it is defined as required. This can be changed in the <a href=%{admin_settings_url} target="_blank">administration settings</a> by the administrator of the instance.
     status:
       button_edit: Edit status
     wizard:

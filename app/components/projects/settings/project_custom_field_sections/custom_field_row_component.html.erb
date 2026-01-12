@@ -69,7 +69,7 @@
                     if configured_as_creation_wizard_assignee?
                       t(
                         "projects.settings.project_custom_fields.enabled_via_assignee_when_submitted_html",
-                        pir_submission_url: project_settings_creation_wizard_url(tab: "submission")
+                        pir_submission_url: project_settings_creation_wizard_path(tab: "submission")
                       )
                     else
                       t("projects.settings.project_custom_fields.is_for_all_blank_slate.description")
