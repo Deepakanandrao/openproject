@@ -388,8 +388,6 @@ tr:
       blank_title: "Toplantı serisi şablonunuz boş"
       description: >
         Bu şablon, seride her yeni toplantı oluşturulduğunda kullanılacaktır. Bu şablona gündem maddeleri, katılımcılar ve ekler ekleyebilirsiniz.
-      blankslate_finalize: >
-        Bu şablonu hazırlamayı tamamlandığınızda kurulumu tamamlamak ve serinin ilk toplantısını zamanlamak için '%{button_title}' düğmesine tıklayın.
       label_view_template: "Şablonu görüntüle"
       label_edit_template: "Şablonu düzenle"
       banner_html: >

@@ -2250,7 +2250,7 @@ pt-PT:
     template_heading: "Selecione um modelo de carteira para trabalhar com os métodos de gestão de projetos mais comuns, ou crie uma carteira de raiz."
     blank_template:
       label: "Carteira em branco"
-      description: Comece do zero. Adicione manualmente atributos, membros e módulos ao portfólio.
+      description: Comece do zero. Adicione manualmente atributos, membros e módulos à carteira.
   create_program:
     template_heading: "Selecione um modelo de programa para trabalhar com os métodos mais comuns de gestão de projetos, ou crie um programa do zero."
     blank_template:

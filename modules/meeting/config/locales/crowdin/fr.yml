@@ -388,8 +388,6 @@ fr:
       blank_title: "Votre modèle de série de réunions est vide"
       description: >
         Ce modèle sera utilisé chaque fois que de nouvelles réunions seront créées dans la série. Vous pouvez ajouter des points à l'ordre du jour, des participants et des pièces jointes à ce modèle.
-      blankslate_finalize: >
-        Lorsque vous avez terminé de préparer ce modèle, cliquez sur le bouton « %{button_title} » ci-dessus pour terminer la configuration et programmer la première réunion de la série.
       label_view_template: "Voir le modèle"
       label_edit_template: "Modifier le modèle"
       banner_html: >

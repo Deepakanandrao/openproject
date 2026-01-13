@@ -191,7 +191,7 @@ ru:
       error_cannot_act_self: "Невозможно выполнить действия с собственными загруженными файлами."
   attribute_help_texts:
     caption: "Эта краткая версия будет отображаться в качестве заголовка атрибута."
-    note_public: "Any text and images you add to this field are publicly visible to all logged in users."
+    note_public: "Любой текст и изображения, которые вы добавляете в это поле, видны всем аутентифицированным пользователям."
     text_overview: "В этом представлении можно создать пользовательскую текстовую справку для атрибутов представления. При ее наличии, она будет показана по клику по значку справки возле атрибута."
     show_preview: "Предпросмотр текста"
     add_new: "Добавить текст справки"
@@ -522,7 +522,7 @@ ru:
         text: "Это действие не приведет к удалению ни одного проекта, содержащегося в списке. Вы уверены, что хотите удалить этот список проектов?"
     settings:
       header_details: Основные сведения
-      header_status: Status
+      header_status: Статус
       header_relations: Отношения с проектом
       button_update_details: Обновить детали
       button_update_status_description: Обновить описание статуса
@@ -620,7 +620,7 @@ ru:
         project_attributes_description: >
           Выберите, какие атрибуты проекта должны быть включены в запрос на инициацию проекта. В этот список входят только [атрибуты проекта](project_attributes_url), включенные для этого проекта.
     status:
-      button_edit: Edit status
+      button_edit: Редактировать статус
     wizard:
       sidebar_content_title: "Содержимое"
       sections: "Разделы"
@@ -1270,8 +1270,8 @@ ru:
           true: "публичный"
           false: "приватный"
         queries: "Запросы"
-        status_code: "Status"
-        status_explanation: "Status description"
+        status_code: "Статус"
+        status_explanation: "Описание статуса"
         status_codes:
           not_started: "Не начат"
           on_track: "По плану"
@@ -1902,9 +1902,9 @@ ru:
         other: "Тексты справки атрибутов"
       auth_provider:
         one: "Провайдер аутентификации"
-        few: "Authentication providers"
-        many: "Authentication providers"
-        other: "Authentication providers"
+        few: "Провайдера аутентификации"
+        many: "Провайдеров аутентификации"
+        other: "Провайдеры аутентификации"
       category: "Категория"
       color: "Цвет"
       comment: "Комментарий"
@@ -1913,9 +1913,9 @@ ru:
       "doorkeeper/application": "Приложение OAuth"
       enterprise_token:
         one: "Корпоративный токен"
-        few: "Enterprise tokens"
-        many: "Enterprise tokens"
-        other: "Корпоративные токены"
+        few: "Корпоративных токена"
+        many: "Корпоративных токенов"
+        other: "Корпоративных токенов"
       forum: "Форум"
       global_role: "Глобальная роль"
       group: "Группа"
@@ -2619,9 +2619,9 @@ ru:
         description: Приведите Ваши проекты в соответствии с Вашими стратегическими целями, организовав их в портфолио и программы.
     teaser:
       title:
-        one: "Остался день для пробного токена %{trial_plan}"
-        few: "%{count} days left of %{trial_plan} trial token"
-        many: "%{count} days left of %{trial_plan} trial token"
+        one: "Остался один день для пробного токена %{trial_plan}"
+        few: "Осталось %{count} дня для пробного токена %{trial_plan}"
+        many: "Осталось %{count} дней для пробного токена %{trial_plan}"
         other: "Осталось %{count} дней для пробного токена %{trial_plan}"
       description: "У вас есть доступ ко всем функциям %{trial_plan}."
     trial:

@@ -383,8 +383,6 @@ zh-CN:
       blank_title: "您的会议系列模板为空"
       description: >
         此模板将在系列中创建新会议时使用。您可以在此模板中添加议程项目、参与者和附件。
-      blankslate_finalize: >
-        准备好模板后，单击上方的 "%{button_title}"按钮完成设置并安排系列会议的第一次会议。
       label_view_template: "查看模板"
       label_edit_template: "编辑模板"
       banner_html: >

@@ -398,8 +398,6 @@ pl:
       blank_title: "Szablon serii spotkań jest pusty"
       description: >
         Ten szablon będzie używany za każdym razem, gdy zostaną utworzone nowe spotkania w serii. Do tego szablonu możesz dodać elementy planu spotkania, uczestników i załączniki.
-      blankslate_finalize: >
-        Gdy skończysz przygotowywać ten szablon, kliknij przycisk „%{button_title}” powyżej, aby zakończyć konfigurację i zaplanować pierwsze spotkanie serii.
       label_view_template: "Wyświetl szablon"
       label_edit_template: "Edytuj szablon"
       banner_html: >

@@ -388,8 +388,6 @@ pt-PT:
       blank_title: "O seu modelo da série de reuniões está vazio"
       description: >
         Este modelo será utilizado sempre que forem criadas novas reuniões na série. Pode adicionar itens da agenda, participantes e anexos a este modelo.
-      blankslate_finalize: >
-        Quando terminar de preparar este modelo, clique no botão "%{button_title}" acima para concluir a configuração e agendar a primeira reunião da série.
       label_view_template: "Ver modelo"
       label_edit_template: "Editar modelo"
       banner_html: >

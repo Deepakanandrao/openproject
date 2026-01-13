@@ -388,8 +388,6 @@ hu:
       blank_title: "Az ismétlődő megbeszélés sablonja üres"
       description: >
         Minden alkalommal ez a sablon lesz használva, amikor új megbeszélés jön létre az ismételt megbeszélésben. Ebbe a sablonba napirendi pontokat, résztvevőket és mellékleteket is felvehet.
-      blankslate_finalize: >
-        Ha elkészült a sablon, kattintson a fenti "%{button_title}" gombra a beállítás befejezéséhez és az első megbeszélés ütemezéséhez.
       label_view_template: "Sablon megtekintése"
       label_edit_template: "Sablon szerkesztése"
       banner_html: >

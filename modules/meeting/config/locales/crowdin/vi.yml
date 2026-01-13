@@ -383,8 +383,6 @@ vi:
       blank_title: "Mẫu chuỗi họp của bạn đang trống"
       description: >
         Mẫu này sẽ được sử dụng bất cứ khi nào các cuộc họp mới trong chuỗi được tạo. Bạn có thể thêm các mục chương trình làm việc, người tham gia và tệp đính kèm vào mẫu này.
-      blankslate_finalize: >
-        Khi bạn chuẩn bị xong mẫu này, hãy nhấp vào nút '%{button_title}' ở trên để hoàn tất thiết lập và lên lịch cuộc họp đầu tiên của chuỗi.
       label_view_template: "Xem Mẫu"
       label_edit_template: "Sửa mẫu"
       banner_html: >

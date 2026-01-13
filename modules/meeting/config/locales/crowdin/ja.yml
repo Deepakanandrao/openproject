@@ -383,8 +383,6 @@ ja:
       blank_title: "一連の会議のテンプレートがありません"
       description: >
         このテンプレートは、シリーズの新しい会議が作成されるたびに使用されます。このテンプレートに議題、参加者、添付ファイルを追加できます。
-      blankslate_finalize: >
-        このテンプレートの準備が完了したら、上の「%{button_title}」ボタンをクリックしてセットアップを完了し、シリーズの最初のミーティングをスケジュールします。
       label_view_template: "テンプレートを表示"
       label_edit_template: "テンプレートを編集"
       banner_html: >

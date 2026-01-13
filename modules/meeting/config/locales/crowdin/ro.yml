@@ -393,8 +393,6 @@ ro:
       blank_title: "Șablonul seriei dvs. de întâlniri este gol"
       description: >
         Acest model va fi folosit ori de câte ori se vor crea noi întâlniri în serie. Puteți adăuga elemente de pe ordinea de zi, participanți și atașamente la acest șablon.
-      blankslate_finalize: >
-        După ce ai terminat de pregătit acest șablon, fă clic pe butonul '%{button_title}' de mai sus pentru a finaliza configurarea și a programa prima întâlnire din serie.
       label_view_template: "Vezi șablon"
       label_edit_template: "Editează șablon"
       banner_html: >

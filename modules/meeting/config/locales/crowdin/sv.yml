@@ -388,8 +388,6 @@ sv:
       blank_title: "Din mall för mötesserier är tom"
       description: >
         Denna mall kommer att användas när nya möten i serien skapas. Du kan lägga till agenda objekt, deltagare och bilagor till denna mall.
-      blankslate_finalize: >
-        När du är klar med att förbereda denna mall, klicka på knappen '%{button_title}' ovan för att avsluta konfigurationen och schemalägga det första mötet i serien.
       label_view_template: "Visa mall"
       label_edit_template: "Redigera mall"
       banner_html: >

@@ -388,8 +388,6 @@ de:
       blank_title: "Die Vorlage für die wiederkehrenden Besprechungen ist leer"
       description: >
         Diese Vorlage wird immer dann verwendet, wenn neue Besprechungen der Terminserie erstellt werden. Sie können zu dieser Vorlage Tagesordnungspunkte, Teilnehmer und Anhänge hinzufügen.
-      blankslate_finalize: >
-        Wenn Sie mit der Vorbereitung dieser Vorlage fertig sind, klicken Sie oben auf die Schaltfläche '%{button_title}', um die Einrichtung abzuschließen und die erste Besprechung der Terminserie anzulegen.
       label_view_template: "Vorlage ansehen"
       label_edit_template: "Vorlage bearbeiten"
       banner_html: >

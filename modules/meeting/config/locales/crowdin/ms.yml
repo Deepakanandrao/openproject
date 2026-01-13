@@ -383,8 +383,6 @@ ms:
       blank_title: "Templat siri mesyuarat anda kosong"
       description: >
         Templat ini akan digunakan apabila mesyuarat baharu dalam siri dibuat. Anda boleh menambah item agenda, peserta dan lampiran pada templat ini.
-      blankslate_finalize: >
-        Apabila anda selesai menyediakan templat ini, klik butang '%{button_title}' di atas untuk menyelesaikan persediaan dan menjadualkan mesyuarat pertama siri ini.
       label_view_template: "Lihat templat"
       label_edit_template: "Edit templat"
       banner_html: >

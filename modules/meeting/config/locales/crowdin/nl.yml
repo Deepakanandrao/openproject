@@ -388,8 +388,6 @@ nl:
       blank_title: "Uw vergaderreeks sjabloon is leeg"
       description: >
         Dit sjabloon wordt gebruikt wanneer nieuwe vergaderingen in de serie worden aangemaakt. U kunt agendapunten, deelnemers en bijlagen aan het sjabloon toevoegen.
-      blankslate_finalize: >
-        Wanneer u klaar bent met het voorbereiden van het sjabloon, klikt u op de knop '%{button_title}' hierboven om het instellen te voltooien en de eerste vergadering van de serie te plannen.
       label_view_template: "Sjabloon bekijken"
       label_edit_template: "Bewerkt sjabloon"
       banner_html: >

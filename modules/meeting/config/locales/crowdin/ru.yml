@@ -83,10 +83,10 @@ ru:
       meeting_agenda: "Повестка дня"
       meeting_section: "Раздел"
       token/ical_meeting:
-        one: "Подписка на совещание iCal"
-        few: "iCal Meeting subscription"
-        many: "iCal Meeting subscription"
-        other: "Подписка на совещание iCal"
+        one: " iCal подписка на совещание"
+        few: " iCal подписки на совещание"
+        many: " iCal подписок на совещание"
+        other: " iCal подписок на совещание"
   activity:
     filter:
       meeting: "Совещания"
@@ -252,8 +252,8 @@ ru:
         header: "Встреча '%{title}' была обновлена"
         summary: "Совещание '%{title}' было обновлено пользователем %{actor}"
         body: "Совещание '%{title}' было обновлено пользователем %{actor}."
-        old_title: "Old title"
-        new_title: "New title"
+        old_title: "Старый заголовок"
+        new_title: "Новый заголовок"
         old_date_time: "Старые дата/время"
         new_date_time: "Новые дата/время"
         old_location: "Старое расположение"
@@ -398,8 +398,6 @@ ru:
       blank_title: "Ваш шаблон серии совещаний пуст"
       description: >
         Этот шаблон будет использоваться каждый раз, когда будут создаваться новые совещания в серии. Вы можете добавить в этот шаблон пункты повестки дня, участников и вложения.
-      blankslate_finalize: >
-        По завершении подготовки шаблона нажмите кнопку '%{button_title}', чтобы завершить установку и запланировать первое совещание этой серии.
       label_view_template: "Посмотреть шаблон"
       label_edit_template: "Изменить шаблон"
       banner_html: >
