@@ -44,13 +44,13 @@ module MeetingOutcomes
 
     private
 
-    def set_work_package_and_kind(params)
+    def set_work_package_and_kind(params) # rubocop:disable Metrics/AbcSize
       if params[:work_package_id].present?
         model.work_package_id = params[:work_package_id]
         model.kind = params[:kind]
       elsif params[:notes].present?
         model.notes = params[:notes]
-        model.kind = params[:kind]
+        model.kind = params[:kind] if model.new_record?
       end
     end
   end

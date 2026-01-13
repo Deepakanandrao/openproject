@@ -42,27 +42,13 @@ class MeetingOutcomesController < ApplicationController
     update_meeting_metadata_via_turbo_stream
 
     if @meeting.in_progress? && !@meeting_agenda_item.in_backlog?
-      @kind = params[:kind]&.to_sym || :information
-
-      component = if @kind == :work_package
-                    MeetingAgendaItems::Outcomes::WorkPackageFormComponent.new(
-                      meeting: @meeting,
-                      meeting_agenda_item: @meeting_agenda_item,
-                      meeting_outcome: @meeting_agenda_item.outcomes.new
-                    )
-                  else
-                    MeetingAgendaItems::Outcomes::InputComponent.new(
-                      meeting: @meeting,
-                      meeting_agenda_item: @meeting_agenda_item,
-                      meeting_outcome: @meeting_agenda_item.outcomes.new
-                    )
-                  end
+      kind = params[:kind].to_sym
+      component = build_outcome_form_component(kind)
 
       replace_via_turbo_stream(
         component:,
         target: MeetingAgendaItems::Outcomes::NewButtonComponent.component_id(@meeting_agenda_item)
       )
-
     else
       render_error_flash_message_via_turbo_stream(message: t("text_outcome_cannot_be_added"))
     end
@@ -93,23 +79,9 @@ class MeetingOutcomesController < ApplicationController
   end
 
   def create
-    call = if params[:meeting_outcome][:work_package_id].present?
-             ::MeetingOutcomes::CreateService
-               .new(user: current_user)
-               .call(
-                 meeting_agenda_item: @meeting_agenda_item,
-                 work_package_id: params[:meeting_outcome][:work_package_id],
-                 kind: :work_package
-               )
-           else
-             ::MeetingOutcomes::CreateService
-               .new(user: current_user)
-               .call(
-                 meeting_agenda_item: @meeting_agenda_item,
-                 notes: params[:meeting_outcome][:notes],
-                 kind: :information
-               )
-           end
+    call = ::MeetingOutcomes::CreateService
+             .new(user: current_user)
+             .call(create_outcome_params)
 
     @meeting_outcome = call.result
 
@@ -120,7 +92,6 @@ class MeetingOutcomesController < ApplicationController
     end
 
     update_meeting_metadata_via_turbo_stream
-
     respond_with_turbo_streams
   end
 
@@ -182,5 +153,31 @@ class MeetingOutcomesController < ApplicationController
 
   def set_meeting_outcome
     @meeting_outcome = MeetingOutcome.find(params[:id])
+  end
+
+  def build_outcome_form_component(kind)
+    component_class = kind == :work_package ? MeetingAgendaItems::Outcomes::WorkPackageFormComponent : MeetingAgendaItems::Outcomes::InputComponent
+
+    component_class.new(
+      meeting: @meeting,
+      meeting_agenda_item: @meeting_agenda_item,
+      meeting_outcome: @meeting_agenda_item.outcomes.new
+    )
+  end
+
+  def create_outcome_params
+    if params[:meeting_outcome][:work_package_id].present?
+      {
+        meeting_agenda_item: @meeting_agenda_item,
+        work_package_id: params[:meeting_outcome][:work_package_id],
+        kind: :work_package
+      }
+    else
+      {
+        meeting_agenda_item: @meeting_agenda_item,
+        notes: params[:meeting_outcome][:notes],
+        kind: :information
+      }
+    end
   end
 end
