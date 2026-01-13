@@ -42,9 +42,24 @@ class MeetingOutcomesController < ApplicationController
     update_meeting_metadata_via_turbo_stream
 
     if @meeting.in_progress? && !@meeting_agenda_item.in_backlog?
+      @kind = params[:kind]&.to_sym || :information
+
+      component = if @kind == :work_package
+                    MeetingAgendaItems::Outcomes::WorkPackageFormComponent.new(
+                      meeting: @meeting,
+                      meeting_agenda_item: @meeting_agenda_item,
+                      meeting_outcome: @meeting_agenda_item.outcomes.new
+                    )
+                  else
+                    MeetingAgendaItems::Outcomes::InputComponent.new(
+                      meeting: @meeting,
+                      meeting_agenda_item: @meeting_agenda_item,
+                      meeting_outcome: @meeting_agenda_item.outcomes.new
+                    )
+                  end
+
       replace_via_turbo_stream(
-        component: MeetingAgendaItems::Outcomes::InputComponent.new(meeting: @meeting, meeting_agenda_item: @meeting_agenda_item,
-                                                                    meeting_outcome: @meeting_agenda_item.outcomes.new),
+        component:,
         target: MeetingAgendaItems::Outcomes::NewButtonComponent.component_id(@meeting_agenda_item)
       )
 
@@ -78,12 +93,23 @@ class MeetingOutcomesController < ApplicationController
   end
 
   def create
-    call = ::MeetingOutcomes::CreateService
-             .new(user: current_user)
-             .call(
-               meeting_agenda_item: @meeting_agenda_item,
-               notes: params[:meeting_outcome][:notes]
-             )
+    call = if params[:meeting_outcome][:work_package_id].present?
+             ::MeetingOutcomes::CreateService
+               .new(user: current_user)
+               .call(
+                 meeting_agenda_item: @meeting_agenda_item,
+                 work_package_id: params[:meeting_outcome][:work_package_id],
+                 kind: :work_package
+               )
+           else
+             ::MeetingOutcomes::CreateService
+               .new(user: current_user)
+               .call(
+                 meeting_agenda_item: @meeting_agenda_item,
+                 notes: params[:meeting_outcome][:notes],
+                 kind: :information
+               )
+           end
 
     @meeting_outcome = call.result
 

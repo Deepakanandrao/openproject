@@ -27,34 +27,39 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
-class MeetingOutcome < ApplicationRecord
-  belongs_to :meeting_agenda_item, touch: true
-  belongs_to :work_package, optional: true
-  belongs_to :author, class_name: "User", optional: true
 
-  enum :kind, {
-    information: 0,
-    decision: 1,
-    work_package: 2
-  }.freeze, suffix: true, default: "information"
+module MeetingAgendaItems::Outcomes
+  class WorkPackageFormComponent < ApplicationComponent
+    include OpTurbo::Streamable
+    include OpPrimer::ComponentHelpers
 
-  validates :meeting_agenda_item, presence: true
-  validates :notes, presence: { if: -> { information_kind? } }
-  validates :work_package, presence: { if: -> { work_package_kind? } }
+    def initialize(meeting:, meeting_agenda_item:, meeting_outcome: nil)
+      super
+      @meeting = meeting
+      @meeting_agenda_item = meeting_agenda_item
+      @meeting_outcome = meeting_outcome || build_meeting_outcome
+      @project_id = @meeting.project.id
+    end
 
-  def editable?
-    meeting_agenda_item.meeting.in_progress?
-  end
+    private
 
-  def linked_work_package?
-    work_package_kind? && work_package.present?
-  end
+    def wrapper_uniq_by
+      @meeting_agenda_item.id
+    end
 
-  def visible_work_package?
-    linked_work_package? && work_package.visible?(User.current)
-  end
+    def build_meeting_outcome
+      MeetingOutcome.new(
+        meeting_agenda_item: @meeting_agenda_item,
+        kind: :work_package
+      )
+    end
 
-  def deleted_work_package?
-    persisted? && work_package_kind? && work_package_id_was.nil?
+    def submit_path
+      meeting_outcomes_path(@meeting, meeting_agenda_item_id: @meeting_agenda_item.id, format: :turbo_stream)
+    end
+
+    def cancel_path
+      cancel_new_meeting_outcomes_path(@meeting, meeting_agenda_item_id: @meeting_agenda_item.id)
+    end
   end
 end
