@@ -159,20 +159,15 @@ RSpec.shared_examples_for "expected fields for the custom field's format", :aggr
   let(:label_max_length) { I18n.t("activerecord.attributes.custom_field.max_length") } # Maximum length
   let(:label_regexp) { I18n.t("activerecord.attributes.custom_field.regexp") } # Regular expression
   let(:label_multi_value) { I18n.t("activerecord.attributes.custom_field.multi_value") } # Allow multi-select
-  # Allow non-open versions
-  let(:label_allow_non_open_versions) do
+  let(:label_allow_non_open_versions) do # Allow non-open versions
     I18n.t("activerecord.attributes.custom_field.allow_non_open_versions")
   end
-  # Possible values
-  let(:label_possible_values) do
+  let(:label_possible_values) do # Possible values
     I18n.t("activerecord.attributes.custom_field.possible_values")
   end
   let(:label_default_value) { I18n.t("activerecord.attributes.custom_field.default_value") } # Default value
   let(:label_is_required) { I18n.t("activerecord.attributes.custom_field.is_required") } # Required
   let(:label_formula) { I18n.t("activerecord.attributes.custom_field.formula") } # Formula
-  # Spent time SFs don't show "Searchable". Not tested here.
-  # Project CFs don't show "For all projects" and "Used as a filter". Not tested here.
-  # Content right to left is not shown for Project CFs Long text. Strange. Not tested.
 
   it "shows the right options for the #{format} custom field type" do
     retry_block do
