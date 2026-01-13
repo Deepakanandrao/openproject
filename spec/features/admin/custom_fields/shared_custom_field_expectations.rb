@@ -206,8 +206,7 @@ RSpec.shared_examples_for "expected fields for the custom field's format", :aggr
       expect(page).to have_no_label(label_is_for_all)
     end
 
-    if (type in "Work package" | "Project") &&
-       !(format in "Boolean" | "Calculated value" | "Date" | "Float" | "Integer" | "User" | "Version" | "Hierarchy")
+    if (type in "Work package" | "Project") && (format in "Text" | "Long text" | "Link" | "List")
       expect(page).to have_field(label_searchable)
     else
       expect(page).to have_no_label(label_searchable)
