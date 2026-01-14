@@ -31,6 +31,7 @@
 module OpenProject
   module Common
     # @logical_path OpenProject/Common
+    # @display min_height 250px
     class CheckAllComponentPreview < Lookbook::Preview
       def default
         render_with_template
