@@ -32,6 +32,7 @@ require "spec_helper"
 
 RSpec.describe WorkPackage do
   describe "#journals (and the saving of them)" do
+    shared_let(:user) { create(:user) }
     shared_let(:type) { create(:type) }
     shared_let(:other_type) { create(:type) }
     shared_let(:status) { create(:default_status) }
@@ -49,14 +50,11 @@ RSpec.describe WorkPackage do
     shared_let(:other_work_package) { build_stubbed(:work_package) }
     shared_let(:other_user) { create(:user) }
 
-    current_user { create(:user) }
-
-    # For the shared examples
-    let(:journable) { work_package }
+    current_user { user }
 
     context "on creation" do
-      let(:work_package) do
-        described_class.new(author: current_user)
+      let(:journable) do
+        described_class.new(author: user)
       end
 
       include_examples "journaled values for",
@@ -111,22 +109,22 @@ RSpec.describe WorkPackage do
                        expect_new_journal: true,
                        expect_predecessor_changed: false do
         it "results in created_at and updated_at being the same on the work package" do
-          work_package.save!
+          journable.save!
           # Just to ensure that there actually is nothing hidden in the DB
-          work_package.reload
+          journable.reload
 
-          expect(work_package.created_at)
-            .to eql work_package.updated_at
+          expect(journable.created_at)
+            .to eql journable.updated_at
         end
       end
     end
 
     context "when nothing is changed" do
       context "for a work package that has only been created (single journal)" do
-        let!(:work_package) do
+        shared_let(:journable) do
           create(:work_package,
                  journals: {
-                   Time.current => { user: current_user, notes: "First comment" }
+                   Time.current => { user:, notes: "First comment" }
                  })
         end
 
@@ -135,11 +133,11 @@ RSpec.describe WorkPackage do
       end
 
       context "for a work package that has been updated already (multiple journals)" do
-        let!(:work_package) do
+        shared_let(:journable) do
           create(:work_package,
                  journals: {
-                   5.days.ago => { user: current_user },
-                   4.days.ago => { user: current_user, notes: "First comment" }
+                   5.days.ago => { user: },
+                   4.days.ago => { user:, notes: "First comment" }
                  })
         end
 
@@ -149,7 +147,7 @@ RSpec.describe WorkPackage do
     end
 
     context "on changes outside of aggregation time" do
-      let!(:work_package) do
+      shared_let(:journable) do
         create(:work_package,
                subject: "Initial subject",
                description: "Initial description",
@@ -162,13 +160,13 @@ RSpec.describe WorkPackage do
                duration: 1,
                estimated_hours: 3.0,
                schedule_manually: true,
-               assigned_to: current_user,
-               responsible: current_user,
+               assigned_to: user,
+               responsible: user,
                category: nil,
                version:,
                ignore_non_working_days: true,
                journals: {
-                 10.minutes.ago => { user: current_user }
+                 10.minutes.ago => { user: }
                })
       end
 
@@ -216,7 +214,7 @@ RSpec.describe WorkPackage do
                          "duration" => [1, 8],
                          "schedule_manually" => [true, false],
                          "ignore_non_working_days" => [true, false],
-                         "assigned_to_id" => %i[current_user other_user],
+                         "assigned_to_id" => %i[user other_user],
                          "responsible_id" => [:current_user, nil],
                          "parent_id" => [nil, :parent_work_package],
                          "project_phase_definition_id" => [nil, :project_phase_definition]
@@ -225,7 +223,7 @@ RSpec.describe WorkPackage do
     end
 
     context "on changes within aggregation time for a work package with no update yet (single journal)" do
-      let!(:work_package) do
+      shared_let(:journable) do
         create(:work_package,
                subject: "Initial subject",
                description: "Initial description",
@@ -238,13 +236,13 @@ RSpec.describe WorkPackage do
                duration: 1,
                estimated_hours: 3.0,
                schedule_manually: true,
-               assigned_to: current_user,
-               responsible: current_user,
+               assigned_to: user,
+               responsible: user,
                category: nil,
                version:,
                ignore_non_working_days: true,
                journals: {
-                 4.minutes.ago => { user: current_user }
+                 4.minutes.ago => { user: }
                })
       end
 
@@ -301,7 +299,7 @@ RSpec.describe WorkPackage do
     end
 
     context "on changes within aggregation time for a work package with former updates (multiple journal)" do
-      let!(:work_package) do
+      shared_let(:journable) do
         create(:work_package,
                subject: "Initial subject",
                description: "Initial description",
@@ -314,16 +312,16 @@ RSpec.describe WorkPackage do
                duration: 1,
                estimated_hours: 3.0,
                schedule_manually: true,
-               assigned_to: current_user,
-               responsible: current_user,
+               assigned_to: user,
+               responsible: user,
                category: nil,
                version:,
                ignore_non_working_days: true,
                journals: {
                  # Both journals will be the exact same snapshot of the current state.
                  # For the sake of this test, this doesn't matter.
-                 10.minutes.ago => { user: current_user },
-                 4.minutes.ago => { user: current_user }
+                 10.minutes.ago => { user: },
+                 4.minutes.ago => { user: }
                })
       end
 
@@ -371,8 +369,8 @@ RSpec.describe WorkPackage do
                          "duration" => [1, 8],
                          "schedule_manually" => [true, false],
                          "ignore_non_working_days" => [true, false],
-                         "assigned_to_id" => %i[current_user other_user],
-                         "responsible_id" => [:current_user, nil],
+                         "assigned_to_id" => %i[user other_user],
+                         "responsible_id" => [:user, nil],
                          "parent_id" => [nil, :parent_work_package],
                          "project_phase_definition_id" => [nil, :project_phase_definition]
                        },
@@ -380,7 +378,7 @@ RSpec.describe WorkPackage do
     end
 
     context "on changes within aggregation time for a different user" do
-      let!(:work_package) do
+      shared_let(:journable) do
         create(:work_package,
                description: "Initial description",
                journals: {
@@ -399,14 +397,14 @@ RSpec.describe WorkPackage do
     end
 
     context "on changes with aggregation disabled", with_settings: { journal_aggregation_time_minutes: 0 } do
-      let!(:work_package) do
+      shared_let(:journable) do
         create(:work_package,
                subject: "Initial subject",
                journals: {
                  # Both journals will be the exact same snapshot of the current state.
                  # For the sake of this test, this doesn't matter.
-                 10.minutes.ago => { user: current_user },
-                 4.minutes.ago => { user: current_user }
+                 10.minutes.ago => { user: },
+                 4.minutes.ago => { user: }
                })
       end
 
@@ -424,17 +422,17 @@ RSpec.describe WorkPackage do
       let(:attachment) { build(:attachment) }
       let(:attachment_id) { "attachments_#{attachment.id}" }
 
-      let!(:work_package) do
+      shared_let(:journable) do
         create(:work_package)
       end
 
       before do
-        work_package.attachments << attachment
-        work_package.save!
+        journable.attachments << attachment
+        journable.save!
       end
 
       context "for new attachment" do
-        subject { work_package.last_journal.details }
+        subject { journable.last_journal.details }
 
         it { is_expected.to have_key attachment_id }
 
@@ -456,7 +454,7 @@ RSpec.describe WorkPackage do
 
       let(:custom_field_id) { "custom_fields_#{custom_value.custom_field_id}" }
 
-      let!(:work_package) do
+      shared_let(:journable) do
         create(:work_package)
       end
 
@@ -464,16 +462,16 @@ RSpec.describe WorkPackage do
         before do
           project.work_package_custom_fields << custom_field
           type.custom_fields << custom_field
-          work_package.reload
-          work_package.custom_values << custom_value
-          work_package.save!
+          journable.reload
+          journable.custom_values << custom_value
+          journable.save!
         end
       end
 
       context "for new custom value" do
         include_context "for work package with custom value"
 
-        subject { work_package.last_journal.details }
+        subject { journable.last_journal.details }
 
         it { is_expected.to have_key custom_field_id }
 
@@ -490,11 +488,11 @@ RSpec.describe WorkPackage do
         end
 
         before do
-          work_package.custom_values = [modified_custom_value]
-          work_package.save!
+          journable.custom_values = [modified_custom_value]
+          journable.save!
         end
 
-        subject { work_package.last_journal.details }
+        subject { journable.last_journal.details }
 
         it { is_expected.to have_key custom_field_id }
 
@@ -511,14 +509,14 @@ RSpec.describe WorkPackage do
         end
 
         before do
-          work_package.custom_values = [unmodified_custom_value]
+          journable.custom_values = [unmodified_custom_value]
         end
 
-        it { expect { work_package.save! }.not_to change(Journal, :count) }
+        it { expect { journable.save! }.not_to change(Journal, :count) }
 
         it "does not set an upper bound to the already existing journal" do
-          work_package.save
-          expect(work_package.last_journal.validity_period.end)
+          journable.save!
+          expect(journable.last_journal.validity_period.end)
             .to be_nil
         end
       end
@@ -527,11 +525,11 @@ RSpec.describe WorkPackage do
         include_context "for work package with custom value"
 
         before do
-          work_package.custom_values.delete(custom_value)
-          work_package.save!
+          journable.custom_values.delete(custom_value)
+          journable.save!
         end
 
-        subject { work_package.last_journal.details }
+        subject { journable.last_journal.details }
 
         it { is_expected.to have_key custom_field_id }
 
@@ -548,20 +546,20 @@ RSpec.describe WorkPackage do
         let(:custom_value) do
           create(:custom_value,
                  value: "",
-                 customized: work_package,
+                 customized: journable,
                  custom_field:)
         end
 
         describe "empty values are recognized as unchanged" do
           include_context "for work package with custom value"
 
-          it { expect(work_package.last_journal.customizable_journals).to be_empty }
+          it { expect(journable.last_journal.customizable_journals).to be_empty }
         end
 
         describe "empty values handled as non existing" do
           include_context "for work package with custom value"
 
-          it { expect(work_package.last_journal.customizable_journals.count).to eq(0) }
+          it { expect(journable.last_journal.customizable_journals.count).to eq(0) }
         end
       end
     end
@@ -570,17 +568,17 @@ RSpec.describe WorkPackage do
       let(:file_link) { build(:file_link) }
       let(:file_link_id) { "file_links_#{file_link.id}" }
 
-      let!(:work_package) do
+      shared_let(:journable) do
         create(:work_package)
       end
 
       before do
-        work_package.file_links << file_link
-        work_package.save!
+        journable.file_links << file_link
+        journable.save!
       end
 
       context "for the new file link" do
-        subject(:journal_details) { work_package.last_journal.details }
+        subject(:journal_details) { journable.last_journal.details }
 
         it { is_expected.to have_key file_link_id }
 
@@ -594,17 +592,17 @@ RSpec.describe WorkPackage do
         it {
           expect do
             file_link.save
-            work_package.save_journals
+            journable.save_journals
           end.not_to change(Journal, :count)
         }
       end
     end
 
     context "on only journal notes adding outside of aggregation time" do
-      let!(:work_package) do
+      shared_let(:journable) do
         create(:work_package,
                journals: {
-                 10.minutes.ago => { user: current_user }
+                 10.minutes.ago => { user: }
                })
       end
 
@@ -618,11 +616,11 @@ RSpec.describe WorkPackage do
     end
 
     context "on only journal notes adding within aggregation time" do
-      let!(:work_package) do
+      shared_let(:journable) do
         create(:work_package,
                journals: {
-                 10.minutes.ago => { user: current_user },
-                 4.minutes.ago => { user: current_user }
+                 10.minutes.ago => { user: },
+                 4.minutes.ago => { user: }
                })
       end
 
@@ -636,7 +634,7 @@ RSpec.describe WorkPackage do
     end
 
     context "on only journal notes adding within aggregation time as a different user" do
-      let!(:work_package) do
+      shared_let(:journable) do
         create(:work_package,
                journals: {
                  10.minutes.ago => { user: other_user },
@@ -654,11 +652,11 @@ RSpec.describe WorkPackage do
     end
 
     context "on only journal notes adding within aggregation time with the last journal already having a note" do
-      let!(:work_package) do
+      shared_let(:journable) do
         create(:work_package,
                journals: {
-                 10.minutes.ago => { user: current_user },
-                 4.minutes.ago => { user: current_user, notes: "The former note" }
+                 10.minutes.ago => { user: },
+                 4.minutes.ago => { user:, notes: "The former note" }
                })
       end
 
@@ -672,12 +670,12 @@ RSpec.describe WorkPackage do
     end
 
     context "on changes within aggregation time for a work package with a journal with notes" do
-      let!(:work_package) do
+      shared_let(:journable) do
         create(:work_package,
                subject: "Initial subject",
                journals: {
-                 10.minutes.ago => { user: current_user },
-                 4.minutes.ago => { user: current_user, notes: "The former note" }
+                 10.minutes.ago => { user: },
+                 4.minutes.ago => { user:, notes: "The former note" }
                })
       end
 
@@ -693,11 +691,11 @@ RSpec.describe WorkPackage do
     end
 
     context "on mixed journal notes and attribute adding outside of aggregation time" do
-      let!(:work_package) do
+      shared_let(:journable) do
         create(:work_package,
                subject: "Initial subject",
                journals: {
-                 10.minutes.ago => { user: current_user }
+                 10.minutes.ago => { user: }
                })
       end
 
@@ -714,13 +712,13 @@ RSpec.describe WorkPackage do
     end
 
     context "on only journal cause adding within aggregation time" do
-      let!(:work_package) do
+      shared_let(:journable) do
         create(:work_package,
                journals: {
                  # Adding a second journal (even if it is empty) to avoid the changes
                  # from the wp creation to mess with the expected values.
-                 10.minutes.ago => { user: current_user },
-                 4.minutes.ago => { user: current_user }
+                 10.minutes.ago => { user: },
+                 4.minutes.ago => { user: }
                })
       end
 
@@ -740,10 +738,10 @@ RSpec.describe WorkPackage do
     end
 
     context "on adding a different cause within aggregation time" do
-      let!(:work_package) do
+      shared_let(:journable) do
         create(:work_package,
                journals: {
-                 4.minutes.ago => { user: current_user, cause: "XYZ" }
+                 4.minutes.ago => { user:, cause: "XYZ" }
                })
       end
 
@@ -757,12 +755,12 @@ RSpec.describe WorkPackage do
     end
 
     context "on adding the same cause within aggregation time" do
-      let!(:work_package) do
+      shared_let(:journable) do
         create(:work_package,
                subject: "Initial subject",
                journals: {
-                 10.minutes.ago => { user: current_user },
-                 4.minutes.ago => { user: current_user, cause: "ABC" }
+                 10.minutes.ago => { user: },
+                 4.minutes.ago => { user:, cause: "ABC" }
                })
       end
 
@@ -780,11 +778,11 @@ RSpec.describe WorkPackage do
     end
 
     context "on mixed journal cause, notes and attribute adding outside of aggregation time" do
-      let!(:work_package) do
+      shared_let(:journable) do
         create(:work_package,
                subject: "Initial subject",
                journals: {
-                 10.minutes.ago => { user: current_user }
+                 10.minutes.ago => { user: }
                })
       end
 
@@ -809,12 +807,12 @@ RSpec.describe WorkPackage do
     end
 
     context "on mixed journal cause, notes and attribute adding within aggregation time" do
-      let!(:work_package) do
+      shared_let(:journable) do
         create(:work_package,
                subject: "Initial subject",
                journals: {
-                 10.minutes.ago => { user: current_user },
-                 4.minutes.ago => { user: current_user }
+                 10.minutes.ago => { user: },
+                 4.minutes.ago => { user: }
                })
       end
 
@@ -839,7 +837,7 @@ RSpec.describe WorkPackage do
     end
 
     context "on mixed journal cause, notes and attribute adding within aggregation time as a different user" do
-      let!(:work_package) do
+      shared_let(:journable) do
         create(:work_package,
                subject: "Initial subject",
                journals: {
@@ -870,45 +868,43 @@ RSpec.describe WorkPackage do
 
     context "when aggregation leads to an empty change (changing back and forth)",
             with_settings: { journal_aggregation_time_minutes: 1 } do
-      let!(:work_package) do
-        User.execute_as current_user do
-          create(:work_package,
-                 :created_in_past,
-                 created_at: 5.minutes.ago,
-                 project_id: project.id,
-                 type:,
-                 description: "Description",
-                 priority:,
-                 status:,
-                 duration: 1)
-        end
+      shared_let(:journable) do
+        create(:work_package,
+               :created_in_past,
+               created_at: 5.minutes.ago,
+               project_id: project.id,
+               type:,
+               description: "Description",
+               priority:,
+               status:,
+               duration: 1)
       end
 
       let(:other_status) { create(:status) }
 
       before do
-        work_package.status = other_status
-        work_package.save!
-        work_package.status = status
-        work_package.save!
+        journable.status = other_status
+        journable.save!
+        journable.status = status
+        journable.save!
       end
 
       it "creates a new journal" do
-        expect(work_package.journals.count).to be 2
+        expect(journable.journals.count).to be 2
       end
 
       it "has the old state in the last journal`s data" do
-        expect(work_package.journals.last.data.status_id).to be status.id
+        expect(journable.journals.last.data.status_id).to be status.id
       end
     end
 
     context "on changes to newline characters" do
       context "when outside of the aggregation time" do
-        let!(:work_package) do
+        shared_let(:journable) do
           create(:work_package,
                  description: "Description\n\nwith newlines\n\nembedded",
                  journals: {
-                   1.day.ago => { user: current_user }
+                   1.day.ago => { user: }
                  })
         end
 
@@ -922,12 +918,12 @@ RSpec.describe WorkPackage do
                          expect_new_journal: true
 
         context "when multiple values are changed and the change to description is only a newline change" do
-          let!(:work_package) do
+          shared_let(:journable) do
             create(:work_package,
                    description: "Description\r\n\r\nwith newlines\r\n\r\nembedded",
                    subject: "Original subject",
                    journals: {
-                     1.day.ago => { user: current_user }
+                     1.day.ago => { user: }
                    })
           end
 
@@ -943,11 +939,11 @@ RSpec.describe WorkPackage do
         end
 
         context "when there is a legacy journal containing non-escaped newlines" do
-          let!(:work_package) do
+          shared_let(:journable) do
             create(:work_package,
                    description: "Description\r\n\r\nwith newlines\r\n\r\nembedded",
                    journals: {
-                     3.minutes.ago => { user: current_user }
+                     3.minutes.ago => { user: }
                    })
           end
 
@@ -966,10 +962,10 @@ RSpec.describe WorkPackage do
     # DETAIL:  Failing row contains (1178, WorkPackage, 481, 1252, , 2025-12-04 07:58:21.028586+00, 1,
     #          2025-12-04 07:58:21.028586+00, Journal::WorkPackageJournal, 833, {}, empty, f).
     context "on adding two notes right after creation" do
-      let(:work_package) do
+      let(:journable) do
         create(:work_package,
                subject: "Initial subject") do |wp|
-          wp.add_journal(user: current_user, notes: "First comment")
+          wp.add_journal(user:, notes: "First comment")
           wp.save!
         end
       end
@@ -984,8 +980,8 @@ RSpec.describe WorkPackage do
 
       context "when then changing an attribute" do
         before do
-          work_package.add_journal(user: current_user, notes: "Second comment")
-          work_package.save!
+          journable.add_journal(user:, notes: "Second comment")
+          journable.save!
         end
 
         include_examples "journaled values for",
@@ -1000,7 +996,7 @@ RSpec.describe WorkPackage do
 
         context "when now adding a note" do
           before do
-            work_package.update!(subject: "Changed subject")
+            journable.update!(subject: "Changed subject")
           end
 
           include_examples "journaled values for",
@@ -1013,7 +1009,7 @@ RSpec.describe WorkPackage do
 
           context "when now adding another note" do
             before do
-              work_package.add_journal(user: current_user, notes: "Third comment")
+              journable.add_journal(user:, notes: "Third comment")
             end
 
             include_examples "journaled values for",
@@ -1030,7 +1026,7 @@ RSpec.describe WorkPackage do
 
     context "on having a broken journal chain (e.g. because of legacy data)",
             with_settings: { journal_aggregation_time_minutes: 0 } do
-      let(:work_package) do
+      let(:journable) do
         create(:work_package,
                description: "Initial description") do |wp|
           wp.add_journal(notes: "Note to be deleted")
