@@ -132,7 +132,7 @@ RSpec.describe OpenProject::Common::CheckAllComponent, type: :component do
     end
   end
 
-  context "with slots" do
+  context "with button slots" do
     subject(:rendered_component) do
       render_component do |check_all|
         check_all.with_check_all_button(scheme: :primary) do
@@ -148,6 +148,20 @@ RSpec.describe OpenProject::Common::CheckAllComponent, type: :component do
       expect(rendered_component).to have_button count: 2
       expect(rendered_component).to have_button "Select all", class: "Button--primary"
       expect(rendered_component).to have_button "Unselect all", class: "Button--danger"
+    end
+  end
+
+  context "with separator slot" do
+    subject(:rendered_component) do
+      render_component do |check_all|
+        check_all.with_separator do
+          "♾️"
+        end
+      end
+    end
+
+    it "renders custom separator" do
+      expect(rendered_component).to have_content "♾️"
     end
   end
 end

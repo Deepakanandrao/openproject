@@ -37,6 +37,8 @@ module OpenProject
 
       CHECKABLE_CONTROLLER_SELECTOR = "[data-controller~='checkable']"
 
+      renders_one :separator
+
       renders_one :check_all_button, ->(**system_arguments) {
         action = use_outlet? ? "check-all#checkAll:stop" : "checkable#checkAll:stop"
         controls = checkable_id if use_outlet?
