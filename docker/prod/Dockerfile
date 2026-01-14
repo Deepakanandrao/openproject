@@ -111,7 +111,7 @@ ENV PGDATA=/var/openproject/pgdata
 COPY --from=openproject/gosu /go/bin/gosu /usr/local/bin/gosu
 RUN chmod +x /usr/local/bin/gosu && gosu nobody true
 
-COPY --from=openproject/hocuspocus --chown=$APP_USER:$APP_USER /app /usr/local/hocuspocus
+COPY --from=openproject/hocuspocus:release-ccd9c565 --chown=$APP_USER:$APP_USER /app /usr/local/hocuspocus
 
 RUN ./docker/prod/setup/postinstall-onprem.sh && \
   ln -s /app/docker/prod/setup/.irbrc /root/
