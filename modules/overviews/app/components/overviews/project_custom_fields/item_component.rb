@@ -36,6 +36,8 @@ module Overviews
       include CustomFieldsHelper
       include OpPrimer::ComponentHelpers
 
+      delegate :has_comment?, :calculated_value?, to: :@project_custom_field
+
       def initialize(project_custom_field:, project_custom_field_values:, project:)
         super
 
@@ -107,10 +109,6 @@ module Overviews
 
       def not_set?
         @project_custom_field_values.none?(&:value?)
-      end
-
-      def calculated_value?
-        @project_custom_field.calculated_value?
       end
 
       def calculation_error?
