@@ -53,6 +53,10 @@ module Overviews
       end
 
       def value_wrapper
+        Primer::Beta::Text.new(**value_wrapper_attributes)
+      end
+
+      def value_wrapper_attributes
         if allowed_to_edit?
           if calculated_value? && !has_comment?
             calculated_field_wrapper
@@ -62,12 +66,12 @@ module Overviews
         elsif has_comment?
           modal_wrapper
         else
-          Primer::Beta::Text.new
+          {}
         end
       end
 
       def modal_wrapper
-        Primer::Beta::Text.new(
+        {
           tag: :div,
           classes: "project-custom-field-clickable",
           data: {
@@ -88,11 +92,11 @@ module Overviews
           role: "button",
           tabindex: 0,
           test_selector: "project-custom-field-modal-button-#{@project_custom_field.id}"
-        )
+        }
       end
 
       def calculated_field_wrapper
-        Primer::Beta::Text.new(
+        {
           tag: :div,
           id: calculated_value_tooltip_id,
           classes: "project-custom-field-non-editable",
@@ -104,7 +108,7 @@ module Overviews
             ].join(", ")
           },
           tabindex: 0
-        )
+        }
       end
 
       def required?
