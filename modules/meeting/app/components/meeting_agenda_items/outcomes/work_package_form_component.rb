@@ -28,30 +28,38 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module MeetingOutcomes
-  class SetAttributesService < ::BaseServices::SetAttributes
-    def set_attributes(params)
+module MeetingAgendaItems::Outcomes
+  class WorkPackageFormComponent < ApplicationComponent
+    include OpTurbo::Streamable
+    include OpPrimer::ComponentHelpers
+
+    def initialize(meeting:, meeting_agenda_item:, meeting_outcome: nil)
       super
-
-      set_work_package_and_kind(params)
-    end
-
-    def set_default_attributes(_params)
-      model.change_by_system do
-        model.author = user
-      end
+      @meeting = meeting
+      @meeting_agenda_item = meeting_agenda_item
+      @meeting_outcome = meeting_outcome || build_meeting_outcome
+      @project_id = @meeting.project.id
     end
 
     private
 
-    def set_work_package_and_kind(params) # rubocop:disable Metrics/AbcSize
-      if params[:work_package_id].present?
-        model.work_package_id = params[:work_package_id]
-        model.kind = params[:kind]
-      elsif params[:notes].present?
-        model.notes = params[:notes]
-        model.kind = params[:kind] if model.new_record?
-      end
+    def wrapper_uniq_by
+      @meeting_agenda_item.id
+    end
+
+    def build_meeting_outcome
+      MeetingOutcome.new(
+        meeting_agenda_item: @meeting_agenda_item,
+        kind: :work_package
+      )
+    end
+
+    def submit_path
+      meeting_outcomes_path(@meeting, meeting_agenda_item_id: @meeting_agenda_item.id, format: :turbo_stream)
+    end
+
+    def cancel_path
+      cancel_new_meeting_outcomes_path(@meeting, meeting_agenda_item_id: @meeting_agenda_item.id)
     end
   end
 end
