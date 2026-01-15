@@ -88,7 +88,7 @@ class MeetingOutcomesController < ApplicationController
     if call.success?
       update_outcomes_via_turbo_stream(meeting_agenda_item: @meeting_agenda_item)
     else
-      render_base_error_in_flash_message_via_turbo_stream(call.errors)
+      render_error_flash_message_via_turbo_stream(message: call.errors.full_messages.join("\n"))
     end
 
     update_meeting_metadata_via_turbo_stream
@@ -114,7 +114,7 @@ class MeetingOutcomesController < ApplicationController
     if call.success?
       update_outcomes_via_turbo_stream(meeting_agenda_item: @meeting_agenda_item)
     else
-      render_base_error_in_flash_message_via_turbo_stream(call.errors)
+      render_error_flash_message_via_turbo_stream(message: call.errors.full_messages.join("\n"))
     end
 
     update_meeting_metadata_via_turbo_stream
@@ -132,7 +132,7 @@ class MeetingOutcomesController < ApplicationController
       update_outcomes_via_turbo_stream(meeting_agenda_item: @meeting_agenda_item)
       update_header_component_via_turbo_stream
     else
-      render_base_error_in_flash_message_via_turbo_stream(call.errors)
+      render_error_flash_message_via_turbo_stream(message: call.errors.full_messages.join("\n"))
     end
 
     update_meeting_metadata_via_turbo_stream
