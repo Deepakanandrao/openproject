@@ -46,6 +46,28 @@ module Documents
           API::V3::Utilities::PathHelper::ApiV3Path.document(document.id)
         ).to_s
       end
+
+      def tabs
+        [{
+          name: I18n.t("activerecord.models.document"),
+          active: false,
+          content: ->(*) do
+            primer_form_with(
+              model: document,
+              url: document_path(document),
+              method: :patch,
+              data: { turbo: false }
+            ) do |form|
+              render Documents::BlockNoteEditorForm.new(form, oauth_token:, readonly:)
+            end
+          end
+        },
+         {
+           name: t(:label_attachment_plural),
+           active: true,
+           content: ->(*) { render Documents::ShowEditView::AttachmentsSidePanelComponent.new(document, readonly:) }
+         }]
+      end
     end
   end
 end
