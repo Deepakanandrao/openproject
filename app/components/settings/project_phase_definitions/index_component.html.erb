@@ -73,9 +73,9 @@ See COPYRIGHT and LICENSE files for more details.
 
       flex.with_row do
         render(border_box_container(mb: 3, data: drop_target_config)) do |component|
-          component.with_header(font_weight: :bold, py: 2) do
+          component.with_header(font_weight: :bold) do
             flex_layout(justify_content: :space_between, align_items: :center) do |header_container|
-              header_container.with_column(py: 2) do
+              header_container.with_column do
                 render(Primer::Beta::Text.new(font_weight: :bold)) do
                   I18n.t("settings.project_phase_definitions.section_header")
                 end
