@@ -61,8 +61,8 @@ class DocumentsController < ApplicationController
     @attachments = @document.attachments.order(Arel.sql("created_at DESC"))
 
     if @document.collaborative? && Setting.real_time_text_collaboration_enabled?
-      generate_encrypted_oauth_token
       derive_readonly_from_permissions
+      define_token_payload
       derive_show_edit_state_from_params
     end
   end
@@ -222,6 +222,26 @@ class DocumentsController < ApplicationController
     redirect_to document_path(call.result, state: :edit)
   end
 
+  def define_token_payload
+    oauth_token = generate_encrypted_oauth_token
+
+    @resource_url = URI.join(
+      root_url,
+      API::V3::Utilities::PathHelper::ApiV3Path.document(@document.id)
+    ).to_s
+
+    @token_payload = JWT.encode(
+      {
+        resource_url: @resource_url,
+        oauth_token:,
+        readonly: @readonly,
+        exp: 20.minutes.from_now.to_i
+      },
+      Setting.collaborative_editing_hocuspocus_secret,
+      "HS256"
+    )
+  end
+
   # rubocop:disable Metrics/AbcSize
   def generate_encrypted_oauth_token
     if !current_user.allowed_in_project?(:view_documents, @project)
@@ -246,7 +266,7 @@ class DocumentsController < ApplicationController
       return
     end
 
-    @oauth_token = result.result
+    result.result
   end
   # rubocop:enable Metrics/AbcSize
 
