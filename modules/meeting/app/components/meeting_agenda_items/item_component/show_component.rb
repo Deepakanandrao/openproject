@@ -163,6 +163,17 @@ module MeetingAgendaItems
                                                              current_occurrence: @current_occurrence),
                               method: "GET"
                             } })
+
+          if User.current.allowed_in_project?(:add_work_packages, @meeting.project)
+            submenu.with_item(label: t("label_work_package_new"),
+                              tag: :button,
+                              content_arguments: { data: {
+                                action: "click->meetings--submit#intercept",
+                                href: create_work_package_dialog_meeting_outcomes_path(@meeting,
+                                                                                       meeting_agenda_item_id: @meeting_agenda_item.id), # rubocop:disable Layout/LineLength
+                                method: "GET"
+                              } })
+          end
         end
       end
     end
