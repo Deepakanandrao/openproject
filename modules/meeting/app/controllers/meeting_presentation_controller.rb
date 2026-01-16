@@ -72,12 +72,6 @@ class MeetingPresentationController < ApplicationController
     @meeting_agenda_item = @meeting.agenda_items.find(params[:meeting_agenda_item_id])
   end
 
-  def check_feature_flag
-    unless OpenProject::FeatureDecisions.meetings_presentation_mode_active?
-      render_404
-    end
-  end
-
   def set_started_at
     @started_at = params[:started_at].present? ? Time.zone.parse(params[:started_at]) : Time.current
   end
