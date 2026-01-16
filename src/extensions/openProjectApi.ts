@@ -1,17 +1,21 @@
+import { BlockNoteSchema } from "@blocknote/core";
+import { ServerBlockNoteEditor } from "@blocknote/server-util";
 import type { onAuthenticatePayload, onLoadDocumentPayload, onStoreDocumentPayload } from "@hocuspocus/server";
 import { Extension } from "@hocuspocus/server";
-import * as Y from "yjs";
-import type { ApiResponseDocument } from "../types";
-import { ServerBlockNoteEditor } from "@blocknote/server-util";
-import { BlockNoteSchema } from "@blocknote/core";
 import { openProjectWorkPackageStaticBlockSpec } from "op-blocknote-extensions";
+import * as Y from "yjs";
 import { decryptToken } from "../services/decryptTokenService";
+import type { ApiResponseDocument } from "../types";
+import { createVerifier } from "fast-jwt";
 
 export const editorSchema = BlockNoteSchema.create().extend({
   blockSpecs: {
     "openProjectWorkPackage": openProjectWorkPackageStaticBlockSpec(),
   },
 });
+
+const SECRET_ENV = process.env.SECRET;
+const verifyToken = createVerifier({ key: SECRET_ENV });
 
 function printLog(message:string) {
   console.log(`[${new Date().toISOString()}] ${message}`);
@@ -32,7 +36,19 @@ export class OpenProjectApi implements Extension {
     if (!token) {
       throw new Error('Unauthorized: Token missing.');
     }
-    const decryptedToken = decryptToken(token);
+    const {
+      resource_url: tokenResourceUrl,
+      oauth_token: authToken,
+      readonly,
+    } = verifyToken(token);
+
+    console.log({ token, resourceUrl, tokenResourceUrl, authToken, readonly });
+
+    if (tokenResourceUrl !== resourceUrl) {
+      throw new Error('Unauthorized: Token resource URL does not match document.');
+    }
+
+    const decryptedToken = decryptToken(authToken);
 
     const response = await fetch(resourceUrl, {
       method: "GET",
