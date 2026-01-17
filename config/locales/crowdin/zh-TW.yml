@@ -3414,9 +3414,6 @@ zh-TW:
   label_project_hierarchy: "專案結構"
   label_project_mappings: "專案"
   label_project_new: "新增專案"
-  label_project_initiation_request: "新專案啟動請求"
-  label_project_creation_wizard: "新專案建立精靈"
-  label_project_mandate: "新的專案任務"
   label_project_plural: "專案"
   label_project_list_plural: "專案列表"
   label_project_life_cycle: "專案生命週期"
@@ -4436,7 +4433,7 @@ zh-TW:
       omniauth_direct_login_hint_html: >
         如果此選項處於活動狀態，登入請求將重新導向至已設定的omniauth 提供者。登入下拉選單和登入頁面將被停用。 <br/> <strong>注意：</strong>除非您也停用密碼登錄，否則啟用此選項後，使用者仍可透過造訪 <code>%{internal_path}</code> 登入頁面進行內部登入。
       remapping_existing_users_hint: >
-        If enabled, allows any configured identity provider to login existing users based on their username, even if the user never signed in through that provider before. This can be useful when migrating the OpenProject instance to a new SSO provider, but is not recommended when using a provider that is not trusted by all users of your instance.
+        如果啟用，允許任何已設定的身分提供者根據使用者名稱登入現有使用者，即使使用者之前從未透過該提供者登入。這在將 OpenProject 實例遷移至新的 SSO 提供者時可能很有用，但在使用並非所有實例使用者都信任的提供者時，則不建議使用。
     attachments:
       whitelist_text_html: >
         為上傳的文件定義有效文件副檔名和/或 MIME 類型的列表。 <br/> 輸入文件副檔名（例如 <code>%{ext_example}</code>）或 MIME 類型（例如 <code>%{mime_example}</code>）。 <br/> 留空以允許上傳任何文件類型。允許多個值（每個值一行）。
