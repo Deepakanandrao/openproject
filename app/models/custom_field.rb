@@ -376,6 +376,11 @@ class CustomField < ApplicationRecord
     calculated_value_errors.find { it.customized == customized }
   end
 
+  def comment_for(customized)
+    # Use a ruby finder following same logic as in first_calculation_error
+    comments.find { it.customized == customized }
+  end
+
   private
 
   def possible_versions(obj, options: {})
