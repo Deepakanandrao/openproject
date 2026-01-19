@@ -21,30 +21,40 @@ describe("OpenProjectApi", () => {
         new OpenProjectApi().onAuthenticate({
           token: null,
         } as unknown as onAuthenticatePayload)
-      ).rejects.toThrowError("Unauthorized: Token missing.");
+      ).rejects.toThrowError("Unauthorized: Missing auth params");
     });
 
-    test("when the token is invalid throw an error", async () => {
+    test("when the packedParams is expired", async () => {
+      await expect(() => 
+        new OpenProjectApi().onAuthenticate({
+          // Expired JWT 
+          token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZXNvdXJjZV91cmwiOiJodHRwczovL29wZW5wcm9qZWN0LmxvY2FsL2FwaS92My9kb2N1bWVudHMvMSIsIm9hdXRoX3Rva2VuIjoiNVNtNGJsTUxoUDhQRlM2N3h3PT0tLWJyOEwvN1lEWDNyYlRMcFQtLUhIRWkrU25OZG1IbUg5ME4zbUhZOUE9PSIsInJlYWRvbmx5IjpmYWxzZSwiZXhwIjoxNzY4ODAyOTU0fQ.jajN89IqReZ8uJQJ-oJci7HCXW3DcVvsUUJg_98jjVE",
+        } as unknown as onAuthenticatePayload)
+      ).rejects.toThrowError("The token has expired at 2026-01-19T06:09:14.000Z.");
+    });
+
+    test("when the oauth_token is invalid throw an error", async () => {
       await expect(() =>
         new OpenProjectApi().onAuthenticate({
-          // Invalid token, generated with a different secret
-          token: "5Sm4blMLhP8PFS67xw==--br8L/7YDX3rbTLpT--HHEi+SnNdmHmH90N3mHY9A==",
+          // JWT with a invalid oauth token, generated with a different secret
+          token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZXNvdXJjZV91cmwiOiJodHRwczovL29wZW5wcm9qZWN0LmxvY2FsL2FwaS92My9kb2N1bWVudHMvMSIsIm9hdXRoX3Rva2VuIjoiNVNtNGJsTUxoUDhQRlM2N3h3PT0tLWJyOEwvN1lEWDNyYlRMcFQtLUhIRWkrU25OZG1IbUg5ME4zbUhZOUE9PSIsInJlYWRvbmx5IjpmYWxzZSwiZXhwIjo0MDcwOTA4ODAwfQ.Q8wUm9j5Fr4bzs06pTRmF7k0Ssc0BXfju8RtdXdrtNc",
+          documentName: "https://openproject.local/api/v3/documents/1",
         } as unknown as onAuthenticatePayload)
       ).rejects.toThrowError("Unsupported state or unable to authenticate data");
     });
 
-    test("when the resourceUrl has invalid format throw an error", async () => {
+    test("when the resourceUrl does not match the one in the token", async () => {
       fetchMock.mockResolvedValueOnce({ throws: new TypeError("is not a valid URL") });
 
       await expect(() =>
         new OpenProjectApi().onAuthenticate({
-          token: "7u+b+QRJN7qANls=--URNw83hIWBq3MMIA--jtl+UPdtbniQVFNOs2EcAw==",
-          documentName: "not a valid url",
+          token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZXNvdXJjZV91cmwiOiJodHRwczovL3Rlc3QuYXBpL2FwaS92My9kb2N1bWVudHMvMTIxIiwib2F1dGhfdG9rZW4iOiJ6WU4xdXBaM1cxcEg5WUU9LS1GOTVMUEJ3cXNNdHpoYWpELS15dW11a1M4R0xNZnI1bmxVVHFOcW13PT0iLCJyZWFkb25seSI6ZmFsc2UsImV4cCI6NDA3MDkwODgwMH0.BTcNp7lSyPqxkxB7auEjAOY6Id14q_Mjcona56uwCiE",
+          documentName: "https://indemiddle/api/v3/documents/1",
         } as unknown as onAuthenticatePayload)
-      ).rejects.toThrowError("Unauthorized: Invalid token or document access denied.");
+      ).rejects.toThrowError("Unauthorized: Token resource URL does not match document.");
     });
 
-    test("when the server does not authorize the request throw an error", async () => {
+    test("when the auth server does not authorize the request throw an error", async () => {
       fetchMock.mockResolvedValueOnce({
         ok: false,
         status: 401,
@@ -52,7 +62,7 @@ describe("OpenProjectApi", () => {
 
       await expect(() =>
         new OpenProjectApi().onAuthenticate({
-          token: "7u+b+QRJN7qANls=--URNw83hIWBq3MMIA--jtl+UPdtbniQVFNOs2EcAw==",
+          token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZXNvdXJjZV91cmwiOiJodHRwczovL3Rlc3QuYXBpL2FwaS92My9kb2N1bWVudHMvMTIxIiwib2F1dGhfdG9rZW4iOiJ6WU4xdXBaM1cxcEg5WUU9LS1GOTVMUEJ3cXNNdHpoYWpELS15dW11a1M4R0xNZnI1bmxVVHFOcW13PT0iLCJyZWFkb25seSI6ZmFsc2UsImV4cCI6NDA3MDkwODgwMH0.BTcNp7lSyPqxkxB7auEjAOY6Id14q_Mjcona56uwCiE",
           documentName: "https://test.api/api/v3/documents/121",
         } as unknown as onAuthenticatePayload)
       ).rejects.toThrowError("Unauthorized: Invalid token or document access denied.");
@@ -63,7 +73,7 @@ describe("OpenProjectApi", () => {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            "Authorization": "Bearer valid_token",
+            "Authorization": "Bearer avalidtoken",
           },
         }
       );
@@ -79,14 +89,14 @@ describe("OpenProjectApi", () => {
       const data = {
         context: {},
         connectionConfig: {},
-        token: "7u+b+QRJN7qANls=--URNw83hIWBq3MMIA--jtl+UPdtbniQVFNOs2EcAw==",
+        token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZXNvdXJjZV91cmwiOiJodHRwczovL3Rlc3QuYXBpL2FwaS92My9kb2N1bWVudHMvMTIxIiwib2F1dGhfdG9rZW4iOiJ6WU4xdXBaM1cxcEg5WUU9LS1GOTVMUEJ3cXNNdHpoYWpELS15dW11a1M4R0xNZnI1bmxVVHFOcW13PT0iLCJyZWFkb25seSI6ZmFsc2UsImV4cCI6NDA3MDkwODgwMH0.BTcNp7lSyPqxkxB7auEjAOY6Id14q_Mjcona56uwCiE",
         documentName: "https://test.api/api/v3/documents/121",
       } as unknown as onAuthenticatePayload;
 
       await new OpenProjectApi().onAuthenticate(data);
 
       expect(data.context.resourceUrl).toEqual("https://test.api/api/v3/documents/121");
-      expect(data.context.token).toEqual("valid_token");
+      expect(data.context.token).toEqual("avalidtoken");
       expect(data.documentName).toEqual("https://test.api/api/v3/documents/121");
     });
 
@@ -104,7 +114,7 @@ describe("OpenProjectApi", () => {
       const data = {
         context: {},
         connectionConfig: {},
-        token: "7u+b+QRJN7qANls=--URNw83hIWBq3MMIA--jtl+UPdtbniQVFNOs2EcAw==",
+        token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZXNvdXJjZV91cmwiOiJodHRwczovL3Rlc3QuYXBpL2FwaS92My9kb2N1bWVudHMvMTIxIiwib2F1dGhfdG9rZW4iOiJ6WU4xdXBaM1cxcEg5WUU9LS1GOTVMUEJ3cXNNdHpoYWpELS15dW11a1M4R0xNZnI1bmxVVHFOcW13PT0iLCJyZWFkb25seSI6ZmFsc2UsImV4cCI6NDA3MDkwODgwMH0.BTcNp7lSyPqxkxB7auEjAOY6Id14q_Mjcona56uwCiE",
         documentName: "https://test.api/api/v3/documents/121",
       } as unknown as onAuthenticatePayload;
 
@@ -130,7 +140,7 @@ describe("OpenProjectApi", () => {
       const data = {
         context: {},
         connectionConfig: {},
-        token: "7u+b+QRJN7qANls=--URNw83hIWBq3MMIA--jtl+UPdtbniQVFNOs2EcAw==",
+        token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZXNvdXJjZV91cmwiOiJodHRwczovL3Rlc3QuYXBpL2FwaS92My9kb2N1bWVudHMvMTIxIiwib2F1dGhfdG9rZW4iOiJ6WU4xdXBaM1cxcEg5WUU9LS1GOTVMUEJ3cXNNdHpoYWpELS15dW11a1M4R0xNZnI1bmxVVHFOcW13PT0iLCJyZWFkb25seSI6ZmFsc2UsImV4cCI6NDA3MDkwODgwMH0.BTcNp7lSyPqxkxB7auEjAOY6Id14q_Mjcona56uwCiE",
         documentName: "https://test.api/api/v3/documents/121",
       } as unknown as onAuthenticatePayload;
 

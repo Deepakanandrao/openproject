@@ -2,11 +2,12 @@ import { BlockNoteSchema } from "@blocknote/core";
 import { ServerBlockNoteEditor } from "@blocknote/server-util";
 import type { onAuthenticatePayload, onLoadDocumentPayload, onStoreDocumentPayload } from "@hocuspocus/server";
 import { Extension } from "@hocuspocus/server";
+import { createVerifier } from "fast-jwt";
 import { openProjectWorkPackageStaticBlockSpec } from "op-blocknote-extensions";
 import * as Y from "yjs";
 import { decryptToken } from "../services/decryptTokenService";
+import * as DigestSecretService from "../services/digestSecretService";
 import type { ApiResponseDocument } from "../types";
-import { createVerifier } from "fast-jwt";
 
 export const editorSchema = BlockNoteSchema.create().extend({
   blockSpecs: {
@@ -14,8 +15,7 @@ export const editorSchema = BlockNoteSchema.create().extend({
   },
 });
 
-const SECRET_ENV = process.env.SECRET;
-const verifyToken = createVerifier({ key: SECRET_ENV });
+const verifyToken = createVerifier({ key: DigestSecretService.secret() });
 
 function printLog(message:string) {
   console.log(`[${new Date().toISOString()}] ${message}`);
@@ -30,19 +30,17 @@ export class OpenProjectApi implements Extension {
     * Authenticate the user by validating the token and document access
     */
   async onAuthenticate(data: onAuthenticatePayload) {
-    const { token, documentName } = data;
+    const { token: packedParams, documentName } = data;
     const resourceUrl = documentName;
 
-    if (!token) {
-      throw new Error('Unauthorized: Token missing.');
+    if (!packedParams) {
+      throw new Error('Unauthorized: Missing auth params');
     }
     const {
       resource_url: tokenResourceUrl,
       oauth_token: authToken,
-      readonly,
-    } = verifyToken(token);
-
-    console.log({ token, resourceUrl, tokenResourceUrl, authToken, readonly });
+      // readonly,
+    } = verifyToken(packedParams);
 
     if (tokenResourceUrl !== resourceUrl) {
       throw new Error('Unauthorized: Token resource URL does not match document.');
