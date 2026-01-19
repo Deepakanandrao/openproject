@@ -68,5 +68,14 @@ module Projects::CustomFields
     def all_visible_custom_fields
       all_available_custom_fields.visible(project: self)
     end
+
+    # Finds a comment for the given custom field using a Ruby finder.
+    #
+    # This method is expected to be used when more comments are needed, so it
+    # uses ruby finder to avoid  N+1 queries when iterating over multiple custom
+    # fields.
+    def custom_comment_for(custom_field)
+      custom_comments.find { it.custom_field == custom_field }
+    end
   end
 end
