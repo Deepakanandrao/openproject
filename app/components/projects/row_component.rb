@@ -93,7 +93,7 @@ module Projects
           "dialog-#{project.id}-cf-#{cf.id}",
           cf.name,
           custom_value,
-          formatted: true
+          format: false # already formatted
         )
       elsif custom_value.is_a?(Array)
         safe_join(Array(custom_value).compact_blank, ", ")
