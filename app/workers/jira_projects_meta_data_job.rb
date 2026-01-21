@@ -66,7 +66,7 @@ class JiraProjectsMetaDataJob < ApplicationJob
     end
 
     {
-      "issues" => issues_count,
+      "issues_count" => issues_count,
       "status_ids" => status_ids,
       "issue_type_ids" => issue_type_ids
     }
