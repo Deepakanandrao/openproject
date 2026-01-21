@@ -62,10 +62,22 @@ module Admin
             configure
           end
         end
-        render_wizard
+
+        respond_to do |format|
+          format.turbo_stream { render_wizard }
+          format.html { render_wizard }
+        end
       rescue StandardError => e
-        render_error_flash_message_via_turbo_stream(message: e.message)
-        respond_with_turbo_streams(status: :unprocessable_entity)
+        respond_to do |format|
+          format.turbo_stream do
+            render_error_flash_message_via_turbo_stream(message: e.message)
+            respond_with_turbo_streams(status: :unprocessable_entity)
+          end
+          format.html do
+            flash[:error] = e.message
+            render_wizard
+          end
+        end
       end
 
       def select_projects
@@ -100,20 +112,20 @@ module Admin
       end
 
       def import
-        return unless model.status?(JiraImport::IMPORT_ERROR, JiraImport::CONFIGURING)
+        return unless @jira_import.status?(JiraImport::IMPORT_ERROR, JiraImport::CONFIGURING)
 
         # job = JiraImportDataJob.perform_later(@jira_import.id)
         @jira_import.update!(status: JiraImport::IMPORTING)
       end
 
       def configure
-        return unless model.status?(JiraImport::FETCHED)
+        return unless @jira_import.status?(JiraImport::FETCHED)
 
         @jira_import.update!(status: JiraImport::CONFIGURING)
       end
 
       def revert
-        return unless model.status?(JiraImport::REVERT_ERROR, JiraImport::IMPORTED)
+        return unless @jira_import.status?(JiraImport::REVERT_ERROR, JiraImport::IMPORTED)
 
         @jira_import.update!(status: JiraImport::REVERTING)
       end
