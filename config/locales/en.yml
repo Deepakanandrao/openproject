@@ -639,7 +639,7 @@ en:
         is_for_all_blank_slate:
           heading: For all projects
           description: This project attribute is enabled in all projects since the "For all projects" option is checked. It cannot be deactivated for individual projects.
-        enabled_via_assignee_when_submitted_html: This project attribute cannot be disabled in this project since it is set as <a href=%{pir_submission_url} target="_blank">assignee when submitted</a> within project initiation requests.
+        enabled_via_assignee_when_submitted_html: This project attribute cannot be disabled since it is set as <a href=%{pir_submission_url} target="_blank">assignee when submitted</a> for project initiation requests.
       types:
         no_results_title_text: There are currently no types available.
         form:
