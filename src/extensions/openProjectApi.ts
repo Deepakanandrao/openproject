@@ -31,7 +31,7 @@ export class OpenProjectApi implements Extension {
    * Validate an encrypted token against the OpenProject API
    * Returns the decrypted token and readonly status, or null if validation fails
    */
-  private async validateToken(encryptedToken: string, resourceUrl: string): Promise<TokenValidationResult | null> {
+  private async validateToken(encryptedToken: string, resourceUrl: string): Promise<TokenValidationResult> {
     const decryptedToken = decryptToken(encryptedToken);
 
     const response = await fetch(resourceUrl, {
@@ -43,7 +43,8 @@ export class OpenProjectApi implements Extension {
     });
 
     if (!response.ok) {
-      return null;
+      const detail = response.statusText ? `: ${response.statusText}` : ".";
+      throw new Error(`Unauthorized: Invalid token or document access denied${detail}`);
     }
 
     const jsonData = await response.json() as ApiResponseDocument;
@@ -65,9 +66,6 @@ export class OpenProjectApi implements Extension {
     }
 
     const result = await this.validateToken(token, resourceUrl);
-    if (!result) {
-      throw new Error('Unauthorized: Invalid token or document access denied.');
-    }
 
     data.context.resourceUrl = resourceUrl;
     data.context.token = result.decryptedToken;
@@ -172,10 +170,6 @@ export class OpenProjectApi implements Extension {
 
     try {
       const result = await this.validateToken(token, resourceUrl);
-      if (!result) {
-        printLog(`Token sync failed for ${resourceUrl}`);
-        return;
-      }
 
       connection.context.token = result.decryptedToken;
 
