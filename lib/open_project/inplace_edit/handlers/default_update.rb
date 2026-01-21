@@ -29,22 +29,12 @@
 #++
 
 module OpenProject
-  module Common
-    class InplaceEditFieldComponent < ViewComponent::Base
-      include OpTurbo::Streamable
-
-      attr_reader :model, :attribute
-
-      def initialize(model:, attribute:, **system_arguments)
-        super()
-        @model = model
-        @attribute = attribute
-        @system_arguments = system_arguments
-      end
-
-      def field_component(form)
-        klass = OpenProject::InplaceEdit::FieldRegistry.fetch(attribute)
-        klass.new(form:, attribute:, model:, **@system_arguments)
+  module InplaceEdit
+    module Handlers
+      class DefaultUpdate
+        def self.call(model:, attribute:, params:, user:)
+          model.update!(params.slice(attribute))
+        end
       end
     end
   end

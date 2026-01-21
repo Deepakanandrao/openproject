@@ -1056,6 +1056,11 @@ Rails.application.routes.draw do
     delete "Groups/:id", to: "groups#destroy"
   end
 
+  scope "inplace_edit_fields/:model/:id/:attribute", as: "inplace_edit_field" do
+    post :update, controller: "inplace_edit_fields", action: :update
+    patch :update, controller: "inplace_edit_fields", action: :update
+  end
+
   if OpenProject::Configuration.lookbook_enabled?
     mount Primer::ViewComponents::Engine, at: "/"
     mount Lookbook::Engine, at: "/lookbook"

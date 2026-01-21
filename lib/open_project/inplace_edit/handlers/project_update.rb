@@ -29,16 +29,16 @@
 #++
 
 module OpenProject
-  class InplaceFieldRegistry
-    @registry = {}
+  module InplaceEdit
+    module Handlers
+      class ProjectUpdate
+        def self.call(model:, attribute:, params:, user:)
+          call = ::Projects::UpdateService
+                   .new(model:, user:)
+                   .call(params)
 
-    class << self
-      def register(attribute_name, field_component)
-        @registry[attribute_name.to_s] = field_component
-      end
-
-      def fetch(attribute_name)
-        @registry.fetch(attribute_name.to_s) { Common::InplaceEditFields::TextInputComponent }
+          call.success?
+        end
       end
     end
   end

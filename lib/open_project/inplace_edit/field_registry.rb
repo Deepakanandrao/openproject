@@ -29,22 +29,18 @@
 #++
 
 module OpenProject
-  module Common
-    class InplaceEditFieldComponent < ViewComponent::Base
-      include OpTurbo::Streamable
+  module InplaceEdit
+    class FieldRegistry
+      @registry = {}
 
-      attr_reader :model, :attribute
+      class << self
+        def register(attribute_name, field_component)
+          @registry[attribute_name.to_s] = field_component
+        end
 
-      def initialize(model:, attribute:, **system_arguments)
-        super()
-        @model = model
-        @attribute = attribute
-        @system_arguments = system_arguments
-      end
-
-      def field_component(form)
-        klass = OpenProject::InplaceEdit::FieldRegistry.fetch(attribute)
-        klass.new(form:, attribute:, model:, **@system_arguments)
+        def fetch(attribute_name)
+          @registry.fetch(attribute_name.to_s) { Common::InplaceEditFields::TextInputComponent }
+        end
       end
     end
   end
