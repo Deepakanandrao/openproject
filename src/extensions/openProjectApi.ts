@@ -23,18 +23,18 @@ export function createEditor() {
   return ServerBlockNoteEditor.create({ schema: editorSchema });
 }
 
+interface TokenValidationResult {
+  decryptedToken: string;
+  readonly: boolean;
+}
+
 export class OpenProjectApi implements Extension {
   /**
-    * Authenticate the user by validating the token and document access
-    */
-  async onAuthenticate(data: onAuthenticatePayload) {
-    const { token, documentName } = data;
-    const resourceUrl = documentName;
-
-    if (!token) {
-      throw new Error('Unauthorized: Token missing.');
-    }
-    const decryptedToken = decryptToken(token);
+   * Validate an encrypted token against the OpenProject API
+   * Returns the decrypted token and readonly status, or null if validation fails
+   */
+  private async validateToken(encryptedToken: string, resourceUrl: string): Promise<TokenValidationResult | null> {
+    const decryptedToken = decryptToken(encryptedToken);
 
     const response = await fetch(resourceUrl, {
       method: "GET",
@@ -45,13 +45,35 @@ export class OpenProjectApi implements Extension {
     });
 
     if (!response.ok) {
+      return null;
+    }
+
+    const jsonData = await response.json() as ApiResponseDocument;
+    return {
+      decryptedToken,
+      readonly: !jsonData._links?.update,
+    };
+  }
+
+  /**
+   * Authenticate the user by validating the token and document access
+   */
+  async onAuthenticate(data: onAuthenticatePayload) {
+    const { token, documentName } = data;
+    const resourceUrl = documentName;
+
+    if (!token) {
+      throw new Error('Unauthorized: Token missing.');
+    }
+
+    const result = await this.validateToken(token, resourceUrl);
+    if (!result) {
       throw new Error('Unauthorized: Invalid token or document access denied.');
     }
-    const jsonData = await response.json() as ApiResponseDocument;
 
     data.context.resourceUrl = resourceUrl;
-    data.context.token = decryptedToken;
-    if (!jsonData._links?.update) {
+    data.context.token = result.decryptedToken;
+    if (result.readonly) {
       // https://tiptap.dev/docs/hocuspocus/guides/auth#read-only-mode
       data.connectionConfig.readOnly = true;
       data.context.readonly = true;
@@ -149,8 +171,8 @@ export class OpenProjectApi implements Extension {
   }
 
   /**
-    * Process a token refresh request from the client
-    */
+   * Process a token refresh request from the client
+   */
   private async handleTokenRefresh(encryptedToken: string, connection: onStatelessPayload["connection"]): Promise<void> {
     if (!encryptedToken) {
       return;
@@ -162,35 +184,19 @@ export class OpenProjectApi implements Extension {
     }
 
     try {
-      const decryptedToken = decryptToken(encryptedToken);
-
-      const response = await fetch(resourceUrl, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${decryptedToken}`,
-        },
-      });
-
-      if (!response.ok) {
-        printLog(`Token refresh failed: ${response.statusText}`);
+      const result = await this.validateToken(encryptedToken, resourceUrl);
+      if (!result) {
+        printLog(`ERROR: Token refresh failed for ${resourceUrl}`);
         return;
       }
 
-      const jsonData = await response.json() as ApiResponseDocument;
+      connection.context.token = result.decryptedToken;
+      connection.context.readonly = result.readonly;
+      connection.readOnly = result.readonly;
 
-      connection.context.token = decryptedToken;
-
-      const wasReadonly = connection.context.readonly;
-      const isReadonly = !jsonData._links?.update;
-
-      if (wasReadonly !== isReadonly) {
-        connection.context.readonly = isReadonly;
-        connection.readOnly = isReadonly;
-        printLog(`Readonly status changed: ${isReadonly}`);
-      }
+      printLog(`[Token Refreshed] Resource: ${resourceUrl} Readonly: ${result.readonly}`);
     } catch (error) {
-      printLog(`Token refresh error: ${error}`);
+      printLog(`ERROR: Token refresh error: ${error}`);
     }
   }
 }
