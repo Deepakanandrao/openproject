@@ -2860,7 +2860,7 @@ zh-TW:
       label: "新增…"
   my_account:
     access_tokens:
-      description: "Provider tokens are issued by OpenProject, allowing other applications to access it. Client tokens are issued by other applications, allowing OpenProject to access them."
+      description: "提供者令牌由 OpenProject 發行，允許其他應用程式存取。用戶端識別碼由其他應用程式發行，允許 OpenProject 存取它們。"
       no_results:
         title: "沒有可顯示的存取令牌(Token)"
         description: "他們全都被停用了。他們可以在管理功能表重新啟用"
