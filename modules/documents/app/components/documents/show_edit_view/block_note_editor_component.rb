@@ -37,30 +37,6 @@ module Documents
       alias_method :document, :model
 
       options :project, :token_payload, :resource_url, :state, :readonly
-
-      private
-
-      def tabs
-        [{
-          name: I18n.t("activerecord.models.document"),
-          active: false,
-          content: ->(*) do
-            primer_form_with(
-              model: document,
-              url: document_path(document),
-              method: :patch,
-              data: { turbo: false }
-            ) do |form|
-              render Documents::BlockNoteEditorForm.new(form, token_payload:, readonly:)
-            end
-          end
-        },
-         {
-           name: t(:label_attachment_plural),
-           active: true,
-           content: ->(*) { render Documents::ShowEditView::AttachmentsSidePanelComponent.new(document, readonly:) }
-         }]
-      end
     end
   end
 end

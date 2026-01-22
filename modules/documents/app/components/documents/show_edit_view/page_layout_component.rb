@@ -41,22 +41,6 @@
 # |                           |                    |
 # |------------------------------------------------|
 #
-# The header can be configured to go full width, in which case the page looks like this:
-# |-------------------------------------------------
-# |                                                |
-# |                    PageHeader                  |
-# |                                                |
-# |---------------------------| Tab1 | Tab 2 | ... |
-# |                           |                    |
-# |                           |                    |
-# |                           |   some             |
-# |       some info           |   more             |
-# |        about the          |   details          |
-# |        object             |                    |
-# |                           |                    |
-# |                           |                    |
-# |------------------------------------------------|
-#
 # There are some special things to consider for mobile,
 # where the left side becomes an additional tab as part of the tab navigation:
 # |-----------------------|
