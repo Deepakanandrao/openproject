@@ -29,7 +29,9 @@
 #++
 
 class AddSelectedToJiraImports < ActiveRecord::Migration[8.0]
-  change_table :jira_imports, bulk: true do |t|
-    t.jsonb :selected, default: {} unless column_exists?(:jira_imports, :selected)
+  def change
+    change_table :jira_imports, bulk: true do |t|
+      t.jsonb :selected, default: {}
+    end
   end
 end
