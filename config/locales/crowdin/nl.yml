@@ -2909,6 +2909,7 @@ nl:
       label: "Add…"
   my_account:
     access_tokens:
+      description: "Provider tokens are issued by OpenProject, allowing other applications to access it. Client tokens are issued by other applications, allowing OpenProject to access them."
       no_results:
         title: "Geen toegangstokens weer te geven"
         description: "Alle van hen zijn uitgeschakeld. Zij kunnen opnieuw worden ingeschakeld in het administratie menu."
@@ -2920,10 +2921,8 @@ nl:
       simple_revoke_confirmation: "Weet u zeker dat u deze token wilt intrekken?"
       tabs:
         client:
-          description: "Client tokens are issued by other applications, allowing OpenProject to access them."
           title: "Client tokens"
         provider:
-          description: "Provider tokens are issued by OpenProject, allowing other applications to access it."
           title: "Provider tokens"
       token/api:
         blank_description: "There is no API token yet. You can create one using the button below."
@@ -3463,9 +3462,6 @@ nl:
   label_project_hierarchy: "Projecthiërarchie"
   label_project_mappings: "Projecten"
   label_project_new: "Nieuw project"
-  label_project_initiation_request: "New project initiation request"
-  label_project_creation_wizard: "New project creation wizard"
-  label_project_mandate: "New project mandate"
   label_project_plural: "Projecten"
   label_project_list_plural: "Projectlijsten"
   label_project_life_cycle: "Project life cycle"
@@ -4488,7 +4484,7 @@ nl:
       omniauth_direct_login_hint_html: >
         If this option is active, login requests will redirect to the configured omniauth provider. The login dropdown and sign-in page will be disabled. <br/> <strong>Note:</strong> Unless you also disable password logins, with this option enabled, users can still log in internally by visiting the <code>%{internal_path}</code> login page.
       remapping_existing_users_hint: >
-        If enabled, allows any configured identity provider to login existing users based on their email address, even if the user never signed in through that provider before. This can be useful when migrating the OpenProject instance to a new SSO provider, but is not recommended when using a provider that is not trusted by all users of your instance.
+        If enabled, allows any configured identity provider to login existing users based on their username, even if the user never signed in through that provider before. This can be useful when migrating the OpenProject instance to a new SSO provider, but is not recommended when using a provider that is not trusted by all users of your instance.
     attachments:
       whitelist_text_html: >
         Definieer een lijst met geldige bestandsextensies en/of MIME-types voor geüploade bestanden. <br/> Vul de bestandsextensies in (bijv. <code>%{ext_example}</code>) of MIME-types (bijv. ., <code>%{mime_example}</code>). <br/> Laat leeg om elk bestandstype te kunnen uploaden. Meerdere waarden toegestaan (één regel voor elke waarde).

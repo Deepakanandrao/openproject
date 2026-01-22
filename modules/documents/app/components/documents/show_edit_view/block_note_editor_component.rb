@@ -36,16 +36,9 @@ module Documents
 
       alias_method :document, :model
 
-      options :project, :oauth_token, :state, :readonly
+      options :project, :token_payload, :resource_url, :state, :readonly
 
       private
-
-      def resource_url
-        URI.join(
-          root_url,
-          API::V3::Utilities::PathHelper::ApiV3Path.document(document.id)
-        ).to_s
-      end
 
       def tabs
         [{
@@ -58,7 +51,7 @@ module Documents
               method: :patch,
               data: { turbo: false }
             ) do |form|
-              render Documents::BlockNoteEditorForm.new(form, oauth_token:, readonly:)
+              render Documents::BlockNoteEditorForm.new(form, token_payload:, readonly:)
             end
           end
         },
