@@ -32,6 +32,7 @@ class JournalsController < ApplicationController
   before_action :load_and_authorize_in_optional_project, only: [:index]
   before_action :find_journal,
                 :ensure_permitted,
+                :find_custom_field,
                 :ensure_valid_for_diffing,
                 only: [:diff]
   authorization_checked! :diff
@@ -102,19 +103,31 @@ class JournalsController < ApplicationController
     @field_param ||= params[:field].parameterize.underscore
   end
 
+  def find_custom_field
+    return unless /\Acustom_(?:fields|comment)_(?<id>\d+)\z/ =~ field_param
+
+    @custom_field = CustomField.select(:field_format, :admin_only).find_by(id:)
+
+    render_404 unless @custom_field
+  end
+
   def ensure_valid_for_diffing
     case field_param
     when "description",
          "status_explanation",
          /\Aagenda_items_\d+_notes\z/
       # no additional checks
-    when /\Acustom_fields_(?<id>\d+)\z/
-      cf = CustomField.select(:field_format, :admin_only).find_by(id: Regexp.last_match[:id])
-
-      if cf.admin_only && !User.current.admin?
+    when /\Acustom_fields_\d+\z/
+      if @custom_field.admin_only && !User.current.admin?
         render_403
-      elsif cf.field_format != "text"
+      elsif @custom_field.field_format != "text"
         render_404
+      end
+    when /\Acustom_comment_\d+\z/
+      if @custom_field.admin_only && !User.current.admin?
+        render_403
+        # elsif !@custom_field.has_comment # TODO: should we rely on current state and not on state when journaling
+        # render_404
       end
     else
       render_404
