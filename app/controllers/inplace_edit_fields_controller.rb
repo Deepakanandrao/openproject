@@ -33,7 +33,7 @@ class InplaceEditFieldsController < ApplicationController
 
   before_action :find_model
   before_action :set_attribute
-  no_authorization_required! :update
+  no_authorization_required! :update, :reset
 
   def update
     handler = OpenProject::InplaceEdit::UpdateRegistry.fetch_handler(@model)
@@ -55,6 +55,11 @@ class InplaceEditFieldsController < ApplicationController
       status: success ? :ok : :unprocessable_entity
     )
 
+    respond_with_turbo_streams
+  end
+
+  def reset
+    replace_via_turbo_stream(component:)
     respond_with_turbo_streams
   end
 
@@ -103,6 +108,6 @@ class InplaceEditFieldsController < ApplicationController
                       .filter_map { |v| v["system_arguments_json"] }
                       .first
 
-    JSON.parse(arguments)
+    arguments.nil? ? {} : JSON.parse(arguments)
   end
 end

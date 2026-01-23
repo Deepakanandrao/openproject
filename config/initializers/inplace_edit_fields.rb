@@ -30,13 +30,9 @@
 
 Rails.application.config.to_prepare do
   # Register the edit fields per attribute
-  require_relative "../../lib/open_project/inplace_edit/field_registry"
-  OpenProject::InplaceEdit::FieldRegistry.register(:description, OpenProject::Common::InplaceEditFields::TextInputComponent)
+  OpenProject::InplaceEdit::FieldRegistry.register(:description, OpenProject::Common::InplaceEditFields::RichTextAreaComponent)
 
   # Register the update handler per model
-  require_relative "../../lib/open_project/inplace_edit/handlers/default_update"
-  require_relative "../../lib/open_project/inplace_edit/handlers/project_update"
-  require_relative "../../app/contracts/projects/update_contract"
   OpenProject::InplaceEdit::UpdateRegistry.register(Project,
                                                     handler: OpenProject::InplaceEdit::Handlers::ProjectUpdate,
                                                     contract: Projects::UpdateContract)

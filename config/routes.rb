@@ -1059,6 +1059,7 @@ Rails.application.routes.draw do
   scope "inplace_edit_fields/:model/:id/:attribute", as: "inplace_edit_field" do
     post :update, controller: "inplace_edit_fields", action: :update
     patch :update, controller: "inplace_edit_fields", action: :update
+    get :reset, controller: "inplace_edit_fields", action: :reset
   end
 
   if OpenProject::Configuration.lookbook_enabled?

@@ -31,7 +31,7 @@
 module OpenProject
   module Common
     module InplaceEditFields
-      class TextInputComponent < ViewComponent::Base
+      class RichTextAreaComponent < ViewComponent::Base
         attr_reader :form, :attribute, :model
 
         def initialize(form:, attribute:, model:, **system_arguments)
@@ -42,14 +42,28 @@ module OpenProject
           @system_arguments = system_arguments
           @system_arguments[:classes] = class_names(
             @system_arguments[:classes],
-            "op-inplace-edit-field--text-input"
+            "op-inplace-edit-field--text-area"
           )
-          @system_arguments[:placeholder] ||= "–"
           @system_arguments[:label] ||= model.class.human_attribute_name(attribute)
+
+          @system_arguments[:rich_text_options] ||= {}
+          @system_arguments[:rich_text_options][:primerized] = true
         end
 
         def call
-          form.text_field name: attribute, **@system_arguments
+          form.rich_text_area(name: attribute, **@system_arguments)
+
+          form.group(layout: :horizontal) do |button_group|
+            button_group.submit(name: :reset,
+                                type: :submit,
+                                label: I18n.t(:button_cancel),
+                                scheme: :default,
+                                formaction: inplace_edit_field_reset_path(model: model.class.name, id: model.id, attribute:),
+                                formmethod: :get)
+            button_group.submit(name: :submit,
+                                label: I18n.t(:button_save),
+                                scheme: :primary)
+          end
         end
       end
     end
