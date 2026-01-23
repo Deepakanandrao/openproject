@@ -63,7 +63,41 @@ class ProjectCustomField < CustomField
       end
     end
 
+    def toggleable_ids_in_project_settings(project, custom_field_section_id)
+      toggleable_ids(
+        project:,
+        custom_field_section_id:,
+        options: { is_for_all: false }
+      )
+    end
+
+    def toggleable_ids_in_creation_wizard_settings(project, custom_field_section_id)
+      toggleable_ids(
+        project:,
+        custom_field_section_id:,
+        options: { is_required: false }
+      )
+    end
+
     private
+
+    # Returns a list of custom field ids that can be toggled = activated/enabled or disabled/deactivated.
+    def toggleable_ids(project:, custom_field_section_id:, user: User.current, options: {})
+      # Fetch project custom field ids that can be enabled/disabled
+      mutable_cf_ids = visible(user, project:)
+                             .where(custom_field_section_id:)
+                             .where(**options)
+                             .pluck(:id)
+
+      # Consider project custom fields that are configured for the project creation wizard as immutable
+      immutable_cf_ids = if project.project_creation_wizard_enabled?
+                           [project.project_creation_wizard_assignee_custom_field_id]
+                         else
+                           []
+                         end
+
+      mutable_cf_ids - immutable_cf_ids
+    end
 
     def mappings_with_view_project_attributes_permission(user, project) # rubocop:disable Metrics/AbcSize
       allowed_projects = Project.allowed_to(user, :view_project_attributes)

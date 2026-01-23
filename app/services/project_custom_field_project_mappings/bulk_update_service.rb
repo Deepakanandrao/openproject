@@ -56,7 +56,7 @@ module ProjectCustomFieldProjectMappings
 
     def perform_bulk_edit(service_call, params)
       action = params[:action]
-      custom_field_ids = fetch_custom_field_ids
+      custom_field_ids = ProjectCustomField.toggleable_ids_in_project_settings(@project, @project_custom_field_section.id)
 
       begin
         case action
@@ -81,24 +81,6 @@ module ProjectCustomFieldProjectMappings
       @project.calculate_custom_fields(affected_cfs)
 
       @project.save if @project.changed_for_autosave?
-    end
-
-    def fetch_custom_field_ids
-      # Only custom fields which are not set "for all projects" can be disabled
-      cf_ids = ProjectCustomField
-                 .visible(@user, project: @project)
-                 .where(custom_field_section_id: @project_custom_field_section.id)
-                 .where(is_for_all: false)
-                 .pluck(:id)
-
-      # Fields that are being used in the project creation wizard cannot be disabled
-      cf_active_in_project_creation_wizard = if @project.project_creation_wizard_enabled?
-                                               [@project.project_creation_wizard_assignee_custom_field_id]
-                                             else
-                                               []
-                                             end
-
-      cf_ids - cf_active_in_project_creation_wizard
     end
 
     def enable_custom_fields(custom_field_ids)
