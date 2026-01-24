@@ -53,6 +53,7 @@ export class ActualCostsComponent {
 
   readonly barChartOptions = computed<ChartConfiguration<'bar'>['options']>(() => ({
     font: chartFont,
+    aspectRatio: 1.5,
     scales: {
       x: {
         stacked: true,
