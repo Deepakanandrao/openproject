@@ -74,6 +74,15 @@ export class ActualCostsComponent {
         enabled: false,
         external: renderChartTooltip,
         callbacks: {
+          title: (context) => {
+            const timestamp = context[0].parsed.x;
+            if (timestamp === null) return '';
+            const date = new Date(timestamp);
+            return date.toLocaleDateString(undefined, {
+              month: 'short',
+              year: 'numeric',
+            });
+          },
           label: (context) => {
             const label = context.dataset.label ?? '';
             const value = context.raw as number;
