@@ -75,7 +75,10 @@ RSpec.describe PermittedParams do
   shared_examples_for "forbids params" do
     include_context "with prepare params comparison"
 
-    it { expect(subject).not_to eq(hash) }
+    it do
+      expected = defined?(expected_permitted) ? expected_permitted : {}
+      expect(subject).to eq(expected)
+    end
   end
 
   describe "#permit" do
@@ -786,6 +789,7 @@ RSpec.describe PermittedParams do
 
     describe "invalid custom fields" do
       let(:hash) { { "custom_field_values" => { "blubs" => "5", "5" => { "1" => "2" } } } }
+      let(:expected_permitted) { { "custom_field_values" => {} } }
 
       it_behaves_like "forbids params"
     end
@@ -912,11 +916,11 @@ RSpec.describe PermittedParams do
         }
       end
 
-      let(:expected_permitted_hash) do
+      let(:expected_permitted) do
         {}
       end
 
-      it { expect(subject).to eq(expected_permitted_hash) }
+      it_behaves_like "forbids params"
     end
 
     context "when fetching settings" do
