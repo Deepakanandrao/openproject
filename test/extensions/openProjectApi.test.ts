@@ -1,7 +1,9 @@
-import { Document, onAuthenticatePayload, onLoadDocumentPayload, onStoreDocumentPayload, onTokenSyncPayload } from "@hocuspocus/server";
+import { beforeHandleMessagePayload, Document, onAuthenticatePayload, onLoadDocumentPayload, onStoreDocumentPayload, onTokenSyncPayload } from "@hocuspocus/server";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 import * as Y from "yjs";
+import { TokenExpired, TokenExpiryMissing, unauthorized } from "../../src/closeEvents";
 import { OpenProjectApi, createEditor } from "../../src/extensions/openProjectApi";
+import { createExpiredToken, createTestToken } from "../helpers/tokenHelper";
 
 describe("OpenProjectApi", () => {
   let fetchMock: any;
@@ -154,6 +156,61 @@ describe("OpenProjectApi", () => {
       expect(data.connectionConfig.readOnly).toBeUndefined();
       expect(data.context.readonly).toBeUndefined();
     });
+
+    test("when the token has expired throw an error", async () => {
+      fetchMock.mockResolvedValueOnce({
+        ok: true,
+        status: 200,
+        json: () => Promise.resolve({
+          _links: {
+            self: { href: "/api/v3/documents/1" },
+            update: { href: "/api/v3/documents/1" }
+          }
+        }),
+      });
+
+      const expiredToken = createExpiredToken();
+
+      await expect(() =>
+        new OpenProjectApi().onAuthenticate({
+          token: expiredToken,
+          documentName: "https://test.api/api/v3/documents/1",
+          context: {},
+          connectionConfig: {},
+        } as unknown as onAuthenticatePayload)
+      ).rejects.toThrowError("Unauthorized: Token already expired.");
+    });
+  });
+
+  describe("beforeHandleMessage", () => {
+    test("should allow message when token not expired", async () => {
+      const futureDate = new Date(Date.now() + 5 * 60 * 1000);
+      const data = {
+        context: { tokenExpiresAt: futureDate },
+      } as unknown as beforeHandleMessagePayload;
+
+      const api = new OpenProjectApi();
+      await expect(api.beforeHandleMessage(data)).resolves.toBeUndefined();
+    });
+
+    test("should throw CloseEvent when token has expired", async () => {
+      const pastDate = new Date(Date.now() - 60 * 1000);
+      const data = {
+        context: { tokenExpiresAt: pastDate },
+      } as unknown as beforeHandleMessagePayload;
+
+      const api = new OpenProjectApi();
+      await expect(api.beforeHandleMessage(data)).rejects.toEqual(TokenExpired);
+    });
+
+    test("should throw CloseEvent when tokenExpiresAt not set", async () => {
+      const data = {
+        context: {},
+      } as unknown as beforeHandleMessagePayload;
+
+      const api = new OpenProjectApi();
+      await expect(api.beforeHandleMessage(data)).rejects.toEqual(TokenExpiryMissing);
+    });
   });
 
   describe("onLoadDocument", () => {
@@ -245,6 +302,7 @@ describe("OpenProjectApi", () => {
           token: "superValidToken",
           resourceUrl: "https://test.api/api/v3/documents/121",
           readonly: false,
+          tokenExpiresAt: new Date(Date.now() + 5 * 60 * 1000), // 5 min from now
         },
         document: { ...document, connections: [] } as unknown as Document,
       } as onStoreDocumentPayload;
@@ -264,12 +322,44 @@ describe("OpenProjectApi", () => {
         })
       );
     });
+
+    test("should skip store when token has expired", async () => {
+      const document = new Y.Doc();
+      const data = {
+        context: {
+          token: "superValidToken",
+          resourceUrl: "https://test.api/api/v3/documents/121",
+          readonly: false,
+          tokenExpiresAt: new Date(Date.now() - 60 * 1000), // 1 min ago
+        },
+        document: { ...document, connections: [] } as unknown as Document,
+      } as onStoreDocumentPayload;
+
+      const api = new OpenProjectApi();
+      await api.onStoreDocument(data);
+
+      expect(fetchMock).not.toHaveBeenCalled();
+    });
+
+    test("should skip store when tokenExpiresAt is not set", async () => {
+      const document = new Y.Doc();
+      const data = {
+        context: {
+          token: "superValidToken",
+          resourceUrl: "https://test.api/api/v3/documents/121",
+          readonly: false,
+        },
+        document: { ...document, connections: [] } as unknown as Document,
+      } as onStoreDocumentPayload;
+
+      const api = new OpenProjectApi();
+      await api.onStoreDocument(data);
+
+      expect(fetchMock).not.toHaveBeenCalled();
+    });
   });
 
   describe("onTokenSync", () => {
-    // Valid packed params token: { resource_url: "https://test.api/api/v3/documents/1", oauth_token: "some_token_value", readonly: false }
-    const validPackedParamsToken = "Yjo1x80JGIjrK8J6IDOuRn5kIOGvaAUw8C1so+dJJq7cgkllf3dQnw6d8bgiKbHXw8ZaMYE4IyOI1KQgX2ZRmx1mKBkxtb/fc7eCpGyTKGTA2Y1r/q7VJYiJZlpX7gx3nu569joEl/k=--mUkLaPiK0E82vGT9--gj1ZnTNlydL9j+Xw8+YFAA==";
-
     test("should return early if token is missing", async () => {
       const data = {
         token: "",
@@ -287,8 +377,9 @@ describe("OpenProjectApi", () => {
     });
 
     test("should return early if resourceUrl is missing", async () => {
+      const token = createTestToken();
       const data = {
-        token: validPackedParamsToken,
+        token,
         connection: {
           readOnly: false,
           context: {},
@@ -314,8 +405,9 @@ describe("OpenProjectApi", () => {
         }),
       });
 
+      const token = createTestToken();
       const data = {
-        token: validPackedParamsToken,
+        token,
         connection: {
           readOnly: false,
           context: {
@@ -344,7 +436,41 @@ describe("OpenProjectApi", () => {
       expect(data.connection.context.token).toBe("some_token_value");
     });
 
+    test("should update tokenExpiresAt in context after sync", async () => {
+      fetchMock.mockResolvedValueOnce({
+        ok: true,
+        status: 200,
+        json: () => Promise.resolve({
+          _links: {
+            self: { href: "/api/v3/documents/1" },
+            update: { href: "/api/v3/documents/1" }
+          }
+        }),
+      });
+
+      const token = createTestToken({ expires_at: "2030-01-01T00:00:00.000Z" });
+      const data = {
+        token,
+        connection: {
+          readOnly: false,
+          context: {
+            resourceUrl: "https://test.api/api/v3/documents/1",
+            token: "old_token",
+            tokenExpiresAt: new Date("2020-01-01"),
+          },
+        },
+        document: {},
+      } as unknown as onTokenSyncPayload;
+
+      await new OpenProjectApi().onTokenSync(data);
+
+      expect(data.connection.context.tokenExpiresAt).toEqual(new Date("2030-01-01T00:00:00.000Z"));
+    });
+
     test("should update readonly status when permissions change from writable to readonly", async () => {
+      // Note: Token readonly: false reflects user's permission at token creation time.
+      // API response without 'update' link means user lost write permission since then.
+      // The API response is authoritative, so connection becomes readonly.
       fetchMock.mockResolvedValueOnce({
         ok: true,
         status: 200,
@@ -356,8 +482,9 @@ describe("OpenProjectApi", () => {
         }),
       });
 
+      const token = createTestToken();
       const data = {
-        token: validPackedParamsToken,
+        token,
         connection: {
           readOnly: false,
           context: {
@@ -376,16 +503,19 @@ describe("OpenProjectApi", () => {
       expect(data.connection.readOnly).toBe(true);
     });
 
-    test("should not update context if token validation fails", async () => {
+    test("should close connection if token validation fails", async () => {
       fetchMock.mockResolvedValueOnce({
         ok: false,
         status: 401,
         statusText: "Unauthorized",
       });
 
+      const closeMock = vi.fn();
+      const token = createTestToken();
       const data = {
-        token: validPackedParamsToken,
+        token,
         connection: {
+          close: closeMock,
           readOnly: false,
           context: {
             resourceUrl: "https://test.api/api/v3/documents/1",
@@ -399,13 +529,16 @@ describe("OpenProjectApi", () => {
       const api = new OpenProjectApi();
       await api.onTokenSync(data);
 
+      expect(closeMock).toHaveBeenCalledWith(unauthorized(expect.stringContaining("Unauthorized")));
       expect(data.connection.context.token).toBe("old_token");
     });
 
-    test("should handle decryption errors gracefully", async () => {
+    test("should close connection if decryption fails", async () => {
+      const closeMock = vi.fn();
       const data = {
         token: "invalid_encrypted_token",
         connection: {
+          close: closeMock,
           readOnly: false,
           context: {
             resourceUrl: "https://test.api/api/v3/documents/1",
@@ -416,10 +549,42 @@ describe("OpenProjectApi", () => {
       } as unknown as onTokenSyncPayload;
 
       const api = new OpenProjectApi();
-      // Should not throw, just log and return
-      await expect(api.onTokenSync(data)).resolves.toBeUndefined();
+      await api.onTokenSync(data);
 
+      expect(closeMock).toHaveBeenCalledWith(unauthorized(expect.any(String)));
       expect(data.connection.context.token).toBe("old_token");
+    });
+
+    test("should close connection if refreshed token is already expired", async () => {
+      fetchMock.mockResolvedValueOnce({
+        ok: true,
+        status: 200,
+        json: () => Promise.resolve({
+          _links: {
+            self: { href: "/api/v3/documents/1" },
+            update: { href: "/api/v3/documents/1" }
+          }
+        }),
+      });
+
+      const closeMock = vi.fn();
+      const expiredToken = createExpiredToken();
+      const data = {
+        token: expiredToken,
+        connection: {
+          close: closeMock,
+          readOnly: false,
+          context: {
+            resourceUrl: "https://test.api/api/v3/documents/1",
+            token: "old_token",
+          },
+        },
+        document: {},
+      } as unknown as onTokenSyncPayload;
+
+      await new OpenProjectApi().onTokenSync(data);
+
+      expect(closeMock).toHaveBeenCalledWith(unauthorized("Token sync failed: received expired token"));
     });
   });
 });

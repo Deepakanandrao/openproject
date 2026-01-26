@@ -1,16 +1,17 @@
 import { createDecipheriv, createHash } from "node:crypto";
 
-const ALGORITHM = "aes-256-gcm";
- 
+export const ALGORITHM = "aes-256-gcm";
+
 if (!process.env.SECRET) {
   throw new Error("SECRET environment variable is not set.");
 }
-const SECRET_ENV = process.env.SECRET;
+export const SECRET_ENV = process.env.SECRET;
 const SECRET = createHash("sha256").update(SECRET_ENV).digest();
 
 type PackedParams = {
   resource_url: string;
   oauth_token: string;
+  expires_at: string;
   readonly: boolean;
 };
 
@@ -27,6 +28,6 @@ export function decryptToken(encrypted:string):PackedParams {
     decipher.update(token),
     decipher.final()
   ]);
-  
+
   return JSON.parse(decrypted.toString());
 }
