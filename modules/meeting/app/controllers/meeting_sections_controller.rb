@@ -33,7 +33,7 @@ class MeetingSectionsController < ApplicationController
   include OpTurbo::ComponentStream
   include Meetings::AgendaComponentStreams
 
-  load_and_authorize_with_permission_in_project :edit_meetings
+  load_and_authorize_with_permission_in_project :manage_agendas
 
   before_action :set_meeting
   before_action :set_meeting_section,
