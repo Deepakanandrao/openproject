@@ -216,7 +216,7 @@ module MeetingAgendaItems
       next_meeting_action_item(
         menu,
         label: t(:label_agenda_item_move_to_next),
-        path_helper: :move_to_next_dialog_project_meeting_agenda_item_path,
+        action: :move_to_next,
         icon: "arrow-right"
       )
     end
@@ -225,12 +225,12 @@ module MeetingAgendaItems
       next_meeting_action_item(
         menu,
         label: t(:label_agenda_item_duplicate_in_next),
-        path_helper: :duplicate_in_next_dialog_project_meeting_agenda_item_path,
+        action: :duplicate_in_next,
         icon: :duplicate
       )
     end
 
-    def next_meeting_action_item(menu, label:, path_helper:, icon:)
+    def next_meeting_action_item(menu, label:, action:, icon:)
       return unless editable?
       return if in_template?
       return if @series.nil?
@@ -244,12 +244,7 @@ module MeetingAgendaItems
         tag: :button,
         content_arguments: { data: {
           action: "click->meetings--submit#intercept",
-          # TODO let's see if wen can avoid using send here
-          href: send(path_helper,
-                     @meeting.project,
-                     @meeting,
-                     @meeting_agenda_item,
-                     datetime: next_date.iso8601),
+          href: path_for_next_button(action: action, next_date: next_date),
           method: "GET"
         } }
       ) do |item|
@@ -412,6 +407,21 @@ module MeetingAgendaItems
         @current_occurrence.sections.many?
       else
         @meeting.sections.many?
+      end
+    end
+
+    def path_for_next_button(action:, next_date:)
+      case action
+      when :move_to_next
+        move_to_next_dialog_project_meeting_agenda_item_path(@meeting.project,
+                                                             @meeting,
+                                                             @meeting_agenda_item,
+                                                             datetime: next_date.iso8601)
+      when :duplicate_in_next
+        duplicate_in_next_dialog_project_meeting_agenda_item_path(@meeting.project,
+                                                                  @meeting,
+                                                                  @meeting_agenda_item,
+                                                                  datetime: next_date.iso8601)
       end
     end
   end
