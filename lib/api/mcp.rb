@@ -66,8 +66,10 @@ module API
 
       status 200
 
+      response = server.handle_json(request.body.read)
+
       # HACK: Grape is JSON-serializing whatever we return here, but handle_json already returns serialized JSON
-      JSON.parse server.handle_json(request.body.read)
+      response && JSON.parse(response)
     end
   end
 end
