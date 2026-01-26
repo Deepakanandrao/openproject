@@ -30,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe Documents::OAuth::RefreshTokensController do
+RSpec.describe Documents::RefreshTokensController do
   let(:project) { create(:project) }
   let(:document) { create(:document, project:) }
   let(:user) { create(:user) }
@@ -47,7 +47,7 @@ RSpec.describe Documents::OAuth::RefreshTokensController do
       it "redirects to login" do
         post :create, params: { document_id: document.id }
 
-        expect(response).to redirect_to(signin_path(back_url: document_oauth_refresh_token_url(document)))
+        expect(response).to redirect_to(signin_path(back_url: document_refresh_token_url(document)))
       end
     end
 

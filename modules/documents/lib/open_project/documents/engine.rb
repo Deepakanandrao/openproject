@@ -60,7 +60,7 @@ module OpenProject::Documents
                        render_connection_error render_connection_recovery
                      ],
                      "documents/menus": %i[show],
-                     "documents/oauth/refresh_tokens": %i[create]
+                     "documents/refresh_tokens": %i[create]
                    },
                    permissible_on: :project
         permission :manage_documents,

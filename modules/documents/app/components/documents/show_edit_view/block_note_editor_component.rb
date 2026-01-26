@@ -41,7 +41,7 @@ module Documents
       private
 
       def refresh_token_url
-        document_oauth_refresh_token_path(document)
+        document_refresh_token_path(document)
       end
     end
   end
