@@ -52,10 +52,12 @@ module Documents
         end
 
         access_token = token_result.result
+        expires_at = access_token.expires_in.seconds.from_now.iso8601
 
         payload = {
           resource_url:,
           oauth_token: access_token.plaintext_token,
+          expires_at:,
           readonly:
         }
 
@@ -71,6 +73,7 @@ module Documents
             encrypted_token: encrypted_result.result,
             resource_url:,
             readonly:,
+            expires_at:,
             expires_in_seconds: access_token.expires_in
           }
         )
