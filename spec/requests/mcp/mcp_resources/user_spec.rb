@@ -30,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe McpResources::Type, with_flag: { mcp_server: true } do # rubocop:disable RSpec/SpecFilePathFormat
+RSpec.describe McpResources::User, with_flag: { mcp_server: true } do
   subject do
     header "Authorization", "Bearer #{access_token.plaintext_token}"
     header "X-Authentication-Scheme", "Bearer"
@@ -48,11 +48,11 @@ RSpec.describe McpResources::Type, with_flag: { mcp_server: true } do # rubocop:
       params: { uri: resource_uri }
     }
   end
-  let(:resource_uri) { "http://test.host/api/v3/types/#{type.id}" }
+  let(:resource_uri) { "http://test.host/api/v3/users/#{requested_user.id}" }
 
   let(:parsed_results) { JSON.parse(last_response.body).fetch("result") }
 
-  let(:type) { create(:type) }
+  let(:requested_user) { create(:user) }
 
   let(:server_config) { create(:mcp_configuration, identifier: "mcp_server") }
   let(:resource_config) { create(:mcp_configuration, identifier: described_class.qualified_name) }
@@ -65,11 +65,11 @@ RSpec.describe McpResources::Type, with_flag: { mcp_server: true } do # rubocop:
   context "when the mcp_server enterprise feature is enabled", with_ee: %i[mcp_server] do
     it_behaves_like "MCP text resource response"
 
-    it "responds with a properly formatted type" do
+    it "responds with a properly formatted user" do
       subject
       text_content = parsed_results.fetch("contents").first
-      type = text_content.fetch("text")
-      expect(type).to match_json_schema.from_docs("type_model")
+      user_json = text_content.fetch("text")
+      expect(user_json).to match_json_schema.from_docs("user_model")
     end
 
     context "when the resource is disabled via configuration" do
@@ -78,8 +78,14 @@ RSpec.describe McpResources::Type, with_flag: { mcp_server: true } do # rubocop:
       it_behaves_like "MCP empty resource response"
     end
 
-    context "when requesting a non-existing type" do
-      let(:resource_uri) { "http://test.host/api/v3/types/#{type.id + 1}" }
+    context "when requesting a non-existing user" do
+      let(:resource_uri) { "http://test.host/api/v3/users/#{requested_user.id + 10}" }
+
+      it_behaves_like "MCP empty resource response"
+    end
+
+    context "when requesting a user not visible to the user" do
+      let(:user) { create(:user) }
 
       it_behaves_like "MCP empty resource response"
     end

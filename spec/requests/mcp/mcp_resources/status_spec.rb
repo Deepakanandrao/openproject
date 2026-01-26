@@ -30,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe McpResources::TypeList, with_flag: { mcp_server: true } do # rubocop:disable RSpec/SpecFilePathFormat
+RSpec.describe McpResources::Status, with_flag: { mcp_server: true } do
   subject do
     header "Authorization", "Bearer #{access_token.plaintext_token}"
     header "X-Authentication-Scheme", "Bearer"
@@ -45,15 +45,14 @@ RSpec.describe McpResources::TypeList, with_flag: { mcp_server: true } do # rubo
       jsonrpc: "2.0",
       id: "Test-Request",
       method: "resources/read",
-      params: {
-        uri: "http://test.host/api/v3/types"
-      }
+      params: { uri: resource_uri }
     }
   end
+  let(:resource_uri) { "http://test.host/api/v3/statuses/#{status.id}" }
 
   let(:parsed_results) { JSON.parse(last_response.body).fetch("result") }
 
-  let!(:type) { create(:type) }
+  let(:status) { create(:status) }
 
   let(:server_config) { create(:mcp_configuration, identifier: "mcp_server") }
   let(:resource_config) { create(:mcp_configuration, identifier: described_class.qualified_name) }
@@ -66,15 +65,21 @@ RSpec.describe McpResources::TypeList, with_flag: { mcp_server: true } do # rubo
   context "when the mcp_server enterprise feature is enabled", with_ee: %i[mcp_server] do
     it_behaves_like "MCP text resource response"
 
-    it "responds with a properly formatted type list" do
+    it "responds with a properly formatted status" do
       subject
       text_content = parsed_results.fetch("contents").first
-      types = text_content.fetch("text")
-      expect(types).to match_json_schema.from_docs("types_model")
+      status = text_content.fetch("text")
+      expect(status).to match_json_schema.from_docs("status_model")
     end
 
     context "when the resource is disabled via configuration" do
       let(:resource_config) { create(:mcp_configuration, identifier: described_class.qualified_name, enabled: false) }
+
+      it_behaves_like "MCP empty resource response"
+    end
+
+    context "when requesting a non-existing status" do
+      let(:resource_uri) { "http://test.host/api/v3/statuses/#{status.id + 1}" }
 
       it_behaves_like "MCP empty resource response"
     end

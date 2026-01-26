@@ -30,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe McpResources::Project, with_flag: { mcp_server: true } do # rubocop:disable RSpec/SpecFilePathFormat
+RSpec.describe McpResources::Version, with_flag: { mcp_server: true } do
   subject do
     header "Authorization", "Bearer #{access_token.plaintext_token}"
     header "X-Authentication-Scheme", "Bearer"
@@ -48,11 +48,11 @@ RSpec.describe McpResources::Project, with_flag: { mcp_server: true } do # ruboc
       params: { uri: resource_uri }
     }
   end
-  let(:resource_uri) { "http://test.host/api/v3/projects/#{project.id}" }
+  let(:resource_uri) { "http://test.host/api/v3/versions/#{version.id}" }
 
   let(:parsed_results) { JSON.parse(last_response.body).fetch("result") }
 
-  let(:project) { create(:project) }
+  let(:version) { create(:version) }
 
   let(:server_config) { create(:mcp_configuration, identifier: "mcp_server") }
   let(:resource_config) { create(:mcp_configuration, identifier: described_class.qualified_name) }
@@ -65,11 +65,11 @@ RSpec.describe McpResources::Project, with_flag: { mcp_server: true } do # ruboc
   context "when the mcp_server enterprise feature is enabled", with_ee: %i[mcp_server] do
     it_behaves_like "MCP text resource response"
 
-    it "responds with a properly formatted project" do
+    it "responds with a properly formatted version" do
       subject
       text_content = parsed_results.fetch("contents").first
-      wp = text_content.fetch("text")
-      expect(wp).to match_json_schema.from_docs("project_model")
+      version = text_content.fetch("text")
+      expect(version).to match_json_schema.from_docs("version_model")
     end
 
     context "when the resource is disabled via configuration" do
@@ -78,13 +78,13 @@ RSpec.describe McpResources::Project, with_flag: { mcp_server: true } do # ruboc
       it_behaves_like "MCP empty resource response"
     end
 
-    context "when requesting a non-existing project" do
-      let(:resource_uri) { "http://test.host/api/v3/projects/#{project.id + 1}" }
+    context "when requesting a non-existing version" do
+      let(:resource_uri) { "http://test.host/api/v3/versions/#{version.id + 1}" }
 
       it_behaves_like "MCP empty resource response"
     end
 
-    context "when requesting a project not visible to the user" do
+    context "when requesting a version not visible to the user" do
       let(:user) { create(:user) }
 
       it_behaves_like "MCP empty resource response"

@@ -30,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe McpResources::StatusList, with_flag: { mcp_server: true } do # rubocop:disable RSpec/SpecFilePathFormat
+RSpec.describe McpResources::TypeList, with_flag: { mcp_server: true } do
   subject do
     header "Authorization", "Bearer #{access_token.plaintext_token}"
     header "X-Authentication-Scheme", "Bearer"
@@ -46,14 +46,14 @@ RSpec.describe McpResources::StatusList, with_flag: { mcp_server: true } do # ru
       id: "Test-Request",
       method: "resources/read",
       params: {
-        uri: "http://test.host/api/v3/statuses"
+        uri: "http://test.host/api/v3/types"
       }
     }
   end
 
   let(:parsed_results) { JSON.parse(last_response.body).fetch("result") }
 
-  let!(:status) { create(:status) }
+  let!(:type) { create(:type) }
 
   let(:server_config) { create(:mcp_configuration, identifier: "mcp_server") }
   let(:resource_config) { create(:mcp_configuration, identifier: described_class.qualified_name) }
@@ -66,11 +66,11 @@ RSpec.describe McpResources::StatusList, with_flag: { mcp_server: true } do # ru
   context "when the mcp_server enterprise feature is enabled", with_ee: %i[mcp_server] do
     it_behaves_like "MCP text resource response"
 
-    it "responds with a properly formatted status list" do
+    it "responds with a properly formatted type list" do
       subject
       text_content = parsed_results.fetch("contents").first
-      statuses = text_content.fetch("text")
-      expect(statuses).to match_json_schema.from_docs("status_collection_model")
+      types = text_content.fetch("text")
+      expect(types).to match_json_schema.from_docs("types_model")
     end
 
     context "when the resource is disabled via configuration" do
