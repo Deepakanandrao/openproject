@@ -121,7 +121,8 @@ class WorkPackageMeetingsTabController < ApplicationController
   end
 
   def meeting_for(meeting_id)
-    @project.meetings.allowed_to(User.current, :manage_agendas).find(meeting_id)
+    # TODO: Should this be scoped to the project?
+    Meeting.visible.find(meeting_id)
   end
 
   def add_work_package_to_meeting_params

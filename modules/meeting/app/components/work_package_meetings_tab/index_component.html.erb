@@ -20,7 +20,8 @@
             end
             component.with_tab(
               selected: @direction == :past,
-              href: work_package_meetings_tab_index_path(
+              href: project_work_package_meetings_tab_index_path(
+                @work_package.project,
                 @work_package,
                 direction: :past
               )
