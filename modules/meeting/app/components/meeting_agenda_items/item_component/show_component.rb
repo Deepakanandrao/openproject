@@ -191,7 +191,7 @@ module MeetingAgendaItems
       submenu.with_item(label: t("label_work_package_new"),
                         tag: :button,
                         content_arguments: outcome_action_data(
-                          create_work_package_project_meeting_agenda_item_outcomes_path(
+                          create_work_package_dialog_project_meeting_agenda_item_outcomes_path(
                             @meeting.project,
                             @meeting,
                             @meeting_agenda_item
