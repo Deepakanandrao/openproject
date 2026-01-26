@@ -77,7 +77,6 @@ Rails.application.routes.draw do
 
       resources :agenda_items, controller: "meeting_agenda_items" do
         collection do
-          get :new, action: :new, as: :new
           get :cancel_new
         end
 
@@ -93,7 +92,7 @@ Rails.application.routes.draw do
           post :move_to_section
         end
 
-        resources :outcomes, controller: "meeting_outcomes" do
+        resources :outcomes, controller: "meeting_outcomes", except: %i[index show] do
           collection do
             get :cancel_new
             get :create_work_package_dialog
