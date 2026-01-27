@@ -56,6 +56,7 @@ class Journals::CreateService
           custom_values.custom_field_id,
           #{normalize_newlines_sql('custom_values.value')}
         FROM custom_values
+        #{availability_join}
         WHERE
           #{only_if_created_sql}
           AND custom_values.customized_id = :journable_id
@@ -72,16 +73,17 @@ class Journals::CreateService
         FROM
           (
             SELECT
-               custom_field_id,
-               ARRAY_AGG(#{normalize_newlines_sql('custom_values.value')} ORDER BY value) AS value
+              custom_values.custom_field_id,
+              ARRAY_AGG(#{normalize_newlines_sql('custom_values.value')} ORDER BY value) AS value
             FROM
-             custom_values
+              custom_values
+            #{availability_join}
             WHERE
               custom_values.customized_id = :journable_id
               AND custom_values.customized_type = :customized_type
               AND custom_values.value != ''
             GROUP BY
-              custom_field_id
+              custom_values.custom_field_id
           ) current_values
         FULL JOIN
           (
@@ -98,6 +100,21 @@ class Journals::CreateService
         ON current_values.custom_field_id = journal_values.custom_field_id
         WHERE
           current_values.value IS DISTINCT FROM journal_values.value
+      SQL
+    end
+
+    private
+
+    def availability_join
+      return "" unless journable.is_a?(Project)
+
+      <<~SQL # rubocop:disable Rails/SquishedSQLHeredocs
+        LEFT OUTER JOIN project_custom_field_project_mappings
+          ON project_custom_field_project_mappings.custom_field_id = custom_values.custom_field_id
+          AND project_custom_field_project_mappings.project_id = :journable_id
+        INNER JOIN custom_fields
+          ON custom_fields.id = custom_values.custom_field_id
+          AND (custom_fields.is_for_all = TRUE OR project_custom_field_project_mappings.project_id IS NOT NULL)
       SQL
     end
   end
