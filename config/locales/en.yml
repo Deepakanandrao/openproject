@@ -166,6 +166,7 @@ en:
           reverted: "Reverted"
           completed: "Completed"
         wizard:
+          button_retry: "Retry"
           parts:
             projects:
               one: "1 project"
@@ -229,6 +230,7 @@ en:
               caption: "Review import run or revert import"
               info: "Import run successful."
               label_results: "Imported"
+              label_revert: "Revert import"
               button_revert: "Revert import"
               button_done: "Finalize import"
               preview_description: "The imported data is currently in preview mode. Click \"Finalize import\" to make the import permanent or \"Revert import\" to undo all changes made in this import run."

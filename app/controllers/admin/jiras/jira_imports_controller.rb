@@ -63,6 +63,8 @@ module Admin
             configure
           when "revert"
             revert
+          when "finalize"
+            finalize
           end
         end
 
@@ -140,6 +142,12 @@ module Admin
 
         job = JiraRevertJiraImportJob.perform_later(@jira_import.id)
         @jira_import.update!(status: JiraImport::REVERTING, job_id: job.job_id)
+      end
+
+      def finalize
+        return unless @jira_import.status?(JiraImport::IMPORTED)
+
+        @jira_import.update!(status: JiraImport::COMPLETED)
       end
 
       def render_wizard
