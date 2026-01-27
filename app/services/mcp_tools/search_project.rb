@@ -38,6 +38,7 @@ module McpTools
                         "Parameters not passed are ignored. Results are limited to a maximum of #{MAX_SIZE} projects."
 
     name "search_project"
+    annotations read_only: true, idempotent: true, destructive: false
 
     filter :name, filter_class: Queries::Projects::Filters::NameFilter, operator: "~"
     filter :identifier
