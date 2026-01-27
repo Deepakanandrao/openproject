@@ -57,7 +57,7 @@ module Admin::JiraImports
       [
         [:id, { caption: I18n.t(:"admin.jira.run.title") }],
         [:status, { caption: JiraImport.human_attribute_name(:status) }],
-        [:last_changed, { caption: I18n.t(:"admin.jira.run.last_changed") }]
+        [:last_changed, { caption: I18n.t(:"admin.jira.columns.last_change") }]
       ]
     end
 

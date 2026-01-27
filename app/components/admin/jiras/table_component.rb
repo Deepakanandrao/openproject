@@ -30,7 +30,7 @@
 
 module Admin::Jiras
   class TableComponent < OpPrimer::BorderBoxTableComponent
-    columns :name
+    columns :name, :last_change, :added
 
     def mobile_title
       Jira.model_name.human(count: 2)
@@ -46,7 +46,9 @@ module Admin::Jiras
 
     def headers
       [
-        [:name, { caption: Jira.human_attribute_name(:name) }]
+        [:name, { caption: Jira.human_attribute_name(:name) }],
+        [:last_change, { caption: I18n.t(:"admin.jira.columns.last_change") }],
+        [:added, { caption: I18n.t(:"admin.jira.columns.added") }]
       ]
     end
 
