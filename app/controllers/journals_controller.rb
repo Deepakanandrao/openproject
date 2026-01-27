@@ -107,8 +107,6 @@ class JournalsController < ApplicationController
     return unless /\Acustom_(?:fields|comment)_(?<id>\d+)\z/ =~ field_param
 
     @custom_field = CustomField.select(:field_format, :admin_only).find_by(id:)
-
-    render_404 unless @custom_field
   end
 
   def ensure_valid_for_diffing
@@ -118,13 +116,13 @@ class JournalsController < ApplicationController
          /\Aagenda_items_\d+_notes\z/
       # no additional checks
     when /\Acustom_fields_\d+\z/
-      if @custom_field.admin_only && !User.current.admin?
+      if (!@custom_field || @custom_field.admin_only) && !User.current.admin?
         render_403
-      elsif @custom_field.field_format != "text"
+      elsif @custom_field && @custom_field.field_format != "text"
         render_404
       end
     when /\Acustom_comment_\d+\z/
-      if @custom_field.admin_only && !User.current.admin?
+      if (!@custom_field || @custom_field.admin_only) && !User.current.admin?
         render_403
         # elsif !@custom_field.has_comment # TODO: should we rely on current state and not on state when journaling
         # render_404
