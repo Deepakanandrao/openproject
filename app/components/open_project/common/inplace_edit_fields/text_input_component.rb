@@ -34,22 +34,36 @@ module OpenProject
       class TextInputComponent < ViewComponent::Base
         attr_reader :form, :attribute, :model
 
+        def self.display_class
+          DisplayFields::DisplayFieldComponent
+        end
+
         def initialize(form:, attribute:, model:, **system_arguments)
           super()
           @form = form
           @attribute = attribute
           @model = model
           @system_arguments = system_arguments
-          @system_arguments[:classes] = class_names(
-            @system_arguments[:classes],
-            "op-inplace-edit-field--text-input"
-          )
-          @system_arguments[:placeholder] ||= "–"
           @system_arguments[:label] ||= model.class.human_attribute_name(attribute)
         end
 
         def call
-          form.text_field name: attribute, **@system_arguments
+          form.text_field name: attribute,
+                          data: { controller: "inplace-edit",
+                                  inplace_edit_url_value: reset_url,
+                                  action: "keydown.esc->inplace-edit#request" },
+                          **@system_arguments
+        end
+
+        private
+
+        def reset_url
+          inplace_edit_field_reset_path(
+            model: model.class.name,
+            id: model.id,
+            attribute:,
+            system_arguments_json: @system_arguments.to_json
+          )
         end
       end
     end

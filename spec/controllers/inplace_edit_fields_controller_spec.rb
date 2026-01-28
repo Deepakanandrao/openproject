@@ -100,6 +100,21 @@ RSpec.describe InplaceEditFieldsController do
         expect(response.media_type).to eq("text/vnd.turbo-stream.html")
       end
     end
+
+    context "when no update handler is registered" do
+      let(:handler) { nil }
+
+      it "returns 404" do
+        patch :update, params: {
+          model: model_param,
+          id: model.id,
+          attribute:,
+          project: { name: "Foo" }
+        }, format: :turbo_stream
+
+        expect(response).to have_http_status(:not_found)
+      end
+    end
   end
 
   describe "POST #reset" do

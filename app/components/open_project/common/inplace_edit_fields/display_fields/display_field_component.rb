@@ -32,16 +32,55 @@ module OpenProject
   module Common
     module InplaceEditFields
       module DisplayFields
-        class RichTextAreaComponent < DisplayFieldComponent
+        class DisplayFieldComponent < ViewComponent::Base
+          include OpenProject::TextFormatting
+
           attr_reader :model, :attribute, :writable
+
+          def initialize(model:, attribute:, writable:, **system_arguments)
+            super()
+            @model = model
+            @attribute = attribute
+            @writable = writable
+            @system_arguments = system_arguments
+          end
+
+          def render_display_value
+            value = model.public_send(attribute)
+
+            if value.present?
+              format_text(value)
+            else
+              "–"
+            end
+          end
+
+          def display_field_arguments
+            @display_field_arguments ||= {
+              classes: "op-inplace-edit--display-field #{'op-inplace-edit--display-field_editable' if writable}",
+              data: {
+                controller: "inplace-edit",
+                inplace_edit_url_value: edit_url,
+                action: writable ? "click->inplace-edit#request" : ""
+              }
+            }
+          end
 
           def call
             render(Primer::BaseComponent.new(tag: :div, **display_field_arguments)) do
-              render(Primer::BaseComponent.new(tag: :div,
-                                               classes: "op-uc-container op-uc-container_reduced-headings -multiline")) do
-                render_display_value
-              end
+              render_display_value
             end
+          end
+
+          private
+
+          def edit_url
+            inplace_edit_field_edit_path(
+              model: model.class.name,
+              id: model.id,
+              attribute:,
+              system_arguments_json: @system_arguments.to_json
+            )
           end
         end
       end

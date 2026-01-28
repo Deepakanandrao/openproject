@@ -30,10 +30,14 @@
 require "rails_helper"
 
 RSpec.describe OpenProject::InplaceEdit::UpdateRegistry do
-  let(:handler) { instance_double(OpenProject::InplaceEdit::Handlers::DefaultUpdate) }
+  let(:handler) { instance_double(OpenProject::InplaceEdit::Handlers::ProjectUpdate) }
   let(:contract) { instance_double(Projects::UpdateContract) }
 
   before do
+    described_class.instance_variable_set(:@registry, {})
+  end
+
+  after do
     described_class.instance_variable_set(:@registry, {})
   end
 
@@ -50,11 +54,11 @@ RSpec.describe OpenProject::InplaceEdit::UpdateRegistry do
     it "returns true for registered model" do
       described_class.register(Project, handler:, contract:)
 
-      expect(described_class.registered?("Project")).to be(true)
+      expect(described_class.registered?(Project)).to be(true)
     end
 
     it "returns false for unregistered model" do
-      expect(described_class.registered?("Foo")).to be(false)
+      expect(described_class.registered?(Project)).to be(false)
     end
   end
 end

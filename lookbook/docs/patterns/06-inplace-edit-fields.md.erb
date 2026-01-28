@@ -16,13 +16,6 @@ The InplaceEdit system consists of:
 - **A generic controller**
 - **TurboStreams + Stimulus** for lazy loading
 
-Depending on the field type, two strategies are used:
-
-| Field type                                      | Strategy |
-|-------------------------------------------------|----------|
-| Simple inputs (text, checkbox)                  | **Eager Edit (CSS switch)** |
-| Complex inputs (RichTextAreas, autocompleteres) | **Lazy Edit (TurboStream)** |
-
 ## Usage
 
 ```ruby
@@ -64,7 +57,6 @@ end %>
 **tl;dr**: This component is responsible for:
 
 - selecting the correct edit field
-- deciding between lazy and eager edit
 - if needed: rendering the appropriate display field
 - checking whether the attribute is writable
 
@@ -88,7 +80,7 @@ OpenProject::InplaceEdit::FieldRegistry.register(
 
 They may render only the field itself or also include submit and reset buttons. Richer fields such as CkEditors typically render their own action buttons, while simpler fields can rely on outer form handling.
 
-Edit field components may define a `display_class`. If present, this class is used to render the read-only display state.
+Edit field components define a `display_class`. This class is used to render the read-only display state.
 
 **Simplified example of an `EditFieldComponent`:**
 ```ruby
@@ -134,9 +126,29 @@ end
 
 They expose the edit URL via data attributes and typically make the rendered value clickable when the attribute is writable.
 
-Display fields are optional. Not every edit field has or needs a display field. If an edit field component does not define a `display_class`, the `InplaceEditFieldComponent` will always render the edit field.
-From a technical perspective, these fields are always in edit mode. There is no Turbo-based replacement between display and edit state. Any display versus edit behavior is handled purely via CSS.
-This is useful for simple fields (like standard text inputs) which are thus high performant in switching modes
+Display fields are mandatory. There is one default `DisplayFieldComponent` which can be inherited from if needed. E.g the RichTextArea does add some more elements to the HTML:
+```ruby
+module OpenProject
+  module Common
+    module InplaceEditFields
+      module DisplayFields
+        class RichTextAreaComponent < DisplayFieldComponent
+          attr_reader :model, :attribute, :writable
+
+          def call
+            render(Primer::BaseComponent.new(tag: :div, **display_field_arguments)) do
+              render(Primer::BaseComponent.new(tag: :div,
+                                               classes: "op-uc-container op-uc-container_reduced-headings -multiline")) do
+                render_display_value
+              end
+            end
+          end
+        end
+      end
+    end
+  end
+end
+```
 
 ### Update behaviour
 

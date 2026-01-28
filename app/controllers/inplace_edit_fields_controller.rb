@@ -47,11 +47,15 @@ class InplaceEditFieldsController < ApplicationController
   def update
     handler = OpenProject::InplaceEdit::UpdateRegistry.fetch_handler(@model)
 
-    success = handler.call(
-      model: @model,
-      params: permitted_params,
-      user: current_user
-    )
+    if handler.present?
+      success = handler.call(
+        model: @model,
+        params: permitted_params,
+        user: current_user
+      )
+    else
+      raise ArgumentError, "Missing update handler for #{@model}"
+    end
 
     if success
       render_success_flash_message_via_turbo_stream(
@@ -65,6 +69,8 @@ class InplaceEditFieldsController < ApplicationController
     )
 
     respond_with_turbo_streams
+  rescue ArgumentError
+    head :not_found
   end
 
   def reset
@@ -76,29 +82,21 @@ class InplaceEditFieldsController < ApplicationController
 
   def find_model
     model_class = resolve_model_class(params[:model])
-    @model = model_class.visible
-                        .find(params[:id])
-  rescue NameError, ActiveRecord::RecordNotFound, ArgumentError, NoMethodError
+    @model = model_class.visible.find(params[:id])
+  rescue ActiveRecord::RecordNotFound, ArgumentError
     head :not_found
   end
 
   def resolve_model_class(model_param)
     return nil if model_param.blank?
 
-    class_name = model_param.to_s.camelize
-    # Only allow models that are registered for inplace updates.
-    unless OpenProject::InplaceEdit::UpdateRegistry.registered?(class_name)
-      raise ArgumentError, "Unsupported model for inplace edit"
-    end
+    model_class =
+      OpenProject::InplaceEdit::UpdateRegistry.resolve_model_class(model_param)
 
-    model_class = class_name.safe_constantize
-
-    # Guard against resolving arbitrary non-ActiveRecord constants.
-    unless model_class.is_a?(Class) &&
-           defined?(ApplicationRecord) &&
+    unless model_class &&
            model_class < ApplicationRecord &&
            model_class.respond_to?(:visible)
-      raise ArgumentError, "Model is not an ActiveRecord model"
+      raise ArgumentError, "Unsupported model for inplace edit"
     end
 
     model_class

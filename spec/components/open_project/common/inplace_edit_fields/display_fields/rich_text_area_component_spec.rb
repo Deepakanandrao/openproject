@@ -57,7 +57,7 @@ RSpec.describe OpenProject::Common::InplaceEditFields::DisplayFields::RichTextAr
     )
 
     expect(rendered_content)
-      .to include("data-action=\"click-&gt;inplace-edit#activate\"")
+      .to include("data-action=\"click-&gt;inplace-edit#request\"")
   end
 
   it "adds no inplace-edit stimulus data when not writable" do
@@ -70,6 +70,6 @@ RSpec.describe OpenProject::Common::InplaceEditFields::DisplayFields::RichTextAr
     )
 
     expect(rendered_content)
-      .not_to include("data-action=\"click-&gt;inplace-edit#activate\"")
+      .not_to include("data-action=\"click-&gt;inplace-edit#request\"")
   end
 end

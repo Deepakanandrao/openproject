@@ -41,7 +41,6 @@ module OpenProject
         @attribute = attribute
         @enforce_edit_mode = enforce_edit_mode
         @system_arguments = system_arguments
-        @system_arguments[:disabled] ||= !writable?
       end
 
       def field_class
@@ -60,6 +59,8 @@ module OpenProject
       def display_field_class
         if field_class.respond_to?(:display_class)
           field_class.display_class
+        else
+          InplaceEditFields::DisplayFields::DisplayFieldComponent
         end
       end
 

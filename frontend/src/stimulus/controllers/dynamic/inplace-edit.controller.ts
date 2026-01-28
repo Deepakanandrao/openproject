@@ -39,7 +39,7 @@ export default class extends Controller {
 
   declare urlValue:string;
 
-  async activate() {
+  async request() {
     const response = await fetch(this.urlValue, {
       method: 'GET',
       headers: { Accept: 'text/vnd.turbo-stream.html' },

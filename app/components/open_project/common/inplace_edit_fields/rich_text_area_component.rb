@@ -57,7 +57,7 @@ module OpenProject
         def call
           form.rich_text_area(name: attribute, **@system_arguments)
 
-          form.group(layout: :horizontal) do |button_group|
+          form.group(layout: :horizontal, justify_content: :flex_end) do |button_group|
             button_group.submit(name: :reset,
                                 type: :submit,
                                 label: I18n.t(:button_cancel),
