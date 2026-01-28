@@ -33,58 +33,9 @@ module Admin::Import::Jira::ImportRuns
     include ApplicationHelper
     include OpTurbo::Streamable
     include OpPrimer::ComponentHelpers
+    include Admin::Import::Jira::ImportRunsHelper
 
     def self.wrapper_key = :jira_imports_wizard
-
-    def import_stats_available
-      [
-        { label: projects_label(available_projects_count), checked: true },
-        { label: "#{issues_label(available_issues_count)} (name, title and description)", checked: true },
-        { label: statuses_label(available_statuses_count), checked: true },
-        { label: types_label(available_types_count), checked: true }
-      ]
-    end
-
-    def available_projects_count
-      model.available["projects"]&.count
-    end
-
-    def available_issues_count
-      model.available["total_issues"]
-    end
-
-    def available_statuses_count
-      model.available["total_statuses"]
-    end
-
-    def available_types_count
-      model.available["total_issue_types"]
-    end
-
-    def import_stats_unavailable
-      [
-        { label: I18n.t(:"admin.jira.run.wizard.sections.import_scope.unavailable.relations"), checked: false },
-        { label: I18n.t(:"admin.jira.run.wizard.sections.import_scope.unavailable.workflows"), checked: false },
-        { label: I18n.t(:"admin.jira.run.wizard.sections.import_scope.unavailable.users"), checked: false },
-        { label: I18n.t(:"admin.jira.run.wizard.sections.import_scope.unavailable.permissions"), checked: false }
-      ]
-    end
-
-    def projects_label(count)
-      I18n.t(:"admin.jira.run.wizard.parts.projects", count: count || 0)
-    end
-
-    def issues_label(count)
-      I18n.t(:"admin.jira.run.wizard.parts.issues", count: count || 0)
-    end
-
-    def statuses_label(count)
-      I18n.t(:"admin.jira.run.wizard.parts.statuses", count: count || 0)
-    end
-
-    def types_label(count)
-      I18n.t(:"admin.jira.run.wizard.parts.types", count: count || 0)
-    end
 
     def import_selection
       [

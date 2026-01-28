@@ -31,15 +31,44 @@
 module Admin::Import::Jira::ImportRuns
   class WizardStepImportScopeComponent < ApplicationComponent
     include OpPrimer::ComponentHelpers
+    include Admin::Import::Jira::ImportRunsHelper
 
-    def initialize(import_run, import_stats_available:, import_stats_unavailable:, selected_projects_count:)
-      super
-      @import_run = import_run
-      @import_stats_available = import_stats_available
-      @import_stats_unavailable = import_stats_unavailable
-      @selected_projects_count = selected_projects_count
+    def import_stats_available
+      [
+        projects_label(available_projects_count),
+        issues_label(available_issues_count),
+        statuses_label(available_statuses_count),
+        types_label(available_types_count)
+      ].map { |label| { label:, checked: true } }
     end
 
-    attr_reader :import_run, :import_stats_available, :import_stats_unavailable, :selected_projects_count
+    def import_stats_unavailable
+      [
+        I18n.t(:"admin.jira.run.wizard.sections.import_scope.unavailable.relations"),
+        I18n.t(:"admin.jira.run.wizard.sections.import_scope.unavailable.workflows"),
+        I18n.t(:"admin.jira.run.wizard.sections.import_scope.unavailable.users"),
+        I18n.t(:"admin.jira.run.wizard.sections.import_scope.unavailable.permissions")
+      ].map { |label| { label:, checked: false } }
+    end
+
+    def selected_projects_count
+      model.projects&.count || 0
+    end
+
+    def available_projects_count
+      model.available["projects"]&.count
+    end
+
+    def available_issues_count
+      model.available["total_issues"]
+    end
+
+    def available_statuses_count
+      model.available["total_statuses"]
+    end
+
+    def available_types_count
+      model.available["total_issue_types"]
+    end
   end
 end

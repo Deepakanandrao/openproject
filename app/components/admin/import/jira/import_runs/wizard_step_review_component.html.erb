@@ -28,13 +28,13 @@ See COPYRIGHT and LICENSE files for more details.
 ++#%>
 
 <%= flex_layout do |box|
-  if import_run.status?(JiraImport::REVERTING, JiraImport::REVERTED, JiraImport::REVERT_ERROR)
+  if model.status?(JiraImport::REVERTING, JiraImport::REVERTED, JiraImport::REVERT_ERROR)
     box.with_row do
       concat(render(Primer::Beta::Text.new(font_weight: :semibold, tag: :div)) {
         I18n.t(:"admin.jira.run.wizard.sections.import_result.label_revert")
       })
     end
-    case import_run.status
+    case model.status
     when JiraImport::REVERTING
       box.with_row(mt: 3) do
         render(Primer::Box.new(border: true, border_color: :accent, border_radius: 2, bg: :accent, p: 3)) do
@@ -52,7 +52,7 @@ See COPYRIGHT and LICENSE files for more details.
       end
     when JiraImport::REVERT_ERROR
       box.with_row(mt: 3) do
-        render(Admin::Import::Jira::ImportRuns::ErrorBannerComponent.new(import_run, 'revert'))
+        render(Admin::Import::Jira::ImportRuns::ErrorBannerComponent.new(model, 'revert'))
       end
     end
   else
@@ -60,28 +60,28 @@ See COPYRIGHT and LICENSE files for more details.
       concat(render(Primer::Beta::Text.new(font_weight: :semibold, tag: :div)) {
         I18n.t(:"admin.jira.run.wizard.sections.import_result.title")
       })
-      if import_run.status_before?(JiraImport::IMPORTED)
+      if model.status_before?(JiraImport::IMPORTED)
         concat(render(Primer::Beta::Text.new(font_size: :small, color: :subtle)) {
           I18n.t(:"admin.jira.run.wizard.sections.import_result.caption")
         })
       end
     end
-    if import_run.status?(JiraImport::IMPORTED)
+    if model.status?(JiraImport::IMPORTED)
       box.with_row(mt: 3) do
         render(Primer::Alpha::Banner.new(scheme: :success, icon: :"check-circle")) {
           I18n.t(:"admin.jira.run.wizard.sections.import_result.info")
         }
       end
     end
-    if import_run.status?(JiraImport::IMPORTED, JiraImport::COMPLETED)
+    if model.status?(JiraImport::IMPORTED, JiraImport::COMPLETED)
       box.with_row(mt: 3, mb: 3) do
         render(Admin::Import::Jira::ImportRuns::InfoListBoxComponent.new(
           title: I18n.t(:"admin.jira.run.wizard.sections.import_result.label_results"),
-          list: import_selection
+          list: imported_data
         ))
       end
     end
-    if import_run.status?(JiraImport::IMPORTED)
+    if model.status?(JiraImport::IMPORTED)
       box.with_row(mb: 3) do
         render(Primer::Alpha::Banner.new(scheme: :default, icon: :info)) {
           I18n.t(:"admin.jira.run.wizard.sections.import_result.preview_description")
@@ -93,14 +93,14 @@ See COPYRIGHT and LICENSE files for more details.
           scheme: :primary,
           size: :medium,
           mr: 2,
-          href: continue_admin_import_jira_run_path(jira_id: import_run.jira.id, id: import_run.id, step: 'finalize'),
+          href: continue_admin_import_jira_run_path(jira_id: model.jira.id, id: model.id, step: 'finalize'),
           data: { turbo_stream: true }
         )) { I18n.t(:"admin.jira.run.wizard.sections.import_result.button_done") })
         concat(render(Primer::Beta::Button.new(
           scheme: :default,
           tag: :a,
           size: :medium,
-          href: revert_modal_admin_import_jira_run_path(jira_id: import_run.jira.id, id: import_run.id),
+          href: revert_modal_admin_import_jira_run_path(jira_id: model.jira.id, id: model.id),
           data: { controller: "async-dialog" }
         )) { I18n.t(:"admin.jira.run.wizard.sections.import_result.button_revert") })
       end

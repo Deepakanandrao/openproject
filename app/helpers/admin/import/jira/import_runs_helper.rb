@@ -28,8 +28,20 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Admin::Import::Jira::ImportRuns
-  class WizardStepFetchDataComponent < ApplicationComponent
-    include OpPrimer::ComponentHelpers
+module Admin::Import::Jira::ImportRunsHelper
+  def projects_label(count)
+    I18n.t(:"admin.jira.run.wizard.parts.projects", count: count || 0)
+  end
+
+  def issues_label(count)
+    I18n.t(:"admin.jira.run.wizard.parts.issues", count: count || 0)
+  end
+
+  def statuses_label(count)
+    I18n.t(:"admin.jira.run.wizard.parts.statuses", count: count || 0)
+  end
+
+  def types_label(count)
+    I18n.t(:"admin.jira.run.wizard.parts.types", count: count || 0)
   end
 end

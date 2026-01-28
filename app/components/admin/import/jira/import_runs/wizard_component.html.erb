@@ -47,12 +47,7 @@ See COPYRIGHT and LICENSE files for more details.
         }
       end
       component.with_row do
-        render(Admin::Import::Jira::ImportRuns::WizardStepImportScopeComponent.new(
-          model,
-          import_stats_available: import_stats_available,
-          import_stats_unavailable: import_stats_unavailable,
-          selected_projects_count: selected_projects_count
-        ))
+        render(Admin::Import::Jira::ImportRuns::WizardStepImportScopeComponent.new(model))
       end
       component.with_row(scheme: :neutral, color: :muted, align_items: :center) do
         render(Primer::Beta::Text.new(font_weight: :semibold)) {
@@ -60,10 +55,7 @@ See COPYRIGHT and LICENSE files for more details.
         }
       end
       component.with_row do
-        render(Admin::Import::Jira::ImportRuns::WizardStepConfirmImportComponent.new(
-          model,
-          import_selection: import_selection
-        ))
+        render(Admin::Import::Jira::ImportRuns::WizardStepConfirmImportComponent.new(model))
       end
       component.with_row(scheme: :neutral, color: :muted, align_items: :center) do
         render(Primer::Beta::Text.new(font_weight: :semibold)) {

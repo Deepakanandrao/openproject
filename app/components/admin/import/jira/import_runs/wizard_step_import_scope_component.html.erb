@@ -32,17 +32,17 @@ See COPYRIGHT and LICENSE files for more details.
     concat(render(Primer::Beta::Text.new(font_weight: :semibold, tag: :div)) {
       I18n.t(:"admin.jira.run.wizard.sections.import_scope.title")
     })
-    if import_run.status_before?(JiraImport::INSTANCE_META_DONE)
+    if model.status_before?(JiraImport::INSTANCE_META_DONE)
       concat(render(Primer::Beta::Text.new(font_size: :small, color: :subtle)) {
         I18n.t(:"admin.jira.run.wizard.sections.import_scope.caption")
       })
-    elsif import_run.status_equal_or_after?(JiraImport::PROJECTS_META_DONE)
+    elsif model.status_equal_or_after?(JiraImport::PROJECTS_META_DONE)
       concat(render(Primer::Beta::Text.new(font_size: :small, color: :subtle)) {
         I18n.t(:"admin.jira.run.wizard.sections.import_scope.caption_done")
       })
     end
   end
-  if import_run.status?(JiraImport::INSTANCE_META_DONE)
+  if model.status?(JiraImport::INSTANCE_META_DONE)
     box.with_row(mb: 3, mt: 3) do
       render(Primer::Alpha::Banner.new(scheme: :warning, icon: :alert)) {
         I18n.t(:"admin.jira.run.wizard.sections.import_scope.label_info")
@@ -71,13 +71,13 @@ See COPYRIGHT and LICENSE files for more details.
         scheme: :primary,
         size: :medium,
         tag: :a,
-        href: continue_admin_import_jira_run_path(jira_id: import_run.jira.id, id: import_run.id, step: 'configure'),
+        href: continue_admin_import_jira_run_path(jira_id: model.jira.id, id: model.id, step: 'configure'),
         data: { turbo_stream: true }
       )) {
         I18n.t(:"admin.jira.run.wizard.sections.import_scope.button_continue")
       }
     end
-  elsif import_run.status?(JiraImport::CONFIGURING, JiraImport::PROJECTS_META_ERROR)
+  elsif model.status?(JiraImport::CONFIGURING, JiraImport::PROJECTS_META_ERROR)
     box.with_row(mb: 3, mt: 3) do
       render(Primer::Beta::Text.new) {
         I18n.t(:"admin.jira.run.wizard.sections.import_scope.label_import")
@@ -87,32 +87,32 @@ See COPYRIGHT and LICENSE files for more details.
       render(Primer::Beta::Button.new(
         size: :medium,
         tag: :a,
-        href: select_projects_modal_admin_import_jira_run_path(jira_id: import_run.jira.id, id: import_run.id),
+        href: select_projects_modal_admin_import_jira_run_path(jira_id: model.jira.id, id: model.id),
         data: { controller: "async-dialog" }
       )) do |component|
         component.with_trailing_visual_counter(count: selected_projects_count)
         I18n.t(:"admin.jira.run.wizard.sections.import_scope.button_select")
       end
     end
-    if import_run.status?(JiraImport::CONFIGURING)
+    if model.status?(JiraImport::CONFIGURING)
       box.with_row do
         render(Primer::Beta::Button.new(
           scheme: :primary,
           size: :medium,
           tag: :a,
-          href: continue_admin_import_jira_run_path(jira_id: import_run.jira.id, id: import_run.id, step: 'stats'),
+          href: continue_admin_import_jira_run_path(jira_id: model.jira.id, id: model.id, step: 'stats'),
           data: { turbo_stream: true },
-          disabled: import_run.projects.nil? || import_run.projects.empty?
+          disabled: model.projects.nil? || model.projects.empty?
         )) {
           I18n.t(:"admin.jira.run.wizard.sections.import_scope.button_continue")
         }
       end
-    elsif import_run.status?(JiraImport::PROJECTS_META_ERROR)
+    elsif model.status?(JiraImport::PROJECTS_META_ERROR)
       box.with_row do
-        render(Admin::Import::Jira::ImportRuns::ErrorBannerComponent.new(import_run, 'stats'))
+        render(Admin::Import::Jira::ImportRuns::ErrorBannerComponent.new(model, 'stats'))
       end
     end
-  elsif import_run.status?(JiraImport::PROJECTS_META_FETCHING)
+  elsif model.status?(JiraImport::PROJECTS_META_FETCHING)
     box.with_row(mt: 3) do
       render(Admin::Import::Jira::ImportRuns::ProgressBoxComponent.new(
         I18n.t(:"admin.jira.run.wizard.sections.import_scope.label_progress")

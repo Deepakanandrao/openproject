@@ -31,13 +31,31 @@
 module Admin::Import::Jira::ImportRuns
   class WizardStepReviewComponent < ApplicationComponent
     include OpPrimer::ComponentHelpers
+    include Admin::Import::Jira::ImportRunsHelper
 
-    def initialize(import_run, import_selection:)
-      super
-      @import_run = import_run
-      @import_selection = import_selection
+    def imported_data
+      [
+        projects_label(imported_projects_count),
+        issues_label(imported_issues_count),
+        statuses_label(imported_statuses_count),
+        types_label(imported_types_count)
+      ].map { |label| { label:, checked: true } }
     end
 
-    attr_reader :import_run, :import_selection
+    def imported_projects_count
+      model.projects&.count || 0
+    end
+
+    def imported_issues_count
+      model.selected["issues_count"] || 0
+    end
+
+    def imported_statuses_count
+      model.selected["status_ids"]&.count || 0
+    end
+
+    def imported_types_count
+      model.selected["issue_type_ids"]&.count || 0
+    end
   end
 end
