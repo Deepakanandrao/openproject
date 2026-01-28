@@ -102,6 +102,22 @@ module McpTools
         @filters ||= {}
       end
 
+      def annotations(read_only:, idempotent:, destructive:)
+        @annotations = {
+          read_only_hint: read_only,
+          destructive_hint: destructive,
+          idempotent_hint: idempotent,
+          open_world_hint: false
+        }
+      end
+
+      def read_annotations
+        # Initialize default annotations, if none are present
+        annotations(read_only: false) if @annotations.nil?
+
+        @annotations
+      end
+
       def tool
         config = McpConfiguration.find_by(identifier: qualified_name)
         return nil if config.nil?
@@ -112,7 +128,8 @@ module McpTools
           title: config.title,
           description: config.description,
           input_schema:,
-          output_schema:
+          output_schema:,
+          annotations: read_annotations
         ) do |opts|
           implementation.new(tool_context: self).handle_request(**opts)
         end
@@ -126,10 +143,11 @@ module McpTools
     def handle_request(**)
       result = call(**)
 
-      if Rails.env.local?
+      if Rails.env.local? && @tool_context.output_schema
         # We are only validating the output during development, so we can see errors during dev, but do not break the
         # API in production due to minor schema differences.
         @tool_context.output_schema.validate_result(result.to_json)
+        validate_root_output_schema!(@tool_context.output_schema)
       end
 
       MCP::Tool::Response.new([{ type: "text", text: result.to_json }], structured_content: result)
@@ -140,6 +158,13 @@ module McpTools
     # Intended to be implemented by subclasses. It should return a structured result (e.g. a Hash or Array).
     def call(**)
       raise NotImplemented, "#{self.class} needs to implement #call method"
+    end
+
+    def validate_root_output_schema!(output_schema)
+      root_type = output_schema.schema.fetch(:type, "object")
+      return if root_type == "object"
+
+      raise "MCP tools must respond with a JSON object as the root element. #{self.class} responds in #{root_type}."
     end
 
     # Usable by tool implementations. Takes a scope and filters it according to the passed params.
