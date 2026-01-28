@@ -6,6 +6,7 @@ import { openProjectWorkPackageStaticBlockSpec } from "op-blocknote-extensions";
 import * as Y from "yjs";
 import { decryptToken } from "../services/decryptTokenService";
 import type { ApiResponseDocument } from "../types";
+import { replaceWithExplicitHost, shouldReplaceHost } from "../services/explicitHostService";
 
 export const editorSchema = BlockNoteSchema.create().extend({
   blockSpecs: {
@@ -27,7 +28,7 @@ export class OpenProjectApi implements Extension {
     */
   async onAuthenticate(data: onAuthenticatePayload) {
     const { token: packedParams, documentName } = data;
-    const resourceUrl = documentName;
+    let resourceUrl = documentName;
 
     if (!packedParams) {
       throw new Error('Unauthorized: Missing auth params');
@@ -48,6 +49,11 @@ export class OpenProjectApi implements Extension {
 
     if (tokenResourceUrl !== resourceUrl) {
       throw new Error('Unauthorized: Token resource URL does not match document.');
+    }
+
+    if (shouldReplaceHost()) {
+      resourceUrl = replaceWithExplicitHost(resourceUrl);
+      printLog(`fetching resource from: ${resourceUrl}`);
     }
 
     const response = await fetch(resourceUrl, {
