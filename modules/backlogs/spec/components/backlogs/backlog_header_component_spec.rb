@@ -211,4 +211,11 @@ RSpec.describe Backlogs::BacklogHeaderComponent, type: :component do
       expect(page).to have_link(I18n.t(:button_cancel))
     end
   end
+
+  describe "state validation" do
+    it "raises an InvalidValueError for invalid state values" do
+      expect { render_component(state: :invalid) }
+        .to raise_error(Primer::FetchOrFallbackHelper::InvalidValueError)
+    end
+  end
 end
