@@ -43,21 +43,37 @@ module Admin::Import::Jira
         label: Jira.human_attribute_name(:url),
         required: true,
         input_width: :large,
-        type: :url
+        type: :url,
+        data: { "admin--jira-configuration-form-target": "urlInput" }
       )
 
       client_form.text_field(
         name: :personal_access_token,
         label: Jira.human_attribute_name(:personal_access_token),
         required: true,
-        input_width: :large
+        input_width: :large,
+        data: { "admin--jira-configuration-form-target": "tokenInput" }
       )
 
-      client_form.submit(
-        name: :submit,
-        label: model.persisted? ? I18n.t("admin.jira.form.button_save") : I18n.t("admin.jira.form.button_add"),
-        scheme: :primary
-      )
+      client_form.group(layout: :horizontal) do |button_group|
+        button_group.submit(
+          name: :submit,
+          label: model.persisted? ? I18n.t("admin.jira.form.button_save") : I18n.t("admin.jira.form.button_add"),
+          scheme: :primary,
+          data: { "admin--jira-configuration-form-target": "submitButton" }
+        )
+
+        button_group.button(
+          name: :test,
+          label: I18n.t("admin.jira.form.button_test"),
+          scheme: :default,
+          type: :button,
+          data: {
+            "admin--jira-configuration-form-target": "testButton",
+            "action": "click->admin--jira-configuration-form#testConnection"
+          }
+        )
+      end
     end
   end
 end

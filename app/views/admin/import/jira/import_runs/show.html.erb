@@ -51,8 +51,8 @@ See COPYRIGHT and LICENSE files for more details.
   render Primer::BaseComponent.new(
     tag: :div,
     data: {
-      controller: "jira-import",
-      "jira-import-url-value": continue_admin_import_jira_run_path(jira_id: @jira.id, id: @jira_import.id)
+      controller: "admin--jira-import",
+      "admin--jira-import-url-value": continue_admin_import_jira_run_path(jira_id: @jira.id, id: @jira_import.id)
     }
   ) do
     render(Admin::Import::Jira::ImportRuns::WizardComponent.new(@jira_import))

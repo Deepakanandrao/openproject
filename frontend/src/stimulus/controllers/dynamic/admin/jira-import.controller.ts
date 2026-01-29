@@ -65,7 +65,7 @@ export default class extends Controller {
         if (response.ok) {
             Turbo.renderStreamMessage(await response.text());
         } else {
-            throw new Error(response.statusText || 'Invalid response from server');
+            throw new Error(response.statusText);
         }
     }
 

@@ -38,6 +38,15 @@ module Admin::Import::Jira
 
     private
 
+    def wrapper_options
+      {
+        data: {
+          controller: "admin--jira-configuration-form",
+          "admin--jira-configuration-form-url-value": test_admin_import_jira_index_path
+        }
+      }
+    end
+
     def form_options
       form_target.merge(model:)
     end

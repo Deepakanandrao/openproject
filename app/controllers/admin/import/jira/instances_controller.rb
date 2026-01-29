@@ -72,6 +72,7 @@ module Admin::Import::Jira
       result = ::Jiras::UpdateService.new(user: User.current, model: @jira).call(jira_params)
 
       result.on_failure do
+        @jira = result.result
         stream_form_component do |format|
           format.html { render :edit }
         end
@@ -93,6 +94,14 @@ module Admin::Import::Jira
       redirect_to action: :index
     end
 
+    def test
+      test_configuration(params[:url], params[:personal_access_token])
+    rescue StandardError => e
+      render_error_flash_message_via_turbo_stream(message: t(:"admin.jira.test.error", message: e.message))
+    ensure
+      respond_with_turbo_streams
+    end
+
     private
 
     def set_jira
@@ -106,6 +115,37 @@ module Admin::Import::Jira
     def stream_form_component(&)
       update_via_turbo_stream(component: Admin::Import::Jira::FormComponent.new(@jira))
       respond_with_turbo_streams(&)
+    end
+
+    def valid_url?(url)
+      uri = URI.parse(url)
+      uri.is_a?(URI::HTTP) || uri.is_a?(URI::HTTPS)
+    end
+
+    def test_configuration(url, personal_access_token)
+      if url.blank? || personal_access_token.blank?
+        render_error_flash_message_via_turbo_stream(message: t(:"admin.jira.test.missing_credentials"))
+        return
+      end
+
+      unless valid_url?(url)
+        render_error_flash_message_via_turbo_stream(message: t(:"admin.jira.test.invalid_url"))
+        return
+      end
+
+      client = J.new(url:, personal_access_token:)
+      response = client.server_info
+
+      if response.is_a?(Hash)
+        render_success_flash_message_via_turbo_stream(
+          message: t(:"admin.jira.test.success",
+                     server: response["serverTitle"] || Jira.model_name,
+                     version: response["version"] || "?"
+          )
+        )
+      else
+        render_error_flash_message_via_turbo_stream(message: t(:"admin.jira.test.failed"))
+      end
     end
   end
 end

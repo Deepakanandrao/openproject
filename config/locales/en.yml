@@ -137,6 +137,14 @@ en:
       form:
         button_add: "Add configuration"
         button_save: "Save configuration"
+        button_test: "Test configuration"
+        label_testing: "Testing configuration..."
+      test:
+        success: "Successfully connected to %{server} (version %{version})"
+        failed: "Connection failed: Unable to retrieve server information"
+        error: "Connection error: %{message}"
+        missing_credentials: "Please provide both URL and Personal Access Token to test the connection"
+        invalid_url: "Please provide a valid URL"
       columns:
         last_change: "Last change"
         added: "Added"
@@ -2054,6 +2062,8 @@ en:
               blank: "Please provide a token name"
               in_use: "This token name is already in use, please select a different one"
               format: "%{message}"
+        jira:
+          invalid_protocol: "Please provide a valid protocol (http or https)"
       template:
         body: "Please check the following fields:"
         header:

@@ -34,9 +34,10 @@ module Admin::Import::Jira::ImportRuns
 
     attr_reader :message
 
-    def initialize(message)
+    def initialize(message, **system_arguments)
       super
       @message = message
+      @system_arguments = system_arguments
     end
   end
 end
