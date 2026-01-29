@@ -36,26 +36,34 @@ module Admin::Import::Jira::ImportRuns
     def imported_data
       [
         projects_label(imported_projects_count),
-        issues_label(imported_issues_count),
+        work_packages_label(imported_issues_count),
         statuses_label(imported_statuses_count),
         types_label(imported_types_count)
       ].map { |label| { label:, checked: true } }
     end
 
     def imported_projects_count
-      model.projects&.count || 0
+      OpenProjectJiraReference
+        .where(jira_import: model, op_entity_class: "Project", uses_existing: false)
+        .count
     end
 
     def imported_issues_count
-      model.selected["issues_count"] || 0
+      OpenProjectJiraReference
+        .where(jira_import: model, op_entity_class: "WorkPackage", uses_existing: false)
+        .count
     end
 
     def imported_statuses_count
-      model.selected["status_ids"]&.count || 0
+      OpenProjectJiraReference
+        .where(jira_import: model, op_entity_class: "Status", uses_existing: false)
+        .count
     end
 
     def imported_types_count
-      model.selected["issue_type_ids"]&.count || 0
+      OpenProjectJiraReference
+        .where(jira_import: model, op_entity_class: "Type", uses_existing: false)
+        .count
     end
   end
 end

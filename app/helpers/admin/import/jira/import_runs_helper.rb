@@ -37,6 +37,10 @@ module Admin::Import::Jira::ImportRunsHelper
     I18n.t(:"admin.jira.run.wizard.parts.issues", count: count || 0)
   end
 
+  def work_packages_label(count)
+    I18n.t(:"admin.jira.run.wizard.parts.work_packages", count: count || 0)
+  end
+
   def statuses_label(count)
     I18n.t(:"admin.jira.run.wizard.parts.statuses", count: count || 0)
   end

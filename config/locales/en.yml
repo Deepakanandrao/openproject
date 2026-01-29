@@ -192,6 +192,9 @@ en:
             issues:
               one: "1 issue"
               other: "%{count} issues"
+            work_packages:
+              one: "1 work package"
+              other: "%{count} work packages"
             types:
               one: "1 type"
               other: "%{count} types"
