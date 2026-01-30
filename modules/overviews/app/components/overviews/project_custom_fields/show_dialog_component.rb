@@ -30,35 +30,15 @@
 
 module Overviews
   module ProjectCustomFields
-    class EditDialogComponent < DialogComponent
+    class ShowDialogComponent < DialogComponent
       private
 
       def body_component
-        Overviews::ProjectCustomFields::EditComponent.new(
-          project_custom_field: @project_custom_field,
-          project: @project,
-          wrapper_id:
-        )
+        Primer::Beta::Text.new.with_content("TODO")
       end
 
       def close_button_title
-        t("button_cancel")
-      end
-
-      def footer_buttons(footer_collection)
-        footer_collection.with_component(
-          Primer::Beta::Button.new(
-            scheme: :primary,
-            type: :submit,
-            form: "project-custom-field-edit-form",
-            data: {
-              test_selector: "save-project-attributes-button",
-              turbo: true
-            }
-          )
-        ) do
-          t("button_save")
-        end
+        t("button_close")
       end
     end
   end

@@ -30,35 +30,41 @@
 
 module Overviews
   module ProjectCustomFields
-    class EditDialogComponent < DialogComponent
+    class DialogComponent < ApplicationComponent
+      include ApplicationHelper
+      include OpTurbo::Streamable
+      include OpPrimer::ComponentHelpers
+
+      def initialize(project:, project_custom_field:)
+        super
+        @project = project
+        @project_custom_field = project_custom_field
+      end
+
       private
 
+      def dialog_title
+        @project_custom_field.project_custom_field_section.name
+      end
+
+      def dialog_id
+        "project-custom-field-dialog-#{@project_custom_field.id}"
+      end
+
+      def wrapper_id
+        "##{dialog_id}"
+      end
+
       def body_component
-        Overviews::ProjectCustomFields::EditComponent.new(
-          project_custom_field: @project_custom_field,
-          project: @project,
-          wrapper_id:
-        )
+        fail NoMethodError, "Must be overridden in subclass"
       end
 
       def close_button_title
-        t("button_cancel")
+        fail NoMethodError, "Must be overridden in subclass"
       end
 
       def footer_buttons(footer_collection)
-        footer_collection.with_component(
-          Primer::Beta::Button.new(
-            scheme: :primary,
-            type: :submit,
-            form: "project-custom-field-edit-form",
-            data: {
-              test_selector: "save-project-attributes-button",
-              turbo: true
-            }
-          )
-        ) do
-          t("button_save")
-        end
+        # noop
       end
     end
   end
