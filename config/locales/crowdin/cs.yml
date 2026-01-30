@@ -1512,6 +1512,7 @@ cs:
         even: "musí být sudé."
         exclusion: "vyhrazeno."
         feature_disabled: is not available.
+        feature_disabled_for_project: is disabled for this project.
         file_too_large: "je příliš velký (maximální velikost je %{count} Bajtů)."
         filter_does_not_exist: "Filtr neexistuje."
         format: "neodpovídá očekávanému formátu '%{expected}'."

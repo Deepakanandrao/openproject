@@ -1491,6 +1491,7 @@ es:
         even: "debe ser incluido."
         exclusion: "está reservado."
         feature_disabled: no está disponible.
+        feature_disabled_for_project: is disabled for this project.
         file_too_large: "es demasiado grande (el tamaño máximo es de %{count} Bytes)."
         filter_does_not_exist: "el filtro no existe."
         format: "no coincide con el formato esperado '%{expected}'."

@@ -1503,6 +1503,7 @@ ro:
         even: "trebuie să fie par."
         exclusion: "este rezervat."
         feature_disabled: is not available.
+        feature_disabled_for_project: is disabled for this project.
         file_too_large: "este prea mare (dimensiunea maximă este %{count} Octeți)."
         filter_does_not_exist: "filtrul nu există."
         format: "nu se potrivește cu formatul așteptat '%{expected}'."

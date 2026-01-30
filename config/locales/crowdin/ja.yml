@@ -1484,6 +1484,7 @@ ja:
         even: "は偶数にしてください。"
         exclusion: "は予約されています。"
         feature_disabled: は利用できません。
+        feature_disabled_for_project: is disabled for this project.
         file_too_large: "は大きすぎます (最大サイズは%{count}バイト)"
         filter_does_not_exist: "フィルターが存在しません。"
         format: "期待されるフォーマットの「%{expected}」と一致しません。"

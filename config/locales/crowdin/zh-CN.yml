@@ -1481,6 +1481,7 @@ zh-CN:
         even: "必须是偶数。"
         exclusion: "是保留关键字。"
         feature_disabled: 不可用。
+        feature_disabled_for_project: is disabled for this project.
         file_too_large: "太大 (最大大小为 %{count} 字节)。"
         filter_does_not_exist: "筛选器不存在。"
         format: "与预期的格式“%{expected}”不匹配。"
