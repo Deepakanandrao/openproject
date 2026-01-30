@@ -81,9 +81,9 @@ RSpec.describe "MCP tools/list", with_flag: { mcp_server: true } do
       it_behaves_like "MCP unauthenticated response"
     end
 
-    context "when passing an API key via Basic auth" do
+    context "when passing an API token via Bearer authentication" do
       subject do
-        header "Authorization", "Basic #{Base64.encode64("apikey:#{apikey.plain_value}")}"
+        header "Authorization", "Bearer #{apikey.plain_value}"
         header "Content-Type", "application/json"
         post "/mcp", request_body.to_json
       end
