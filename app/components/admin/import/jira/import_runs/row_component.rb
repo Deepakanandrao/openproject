@@ -49,6 +49,10 @@ module Admin::Import::Jira::ImportRuns
       helpers.format_time(model.updated_at)
     end
 
+    def projects
+      (model.projects || []).pluck("name").join(", ")
+    end
+
     def button_links
       [
         edit_button

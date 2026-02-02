@@ -159,6 +159,7 @@ en:
         parse_error: "Failed to parse Jira API response: %{message}"
         api_error: "Jira API returned error status %{status}"
       columns:
+        projects: "Projects"
         last_change: "Last change"
         added: "Added"
         label_ago: "%{amount} ago"
