@@ -38,6 +38,10 @@ module Admin::Import::Jira::Projects
       @jira_import = jira_import
     end
 
+    def project_ids
+      @project_ids ||= jira_import.project_ids || []
+    end
+
     form do |f|
       f.check_box_group(name: :projects) do |check_group|
         (@jira_import.available&.dig("projects") || []).each do |project|
@@ -45,7 +49,7 @@ module Admin::Import::Jira::Projects
             value: project["id"],
             label: project["name"],
             caption: project["key"],
-            checked: @jira_import.projects&.include?(project["id"])
+            checked: project_ids.include?(project["id"])
           )
         end
       end

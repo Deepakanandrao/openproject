@@ -94,4 +94,8 @@ class JiraImport < ApplicationRecord
       REVERTING
     ].include?(status)
   end
+
+  def project_ids
+    (projects || []).pluck("id")
+  end
 end

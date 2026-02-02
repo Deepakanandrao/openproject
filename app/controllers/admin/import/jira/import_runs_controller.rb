@@ -65,7 +65,7 @@ module Admin::Import::Jira
     end
 
     def select_projects
-      @jira_import.update!(projects: select_projects_params[:projects])
+      @jira_import.update!(projects: select_projects_params)
       redirect_to(admin_import_jira_run_path(jira_id: @jira.id, id: @jira_import.id))
     end
 
@@ -129,8 +129,13 @@ module Admin::Import::Jira
 
     def select_projects_params
       permitted = params.permit(projects: [])
-      projects = Array(permitted[:projects]).map(&:to_s).compact_blank
-      { projects: projects }
+      selected_ids = Array(permitted[:projects]).map(&:to_s).compact_blank
+      available_projects = @jira_import.available&.dig("projects") || []
+
+      selected_ids.filter_map do |id|
+        project = available_projects.find { |p| p["id"] == id }
+        { "id" => id, "name" => project["name"], "key" => project["key"] } if project
+      end
     end
 
     def init

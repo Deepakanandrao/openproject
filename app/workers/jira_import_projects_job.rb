@@ -3,7 +3,7 @@ class JiraImportProjectsJob < ApplicationJob
 
   def perform(jira_import_id)
     jira_import  = JiraImport.find(jira_import_id)
-    project_ids = jira_import.projects
+    project_ids = jira_import.project_ids
     jira = jira_import.jira
     jira_id = jira.id
     updated_at = Time.now
