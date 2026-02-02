@@ -37,6 +37,5 @@ module Jiras
     validates :url, presence: true
 
     attribute :personal_access_token
-    validates :personal_access_token, presence: true
   end
 end

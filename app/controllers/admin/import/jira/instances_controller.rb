@@ -37,7 +37,7 @@ module Admin::Import::Jira
     menu_item :jira_import
 
     before_action :require_admin
-    before_action :set_jira, only: %i[show edit update destroy]
+    before_action :set_jira, only: %i[show edit update destroy delete_token]
 
     def index
       @jira_instances = Jira.all
@@ -92,6 +92,12 @@ module Admin::Import::Jira
         flash[:notice] = t(:notice_successful_delete)
       end
       redirect_to action: :index
+    end
+
+    def delete_token
+      @jira.update!(personal_access_token: nil)
+      flash[:notice] = t(:"admin.jira.token_deleted")
+      redirect_to edit_admin_import_jira_path(@jira), status: :see_other
     end
 
     def test

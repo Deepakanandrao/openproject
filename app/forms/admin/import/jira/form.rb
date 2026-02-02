@@ -54,6 +54,7 @@ module Admin::Import::Jira
         input_width: :large,
         value: model.persisted? ? "" : model.personal_access_token,
         placeholder: model.persisted? && model.personal_access_token.present? ? I18n.t("admin.jira.form.token_placeholder") : nil,
+        autocomplete: "off",
         data: { "admin--jira-configuration-form-target": "tokenInput" }
       )
 
@@ -75,6 +76,22 @@ module Admin::Import::Jira
             "action": "click->admin--jira-configuration-form#testConnection"
           }
         )
+
+        if model.persisted? && model.personal_access_token.present?
+          button_group.button(
+            name: :delete_token,
+            label: I18n.t("admin.jira.form.button_delete_token"),
+            scheme: :danger,
+            type: :button,
+            tag: :a,
+            href: url_helpers.delete_token_admin_import_jira_path(model),
+            icon: :trash,
+            data: {
+              turbo_method: :delete,
+              turbo_confirm: I18n.t("admin.jira.form.delete_token_confirm")
+            }
+          )
+        end
       end
     end
   end

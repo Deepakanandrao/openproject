@@ -723,6 +723,9 @@ Rails.application.routes.draw do
         collection do
           post :test
         end
+        member do
+          delete :delete_token
+        end
         resources :run, controller: "/admin/import/jira/import_runs", module: :jiras do
           member do
             get :continue

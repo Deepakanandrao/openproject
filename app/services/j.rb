@@ -46,6 +46,8 @@ class J
   end
 
   def initialize(url:, personal_access_token:)
+    raise ApiError.new(I18n.t(:"admin.jira.test.token_error")) if personal_access_token.nil?
+
     @httpx = OpenProject
                .httpx
                .plugin(:basic_auth)
