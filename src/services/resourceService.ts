@@ -1,7 +1,6 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 
 const OPENPROJECT_URL = process.env.OPENPROJECT_URL?.trim() || null;
-const OPENPROJECT_HOST = process.env.OPENPROJECT_HOST?.trim() || null;
 
 if (OPENPROJECT_URL) {
   const openProjectDirectUrl = new URL(OPENPROJECT_URL);
@@ -10,10 +9,6 @@ if (OPENPROJECT_URL) {
   }
 
   console.log(`using OPENPROJECT_URL: ${OPENPROJECT_URL}`);
-}
-
-if (OPENPROJECT_HOST) {
-  console.log(`using OPENPROJECT_HOST: ${OPENPROJECT_HOST}`);
 }
 
 /**
@@ -32,8 +27,7 @@ export async function fetchResource(
 ): Promise<AxiosResponse> {
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
-    "Authorization": `Bearer ${oauthToken}`,
-    ...(OPENPROJECT_HOST && { "Host": OPENPROJECT_HOST })
+    "Authorization": `Bearer ${oauthToken}`
   };
 
   const params = {

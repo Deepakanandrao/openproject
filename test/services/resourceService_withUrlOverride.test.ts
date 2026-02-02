@@ -18,6 +18,6 @@ describe("fetchResource with overriden OpenProject URL", () => {
     const resourceUrl = "https://test.openproject.com/api/v3/documents/42";
     const response = await fetchResource(resourceUrl, "__valid_oauth_token");
 
-    expect(response.data).toMatchObject({ __echo: { url: 'http://web/api/v3/documents/42', hostHeader: 'web' }});
+    expect(response.data).toMatchObject({ __echo: { url: 'http://web/api/v3/documents/42' }});
   });
 });

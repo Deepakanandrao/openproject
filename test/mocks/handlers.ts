@@ -20,8 +20,7 @@ export const handlers = [
       id: request.params.id,
       title: 'Some existing document',
       __echo: {
-        url: request.request.url,
-        hostHeader: request.request.headers.get('Host')
+        url: request.request.url
       }
     });
   }),

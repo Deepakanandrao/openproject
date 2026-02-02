@@ -8,6 +8,6 @@ describe("fetchResource", () => {
     const resourceUrl = "https://test.openproject.com/api/v3/documents/42";
     const response = await fetchResource(resourceUrl, "__valid_oauth_token");
 
-    expect(response.data).toMatchObject({ __echo: { url: resourceUrl, hostHeader: 'test.openproject.com' }})
+    expect(response.data).toMatchObject({ __echo: { url: resourceUrl }})
   });
 });
