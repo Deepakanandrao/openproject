@@ -2,7 +2,9 @@
 
 class ChangeJiraImportsProjectsToJsonb < ActiveRecord::Migration[8.0]
   def change
-    remove_column :jira_imports, :projects, :string, array: true, default: []
-    add_column :jira_imports, :projects, :jsonb, default: []
+    change_table :jira_imports, bulk: true do |t|
+      t.remove :projects, type: :string, array: true, default: []
+      t.column :projects, :jsonb, default: []
+    end
   end
 end

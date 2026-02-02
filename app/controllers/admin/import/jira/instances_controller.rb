@@ -80,20 +80,9 @@ module Admin::Import::Jira
     end
 
     def test
-      token = params[:personal_access_token]
-      if token.blank? && params[:id].present?
-        token = Jira.find(params[:id]).personal_access_token
-      end
-      test_configuration(params[:url], token)
-    rescue J::ConnectionError => e
-      render_error_flash_message_via_turbo_stream(message: t(:"admin.jira.test.connection_error", message: e.message))
-    rescue J::ParseError
-      render_error_flash_message_via_turbo_stream(message: t(:"admin.jira.test.parse_error"))
-    rescue J::ApiError => e
-      render_error_flash_message_via_turbo_stream(message: t(:"admin.jira.test.api_error", status: e.status))
+      test_configuration(params[:url], token_for_test)
     rescue StandardError => e
-      Rails.logger.error("Unexpected error testing Jira configuration: #{e.class} - #{e.message}")
-      render_error_flash_message_via_turbo_stream(message: t(:"admin.jira.test.error"))
+      handle_test_error(e)
     ensure
       respond_with_turbo_streams
     end
@@ -132,20 +121,36 @@ module Admin::Import::Jira
       uri.is_a?(URI::HTTP) || uri.is_a?(URI::HTTPS)
     end
 
+    def token_for_test
+      return params[:personal_access_token] if params[:personal_access_token].present?
+
+      Jira.find(params[:id]).personal_access_token if params[:id].present?
+    end
+
+    def handle_test_error(error)
+      message = case error
+                when J::ConnectionError then t(:"admin.jira.test.connection_error", message: error.message)
+                when J::ParseError then t(:"admin.jira.test.parse_error")
+                when J::ApiError then t(:"admin.jira.test.api_error", status: error.status)
+                else
+                  Rails.logger.error("Unexpected error testing Jira configuration: #{error.class} - #{error.message}")
+                  t(:"admin.jira.test.error")
+                end
+      render_error_flash_message_via_turbo_stream(message:)
+    end
+
     def test_configuration(url, personal_access_token)
       if url.blank? || personal_access_token.blank?
-        render_error_flash_message_via_turbo_stream(message: t(:"admin.jira.test.missing_credentials"))
-        return
+        return render_error_flash_message_via_turbo_stream(message: t(:"admin.jira.test.missing_credentials"))
       end
-
       unless valid_url?(url)
-        render_error_flash_message_via_turbo_stream(message: t(:"admin.jira.test.invalid_url"))
-        return
+        return render_error_flash_message_via_turbo_stream(message: t(:"admin.jira.test.invalid_url"))
       end
 
-      client = J.new(url:, personal_access_token:)
-      response = client.server_info
+      render_test_result(J.new(url:, personal_access_token:).server_info)
+    end
 
+    def render_test_result(response)
       if response.is_a?(Hash)
         server = response["serverTitle"] || Jira.model_name
         version = response["version"] || "?"
