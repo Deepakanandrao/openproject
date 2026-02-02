@@ -263,6 +263,8 @@ en:
               preview_description: "The imported data is currently in preview mode. Click \"Finalize import\" to make the import permanent or \"Revert import\" to undo all changes made in this import run."
               label_revert_progress: "Reverting import..."
               label_reverted: "Import reverted."
+          select_dialog:
+            filter_projects: "Filter by text"
           revert_dialog:
             title: "Permanently revert this import?"
             description: "This will delete all imported objects (including whole projects) even if there was user activity in those projects after the import on OpenProject."
