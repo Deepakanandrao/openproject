@@ -1502,7 +1502,7 @@ zh-TW:
         even: "必須是偶數"
         exclusion: "已保留"
         feature_disabled: 不可用。
-        feature_disabled_for_project: is disabled for this project.
+        feature_disabled_for_project: 對於此專案已停用。
         file_too_large: "太大 (最大為 %{count} Bytes)."
         filter_does_not_exist: "過濾條件不存在"
         format: "與預期的格式“%{expected}”不符"
