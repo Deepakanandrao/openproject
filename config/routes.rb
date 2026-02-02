@@ -458,6 +458,13 @@ Rails.application.routes.draw do
     end
 
     resources :forums do
+      resources :topics, controller: "messages", except: [:index] do
+        member do
+          get :quote
+          post :reply, as: "reply_to"
+        end
+      end
+
       member do
         get :confirm_destroy
         get :move
@@ -903,15 +910,6 @@ Rails.application.routes.draw do
 
   # The show page of groups is public and thus moved out of the admin scope
   resources :groups, only: %i[show], as: :show_group
-
-  resources :forums, only: [] do
-    resources :topics, controller: "messages", except: [:index], shallow: true do
-      member do
-        get :quote
-        post :reply, as: "reply_to"
-      end
-    end
-  end
 
   resources :news, only: %i[index]
 
