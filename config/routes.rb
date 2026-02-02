@@ -465,16 +465,13 @@ Rails.application.routes.draw do
 
     resources :categories, except: %i[index show], shallow: true
 
-    resources :members, only: %i[index create update], shallow: true do
+    resources :members, only: %i[index create update] do
       collection do
         delete "by_principal/:principal_id", action: :destroy_by_principal
 
         get :autocomplete_for_member
+        get :menu, to: "members/menus#show"
       end
-    end
-
-    namespace :members do
-      resource :menu, only: %[show]
     end
 
     resource :repository, controller: "repositories", except: [:new] do

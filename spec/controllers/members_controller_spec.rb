@@ -259,7 +259,7 @@ RSpec.describe MembersController do
     describe "WHEN the user is not authorized" do
       it "is forbidden" do
         subject
-        expect(response.response_code).to eq(403)
+        expect(response.response_code).to eq(404)
       end
     end
   end
@@ -476,6 +476,7 @@ RSpec.describe MembersController do
     let(:action) do
       post :update,
            params: {
+             project_id: project.id,
              id: member.id,
              member: { role_ids: [role2.id], user_id: user.id }
            }

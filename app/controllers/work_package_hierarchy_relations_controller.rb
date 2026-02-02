@@ -139,7 +139,7 @@ class WorkPackageHierarchyRelationsController < ApplicationController
   end
 
   def set_work_package
-    @work_package = WorkPackage.find(params[:work_package_id])
+    @work_package = WorkPackage.visible.find(params[:work_package_id])
     @project = @work_package.project
   end
 

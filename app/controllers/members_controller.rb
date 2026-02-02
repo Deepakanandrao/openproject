@@ -31,8 +31,8 @@
 class MembersController < ApplicationController
   include MemberHelper
 
-  before_action :find_member, except: %i[autocomplete_for_member destroy_by_principal]
-  before_action :find_project_by_project_id, only: %i[autocomplete_for_member destroy_by_principal]
+  before_action :find_project_by_project_id
+  before_action :find_member, except: %i[create autocomplete_for_member destroy_by_principal]
   before_action :authorize
 
   def index
@@ -85,7 +85,7 @@ class MembersController < ApplicationController
   end
 
   def destroy_by_principal
-    principal = Principal.find(params[:principal_id])
+    principal = Principal.visible.find(params[:principal_id])
 
     service_call = Members::DeleteByPrincipalService
                      .new(user: current_user, project: @project, principal:)
