@@ -30,7 +30,7 @@
 
 class CostlogController < ApplicationController
   menu_item :work_packages
-  before_action :find_project, :authorize, only: %i[edit new create update destroy]
+  before_action :find_cost_entry_work_package_or_project, :authorize, only: %i[edit new create update destroy]
   before_action :find_associated_objects, only: %i[create update]
 
   helper :work_packages
@@ -96,8 +96,7 @@ class CostlogController < ApplicationController
 
   private
 
-  def find_project
-    # copied from timelog_controller.rb
+  def find_cost_entry_work_package_or_project # rubocop:disable Metrics/AbcSize
     if params[:id]
       @cost_entry = CostEntry.visible.find(params[:id])
       @project = @cost_entry.project
@@ -108,11 +107,10 @@ class CostlogController < ApplicationController
       @project = Project.visible.find(params[:project_id])
     else
       render_404
-      false
     end
   end
 
-  def find_associated_objects
+  def find_associated_objects # rubocop:disable Metrics/AbcSize, Metrics/PerceivedComplexity
     user_id = cost_entry_params.delete(:user_id)
     @user = if @cost_entry.present? && @cost_entry.user_id == user_id
               @cost_entry.user
