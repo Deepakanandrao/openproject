@@ -86,6 +86,10 @@ class JiraImport < ApplicationRecord
     check_statuses.include?(status)
   end
 
+  def deletable?
+    !status_running? && !status?(IMPORTED, IMPORT_ERROR, REVERT_ERROR)
+  end
+
   def status_running?
     [
       INSTANCE_META_FETCHING,

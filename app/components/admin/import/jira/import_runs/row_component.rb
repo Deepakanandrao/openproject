@@ -54,15 +54,28 @@ module Admin::Import::Jira::ImportRuns
     end
 
     def button_links
-      [
-        edit_button
-      ]
+      buttons = []
+      buttons.push(remove_button) if model.deletable?
+      buttons.push(edit_button)
+      buttons
     end
 
     def edit_button
       render(
         Primer::Beta::IconButton.new(
           icon: :pencil,
+          tag: :a,
+          href: admin_import_jira_run_path(jira_id: model.jira.id, id: model.id),
+          "aria-label": "Edit"
+        )
+      )
+    end
+
+    def remove_button
+      render(
+        Primer::Beta::IconButton.new(
+          icon: :trash,
+          scheme: :danger,
           tag: :a,
           href: admin_import_jira_run_path(jira_id: model.jira.id, id: model.id),
           "aria-label": "Edit"

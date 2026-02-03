@@ -47,16 +47,65 @@ module Admin::Import::Jira
         data: { "admin--jira-configuration-form-target": "urlInput" }
       )
 
-      client_form.text_field(
-        name: :personal_access_token,
-        label: Jira.human_attribute_name(:personal_access_token),
-        required: !model.persisted?,
-        input_width: :large,
-        value: model.persisted? ? "" : model.personal_access_token,
-        placeholder: model.persisted? && model.personal_access_token.present? ? I18n.t("admin.jira.form.token_placeholder") : nil,
-        autocomplete: "off",
-        data: { "admin--jira-configuration-form-target": "tokenInput" }
-      )
+      if model.persisted? && model.personal_access_token.present?
+        client_form.html_content do
+          render(Primer::BaseComponent.new(tag: :div, classes: "FormControl")) do
+            render(
+              Primer::OpenProject::FlexLayout.new(
+                align_items: :flex_end,
+                classes: "FormControl-input-wrap FormControl-input-width--large"
+              )
+            ) do |flex|
+              flex.with_column(flex: 1) do
+                render(
+                  Primer::Alpha::TextField.new(
+                    name: :saved_personal_access_token,
+                    label: Jira.human_attribute_name(:personal_access_token),
+                    input_width: :large,
+                    disabled: true,
+                    value: "*********"
+                  )
+                )
+              end
+              flex.with_column(ml: 2) do
+                render(
+                  Primer::Beta::IconButton.new(
+                    icon: :trash,
+                    scheme: :danger,
+                    size: :medium,
+                    tag: :a,
+                    href: url_helpers.delete_token_admin_import_jira_path(model),
+                    "aria-label": I18n.t("admin.jira.form.button_delete_token"),
+                    data: {
+                      "admin--jira-configuration-form-target": "button",
+                      turbo_method: :delete,
+                      turbo_confirm: I18n.t("admin.jira.form.delete_token_confirm"),
+                      action: "click->admin--jira-configuration-form#disableButtons"
+                    }
+                  )
+                )
+              end
+            end
+          end
+        end
+
+        client_form.text_field(
+          name: :personal_access_token,
+          label: Jira.human_attribute_name(:personal_access_token),
+          hidden: true,
+          value: "",
+          data: { "admin--jira-configuration-form-target": "tokenInput" }
+        )
+      else
+        client_form.text_field(
+          name: :personal_access_token,
+          label: Jira.human_attribute_name(:personal_access_token),
+          required: !model.persisted?,
+          input_width: :large,
+          autocomplete: "off",
+          data: { "admin--jira-configuration-form-target": "tokenInput" }
+        )
+      end
 
       client_form.group(layout: :horizontal) do |button_group|
         button_group.submit(
@@ -76,24 +125,6 @@ module Admin::Import::Jira
             action: "click->admin--jira-configuration-form#testConnection"
           }
         )
-
-        if model.persisted? && model.personal_access_token.present?
-          button_group.button(
-            name: :delete_token,
-            label: I18n.t("admin.jira.form.button_delete_token"),
-            scheme: :danger,
-            type: :button,
-            tag: :a,
-            href: url_helpers.delete_token_admin_import_jira_path(model),
-            icon: :trash,
-            data: {
-              "admin--jira-configuration-form-target": "button",
-              turbo_method: :delete,
-              turbo_confirm: I18n.t("admin.jira.form.delete_token_confirm"),
-              action: "click->admin--jira-configuration-form#disableButtons"
-            }
-          )
-        end
       end
     end
   end

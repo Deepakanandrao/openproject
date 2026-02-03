@@ -56,14 +56,16 @@ export default class extends Controller {
     }
 
     disableButtons():void {
-        this.buttonTargets.forEach(button => { button.disabled = true; });
+        this.buttonTargets.forEach(button => {
+            button.disabled = true;
+        });
     }
 
     async testConnection(event:Event):Promise<void> {
         event.preventDefault();
 
         const url = this.urlInputTarget.value.trim();
-        const token = this.tokenInputTarget.value.trim();
+        const token = this.tokenInputTarget?.value.trim();
 
         this.disableButtons();
         this.progressBannerTarget.hidden = false;
@@ -71,7 +73,9 @@ export default class extends Controller {
         try {
             const formData = new FormData();
             formData.append('url', url);
-            formData.append('personal_access_token', token);
+            if (token) {
+                formData.append('personal_access_token', token);
+            }
             if (this.idValue) {
                 formData.append('id', this.idValue);
             }
@@ -89,7 +93,9 @@ export default class extends Controller {
         } catch (error) {
             console.error(error);
         } finally {
-            this.buttonTargets.forEach(button => { button.disabled = false; });
+            this.buttonTargets.forEach(button => {
+                button.disabled = false;
+            });
             this.progressBannerTarget.hidden = true;
         }
     }
