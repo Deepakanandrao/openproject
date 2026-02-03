@@ -26,6 +26,7 @@
       visually_hide_label: true,
       input_width: :large,
       leading_visual: { icon: :search },
+      show_clear_button: true,
       data: {
         "admin--jira-projects-filter-target": "filterInput",
         action: "input->admin--jira-projects-filter#filter"
@@ -33,16 +34,23 @@
     ))
   end
   flex.with_column do
-    render(OpenProject::Common::CheckAllComponent.new(checkable_id: "jira-projects-list")) do |check_all|
-      check_all.with_check_all_button(scheme: :invisible) do |button|
-        button.with_leading_visual_icon(icon: :"check-circle")
-        I18n.t(:button_check_all)
-      end
-      check_all.with_separator_content("")
-      check_all.with_uncheck_all_button(scheme: :invisible) do |button|
-        button.with_leading_visual_icon(icon: :"x-circle")
-        I18n.t(:button_uncheck_all)
-      end
+    render(Primer::Beta::Button.new(
+      scheme: :invisible,
+      tag: :a,
+      data: { action: "click->admin--jira-projects-filter#checkAll" }
+    )) do |button|
+      button.with_leading_visual_icon(icon: :"check-circle")
+      I18n.t(:button_check_all)
+    end
+  end
+  flex.with_column do
+    render(Primer::Beta::Button.new(
+      scheme: :invisible,
+      tag: :a,
+      data: { action: "click->admin--jira-projects-filter#uncheckAll" }
+      )) do |button|
+      button.with_leading_visual_icon(icon: :"x-circle")
+      I18n.t(:button_uncheck_all)
     end
   end
 end %>
@@ -54,8 +62,7 @@ end %>
         Primer::Alpha::CheckBoxGroup.new(
           name: :projects,
           label: I18n.t(:"admin.jira.columns.projects"),
-          visually_hide_label: true,
-          data: { controller: "checkable" }
+          visually_hide_label: true
         )
       ) do |group|
         available_projects.each do |project|
@@ -65,7 +72,6 @@ end %>
             caption: project["key"],
             checked: checked?(project["id"]),
             data: {
-              checkable_target: "checkbox",
               "admin--jira-projects-filter-target": "project",
               project_name: project["name"],
               project_key: project["key"]

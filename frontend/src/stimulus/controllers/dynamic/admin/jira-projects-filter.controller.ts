@@ -31,10 +31,11 @@
 import {Controller} from "@hotwired/stimulus";
 
 export default class extends Controller {
-    static targets = ['filterInput', 'project'];
+    static targets = ['filterInput', 'project', 'counter'];
 
     declare readonly filterInputTarget:HTMLInputElement;
     declare readonly projectTargets:HTMLElement[];
+    declare readonly counterTargets:HTMLElement[];
 
     filter():void {
         const query = this.filterInputTarget.value.toLowerCase().trim();
@@ -50,5 +51,49 @@ export default class extends Controller {
     clear():void {
         this.filterInputTarget.value = '';
         this.filter();
+    }
+
+    connect():void {
+        this.updateCounter();
+        // Listen for changes on all checkboxes
+        this.element.addEventListener('change', (event) => {
+             const target = event.target as HTMLElement;
+            if (target.tagName === 'INPUT' && target.getAttribute('type') === 'checkbox') {
+                this.updateCounter();
+            }
+        });
+    }
+
+    updateCounter():void {
+        const checkboxes = this.element.querySelectorAll<HTMLInputElement>('input[type="checkbox"]');
+        const checkedCount = Array.from(checkboxes).filter(cb => cb.checked).length.toString();
+        this.counterTargets.forEach(counter => {
+            counter.textContent = checkedCount;
+            counter.setAttribute('title', checkedCount);
+        });
+    }
+
+    checkAll(event:Event):void {
+        event.preventDefault();
+        const checkboxes = this.element.querySelectorAll<HTMLInputElement>('input[type="checkbox"]');
+        checkboxes.forEach(checkbox => {
+            const wrapper:HTMLElement = checkbox.closest('.FormControl-checkbox-wrap')!;
+            if (wrapper.style.display !== 'none') {
+                checkbox.checked = true;
+            }
+        });
+        this.updateCounter();
+    }
+
+    uncheckAll(event:Event):void {
+        event.preventDefault();
+        const checkboxes = this.element.querySelectorAll<HTMLInputElement>('input[type="checkbox"]');
+        checkboxes.forEach(checkbox => {
+            const wrapper:HTMLElement = checkbox.closest('.FormControl-checkbox-wrap')!;
+            if (wrapper.style.display !== 'none') {
+                checkbox.checked = false;
+            }
+        });
+        this.updateCounter();
     }
 }

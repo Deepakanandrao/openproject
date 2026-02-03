@@ -2,17 +2,15 @@
       Primer::Alpha::Dialog.new(
         title: I18n.t(:"admin.jira.run.wizard.select_projects.title"),
         id: MODAL_ID,
-        size: :xlarge
+        size: :xlarge,
+        data: { controller: "admin--jira-projects-filter" }
       )
     ) do |d|
   d.with_header(
     show_divider: true,
     variant: :medium
   )
-  d.with_body(
-    classes: "Overlay-body_autocomplete_height",
-    data: { controller: "admin--jira-projects-filter" }
-  ) do
+  d.with_body(classes: "Overlay-body_autocomplete_height") do
     render(Admin::Import::Jira::Projects::FormComponent.new(jira_import:))
   end
   d.with_footer(
@@ -30,9 +28,14 @@
         Primer::Beta::Button.new(
           scheme: :primary,
           form: Admin::Import::Jira::Projects::FormComponent::FORM_ID,
-          type: :submit
+          type: :submit,
+          data: { "admin--jira-projects-filter-target": "counterButton" }
         )
-      ) do
+      ) do |button|
+        button.with_trailing_visual_counter(
+          count: jira_import.projects&.count || 0,
+          data: { "admin--jira-projects-filter-target": "counter" }
+        )
         I18n.t(:button_continue)
       end
     end
