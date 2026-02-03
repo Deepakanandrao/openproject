@@ -36,7 +36,7 @@ module Redmine
       end
 
       module ClassMethods
-        def acts_as_customizable(options = {})
+        def acts_as_customizable(options = {}) # rubocop:disable Metrics/AbcSize
           return if included_modules.include?(Redmine::Acts::Customizable::InstanceMethods)
 
           cattr_accessor :customizable_options
@@ -51,6 +51,13 @@ module Redmine
              dependent: :delete_all,
              validate: false,
              autosave: true
+
+          if can_have_custom_comments?
+            has_many :custom_comments,
+                     as: :customized,
+                     dependent: :delete_all,
+                     autosave: true
+          end
 
           validation_options = {}
 
