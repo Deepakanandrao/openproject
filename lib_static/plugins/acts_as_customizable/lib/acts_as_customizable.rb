@@ -96,6 +96,8 @@ module Redmine
           true
         end
 
+        delegate :can_have_custom_comments?, to: :class
+
         def available_custom_fields
           self.class.available_custom_fields(self)
         end
@@ -140,6 +142,22 @@ module Redmine
             next if existing_cv_by_value.empty?
 
             update_custom_value(custom_field_id, existing_cv_by_value, new_values)
+          end
+        end
+
+        def custom_comments=(values)
+          raise ArgumentError, "Comments are not enabled for this customizable model" unless can_have_custom_comments?
+
+          case values
+          when Array
+            super
+          when Hash
+            commentable_fields_by_id = available_custom_fields.select(&:has_comment?).index_by(&:id)
+            comments_by_field_id = custom_comments.index_by(&:custom_field_id)
+
+            set_custom_comments(values:, commentable_fields_by_id:, comments_by_field_id:)
+          else
+            raise ArgumentError, "Expected an Array or Hash, got #{values.class}"
           end
         end
 
@@ -488,6 +506,28 @@ module Redmine
           custom_value.mark_for_destruction
           cached_custom_field_values.each_value { it.delete custom_value }
           self.custom_value_destroyed = true
+        end
+
+        def set_custom_comments(values:, commentable_fields_by_id:, comments_by_field_id:)
+          values.each do |cf_id, text|
+            cf_id = cf_id.to_s.to_i
+
+            set_custom_comment(commentable_fields_by_id[cf_id], comments_by_field_id[cf_id], text)
+          end
+        end
+
+        def set_custom_comment(custom_field, comment, text)
+          return unless custom_field
+
+          if comment
+            if text.present?
+              comment.text = text
+            else
+              custom_comments.delete(comment)
+            end
+          elsif text.present?
+            custom_comments.build(custom_field:, text:)
+          end
         end
 
         module AddClassMethods
