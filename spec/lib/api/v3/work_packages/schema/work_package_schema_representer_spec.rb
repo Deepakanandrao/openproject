@@ -288,9 +288,8 @@ RSpec.describe API::V3::WorkPackages::Schema::WorkPackageSchemaRepresenter do
       context "on a work package which's type has an auto-generated subject" do
         before do
           allow(wp_type)
-            .to receive(:replacement_pattern_defined_for?)
-                .with(:subject)
-                .and_return(true)
+            .to receive(:enabled_patterns)
+                .and_return({ subject: double })
         end
 
         it_behaves_like "has basic schema properties" do
