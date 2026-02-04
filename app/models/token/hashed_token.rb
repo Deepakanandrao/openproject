@@ -62,10 +62,6 @@ module Token
         find_by(value: hash_function(input)) || find_and_upgrade_legacy_token(input)
       end
 
-      def find_by_plaintext_value!(input)
-        find_by!(value: hash_function(input)) || find_by!(value: legacy_hash_function(input))
-      end
-
       def hash_function(input)
         # Use HMAC-SHA256 with a pepper stored in the database.
         # This protects low-entropy inputs (like backup codes) and allows
