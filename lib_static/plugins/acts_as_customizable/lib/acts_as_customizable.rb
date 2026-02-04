@@ -126,17 +126,13 @@ module Redmine
         def custom_field_values=(values)
           return unless values.is_a?(Hash) && values.any?
 
-          values.with_indifferent_access.each do |custom_field_id, val|
+          values.with_indifferent_access.each do |custom_field_id, new_values|
             existing_cv_by_value = custom_values_for_custom_field(custom_field_id, all: true)
                                      .group_by(&:value)
                                      .transform_values(&:first)
-            new_values = Array(val).map { |v| v.respond_to?(:id) ? v.id.to_s : v.to_s }
+            next if existing_cv_by_value.empty?
 
-            if existing_cv_by_value.any?
-              assign_new_values custom_field_id, existing_cv_by_value, new_values
-              delete_obsolete_custom_values existing_cv_by_value, new_values
-              handle_minimum_custom_value custom_field_id, existing_cv_by_value, new_values
-            end
+            update_custom_value(custom_field_id, existing_cv_by_value, new_values)
           end
         end
 
@@ -433,6 +429,14 @@ module Redmine
         # Particularly important for caching.
         def touch_customizable
           touch if !saved_changes? && custom_values.loaded? && (custom_values.any?(&:saved_changes?) || custom_value_destroyed)
+        end
+
+        def update_custom_value(custom_field_id, existing_cv_by_value, new_values)
+          new_values = Array(new_values).map { |v| v.respond_to?(:id) ? v.id.to_s : v.to_s }
+
+          assign_new_values(custom_field_id, existing_cv_by_value, new_values)
+          delete_obsolete_custom_values(existing_cv_by_value, new_values)
+          handle_minimum_custom_value(custom_field_id, existing_cv_by_value, new_values)
         end
 
         def assign_new_values(custom_field_id, existing_cv_by_value, new_values)
