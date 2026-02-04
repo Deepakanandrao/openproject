@@ -58,6 +58,11 @@ export default class extends Controller {
         }
     }
 
+    disconnect() {
+        super.disconnect();
+        this.finishedTargetConnected();
+    }
+
     private async reload() {
         const url = this.urlValue;
         const response = await fetch(url, {
