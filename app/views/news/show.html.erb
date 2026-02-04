@@ -88,7 +88,7 @@ See COPYRIGHT and LICENSE files for more details.
       <div class="comment">
         <div class="contextual">
           <%= link_to_if_authorized icon_wrapper("icon-context icon-delete", t(:button_delete)),
-                                    { controller: "/news/comments", action: "destroy", id: comment },
+                                    { controller: "/news/comments", action: "destroy", id: comment, project_id: @project, news_id: @news },
                                     data: { turbo_method: :delete, turbo_confirm: t(:text_are_you_sure) },
                                     class: "no-decoration-on-hover",
                                     title: t(:button_delete),
