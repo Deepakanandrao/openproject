@@ -101,7 +101,7 @@ services:
     environment:
       SECRET: "secret123"
     ports:
-      - "127.0.0.1:8080:1234"
+      - "127.0.0.1:1234:1234"
 ```
 Replace the `<hocuspocus_image>` with the image from [here](https://github.com/opf/openproject-docker-compose/blob/stable/17/docker-compose.yml#L122).
 
@@ -119,9 +119,10 @@ docker compose up -d
 Create `/etc/openproject/addons/apache2/custom/vhost/hocuspocus.conf` with the following content:
 
 ```apache
-ProxyPass        /hocuspocus  ws://127.0.0.1:8080/hocuspocus
-ProxyPassReverse /hocuspocus  ws://127.0.0.1:8080/hocuspocus
+ProxyPass        /hocuspocus  ws://127.0.0.1:1234/hocuspocus
+ProxyPassReverse /hocuspocus  ws://127.0.0.1:1234/hocuspocus
 ```
+*For Debian/Ubuntu-based systems, run the following commands:*
 
 Enable the `proxy_wstunnel` module:
 
@@ -135,10 +136,18 @@ Restart Apache:
 sudo service apache2 restart
 ```
 
+*For RHEL/CentOS-based systems, run the following command:*
+
+```shell
+sudo  service httpd restart 
+```
 
 #### 3. Enable real-time collaboration
 
-Manually configure the server URL & secret in the *Documents* administration settings in OpenProject.
+Manually configure the server URL & secret in the *Documents* administration settings in OpenProject.  
+Here you need to provide the URL in the following format: `wss://<your_op_hostname>/hocuspocus`.  
+If you are using HTTP in your instance, the protocol has to be `ws://` instead of `wss://`.  
+
 > [!NOTE]  
 > The secret must be identical in both op-blocknote-hocuspocus and OpenProject.
 
