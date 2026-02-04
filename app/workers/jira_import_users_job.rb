@@ -8,7 +8,7 @@ class JiraImportUsersJob < ApplicationJob
     jira_id = jira.id
     updated_at = Time.now
     created_at = updated_at
-    j = J.new(url: jira.url, personal_access_token: jira.personal_access_token)
+    jira_client = JiraClient.new(url: jira.url, personal_access_token: jira.personal_access_token)
 
     ActiveRecord::Base.transaction do
       jira_users = JiraUser.where(jira_id: jira.id)

@@ -45,7 +45,7 @@ class JiraInstanceMetaDataJob < ApplicationJob
 
   def get_meta(jira_import)
     jira = jira_import.jira
-    client = J.new(url: jira.url, personal_access_token: jira.personal_access_token)
+    client = JiraClient.new(url: jira.url, personal_access_token: jira.personal_access_token)
     available = collect_metadata(client)
     jira_import.update!(status: JiraImport::INSTANCE_META_DONE, job_id: nil, available:, error: nil)
   rescue StandardError => e

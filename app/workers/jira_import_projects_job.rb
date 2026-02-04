@@ -9,7 +9,8 @@ class JiraImportProjectsJob < ApplicationJob
     updated_at = Time.now
     created_at = updated_at
     user = User.system
-    j = J.new(url: jira.url, personal_access_token: jira.personal_access_token)
+    jira_client = JiraClient.new(url: jira.url, personal_access_token: jira.personal_access_token)
+    error = nil
 
     ActiveRecord::Base.transaction do
       created_projects = []
@@ -31,7 +32,7 @@ class JiraImportProjectsJob < ApplicationJob
           uses_existing: false
         )
       else
-        raise ActiveRecord::Rollback
+        raise service_call.message
       end
       project_role = service_call.result
 
@@ -79,7 +80,7 @@ class JiraImportProjectsJob < ApplicationJob
                 type = service_call.result
                 uses_existing = false
               else
-                raise ActiveRecord::Rollback
+                raise service_call.message
               end
             end
             service_call = WorkPackageTypes::UpdateService.new(
@@ -99,7 +100,7 @@ class JiraImportProjectsJob < ApplicationJob
                 uses_existing:
               )
             else
-              raise ActiveRecord::Rollback
+              raise service_call.message
             end
 
             ### STATUS
@@ -165,7 +166,7 @@ class JiraImportProjectsJob < ApplicationJob
 
               else
                 if service_call.errors.find { |error| error.type == :taken }.blank?
-                  raise ActiveRecord::Rollback
+                  raise service_call.message
                 end
               end
             end
@@ -201,14 +202,14 @@ class JiraImportProjectsJob < ApplicationJob
 
               attachments = jira_issue.payload["fields"]["attachment"]
               attachments.each do |attachment|
-                add_attachment(j:,work_package:, attachment:)
+                add_attachment(jira_client:, work_package:, attachment:)
               end
             else
-              raise ActiveRecord::Rollback
+              raise service_call.message
             end
           end
         else
-          raise ActiveRecord::Rollback
+          raise service_call.message
         end
       end
     end
@@ -233,7 +234,7 @@ class JiraImportProjectsJob < ApplicationJob
                        internal: false)
 
     if service_call.failure?
-      raise ActiveRecord::Rollback
+      raise service_call.message
     end
   end
 
@@ -248,18 +249,18 @@ class JiraImportProjectsJob < ApplicationJob
                        internal: false)
 
     if service_call.failure?
-      raise ActiveRecord::Rollback
+      raise service_call.message
     end
   end
 
-  def add_attachment(j:, work_package:, attachment:)
+  def add_attachment(jira_client:, work_package:, attachment:)
     filename = attachment["filename"]
     content_url = attachment["content"]
     author = User.find_by!(login: attachment["author"]["name"])
     created_at = attachment["created"]
     mime_type = attachment["mimeType"]
     size = attachment["size"]
-    response_body = j.download_attachment(content_url)
+    response_body = jira_client.download_attachment(content_url)
 
     Tempfile.create(filename, binmode: true) do |tempfile|
       response_body.copy_to(tempfile)
@@ -275,7 +276,7 @@ class JiraImportProjectsJob < ApplicationJob
       end
 
       call.on_failure do
-        raise ActiveRecord::Rollback
+        raise service_call.message
       end
     end
   end

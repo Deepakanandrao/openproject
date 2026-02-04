@@ -6,10 +6,10 @@ class JiraFetchProjectsJob < ApplicationJob
     jira_id = jira.id
     updated_at = Time.now
     created_at = updated_at
-    j = J.new(url: jira.url, personal_access_token: jira.personal_access_token)
+    jira_client = JiraClient.new(url: jira.url, personal_access_token: jira.personal_access_token)
 
     # ISSUE TYPES SYNC
-    issue_types = j.issue_types
+    issue_types = jira_client.issue_types
     issue_types_upsert_data = issue_types.map do |issue_type|
       {
         payload: issue_type,
@@ -23,7 +23,7 @@ class JiraFetchProjectsJob < ApplicationJob
     upsert_result = JiraIssueType.upsert_all(issue_types_upsert_data, unique_by: [:jira_id, :jira_issue_type_id])
 
     # PRIORITIES SYNC
-    priorities = j.priorities
+    priorities = jira_client.priorities
     priorities_upsert_data = priorities.map do |priority|
       {
         payload: priority,
@@ -37,7 +37,7 @@ class JiraFetchProjectsJob < ApplicationJob
     upsert_result = JiraPriority.upsert_all(priorities_upsert_data, unique_by: [:jira_id, :jira_priority_id])
 
     # STATUSES SYNC
-    statuses = j.statuses
+    statuses = jira_client.statuses
     statuses_upsert_data = statuses.map do |status|
       {
         payload: status,
@@ -51,7 +51,7 @@ class JiraFetchProjectsJob < ApplicationJob
     upsert_result = JiraStatus.upsert_all(statuses_upsert_data, unique_by: [:jira_id, :jira_status_id])
 
     # PROJECTS SYNC
-    projects_upsert_data = j.projects.map do |p|
+    projects_upsert_data = jira_client.projects.map do |p|
       {
         payload: p,
         jira_id:,
@@ -67,7 +67,7 @@ class JiraFetchProjectsJob < ApplicationJob
     # ISSUES SYNC
     JiraProject.where(jira_id:, jira_project_id: project_ids).each do |jira_project|
       jql = "project=#{jira_project.payload["key"]}"
-      result = j.issues(jql: ,
+      result = jira_client.issues(jql: ,
                         start_at: 0,
                         max_results: 5)
       total = result["total"]
@@ -88,7 +88,7 @@ class JiraFetchProjectsJob < ApplicationJob
       upsert_result = JiraIssue.upsert_all(issues_upsert_data, unique_by: [:jira_id, :jira_issue_id])
       while(total > start_at + max_results)
         start_at = start_at + max_results
-        result = j.issues(jql:,
+        result = jira_client.issues(jql:,
                           start_at:,
                           max_results: 5)
         total = result["total"]

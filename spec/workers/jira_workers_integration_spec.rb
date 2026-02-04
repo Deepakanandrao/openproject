@@ -40,7 +40,7 @@ RSpec.describe("Jira workers integration", :webmock) do
           'Authorization'=>'Bearer <personal_access_token>',
           'User-Agent'=>'OpenProject 17.2.0 HTTPX Client'
         }).
-      to_return(status: 200, body: File.read("test.png").to_s, headers: {"accept-ranges" => "bytes",
+      to_return(status: 200, body: File.read(Rails.root.join("spec/fixtures/files/image.png")).to_s, headers: {"accept-ranges" => "bytes",
                                                                          "cache-control" => "private, max-age=31536000",
                                                                          "content-disposition" => "inline; filename*=UTF-8''test.png;",
                                                                          "content-security-policy" => "sandbox",
@@ -65,7 +65,8 @@ RSpec.describe("Jira workers integration", :webmock) do
       :jira_import,
       status: "configured",
       jira:,
-      projects: ["10001", "10002"],
+      projects: [{"id" => "10002", "key" => "PROCESS1", "name" => "PROCESS_MANAGEMENT1"},
+                 {"id" => "10001", "key" => "KANBAN1", "name" => "KANBAN1"}],
       author:
     )
     type = create(:type_bug, :default)
@@ -192,7 +193,7 @@ RSpec.describe("Jira workers integration", :webmock) do
 
 
     # IMPORT PROJECTS
-    JiraImportProjectsJob.perform_now(jira_import.id)
+    result = JiraImportProjectsJob.perform_now(jira_import.id)
 
     expect(Project.count).to eq(2)
     expect(ProjectRole.where(name: "JiraMember").first).to be_present

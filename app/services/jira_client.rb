@@ -28,7 +28,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class J
+class JiraClient
   class Error < StandardError; end
 
   class ConnectionError < Error; end

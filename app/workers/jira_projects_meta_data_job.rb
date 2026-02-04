@@ -45,7 +45,7 @@ class JiraProjectsMetaDataJob < ApplicationJob
 
   def get_meta(jira_import)
     jira = jira_import.jira
-    client = J.new(url: jira.url, personal_access_token: jira.personal_access_token)
+    client = JiraClient.new(url: jira.url, personal_access_token: jira.personal_access_token)
     selected = collect_metadata(client, jira_import.project_ids)
     jira_import.update!(status: JiraImport::PROJECTS_META_DONE, job_id: nil, selected:, error: nil)
   rescue StandardError => e

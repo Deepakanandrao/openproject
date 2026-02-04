@@ -129,9 +129,9 @@ module Admin::Import::Jira
 
     def handle_test_error(error)
       message = case error
-                when J::ConnectionError then t(:"admin.jira.test.connection_error", message: error.message)
-                when J::ParseError then t(:"admin.jira.test.parse_error")
-                when J::ApiError then t(:"admin.jira.test.api_error", status: error.status)
+                when JiraClient::ConnectionError then t(:"admin.jira.test.connection_error", message: error.message)
+                when JiraClient::ParseError then t(:"admin.jira.test.parse_error")
+                when JiraClient::ApiError then t(:"admin.jira.test.api_error", status: error.status)
                 else
                   Rails.logger.error("Unexpected error testing Jira configuration: #{error.class} - #{error.message}")
                   t(:"admin.jira.test.error")
@@ -147,7 +147,7 @@ module Admin::Import::Jira
         return render_error_flash_message_via_turbo_stream(message: t(:"admin.jira.test.invalid_url"))
       end
 
-      render_test_result(J.new(url:, personal_access_token:).server_info)
+      render_test_result(JiraClient.new(url:, personal_access_token:).server_info)
     end
 
     def render_test_result(response)
