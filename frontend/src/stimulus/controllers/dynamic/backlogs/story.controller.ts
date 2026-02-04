@@ -65,12 +65,12 @@ export default class StoryController extends Controller<HTMLElement> implements 
     }
   }
 
-  markAsSelected(_event:Event) {
+  markAsSelected(_event?:Event) {
     this.element.classList.add(this.selectedClass);
     this.element.setAttribute('aria-current', 'true');
   }
 
-  unmarkAsSelected(_event:Event) {
+  unmarkAsSelected(_event?:Event) {
     this.element.classList.remove(this.selectedClass);
     this.element.removeAttribute('aria-current');
   }

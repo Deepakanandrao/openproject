@@ -70,10 +70,16 @@ export default class BacklogsController extends Controller<HTMLElement> {
     this.abortController = null;
   }
 
+  backlogsStoryOutletConnected(outlet:StoryController) {
+    const selectedId = this.getSelectedIdFromPathname(window.location.pathname);
+    if (selectedId !== null && outlet.idValue === selectedId) {
+      outlet.markAsSelected();
+    }
+  }
+
   private updateSelection = (event:TurboVisitEvent) => {
     const url = new URL(event.detail.url, window.location.origin);
-    const match = /\/details\/(\d+)/.exec(url.pathname);
-    const selectedId = match ? Number(match[1]) : null;
+    const selectedId = this.getSelectedIdFromPathname(url.pathname);
 
     this.backlogsStoryOutlets.forEach((story) => {
       if (selectedId !== null && story.idValue === selectedId) {
@@ -83,6 +89,11 @@ export default class BacklogsController extends Controller<HTMLElement> {
       }
     });
   };
+
+  private getSelectedIdFromPathname(pathname:string):number|null {
+    const match = /\/details\/(\d+)/.exec(pathname);
+    return match ? Number(match[1]) : null;
+  }
 
   private refreshList() {
     this.listElement.src = this.listUrlValue;
