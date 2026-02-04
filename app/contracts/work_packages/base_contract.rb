@@ -34,10 +34,7 @@ module WorkPackages
     include AssignableValuesContract
     include WorkPackages::SetAttributesService::ProgressValuesCalculations
 
-    attribute :subject,
-              writable: ->(*) {
-                !model.type&.replacement_pattern_defined_for?(:subject)
-              }
+    attribute :subject
     attribute :description
     attribute :status_id,
               permission: %i[edit_work_packages change_work_package_status],
@@ -246,6 +243,16 @@ module WorkPackages
     alias_method :assignable_responsibles, :assignable_assignees
 
     def valid?(context = :saving_custom_fields) = super
+
+    def writable_attributes
+      attributes = super
+
+      unless auto_generated_attributes_writable?
+        attributes -= auto_generated_attribute_names
+      end
+
+      attributes
+    end
 
     private
 
@@ -687,6 +694,12 @@ module WorkPackages
 
     def leaf_or_manually_scheduled?
       model.leaf? || model.schedule_manually?
+    end
+
+    def auto_generated_attributes_writable? = false
+
+    def auto_generated_attribute_names
+      (model.type && model.type.enabled_patterns&.keys&.map(&:to_s)) || []
     end
   end
 end
