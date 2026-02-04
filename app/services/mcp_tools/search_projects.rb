@@ -29,7 +29,7 @@
 #++
 
 module McpTools
-  class SearchProject < Base
+  class SearchProjects < Base
     # TODO: The mcp gem does not support pagination, so we only limit the number of results for now
     MAX_SIZE = 100
 
@@ -37,7 +37,7 @@ module McpTools
     default_description "Search projects matching all of the passed input parameters. " \
                         "Parameters not passed are ignored. Results are limited to a maximum of #{MAX_SIZE} projects."
 
-    name "search_project"
+    name "search_projects"
     annotations read_only: true, idempotent: true, destructive: false
 
     filter :name, filter_class: Queries::Projects::Filters::NameFilter, operator: "~"
