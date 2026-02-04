@@ -32,6 +32,8 @@ module MeetingAgendaItems
   class UpdateService < ::BaseServices::Update
     include AfterPerformHook
 
+    alias_method :original_after_perform, :after_perform
+
     private
 
     def before_perform(params)
@@ -41,7 +43,7 @@ module MeetingAgendaItems
     end
 
     def after_perform(call)
-      super
+      original_after_perform(call)
 
       if call.success? && @old_meeting_id != call.result.meeting_id
         copy_attachments_to_new_meeting(call.result, @old_meeting_id)
