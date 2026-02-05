@@ -89,7 +89,7 @@ RSpec.describe Backlogs::StoryComponent, type: :component do
     it "shows story points" do
       render_component
 
-      expect(page).to have_text("5 points")
+      expect(page).to have_text("5 points", normalize_ws: true)
     end
 
     it "renders StoryMenuComponent" do
@@ -106,7 +106,7 @@ RSpec.describe Backlogs::StoryComponent, type: :component do
       it "shows 0 points" do
         render_component
 
-        expect(page).to have_text("0 points")
+        expect(page).to have_text("0 points", normalize_ws: true)
       end
     end
 
@@ -116,7 +116,7 @@ RSpec.describe Backlogs::StoryComponent, type: :component do
       it "shows 0 points" do
         render_component
 
-        expect(page).to have_text("0 points")
+        expect(page).to have_text("0 points", normalize_ws: true)
       end
     end
 
@@ -126,7 +126,7 @@ RSpec.describe Backlogs::StoryComponent, type: :component do
       it "shows 1 point (singular)" do
         render_component
 
-        expect(page).to have_text("1 point")
+        expect(page).to have_text("1 point", normalize_ws: true)
       end
     end
   end

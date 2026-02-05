@@ -111,7 +111,7 @@ RSpec.describe Backlogs::BacklogHeaderComponent, type: :component do
         render_component
 
         # 5 + 3 + 0 = 8 points
-        expect(page).to have_text("8 points")
+        expect(page).to have_text("8 points", normalize_ws: true)
       end
 
       it "renders collapse/expand chevrons" do
@@ -140,7 +140,7 @@ RSpec.describe Backlogs::BacklogHeaderComponent, type: :component do
       it "shows 0 points" do
         render_component
 
-        expect(page).to have_text("0 points")
+        expect(page).to have_text("0 points", normalize_ws: true)
       end
     end
 
