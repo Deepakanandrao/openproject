@@ -136,7 +136,7 @@ RSpec.describe Backlogs::BacklogComponent, type: :component do
       let(:stories) { [] }
       let(:rendered_component) { render_component }
 
-      it_behaves_like "rendering Blank Slate", heading: "Sprint Backlog is empty"
+      it_behaves_like "rendering Blank Slate", heading: "Sprint 1 is empty"
     end
   end
 end

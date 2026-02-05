@@ -86,12 +86,8 @@ en:
       button_update_backlogs: "Update backlogs module"
 
     backlog_component:
-      sprint_backlog:
-        blankslate_title: "Sprint Backlog is empty"
-        blankslate_description: "No items planned yet. Drag items here to add them to the Sprint."
-      product_backlog:
-        blankslate_title: "Product Backlog is empty"
-        blankslate_description: "There is no upcoming work defined in the Product Backlog"
+      blankslate_title: "%{name} is empty"
+      blankslate_description: "No items planned yet. Drag items here to add them."
 
     backlog_header_component:
       label_toggle_backlog: "Collapse/Expand %{name}"

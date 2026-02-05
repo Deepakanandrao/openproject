@@ -34,21 +34,12 @@ See COPYRIGHT and LICENSE files for more details.
     <% end %>
     <% if backlog.stories.empty? %>
       <% border_box.with_row(data: { empty_list_item: true }) do %>
-        <% if backlog.sprint_backlog? %>
-          <%=
-            render Primer::Beta::Blankslate.new(role: "status", aria: { live: "polite" }) do |blankslate|
-              blankslate.with_heading(tag: :h4).with_content(t(".sprint_backlog.blankslate_title"))
-              blankslate.with_description_content(t(".sprint_backlog.blankslate_description"))
-            end
-          %>
-        <% else %>
-          <%=
-            render Primer::Beta::Blankslate.new(role: "status", aria: { live: "polite" }) do |blankslate|
-              blankslate.with_heading(tag: :h4).with_content(t(".product_backlog.blankslate_title"))
-              blankslate.with_description_content(t(".product_backlog.blankslate_description"))
-            end
-          %>
-        <% end %>
+        <%=
+          render Primer::Beta::Blankslate.new(role: "status", aria: { live: "polite" }) do |blankslate|
+            blankslate.with_heading(tag: :h4).with_content(t(".blankslate_title", name: sprint.name))
+            blankslate.with_description_content(t(".blankslate_description"))
+          end
+        %>
       <% end %>
     <% end %>
     <% backlog.stories.each do |story| %>
