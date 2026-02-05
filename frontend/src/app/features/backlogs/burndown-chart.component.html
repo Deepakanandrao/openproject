@@ -5,12 +5,14 @@
     [type]="'line'"></canvas>
 </div>
 
-<hr/>
+@if (isDevMode) {
+  <hr/>
 
-<details>
-  <summary>Debug</summary>
-  <code>
-    <pre>{{maxValue() }}</pre>
-    <pre>{{lineChartData() | json}}</pre>
-  </code>
-</details>
+  <details>
+    <summary>Debug</summary>
+    <code>
+      <pre>{{maxValue() }}</pre>
+      <pre>{{lineChartData() | json}}</pre>
+    </code>
+  </details>
+}
