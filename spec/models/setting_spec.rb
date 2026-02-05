@@ -666,6 +666,12 @@ RSpec.describe Setting do
       it "returns the existing value" do
         expect(described_class[setting_name]).to eq("existing_value")
       end
+
+      it "can set the value to persist it and override the default" do
+        described_class[setting_name] = "another value"
+        read_value = described_class[setting_name]
+        expect(read_value).to eq("another value")
+      end
     end
 
     context "when settings table does not exist" do
@@ -682,12 +688,14 @@ RSpec.describe Setting do
 
   describe ".persist_default_value", :settings_reset do
     let(:setting_name) { "auto_init_test" }
+    let(:format) { :string }
+    let(:default) { -> { "test_value" } }
 
     before do
       Settings::Definition.add(
         setting_name,
-        default: -> { "test_value" },
-        format: :string,
+        default:,
+        format:,
         persist_on_first_read: true
       )
     end
@@ -717,6 +725,31 @@ RSpec.describe Setting do
         result = described_class.persist_default_value(setting_name)
         expect(result).to eq("pre_existing")
       end
+    end
+
+    context "with a more complex hash value" do
+      let(:format) { :hash }
+      let(:default) do
+        -> { { foo: :bar } }
+      end
+
+      it "returns the existing value" do
+        result = described_class.persist_default_value(setting_name)
+        expect(result).to eq({ foo: :bar })
+      end
+    end
+  end
+
+  describe ".persist_default_value with nil default", :settings_reset do
+    it "raises an error if persist_default_value is called without a default value" do
+      expect do
+        Settings::Definition.add(
+          :my_test_setting,
+          default: nil,
+          persist_on_first_read: true,
+          format: :string
+        )
+      end.to raise_error(ArgumentError)
     end
   end
 end

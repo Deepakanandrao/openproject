@@ -1329,6 +1329,10 @@ module Settings
       if persist_on_first_read && !writable
         raise ArgumentError, "Settings using persist_on_first_read need to be writable"
       end
+
+      if persist_on_first_read && default.nil?
+        raise ArgumentError, "Settings using persist_on_first_read need to have a default value"
+      end
     end
 
     def derive_default(default)
