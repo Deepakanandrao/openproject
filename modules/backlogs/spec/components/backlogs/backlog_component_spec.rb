@@ -126,8 +126,8 @@ RSpec.describe Backlogs::BacklogComponent, type: :component do
         render_component
 
         story_row = page.find(".Box-row[id='story_#{story1.id}']")
-        expect(story_row[:class]).to include("Box-row--hover-gray")
-        expect(story_row[:class]).to include("Box-row--focus-blue")
+        expect(story_row[:class]).to include("Box-row--hover-blue")
+        expect(story_row[:class]).to include("Box-row--focus-gray")
         expect(story_row[:class]).to include("Box-row--clickable")
       end
     end
