@@ -31,7 +31,7 @@
 class RbStoriesController < RbApplicationController
   include OpTurbo::ComponentStream
 
-  def move
+  def move # rubocop:disable Metrics/AbcSize
     story = Story.visible.find(params[:id])
     # The #move_after called in update service required reloading the story, hence
     # it is required to memoize the previous version_id.
