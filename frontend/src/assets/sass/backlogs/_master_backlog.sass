@@ -114,9 +114,11 @@ $op-backlogs-header--points-min-width-narrow: 2rem
   flex: 1 1 100%
   overflow: hidden
 
-// Note: Using hardcoded values instead of $breakpoint-sm because
-// Sass doesn't interpolate variables in @container query conditions
-@container backlogsListsContainer (min-width: 544px)
+// Note: Using hardcoded values because Sass doesn't interpolate variables in
+// @container query conditions.
+// Note: 655px is between $breakpoint-sm and $breakpoint-md. This was found to
+// be a sensible value after initial testing with different viewports.
+@container backlogsListsContainer (min-width: 655px)
   .op-backlogs-header-form
     .FormControl-spacingWrapper
       flex-direction: row
@@ -126,7 +128,7 @@ $op-backlogs-header--points-min-width-narrow: 2rem
         flex: 1 1 auto
         min-width: 33%
 
-@container backlogsListsContainer (max-width: 543px)
+@container backlogsListsContainer (max-width: 654px)
   .op-backlogs-header
     grid-template-columns: 1fr minmax($op-backlogs-header--points-min-width-narrow, max-content) auto
 
