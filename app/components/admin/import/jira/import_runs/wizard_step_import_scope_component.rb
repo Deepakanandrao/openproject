@@ -38,16 +38,18 @@ module Admin::Import::Jira::ImportRuns
         projects_label(available_projects_count),
         issues_label(available_issues_count),
         statuses_label(available_statuses_count),
-        types_label(available_types_count)
+        types_label(available_types_count),
+        I18n.t(:"admin.jira.run.wizard.sections.import_scope.elements.users")
       ].map { |label| { label:, checked: true } }
     end
 
     def import_stats_unavailable
       [
-        I18n.t(:"admin.jira.run.wizard.sections.import_scope.unavailable.relations"),
-        I18n.t(:"admin.jira.run.wizard.sections.import_scope.unavailable.workflows"),
-        I18n.t(:"admin.jira.run.wizard.sections.import_scope.unavailable.users"),
-        I18n.t(:"admin.jira.run.wizard.sections.import_scope.unavailable.permissions")
+        I18n.t(:"admin.jira.run.wizard.sections.import_scope.elements.relations"),
+        I18n.t(:"admin.jira.run.wizard.sections.import_scope.elements.workflows"),
+        I18n.t(:"admin.jira.run.wizard.sections.import_scope.elements.permissions"),
+        I18n.t(:"admin.jira.run.wizard.sections.import_scope.elements.sprints"),
+        I18n.t(:"admin.jira.run.wizard.sections.import_scope.elements.schemes")
       ].map { |label| { label:, checked: false } }
     end
 

@@ -238,11 +238,13 @@ en:
               label_selected_data: "Selected data for import"
               label_progress: "Fetching data from Jira..."
               label_importing: "Currently importing"
-              unavailable:
+              elements:
                 relations: "Relations between issues"
                 workflows: "Custom workflows"
                 users: "Users"
-                permissions: "User, group and project permissions"
+                sprints: "Sprints"
+                schemes: "Schemas"
+                permissions: "Permissions, roles"
             confirm_import:
               title: "Import data"
               caption: "Review your import settings and start the import"
