@@ -37,8 +37,6 @@ module Types
 
       def apply_patterns(model, save: true)
         model.type&.enabled_patterns&.each do |key, pattern|
-          next if model.changed_attribute_keys.include?(key)
-
           model.public_send(:"#{key}=", pattern.resolve(model))
         end
 
