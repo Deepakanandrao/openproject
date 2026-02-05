@@ -142,18 +142,6 @@ module RbCommonHelper
     @all_work_package_status_by_id[id]
   end
 
-  # Returns all distinct virtual workflows for the roles the current user has in the project and the story types.
-  # Virtual workflow because not every instance of a workflow in the database will be returned but a representation
-  # distinct by type_id, old_status_id and new_status_id. This helps in case a lot of workflows are configured.
-  def all_workflows
-    Workflow
-      .includes(%i[new_status old_status])
-      .where(role_id: User.current.roles_for_project(@project).map(&:id),
-             type_id: story_types.map(&:id))
-      .group(:type_id, :old_status_id, :new_status_id)
-      .reselect(:type_id, :old_status_id, :new_status_id)
-  end
-
   def all_work_package_status
     @all_work_package_status ||= Status.order(Arel.sql("position ASC"))
   end
