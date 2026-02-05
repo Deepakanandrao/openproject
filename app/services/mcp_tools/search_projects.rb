@@ -38,6 +38,7 @@ module McpTools
 
     name "search_projects"
     annotations read_only: true, idempotent: true, destructive: false
+    pagination_enabled? true
 
     filter :name, filter_class: Queries::Projects::Filters::NameFilter, operator: "~"
     filter :identifier
@@ -63,12 +64,12 @@ module McpTools
       }
     )
 
-    def call(**query)
-      filtered = apply_filters(Project.visible, query)
-      paginated = apply_pagination(filtered, query)
+    def call(page: nil, **filters)
+      filtered = apply_filters(Project.visible, filters)
+      projects = apply_pagination(filtered, page)
 
       {
-        items: paginated.map { |p| API::V3::Projects::ProjectRepresenter.create(p, current_user:) }
+        items: projects.map { |p| API::V3::Projects::ProjectRepresenter.create(p, current_user:) }
       }
     end
   end

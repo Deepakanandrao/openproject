@@ -39,6 +39,7 @@ module McpTools
 
     name "search_work_packages"
     annotations read_only: true, idempotent: true, destructive: false
+    pagination_enabled? true
 
     # We can't use subclasses of WorkPackageFilter as filter_class, because they overwrite apply_to badly and rely on using
     # an instantiated Query to be used.
@@ -54,7 +55,7 @@ module McpTools
     input_schema(
       properties: {
         assigned_to_id: {
-          type: ["number", "null"],
+          type: %w[number null],
           description: "The ID of the user or group that is assigned to this work package. " \
                        "Pass null to search for work packages without an assignee."
         },
@@ -68,7 +69,7 @@ module McpTools
         },
         type_id: { type: "number", description: "The ID of the work package's type." },
         version_id: {
-          type: ["number", "null"],
+          type: %w[number null],
           description: "The ID of the work package's version. Pass null to search for work packages without a version."
         }
       }
@@ -85,12 +86,12 @@ module McpTools
       }
     )
 
-    def call(**query)
-      filtered = apply_filters(WorkPackage.visible, query)
-      paginated = apply_pagination(filtered, query)
+    def call(page: nil, **filters)
+      filtered = apply_filters(WorkPackage.visible, filters)
+      work_packages = apply_pagination(filtered, page)
 
       {
-        items: paginated.map { |wp| API::V3::WorkPackages::WorkPackageRepresenter.create(wp, current_user:) }
+        items: work_packages.map { |wp| API::V3::WorkPackages::WorkPackageRepresenter.create(wp, current_user:) }
       }
     end
   end

@@ -57,16 +57,26 @@ module McpTools
         @name
       end
 
+      def pagination_enabled?(enabled = nil)
+        @pagination_enabled = enabled if enabled.present?
+
+        @pagination_enabled || false
+      end
+
       def input_schema(schema = nil)
         if schema.present?
-          page = {
-            type: "number",
-            default: 1,
-            description: "Page number for pagination. If no page is defined, the first result set is returned. " \
-                         "To get the rest of the results, use a page number of 2 or higher."
-          }
+          if pagination_enabled?
+            page = {
+              type: "number",
+              default: 1,
+              description: "Page number for pagination. If no page is defined, the first result set is returned. " \
+                           "To get the rest of the results, use a page number of 2 or higher."
+            }
 
-          @input_schema = schema.deep_merge({ properties: { page: } })
+            @input_schema = schema.deep_merge({ properties: { page: } })
+          else
+            @input_schema = schema
+          end
         end
 
         @input_schema
@@ -193,20 +203,24 @@ module McpTools
     # Filtering happens based on the filters defined for the tool, see .filter.
     def apply_filters(scope, params)
       params.each do |name, value|
-        filter_proc = self.class.filters[name]
-        return scope unless filter_proc
-
+        filter_proc = filter_proc_for(name)
         scope = filter_proc.call(scope, value)
       end
 
       scope
     end
 
-    def apply_pagination(scope, query)
-      page = query[:page] || 1
+    def filter_proc_for(name)
+      self.class.filters[name] || raise(ArgumentError, "Don't know how to handle filter argument called #{name}")
+    end
+
+    def apply_pagination(scope, page)
+      return scope unless self.class.pagination_enabled?
+
+      page_number = page || 1
       page_size = self.class.page_size
 
-      scope.offset((page - 1) * page_size).limit(page_size)
+      scope.offset((page_number - 1) * page_size).limit(page_size)
     end
   end
 end
