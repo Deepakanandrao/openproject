@@ -71,15 +71,6 @@ $op-backlogs-header--points-min-width-narrow: 2rem
       &[hidden]
         opacity: 0
 
-@media screen and (max-width: $breakpoint-sm)
-  .op-backlogs-collapsible
-    flex-direction: column
-    align-items: flex-start
-
-    &--description
-      [data-collapsed] &
-        display: none
-
 .op-backlogs-story
   display: grid
   grid-template-columns: var(--control-xsmall-size) 1fr minmax($op-backlogs-header--points-min-width, max-content) auto
@@ -106,16 +97,6 @@ $op-backlogs-header--points-min-width-narrow: 2rem
   word-wrap: break-word
   overflow-wrap: break-word
 
-@media screen and (min-width: $breakpoint-sm)
-  .op-backlogs-header-form
-    .FormControl-spacingWrapper
-      flex-direction: row
-      column-gap: 0.5rem
-
-      & > :first-child
-        flex: 1 1 auto
-        min-width: 33%
-
 .op-backlogs-page
   display: block
   container-name: backlogsListsContainer
@@ -133,15 +114,35 @@ $op-backlogs-header--points-min-width-narrow: 2rem
   flex: 1 1 100%
   overflow: hidden
 
+// Note: Using hardcoded values instead of $breakpoint-sm because
+// Sass doesn't interpolate variables in @container query conditions
+@container backlogsListsContainer (min-width: 544px)
+  .op-backlogs-header-form
+    .FormControl-spacingWrapper
+      flex-direction: row
+      column-gap: 0.5rem
+
+      & > :first-child
+        flex: 1 1 auto
+        min-width: 33%
+
 @container backlogsListsContainer (max-width: 543px)
-  .op-backlogs-container
+  .op-backlogs-header
+    grid-template-columns: 1fr minmax($op-backlogs-header--points-min-width-narrow, max-content) auto
+
+  .op-backlogs-collapsible
     flex-direction: column
+    align-items: flex-start
+
+    &--description
+      [data-collapsed] &
+        display: none
 
   .op-backlogs-points-label
     display: none
 
-  .op-backlogs-header
-    grid-template-columns: 1fr minmax($op-backlogs-header--points-min-width-narrow, max-content) auto
-
   .op-backlogs-story
     grid-template-columns: var(--control-xsmall-size) 1fr minmax($op-backlogs-header--points-min-width-narrow, max-content) auto
+
+  .op-backlogs-container
+    flex-direction: column
