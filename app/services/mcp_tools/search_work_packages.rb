@@ -30,12 +30,12 @@
 
 module McpTools
   class SearchWorkPackages < Base
-    # TODO: The mcp gem does not support pagination, so we only limit the number of results for now
-    MAX_SIZE = 100
-
     default_title "Search work packages"
     default_description "Search work packages matching all of the passed input parameters. " \
-                        "Parameters not passed are ignored. Results are limited to a maximum of #{MAX_SIZE} work packages."
+                        "Parameters not passed are ignored. Results are limited to a maximum " \
+                        "of #{page_size} work packages. To get the rest of the results, call the tool again with a" \
+                        "page number of 2 or higher."
+
 
     name "search_work_packages"
     annotations read_only: true, idempotent: true, destructive: false
@@ -86,10 +86,11 @@ module McpTools
     )
 
     def call(**query)
-      work_packages = apply_filters(WorkPackage.visible.limit(MAX_SIZE), query)
+      filtered = apply_filters(WorkPackage.visible, query)
+      paginated = apply_pagination(filtered, query)
 
       {
-        items: work_packages.map { |wp| API::V3::WorkPackages::WorkPackageRepresenter.create(wp, current_user:) }
+        items: paginated.map { |wp| API::V3::WorkPackages::WorkPackageRepresenter.create(wp, current_user:) }
       }
     end
   end
