@@ -98,7 +98,7 @@ RSpec.describe "Backlogs context menu", :js do
              display: VersionSetting::DISPLAY_RIGHT)
     end
 
-    it "only displays 4 menu entries" do
+    it "only displays 2 menu entries" do
       within_backlog_context_menu do |menu|
         expect(menu).to have_selector :menuitem, count: 2
         expect(menu).to have_selector :menuitem, "New story"
