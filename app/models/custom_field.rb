@@ -277,6 +277,10 @@ class CustomField < ApplicationRecord
     where(is_filter: true)
   end
 
+  def all_attribute_names
+    [attribute_name, comment_attribute_name].compact
+  end
+
   def attribute_name(format = nil)
     return "customField#{id}" if format == :camel_case
     return "custom-field-#{id}" if format == :kebab_case

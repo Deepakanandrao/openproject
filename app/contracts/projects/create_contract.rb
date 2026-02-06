@@ -54,7 +54,7 @@ module Projects
     protected
 
     def collect_available_custom_field_attributes
-      model.all_visible_custom_fields.map(&:attribute_name)
+      model.all_visible_custom_fields.flat_map(&:all_attribute_names)
     end
 
     private

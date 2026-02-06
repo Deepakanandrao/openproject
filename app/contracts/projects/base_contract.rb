@@ -86,14 +86,10 @@ module Projects
       #
       # relevant especially for the project API
 
-      custom_field_attributes(model.all_available_custom_fields)
+      model.all_available_custom_fields.flat_map(&:all_attribute_names)
     end
 
     private
-
-    def custom_field_attributes(custom_fields)
-      custom_fields.flat_map { [it.attribute_name, it.comment_attribute_name] }.compact
-    end
 
     def validate_parent_assignable
       if model.parent &&

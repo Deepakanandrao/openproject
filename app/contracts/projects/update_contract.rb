@@ -68,10 +68,12 @@ module Projects
 
     def without_custom_fields(changes) = changes.grep_v(/^custom_(field|comment)_/)
 
-    def with_available_custom_fields_only(changes) = changes & custom_field_attributes(model.available_custom_fields)
+    def with_available_custom_fields_only(changes)
+      changes & available_custom_fields.flat_map(&:all_attribute_names)
+    end
 
     def with_all_available_custom_fields(changes)
-      without_custom_fields(changes) + (changes & custom_field_attributes(model.all_available_custom_fields))
+      without_custom_fields(changes) + (changes & all_available_custom_fields.flat_map(&:all_attribute_names))
     end
 
     def manage_permission
