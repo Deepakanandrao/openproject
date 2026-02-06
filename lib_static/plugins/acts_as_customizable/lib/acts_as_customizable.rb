@@ -170,6 +170,15 @@ module Redmine
 
         def custom_field_values(all: false) = cached_custom_field_values[all ? :all_available : :available]
 
+        # Finds a comment for the given custom field using a Ruby finder.
+        #
+        # This method is expected to be used when more comments are needed, so it
+        # uses ruby finder to avoid  N+1 queries when iterating over multiple custom
+        # fields.
+        def custom_comment_for(custom_field)
+          custom_comments.find { it.custom_field == custom_field }
+        end
+
         # Override to extend the cache key for caching @custom_field_values_cache.
         #
         # In some cases, the implementing class has a changing list of custom field values
