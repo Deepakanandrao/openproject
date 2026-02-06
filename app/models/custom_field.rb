@@ -285,7 +285,7 @@ class CustomField < ApplicationRecord
   end
 
   def comment_attribute_name
-    "custom_comment_#{id}" if can_have_comment?
+    "custom_comment_#{id}" if has_comment?
   end
 
   def attribute_getter
