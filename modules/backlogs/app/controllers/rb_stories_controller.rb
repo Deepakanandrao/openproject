@@ -31,18 +31,19 @@
 class RbStoriesController < RbApplicationController
   include OpTurbo::ComponentStream
 
+  before_action :load_story
+
   def move # rubocop:disable Metrics/AbcSize
-    story = Story.visible.find(params[:id])
-    # The #move_after called in update service required reloading the story, hence
-    # it is required to memoize the previous version_id.
-    version_id_was = story.version_id
+    # The update service reloads the story internally (via #move_after),
+    # so we memoize the previous version_id before the call.
+    version_id_was = @story.version_id
 
     call = Stories::UpdateService
-            .new(user: current_user, story:)
-            .call(
-              attributes: { version_id: move_params[:target_id] },
-              position: move_params[:position].to_i
-            )
+      .new(user: current_user, story: @story)
+      .call(
+        attributes: { version_id: move_params[:target_id] },
+        position: move_params[:position].to_i
+      )
 
     unless call.success?
       render_error_flash_message_via_turbo_stream(
@@ -50,28 +51,24 @@ class RbStoriesController < RbApplicationController
       )
     end
 
-    backlog = Backlog.for(sprint: @sprint, project: @project)
-    replace_via_turbo_stream(component: Backlogs::BacklogComponent.new(backlog:, project: @project))
+    replace_backlog_component_via_turbo_stream(sprint: @sprint)
 
-    if story.version_id != version_id_was
-      new_sprint  = story.version.becomes(Sprint)
-      new_backlog = Backlog.for(sprint: new_sprint, project: @project)
+    if @story.version_id != version_id_was
+      new_sprint = @story.version.becomes(Sprint)
 
       render_success_flash_message_via_turbo_stream(
         message: I18n.t(:notice_successful_move, from: @sprint.name, to: new_sprint.name)
       )
-      replace_via_turbo_stream(component: Backlogs::BacklogComponent.new(backlog: new_backlog, project: @project))
+      replace_backlog_component_via_turbo_stream(sprint: new_sprint)
     end
 
     respond_with_turbo_streams
   end
 
   def reorder
-    story = Story.visible.find(params[:id])
-
     call = Stories::UpdateService
-        .new(user: current_user, story:)
-        .call(attributes: { move_to: reorder_param })
+      .new(user: current_user, story: @story)
+      .call(attributes: { move_to: reorder_param })
 
     unless call.success?
       render_error_flash_message_via_turbo_stream(
@@ -79,14 +76,21 @@ class RbStoriesController < RbApplicationController
       )
     end
 
-    backlog = Backlog.for(sprint: @sprint, project: @project)
-
-    replace_via_turbo_stream(component: Backlogs::BacklogComponent.new(backlog:, project: @project))
+    replace_backlog_component_via_turbo_stream(sprint: @sprint)
 
     respond_with_turbo_streams
   end
 
   private
+
+  def replace_backlog_component_via_turbo_stream(sprint:)
+    @backlog = Backlog.for(sprint:, project: @project)
+    replace_via_turbo_stream(component: Backlogs::BacklogComponent.new(backlog: @backlog, project: @project))
+  end
+
+  def load_story
+    @story = Story.visible.find(params[:id])
+  end
 
   def move_params
     params.require(%i[position target_id])

@@ -67,6 +67,8 @@ RSpec.describe RbStoriesController do
       expect(response).to have_turbo_stream action: "flash", target: "op-primer-flash-component"
       expect(assigns(:project)).to eq(project)
       expect(assigns(:sprint)).to eq(sprint)
+      expect(assigns(:story)).to eq(story)
+      expect(assigns(:backlog)).to be_a(Backlog)
     end
 
     context "when service call fails" do
@@ -107,6 +109,8 @@ RSpec.describe RbStoriesController do
       expect(response).to have_turbo_stream action: "replace", target: "backlogs-backlog-component-#{sprint.id}"
       expect(assigns(:project)).to eq(project)
       expect(assigns(:sprint)).to eq(sprint)
+      expect(assigns(:story)).to eq(story)
+      expect(assigns(:backlog)).to be_a(Backlog)
     end
 
     context "when service call fails" do
