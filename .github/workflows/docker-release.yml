@@ -51,7 +51,7 @@ jobs:
 
   build-hocuspocus:
     needs: compute-inputs
-    uses: opf/hocuspocus/.github/workflows/docker-build.yml@dev
+    uses: opf/op-blocknote-hocuspocus/.github/workflows/docker-build.yml@dev
     with:
       ref: refs/tags/${{ needs.compute-inputs.outputs.tag }}
       tags: |
