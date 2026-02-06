@@ -635,10 +635,10 @@ uk:
   my_account:
     access_tokens:
       token/ical_meeting:
-        blank_description: "Ви можете створити нараду, натиснувши кнопку нижче."
-        blank_title: "Немає маркера наради в iCalendar"
+        blank_description: "Щоб створити нараду, натисніть кнопку нижче."
+        blank_title: "Немає маркера наради для iCalendar"
         title: "iCalendar для нарад"
-        table_title: "Маркери нарад в iCalendar"
+        table_title: "Маркери нарад для iCalendar"
         text_hint: "Маркери iCalendar для нарад дають змогу користувачам підписуватися на всі свої наради й переглядати актуальну інформацію про них у зовнішніх клієнтах."
         disabled_text: "Підписки на наради iCalendar не активував адміністратор. Зв’яжіться з ним, щоб використовувати цю функцію."
         add_button: "Підписатися на календар"
