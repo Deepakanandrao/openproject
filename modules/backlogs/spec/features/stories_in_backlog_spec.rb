@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -37,7 +39,7 @@ RSpec.describe "Stories in backlog", :js,
            enabled_module_names: %w(work_package_tracking backlogs))
   end
   let!(:story) { create(:type_feature) }
-  let!(:other_story) { create(:type) }
+  let!(:other_story) { create(:type, name: "Story") }
   let!(:task) { create(:type_task) }
   let!(:priority) { create(:default_priority) }
   let!(:default_status) { create(:status, is_default: true) }
@@ -69,7 +71,7 @@ RSpec.describe "Stories in backlog", :js,
            status: default_status,
            version: sprint,
            position: 1,
-           story_points: 10)
+           story_points: 8)
   end
   let!(:sprint_story1_task) do
     create(:work_package,
@@ -92,7 +94,7 @@ RSpec.describe "Stories in backlog", :js,
            status: default_status,
            version: sprint,
            position: 2,
-           story_points: 20)
+           story_points: 13)
   end
   let!(:backlog_story1) do
     create(:work_package,
@@ -104,8 +106,8 @@ RSpec.describe "Stories in backlog", :js,
   let!(:sprint) do
     create(:version,
            project:,
-           start_date: Date.today - 10.days,
-           effective_date: Date.today + 10.days,
+           start_date: Time.zone.today - 10.days,
+           effective_date: Time.zone.today + 10.days,
            version_settings_attributes: [{ project:, display: VersionSetting::DISPLAY_LEFT }])
   end
   let!(:backlog) do
@@ -127,7 +129,7 @@ RSpec.describe "Stories in backlog", :js,
            type: story,
            status: default_status,
            version: sprint,
-           story_points: 10)
+           story_points: 5)
   end
   let(:backlogs_page) { Pages::Backlogs.new(project) }
 
@@ -139,7 +141,7 @@ RSpec.describe "Stories in backlog", :js,
                         "task_type" => task.id.to_s)
   end
 
-  it "displays stories which are editable" do
+  it "displays stories which are editable via details view" do
     backlogs_page.visit!
 
     # All stories are visible in their sprint/backlog
@@ -166,7 +168,16 @@ RSpec.describe "Stories in backlog", :js,
       .expect_stories_in_order(sprint, sprint_story1, sprint_story2)
 
     # Velocity is calculated by summing up all story points in a sprint
+    backlogs_page.expect_velocity(sprint, 21)
+
     backlogs_page
-      .expect_velocity(sprint, 30)
+      .edit_story_in_details_view(sprint_story1, story_points: 5)
+
+    backlogs_page.expect_velocity(sprint, 18)
+
+    backlogs_page
+      .edit_story_in_details_view(sprint_story2, subject: "Updated story", story_points: 3)
+
+    backlogs_page.expect_velocity(sprint, 8)
   end
 end
