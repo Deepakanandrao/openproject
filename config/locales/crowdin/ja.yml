@@ -2248,7 +2248,7 @@ ja:
   create_project:
     attributes_heading: "Fill in this mandatory information to work on your projects."
     template_label: "テンプレートを使用"
-    template_heading: "Select a project template to work with the most common project management methods, or create a project from scratch."
+    template_heading: "テンプレートを選択するか、ゼロからプロジェクトを作成。"
     copy_options:
       dependencies_label: "テンプレートからコピー"
     blank_template:
