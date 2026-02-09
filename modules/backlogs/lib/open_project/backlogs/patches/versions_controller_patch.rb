@@ -27,7 +27,7 @@
 #++
 
 module OpenProject::Backlogs::Patches::VersionsControllerPatch
-  def self.included(base)
+  def self.included(base) # rubocop:disable Metrics/AbcSize
     base.class_eval do
       include VersionSettingsHelper
 

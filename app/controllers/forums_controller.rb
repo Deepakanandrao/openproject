@@ -49,7 +49,7 @@ class ForumsController < ApplicationController
     :forums
   end
 
-  def show
+  def show # rubocop:disable Metrics/AbcSize
     sort_init "updated_at", "desc"
     sort_update "created_at" => "#{Message.table_name}.created_at",
                 "replies" => "#{Message.table_name}.replies_count",

@@ -42,9 +42,12 @@ RSpec.describe RepositoriesController do
                          scm_type: "local",
                          url:,
                          project:)
-    allow(repo).to receive(:default_branch).and_return("master")
-    allow(repo).to receive(:branches).and_return(["master"])
-    allow(repo).to receive(:save).and_return(true)
+
+    allow(repo).to receive_messages({
+                                      default_branch: "master",
+                                      branches: ["master"],
+                                      save: true
+                                    })
 
     repo
   end
@@ -52,7 +55,7 @@ RSpec.describe RepositoriesController do
   before do
     login_as(user)
 
-    visible_relation = double("relation").as_null_object
+    visible_relation = instance_double(Project.all.class).as_null_object
     allow(Project).to receive(:visible).and_return(visible_relation)
     allow(visible_relation).to receive(:find).and_return(project)
 

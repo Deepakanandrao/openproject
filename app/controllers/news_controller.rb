@@ -40,7 +40,7 @@ class NewsController < ApplicationController
 
   accept_key_auth :index
 
-  def index
+  def index # rubocop:disable Metrics/AbcSize
     scope = @project ? @project.news : News.visible
 
     @news = scope.merge(News.latest_for(current_user, count: 0))

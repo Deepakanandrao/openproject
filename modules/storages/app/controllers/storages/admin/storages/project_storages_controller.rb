@@ -154,7 +154,7 @@ class Storages::Admin::Storages::ProjectStoragesController < ApplicationControll
     respond_with_turbo_streams
   end
 
-  def find_projects_to_activate_for_storage
+  def find_projects_to_activate_for_storage # rubocop:disable Metrics/AbcSize
     if (project_ids = params.to_unsafe_h[:storages_project_storage][:project_ids]).present?
       @projects = Project.visible.find(project_ids)
     else

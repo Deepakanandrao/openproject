@@ -39,7 +39,7 @@ class MembersController < ApplicationController
     set_index_data!
   end
 
-  def create
+  def create # rubocop:disable Metrics/AbcSize
     overall_result = []
 
     find_or_create_users(send_notification: true) do |member_params|
