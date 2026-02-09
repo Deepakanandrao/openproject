@@ -59,16 +59,6 @@ RSpec.describe Admin::Import::Jira::ImportRunsController do
       expect(response).to have_http_status(:forbidden)
     end
 
-    it "returns forbidden for POST #select_projects" do
-      post :select_projects, params: { jira_id: jira.id, id: jira_import.id, projects: %w[PROJ1] }
-      expect(response).to have_http_status(:forbidden)
-    end
-
-    it "returns forbidden for GET #select_projects_modal" do
-      get :select_projects_modal, params: { jira_id: jira.id, id: jira_import.id }, format: :turbo_stream
-      expect(response).to have_http_status(:forbidden)
-    end
-
     it "returns forbidden for GET #revert_modal" do
       get :revert_modal, params: { jira_id: jira.id, id: jira_import.id }, format: :turbo_stream
       expect(response).to have_http_status(:forbidden)
@@ -306,69 +296,6 @@ RSpec.describe Admin::Import::Jira::ImportRunsController do
         expect(flash[:error]).to eq("Test error")
         expect(response).to redirect_to(admin_import_jira_run_path(jira_id: jira.id, id: jira_import.id))
       end
-    end
-  end
-
-  describe "POST #select_projects" do
-    let(:available_projects) do
-      {
-        "projects" => [
-          { "id" => "10001", "name" => "Project One", "key" => "PROJ1" },
-          { "id" => "10002", "name" => "Project Two", "key" => "PROJ2" },
-          { "id" => "10003", "name" => "Project Three", "key" => "PROJ3" }
-        ]
-      }
-    end
-
-    before do
-      jira_import.update!(available: available_projects)
-    end
-
-    it "updates the selected projects" do
-      post :select_projects, params: { jira_id: jira.id, id: jira_import.id, projects: %w[10001 10002] }
-      expect(jira_import.reload.projects).to eq([
-        { "id" => "10001", "name" => "Project One", "key" => "PROJ1" },
-        { "id" => "10002", "name" => "Project Two", "key" => "PROJ2" }
-      ])
-      expect(response).to redirect_to(admin_import_jira_run_path(jira_id: jira.id, id: jira_import.id))
-    end
-
-    it "filters out blank values" do
-      post :select_projects, params: { jira_id: jira.id, id: jira_import.id, projects: ["10001", "", "10002", nil] }
-      expect(jira_import.reload.projects).to eq([
-        { "id" => "10001", "name" => "Project One", "key" => "PROJ1" },
-        { "id" => "10002", "name" => "Project Two", "key" => "PROJ2" }
-      ])
-    end
-
-    it "handles empty projects array" do
-      post :select_projects, params: { jira_id: jira.id, id: jira_import.id, projects: [] }
-      expect(jira_import.reload.projects).to eq([])
-    end
-
-    it "ignores project IDs not in available projects" do
-      post :select_projects, params: { jira_id: jira.id, id: jira_import.id, projects: %w[10001 99999] }
-      expect(jira_import.reload.projects).to eq([
-        { "id" => "10001", "name" => "Project One", "key" => "PROJ1" }
-      ])
-    end
-
-    context "when available projects is empty" do
-      before do
-        jira_import.update!(available: {})
-      end
-
-      it "sets projects to empty array" do
-        post :select_projects, params: { jira_id: jira.id, id: jira_import.id, projects: %w[10001 10002] }
-        expect(jira_import.reload.projects).to eq([])
-      end
-    end
-  end
-
-  describe "GET #select_projects_modal" do
-    it "responds with a dialog component" do
-      get :select_projects_modal, params: { jira_id: jira.id, id: jira_import.id }, format: :turbo_stream
-      expect(response).to have_http_status(:ok)
     end
   end
 

@@ -740,9 +740,18 @@ Rails.application.routes.draw do
             get :continue
             post :continue
             delete :remove
-            get :select_projects_modal
+
             get :revert_modal
-            post :select_projects
+          end
+
+          resource :select_projects,
+                   controller: "/admin/import/jira/import_runs/select_projects",
+                   only: %i[show update] do
+            post :filter
+            get :switch_page
+            get :check_all
+            get :uncheck_all
+            get :toggle
           end
         end
       end

@@ -28,40 +28,26 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Admin::Import::Jira::Projects
-  class FormComponent < ApplicationComponent
+module Admin::Import::Jira::ImportRuns::SelectProjects
+  class ListHeaderComponent < ApplicationComponent
     include ApplicationHelper
     include OpPrimer::ComponentHelpers
+    include OpTurbo::Streamable
 
-    FORM_ID = "op-jira-select-projects-list-form"
+    attr_reader :jira_import, :filter
 
-    def initialize(jira_import:)
+    def initialize(jira_import:, filter: nil)
       super()
       @jira_import = jira_import
+      @filter = filter
     end
 
-    private
-
-    attr_reader :jira_import
-
-    def available_projects
-      @jira_import.available&.dig("projects") || []
+    def check_all_url
+      check_all_admin_import_jira_run_select_projects_path(jira_id: jira_import.jira.id, run_id: jira_import.id)
     end
 
-    def project_ids
-      @project_ids ||= jira_import.project_ids || []
-    end
-
-    def checked?(project_id)
-      project_ids.include?(project_id)
-    end
-
-    def form_options
-      {
-        id: FORM_ID,
-        url: select_projects_admin_import_jira_run_path(jira_id: jira_import.jira.id, id: jira_import.id),
-        method: :post
-      }
+    def uncheck_all_url
+      uncheck_all_admin_import_jira_run_select_projects_path(jira_id: jira_import.jira.id, run_id: jira_import.id)
     end
   end
 end

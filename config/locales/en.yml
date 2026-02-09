@@ -133,8 +133,7 @@ en:
         new: "New configuration"
       banner:
         title: "Limited import"
-        description: "This import tool is currently in beta and can only import basic data: projects, issues (name, title, description), users (name, email, project membership), statuses, and types. It cannot import custom workflows, custom fields, attachments, issue relations, or permissions."
-        restriction: "We currently support only Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time."
+        description: "This import tool is currently in beta and can only import basic data: projects, issues (name, title, description), users (name, email, project membership), statuses, and types. It cannot import custom workflows, custom fields, attachments, issue relations, or permissions. We currently only support Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time."
       form:
         button_add: "Add configuration"
         button_save: "Save configuration"

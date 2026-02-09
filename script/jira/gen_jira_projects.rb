@@ -510,7 +510,7 @@ class JiraProjectCreator
 
   def ensure_categories_exist
     existing = fetch_project_categories
-    existing_names = existing.map { |c| c["name"] }
+    existing_names = existing.pluck("name")
 
     categories = []
     PROJECT_CATEGORIES.each do |cat|

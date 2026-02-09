@@ -1,0 +1,13 @@
+<%= component_wrapper do
+  render(
+    Primer::Beta::Button.new(
+      scheme: :primary,
+      tag: :a,
+      href: admin_import_jira_run_select_projects_path(jira_id: jira_import.jira.id, run_id: jira_import.id),
+      data: { "close-dialog-id": modal_id }
+    )
+  ) do |button|
+    button.with_trailing_visual_counter(count: count)
+    I18n.t(:button_continue)
+  end
+end %>

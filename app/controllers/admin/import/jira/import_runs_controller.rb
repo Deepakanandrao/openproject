@@ -31,6 +31,7 @@
 module Admin::Import::Jira
   class ImportRunsController < ApplicationController
     include OpTurbo::ComponentStream
+    include ImportRuns::ComponentStreams
 
     layout "admin"
 
@@ -47,7 +48,7 @@ module Admin::Import::Jira
     menu_item :jira_import
 
     before_action :require_admin
-    before_action :find_jira_and_jira_import, only: %i[show continue remove select_projects select_projects_modal revert_modal]
+    before_action :find_jira_and_jira_import, only: %i[show continue remove revert_modal]
 
     def show; end
 
@@ -62,15 +63,6 @@ module Admin::Import::Jira
       stream_wizard
     rescue StandardError => e
       handle_error(e)
-    end
-
-    def select_projects
-      @jira_import.update!(projects: select_projects_params)
-      stream_wizard
-    end
-
-    def select_projects_modal
-      respond_with_dialog Admin::Import::Jira::ImportRuns::SelectProjectsModalComponent.new(jira_import: @jira_import)
     end
 
     def revert_modal
@@ -105,36 +97,6 @@ module Admin::Import::Jira
           flash[:error] = error.message
           redirect_to(admin_import_jira_run_path(jira_id: @jira.id, id: @jira_import.id))
         end
-      end
-    end
-
-    def stream_wizard
-      respond_to do |format|
-        format.turbo_stream do
-          update_via_turbo_stream(
-            component: Admin::Import::Jira::ImportRuns::WizardComponent.new(@jira_import),
-            method: "morph"
-          )
-          update_via_turbo_stream(
-            component: Admin::Import::Jira::ImportRuns::StreamableStatusBadgeComponent.new(@jira_import.status),
-            method: "morph"
-          )
-          render turbo_stream: turbo_streams
-        end
-        format.html do
-          redirect_to(admin_import_jira_run_path(jira_id: @jira.id, id: @jira_import.id))
-        end
-      end
-    end
-
-    def select_projects_params
-      permitted = params.permit(projects: [])
-      selected_ids = Array(permitted[:projects]).map(&:to_s).compact_blank
-      available_projects = @jira_import.available&.dig("projects") || []
-
-      selected_ids.filter_map do |id|
-        project = available_projects.find { |p| p["id"] == id }
-        { "id" => id, "name" => project["name"], "key" => project["key"] } if project
       end
     end
 

@@ -92,7 +92,7 @@ See COPYRIGHT and LICENSE files for more details.
       render(Primer::Beta::Button.new(
         size: :medium,
         tag: :a,
-        href: select_projects_modal_admin_import_jira_run_path(jira_id: model.jira.id, id: model.id),
+        href: admin_import_jira_run_select_projects_path(jira_id: model.jira.id, run_id: model.id),
         data: { controller: "async-dialog" }
       )) do |component|
         component.with_trailing_visual_counter(count: selected_projects_count)

@@ -28,72 +28,74 @@
  * ++
  */
 
-import {Controller} from "@hotwired/stimulus";
+import {Controller} from '@hotwired/stimulus';
+import {renderStreamMessage} from '@hotwired/turbo';
+import {debounce, DebouncedFunc} from 'lodash';
+import {useMeta} from 'stimulus-use';
 
 export default class extends Controller {
-    static targets = ['filterInput', 'project', 'counter'];
+    static values = {
+        toggleUrl: String,
+        filterUrl: String,
+        debounce: {type: Number, default: 500},
+    };
 
-    declare readonly filterInputTarget:HTMLInputElement;
-    declare readonly projectTargets:HTMLElement[];
-    declare readonly counterTargets:HTMLElement[];
+    static metaNames = ['csrf-token'];
 
-    filter():void {
-        const query = this.filterInputTarget.value.toLowerCase().trim();
+    declare readonly csrfToken:string;
+    declare toggleUrlValue:string;
+    declare filterUrlValue:string;
+    declare debounceValue:number;
 
-        this.projectTargets.forEach((project) => {
-            const name = project.dataset.projectName?.toLowerCase() ?? '';
-            const key = project.dataset.projectKey?.toLowerCase() ?? '';
-            const wrapper:HTMLElement = project.closest('.FormControl-checkbox-wrap')!;
-            wrapper.style.display = (query === '' || name.includes(query) || key.includes(query)) ? '' : 'none';
-        });
-    }
-
-    clear():void {
-        this.filterInputTarget.value = '';
-        this.filter();
-    }
+    private debouncedFilter:DebouncedFunc<(filter:string) => Promise<void>> | null = null;
 
     connect():void {
-        this.updateCounter();
-        // Listen for changes on all checkboxes
-        this.element.addEventListener('change', (event) => {
-             const target = event.target as HTMLElement;
-            if (target.tagName === 'INPUT' && target.getAttribute('type') === 'checkbox') {
-                this.updateCounter();
-            }
-        });
+        useMeta(this, {suffix: false});
+        this.debouncedFilter = debounce(
+            (filter:string) => this.submitFilter(filter),
+            this.debounceValue,
+        );
     }
 
-    updateCounter():void {
-        const checkboxes = this.element.querySelectorAll<HTMLInputElement>('input[type="checkbox"]');
-        const checkedCount = Array.from(checkboxes).filter(cb => cb.checked).length.toString();
-        this.counterTargets.forEach(counter => {
-            counter.textContent = checkedCount;
-            counter.setAttribute('title', checkedCount);
-        });
+    disconnect():void {
+        this.debouncedFilter?.cancel();
     }
 
-    checkAll(event:Event):void {
-        event.preventDefault();
-        const checkboxes = this.element.querySelectorAll<HTMLInputElement>('input[type="checkbox"]');
-        checkboxes.forEach(checkbox => {
-            const wrapper:HTMLElement = checkbox.closest('.FormControl-checkbox-wrap')!;
-            if (wrapper.style.display !== 'none') {
-                checkbox.checked = true;
-            }
+    async toggleProject(event:Event):Promise<void> {
+        const checkbox = event.currentTarget as HTMLInputElement;
+        const projectId = checkbox.value;
+        const url = this.toggleUrlValue.replace('PROJECT_ID', projectId);
+
+        const response = await fetch(url, {
+            headers: {
+                Accept: 'text/vnd.turbo-stream.html',
+            },
         });
-        this.updateCounter();
+
+        const html = await response.text();
+        renderStreamMessage(html);
     }
 
-    uncheckAll(event:Event):void {
-        event.preventDefault();
-        const checkboxes = this.element.querySelectorAll<HTMLInputElement>('input[type="checkbox"]');
-        checkboxes.forEach(checkbox => {
-            const wrapper:HTMLElement = checkbox.closest('.FormControl-checkbox-wrap')!;
-            if (wrapper.style.display !== 'none') {
-                checkbox.checked = false;
-            }
+    filterProjects(event:Event):void {
+        const input = event.currentTarget as HTMLInputElement;
+        void this.debouncedFilter?.(input.value);
+    }
+
+    private async submitFilter(filter:string):Promise<void> {
+        const url = this.filterUrlValue;
+        const formData = new FormData();
+        formData.append('filter', filter);
+
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Accept': 'text/vnd.turbo-stream.html',
+                'X-CSRF-Token': this.csrfToken,
+            },
+            body: formData,
         });
-        this.updateCounter();
+
+        const html = await response.text();
+        renderStreamMessage(html);
     }
 }

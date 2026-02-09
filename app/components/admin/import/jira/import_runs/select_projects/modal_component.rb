@@ -28,14 +28,31 @@
 # See COPYRIGHT and LICENSE files for more details.
 # ++
 
-module Admin::Import::Jira::ImportRuns
-  class SelectProjectsModalComponent < ApplicationComponent
+module Admin::Import::Jira::ImportRuns::SelectProjects
+  class ModalComponent < ApplicationComponent
     include ApplicationHelper
     include OpPrimer::ComponentHelpers
     include OpTurbo::Streamable
 
     MODAL_ID = "op-jira-select-projects-list-dialog"
 
-    options :jira_import
+    attr_reader :jira_import, :list_header_component, :list_component, :list_footer_component, :selected_count
+
+    def initialize(jira_import:, list_header_component:, list_component:, list_footer_component:, selected_count:)
+      super()
+      @jira_import = jira_import
+      @list_header_component = list_header_component
+      @list_component = list_component
+      @list_footer_component = list_footer_component
+      @selected_count = selected_count
+    end
+
+    def toggle_url(project_id)
+      toggle_admin_import_jira_run_select_projects_path(jira_id: jira_import.jira.id, run_id: jira_import.id, project_id:)
+    end
+
+    def filter_url
+      filter_admin_import_jira_run_select_projects_path(jira_id: jira_import.jira.id, run_id: jira_import.id)
+    end
   end
 end
