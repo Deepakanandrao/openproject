@@ -188,7 +188,7 @@ RSpec.describe "Projects list filters", :js, with_settings: { login_required?: f
 
       # The child project does not get unarchived automatically
       visit project_path(child_project)
-      expect(page).to have_text("The project you're trying to access has been archived.")
+      expect(page).to have_text("The page you were trying to access doesn't exist or has been removed.")
 
       visit project_path(parent_project)
       expect(page).to have_text(parent_project.name)

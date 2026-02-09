@@ -478,9 +478,7 @@ RSpec.describe ProjectsController do
     let(:service_result) { ServiceResult.new(success:) }
 
     before do
-      visible_relation = instance_double(ActiveRecord::Relation)
-      allow(Project).to receive(:visible).and_return(visible_relation)
-      allow(visible_relation).to receive(:find).with(project.id.to_s).and_return(project)
+      allow(Project).to receive(:find).with(project.id.to_s).and_return(project)
 
       deletion_service = instance_double(Projects::ScheduleDeletionService,
                                          call: service_result)
