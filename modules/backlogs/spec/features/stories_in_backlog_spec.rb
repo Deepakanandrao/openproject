@@ -31,7 +31,7 @@
 require "spec_helper"
 require_relative "../support/pages/backlogs"
 
-RSpec.describe "Stories in backlog", :js, :selenium, :settings_reset do
+RSpec.describe "Stories in backlog", :js, :settings_reset do
   let!(:project) do
     create(:project,
            types: [story, task, other_story],
@@ -133,19 +133,16 @@ RSpec.describe "Stories in backlog", :js, :selenium, :settings_reset do
   let(:backlogs_page) { Pages::Backlogs.new(project) }
 
   before do
-    login_as current_user
-
     Setting.plugin_openproject_backlogs = {
       "story_types" => [story.id.to_s, other_story.id.to_s],
       "task_type" => task.id.to_s
     }
+
+    login_as current_user
+    backlogs_page.visit!
   end
 
-  it "displays stories which are editable via details view" do
-    backlogs_page.visit!
-
-    # All stories are visible in their sprint/backlog
-    # but non stories are not displayed
+  it "displays stories in correct order, calculates velocity, and allows editing story points" do
     backlogs_page
       .expect_story_in_sprint(sprint_story1, sprint)
 
@@ -179,15 +176,17 @@ RSpec.describe "Stories in backlog", :js, :selenium, :settings_reset do
       .edit_story_in_details_view(sprint_story2, subject: "Updated story", story_points: 3)
 
     backlogs_page.expect_velocity(sprint, 8)
+  end
 
-    # Assigning the story to the backlog will move it to the backlog
+  it "moves story from sprint to backlog when version is changed via details view" do
     backlogs_page
       .edit_story_in_details_view(sprint_story1, version: backlog)
 
     backlogs_page.expect_story_not_in_sprint(sprint_story1, sprint)
     backlogs_page.expect_story_in_sprint(sprint_story1, backlog)
+  end
 
-    # Changing type to TASK will remove the item from the list
+  it "removes story from sprint when type is changed to non-story type via details view" do
     backlogs_page
       .edit_story_in_details_view(sprint_story2, type: task.name)
 
