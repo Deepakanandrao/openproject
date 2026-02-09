@@ -168,7 +168,7 @@ module Accounts::CurrentUser
           redirect_to main_app.signin_path(back_url: login_back_url)
         end
 
-        auth_header = OpenProject::Authentication::WWWAuthenticate.response_header(request_headers: request.headers)
+        auth_header = OpenProject::Authentication::WWWAuthenticate.response_header
 
         format.any(:xml, :js, :json, :turbo_stream) do
           head :unauthorized,
