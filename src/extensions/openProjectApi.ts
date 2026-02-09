@@ -1,10 +1,11 @@
 import { BlockNoteSchema } from "@blocknote/core";
 import { ServerBlockNoteEditor } from "@blocknote/server-util";
-import type { onAuthenticatePayload, onLoadDocumentPayload, onStoreDocumentPayload } from "@hocuspocus/server";
+import type { beforeHandleMessagePayload, onAuthenticatePayload, onLoadDocumentPayload, onStoreDocumentPayload, onTokenSyncPayload } from "@hocuspocus/server";
 import { Extension } from "@hocuspocus/server";
 import { openProjectWorkPackageStaticBlockSpec } from "op-blocknote-extensions";
 import * as Y from "yjs";
-import { decryptToken } from "../services/decryptTokenService";
+import { TokenExpired, TokenExpiryMissing, unauthorized } from "../closeEvents";
+import { decryptAndValidateToken } from "../services/tokenValidationService";
 import type { ApiResponseDocument } from "../types";
 import { fetchResource } from "../services/resourceService";
 
@@ -24,45 +25,50 @@ export function createEditor() {
 
 export class OpenProjectApi implements Extension {
   /**
-    * Authenticate the user by validating the token and document access
-    */
+   * Authenticate the user by validating the token and document access
+   */
   async onAuthenticate(data: onAuthenticatePayload) {
-    const { token: packedParams, documentName: resourceUrl } = data;
+    const { token, documentName } = data;
+    const resourceUrl = documentName;
 
-    if (!packedParams) {
+    if (!token) {
       throw new Error('Unauthorized: Missing auth params');
     }
 
-    const decryptedToken = decryptToken(packedParams);
-
-    const {
-      resource_url: tokenResourceUrl,
-      oauth_token,
-      // readonly,
-    } = decryptedToken;
-
     const requestOrigin = data.request?.headers?.origin;
-    if (requestOrigin && !tokenResourceUrl?.startsWith(requestOrigin)) {
-      throw new Error('Unauthorized: Token origin does not match request origin.');
-    }
+    const result = await decryptAndValidateToken(token, resourceUrl, requestOrigin);
 
-    if (tokenResourceUrl !== resourceUrl) {
-      throw new Error(`Unauthorized: Token resource URL does not match document. (Token: ${tokenResourceUrl}, Resource: ${resourceUrl})`);
+    const tokenExpiresAtDate = new Date(result.tokenExpiresAt);
+    if (tokenExpiresAtDate <= new Date()) {
+      throw new Error('Unauthorized: Token already expired.');
     }
-
-    const response = await fetchResource(resourceUrl, oauth_token);
-
-    if (response.status != 200) {
-      throw new Error(`Unauthorized: Invalid token or document access denied. (${response.status}: ${response.statusText})`);
-    }
-    const jsonData = await response.json() as ApiResponseDocument;
 
     data.context.resourceUrl = resourceUrl;
-    data.context.token = oauth_token;
-    if (!jsonData._links?.update) {
+    data.context.token = result.decryptedToken;
+    data.context.tokenExpiresAt = tokenExpiresAtDate;
+
+    if (result.readonly) {
       // https://tiptap.dev/docs/hocuspocus/guides/auth#read-only-mode
       data.connectionConfig.readOnly = true;
       data.context.readonly = true;
+    }
+  }
+
+  /**
+   * Check token expiry before processing any message.
+   * Throwing CloseEvent closes the connection with the specified reason.
+   */
+  async beforeHandleMessage(data: beforeHandleMessagePayload): Promise<void> {
+    const { tokenExpiresAt } = data.context;
+
+    if (!tokenExpiresAt) {
+      printLog("[beforeHandleMessage] Missing tokenExpiresAt, closing connection");
+      throw TokenExpiryMissing;
+    }
+
+    if (tokenExpiresAt <= new Date()) {
+      printLog("[beforeHandleMessage] Token expired, closing connection");
+      throw TokenExpired;
     }
   }
 
@@ -71,6 +77,8 @@ export class OpenProjectApi implements Extension {
     */
   async onLoadDocument(data: onLoadDocumentPayload) {
     const { resourceUrl } = data.context;
+
+    printLog(`[onLoadDocument] GET ${resourceUrl}`);
 
     const response = await fetchResource(resourceUrl, data.context.token);
 
@@ -103,6 +111,8 @@ export class OpenProjectApi implements Extension {
       return;
     }
 
+    printLog(`[onStoreDocument] PATCH ${resourceUrl}`);
+
     const base64Data = Buffer.from(Y.encodeStateAsUpdate(data.document)).toString("base64");
 
     // Create a copy of the document to avoid side effects
@@ -129,5 +139,47 @@ export class OpenProjectApi implements Extension {
 
     data.document.connections.forEach(({ connection }) => connection.sendStateless("storeEvent"));
   }
-}
 
+  /**
+   * Handle token sync from clients (triggered by provider.sendToken())
+   */
+  async onTokenSync(data: onTokenSyncPayload): Promise<void> {
+    const { token, connection } = data;
+    if (!token) {
+      return;
+    }
+
+    const { resourceUrl } = connection.context;
+    if (!resourceUrl) {
+      return;
+    }
+
+    try {
+      const result = await decryptAndValidateToken(token, resourceUrl);
+
+      // Check if refreshed token is already expired (defensive)
+      const tokenExpiresAt = new Date(result.tokenExpiresAt);
+      if (tokenExpiresAt <= new Date()) {
+        connection.close(unauthorized("Token sync failed: received expired token"));
+        return;
+      }
+
+      connection.context.token = result.decryptedToken;
+      connection.context.tokenExpiresAt = tokenExpiresAt;
+
+      // Update permissions if changed
+      const isReadOnly = result.readonly;
+      if (isReadOnly !== connection.readOnly) {
+        connection.readOnly = isReadOnly;
+        connection.context.readonly = isReadOnly;
+      }
+
+      printLog(`[onTokenSync] Resource: ${resourceUrl} Readonly: ${result.readonly}`);
+    } catch (error) {
+      // Explicitly close connection on validation failure
+      const reason = error instanceof Error ? error.message : "Token sync failed";
+      printLog(`[onTokenSync] Error: ${reason}`);
+      connection.close(unauthorized(reason));
+    }
+  }
+}

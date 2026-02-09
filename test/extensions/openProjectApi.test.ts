@@ -1,7 +1,9 @@
-import { Document, onAuthenticatePayload, onLoadDocumentPayload, onStoreDocumentPayload } from "@hocuspocus/server";
-import { describe, expect, test } from "vitest";
+import { beforeHandleMessagePayload, Document, onAuthenticatePayload, onLoadDocumentPayload, onStoreDocumentPayload, onTokenSyncPayload } from "@hocuspocus/server";
+import { describe, expect, test, vi } from "vitest";
 import * as Y from "yjs";
-import { OpenProjectApi, createEditor } from "../../src/extensions/openProjectApi";
+import { TokenExpired, TokenExpiryMissing, unauthorized } from "../../src/closeEvents";
+import { createEditor, OpenProjectApi } from "../../src/extensions/openProjectApi";
+import { createExpiredToken, createTestToken } from "../helpers/tokenHelper";
 import { server } from "../mocks/node";
 import { http, HttpResponse } from "msw";
 import { text } from 'stream/consumers';
@@ -65,7 +67,7 @@ describe("OpenProjectApi", () => {
           token: "Yjo1x80JGIjrK8J6IDOuRn5kIOGvaAUw8C1so+dJJq7cgkllf3dQnw6d8bgiKbHXw8ZaMYE4IyOI1KQgX2ZRmx1mKBkxtb/fc7eCpGyTKGTA2Y1r/q7VJYiJZlpX7gx3nu569joEl/k=--mUkLaPiK0E82vGT9--gj1ZnTNlydL9j+Xw8+YFAA==",
           documentName: "https://test.api/api/v3/documents/1",
         } as unknown as onAuthenticatePayload)
-      ).rejects.toThrowError("Unauthorized: Invalid token or document access denied.");
+      ).rejects.toThrowError("Unauthorized: Invalid token or document access denied");
 
       expect(authHeader).toEqual("Bearer some_token_value");
     });
@@ -137,6 +139,59 @@ describe("OpenProjectApi", () => {
 
       expect(data.connectionConfig.readOnly).toBeUndefined();
       expect(data.context.readonly).toBeUndefined();
+    });
+
+    test("when the token has expired throw an error", async () => {
+      server.use(http.get('https://test.api/api/v3/documents/1', () => {
+        return HttpResponse.json({
+          _links: {
+            self: { href: "/api/v3/documents/1" },
+            update: { href: "/api/v3/documents/1" }
+          }
+        }, { status: 200 });
+      }));
+
+      const expiredToken = createExpiredToken();
+
+      await expect(() =>
+        new OpenProjectApi().onAuthenticate({
+          token: expiredToken,
+          documentName: "https://test.api/api/v3/documents/1",
+          context: {},
+          connectionConfig: {},
+        } as unknown as onAuthenticatePayload)
+      ).rejects.toThrowError("Unauthorized: Token already expired.");
+    });
+  });
+
+  describe("beforeHandleMessage", () => {
+    test("should allow message when token not expired", async () => {
+      const futureDate = new Date(Date.now() + 5 * 60 * 1000);
+      const data = {
+        context: { tokenExpiresAt: futureDate },
+      } as unknown as beforeHandleMessagePayload;
+
+      const api = new OpenProjectApi();
+      await expect(api.beforeHandleMessage(data)).resolves.toBeUndefined();
+    });
+
+    test("should throw CloseEvent when token has expired", async () => {
+      const pastDate = new Date(Date.now() - 60 * 1000);
+      const data = {
+        context: { tokenExpiresAt: pastDate },
+      } as unknown as beforeHandleMessagePayload;
+
+      const api = new OpenProjectApi();
+      await expect(api.beforeHandleMessage(data)).rejects.toEqual(TokenExpired);
+    });
+
+    test("should throw CloseEvent when tokenExpiresAt not set", async () => {
+      const data = {
+        context: {},
+      } as unknown as beforeHandleMessagePayload;
+
+      const api = new OpenProjectApi();
+      await expect(api.beforeHandleMessage(data)).rejects.toEqual(TokenExpiryMissing);
     });
   });
 
@@ -210,7 +265,7 @@ describe("OpenProjectApi", () => {
 
       const document = new Y.Doc();
       const fragment = document.getXmlFragment('document-store');
-     
+
       // @ts-expect-error BlockNote types are complicated
       editor.blocksToYXmlFragment(blocks, fragment);
 
@@ -219,6 +274,7 @@ describe("OpenProjectApi", () => {
           token: "superValidToken",
           resourceUrl: "https://test.api/api/v3/documents/121",
           readonly: false,
+          tokenExpiresAt: new Date(Date.now() + 5 * 60 * 1000), // 5 min from now
         },
         document: { ...document, connections: [] } as unknown as Document,
       } as onStoreDocumentPayload;
@@ -227,6 +283,220 @@ describe("OpenProjectApi", () => {
       await api.onStoreDocument(data);
 
       await expect(body).resolves.toContain("content_binary");
+    });
+  });
+
+  describe("onTokenSync", () => {
+    test("should return early if token is missing", async () => {
+      const data = {
+        token: "",
+        connection: {
+          readOnly: false,
+          context: { resourceUrl: "https://test.api/api/v3/documents/1" },
+        },
+        document: {},
+      } as unknown as onTokenSyncPayload;
+
+      const api = new OpenProjectApi();
+      await api.onTokenSync(data);
+
+      // No error thrown, early return
+    });
+
+    test("should return early if resourceUrl is missing", async () => {
+      const token = createTestToken();
+      const data = {
+        token,
+        connection: {
+          readOnly: false,
+          context: {},
+        },
+        document: {},
+      } as unknown as onTokenSyncPayload;
+
+      const api = new OpenProjectApi();
+      await api.onTokenSync(data);
+
+      // No error thrown, early return
+    });
+
+    test("should validate and update token on successful sync", async () => {
+      let authHeader: string = "";
+      server.events.on('request:end', ({ request }) => {
+        authHeader = request.headers.get("Authorization") || "";
+      });
+
+      server.use(http.get('https://test.api/api/v3/documents/1', () => {
+        return HttpResponse.json({
+          _links: {
+            self: { href: "/api/v3/documents/1" },
+            update: { href: "/api/v3/documents/1" }
+          }
+        }, { status: 200 });
+      }));
+
+      const token = createTestToken();
+      const data = {
+        token,
+        connection: {
+          readOnly: false,
+          context: {
+            resourceUrl: "https://test.api/api/v3/documents/1",
+            token: "old_token",
+            readonly: false,
+          },
+        },
+        document: {},
+      } as unknown as onTokenSyncPayload;
+
+      const api = new OpenProjectApi();
+      await api.onTokenSync(data);
+
+      expect(authHeader).toEqual("Bearer some_token_value");
+      expect(data.connection.context.token).toBe("some_token_value");
+    });
+
+    test("should update tokenExpiresAt in context after sync", async () => {
+      server.use(http.get('https://test.api/api/v3/documents/1', () => {
+        return HttpResponse.json({
+          _links: {
+            self: { href: "/api/v3/documents/1" },
+            update: { href: "/api/v3/documents/1" }
+          }
+        }, { status: 200 });
+      }));
+
+      const token = createTestToken({ expires_at: "2030-01-01T00:00:00.000Z" });
+      const data = {
+        token,
+        connection: {
+          readOnly: false,
+          context: {
+            resourceUrl: "https://test.api/api/v3/documents/1",
+            token: "old_token",
+            tokenExpiresAt: new Date("2020-01-01"),
+          },
+        },
+        document: {},
+      } as unknown as onTokenSyncPayload;
+
+      await new OpenProjectApi().onTokenSync(data);
+
+      expect(data.connection.context.tokenExpiresAt).toEqual(new Date("2030-01-01T00:00:00.000Z"));
+    });
+
+    test("should update readonly status when permissions change from writable to readonly", async () => {
+      // Note: Token readonly: false reflects user's permission at token creation time.
+      // API response without 'update' link means user lost write permission since then.
+      // The API response is authoritative, so connection becomes readonly.
+      server.use(http.get('https://test.api/api/v3/documents/1', () => {
+        return HttpResponse.json({
+          _links: {
+            self: { href: "/api/v3/documents/1" }
+            // No update link = readonly
+          }
+        }, { status: 200 });
+      }));
+
+      const token = createTestToken();
+      const data = {
+        token,
+        connection: {
+          readOnly: false,
+          context: {
+            resourceUrl: "https://test.api/api/v3/documents/1",
+            token: "old_token",
+            readonly: false,
+          },
+        },
+        document: {},
+      } as unknown as onTokenSyncPayload;
+
+      const api = new OpenProjectApi();
+      await api.onTokenSync(data);
+
+      expect(data.connection.context.readonly).toBe(true);
+      expect(data.connection.readOnly).toBe(true);
+    });
+
+    test("should close connection if token validation fails", async () => {
+      server.use(http.get('https://test.api/api/v3/documents/1', () => {
+        return HttpResponse.json({}, { status: 401 });
+      }));
+
+      const closeMock = vi.fn();
+      const token = createTestToken();
+      const data = {
+        token,
+        connection: {
+          close: closeMock,
+          readOnly: false,
+          context: {
+            resourceUrl: "https://test.api/api/v3/documents/1",
+            token: "old_token",
+            readonly: false,
+          },
+        },
+        document: {},
+      } as unknown as onTokenSyncPayload;
+
+      const api = new OpenProjectApi();
+      await api.onTokenSync(data);
+
+      expect(closeMock).toHaveBeenCalledWith(unauthorized(expect.stringContaining("Unauthorized")));
+      expect(data.connection.context.token).toBe("old_token");
+    });
+
+    test("should close connection if decryption fails", async () => {
+      const closeMock = vi.fn();
+      const data = {
+        token: "invalid_encrypted_token",
+        connection: {
+          close: closeMock,
+          readOnly: false,
+          context: {
+            resourceUrl: "https://test.api/api/v3/documents/1",
+            token: "old_token",
+          },
+        },
+        document: {},
+      } as unknown as onTokenSyncPayload;
+
+      const api = new OpenProjectApi();
+      await api.onTokenSync(data);
+
+      expect(closeMock).toHaveBeenCalledWith(unauthorized(expect.any(String)));
+      expect(data.connection.context.token).toBe("old_token");
+    });
+
+    test("should close connection if refreshed token is already expired", async () => {
+      server.use(http.get('https://test.api/api/v3/documents/1', () => {
+        return HttpResponse.json({
+          _links: {
+            self: { href: "/api/v3/documents/1" },
+            update: { href: "/api/v3/documents/1" }
+          }
+        }, { status: 200 });
+      }));
+
+      const closeMock = vi.fn();
+      const expiredToken = createExpiredToken();
+      const data = {
+        token: expiredToken,
+        connection: {
+          close: closeMock,
+          readOnly: false,
+          context: {
+            resourceUrl: "https://test.api/api/v3/documents/1",
+            token: "old_token",
+          },
+        },
+        document: {},
+      } as unknown as onTokenSyncPayload;
+
+      await new OpenProjectApi().onTokenSync(data);
+
+      expect(closeMock).toHaveBeenCalledWith(unauthorized("Token sync failed: received expired token"));
     });
   });
 });
