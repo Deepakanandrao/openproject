@@ -49,7 +49,7 @@ See COPYRIGHT and LICENSE files for more details.
 %>
 
 <% if @burndown %>
-  <%= render partial: "burndown", locals: { div: "burndown_", burndown: @burndown } %>
+  <%= render partial: "burndown", locals: { burndown: @burndown } %>
 <% else %>
   <%=
     render(Primer::Beta::Blankslate.new(border: true, spacious: true)) do |blankslate|
