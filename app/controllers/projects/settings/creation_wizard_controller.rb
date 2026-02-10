@@ -109,7 +109,8 @@ class Projects::Settings::CreationWizardController < Projects::SettingsControlle
     error = if @project.project_creation_wizard_default_work_package_type.nil?
               I18n.t("projects.settings.creation_wizard.errors.no_work_package_type")
             elsif @project.project_creation_wizard_default_status_when_submitted.nil?
-              I18n.t("projects.settings.creation_wizard.errors.no_status_when_submitted")
+              type = @project.project_creation_wizard_default_work_package_type.name
+              I18n.t("projects.settings.creation_wizard.errors.no_status_when_submitted", type:)
             end
 
     if error

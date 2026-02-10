@@ -58,7 +58,8 @@ RSpec.describe Projects::Settings::CreationWizardController do
 
         expect(response).to have_http_status(:redirect)
         expect(flash[:error]).to eq(
-          I18n.t("projects.settings.creation_wizard.errors.no_status_when_submitted")
+          I18n.t("projects.settings.creation_wizard.errors.no_status_when_submitted",
+                 type: project.project_creation_wizard_default_work_package_type.name)
         )
         expect(project.reload.project_creation_wizard_enabled).to be false
       end
