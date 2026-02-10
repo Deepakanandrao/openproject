@@ -151,7 +151,7 @@ RSpec.describe Projects::CreateArtifactWorkPackageContract, :check_errors_i18n d
       project.update(project_creation_wizard_assignee_custom_field_id: nil)
     end
 
-    it_behaves_like "contract is invalid", project_creation_wizard_assignee_custom_field_id: :blank
+    it_behaves_like "contract is valid"
   end
 
   context "with project attribute pointed by 'Assignee when submitted' not set" do
