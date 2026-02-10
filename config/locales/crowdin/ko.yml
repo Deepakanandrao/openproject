@@ -3922,6 +3922,7 @@ ko:
   notice_successful_delete: "삭제에 성공했습니다."
   notice_successful_cancel: "취소에 성공했습니다."
   notice_successful_update: "업데이트에 성공했습니다."
+  notice_successful_move: "Successful move from %{from} to %{to}."
   notice_unsuccessful_create: "생성이 실패했습니다."
   notice_unsuccessful_create_with_reason: "생성 실패: %{reason}"
   notice_unsuccessful_update: "업데이트에 실패했습니다."
@@ -4263,6 +4264,9 @@ ko:
   setting_capture_external_links: "외부 링크 캡처"
   setting_capture_external_links_text: >
     활성화된 경우, 서식이 지정된 텍스트의 모든 외부 링크는 애플리케이션을 종료하기 전에 경고 페이지를 통해 리디렉션됩니다. 따라서 잠재적인 악성 외부 웹사이트로부터 사용자를 보호할 수 있습니다.
+  setting_capture_external_links_require_login: "Require users to be logged in"
+  setting_capture_external_links_require_login_text: >
+    When enabled, users wanting to click on external links need to be logged in before being able to continue.
   setting_after_first_login_redirect_url: "첫 번째 로그인 리디렉션"
   setting_after_first_login_redirect_url_text_html: >
     첫 로그인 후 사용자를 리디렉션할 경로를 설정하세요. 비어 있으면 온보딩 투어의 홈페이지로 리디렉션됩니다. <br/> 예: <code>/my/page</code>

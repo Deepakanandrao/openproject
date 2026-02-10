@@ -4067,6 +4067,7 @@ pl:
   notice_successful_delete: "Usuwanie zakończone sukcesem."
   notice_successful_cancel: "Anulowanie powiodło się."
   notice_successful_update: "Aktualizacja zakończona sukcesem."
+  notice_successful_move: "Successful move from %{from} to %{to}."
   notice_unsuccessful_create: "Utworzenie nie powiodło się."
   notice_unsuccessful_create_with_reason: "Utworzenie nie powiodło się: %{reason}"
   notice_unsuccessful_update: "Aktualizacja nie powiodła się."
@@ -4412,6 +4413,9 @@ pl:
   setting_capture_external_links: "Przechwyć linki zewnętrzne"
   setting_capture_external_links_text: >
     Po włączeniu tej funkcji wszystkie linki zewnętrzne w tekście formatowanym będą przekierowywać na stronę z ostrzeżeniem przed opuszczeniem aplikacji. Pomaga to chronić użytkowników przed potencjalnie złośliwymi zewnętrznymi witrynami internetowymi.
+  setting_capture_external_links_require_login: "Require users to be logged in"
+  setting_capture_external_links_require_login_text: >
+    When enabled, users wanting to click on external links need to be logged in before being able to continue.
   setting_after_first_login_redirect_url: "Przekierowanie pierwszego logowania"
   setting_after_first_login_redirect_url_text_html: >
     Ustaw ścieżkę przekierowania użytkowników po ich pierwszym zalogowaniu. Jeśli jest pusta, przekierowuje do strony głównej wycieczki wdrożeniowej. <br/> Przykład: <code>/my/page</code>

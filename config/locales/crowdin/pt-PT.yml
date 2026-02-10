@@ -3968,6 +3968,7 @@ pt-PT:
   notice_successful_delete: "Eliminado com sucesso."
   notice_successful_cancel: "Cancelamento bem-sucedido."
   notice_successful_update: "Actualizado com sucesso."
+  notice_successful_move: "Successful move from %{from} to %{to}."
   notice_unsuccessful_create: "A criação falhou."
   notice_unsuccessful_create_with_reason: "A criação falhou: %{reason}"
   notice_unsuccessful_update: "Falha na atualização."
@@ -4311,6 +4312,9 @@ pt-PT:
   setting_capture_external_links: "Capturar links externos"
   setting_capture_external_links_text: >
     Quando ativada, todos os links externos no texto formatado serão redirecionados através de uma página de aviso antes de sair da aplicação. Isto ajuda a proteger os utilizadores de sites externos potencialmente maliciosos.
+  setting_capture_external_links_require_login: "Require users to be logged in"
+  setting_capture_external_links_require_login_text: >
+    When enabled, users wanting to click on external links need to be logged in before being able to continue.
   setting_after_first_login_redirect_url: "Redirecionamento do primeiro início de sessão"
   setting_after_first_login_redirect_url_text_html: >
     Defina um caminho para redirecionar os utilizadores após o primeiro início de sessão. Se estiver vazio, redireciona para a página inicial do tour de integração. <br/> Exemplo: <code>/my/page</code>

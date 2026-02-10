@@ -983,7 +983,7 @@ es:
           automatic_with_children: "Fechas determinadas por paquetes de trabajo secundarios."
           automatic_with_predecessor: "La fecha de inicio la fija un predecesor."
           manual_mobile: "Programado manualmente."
-          manually_scheduled: "Programado manualmente. No afectadas por relaciones."
+          manually_scheduled: "Programado manualmente. Fechas no afectadas por relaciones."
       blankslate:
         title: "Sin predecesores"
         description: "Para activar la programación automática, este paquete de trabajo debe tener al menos un predecesor. Entonces se programará automáticamente para que comience después del predecesor más cercano."
@@ -3969,6 +3969,7 @@ es:
   notice_successful_delete: "Eliminado con éxito."
   notice_successful_cancel: "Cancelación exitosa."
   notice_successful_update: "Actualización correcta."
+  notice_successful_move: "Successful move from %{from} to %{to}."
   notice_unsuccessful_create: "Error en la creación."
   notice_unsuccessful_create_with_reason: "Error en la creación: %{reason}"
   notice_unsuccessful_update: "Error al actualizar."
@@ -4313,6 +4314,9 @@ es:
   setting_capture_external_links: "Detección de enlaces externos"
   setting_capture_external_links_text: >
     Cuando esta función está habilitada, todos los enlaces externos en texto formateado redirigirán a una página de advertencia antes de salir de la aplicación. Esto ayuda a proteger a los usuarios de sitios web externos potencialmente maliciosos.
+  setting_capture_external_links_require_login: "Require users to be logged in"
+  setting_capture_external_links_require_login_text: >
+    When enabled, users wanting to click on external links need to be logged in before being able to continue.
   setting_after_first_login_redirect_url: "Primera redirección de inicio de sesión"
   setting_after_first_login_redirect_url_text_html: >
     Establezca una ruta para redirigir a los usuarios tras su primer inicio de sesión. Si está vacía, redirige a la página de inicio del recorrido de incorporación. <br/> Ejemplo: <code>/my/page</code>

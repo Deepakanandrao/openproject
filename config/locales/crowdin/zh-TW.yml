@@ -3205,7 +3205,7 @@ zh-TW:
   label_filter_add: "新增條件"
   label_filter_by: "篩選條件："
   label_filter_any_name_attribute: "名稱屬性"
-  label_filter_plural: "篩選條件"
+  label_filter_plural: "篩選器"
   label_filters_toggle: "顯示/隱藏篩選條件"
   label_float: "浮點數"
   label_folder: "資料夾"
@@ -3220,8 +3220,8 @@ zh-TW:
   label_global_modules: "全域模組"
   label_global_roles: "全域角色"
   label_git_path: ".git 目錄的路徑"
-  label_greater_or_equal: "之前"
-  label_group_by: "分類"
+  label_greater_or_equal: ">="
+  label_group_by: "分組依據"
   label_group_new: "新增群組"
   label_group: "群組"
   label_group_named: "群組名稱 %{name}"
@@ -3233,7 +3233,7 @@ zh-TW:
   label_hierarchy: "階層"
   label_hierarchy_leaf: "頁面結構頁"
   label_home: "Home"
-  label_subject_or_id: "名稱或 id"
+  label_subject_or_id: "主旨或 id"
   label_calendar_subscriptions: "訂閱行事曆"
   label_identifier: "識別碼"
   label_in: "在"
@@ -3283,7 +3283,7 @@ zh-TW:
   label_latest_revision_plural: "最新版本"
   label_ldap_authentication: "LDAP 認證"
   label_learn_more: "了解更多"
-  label_less_or_equal: "之後"
+  label_less_or_equal: "<="
   label_less_than_ago: "幾天內"
   label_link_url: "連結(URL)"
   label_list: "清單"
@@ -3917,6 +3917,7 @@ zh-TW:
   notice_successful_delete: "刪除成功"
   notice_successful_cancel: "取消成功"
   notice_successful_update: "更新成功"
+  notice_successful_move: "Successful move from %{from} to %{to}."
   notice_unsuccessful_create: "建立失敗。"
   notice_unsuccessful_create_with_reason: "建立失敗：%{reason}"
   notice_unsuccessful_update: "更新失敗。"
@@ -4260,6 +4261,9 @@ zh-TW:
   setting_capture_external_links: "擷取外部連結"
   setting_capture_external_links_text: >
     啟用後，格式化文字中的所有外部連結都會在離開應用程式前透過警告頁重定向。這有助於保護使用者遠離潛在的惡意外部網站。
+  setting_capture_external_links_require_login: "Require users to be logged in"
+  setting_capture_external_links_require_login_text: >
+    When enabled, users wanting to click on external links need to be logged in before being able to continue.
   setting_after_first_login_redirect_url: "首次登入重新導向"
   setting_after_first_login_redirect_url_text_html: >
     設定使用者首次登入後的重新導向路徑。如果為空，則會重定向到上線導覽的首頁。 <br/> 範例：<code>/my/page</code>

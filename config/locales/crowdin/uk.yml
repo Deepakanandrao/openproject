@@ -3393,7 +3393,7 @@ uk:
   label_index_by_title: "Індекс за назвою"
   label_information: "Інформація"
   label_information_plural: "Інформація"
-  label_installation_guides: "Інструкції із встановлення"
+  label_installation_guides: "Інструкції зі встановлення"
   label_integer: "Ціле число"
   label_interface: "Інтерфейс"
   label_internal: "Власне"
@@ -4065,6 +4065,7 @@ uk:
   notice_successful_delete: "Видалення успішно завершене."
   notice_successful_cancel: "Успішно видалено."
   notice_successful_update: "Успішно оновлено."
+  notice_successful_move: "Successful move from %{from} to %{to}."
   notice_unsuccessful_create: "Не вдалося створити."
   notice_unsuccessful_create_with_reason: "Не вдалося створити: %{reason}"
   notice_unsuccessful_update: "Не вдалось оновити."
@@ -4411,6 +4412,9 @@ uk:
   setting_capture_external_links: "Захоплення зовнішніх посилань"
   setting_capture_external_links_text: >
     Якщо ввімкнено, усі зовнішні посилання у відформатованому тексті переспрямовуватимуть на попереджувальну сторінку перед переходом із додатка. Це допомагає захистити користувачів від потенційно шкідливих зовнішніх вебсайтів.
+  setting_capture_external_links_require_login: "Require users to be logged in"
+  setting_capture_external_links_require_login_text: >
+    When enabled, users wanting to click on external links need to be logged in before being able to continue.
   setting_after_first_login_redirect_url: "Переспрямування після першого входу"
   setting_after_first_login_redirect_url_text_html: >
     Задайте шлях для переспрямування користувачів після першого входу. Якщо не задано, користувачі переспрямовуються на головну сторінку з ознайомленням. <br/>Наприклад: <code>/my/page</code>

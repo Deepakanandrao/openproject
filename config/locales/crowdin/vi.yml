@@ -2004,7 +2004,7 @@ vi:
     body: "cơ thể"
     blocks_ids: "ID của các work package bị chặn"
     category: "thể loại"
-    comment: "bình luận"
+    comment: "Nhận xét"
     comments: "bình luận"
     content: "Nội dung"
     color: "màu sắc"
@@ -3584,7 +3584,7 @@ vi:
   label_used_by: "Được dùng bởi"
   label_used_by_types: "Được sử dụng bởi các loại"
   label_used_in_projects: "Được sử dụng trong các dự án"
-  label_user: "người dùng"
+  label_user: "Người dùng"
   label_user_and_permission: "Người dùng và quyền"
   label_user_named: "Người dùng %{name}"
   label_user_activity: "%{value} hoạt động"
@@ -3920,6 +3920,7 @@ vi:
   notice_successful_delete: "Xóa thành công."
   notice_successful_cancel: "Hủy thành công."
   notice_successful_update: "Cập nhật thành công."
+  notice_successful_move: "Successful move from %{from} to %{to}."
   notice_unsuccessful_create: "Tạo không thành công."
   notice_unsuccessful_create_with_reason: "Tạo không thành công: %{reason}"
   notice_unsuccessful_update: "Cập nhật không thành công."
@@ -4264,6 +4265,9 @@ vi:
   setting_capture_external_links: "Chụp các liên kết bên ngoài"
   setting_capture_external_links_text: >
     Khi tính năng này được kích hoạt, tất cả các liên kết ngoài trong văn bản định dạng sẽ được chuyển hướng qua một trang cảnh báo trước khi rời khỏi ứng dụng. Điều này giúp bảo vệ người dùng khỏi các trang web bên ngoài có thể chứa mã độc hại.
+  setting_capture_external_links_require_login: "Require users to be logged in"
+  setting_capture_external_links_require_login_text: >
+    When enabled, users wanting to click on external links need to be logged in before being able to continue.
   setting_after_first_login_redirect_url: "Chuyển hướng đăng nhập lần đầu"
   setting_after_first_login_redirect_url_text_html: >
     Đặt đường dẫn để chuyển hướng người dùng sau lần đăng nhập đầu tiên của họ. Nếu trống, hãy chuyển hướng đến trang chủ để xem chuyến tham quan giới thiệu. <br/> Ví dụ: <code>/my/page</code>
