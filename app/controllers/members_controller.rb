@@ -84,7 +84,7 @@ class MembersController < ApplicationController
                                      per_page: params[:per_page])
   end
 
-  def destroy_by_principal
+  def destroy_by_principal # rubocop:disable Metrics/AbcSize
     principal = Principal.visible.find(params[:principal_id])
 
     service_call = Members::DeleteByPrincipalService
