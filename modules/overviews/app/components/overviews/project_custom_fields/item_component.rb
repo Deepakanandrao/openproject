@@ -38,14 +38,14 @@ module Overviews
       def value_wrapper_attributes
         if allowed_to_edit?
           if calculated_value? && !has_comment?
-            calculated_field_wrapper
+            non_editable_wrapper(id: calculated_value_tooltip_id)
           else
             modal_wrapper
           end
         elsif has_comment?
           modal_wrapper
         else
-          {}
+          non_editable_wrapper
         end
       end
 
@@ -64,7 +64,7 @@ module Overviews
 
         {
           tag: :div,
-          classes: "project-custom-field-clickable", # TODO: should it differentiate calculated value field?
+          classes: "project-custom-field-clickable",
           data: {
             controller: "project-custom-field-modal async-dialog",
             "project-custom-field-modal-url-value": url,
@@ -85,10 +85,9 @@ module Overviews
         }
       end
 
-      def calculated_field_wrapper
+      def non_editable_wrapper(**)
         {
           tag: :div,
-          id: calculated_value_tooltip_id,
           classes: "project-custom-field-non-editable",
           aria: {
             disabled: true,
@@ -97,7 +96,8 @@ module Overviews
               I18n.t(:label_value_x, x: accessible_value_text)
             ].join(", ")
           },
-          tabindex: 0
+          tabindex: 0,
+          **
         }
       end
     end
