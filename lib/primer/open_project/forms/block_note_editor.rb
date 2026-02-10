@@ -35,7 +35,7 @@ module Primer
       class BlockNoteEditor < Primer::Forms::BaseComponent
         include ::OpenProject::StaticRouting::UrlHelpers
         include FrontendAssetHelper
-        include BrowserHelper
+        include BrowserAware
 
         attr_reader :input,
                     :value,
@@ -64,16 +64,6 @@ module Primer
           @shadow_dom_stylesheet_url = variable_asset_path("styles.css")
 
           @collaboration_enabled = true
-        end
-
-        # N.B. This is an inelegant, and very likely brittle solution.
-        #
-        # The Browser gem uses `helper_method(:browser)` to declare a
-        # controller method as a helper. This helper is available in classic
-        # Rails views, but since upgrading to ViewComponent 4.0, no longer
-        # works with Primer Forms.
-        def browser
-          @view_context.controller.send(:browser)
         end
       end
     end
