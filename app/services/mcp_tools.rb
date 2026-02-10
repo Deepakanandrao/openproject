@@ -34,6 +34,8 @@ module McpTools
       [
         McpTools::ListStatuses,
         McpTools::ListTypes,
+        McpTools::SearchPortfolios,
+        McpTools::SearchPrograms,
         McpTools::SearchProjects,
         McpTools::SearchWorkPackages
       ]
