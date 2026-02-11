@@ -1,10 +1,16 @@
-name: test.yml
+name: "Hocuspocus / Tests"
 on:
   pull_request:
     types: [opened, reopened, synchronize]
+    paths:
+      - 'blocknote/hocuspocus/**'
 
 permissions:
   contents: read
+
+defaults:
+  run:
+    working-directory: ./blocknote/hocuspocus
 
 jobs:
   units:
@@ -20,7 +26,7 @@ jobs:
         with:
           node-version: '22.19'
           cache: npm
-          cache-dependency-path: package-lock.json
+          cache-dependency-path: blocknote/hocuspocus/package-lock.json
 
       - name: Install Dependencies
         id: npm-i

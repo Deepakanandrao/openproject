@@ -1,7 +1,7 @@
 # op-blocknote-hocuspocus
 
-[![Tests](https://github.com/opf/op-blocknote-hocuspocus/actions/workflows/test.yml/badge.svg)](https://github.com/opf/op-blocknote-hocuspocus/actions/workflows/test.yml)
-[![Docker](https://github.com/opf/op-blocknote-hocuspocus/actions/workflows/docker.yml/badge.svg)](https://github.com/opf/op-blocknote-hocuspocus/actions/workflows/docker.yml)
+[![Tests](https://github.com/opf/openproject/actions/workflows/hocuspocus-test.yml/badge.svg)](https://github.com/opf/openproject/actions/workflows/hocuspocus-test.yml)
+[![Docker](https://github.com/opf/openproject/actions/workflows/hocuspocus-docker.yml/badge.svg)](https://github.com/opf/openproject/actions/workflows/hocuspocus-docker.yml)
 
 A real-time collaborative editing server for [OpenProject](https://www.openproject.org/) documents, powered by [Yjs](https://github.com/yjs/yjs) and [Hocuspocus](https://tiptap.dev/docs/hocuspocus/introduction).
 
@@ -10,9 +10,9 @@ A real-time collaborative editing server for [OpenProject](https://www.openproje
 ### From Source
 
 ```bash
-# Clone the repository
-git clone https://github.com/opf/op-blocknote-hocuspocus.git
-cd op-blocknote-hocuspocus
+# Clone the OpenProject repository
+git clone https://github.com/opf/openproject.git
+cd openproject/blocknote/hocuspocus
 
 # Install dependencies
 npm install
@@ -99,7 +99,7 @@ npm run lint
 - [Hocuspocus Documentation](https://tiptap.dev/docs/hocuspocus/introduction)
 - [Yjs Documentation](https://docs.yjs.dev/)
 - [BlockNote Editor](https://www.blocknotejs.org/)
-- [Repository Issues](https://github.com/opf/op-blocknote-hocuspocus/issues)
+- [Repository Issues](https://github.com/opf/openproject/issues)
 
 ---
 

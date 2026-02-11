@@ -1,17 +1,23 @@
-name: Dockerize
+name: "Hocuspocus / Dockerize"
 
 on:
   push:
     branches:
       - dev
       - release
+    paths:
+      - 'blocknote/hocuspocus/**'
     tags:
-      - v*
+      - hocuspocus-v*
   workflow_dispatch:
     inputs:
       tag:
         description: "The tag to release. Note that this happens by default on the tag push. Only run this action when something went wrong!"
         required: false
+
+defaults:
+  run:
+    working-directory: ./blocknote/hocuspocus
 
 jobs:
   build:
@@ -25,12 +31,13 @@ jobs:
           GITHUB_REF: ${{ github.ref }}
         run: |
           if [[ "$EVENT_NAME" == 'workflow_dispatch' && -n "$INPUT_TAG" ]]; then
-            # Allow "v16.3.0", "16.3.0" or "refs/tags/v16.3.0" as input
+            # Allow "hocuspocus-v16.3.0", "v16.3.0", "16.3.0" or "refs/tags/hocuspocus-v16.3.0" as input
             RAW_TAG="${INPUT_TAG#refs/tags/}"
             echo "ref=refs/tags/$RAW_TAG" >> "$GITHUB_OUTPUT"
           else
             echo "ref=$GITHUB_REF" >> "$GITHUB_OUTPUT"
           fi
+        working-directory: .
 
       - name: Checkout
         uses: actions/checkout@v5
@@ -49,7 +56,8 @@ jobs:
           if [[ "$REF" == refs/tags/* ]]; then
             REF_TYPE="tag"
             TAG_REF="${REF#refs/tags/}"
-            # Normalize tag e.g. v16.3.0 => 16.3.0
+            # Normalize tag e.g. hocuspocus-v16.3.0 => 16.3.0
+            TAG_REF="${TAG_REF#hocuspocus-v}"
             TAG_REF="${TAG_REF#v}"
             BRANCH_REF=""
           elif [[ "$REF" == refs/heads/* ]]; then
@@ -86,7 +94,7 @@ jobs:
         if: steps.compute.outputs.ref_type == 'branch'
         uses: docker/build-push-action@v6
         with:
-          context: .
+          context: ./blocknote/hocuspocus
           push: true
           platforms: linux/amd64,linux/arm64/v8
           tags: |
@@ -99,7 +107,7 @@ jobs:
         if: steps.compute.outputs.ref_type == 'tag'
         uses: docker/build-push-action@v6
         with:
-          context: .
+          context: ./blocknote/hocuspocus
           push: true
           platforms: linux/amd64,linux/arm64/v8
           tags: |
