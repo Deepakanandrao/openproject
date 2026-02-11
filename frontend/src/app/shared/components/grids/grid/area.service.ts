@@ -104,7 +104,7 @@ export class GridAreaService {
 
   public async rebuildAndPersist():Promise<GridResource> {
     const resource = await this.persist();
-    this.buildAreas(true);
+    this.buildAreas(false);
     return resource;
   }
 
@@ -193,6 +193,7 @@ export class GridAreaService {
 
       area.widget = newWidget!;
     });
+    this.sortWidgetAreasRowMajor();
   }
 
   private buildGridAreas() {
@@ -282,6 +283,24 @@ export class GridAreaService {
       area.writeAreaChangeToWidget();
     });
   }
+
+  public sortWidgetAreasRowMajor():void {
+    const index = (area:GridWidgetArea) =>
+      (area.startRow - 1) * this.numColumns + area.startColumn;
+
+    this.widgetAreas.sort((a, b) => {
+      const diff = index(a) - index(b);
+
+      if (diff !== 0) return diff;
+
+      // stable fallback
+      const aKey = (a.widget.id ?? a.guid).toString();
+      const bKey = (b.widget.id ?? b.guid).toString();
+
+      return aKey.localeCompare(bKey);
+    });
+  }
+
 
   public addColumn(column:number, excludeRow:number) {
     this.numColumns++;
