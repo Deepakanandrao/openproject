@@ -71,7 +71,7 @@ module OpenProject
       end
 
       def wrapper_key
-        "op-inplace-edit-field-component--#{@model.name.parameterize(separator: '_')}-#{model.id}--#{attribute.name}"
+        "op-inplace-edit-field-component--#{@model.class.name.parameterize(separator: '_')}-#{model.id}--#{attribute.name}"
       end
 
       def wrapper_test_selector
