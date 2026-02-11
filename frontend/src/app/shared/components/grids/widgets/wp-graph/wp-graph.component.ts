@@ -85,4 +85,8 @@ export class WidgetWpGraphComponent extends AbstractWidgetComponent implements O
   public get chartType() {
     return this.graphConfiguration.chartType;
   }
+
+  public get widgetMenuLabel():string {
+    return this.i18n.t('js.grid.widget_menu_label', { widgetName: this.widgetName });
+  }
 }
