@@ -1,0 +1,39 @@
+# Schema: VersionWriteModel
+---
+type: object
+allOf:
+  - $ref: "./custom_field_properties.yml"
+properties:
+  name:
+    type: string
+    description: Version name
+  description:
+    $ref: "./formattable.yml"
+  startDate:
+    type:
+      - "string"
+      - "null"
+    format: date
+  endDate:
+    type:
+      - "string"
+      - "null"
+    format: date
+  status:
+    type: string
+    description: The current status of the version
+  sharing:
+    type: string
+    description: The current status of the version
+  _links:
+    type: object
+    allOf:
+      - $ref: "./custom_field_linked_properties.yml"
+    properties:
+      definingProject:
+        allOf:
+          - $ref: "./link.yml"
+          - description: |-
+              The workspace to which the version belongs
+              
+              **Resource**: Workspace

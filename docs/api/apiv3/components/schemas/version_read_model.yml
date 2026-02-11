@@ -1,11 +1,28 @@
-# Schema: VersionModel
+# Schema: VersionReadModel
 ---
 type: object
+required:
+  - id
+  - _type
+  - name
+  - description
+  - startDate
+  - endDate
+  - status
+  - sharing
+  - createdAt
+  - updatedAt
+allOf:
+  - $ref: "./custom_field_properties.yml"
 properties:
   id:
     type: integer
     description: Version id
     minimum: 1
+  _type:
+    type: string
+    enum:
+      - Version
   name:
     type: string
     description: Version name
@@ -24,9 +41,25 @@ properties:
   status:
     type: string
     description: The current status of the version
+    enum:
+      - open
+      - locked
+      - closed
   sharing:
     type: string
-    description: The current status of the version
+    description: |-
+      The indicator of how the version is shared between projects. This could be:
+        - *none*: if the version is only available in the defining project
+        - *descendants*: if the version is shared with the descendants of the defining project
+        - *hierarchy*: if the version is shared with the descendants and the ancestors of the defining project
+        - *tree*: if the version is shared with the root project of the defining project and all descendants of the root project
+        - *system*: if the version is shared globally
+    enum:
+      - none
+      - descendants
+      - hierarchy
+      - tree
+      - system
   createdAt:
     type: string
     format: date-time
@@ -39,13 +72,40 @@ properties:
     type: object
     required:
       - self
+      - schema
+      - definingProject
       - availableInProjects
+    allOf:
+      - $ref: "./custom_field_linked_properties.yml"
     properties:
+      self:
+        allOf:
+          - $ref: "./link.yml"
+          - description: |-
+              This version
+              
+              **Resource**: Version
+      schema:
+        allOf:
+          - $ref: "./link.yml"
+          - description: |-
+              The schema of this version
+              
+              **Resource**: VersionSchema
       update:
         allOf:
           - $ref: "./link.yml"
           - description: |-
               Form endpoint that aids in preparing and performing edits on the version
+              
+              # Conditions
+              
+              **Permission**: manage versions
+      delete:
+        allOf:
+          - $ref: "./link.yml"
+          - description: |-
+              Deletes this version
               
               # Conditions
               
@@ -59,13 +119,6 @@ properties:
               # Conditions
               
               **Permission**: manage versions
-      self:
-        allOf:
-          - $ref: "./link.yml"
-          - description: |-
-              This version
-              
-              **Resource**: Version
       definingProject:
         allOf:
           - $ref: "./link.yml"
@@ -80,34 +133,3 @@ properties:
               Workspaces where this version can be used
               
               **Resource**: Workspace
-example:
-  _links:
-    self:
-      href: "/api/v3/versions/11"
-    update:
-      href: "/api/v3/versions/11/form"
-      method: POST
-    updateImmediately:
-      href: "/api/v3/versions/11"
-      method: PATCH
-    definingProject:
-      href: "/api/v3/projects/11"
-    availableInProjects:
-      href: "/api/v3/versions/11/workspaces"
-    customField4:
-      href: "/api/v3/custom_options/5"
-      title: Custom field option
-  _type: Version
-  id: 11
-  name: v3.0 Alpha
-  description:
-    format: plain
-    raw: This version has a description
-    html: This version has a description
-  startDate: '2014-11-20'
-  endDate:
-  status: open
-  sharing: system
-  customField14: '1234567890'
-  createdAt: "2025-12-10T13:37:00Z"
-  updatedAt: "2025-12-10T13:37:00Z"
