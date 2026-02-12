@@ -285,8 +285,8 @@ module Projects
     def additional_css_class(column)
       if column.attribute == :name
         "project--hierarchy #{'archived' if project.archived?}"
-      elsif %i[status_explanation description].include?(column.attribute)
-        "project-long-text-container"
+      elsif %i[status_explanation description].include?(column.attribute) || custom_comment_column?(column)
+        "project-long-text-container" # TODO: it doesn't seem to be used, is this class needed at all?
       elsif column.attribute == :favorited
         "-w-abs-45"
       elsif custom_field_column?(column)
