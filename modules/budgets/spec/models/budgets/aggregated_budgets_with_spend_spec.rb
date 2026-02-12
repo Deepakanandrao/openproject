@@ -54,6 +54,7 @@ RSpec.describe Budgets::AggregatedBudgetsWithSpend do
     end
 
     context "with both material and labor spending" do
+      let!(:budget) { create(:budget, project:) }
       let!(:cost_type) { create(:cost_type) }
       let!(:cost_rate) do
         create(:cost_rate,
@@ -80,6 +81,7 @@ RSpec.describe Budgets::AggregatedBudgetsWithSpend do
       end
 
       before do
+        work_package.update!(budget:)
         create(:hourly_rate,
                user:,
                project:,
@@ -119,6 +121,10 @@ RSpec.describe Budgets::AggregatedBudgetsWithSpend do
                spent_on: Date.current)
       end
 
+      before do
+        work_package.update(budget:)
+      end
+
       it "calculates the ratio of spent to budget" do
         expect(aggregated.spent_ratio).to eq(BigDecimal("0.5"))
       end
@@ -141,6 +147,10 @@ RSpec.describe Budgets::AggregatedBudgetsWithSpend do
                cost_type:,
                units: 20,
                spent_on: Date.current)
+      end
+
+      before do
+        work_package.update(budget:)
       end
 
       it "returns a ratio greater than 1" do
@@ -177,6 +187,10 @@ RSpec.describe Budgets::AggregatedBudgetsWithSpend do
                spent_on: Date.current)
       end
 
+      before do
+        work_package.update(budget:)
+      end
+
       it "calculates remaining as budgeted_total - spent_total" do
         expect(aggregated.remaining).to eq(BigDecimal("7000"))
       end
@@ -201,6 +215,10 @@ RSpec.describe Budgets::AggregatedBudgetsWithSpend do
                spent_on: Date.current)
       end
 
+      before do
+        work_package.update(budget:)
+      end
+
       it "returns 0" do
         expect(aggregated.remaining).to eq(BigDecimal("0"))
       end
@@ -223,6 +241,10 @@ RSpec.describe Budgets::AggregatedBudgetsWithSpend do
                cost_type:,
                units: 20,
                spent_on: Date.current)
+      end
+
+      before do
+        work_package.update(budget:)
       end
 
       it "returns negative value" do
@@ -266,6 +288,7 @@ RSpec.describe Budgets::AggregatedBudgetsWithSpend do
     end
 
     before do
+      work_package.update!(budget:)
       create(:hourly_rate,
              user:,
              project:,

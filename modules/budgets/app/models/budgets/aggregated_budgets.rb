@@ -46,15 +46,19 @@ module Budgets
     end
 
     def budgeted_material
-      material_budget_items.sum(:amount)
+      material_budget_items.visible_costs(current_user).sum(&:costs)
     end
 
     def budgeted_material_by_type
-      material_budget_items_by_type.sum("material_budget_items.amount")
+      material_budget_items
+        .visible_costs(current_user)
+        .includes(:cost_type)
+        .group_by { |item| item.cost_type.name }
+        .transform_values { |items| items.sum(&:costs) }
     end
 
     def budgeted_labor
-      labor_budget_items.sum(:amount)
+      labor_budget_items.visible_costs(current_user).sum(&:costs)
     end
 
     def budgeted_total
@@ -69,23 +73,22 @@ module Budgets
 
     def budgets
       Budget
-        .joins(:project)
-        .merge(applicable_projects)
         .visible(current_user)
+        .where(project_id: applicable_projects)
     end
 
     def material_budget_items
       MaterialBudgetItem
         .joins(budget: :project)
-        .merge(applicable_projects)
         .visible(current_user)
+        .where(budget: { project_id: applicable_projects })
     end
 
     def material_budget_items_by_type
       CostType
         .left_joins(material_budget_items: { budget: :project })
-        .merge(applicable_projects)
         .merge(MaterialBudgetItem.visible(current_user))
+        .where(projects: { id: applicable_projects })
         .group(:name)
         .order(name: :asc)
     end
@@ -93,8 +96,8 @@ module Budgets
     def labor_budget_items
       LaborBudgetItem
         .joins(budget: :project)
-        .merge(applicable_projects)
         .visible(current_user)
+        .where(budget: { project_id: applicable_projects })
     end
   end
 end

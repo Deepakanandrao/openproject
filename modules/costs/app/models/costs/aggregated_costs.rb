@@ -75,7 +75,11 @@ module Costs
     private
 
     def cost_entries
-      scope = CostEntry.joins(:project).merge(applicable_projects).visible_costs(current_user)
+      scope = CostEntry
+        .joins(:project)
+        .merge(applicable_projects)
+        .on_work_packages(budgeted_work_packages)
+        .visible_costs(current_user)
       scope = scope.where(spent_on: @date_range) if @date_range
       scope
     end
@@ -91,13 +95,23 @@ module Costs
     end
 
     def time_entries
-      scope = TimeEntry.joins(:project).merge(applicable_projects).visible_costs(current_user)
+      scope = TimeEntry
+        .joins(:project)
+        .merge(applicable_projects)
+        .on_work_packages(budgeted_work_packages)
+        .visible_costs(current_user)
       scope = scope.where(spent_on: @date_range) if @date_range
       scope
     end
 
     def time_entries_by_month
       time_entries.group("date_trunc('month', time_entries.spent_on)")
+    end
+
+    def budgeted_work_packages
+      WorkPackage
+        .where(project_id: applicable_projects)
+        .where.associated(:budget)
     end
   end
 end

@@ -47,7 +47,8 @@ RSpec.describe Costs::Widgets::ActualCosts, type: :component do
   subject(:rendered_component) { render_component(project, current_user:) }
 
   context "with spending data" do
-    let(:work_package) { create(:work_package, project: project) }
+    let!(:budget) { create(:budget, project:) }
+    let(:work_package) { create(:work_package, project:, budget:) }
     let!(:hourly_rate) do
       create(:hourly_rate,
              user: current_user,
@@ -108,7 +109,8 @@ RSpec.describe Costs::Widgets::ActualCosts, type: :component do
   end
 
   context "with material cost entries" do
-    let(:work_package) { create(:work_package, project: project) }
+    let!(:budget) { create(:budget, project:) }
+    let(:work_package) { create(:work_package, project:, budget:) }
     let(:cost_type) { create(:cost_type, name: "Development") }
     let!(:cost_rate) do
       create(:cost_rate,
@@ -138,7 +140,8 @@ RSpec.describe Costs::Widgets::ActualCosts, type: :component do
   end
 
   context "with spending data only from a prior year" do
-    let(:work_package) { create(:work_package, project: project) }
+    let!(:budget) { create(:budget, project:) }
+    let(:work_package) { create(:work_package, project:, budget:) }
     let!(:hourly_rate) do
       create(:hourly_rate,
              user: current_user,

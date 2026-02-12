@@ -74,7 +74,7 @@ RSpec.describe Budgets::Widgets::BudgetTotals, type: :component do
   end
 
   context "with budget and spending data" do
-    let(:work_package) { create(:work_package, project:) }
+    let(:work_package) { create(:work_package, project:, budget:) }
     let!(:budget) { create(:budget, project:, base_amount: BigDecimal("10000")) }
     let!(:hourly_rate) do
       create(:hourly_rate, user: current_user, project:, rate: 50.0, valid_from: 1.month.ago)
@@ -100,7 +100,7 @@ RSpec.describe Budgets::Widgets::BudgetTotals, type: :component do
   end
 
   context "with overspending (negative remaining)" do
-    let(:work_package) { create(:work_package, project:) }
+    let(:work_package) { create(:work_package, project:, budget:) }
     let!(:budget) { create(:budget, project:, base_amount: BigDecimal("5000")) }
     let!(:hourly_rate) do
       create(:hourly_rate, user: current_user, project:, rate: 100.0, valid_from: 1.month.ago)

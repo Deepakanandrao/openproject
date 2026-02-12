@@ -38,9 +38,11 @@ RSpec.describe Costs::AggregatedCosts do
                                                     view_cost_rates
                                                     view_time_entries
                                                     view_hourly_rates
-                                                    view_own_hourly_rate] })
+                                                    view_own_hourly_rate
+                                                    view_budgets] })
   end
-  shared_let(:work_package) { create(:work_package, project: project) }
+  shared_let(:budget) { create(:budget, project:) }
+  shared_let(:work_package) { create(:work_package, project:, budget:) }
 
   subject(:aggregated) { described_class.new(project:, current_user: user) }
 
@@ -705,7 +707,8 @@ RSpec.describe Costs::AggregatedCosts do
                             permissions: %i[view_cost_entries
                                             view_cost_rates
                                             view_time_entries
-                                            view_hourly_rates])])
+                                            view_hourly_rates
+                                            view_budgets])])
       # Create memberships for user in child projects
       create(:member,
              project: child_project_one,
@@ -714,7 +717,8 @@ RSpec.describe Costs::AggregatedCosts do
                             permissions: %i[view_cost_entries
                                             view_cost_rates
                                             view_time_entries
-                                            view_hourly_rates])])
+                                            view_hourly_rates
+                                            view_budgets])])
       create(:member,
              project: child_project_two,
              user:,
@@ -722,12 +726,15 @@ RSpec.describe Costs::AggregatedCosts do
                             permissions: %i[view_cost_entries
                                             view_cost_rates
                                             view_time_entries
-                                            view_hourly_rates])])
+                                            view_hourly_rates
+                                            view_budgets])])
     end
 
     context "with spending in child projects" do
-      let!(:wp1) { create(:work_package, project: child_project_one) }
-      let!(:wp2) { create(:work_package, project: child_project_two) }
+      let!(:budget1) { create(:budget, project: child_project_one) }
+      let!(:budget2) { create(:budget, project: child_project_two) }
+      let!(:wp1) { create(:work_package, project: child_project_one, budget: budget1) }
+      let!(:wp2) { create(:work_package, project: child_project_two, budget: budget2) }
       let!(:cost_type) { create(:cost_type) }
       let!(:cost_rate) do
         create(:cost_rate,
