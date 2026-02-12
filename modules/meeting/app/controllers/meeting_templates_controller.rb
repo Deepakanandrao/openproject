@@ -64,7 +64,7 @@ class MeetingTemplatesController < ApplicationController
   end
 
   def create
-    call = ::MeetingTemplates::CreateService
+    call = ::Meetings::CreateService
       .new(user: current_user)
       .call(template_params)
 

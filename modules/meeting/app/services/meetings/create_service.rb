@@ -35,6 +35,9 @@ module Meetings
     def after_perform(call)
       meeting = call.result
 
+      # Skip post creation steps for one-time templates
+      return call if meeting.template? && meeting.recurring_meeting_id.nil?
+
       if call.success? && Journal::NotificationConfiguration.active? && meeting.send_emails?
         meeting.participants.where(invited: true).find_each do |participant|
           MeetingMailer
