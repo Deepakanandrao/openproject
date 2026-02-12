@@ -59,7 +59,7 @@ updates:
       - dependency-name: "openproject-octicons_helper"
       - dependency-name: "openproject-primer_view_components"
   - package-ecosystem: "npm"
-    directory: "/blocknote/hocuspocus"
+    directory: "/extensions/op-blocknote-hocuspocus"
     schedule:
       interval: "weekly"
     target-branch: "dev"

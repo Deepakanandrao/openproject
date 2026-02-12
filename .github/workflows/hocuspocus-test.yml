@@ -3,14 +3,14 @@ on:
   pull_request:
     types: [opened, reopened, synchronize]
     paths:
-      - 'blocknote/hocuspocus/**'
+      - 'extensions/op-blocknote-hocuspocus/**'
 
 permissions:
   contents: read
 
 defaults:
   run:
-    working-directory: ./blocknote/hocuspocus
+    working-directory: ./extensions/op-blocknote-hocuspocus
 
 jobs:
   units:
@@ -26,7 +26,7 @@ jobs:
         with:
           node-version: '22.19'
           cache: npm
-          cache-dependency-path: blocknote/hocuspocus/package-lock.json
+          cache-dependency-path: extensions/op-blocknote-hocuspocus/package-lock.json
 
       - name: Install Dependencies
         id: npm-i

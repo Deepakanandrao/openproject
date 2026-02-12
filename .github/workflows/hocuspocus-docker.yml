@@ -6,7 +6,7 @@ on:
       - dev
       - release/*
     paths:
-      - 'blocknote/hocuspocus/**'
+      - 'extensions/op-blocknote-hocuspocus/**'
   workflow_call:
     inputs:
       tags:
@@ -16,7 +16,7 @@ on:
 
 defaults:
   run:
-    working-directory: ./blocknote/hocuspocus
+    working-directory: ./extensions/op-blocknote-hocuspocus
 
 jobs:
   build:
@@ -44,7 +44,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
-          context: ./blocknote/hocuspocus
+          context: ./extensions/op-blocknote-hocuspocus
           push: true
           platforms: linux/amd64,linux/arm64/v8
           tags: ${{ inputs.tags }}

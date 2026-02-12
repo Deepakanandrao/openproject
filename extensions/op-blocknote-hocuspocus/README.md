@@ -12,7 +12,7 @@ A real-time collaborative editing server for [OpenProject](https://www.openproje
 ```bash
 # Clone the OpenProject repository
 git clone https://github.com/opf/openproject.git
-cd openproject/blocknote/hocuspocus
+cd openproject/extensions/op-blocknote-hocuspocus
 
 # Install dependencies
 npm install

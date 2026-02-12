@@ -18,7 +18,7 @@
   "bugs": {
     "url": "https://github.com/opf/openproject/issues"
   },
-  "homepage": "https://github.com/opf/openproject/tree/dev/blocknote/hocuspocus#readme",
+  "homepage": "https://github.com/opf/openproject/tree/dev/extensions/op-blocknote-hocuspocus#readme",
   "engines": {
     "node": ">=22.18"
   },
