@@ -624,6 +624,9 @@ ru:
       work_package_priorities:
         new_label: "Новый приоритет"
       creation_wizard:
+        errors:
+          no_work_package_type: "Failed to enable project initiation request because it requires at least one active work package type and this project has none. Please add at least one work package type to this project."
+          no_status_when_submitted: "Failed to enable project initiation request because work package type %{type} requires at least one status associated with it. Please enable at least one status workflow for this work package type."
         export:
           description_attachment_export: "Созданный артефакт будет сохранен в виде PDF-вложения к пакету работ."
           description_file_link_export: "Пакет работ будет содержать ссылку на файл PDF, хранящийся во внешнем файловом хранилище. Требуется рабочее файловое хранилище с автоматически управляемыми папками для данного проекта. На данный момент поддерживаются только файловые хранилища Nextcloud."
@@ -1052,7 +1055,6 @@ ru:
         title: "Отсутствует рабочий процесс для совместного использования пакета работ"
         message: "Рабочий процесс не настроен для роли 'Редактора пакетов работ'. Без рабочего процесса, общий с пользователем не может изменить статус рабочего пакета. Рабочие процессы могут быть скопированы. Выберите исходный тип (например, «Задача») и исходную роль (например, «Участник»). Затем выберите нужные типы. Чтобы начать, можно выбрать все типы в качестве целей. Наконец, выберите роль 'Редактор пакетов работ' в качестве цели и нажмите 'Копировать'. После создания таким образом по умолчанию, тонкая настройка рабочих процессов как вы делаете для каждой другой роли."
         link_message: "Настройка рабочих процессов в администрации."
-    templated_subject_hint: Автоматически сгенерировано по типу %{type}
     summary:
       reports:
         category:
@@ -1177,6 +1179,9 @@ ru:
         dependencies: "Связи"
   activerecord:
     attributes:
+      agile/sprint:
+        sharing: "Sharing"
+        finish_date: "End date"
       announcements:
         show_until: "Отобразить до"
       attachment:
@@ -1551,6 +1556,7 @@ ru:
         not_available: "недоступно из-за конфигурации системы."
         not_deletable: "не может быть удален."
         not_current_user: "не является текущим пользователем."
+        only_one_active_sprint_allowed: "only one active sprint is allowed per project."
         not_found: "не найдено."
         not_a_date: "не является допустимой датой."
         not_a_datetime: "дата и время не являются допустимыми."
@@ -2150,6 +2156,7 @@ ru:
     role: "Роль"
     roles: "Роли"
     search: "Поиск"
+    sprint: "Sprint"
     start_date: "Дата начала"
     status: "Статус"
     state: "Область"
@@ -3313,7 +3320,6 @@ ru:
   label_duplicate: "дублировать"
   label_duplicates: "Дублирует"
   label_edit: "Правка"
-  label_edit_attribute: "Изменить атрибут"
   label_edit_x: "Правка: %{x}"
   label_enable_multi_select: "Разрешен множественный выбор"
   label_enabled_project_custom_fields: "Доступные настраиваемые поля"
@@ -4233,6 +4239,7 @@ ru:
   permission_edit_project_query: "Редактирование запроса проекта"
   placeholders:
     default: "-"
+    templated_hint: Automatically generated through type %{type}
   portfolio:
     count:
       zero: "0 портфолио"

@@ -621,6 +621,9 @@ zh-TW:
       work_package_priorities:
         new_label: "新優先權"
       creation_wizard:
+        errors:
+          no_work_package_type: "Failed to enable project initiation request because it requires at least one active work package type and this project has none. Please add at least one work package type to this project."
+          no_status_when_submitted: "Failed to enable project initiation request because work package type %{type} requires at least one status associated with it. Please enable at least one status workflow for this work package type."
         export:
           description_attachment_export: "產生的產物將會以 PDF 附件的形式，儲存到該產物的工作套件中。"
           description_file_link_export: "該成品工作套件將會包含一個檔案連結，指向儲存在外部檔案儲存空間中的 PDF 檔案。這要求有一個具備檔案儲存功能的空間，並且其中有為此專案自動化管理的專案資料夾。目前僅支援 Nextcloud 檔案儲存空間。"
@@ -1024,7 +1027,6 @@ zh-TW:
         title: "共用工作套件缺少工作流"
         message: "「工作套件編輯者」角色尚未設定工作流程。沒有工作流程時，共享給該角色的使用者無法變更工作套件的狀態。您可以複製其他工作流程：選擇來源類型（例如「任務」）和來源角色（例如「成員」）。接著選擇目標類型。初期建議選擇所有類型作為目標。最後，選擇「工作套件編輯者」角色作為目標，並按下「複製」。建立預設後，您可以像調整其他角色的工作流程一樣，進行細部調整。"
         link_message: "在管理中配置工作流。"
-    templated_subject_hint: 透過類型 %{type}自動產生
     summary:
       reports:
         category:
@@ -1148,6 +1150,9 @@ zh-TW:
         dependencies: "依賴套件"
   activerecord:
     attributes:
+      agile/sprint:
+        sharing: "Sharing"
+        finish_date: "End date"
       announcements:
         show_until: "只顯示到"
       attachment:
@@ -1522,6 +1527,7 @@ zh-TW:
         not_available: "由於系統配置所以不可用"
         not_deletable: "無法刪除"
         not_current_user: "不是目前使用者。"
+        only_one_active_sprint_allowed: "only one active sprint is allowed per project."
         not_found: "未找到"
         not_a_date: "不是有效的日期。"
         not_a_datetime: "不是有效的日期時間。"
@@ -2064,6 +2070,7 @@ zh-TW:
     role: "角色"
     roles: "角色"
     search: "搜尋"
+    sprint: "Sprint"
     start_date: "起始日期"
     status: "狀態"
     state: "狀態"
@@ -3164,7 +3171,6 @@ zh-TW:
   label_duplicate: "重複"
   label_duplicates: "重複"
   label_edit: "編輯"
-  label_edit_attribute: "編輯屬性"
   label_edit_x: "編輯：%{x}"
   label_enable_multi_select: "取用複選"
   label_enabled_project_custom_fields: "開啟客製欄位"
@@ -4077,6 +4083,7 @@ zh-TW:
   permission_edit_project_query: "編輯專案查詢"
   placeholders:
     default: "-"
+    templated_hint: Automatically generated through type %{type}
   portfolio:
     count:
       zero: "0 個組合"

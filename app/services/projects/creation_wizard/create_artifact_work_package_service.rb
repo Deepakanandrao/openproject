@@ -155,7 +155,7 @@ module Projects::CreationWizard
     end
 
     def assigned_to_id
-      project.custom_value_for(assignee_custom_field).value
+      project.custom_value_for(assignee_custom_field).value if assignee_custom_field
     end
 
     def assignee_custom_field

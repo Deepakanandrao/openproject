@@ -621,6 +621,9 @@ it:
       work_package_priorities:
         new_label: "Nuova priorità"
       creation_wizard:
+        errors:
+          no_work_package_type: "Failed to enable project initiation request because it requires at least one active work package type and this project has none. Please add at least one work package type to this project."
+          no_status_when_submitted: "Failed to enable project initiation request because work package type %{type} requires at least one status associated with it. Please enable at least one status workflow for this work package type."
         export:
           description_attachment_export: "L'artefatto generato verrà salvato come allegato PDF alla macro-attività dell'artefatto."
           description_file_link_export: "La macro-attività dell'artefatto includerà un collegamento a un file PDF archiviato in uno spazio di archiviazione esterno. Richiede uno spazio di archiviazione file funzionante con cartelle di progetto gestite automaticamente per questo progetto. Al momento sono supportati solo archivi file Nextcloud."
@@ -1033,7 +1036,6 @@ it:
         title: "Flusso di lavoro mancante per la condivisione di macro-attività"
         message: "Nessun flusso di lavoro è configurato per il ruolo \"Editor di macro-attività\". Senza un flusso di lavoro, la condivisione con l'utente non può alterare lo stato della macro-attività. I flussi di lavoro possono essere copiati. Seleziona un tipo di origine (ad esempio \"Attività\") e un ruolo di origine (ad esempio \"Membro\"). Quindi seleziona i tipi obiettivo. Per cominciare, potresti selezionare tutti i tipi come obiettivi. Infine, seleziona il ruolo \"Editor di macro-attività\" come destinazione e premi \"Copia\". Dopo aver creato le impostazioni predefinite, perfeziona i flussi di lavoro come fai per ogni altro ruolo."
         link_message: "Configura i flussi di lavoro nell'amministrazione."
-    templated_subject_hint: Generato automaticamente attraverso il tipo %{type}
     summary:
       reports:
         category:
@@ -1158,6 +1160,9 @@ it:
         dependencies: "Dipendenze"
   activerecord:
     attributes:
+      agile/sprint:
+        sharing: "Sharing"
+        finish_date: "End date"
       announcements:
         show_until: "Visualizza fino a"
       attachment:
@@ -1532,6 +1537,7 @@ it:
         not_available: "non è disponibile a causa di una configurazione di sistema."
         not_deletable: "non può essere eliminato."
         not_current_user: "non è l'utente attuale."
+        only_one_active_sprint_allowed: "only one active sprint is allowed per project."
         not_found: "non trovato."
         not_a_date: "non è una data valida."
         not_a_datetime: "non è un'orario valido."
@@ -2093,6 +2099,7 @@ it:
     role: "Ruolo"
     roles: "Ruoli"
     search: "Cerca"
+    sprint: "Sprint"
     start_date: "Data di inizio"
     status: "Stato"
     state: "Stato"
@@ -3214,7 +3221,6 @@ it:
   label_duplicate: "duplica"
   label_duplicates: "duplica"
   label_edit: "Modifica"
-  label_edit_attribute: "Modifica attributo"
   label_edit_x: "Modifica: %{x}"
   label_enable_multi_select: "Attiva/disattiva multiselezione"
   label_enabled_project_custom_fields: "Campi personalizzati abilitati"
@@ -4131,6 +4137,7 @@ it:
   permission_edit_project_query: "Modifica elenco di progetti"
   placeholders:
     default: "-"
+    templated_hint: Automatically generated through type %{type}
   portfolio:
     count:
       zero: "0 portfolio"

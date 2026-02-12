@@ -28,31 +28,10 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require "rails_helper"
+require "spec_helper"
 
-RSpec.describe Overviews::ProjectCustomFields::ShowComponent, type: :component do
-  include Rails.application.routes.url_helpers
-
-  def render_component(...)
-    render_inline(described_class.new(...))
-  end
-
-  let(:project) { build(:project) }
-  let(:project_custom_field_section) { build(:project_custom_field_section, name: "Special Section") }
-  let(:project_custom_fields) { create_list(:project_custom_field, 2, projects: [project]) }
-  let(:user) { build_stubbed(:user) }
-
-  current_user { user }
-
-  subject(:rendered_component) do
-    render_component(project:, project_custom_field_section:, project_custom_fields:)
-  end
-
-  it "renders a section" do
-    expect(rendered_component).to have_section "Special Section"
-  end
-
-  it "renders two custom fields" do
-    expect(rendered_component).to have_css ".op-project-custom-field-container", count: 2
+RSpec.describe Project do
+  describe "associations" do
+    it { is_expected.to have_many(:sprints).class_name("Agile::Sprint").dependent(:destroy) }
   end
 end
