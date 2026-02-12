@@ -30,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe McpTools::SearchProjects, with_flag: { mcp_server: true } do
+RSpec.describe McpTools::SearchPortfolios, with_flag: { mcp_server: true } do
   subject do
     header "Authorization", "Bearer #{access_token.plaintext_token}"
     header "X-Authentication-Scheme", "Bearer"
@@ -39,14 +39,14 @@ RSpec.describe McpTools::SearchProjects, with_flag: { mcp_server: true } do
   end
 
   let(:access_token) { create(:oauth_access_token, scopes: "mcp", resource_owner: user) }
-  let(:user) { create(:admin) } # using an admin, so that projects are visible
+  let(:user) { create(:admin) } # using an admin, so that portfolios are visible
   let(:request_body) do
     {
       jsonrpc: "2.0",
       id: "Test-Request",
       method: "tools/call",
       params: {
-        name: "search_projects",
+        name: "search_portfolios",
         arguments: call_args
       }
     }
@@ -54,9 +54,9 @@ RSpec.describe McpTools::SearchProjects, with_flag: { mcp_server: true } do
   let(:call_args) { {} }
   let(:parsed_results) { JSON.parse(last_response.body).fetch("result") }
 
-  let!(:project_a) { create(:project, identifier: "abc", name: "The ABC Project", status_code: :on_track) }
-  let!(:project_b) { create(:project, identifier: "def", name: "The DEF Project", status_code: :off_track) }
-  let!(:portfolio) { create(:portfolio, identifier: "ghi", name: "The unrelated Portfolio", status_code: :on_track) }
+  let!(:portfolio_a) { create(:portfolio, identifier: "abc", name: "The ABC Portfolio", status_code: :on_track) }
+  let!(:portfolio_b) { create(:portfolio, identifier: "def", name: "The DEF Portfolio", status_code: :off_track) }
+  let!(:project) { create(:project, identifier: "ghi", name: "The unrelated Project", status_code: :on_track) }
 
   let(:server_config) { create(:mcp_configuration, identifier: "mcp_server") }
   let(:tool_config) { create(:mcp_configuration, identifier: described_class.qualified_name) }
@@ -69,22 +69,22 @@ RSpec.describe McpTools::SearchProjects, with_flag: { mcp_server: true } do
   context "when the mcp_server enterprise feature is enabled", with_ee: %i[mcp_server] do
     it_behaves_like "MCP response with structured content"
 
-    it "finds all projects without filters" do
+    it "finds all portfolios without filters" do
       subject
       expect(parsed_results.dig("structuredContent", "items").size).to eq(2)
     end
 
-    it "responds with properly formatted projects" do
+    it "responds with properly formatted portfolios" do
       subject
-      parsed_results.dig("structuredContent", "items").each do |project|
-        expect(project.to_json).to match_json_schema.from_docs("project_model")
+      parsed_results.dig("structuredContent", "items").each do |portfolio|
+        expect(portfolio.to_json).to match_json_schema.from_docs("portfolio_model")
       end
     end
 
     context "when passing an exact identifier" do
       let(:call_args) { { identifier: "abc" } }
 
-      it "finds the project" do
+      it "finds the portfolio" do
         subject
         expect(parsed_results.dig("structuredContent", "items")).to be_present
       end
@@ -93,16 +93,16 @@ RSpec.describe McpTools::SearchProjects, with_flag: { mcp_server: true } do
     context "when passing a non-exact identifier" do
       let(:call_args) { { identifier: "Abc" } }
 
-      it "does not find the project" do
+      it "does not find the portfolio" do
         subject
         expect(parsed_results.dig("structuredContent", "items")).to be_empty
       end
     end
 
     context "when passing an exact name" do
-      let(:call_args) { { name: "The ABC Project" } }
+      let(:call_args) { { name: "The ABC Portfolio" } }
 
-      it "finds the project" do
+      it "finds the portfolio" do
         subject
         expect(parsed_results.dig("structuredContent", "items")).to be_present
       end
@@ -110,15 +110,15 @@ RSpec.describe McpTools::SearchProjects, with_flag: { mcp_server: true } do
 
     describe "pagination" do
       let(:page_size) { 10 }
-      let(:overspilling_projects) { 5 }
-      let(:project_count) { page_size + overspilling_projects }
+      let(:overspilling_portfolios) { 5 }
+      let(:portfolio_count) { page_size + overspilling_portfolios }
       let(:call_args) { { name: "Death Star" } }
 
       before do
         allow(described_class).to receive(:page_size).and_return(page_size)
 
-        project_count.times do |idx|
-          create(:project,
+        portfolio_count.times do |idx|
+          create(:portfolio,
                  identifier: "p#{idx}",
                  name: "Death Star construction phase #{idx}",
                  status_code: :on_track)
@@ -135,7 +135,7 @@ RSpec.describe McpTools::SearchProjects, with_flag: { mcp_server: true } do
 
         it "returns the requested page" do
           subject
-          expect(parsed_results.dig("structuredContent", "items").count).to eq(overspilling_projects)
+          expect(parsed_results.dig("structuredContent", "items").count).to eq(overspilling_portfolios)
         end
       end
     end
@@ -143,49 +143,49 @@ RSpec.describe McpTools::SearchProjects, with_flag: { mcp_server: true } do
     context "when passing a non-exact name" do
       let(:call_args) { { name: "The abc" } }
 
-      it "finds the project" do
+      it "finds the portfolio" do
         subject
         expect(parsed_results.dig("structuredContent", "items")).to be_present
       end
     end
 
-    context "when passing a project status" do
+    context "when passing a portfolio status" do
       let(:call_args) { { status_code: "on_track" } }
 
-      it "finds the project" do
+      it "finds the portfolio" do
         subject
         expect(parsed_results.dig("structuredContent", "items")).to be_present
       end
 
-      context "and when passing a project identifier" do
+      context "and when passing a portfolio identifier" do
         let(:call_args) { { status_code: "on_track", identifier: "abc" } }
 
-        it "finds the project" do
+        it "finds the portfolio" do
           subject
           expect(parsed_results.dig("structuredContent", "items")).to be_present
         end
       end
 
-      context "and when passing the project identifier of a project in a different status" do
+      context "and when passing the portfolio identifier of a portfolio in a different status" do
         let(:call_args) { { status_code: "on_track", identifier: "def" } }
 
-        it "does not find the project" do
+        it "does not find the portfolio" do
           subject
           expect(parsed_results.dig("structuredContent", "items")).to be_empty
         end
       end
     end
 
-    context "when passing an invalid project status" do
+    context "when passing an invalid portfolio status" do
       let(:call_args) { { status_code: "blubb" } }
 
       it_behaves_like "MCP error response"
     end
 
-    context "when user can't see projects" do
+    context "when user can't see portfolios" do
       let(:user) { create(:user) }
 
-      it "does not find the project" do
+      it "does not find the portfolio" do
         subject
         expect(parsed_results.dig("structuredContent", "items")).to be_empty
       end
