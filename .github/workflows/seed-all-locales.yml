@@ -57,7 +57,7 @@ jobs:
   seed:
     needs: prepare
     if: github.repository == 'opf/openproject'
-    name: Seed in ${{ matrix.locale }} for ${{ matrix.edition }}
+    name: Seed in ${{ matrix.locale }} for ${{ matrix.edition }} edition
     runs-on: ubuntu-latest
     timeout-minutes: 15
     strategy:
@@ -102,7 +102,7 @@ jobs:
             url: <%= ENV["DATABASE_URL"] %>
           EOF
 
-      - name: Seed in locale ${{ matrix.locale }} for edition ${{ matrix.edition }}
+      - name: Seed in locale ${{ matrix.locale }} for ${{ matrix.edition }} edition
         env:
           SILENCE_SQL_LOGS: 1
           OPENPROJECT_EDITION: ${{ matrix.edition }}
