@@ -37,7 +37,7 @@ class WikiMenuItemsController < ApplicationController
     next controller.wiki_menu_item.menu_identifier if controller.wiki_menu_item.try(:persisted?)
 
     project = controller.instance_variable_get(:@project)
-    if (page = project.wiki.find_page(controller.params[:id]))
+    if (page = project.wiki.pages.find_by(id: controller.params[:id]))
       default_menu_item(controller, page)
     end
   end
@@ -46,7 +46,7 @@ class WikiMenuItemsController < ApplicationController
     next controller.wiki_menu_item.menu_identifier if controller.wiki_menu_item.try(:persisted?)
 
     project = controller.instance_variable_get(:@project)
-    if (page = project.wiki.find_page(id: controller.params[:id]))
+    if (page = project.wiki.pages.find_by(id: controller.params[:id]))
       default_menu_item(controller, page)
     end
   end
@@ -127,12 +127,16 @@ class WikiMenuItemsController < ApplicationController
                            end
   end
 
-  def replace_main_menu_item
-    current_page = @project.wiki.find_page(params[:id])
+  def replace_main_menu_item # rubocop:disable Metrics/AbcSize
+    current_page = @project.wiki.pages.find(params[:id])
 
-    if (current_menu_item = current_page.menu_item) && (page = @project.wiki.find_page(params[:wiki_page][:id])) && current_menu_item != page.menu_item
-      create_main_menu_item_for_wiki_page(page, current_menu_item.options)
-      current_menu_item.destroy
+    if current_menu_item = current_page.menu_item
+      page = @project.wiki.pages.find(params[:wiki_page][:id])
+
+      if page && current_menu_item != page.menu_item
+        create_main_menu_item_for_wiki_page(page, current_menu_item.options)
+        current_menu_item.destroy!
+      end
     end
 
     redirect_to action: :edit, id: current_page
@@ -141,11 +145,11 @@ class WikiMenuItemsController < ApplicationController
   private
 
   def wiki_menu_item_params
-    @wiki_menu_item_params ||= params.require(:menu_items_wiki_menu_item).permit(:name, :title, :navigatable_id, :parent_id,
-                                                                                 :setting, :new_wiki_page, :index_page)
+    @wiki_menu_item_params ||= params.expect(menu_items_wiki_menu_item: %i[name title navigatable_id parent_id
+                                                                           setting new_wiki_page index_page])
   end
 
-  def get_data_from_params(params)
+  def get_data_from_params(params) # rubocop:disable Metrics/AbcSize
     wiki = @project.wiki
 
     @page = wiki.find_page(params[:id])
