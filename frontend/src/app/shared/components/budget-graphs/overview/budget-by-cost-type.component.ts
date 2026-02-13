@@ -68,6 +68,7 @@ export class BudgetByCostTypeComponent {
     font: chartFont,
     plugins: {
       ...chartLegend,
+      'primer-colors': { labelBased: true },
       tooltip: {
         enabled: false,
         external: createPieTooltipRenderer(this.formatCurrency.bind(this)),
