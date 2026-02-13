@@ -1163,8 +1163,9 @@ GEM
       date
       stringio
     public_suffix (7.0.2)
-    puffing-billy (4.0.2)
+    puffing-billy (4.0.3)
       addressable (~> 2.5)
+      cgi
       em-http-request (~> 1.1, >= 1.1.0)
       em-synchrony
       eventmachine (~> 1.2)
@@ -2141,7 +2142,7 @@ CHECKSUMS
   pry-rescue (1.6.0) sha256=985bfd506d9866b587fd86790cf8445266a41b7f92c627fc5b21ec7d92aba6db
   psych (5.3.1) sha256=eb7a57cef10c9d70173ff74e739d843ac3b2c019a003de48447b2963d81b1974
   public_suffix (7.0.2) sha256=9114090c8e4e7135c1fd0e7acfea33afaab38101884320c65aaa0ffb8e26a857
-  puffing-billy (4.0.2) sha256=c983610f737e3847301f64cf41dccd9dcedcac9219af54d6eaf8178cbe48b3cc
+  puffing-billy (4.0.3) sha256=376fe2e2cc3ff9d48814a15153db80970cf0539ba026ac5108c971c2e160883c
   puma (7.1.0) sha256=e45c10cb124f224d448c98db653a75499794edbecadc440ad616cf50f2fd49dd
   puma-plugin-statsd (2.7.0) sha256=04f243a7233f4d06ec0e26f1a3522bce18a5910ae711763fabff22681bdad08b
   raabro (1.4.0) sha256=d4fa9ff5172391edb92b242eed8be802d1934b1464061ae5e70d80962c5da882
