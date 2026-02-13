@@ -44,17 +44,8 @@ jobs:
           echo "branch=$BRANCH_REF" | tee -a "$GITHUB_OUTPUT"
           echo "tag=$TAG_REF" | tee -a "$GITHUB_OUTPUT"
 
-  build-hocuspocus:
-    needs: compute-inputs
-    uses: ./.github/workflows/hocuspocus-docker.yml
-    with:
-      tags: |
-        openproject/hocuspocus:latest
-        openproject/hocuspocus:${{ needs.compute-inputs.outputs.version }}
-    secrets: inherit
-
   build:
-    needs: [compute-inputs, build-hocuspocus]
+    needs: [compute-inputs]
     uses: ./.github/workflows/docker.yml
     with:
       branch: ${{ needs.compute-inputs.outputs.branch }}

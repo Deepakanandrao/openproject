@@ -37,20 +37,12 @@ env:
 
 jobs:
   build-hocuspocus:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-        with:
-          ref: ${{ inputs.branch }}
-      - name: debug
-        run: |
-          ls -lisah ./.github/workflows/
-      - uses: ./.github/workflows/hocuspocus-docker.yml
-        with:
-          tags: |
-            openproject/${{ case(inputs.use_test_registry, 'openproject-test', 'hocuspocus') }}:${{ case(inputs.use_test_registry, 'hp-', '' )}}latest-${{ case(startsWith(inputs.branch, 'release'), 'release', 'dev') }}
-            openproject/${{ case(inputs.use_test_registry, 'openproject-test', 'hocuspocus') }}:${{ case(inputs.use_test_registry, 'hp-', '' )}}${{ inputs.tag }}
+    uses: ./.github/workflows/hocuspocus-docker.yml
+    with:
+      tags: |
+        openproject/${{ case(inputs.use_test_registry, 'openproject-test', 'hocuspocus') }}:${{ case(inputs.use_test_registry, 'hp-', '' )}}latest-${{ case(startsWith(inputs.branch, 'release'), 'release', 'dev') }}
+        openproject/${{ case(inputs.use_test_registry, 'openproject-test', 'hocuspocus') }}:${{ case(inputs.use_test_registry, 'hp-', '' )}}${{ inputs.tag }}
+    secrets: inherit
   setup:
     needs: [build-hocuspocus]
     runs-on: ubuntu-latest
