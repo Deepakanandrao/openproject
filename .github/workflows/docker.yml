@@ -36,7 +36,16 @@ env:
   REGISTRY_IMAGE: openproject/openproject
 
 jobs:
+  build-hocuspocus:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ./.github/workflows/hocuspocus-docker.yml
+        with:
+          tags: |
+            openproject/${{ case(inputs.use_test_registry, 'openproject-test', 'hocuspocus') }}:${{ case(inputs.use_test_registry, 'hp-', '' )}}latest-${{ case(startsWith(inputs.branch, 'release'), 'release', 'dev') }}
+            openproject/${{ case(inputs.use_test_registry, 'openproject-test', 'hocuspocus') }}:${{ case(inputs.use_test_registry, 'hp-', '' )}}${{ inputs.tag }}
   setup:
+    needs: [build-hocuspocus]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
