@@ -71,12 +71,10 @@ class CustomStyle < ApplicationRecord
     end
 
     define_method :"remove_#{name}" do
-      attachment = send(name)
-      attachment&.remove!
+      _mounter(name).remove!
+      write_uploader(name, nil)
 
-      if new_record?
-        send(:"#{name}=", nil)
-      else
+      unless new_record?
         update_columns(name => nil, updated_at: Time.zone.now)
       end
     end
