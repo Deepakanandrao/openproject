@@ -75,7 +75,8 @@ module OpenProject::Backlogs
                      rb_taskboards: :show,
                      rb_tasks: %i[index show],
                      rb_impediments: %i[index show] },
-                   permissible_on: :project
+                   permissible_on: :project,
+                   dependencies: :view_work_packages
 
         permission :create_sprints,
                    { rb_sprints: %i[new_dialog refresh_form create edit_name update],
