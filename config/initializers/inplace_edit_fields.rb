@@ -42,7 +42,7 @@ Rails.application.config.to_prepare do
     "float" => OpenProject::Common::InplaceEditFields::FloatInputComponent,
     "date" => OpenProject::Common::InplaceEditFields::DateInputComponent,
     "bool" => OpenProject::Common::InplaceEditFields::BooleanInputComponent,
-    "link" => OpenProject::Common::InplaceEditFields::TextInputComponent, # TODO
+    "link" => OpenProject::Common::InplaceEditFields::LinkInputComponent,
     "hierarchy" => OpenProject::Common::InplaceEditFields::TextInputComponent, # TODO
     "weighted_item_list" => OpenProject::Common::InplaceEditFields::TextInputComponent, # TODO
     "list" => OpenProject::Common::InplaceEditFields::TextInputComponent,   # TODO

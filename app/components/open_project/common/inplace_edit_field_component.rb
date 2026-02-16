@@ -98,7 +98,7 @@ module OpenProject
 
       def field_label
         # Check if this is a custom field attribute
-        if attribute.to_s.start_with?("custom_field_") && custom_field
+        if custom_field? && custom_field
           return custom_field.name
         end
 
@@ -112,13 +112,17 @@ module OpenProject
 
         @required = if @system_arguments.key?(:required)
                       @system_arguments[:required]
-                    elsif attribute.to_s.start_with?("custom_field_")
+                    elsif custom_field?
                       # For custom fields, check the is_required attribute
                       custom_field&.is_required || false
                     else
                       # For regular model attributes, check ActiveRecord validations
                       model.class.validators_on(attribute).any?(ActiveRecord::Validations::PresenceValidator)
                     end
+      end
+
+      def custom_field?
+        attribute.to_s.start_with?("custom_field_")
       end
 
       def custom_field

@@ -39,7 +39,13 @@ export default class extends Controller {
 
   declare urlValue:string;
 
-  async request() {
+  async request(e:Event):Promise<void> {
+    // Don't trigger edit mode if clicking on a link
+    const target = e.target as HTMLElement;
+    if (target.tagName === 'a' || target.closest('a')) {
+      return;
+    }
+
     const response = await fetch(this.urlValue, {
       method: 'GET',
       headers: { Accept: 'text/vnd.turbo-stream.html' },

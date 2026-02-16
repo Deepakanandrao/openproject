@@ -47,6 +47,7 @@ module Overviews
       private
 
       def show_inplace_edit_field?
+        # TODO: Move outside of this component and pass in instead
         @project_custom_field.field_format != "text" ||
           @project_custom_field.project_custom_field_section&.shown_in_overview_main_area?
       end
