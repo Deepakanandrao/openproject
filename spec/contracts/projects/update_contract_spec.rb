@@ -225,23 +225,25 @@ RSpec.describe Projects::UpdateContract do
 
       shared_examples "can write" do |attribute|
         it "can write #{attribute}" do
-          attr_name = if respond_to?(attribute)
-                        "custom_field_#{send(attribute).id}"
-                      else
-                        attribute.to_s
-                      end
-          expect(contract.writable_attributes).to include(attr_name)
+          expect(contract.writable_attributes).to include(attribute.to_s)
         end
       end
 
       shared_examples "can not write" do |attribute|
         it "can not write #{attribute}" do
-          attr_name = if respond_to?(attribute)
-                        "custom_field_#{send(attribute).id}"
-                      else
-                        attribute.to_s
-                      end
-          expect(contract.writable_attributes).not_to include(attr_name)
+          expect(contract.writable_attributes).not_to include(attribute.to_s)
+        end
+      end
+
+      shared_examples "can write custom value" do |custom_field_name|
+        it "can write custom value for #{custom_field_name}" do
+          expect(contract.writable_attributes).to include(send(custom_field_name).attribute_name)
+        end
+      end
+
+      shared_examples "can not write custom value" do |custom_field_name|
+        it "can not write custom value for #{custom_field_name}" do
+          expect(contract.writable_attributes).not_to include(send(custom_field_name).attribute_name)
         end
       end
 
@@ -251,14 +253,14 @@ RSpec.describe Projects::UpdateContract do
         context "when project_attributes_only flag is true" do
           let(:options) { { project_attributes_only: true } }
 
-          include_examples "can write", :custom_field
+          include_examples "can write custom value", :custom_field
           include_examples "can not write", :name
         end
 
         context "when project_attributes_only flag is false" do
           let(:options) { { project_attributes_only: false } }
 
-          include_examples "can write", :custom_field
+          include_examples "can write custom value", :custom_field
           include_examples "can not write", :name
         end
       end
@@ -267,14 +269,14 @@ RSpec.describe Projects::UpdateContract do
         context "when project_attributes_only flag is true" do
           let(:options) { { project_attributes_only: true } }
 
-          include_examples "can not write", :custom_field
+          include_examples "can not write custom value", :custom_field
           include_examples "can not write", :name
         end
 
         context "when project_attributes_only flag is false" do
           let(:options) { { project_attributes_only: false } }
 
-          include_examples "can not write", :custom_field
+          include_examples "can not write custom value", :custom_field
           include_examples "can write", :name
         end
       end
@@ -285,14 +287,14 @@ RSpec.describe Projects::UpdateContract do
         context "when project_attributes_only flag is true" do
           let(:options) { { project_attributes_only: true } }
 
-          include_examples "can write", :custom_field
+          include_examples "can write custom value", :custom_field
           include_examples "can not write", :name
         end
 
         context "when project_attributes_only flag is false" do
           let(:options) { { project_attributes_only: false } }
 
-          include_examples "can write", :custom_field
+          include_examples "can write custom value", :custom_field
           include_examples "can write", :name
         end
       end
@@ -303,14 +305,14 @@ RSpec.describe Projects::UpdateContract do
         context "when project_attributes_only flag is true" do
           let(:options) { { project_attributes_only: true } }
 
-          include_examples "can not write", :custom_field
+          include_examples "can not write custom value", :custom_field
           include_examples "can not write", :name
         end
 
         context "when project_attributes_only flag is false" do
           let(:options) { { project_attributes_only: false } }
 
-          include_examples "can not write", :custom_field
+          include_examples "can not write custom value", :custom_field
           include_examples "can not write", :name
         end
       end
@@ -320,19 +322,19 @@ RSpec.describe Projects::UpdateContract do
           context "when user is admin" do
             let(:current_user) { build_stubbed(:admin) }
 
-            include_examples "can write", :admin_only_custom_field
+            include_examples "can write custom value", :admin_only_custom_field
           end
 
           context "when user is not admin" do
             let(:current_user) { build_stubbed(:user) }
             let(:project_permissions) { %i(edit_project_attributes) }
 
-            include_examples "can not write", :admin_only_custom_field
+            include_examples "can not write custom value", :admin_only_custom_field
 
             context "with all permissions" do
               let(:project_permissions) { %i(edit_project edit_project_attributes) }
 
-              include_examples "can not write", :admin_only_custom_field
+              include_examples "can not write custom value", :admin_only_custom_field
             end
           end
         end
@@ -358,19 +360,19 @@ RSpec.describe Projects::UpdateContract do
             let(:current_user) { build_stubbed(:admin) }
             let(:project_permissions) { %i(edit_project_attributes) }
 
-            include_examples "can not write", :not_enabled_custom_field
+            include_examples "can not write custom value", :not_enabled_custom_field
           end
 
           context "when user is not admin" do
             let(:current_user) { build_stubbed(:user) }
             let(:project_permissions) { %i(edit_project_attributes) }
 
-            include_examples "can not write", :not_enabled_custom_field
+            include_examples "can not write custom value", :not_enabled_custom_field
 
             context "with all permissions" do
               let(:project_permissions) { %i(edit_project edit_project_attributes) }
 
-              include_examples "can not write", :not_enabled_custom_field
+              include_examples "can not write custom value", :not_enabled_custom_field
             end
           end
         end
@@ -382,19 +384,19 @@ RSpec.describe Projects::UpdateContract do
             let(:current_user) { build_stubbed(:admin) }
             let(:project_permissions) { %i(edit_project edit_project_attributes) }
 
-            include_examples "can write", :not_enabled_custom_field
+            include_examples "can write custom value", :not_enabled_custom_field
           end
 
           context "when user is not admin" do
             let(:current_user) { build_stubbed(:user) }
             let(:project_permissions) { %i(edit_project_attributes) }
 
-            include_examples "can not write", :not_enabled_custom_field
+            include_examples "can not write custom value", :not_enabled_custom_field
 
             context "with all permissions" do
               let(:project_permissions) { %i(edit_project edit_project_attributes) }
 
-              include_examples "can write", :not_enabled_custom_field
+              include_examples "can write custom value", :not_enabled_custom_field
             end
           end
         end
