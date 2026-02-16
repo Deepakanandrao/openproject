@@ -54,44 +54,44 @@ module MeetingTemplates
           data: { "test-selector": "more-button" }
         )
 
-        # edit_action(menu)
-        # delete_action(menu)
+        edit_action(menu)
+        delete_action(menu)
       end
     end
 
-    # def edit_action(menu)
-    #   return unless edit_allowed?
-    #
-    #   menu.with_item(
-    #     label: I18n.t(:button_edit),
-    #     href: project_meeting_path(project, model)
-    #   ) do |item|
-    #     item.with_leading_visual_icon(icon: :pencil)
-    #   end
-    # end
+    def edit_action(menu)
+      return unless edit_allowed?
 
-    # def delete_action(menu)
-    #   return unless delete_allowed?
-    #
-    #   menu.with_item(
-    #     label: I18n.t(:button_delete),
-    #     scheme: :danger,
-    #     href: delete_dialog_project_meeting_path(project, model),
-    #     tag: :a,
-    #     content_arguments: {
-    #       data: { controller: "async-dialog" }
-    #     }
-    #   ) do |item|
-    #     item.with_leading_visual_icon(icon: :trash)
-    #   end
-    # end
+      menu.with_item(
+        label: I18n.t(:label_meeting_template_edit),
+        href: project_meeting_path(project, model)
+      ) do |item|
+        item.with_leading_visual_icon(icon: :pencil)
+      end
+    end
 
-    # def delete_allowed?
-    #   User.current.allowed_in_project?(:edit_meetings, project)
-    # end
-    #
-    # def edit_allowed?
-    #   User.current.allowed_in_project?(:edit_meetings, project)
-    # end
+    def delete_action(menu)
+      return unless delete_allowed?
+
+      menu.with_item(
+        label: I18n.t(:label_meeting_template_delete),
+        scheme: :danger,
+        href: delete_dialog_project_meeting_path(project, model),
+        tag: :a,
+        content_arguments: {
+          data: { controller: "async-dialog" }
+        }
+      ) do |item|
+        item.with_leading_visual_icon(icon: :trash)
+      end
+    end
+
+    def delete_allowed?
+      User.current.allowed_in_project?(:delete_meetings, project)
+    end
+
+    def edit_allowed?
+      User.current.allowed_in_project?(:edit_meetings, project)
+    end
   end
 end
