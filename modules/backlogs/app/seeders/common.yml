@@ -31,7 +31,6 @@ modules_permissions:
   - role: :default_role_member
     add:
     - :view_sprints
-    - :create_sprints
     - :manage_sprint_items
   - role: :default_role_reader
     add:
