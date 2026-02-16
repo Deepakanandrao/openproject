@@ -42,7 +42,7 @@ import OpBlockNoteContainer from '../react/OpBlockNoteContainer';
 
 class BlockNoteElement extends HTMLElement {
   private stimulusRoot:HTMLDivElement;
-  private mount:HTMLDivElement;
+  private editorMount:HTMLDivElement;
   private errorContainer:HTMLDivElement;
   private reactRoot:Root|null = null;
   private stimulusApp:Application|null = null;
@@ -52,7 +52,7 @@ class BlockNoteElement extends HTMLElement {
 
     const shadowRoot = this.attachShadow({ mode: 'open' });
 
-    // Wrapper div as Stimulus root so both errorContainer and mount are in scope
+    // Wrapper div as Stimulus root so both errorContainer and editorMount are in scope
     this.stimulusRoot = document.createElement('div');
 
     // Container for connection error/recovery messages (rendered by React via fetchConnectionTemplate)
@@ -61,15 +61,15 @@ class BlockNoteElement extends HTMLElement {
     this.errorContainer.dataset.controller = 'flash';
     this.errorContainer.dataset.flashAutohideValue = 'true';
 
-    this.mount = document.createElement('div');
-    this.mount.dataset.controller = 'external-links';
+    this.editorMount = document.createElement('div');
+    this.editorMount.dataset.controller = 'external-links';
     const browserSpecificClasses = this.getAttribute('browser-specific-classes')?.split(' ') ?? [];
     if (browserSpecificClasses.length > 0) {
-      this.mount.classList.add(...browserSpecificClasses);
+      this.editorMount.classList.add(...browserSpecificClasses);
     }
 
     this.stimulusRoot.appendChild(this.errorContainer);
-    this.stimulusRoot.appendChild(this.mount);
+    this.stimulusRoot.appendChild(this.editorMount);
     shadowRoot.appendChild(this.stimulusRoot);
 
     const blockNoteStylesheetUrl = this.getAttribute('blocknote-stylesheet-url');
@@ -96,7 +96,7 @@ class BlockNoteElement extends HTMLElement {
     this.stimulusApp.register('external-links', ExternalLinksController);
 
     // Initialize React application within shadow DOM
-    this.reactRoot = createRoot(this.mount);
+    this.reactRoot = createRoot(this.editorMount);
 
     const collaborationEnabled = this.getAttribute('collaboration-enabled') === 'true';
 
@@ -128,7 +128,7 @@ class BlockNoteElement extends HTMLElement {
   private BlockNoteReactContainer = (hocuspocusProvider?:HocuspocusProvider) => {
     return React.createElement(
       ShadowDomWrapper,
-      { target: this.mount },
+      { target: this.editorMount },
       React.createElement(
         OpBlockNoteContainer,
         {
