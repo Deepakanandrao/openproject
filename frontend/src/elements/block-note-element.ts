@@ -31,6 +31,7 @@
 import { User } from '@blocknote/core/comments';
 import { HocuspocusProvider } from '@hocuspocus/provider';
 import { Application } from '@hotwired/stimulus';
+import ExternalLinksController from 'core-stimulus/controllers/external-links.controller';
 import FlashController from 'core-stimulus/controllers/flash.controller';
 import { LiveCollaborationManager } from 'core-stimulus/helpers/live-collaboration-helpers';
 import { ShadowDomWrapper } from 'op-blocknote-extensions';
@@ -40,6 +41,7 @@ import { createRoot } from 'react-dom/client';
 import OpBlockNoteContainer from '../react/OpBlockNoteContainer';
 
 class BlockNoteElement extends HTMLElement {
+  private stimulusRoot:HTMLDivElement;
   private mount:HTMLDivElement;
   private errorContainer:HTMLDivElement;
   private reactRoot:Root|null = null;
@@ -50,6 +52,9 @@ class BlockNoteElement extends HTMLElement {
 
     const shadowRoot = this.attachShadow({ mode: 'open' });
 
+    // Wrapper div as Stimulus root so both errorContainer and mount are in scope
+    this.stimulusRoot = document.createElement('div');
+
     // Container for connection error/recovery messages (rendered by React via fetchConnectionTemplate)
     this.errorContainer = document.createElement('div');
     this.errorContainer.id = 'documents-show-edit-view-connection-error-notice-component';
@@ -57,13 +62,15 @@ class BlockNoteElement extends HTMLElement {
     this.errorContainer.dataset.flashAutohideValue = 'true';
 
     this.mount = document.createElement('div');
+    this.mount.dataset.controller = 'external-links';
     const browserSpecificClasses = this.getAttribute('browser-specific-classes')?.split(' ') ?? [];
     if (browserSpecificClasses.length > 0) {
       this.mount.classList.add(...browserSpecificClasses);
     }
 
-    shadowRoot.appendChild(this.errorContainer);
-    shadowRoot.appendChild(this.mount);
+    this.stimulusRoot.appendChild(this.errorContainer);
+    this.stimulusRoot.appendChild(this.mount);
+    shadowRoot.appendChild(this.stimulusRoot);
 
     const blockNoteStylesheetUrl = this.getAttribute('blocknote-stylesheet-url');
     if (blockNoteStylesheetUrl) {
@@ -84,8 +91,9 @@ class BlockNoteElement extends HTMLElement {
 
   connectedCallback() {
     // Initialize Stimulus application within shadow DOM
-    this.stimulusApp = Application.start(this.errorContainer);
+    this.stimulusApp = Application.start(this.stimulusRoot);
     this.stimulusApp.register('flash', FlashController);
+    this.stimulusApp.register('external-links', ExternalLinksController);
 
     // Initialize React application within shadow DOM
     this.reactRoot = createRoot(this.mount);
