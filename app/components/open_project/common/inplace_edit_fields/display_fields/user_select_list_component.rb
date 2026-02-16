@@ -32,31 +32,37 @@ module OpenProject
   module Common
     module InplaceEditFields
       module DisplayFields
-        class SelectListComponent < DisplayFieldComponent
+        class UserSelectListComponent < SelectListComponent
           include CustomFieldsHelper
 
           attr_reader :model, :attribute, :writable
 
-          def render_display_value
-            value = model.public_send(attribute)
-
-            if value.present? && value != [nil]
-              if custom_field?
-                formatted_custom_field_values
-              else
-                value.is_a?(Array) ? value.map(&:to_s).join(", ") : value.to_s
-              end
-            else
-              t("placeholders.default")
-            end
-          end
-
           def formatted_custom_field_values
             return @formatted_custom_field_values if defined?(@formatted_custom_field_values)
 
-            values = custom_field_values.map { |v| format_value(v.value, custom_field) }
+            cf_values = custom_field_values
 
-            @formatted_custom_field_values = custom_field&.multi_value? ? values.join(", ") : values.first
+            users = cf_values.filter_map(&:typed_value)
+
+            @formatted_custom_field_values = if custom_field.multi_value?
+                                               flex_layout do |avatar_container|
+                                                 users.each do |user|
+                                                   avatar_container.with_row do
+                                                     render_avatar(user)
+                                                   end
+                                                 end
+                                               end
+                                             else
+                                               render_avatar(users.first)
+                                             end
+          end
+
+          private
+
+          def render_avatar(user)
+            return unless user
+
+            render(::Users::AvatarComponent.new(user:, size: :mini))
           end
         end
       end

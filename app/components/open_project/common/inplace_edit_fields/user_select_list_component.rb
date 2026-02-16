@@ -31,32 +31,33 @@
 module OpenProject
   module Common
     module InplaceEditFields
-      module DisplayFields
-        class SelectListComponent < DisplayFieldComponent
-          include CustomFieldsHelper
+      class UserSelectListComponent < SelectListComponent
+        attr_reader :form, :attribute, :model
 
-          attr_reader :model, :attribute, :writable
+        def self.display_class
+          DisplayFields::UserSelectListComponent
+        end
 
-          def render_display_value
-            value = model.public_send(attribute)
+        def initialize(form:, attribute:, model:, **system_arguments)
+          super
 
-            if value.present? && value != [nil]
-              if custom_field?
-                formatted_custom_field_values
-              else
-                value.is_a?(Array) ? value.map(&:to_s).join(", ") : value.to_s
-              end
-            else
-              t("placeholders.default")
-            end
+          unless custom_field?
+            assign_defaults!
           end
+        end
 
-          def formatted_custom_field_values
-            return @formatted_custom_field_values if defined?(@formatted_custom_field_values)
+        private
 
-            values = custom_field_values.map { |v| format_value(v.value, custom_field) }
+        def render_custom_field_input
+          input_class = if custom_field.multi_value?
+                          CustomFields::Inputs::MultiUserSelectList
+                        else
+                          CustomFields::Inputs::SingleUserSelectList
+                        end
 
-            @formatted_custom_field_values = custom_field&.multi_value? ? values.join(", ") : values.first
+          # Use fields_for to create the proper context for custom field inputs
+          form.fields_for(:custom_field_values) do |builder|
+            input_class.new(builder, custom_field:, object: model)
           end
         end
       end

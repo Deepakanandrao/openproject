@@ -107,6 +107,16 @@ module OpenProject
           def writable?
             writable && (@system_arguments[:readonly].nil? || @system_arguments[:readonly] == false)
           end
+
+          def custom_field_values
+            CustomValue
+              .includes(custom_field: :custom_options)
+              .where(
+                custom_field_id: custom_field&.id,
+                customized_id: model.id
+              )
+              .to_a
+          end
         end
       end
     end
