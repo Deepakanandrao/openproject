@@ -40,10 +40,6 @@ module OpenProject
 
         def initialize(form:, attribute:, model:, **system_arguments)
           super
-
-          unless custom_field?
-            assign_defaults!
-          end
         end
 
         private
@@ -57,7 +53,7 @@ module OpenProject
 
           # Use fields_for to create the proper context for custom field inputs
           form.fields_for(:custom_field_values) do |builder|
-            input_class.new(builder, custom_field:, object: model)
+            input_class.new(builder, custom_field:, object: model, **@system_arguments[:autocomplete_options])
           end
         end
       end

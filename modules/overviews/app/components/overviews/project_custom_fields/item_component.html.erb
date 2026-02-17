@@ -1,11 +1,13 @@
+<%= render OpenProject::Common::InplaceEditFieldComponent.new(
+  model: @project,
+  attribute: @project_custom_field.attribute_name.to_sym,
+  open_in_dialog: limited_space?,
+  truncated: limited_space?
+) %>
 
-<% if show_inplace_edit_field? %>
-  <%= render OpenProject::Common::InplaceEditFieldComponent.new(
-        model: @project,
-        attribute: @project_custom_field.attribute_name.to_sym
-      ) %>
-<% else %>
-  <%=
+<!--
+<%# if show_special_field? %>
+  <%#=
     flex_layout(
       align_items: :flex_start,
       justify_content: :space_between,
@@ -51,7 +53,10 @@
         end
       end
     end
-  %>
+   %>
 
-  <%= render_calculated_value_tooltip if calculated_value? %>
-<% end %>
+  <%#=  render_calculated_value_tooltip if calculated_value?  %>
+<%#  else  %>-->
+
+
+<%#  end %>

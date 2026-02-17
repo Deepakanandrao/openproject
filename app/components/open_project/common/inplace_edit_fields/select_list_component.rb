@@ -38,11 +38,12 @@ module OpenProject
           DisplayFields::SelectListComponent
         end
 
-        def initialize(form:, attribute:, model:, **system_arguments)
+        def initialize(form:, attribute:, model:, show_action_buttons: true, **system_arguments)
           super()
           @form = form
           @attribute = attribute
           @model = model
+          @show_action_buttons = show_action_buttons
           @system_arguments = system_arguments
           @system_arguments[:classes] = class_names(
             @system_arguments[:classes],
@@ -53,6 +54,7 @@ module OpenProject
           @system_arguments[:autocomplete_options] ||= {}
           @system_arguments[:autocomplete_options][:model] ||= { id: model.id, name: model.name }
           @system_arguments[:autocomplete_options][:inputName] ||= attribute
+          @system_arguments[:autocomplete_options][:wrapper_id] ||= system_arguments[:wrapper_id]
           if @system_arguments[:autocomplete_options][:focusDirectly].nil?
             @system_arguments[:autocomplete_options][:focusDirectly] =
               true
@@ -70,16 +72,18 @@ module OpenProject
             render_autocompleter
           end
 
-          form.group(layout: :horizontal, justify_content: :flex_end) do |button_group|
-            button_group.submit(name: :reset,
-                                type: :submit,
-                                label: I18n.t(:button_cancel),
-                                scheme: :default,
-                                formaction: inplace_edit_field_reset_path(model: model.class.name, id: model.id, attribute:),
-                                formmethod: :get)
-            button_group.submit(name: :submit,
-                                label: I18n.t(:button_save),
-                                scheme: :primary)
+          if @show_action_buttons
+            form.group(layout: :horizontal, justify_content: :flex_end) do |button_group|
+              button_group.submit(name: :reset,
+                                  type: :submit,
+                                  label: I18n.t(:button_cancel),
+                                  scheme: :default,
+                                  formaction: inplace_edit_field_reset_path(model: model.class.name, id: model.id, attribute:),
+                                  formmethod: :get)
+              button_group.submit(name: :submit,
+                                  label: I18n.t(:button_save),
+                                  scheme: :primary)
+            end
           end
         end
 
@@ -94,7 +98,7 @@ module OpenProject
 
           # Use fields_for to create the proper context for custom field inputs
           form.fields_for(:custom_field_values) do |builder|
-            input_class.new(builder, custom_field:, object: model)
+            input_class.new(builder, custom_field:, object: model, **@system_arguments[:autocomplete_options])
           end
         end
 

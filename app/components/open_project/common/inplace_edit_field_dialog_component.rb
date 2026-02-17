@@ -30,39 +30,47 @@
 
 module OpenProject
   module Common
-    module InplaceEditFields
-      module DisplayFields
-        class RichTextAreaComponent < DisplayFieldComponent
-          include OpenProject::TextFormatting
+    class InplaceEditFieldDialogComponent < ViewComponent::Base
+      include OpTurbo::Streamable
+      include OpPrimer::ComponentHelpers
 
-          attr_reader :model, :attribute, :writable
+      def initialize(model:, attribute:, system_arguments: {})
+        super()
+        @model = model
+        @attribute = attribute
+        @system_arguments = system_arguments
+      end
 
-          def input_specific_call
-            render(Primer::BaseComponent.new(tag: :div, **display_field_arguments)) do
-              render(Primer::BaseComponent.new(tag: :div,
-                                               classes: "op-uc-container op-uc-container_reduced-headings -multiline")) do
-                if field_value.present?
-                  if truncated
-                    render OpenProject::Common::AttributeComponent.new("#{attribute}-truncated-display-field",
-                                                                       attribute,
-                                                                       field_value,
-                                                                       lines: 3)
-                  else
-                    format_text(field_value)
-                  end
-                else
-                  t("placeholders.default")
-                end
-              end
-            end
-          end
+      private
 
-          private
+      def dialog_title
+        @system_arguments[:label] || @model.class.human_attribute_name(@attribute)
+      end
 
-          def field_value
-            model.public_send(attribute)
-          end
-        end
+      def dialog_id
+        model_class = @model.class.name.parameterize(separator: "_")
+        "inplace-edit-field-dialog--#{model_class}-#{@model.id}--#{@attribute}"
+      end
+
+      def wrapper_id
+        "##{dialog_id}"
+      end
+
+      def form_id
+        "inplace-edit-field-form-#{dialog_id}"
+      end
+
+      def edit_component
+        OpenProject::Common::InplaceEditFieldComponent.new(
+          model: @model,
+          attribute: @attribute,
+          enforce_edit_mode: true,
+          **@system_arguments.merge(
+            wrapper_id:,
+            form_id:,
+            show_action_buttons: false
+          )
+        )
       end
     end
   end

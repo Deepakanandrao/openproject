@@ -33,13 +33,17 @@ module OpenProject
     class InplaceEditFieldComponent < ViewComponent::Base
       include OpTurbo::Streamable
 
-      attr_reader :model, :attribute, :enforce_edit_mode
+      attr_reader :model, :attribute, :enforce_edit_mode, :open_in_dialog, :show_action_buttons, :truncated
 
-      def initialize(model:, attribute:, enforce_edit_mode: false, **system_arguments)
+      def initialize(model:, attribute:, enforce_edit_mode: false, open_in_dialog: false, show_action_buttons: true,
+                     truncated: false, **system_arguments)
         super()
         @model = model
         @attribute = attribute
         @enforce_edit_mode = enforce_edit_mode
+        @open_in_dialog = open_in_dialog
+        @show_action_buttons = show_action_buttons
+        @truncated = truncated
         @system_arguments = system_arguments
         @system_arguments[:id] = system_arguments[:id] || SecureRandom.uuid
         @system_arguments[:required] ||= required?
@@ -55,6 +59,7 @@ module OpenProject
           form:,
           attribute:,
           model:,
+          show_action_buttons:,
           **@system_arguments
         )
       end
@@ -70,7 +75,8 @@ module OpenProject
       def display_field_component
         return nil if display_field_class.nil?
 
-        display_field_class.new(model:, attribute:, writable: writable?, **@system_arguments)
+        additional_args = open_in_dialog? ? dialog_display_arguments : {}
+        display_field_class.new(model:, attribute:, writable: writable?, truncated:, **@system_arguments.merge(additional_args))
       end
 
       def wrapper_key
@@ -82,7 +88,58 @@ module OpenProject
         "op-inplace-edit-field"
       end
 
+      def wrapper_uniq_by
+        "#{@model.class.name.parameterize(separator: '_')}_#{@model.id}_#{@attribute}"
+      end
+
+      def form_id
+        @system_arguments[:form_id]
+      end
+
+      def wrapper_id
+        @system_arguments[:wrapper_id]
+      end
+
+      def form_options
+        options = {
+          model: @model,
+          url: inplace_edit_field_update_path(
+            model: @model.class.name,
+            id: @model.id,
+            attribute: @attribute
+          ),
+          method: :patch,
+          data: { turbo_stream: true }
+        }
+
+        options[:id] = form_id if form_id.present?
+        options
+      end
+
+      def open_in_dialog?
+        @open_in_dialog
+      end
+
+      def dialog_edit_url
+        return unless open_in_dialog?
+
+        inplace_edit_field_dialog_path(
+          model: model.class.name,
+          id: model.id,
+          attribute:,
+          system_arguments_json: @system_arguments.except(:id).to_json
+        )
+      end
+
       private
+
+      def dialog_display_arguments
+        {
+          dialog_controller_name: "inplace-edit",
+          dialog_url: dialog_edit_url,
+          dialog_test_selector: "inplace-edit-dialog-button-#{wrapper_key}"
+        }
+      end
 
       def writable?
         return @writable if defined?(@writable)

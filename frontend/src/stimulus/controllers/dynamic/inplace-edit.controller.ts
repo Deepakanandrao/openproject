@@ -35,9 +35,12 @@ import { renderStreamMessage } from '@hotwired/turbo';
 export default class extends Controller {
   static values = {
     url: String,
+    dialogUrl: String,
   };
 
   declare urlValue:string;
+  declare dialogUrlValue:string;
+  declare hasDialogUrlValue:boolean;
 
   async request(e:Event):Promise<void> {
     // Don't trigger edit mode if clicking on a link
@@ -59,10 +62,36 @@ export default class extends Controller {
     }
   }
 
+  open(event:Event) {
+    const target = event.target as HTMLElement;
+
+    // Check if the event is on an interactive element that should be ignored
+    if (this.isInteractiveElement(target)) {
+      // Don't handle this event, let the child element handle it
+      return;
+    }
+
+    // Prevent default and dispatch custom event for async-dialog to handle
+    event.preventDefault();
+    this.dispatch('open-dialog', { detail: { url: this.dialogUrlValue } });
+  }
+
   submitForm() {
     const form = this.element.closest('form');
     if (form) {
       form.requestSubmit();
     }
+  }
+
+  private isInteractiveElement(element:HTMLElement):boolean {
+    // Check if the element is or is inside an interactive element.
+    let current = element;
+    while (current && current !== this.element) {
+      if (current.matches('button, a, dialog')) {
+        return true;
+      }
+      current = current.parentElement!;
+    }
+    return false;
   }
 }

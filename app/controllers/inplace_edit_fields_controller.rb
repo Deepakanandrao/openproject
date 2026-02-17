@@ -33,7 +33,7 @@ class InplaceEditFieldsController < ApplicationController
 
   before_action :find_model
   before_action :set_attribute
-  no_authorization_required! :edit, :update, :reset
+  no_authorization_required! :edit, :update, :reset, :dialog
 
   def edit
     replace_via_turbo_stream(
@@ -76,6 +76,16 @@ class InplaceEditFieldsController < ApplicationController
   def reset
     replace_via_turbo_stream(component:)
     respond_with_turbo_streams
+  end
+
+  def dialog
+    respond_with_dialog(
+      OpenProject::Common::InplaceEditFieldDialogComponent.new(
+        model: @model,
+        attribute: @attribute,
+        system_arguments: system_arguments.to_h.symbolize_keys
+      )
+    )
   end
 
   private

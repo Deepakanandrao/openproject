@@ -35,13 +35,14 @@ module OpenProject
         class DisplayFieldComponent < ViewComponent::Base
           include OpPrimer::ComponentHelpers
 
-          attr_reader :model, :attribute, :writable
+          attr_reader :model, :attribute, :writable, :truncated
 
-          def initialize(model:, attribute:, writable:, **system_arguments)
+          def initialize(model:, attribute:, writable:, truncated:, **system_arguments)
             super()
             @model = model
             @attribute = attribute
             @writable = writable
+            @truncated = truncated
             @system_arguments = system_arguments
           end
 
@@ -58,9 +59,48 @@ module OpenProject
           end
 
           def display_field_arguments
-            @display_field_arguments ||= {
+            @display_field_arguments ||= if open_in_dialog?
+                                           base_arguments.merge(dialog_field_arguments)
+                                         else
+                                           base_arguments.merge(inline_edit_field_arguments)
+                                         end
+          end
+
+          def open_in_dialog?
+            @system_arguments[:dialog_controller_name].present?
+          end
+
+          def base_arguments
+            {
               classes: "op-inplace-edit--display-field #{'op-inplace-edit--display-field_editable' if writable?}",
-              id: @system_arguments[:id],
+              id: @system_arguments[:id]
+            }
+          end
+
+          def dialog_field_arguments
+            {
+              data: {
+                controller: "inplace-edit async-dialog",
+                inplace_edit_dialog_url_value: @system_arguments[:dialog_url],
+                action: "click->inplace-edit#open " \
+                        "keydown.enter->inplace-edit#open " \
+                        "keydown.space->inplace-edit#open " \
+                        "inplace-edit:open-dialog->async-dialog#handleOpenDialog",
+                test_selector: @system_arguments[:dialog_test_selector]
+              },
+              aria: {
+                label: [
+                  I18n.t(:label_edit_x, x: @system_arguments[:label]),
+                  I18n.t(:label_value_x, x: render_display_value)
+                ].join(", ")
+              },
+              role: "button",
+              tabindex: 0
+            }
+          end
+
+          def inline_edit_field_arguments
+            {
               data: {
                 controller: "inplace-edit",
                 inplace_edit_url_value: edit_url,
