@@ -272,24 +272,6 @@ export class GridAreaService {
     });
   }
 
-  public sortWidgetAreasRowMajor():void {
-    const index = (area:GridWidgetArea) =>
-      (area.startRow - 1) * this.numColumns + area.startColumn;
-
-    this.widgetAreas.sort((a, b) => {
-      const diff = index(a) - index(b);
-
-      if (diff !== 0) return diff;
-
-      // stable fallback
-      const aKey = (a.widget.id ?? a.guid).toString();
-      const bKey = (b.widget.id ?? b.guid).toString();
-
-      return aKey.localeCompare(bKey);
-    });
-  }
-
-
   public addColumn(column:number, excludeRow:number) {
     this.numColumns++;
 
