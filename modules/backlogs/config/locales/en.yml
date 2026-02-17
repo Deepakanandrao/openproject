@@ -40,6 +40,8 @@ en:
         goal: "Sprint goal"
         name: "Sprint name"
         sharing: "Sharing"
+      project:
+        sprint_sharing: "Sprint sharing"
       sprint:
         duration: "Sprint duration"
       work_package:
@@ -70,6 +72,9 @@ en:
     column_width: "Column width"
     definition_of_done: "Definition of Done"
     definition_of_done_caption: "Work packages with these statuses are treated as completed in backlog views and reporting."
+    done_status: "Done status"
+    sharing_description: "This project can either share its own sprints, receive shared sprints or handle sprints independently (no sharing)."
+    sharing: "Sharing"
     impediment: "Impediment"
     label_versions_default_fold_state: "Show versions folded"
     caption_versions_default_fold_state: "Versions will not be expanded by default when viewing backlogs. Each one has to be manually expanded."
