@@ -32,8 +32,6 @@ module OpenProject
   module Common
     module InplaceEditFields
       class LinkInputComponent < TextInputComponent
-        attr_reader :form, :attribute, :model
-
         def self.display_class
           DisplayFields::LinkInputComponent
         end

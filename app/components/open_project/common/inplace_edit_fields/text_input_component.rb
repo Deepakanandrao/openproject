@@ -31,21 +31,7 @@
 module OpenProject
   module Common
     module InplaceEditFields
-      class TextInputComponent < ViewComponent::Base
-        attr_reader :form, :attribute, :model
-
-        def self.display_class
-          DisplayFields::DisplayFieldComponent
-        end
-
-        def initialize(form:, attribute:, model:, **system_arguments)
-          super()
-          @form = form
-          @attribute = attribute
-          @model = model
-          @system_arguments = system_arguments
-        end
-
+      class TextInputComponent < BaseFieldComponent
         def call
           form.text_field name: attribute,
                           data: { controller: "inplace-edit",

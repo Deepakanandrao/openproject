@@ -32,8 +32,6 @@ module OpenProject
   module Common
     module InplaceEditFields
       class VersionSelectListComponent < SelectListComponent
-        attr_reader :form, :attribute, :model
-
         def initialize(form:, attribute:, model:, **system_arguments)
           super
 

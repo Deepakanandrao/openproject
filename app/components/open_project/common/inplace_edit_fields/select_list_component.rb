@@ -31,30 +31,18 @@
 module OpenProject
   module Common
     module InplaceEditFields
-      class SelectListComponent < ViewComponent::Base
-        attr_reader :form, :attribute, :model
-
+      class SelectListComponent < BaseFieldComponent
         def self.display_class
           DisplayFields::SelectListComponent
         end
 
         def initialize(form:, attribute:, model:, show_action_buttons: true, **system_arguments)
-          super()
-          @form = form
-          @attribute = attribute
-          @model = model
-          @show_action_buttons = show_action_buttons
-          @system_arguments = system_arguments
-          @system_arguments[:classes] = class_names(
-            @system_arguments[:classes],
-            "op-inplace-edit-field--select-list"
-          )
-          @system_arguments[:label] ||= model.class.human_attribute_name(attribute)
+          super
 
           @system_arguments[:autocomplete_options] ||= {}
           @system_arguments[:autocomplete_options][:model] ||= { id: model.id, name: model.name }
           @system_arguments[:autocomplete_options][:inputName] ||= attribute
-          @system_arguments[:autocomplete_options][:wrapper_id] ||= system_arguments[:wrapper_id]
+          @system_arguments[:autocomplete_options][:wrapper_id] ||= @system_arguments[:wrapper_id]
           if @system_arguments[:autocomplete_options][:focusDirectly].nil?
             @system_arguments[:autocomplete_options][:focusDirectly] =
               true
@@ -104,16 +92,6 @@ module OpenProject
 
         def render_autocompleter
           form.autocompleter(name: attribute, **@system_arguments)
-        end
-
-        def custom_field?
-          attribute.to_s.start_with?("custom_field_")
-        end
-
-        def custom_field
-          return @custom_field if defined?(@custom_field)
-
-          @custom_field = CustomField.find_by(id: attribute.to_s.sub("custom_field_", "").to_i)
         end
       end
     end

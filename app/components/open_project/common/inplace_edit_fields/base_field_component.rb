@@ -31,24 +31,30 @@
 module OpenProject
   module Common
     module InplaceEditFields
-      class UserSelectListComponent < SelectListComponent
+      class BaseFieldComponent < ViewComponent::Base
+        attr_reader :form, :attribute, :model, :show_action_buttons
+
         def self.display_class
-          DisplayFields::UserSelectListComponent
+          DisplayFields::DisplayFieldComponent
         end
 
-        private
+        def initialize(form:, attribute:, model:, show_action_buttons: true, **system_arguments)
+          super()
+          @form = form
+          @attribute = attribute
+          @model = model
+          @show_action_buttons = show_action_buttons
+          @system_arguments = system_arguments
+        end
 
-        def render_custom_field_input
-          input_class = if custom_field.multi_value?
-                          CustomFields::Inputs::MultiUserSelectList
-                        else
-                          CustomFields::Inputs::SingleUserSelectList
-                        end
+        def custom_field?
+          attribute.to_s.start_with?("custom_field_")
+        end
 
-          # Use fields_for to create the proper context for custom field inputs
-          form.fields_for(:custom_field_values) do |builder|
-            input_class.new(builder, custom_field:, object: model, **@system_arguments[:autocomplete_options])
-          end
+        def custom_field
+          return @custom_field if defined?(@custom_field)
+
+          @custom_field = CustomField.find_by(id: attribute.to_s.sub("custom_field_", "").to_i)
         end
       end
     end

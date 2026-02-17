@@ -31,26 +31,7 @@
 module OpenProject
   module Common
     module InplaceEditFields
-      class BooleanInputComponent < ViewComponent::Base
-        attr_reader :form, :attribute, :model
-
-        def self.display_class
-          DisplayFields::DisplayFieldComponent
-        end
-
-        def initialize(form:, attribute:, model:, **system_arguments)
-          super()
-          @form = form
-          @attribute = attribute
-          @model = model
-          @system_arguments = system_arguments
-          @system_arguments[:classes] = class_names(
-            @system_arguments[:classes],
-            "op-inplace-edit-field--boolean"
-          )
-          @system_arguments[:label] ||= model.class.human_attribute_name(attribute)
-        end
-
+      class BooleanInputComponent < BaseFieldComponent
         def call
           form.check_box name: attribute,
                          data: { controller: "inplace-edit",

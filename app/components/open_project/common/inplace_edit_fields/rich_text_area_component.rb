@@ -31,20 +31,13 @@
 module OpenProject
   module Common
     module InplaceEditFields
-      class RichTextAreaComponent < ViewComponent::Base
-        attr_reader :form, :attribute, :model, :show_action_buttons
-
+      class RichTextAreaComponent < BaseFieldComponent
         def self.display_class
           DisplayFields::RichTextAreaComponent
         end
 
         def initialize(form:, attribute:, model:, show_action_buttons: true, **system_arguments)
-          super()
-          @form = form
-          @attribute = attribute
-          @model = model
-          @show_action_buttons = show_action_buttons
-          @system_arguments = system_arguments
+          super
           @system_arguments[:classes] = class_names(
             @system_arguments[:classes],
             "op-inplace-edit-field--text-area"
