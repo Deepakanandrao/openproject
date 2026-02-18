@@ -111,8 +111,8 @@ jobs:
           HOCUSPOCUS_IMAGE: ${{ steps.tags.outputs.tags }}
           THIS_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
-          echo "HOCUSPOCUS_IMAGE is ${{ steps.tags.outputs.tags[0] }}"
-          HOCUSPOCUS_TAG=$(echo $HOCUSPOCUS_IMAGE | head -n1 | cut -d':' -f 2)
+          # get the tag only from the first given image in "org/repository:tag1 org/repository:tag2"
+          HOCUSPOCUS_TAG=$(echo $HOCUSPOCUS_IMAGE | cut -d' ' -f1 | cut -d':' -f2)
 
           inputs_json=$(jq -cn \
             --arg tag "$HOCUSPOCUS_TAG" \
