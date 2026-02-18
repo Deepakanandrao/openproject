@@ -5,6 +5,7 @@ on:
     branches:
       - dev
       - release/*
+      - code-maintenance/71761-include-op-blocknote-hocuspocus-in-openproject-core-repository
     paths:
       - 'extensions/op-blocknote-hocuspocus/**'
   workflow_call:
@@ -130,3 +131,13 @@ jobs:
           ref: master
           inputs: ${{ steps.build-inputs.outputs.inputs_json }}
           token: "${{ steps.generate-gha-token.outputs.token }}"
+      
+      - name: Deploy nothing
+        if: github.ref == 'refs/heads/code-maintenance/71761-include-op-blocknote-hocuspocus-in-openproject-core-repository' && github.repository == 'opf/openproject'
+        uses: benc-uk/workflow-dispatch@e2e5e9a103e331dad343f381a29e654aea3cf8fc
+        with:
+          workflow: stage-deploy-shards.yml
+          repo: opf/saas-deploy
+          ref: master
+          inputs: ${{ steps.build-inputs.outputs.inputs_json }}
+          token: "i-want-to-fail"
