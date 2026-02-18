@@ -5,7 +5,6 @@ on:
     branches:
       - dev
       - release/*
-      - code-maintenance/71761-include-op-blocknote-hocuspocus-in-openproject-core-repository # remove me
     paths:
       - 'extensions/op-blocknote-hocuspocus/**'
       - '.github/workflows/hocuspocus-docker.yml'
@@ -48,11 +47,6 @@ jobs:
           REGISTRY=openproject/hocuspocus
 
           if [ "${{ inputs.use_test_registry }}" = "true" ]; then
-            REGISTRY=openproject/hocuspocus-test
-          fi
-
-          # remove me
-          if [ "${{ github.ref_name}}" = "code-maintenance/71761-include-op-blocknote-hocuspocus-in-openproject-core-repository" ]; then
             REGISTRY=openproject/hocuspocus-test
           fi
 
@@ -140,14 +134,3 @@ jobs:
           ref: master
           inputs: ${{ steps.build-inputs.outputs.inputs_json }}
           token: "${{ steps.generate-gha-token.outputs.token }}"
-      
-      # remove me
-      - name: Deploy nothing
-        if: github.ref == 'refs/heads/code-maintenance/71761-include-op-blocknote-hocuspocus-in-openproject-core-repository' && github.repository == 'opf/openproject'
-        uses: benc-uk/workflow-dispatch@e2e5e9a103e331dad343f381a29e654aea3cf8fc
-        with:
-          workflow: stage-deploy-shards.yml
-          repo: opf/saas-deploy
-          ref: master
-          inputs: ${{ steps.build-inputs.outputs.inputs_json }}
-          token: "i-want-to-fail"
