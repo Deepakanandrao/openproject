@@ -87,6 +87,25 @@ RSpec.describe "Document collaboration settings admin",
     end
   end
 
+  context "when submitting an invalid URL scheme",
+          with_settings: {
+            real_time_text_collaboration_enabled: true,
+            collaborative_editing_hocuspocus_url: "wss://hocuspocus.example.com",
+            collaborative_editing_hocuspocus_secret: "secret1234"
+          } do
+    it "rejects https:// URLs and shows an error" do
+      visit admin_settings_document_collaboration_settings_path
+
+      fill_in "Hocuspocus server URL", with: "https://hocuspocus.example.com"
+      click_on("Save")
+
+      expect_flash(type: :error, message: "Hocuspocus server URL is not a supported protocol (allowed: ws, wss).")
+
+      # Setting unchanged
+      expect(Setting.collaborative_editing_hocuspocus_url).to eq("wss://hocuspocus.example.com")
+    end
+  end
+
   context "with hocuspocus url set via environment variable",
           with_env: { "OPENPROJECT_COLLABORATIVE_EDITING_HOCUSPOCUS_URL" => "wss://env-hocuspocus.example.com" },
           with_settings: { collaborative_editing_hocuspocus_secret: "secret1234" } do

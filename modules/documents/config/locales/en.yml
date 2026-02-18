@@ -31,6 +31,9 @@ en:
     name: "OpenProject Documents"
     description: "An OpenProject plugin to allow creation of documents in projects."
 
+  attributes:
+    collaborative_editing_hocuspocus_url: "Hocuspocus server URL"
+
   activerecord:
     errors:
       models:

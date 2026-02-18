@@ -31,51 +31,33 @@
 module Documents
   module Admin
     module Settings
-      class DocumentCollaborationSettingsController < ::Admin::SettingsController
-        include OpTurbo::ComponentStream
+      class CollaborationServerSettingsParamsContract < ::ParamsContract
+        include RequiresAdminGuard
 
-        menu_item :document_collaboration_settings
+        validate :validate_collaborative_editing_hocuspocus_url
 
-        def create
-          toggle_collaboration(enabled: true)
-        end
-
-        def delete_dialog
-          respond_with_dialog Documents::Admin::CollaborationSettings::DisableTextCollaborationDialogComponent.new
-        end
-
-        def destroy
-          toggle_collaboration(enabled: false)
+        # Expose the param value as a method so that ActiveModel::Errors#full_messages
+        # can resolve the attribute without hitting Disposable::Twin's method_missing.
+        def collaborative_editing_hocuspocus_url
+          params[:collaborative_editing_hocuspocus_url]
         end
 
         private
 
-        def update_service
-          Documents::Admin::Settings::CollaborationServerSettingsUpdateService
-        end
+        def validate_collaborative_editing_hocuspocus_url
+          url = params[:collaborative_editing_hocuspocus_url]
+          return if url.blank?
 
-        def toggle_collaboration(enabled:)
-          call = update_service
-            .new(user: current_user)
-            .call(real_time_text_collaboration_enabled: enabled.to_s)
-
-          if call.success?
-            flash[:notice] = I18n.t(success_key_for(enabled))
-          else
-            flash[:error] = call.errors.full_messages.to_sentence
+          uri = URI.parse(url)
+          unless uri.is_a?(URI::WS) || uri.is_a?(URI::WSS)
+            errors.add :collaborative_editing_hocuspocus_url, :invalid_url_scheme,
+                       allowed_schemes: allowed_protocols.join(", ")
           end
-
-          redirect_to action: :show
+        rescue URI::InvalidURIError
+          errors.add :collaborative_editing_hocuspocus_url, :invalid_url
         end
 
-        def success_key_for(enabled)
-          base = "documents.admin"
-          if enabled
-            "#{base}.enable_text_collaboration.success"
-          else
-            "#{base}.disable_text_collaboration_dialog.success"
-          end
-        end
+        def allowed_protocols = %w[ws wss]
       end
     end
   end

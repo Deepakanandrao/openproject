@@ -31,50 +31,12 @@
 module Documents
   module Admin
     module Settings
-      class DocumentCollaborationSettingsController < ::Admin::SettingsController
-        include OpTurbo::ComponentStream
-
-        menu_item :document_collaboration_settings
-
-        def create
-          toggle_collaboration(enabled: true)
-        end
-
-        def delete_dialog
-          respond_with_dialog Documents::Admin::CollaborationSettings::DisableTextCollaborationDialogComponent.new
-        end
-
-        def destroy
-          toggle_collaboration(enabled: false)
-        end
-
-        private
-
-        def update_service
-          Documents::Admin::Settings::CollaborationServerSettingsUpdateService
-        end
-
-        def toggle_collaboration(enabled:)
-          call = update_service
-            .new(user: current_user)
-            .call(real_time_text_collaboration_enabled: enabled.to_s)
-
-          if call.success?
-            flash[:notice] = I18n.t(success_key_for(enabled))
-          else
-            flash[:error] = call.errors.full_messages.to_sentence
-          end
-
-          redirect_to action: :show
-        end
-
-        def success_key_for(enabled)
-          base = "documents.admin"
-          if enabled
-            "#{base}.enable_text_collaboration.success"
-          else
-            "#{base}.disable_text_collaboration_dialog.success"
-          end
+      class CollaborationServerSettingsUpdateService < ::Settings::UpdateService
+        def validate_params
+          contract = CollaborationServerSettingsParamsContract.new(model, user, params:)
+          ServiceResult.new success: contract.valid?,
+                            errors: contract.errors,
+                            result: model
         end
       end
     end
