@@ -44,6 +44,20 @@ RSpec.describe JournalsController do
   describe "GET diff" do
     render_views
 
+    shared_examples "the diff is shown" do |value|
+      it { expect(response).to have_http_status(:ok) }
+
+      it "presents the diff correctly" do
+        expect(response.body.strip).to be_html_eql <<-HTML
+          <div class="text-diff">
+            <label class="sr-only">Begin of the insertion</label>
+            <ins class="diffmod">#{value}</ins>
+            <label class="sr-only">End of the insertion</label>
+          </div>
+        HTML
+      end
+    end
+
     context "for work package description" do
       shared_let(:work_package) do
         create(:work_package, type: project.types.first,
@@ -58,21 +72,7 @@ RSpec.describe JournalsController do
       end
 
       describe "with a user having :view_work_package permission" do
-        it { expect(response).to have_http_status(:ok) }
-
-        it "presents the diff correctly" do
-          expect(response.body.strip).to be_html_eql <<-HTML
-            <div class="text-diff">
-              <label class="sr-only">Begin of the insertion</label>
-              <ins class="diffmod">
-                description
-                <br/>
-                more changes
-              </ins>
-              <label class="sr-only">End of the insertion</label>
-            </div>
-          HTML
-        end
+        include_examples "the diff is shown", "description<br/>more changes"
       end
 
       describe "with a user not having the :view_work_package permission" do
@@ -107,17 +107,7 @@ RSpec.describe JournalsController do
         let(:factory_name) { :text_wp_custom_field }
 
         describe "with a user having :view_work_package permission" do
-          it { expect(response).to have_http_status(:ok) }
-
-          it "presents the diff correctly" do
-            expect(response.body.strip).to be_html_eql <<-HTML
-              <div class="text-diff">
-                <label class="sr-only">Begin of the insertion</label>
-                <ins class="diffmod">foo</ins>
-                <label class="sr-only">End of the insertion</label>
-              </div>
-            HTML
-          end
+          include_examples "the diff is shown", "foo"
         end
 
         describe "with a user not having the :view_work_package permission" do
@@ -128,7 +118,7 @@ RSpec.describe JournalsController do
       end
 
       context "with format string" do
-        let(:factory_name) { :wp_custom_field }
+        let(:factory_name) { :string_wp_custom_field }
 
         it { expect(response).to have_http_status(:not_found) }
       end
@@ -138,7 +128,7 @@ RSpec.describe JournalsController do
       let(:params) { { id: project.last_journal.id.to_s, field: "custom_fields_#{custom_field.id}", format: "js" } }
 
       before do
-        project.update custom_field.attribute_name => "foo"
+        project.update custom_field.attribute_name => "bar"
       end
 
       context "with format text" do
@@ -146,17 +136,7 @@ RSpec.describe JournalsController do
           let!(:custom_field) { create(:text_project_custom_field, projects: [project]) }
 
           describe "with a user being project member" do
-            it { expect(response).to have_http_status(:ok) }
-
-            it "presents the diff correctly" do
-              expect(response.body.strip).to be_html_eql <<-HTML
-                <div class="text-diff">
-                  <label class="sr-only">Begin of the insertion</label>
-                  <ins class="diffmod">foo</ins>
-                  <label class="sr-only">End of the insertion</label>
-                </div>
-              HTML
-            end
+            include_examples "the diff is shown", "bar"
           end
 
           describe "with a user not being project member" do
@@ -176,17 +156,7 @@ RSpec.describe JournalsController do
           describe "with an admin user" do
             let(:user) { build_stubbed(:admin) }
 
-            it { expect(response).to have_http_status(:ok) }
-
-            it "presents the diff correctly" do
-              expect(response.body.strip).to be_html_eql <<-HTML
-                <div class="text-diff">
-                  <label class="sr-only">Begin of the insertion</label>
-                  <ins class="diffmod">foo</ins>
-                  <label class="sr-only">End of the insertion</label>
-                </div>
-              HTML
-            end
+            include_examples "the diff is shown", "bar"
           end
         end
       end
@@ -206,17 +176,7 @@ RSpec.describe JournalsController do
       end
 
       describe "with a user being member of the project" do
-        it { expect(response).to have_http_status(:ok) }
-
-        it "presents the diff correctly" do
-          expect(response.body.strip).to be_html_eql <<-HTML
-            <div class="text-diff">
-              <label class="sr-only">Begin of the insertion</label>
-              <ins class="diffmod">description</ins>
-              <label class="sr-only">End of the insertion</label>
-            </div>
-          HTML
-        end
+        include_examples "the diff is shown", "description"
       end
 
       describe "with a user not being member of the project" do
