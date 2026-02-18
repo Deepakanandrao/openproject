@@ -60,11 +60,33 @@ module CustomFields
         end
       end
 
-      if show_multi_value_field?
-        details_form.check_box(
-          name: :multi_value,
-          label: label(:multi_value),
-          caption: instructions(:multi_select)
+      if show_min_max_field?
+        details_form.group(layout: :horizontal) do |g|
+          g.text_field(
+            name: :min_length,
+            type: :number,
+            label: label(:min_length),
+            caption: instructions(:min_max),
+            input_width: :xsmall
+          )
+
+          g.text_field(
+            name: :max_length,
+            type: :number,
+            label: label(:max_length),
+            caption: instructions(:min_max),
+            input_width: :xsmall
+          )
+        end
+      end
+
+      if show_regex_field?
+        details_form.text_field(
+          name: :regexp,
+          label: label(:regexp),
+          size: 50,
+          caption: instructions(:regexp),
+          input_width: :medium
         )
       end
 
@@ -83,6 +105,37 @@ module CustomFields
         details_form.check_box(
           name: :default_value,
           label: label(:default_value)
+        )
+      end
+
+      if show_default_text_field?
+        details_form.text_field(
+          name: :default_value,
+          label: label(:default_value),
+          input_width: :medium
+        )
+      end
+
+      if show_default_rich_text_field?
+        details_form.rich_text_area(
+          name: :default_value,
+          label: label(:default_value),
+          rich_text_options: { resource: nil, macros: :none }
+        )
+      end
+
+      if show_multi_value_field?
+        details_form.check_box(
+          name: :multi_value,
+          label: label(:multi_value),
+          caption: instructions(:multi_select)
+        )
+      end
+
+      if show_non_open_versions_field?
+        details_form.check_box(
+          name: :allow_non_open_versions,
+          label: label(:allow_non_open_versions)
         )
       end
 
@@ -107,6 +160,21 @@ module CustomFields
           name: :is_filter,
           label: label(:is_filter),
           caption: instructions(:is_filter)
+        )
+      end
+
+      if show_is_searchable_field?
+        details_form.check_box(
+          name: :searchable,
+          label: label(:searchable),
+          caption: instructions(:searchable)
+        )
+      end
+
+      if show_right_to_left_field?
+        details_form.check_box(
+          name: :content_right_to_left,
+          label: label(:content_right_to_left)
         )
       end
 
@@ -151,8 +219,28 @@ module CustomFields
       %w[bool].include?(model.field_format)
     end
 
+    def show_default_text_field?
+      %w[list bool date text user version hierarchy calculated_value].exclude?(model.field_format)
+    end
+
+    def show_default_rich_text_field?
+      %w[text].include?(model.field_format)
+    end
+
     def show_is_required_field?
       %w[calculated_value bool].exclude?(model.field_format)
+    end
+
+    def show_min_max_field?
+      %w[list bool date user version link hierarchy calculated_value].exclude?(model.field_format)
+    end
+
+    def show_regex_field?
+      %w[list bool date user version hierarchy calculated_value].exclude?(model.field_format)
+    end
+
+    def show_right_to_left_field?
+      %w[text].include?(model.field_format)
     end
 
     def show_multi_value_field?
@@ -169,6 +257,14 @@ module CustomFields
 
     def show_is_filter_field?
       model.is_a?(WorkPackageCustomField)
+    end
+
+    def show_is_searchable_field?
+      %w[bool date float int user version hierarchy calculated_value].exclude?(model.field_format)
+    end
+
+    def show_non_open_versions_field?
+      %w[version].include?(model.field_format) && model.allow_non_open_versions_possible?
     end
 
     def show_admin_only_field?

@@ -46,7 +46,7 @@ module Admin
           }
         ]
 
-        if @custom_field.hierarchical_list?
+        if @custom_field.hierarchical_list? || @custom_field.list?
           tabs << {
             name: "items",
             path: custom_field_items_path(@custom_field),

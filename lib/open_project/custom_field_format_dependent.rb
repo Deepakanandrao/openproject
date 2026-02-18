@@ -29,10 +29,24 @@
 module OpenProject
   class CustomFieldFormatDependent
     CONFIG = {
-      possibleValues: [:only, %w[list]],
+      allowNonOpenVersions: [:only, %w[version]],
+      defaultBool: [:only, %w[bool]],
+      defaultLongText: [:only, %w[text]],
+      defaultText: [:except, %w[list bool date text user version hierarchy calculated_value]],
+      enterpriseBanner: [:only, %w[hierarchy]],
       formula: [:only, %w[calculated_value]],
-      enterpriseBanner: [:only, %w[hierarchy]]
+      length: [:except, %w[list bool date user version link hierarchy calculated_value]],
+      multiSelect: [:only, %w[list user version hierarchy]],
+      possibleValues: [:only, %w[list]],
+      regexp: [:except, %w[list bool date user version hierarchy calculated_value]],
+      searchable: [:except, %w[bool date float int user version hierarchy calculated_value]],
+      textOrientation: [:only, %w[text]]
     }.freeze
+
+    def self.stimulus_config
+      CONFIG
+        .map { |target_name, (operator, formats)| [target_name, operator, formats] }.to_json
+    end
 
     attr_reader :format
 
@@ -40,12 +54,17 @@ module OpenProject
       @format = format
     end
 
-    def visible?(target_name)
+    def attributes(target_name)
       operator, formats = CONFIG[target_name.to_sym]
 
       fail ArgumentError, "Unknown target name #{target_name}" unless formats
 
-      operator == :only ? format.in?(formats) : !format.in?(formats)
+      visible = operator == :only ? format.in?(formats) : !format.in?(formats)
+
+      ApplicationController.helpers.tag.attributes(
+        data: { "admin--custom-fields-target": target_name },
+        hidden: !visible
+      )
     end
   end
 end
