@@ -28,21 +28,34 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-# This context allows to run tests against an OpenProject Hocuspocus server,
-# either running in Docker or locally.
-# It will throw an error if Hocuspocus is not reachable.
-RSpec.shared_context "with hocuspocus" do
-  include_context "with settings reset"
+# Helper to remove a variable from ENV and reset its setting.
+# Usage:
+# it "runs a spec", without_env: ["OPENPROJECT_COLLABORATIVE__EDITING__HOCUSPOCUS__SECRET"] do
+RSpec.configure do |config|
+  config.include_context "with settings reset"
 
-  before do
-    host = ENV["OPENPROJECT_TESTING_WITH_DOCKER"] == "true" ? "hocuspocus-test" : "127.0.0.1"
-    port = 1234
-    Setting.collaborative_editing_hocuspocus_url = "ws://#{host}:#{port}"
+  config.around do |example|
+    environment_overrides = aggregate_metadata(example, :without_env)
+    keys_to_reset = environment_overrides.to_set
+    previous = ENV.to_hash
 
-    begin
-      TCPSocket.new(host, port).close
-    rescue Errno::ECONNREFUSED, Errno::EHOSTUNREACH, SocketError => e
-      raise("Hocuspocus server is required for this test. It is not reachable at #{host}:#{port} - #{e.message}")
+    if environment_overrides.present?
+      environment_overrides.each do |override|
+        ENV.delete(override) # e.g. OPENPROJECT_COLLABORATIVE__EDITING__HOCUSPOCUS__SECRET
+        cleaned_override = override.gsub("__", "_")
+        keys_to_reset << cleaned_override
+        ENV.delete(cleaned_override) # e.g. OPENPROJECT_COLLABORATIVE_EDITING_HOCUSPOCUS_SECRET
+        reset(cleaned_override.delete_prefix("OPENPROJECT_").downcase.to_sym) # e.g. :collaborative_editing_hocuspocus_secret
+        example.run
+      end
+    else
+      example.run
+    end
+  ensure
+    keys_to_reset&.each do |key|
+      if previous&.key?(key)
+        ENV[key] = previous[key]
+      end
     end
   end
 end

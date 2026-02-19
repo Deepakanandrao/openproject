@@ -13,6 +13,8 @@ export PGUSER=${PGUSER:=appuser}
 export PGHOST=${PGHOST:=127.0.0.1}
 export PGPASSWORD=${PGPASSWORD:=p4ssw0rd}
 export DATABASE_URL="postgres://$PGUSER:$PGPASSWORD@$PGHOST/appdb"
+# Hocuspocus will not start without a secret and it needs to be the same in OpenProject
+export OPENPROJECT_COLLABORATIVE__EDITING__HOCUSPOCUS__SECRET=secret12345
 
 run_psql() {
 	psql -v ON_ERROR_STOP=1 "$@"
@@ -98,22 +100,22 @@ reset_dbs() {
 }
 
 setup_hocuspocus() {
-  if [ -d "vendor/hocuspocus" ]; then
-    cd vendor/hocuspocus
+  if [ -d "extensions/op-blocknote-hocuspocus" ]; then
+    cd extensions/op-blocknote-hocuspocus
     npm install --omit=dev
     cd -
   else
-    echo 'Could not find Hocuspocus in vendor/hocuspocus!'
+    echo 'Could not find Hocuspocus in extensions/op-blocknote-hocuspocus!'
   fi
 }
 
 start_hocuspocus() {
-  if [ -d "vendor/hocuspocus" ]; then
-    cd vendor/hocuspocus
-    execute "SECRET=secret12345 npm run start"
+  if [ -d "extensions/op-blocknote-hocuspocus" ]; then
+    cd extensions/op-blocknote-hocuspocus
+    execute "SECRET=$OPENPROJECT_COLLABORATIVE__EDITING__HOCUSPOCUS__SECRET npm run start"
     cd -
   else
-    echo 'Could not find Hocuspocus in vendor/hocuspocus!'
+    echo 'Could not find Hocuspocus in extensions/op-blocknote-hocuspocus!'
   fi
 }
 
