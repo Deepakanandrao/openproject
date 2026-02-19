@@ -84,8 +84,12 @@ module CustomFields
     end
 
     def persisted_cf_has_no_items_or_projects?
-      if custom_field.list? && custom_field.custom_options.empty? && custom_field.projects.empty?
-        return true
+      if custom_field.list? && custom_field.custom_options.empty?
+        if custom_field.respond_to?(:projects)
+          custom_field.projects.empty?
+        end
+
+        true
       end
 
       custom_field.persisted? &&

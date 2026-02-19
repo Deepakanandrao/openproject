@@ -65,10 +65,10 @@ See COPYRIGHT and LICENSE files for more details.
       flex.with_column do
         render Primer::Beta::Button.new(
           scheme: :primary,
-          type: :submit,
-          ) do |button|
+          type: :submit
+        ) do |button|
           button.with_leading_visual_icon(icon: :check)
-          t(:button_submit)
+          t(:button_save)
         end
       end
     end

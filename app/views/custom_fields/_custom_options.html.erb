@@ -93,7 +93,7 @@ See COPYRIGHT and LICENSE files for more details.
                                     no_label: true %>
               </span>
             </td>
-            <td>
+            <td class="custom-option-default-value">
               <%= co_f.check_box :default_value,
                                  container_class: "custom-option-default-value",
                                  data: {
@@ -105,7 +105,7 @@ See COPYRIGHT and LICENSE files for more details.
             <td>
                 <span class="reorder-icons">
                   <a
-                    title="<%= t(:label_sort_highest) %>"
+                    aria-label="<%= t(:label_sort_highest) %>"
                     rel="nofollow"
                     href="#"
                     class="sort-up-custom-option"
@@ -113,7 +113,7 @@ See COPYRIGHT and LICENSE files for more details.
                     <%= op_icon("icon-context icon-sort-up icon-small") %>
                   </a>
                   <a
-                    title="<%= t(:label_sort_higher) %>"
+                    aria-label="<%= t(:label_sort_higher) %>"
                     rel="nofollow"
                     href="#"
                     class="move-up-custom-option"
@@ -121,14 +121,14 @@ See COPYRIGHT and LICENSE files for more details.
                     <%= op_icon("icon-context icon-arrow-up2 icon-small") %>
                   </a>
                   <a
-                    title="<%= t(:label_sort_lower) %>"
+                    aria-label="<%= t(:label_sort_lower) %>"
                     rel="nofollow" href="#"
                     class="move-down-custom-option"
                     data-action="admin--custom-fields#moveRowDown">
                     <%= op_icon("icon-context icon-arrow-down2 icon-small") %>
                   </a>
                   <a
-                    title="<%= t(:label_sort_lowest) %>"
+                    aria-label="<%= t(:label_sort_lowest) %>"
                     rel="nofollow"
                     href="#"
                     class="sort-down-custom-option"

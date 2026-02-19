@@ -82,7 +82,6 @@ module CustomFields
         details_form.text_field(
           name: :regexp,
           label: label(:regexp),
-          size: 50,
           caption: instructions(:regexp),
           input_width: :medium
         )
@@ -238,7 +237,7 @@ module CustomFields
     end
 
     def show_right_to_left_field?
-      %w[text].include?(model.field_format)
+      model.is_a?(WorkPackageCustomField) && %w[text].include?(model.field_format)
     end
 
     def show_multi_value_field?
@@ -258,7 +257,8 @@ module CustomFields
     end
 
     def show_is_searchable_field?
-      %w[bool date float int user version hierarchy weighted_item_list calculated_value].exclude?(model.field_format)
+      (model.is_a?(WorkPackageCustomField) || model.is_a?(ProjectCustomField)) &&
+        %w[bool date float int user version hierarchy weighted_item_list calculated_value].exclude?(model.field_format)
     end
 
     def show_non_open_versions_field?
