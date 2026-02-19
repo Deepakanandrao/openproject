@@ -133,7 +133,7 @@ RSpec.describe "Projects lists columns", :js, with_settings: { login_required?: 
         # Move "Name" column to the left
         projects_page.click_table_header_to_open_action_menu("Name")
         projects_page.move_column_via_action_menu("Name", direction: :left)
-        wait_for_reload
+        wait_for_network_idle
 
         # Name was moved left?
         projects_page.expect_columns_in_order("Name", "Created on", "Status")
@@ -141,7 +141,7 @@ RSpec.describe "Projects lists columns", :js, with_settings: { login_required?: 
         # Now move it back to the right once
         projects_page.click_table_header_to_open_action_menu("Name")
         projects_page.move_column_via_action_menu("Name", direction: :right)
-        wait_for_reload
+        wait_for_network_idle
 
         # Original position should have been restored
         projects_page.expect_columns_in_order("Created on", "Name", "Status")
@@ -189,7 +189,7 @@ RSpec.describe "Projects lists columns", :js, with_settings: { login_required?: 
         # Remove "Name" column
         projects_page.click_table_header_to_open_action_menu("Name")
         projects_page.remove_column_via_action_menu("Name")
-        wait_for_reload
+        wait_for_network_idle
 
         # Name was removed
         projects_page.expect_columns_in_order("Created on", "Status")
@@ -197,7 +197,7 @@ RSpec.describe "Projects lists columns", :js, with_settings: { login_required?: 
         # Remove "Status" column, too
         projects_page.click_table_header_to_open_action_menu("project_status")
         projects_page.remove_column_via_action_menu("project_status")
-        wait_for_reload
+        wait_for_network_idle
 
         # It was removed
         projects_page.expect_columns_in_order("Created on")
