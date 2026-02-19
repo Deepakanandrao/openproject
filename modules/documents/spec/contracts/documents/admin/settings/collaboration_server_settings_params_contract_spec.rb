@@ -62,21 +62,21 @@ RSpec.describe Documents::Admin::Settings::CollaborationServerSettingsParamsCont
       let(:url) { "http://hocuspocus.example.com" }
 
       include_examples "contract is invalid",
-                       collaborative_editing_hocuspocus_url: :invalid_url_scheme
+                       collaborative_editing_hocuspocus_url: :invalid
     end
 
     context "with an https:// URL" do
       let(:url) { "https://hocuspocus.example.com" }
 
       include_examples "contract is invalid",
-                       collaborative_editing_hocuspocus_url: :invalid_url_scheme
+                       collaborative_editing_hocuspocus_url: :invalid
     end
 
     context "with a completely invalid URL" do
       let(:url) { "not a url at all %%%" }
 
       include_examples "contract is invalid",
-                       collaborative_editing_hocuspocus_url: :invalid_url
+                       collaborative_editing_hocuspocus_url: :invalid
     end
 
     context "with a blank URL" do

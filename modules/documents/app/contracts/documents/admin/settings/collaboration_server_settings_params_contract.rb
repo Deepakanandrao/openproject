@@ -47,17 +47,18 @@ module Documents
         def validate_collaborative_editing_hocuspocus_url
           url = params[:collaborative_editing_hocuspocus_url]
           return if url.blank?
+          return if websocket_url?(url)
 
-          uri = URI.parse(url)
-          unless uri.is_a?(URI::WS) || uri.is_a?(URI::WSS)
-            errors.add :collaborative_editing_hocuspocus_url, :invalid_url_scheme,
-                       allowed_schemes: allowed_protocols.join(", ")
-          end
-        rescue URI::InvalidURIError
-          errors.add :collaborative_editing_hocuspocus_url, :invalid_url
+          errors.add :collaborative_editing_hocuspocus_url, :invalid,
+                     message: I18n.t("documents.admin.collaboration_settings.hocuspocus_server_url.invalid_scheme")
         end
 
-        def allowed_protocols = %w[ws wss]
+        def websocket_url?(url)
+          uri = URI.parse(url)
+          uri.is_a?(URI::WS) || uri.is_a?(URI::WSS)
+        rescue URI::InvalidURIError
+          false
+        end
       end
     end
   end
