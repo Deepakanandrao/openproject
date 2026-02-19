@@ -33,19 +33,14 @@ module Projects
     attribute :sprint_sharing
 
     validate :validate_permissions
-    validate :validate_sharing_settings
+    validates :sprint_sharing, presence: true
+    validates :sprint_sharing, inclusion: { in: Project::SPRINT_SHARING_OPTIONS }, allow_blank: true
 
     protected
 
     def validate_permissions
       unless user.allowed_in_project?(:share_sprint, model)
         errors.add :base, :error_unauthorized
-      end
-    end
-
-    def validate_sharing_settings
-      unless model.sprint_sharing.in?(Project::SPRINT_SHARING_OPTIONS)
-        errors.add :sprint_sharing, :inclusion
       end
     end
   end

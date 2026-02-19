@@ -192,6 +192,18 @@ en:
 
   project_module_backlogs: "Backlogs"
 
+  projects:
+    settings:
+      backlog_sharing:
+        options:
+          share_sprints: "Share sprints"
+          no_sharing: "Don't share"
+          receive_shared: "Receive shared sprints"
+          share_all_projects: "All projects"
+          share_all_projects_caption: "Sprints created in this project will be available to all projects in this instance"
+          share_subprojects: "Subprojects"
+          share_subprojects_caption: "Sprints created in this project will be available to all subprojects of the current project"
+        sharing_scope: "Sharing scope"
   rb_burndown_charts:
     show:
       blankslate_title: "No burndown data available"

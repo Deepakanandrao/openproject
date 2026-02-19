@@ -32,17 +32,57 @@ module Projects
   module Settings
     module Backlogs
       class SharingForm < ApplicationForm
+        SHARING_OPTIONS = %w(no_sharing receive_shared).freeze
+        SHARING_SCOPE_OPTIONS = %w(share_all_projects share_subprojects).freeze
+
         form do |f|
           f.select_list(
             name: :sprint_sharing,
             label: Project.human_attribute_name(:sprint_sharing),
-            input_width: :medium
+            input_width: :medium,
+            data: {
+              target_name: "sprint_sharing_scope",
+              "show-when-value-selected-target": "cause"
+            }
           ) do |list|
-            Project::SPRINT_SHARING_OPTIONS.each do |option|
+            list.option(
+              value: nil,
+              label: I18n.t("projects.settings.backlog_sharing.options.share_sprints"),
+              selected: model.sprint_sharing.in?(SHARING_SCOPE_OPTIONS)
+            )
+            SHARING_OPTIONS.each do |option|
               list.option(
                 value: option,
-                label: I18n.t("projects.settings.backlog_sharing.options.#{option}", default: option.humanize),
+                label: I18n.t("projects.settings.backlog_sharing.options.#{option}"),
                 selected: option == model.sprint_sharing
+              )
+            end
+          end
+
+          f.radio_button_group(
+            name: :sprint_sharing,
+            label: I18n.t("projects.settings.backlog_sharing.sharing_scope"),
+            # Would have been nicer to use `hidden:` here, but that hides the component wrapper,
+            # while the stimulus `effect` target is bound to the inner fieldset, because `data:`
+            # is forwarded there. Since the hidden state and the stimulus `effect` target end up
+            # on different elements, stimulus cannot unhide the fieldset reliably.
+            # Using `class: "d-none"` ends up on the same fieldset as the stimulus `effect` target.
+            # One advantage of the `effect` target being on the fieldset is that, disabling the
+            # fieldset will also disable the radio buttons inside it.
+            class: ("d-none" if model.sprint_sharing.in?(SHARING_OPTIONS)),
+            data: {
+              target_name: "sprint_sharing_scope",
+              value: "",
+              visibility_class: "d-none",
+              "show-when-value-selected-target": "effect"
+            }
+          ) do |group|
+            SHARING_SCOPE_OPTIONS.each do |option|
+              group.radio_button(
+                value: option,
+                checked: option == model.sprint_sharing,
+                label: I18n.t("projects.settings.backlog_sharing.options.#{option}"),
+                caption: I18n.t("projects.settings.backlog_sharing.options.#{option}_caption")
               )
             end
           end

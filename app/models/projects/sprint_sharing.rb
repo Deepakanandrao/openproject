@@ -34,6 +34,16 @@ module Projects::SprintSharing
   extend ActiveSupport::Concern
 
   included do
-    store_attribute :settings, :sprint_sharing, :string, default: "no_sharing"
+    store_attribute :settings, :sprint_sharing, :string
+
+    # TODO: Change the store_attribute_unset_values_fallback_to_default to true in the
+    # config/initializers/store_attribute.rb.
+    # Otherwise defaults set on the setting declaration are not working correctly:
+    # `store_attribute :settings, :sprint_sharing, :string, default: "no_sharing"`.
+    # The method getter override below is required to provide the default value.
+
+    def sprint_sharing
+      super.presence || "no_sharing"
+    end
   end
 end

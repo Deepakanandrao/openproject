@@ -37,7 +37,8 @@ See COPYRIGHT and LICENSE files for more details.
   settings_primer_form_with(
     model: project,
     url: project_settings_backlog_sharing_path(project),
-    method: :patch
+    method: :patch,
+    data: { controller: "show-when-value-selected" }
   ) do |f|
     render(Projects::Settings::Backlogs::SharingForm.new(f))
   end
