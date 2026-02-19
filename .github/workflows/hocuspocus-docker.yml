@@ -1,6 +1,7 @@
 name: "Hocuspocus / Dockerize"
 
 on:
+  # for continuous integration
   push:
     branches:
       - dev
@@ -8,7 +9,8 @@ on:
     paths:
       - 'extensions/op-blocknote-hocuspocus/**'
       - '.github/workflows/hocuspocus-docker.yml'
-  workflow_call:
+  # for manually triggered builds
+  workflow_dispatch:
     inputs:
       branch:
         description: "The branch or tag to checkout and build"
@@ -19,7 +21,24 @@ on:
         required: true
         type: string
       use_test_registry:
-        description: "Use openproject/openproject-test registry instead (for testing)"
+        description: "Use openproject/hocuspocus-test registry instead (for testing)"
+        required: false
+        type: boolean
+        default: false
+  # for use within docker.yml
+  workflow_call:
+    inputs:
+      branch:
+        description: "The branch or tag to checkout and build"
+        required: true
+        type: string
+      tag:
+        description: "The main docker tag to use (e.g., 'dev' or '16.3.0')"
+        required: true
+        type: string
+      # this option may be passed in from docker.yml if docker.yml was called with it as well
+      use_test_registry:
+        description: "Use openproject/hocuspocus-test registry instead (for testing)"
         required: false
         type: boolean
         default: false
@@ -126,7 +145,8 @@ jobs:
           token: "${{ steps.generate-gha-token.outputs.token }}"
 
       - name: Deploy STAGE
-        if: github.ref == 'refs/heads/release' && github.repository == 'opf/openproject'
+        # make sure to always use the latest release branch here
+        if: github.ref == 'refs/heads/release/17.1' && github.repository == 'opf/openproject'
         uses: benc-uk/workflow-dispatch@e2e5e9a103e331dad343f381a29e654aea3cf8fc
         with:
           workflow: stage-deploy-shards.yml
