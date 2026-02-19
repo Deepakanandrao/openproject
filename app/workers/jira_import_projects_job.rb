@@ -289,8 +289,7 @@ class JiraImportProjectsJob < ApplicationJob
 
   def add_comment(work_package:, comment:)
     author = User.find_by!(login: comment["author"]["name"])
-    body = convert_rich_text(comment["body"])
-    notes = "## #{author["displayName"]}\n\n ### Comment\n\n#{body}"
+    notes = convert_rich_text(comment["body"])
     service_call = AddWorkPackageNoteService
                      .new(user: author, work_package:)
                      .call(notes,
