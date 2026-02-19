@@ -185,14 +185,14 @@ RSpec.describe WorkPackage do
       context "when project#deactivate_work_package_attachments is false" do
         before { work_package.project.deactivate_work_package_attachments = false }
 
-        it { is_expected.to be_falsy }
+        it { is_expected.to be_falsey }
       end
     end
 
     context "when project is absent" do
       before { work_package.project = nil }
 
-      it { is_expected.to be_falsy }
+      it { is_expected.to be_falsey }
     end
   end
 

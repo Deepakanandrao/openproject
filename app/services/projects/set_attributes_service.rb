@@ -75,7 +75,7 @@ module Projects
     end
 
     def set_default_show_work_package_attachments(provided)
-      model.deactivate_work_package_attachments = !Setting.show_work_package_attachments unless provided
+      model.deactivate_work_package_attachments = !Setting.show_work_package_attachments? unless provided
     end
 
     def set_default_types(provided)

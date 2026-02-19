@@ -318,7 +318,7 @@ class WorkPackage < ApplicationRecord
   end
 
   def hide_attachments?
-    project&.deactivate_work_package_attachments? || false
+    project&.deactivate_work_package_attachments?
   end
 
   def estimated_hours=(hours)
