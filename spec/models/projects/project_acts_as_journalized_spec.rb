@@ -122,53 +122,37 @@ RSpec.describe Project, "acts_as_journalized" do
             value: "some string value for project custom field",
             custom_field:)
     end
-    let(:custom_field_key) { "custom_fields_#{custom_field.id}" }
-
-    before do
-      project.update!(custom_values: [custom_value])
+    let(:modified_custom_value) do
+      build(:custom_value,
+            value: "some modified value for project custom field",
+            custom_field:)
     end
+    let(:custom_field_key) { "custom_fields_#{custom_field.id}" }
 
     shared_examples "contains the expected change" do
       it "contains the expected change" do
         expect(project.last_journal.details).to include(custom_field_key => expected_change)
-      end
-
-      context "for disabled custom field" do
-        before do
-          project.project_custom_field_project_mappings.where(custom_field_id: custom_field.id).delete_all
-        end
-
-        it "contains no change for the disabled custom field" do
-          expect(project.last_journal.details).not_to have_key(custom_field_key)
-        end
-
-        context "if custom field is marked for all" do
-          before do
-            custom_field.update_attribute(:is_for_all, true)
-          end
-
-          it "contains the expected change" do
-            expect(project.last_journal.details).to include(custom_field_key => expected_change)
-          end
-        end
       end
     end
 
     context "for new custom value" do
       let(:expected_change) { [nil, custom_value.value] }
 
+      before do
+        project.update!(custom_values: [custom_value])
+      end
+
       include_examples "contains the expected change"
     end
 
     context "for updated custom value" do
-      let(:modified_custom_value) do
-        build(:custom_value,
-              value: "some modified value for project custom field",
-              custom_field:)
-      end
       let(:expected_change) { [custom_value.value, modified_custom_value.value] }
 
       before do
+        User.execute_as user do
+          project.update!(custom_values: [custom_value])
+        end
+
         project.update!(custom_values: [modified_custom_value])
       end
 
@@ -179,6 +163,10 @@ RSpec.describe Project, "acts_as_journalized" do
       let(:expected_change) { [custom_value.value, nil] }
 
       before do
+        User.execute_as user do
+          project.update!(custom_values: [custom_value])
+        end
+
         project.update!(custom_values: [])
       end
 
@@ -193,10 +181,51 @@ RSpec.describe Project, "acts_as_journalized" do
       end
 
       before do
+        User.execute_as user do
+          project.update!(custom_values: [custom_value])
+        end
+
         project.custom_values = [unmodified_custom_value]
       end
 
       it { expect { project.save! }.not_to change(Journal, :count) }
+    end
+
+    context "when custom field gets disabled" do
+      let(:expected_change) { [custom_value.value, nil] }
+
+      before do
+        User.execute_as user do
+          project.update!(custom_values: [custom_value])
+        end
+
+        project.update!(custom_values: [modified_custom_value])
+        project.project_custom_field_project_mappings.where(custom_field_id: custom_field.id).delete_all
+        project.save_journals
+      end
+
+      it "contains no change for the disabled custom field (removed when fetching)" do
+        expect(project.last_journal.details).not_to have_key(custom_field_key)
+      end
+    end
+
+    context "if custom field is marked for all" do
+      let(:expected_change) { [custom_value.value, modified_custom_value.value] }
+
+      before do
+        User.execute_as user do
+          project.update!(custom_values: [custom_value])
+        end
+
+        project.update!(custom_values: [modified_custom_value])
+        custom_field.update!(is_for_all: true)
+        project.project_custom_field_project_mappings.where(custom_field_id: custom_field.id).delete_all
+        project.save_journals
+      end
+
+      it "contains no change for the disabled custom field (removed when fetching)" do
+        expect(project.last_journal.details).not_to have_key(custom_field_key)
+      end
     end
   end
 
