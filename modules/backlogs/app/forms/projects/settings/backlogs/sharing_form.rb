@@ -80,7 +80,7 @@ module Projects
             SHARING_SCOPE_OPTIONS.each do |option|
               group.radio_button(
                 value: option,
-                checked: option == model.sprint_sharing,
+                checked: checked?(option),
                 label: I18n.t("projects.settings.backlog_sharing.options.#{option}"),
                 caption: I18n.t("projects.settings.backlog_sharing.options.#{option}_caption")
               )
@@ -92,6 +92,11 @@ module Projects
             label: I18n.t("button_save"),
             scheme: :primary
           )
+        end
+
+        def checked?(option)
+          option == model.sprint_sharing ||
+          (option == "share_all_projects" && !model.sprint_sharing.in?(SHARING_SCOPE_OPTIONS))
         end
       end
     end
