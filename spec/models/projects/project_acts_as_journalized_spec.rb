@@ -200,6 +200,118 @@ RSpec.describe Project, "acts_as_journalized" do
     end
   end
 
+  describe "custom comments" do
+    shared_let(:custom_field) { create(:string_project_custom_field, :has_comment) }
+    let(:custom_comment_key) { "custom_comment_#{custom_field.id}" }
+    let(:custom_comment_text) { "some descriptive comment" }
+    let(:modified_custom_comment_text) { "a more descriptive comment" }
+
+    shared_examples "contains the expected change" do
+      it "contains the expected change" do
+        expect(project.last_journal.details).to include(custom_comment_key => expected_change)
+      end
+    end
+
+    context "for new custom comment" do
+      let(:expected_change) { [nil, custom_comment_text] }
+
+      before do
+        project.update!(custom_comments: { custom_field.id => custom_comment_text })
+      end
+
+      include_examples "contains the expected change"
+    end
+
+    context "for updated custom comment" do
+      let(:expected_change) { [custom_comment_text, modified_custom_comment_text] }
+
+      before do
+        User.execute_as user do
+          project.update!(custom_comments: { custom_field.id => custom_comment_text })
+        end
+
+        project.update!(custom_comments: { custom_field.id => modified_custom_comment_text })
+      end
+
+      include_examples "contains the expected change"
+    end
+
+    context "for removed custom comment" do
+      let(:expected_change) { [custom_comment_text, nil] }
+
+      before do
+        User.execute_as user do
+          project.update!(custom_comments: { custom_field.id => custom_comment_text })
+        end
+
+        project.update!(custom_comments: { custom_field.id => "" })
+      end
+
+      include_examples "contains the expected change"
+    end
+
+    context "when project saved without any changes" do
+      before do
+        User.execute_as user do
+          project.update!(custom_comments: { custom_field.id => custom_comment_text })
+        end
+
+        project.custom_comments = { custom_field.id => custom_comment_text }
+      end
+
+      it { expect { project.save! }.not_to change(Journal, :count) }
+    end
+
+    context "when custom field gets disabled" do
+      let(:expected_change) { [custom_comment_text, nil] }
+
+      before do
+        User.execute_as user do
+          project.update!(custom_comments: { custom_field.id => custom_comment_text })
+        end
+
+        project.update!(custom_comments: { custom_field.id => modified_custom_comment_text })
+        project.project_custom_field_project_mappings.where(custom_field_id: custom_field.id).delete_all
+        project.save_journals
+      end
+
+      include_examples "contains the expected change"
+    end
+
+    context "if custom field is marked for all" do
+      let(:expected_change) { [custom_comment_text, modified_custom_comment_text] }
+
+      before do
+        User.execute_as user do
+          project.update!(custom_comments: { custom_field.id => custom_comment_text })
+        end
+
+        project.update!(custom_comments: { custom_field.id => modified_custom_comment_text })
+        custom_field.update!(is_for_all: true)
+        project.project_custom_field_project_mappings.where(custom_field_id: custom_field.id).delete_all
+        project.save_journals
+      end
+
+      include_examples "contains the expected change"
+    end
+
+    context "if custom field is marked as not having comments" do
+      let(:expected_change) { [custom_comment_text, nil] }
+
+      before do
+        User.execute_as user do
+          project.update!(custom_comments: { custom_field.id => custom_comment_text })
+        end
+
+        project.update!(custom_comments: { custom_field.id => modified_custom_comment_text })
+        custom_field.update!(has_comment: false)
+        project.save_journals
+      end
+
+      include_examples "contains the expected change"
+    end
+  end
+
   describe "phases", with_settings: { journal_aggregation_time_minutes: 0 } do
     describe "activation/deactivation" do
       let(:phase1) { build(:project_phase, project:, active: true, start_date: nil, finish_date: nil) }
