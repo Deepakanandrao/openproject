@@ -125,7 +125,7 @@ RSpec.describe Project, "acts_as_journalized" do
     let(:custom_field_key) { "custom_fields_#{custom_field.id}" }
 
     before do
-      project.update(custom_values: [custom_value])
+      project.update!(custom_values: [custom_value])
     end
 
     shared_examples "contains the expected change" do
@@ -169,7 +169,7 @@ RSpec.describe Project, "acts_as_journalized" do
       let(:expected_change) { [custom_value.value, modified_custom_value.value] }
 
       before do
-        project.update(custom_values: [modified_custom_value])
+        project.update!(custom_values: [modified_custom_value])
       end
 
       include_examples "contains the expected change"
@@ -179,7 +179,7 @@ RSpec.describe Project, "acts_as_journalized" do
       let(:expected_change) { [custom_value.value, nil] }
 
       before do
-        project.update(custom_values: [])
+        project.update!(custom_values: [])
       end
 
       include_examples "contains the expected change"
@@ -225,8 +225,8 @@ RSpec.describe Project, "acts_as_journalized" do
         end
 
         it "contains the change" do
-          phase1.update(active: false)
-          phase2.update(active: true)
+          phase1.update!(active: false)
+          phase2.update!(active: true)
           project.save!
 
           expect(project.last_journal.details).to eq(
@@ -256,8 +256,8 @@ RSpec.describe Project, "acts_as_journalized" do
         let(:original4) { nil }
 
         it "contains the change" do
-          phase1.update(start_date: Date.new(2025, 1, 28), finish_date: Date.new(2025, 1, 29))
-          phase2.update(start_date: Date.new(2025, 1, 30), finish_date: Date.new(2025, 1, 31))
+          phase1.update!(start_date: Date.new(2025, 1, 28), finish_date: Date.new(2025, 1, 29))
+          phase2.update!(start_date: Date.new(2025, 1, 30), finish_date: Date.new(2025, 1, 31))
           project.save!
 
           expect(project.last_journal.details).to match(
@@ -282,9 +282,9 @@ RSpec.describe Project, "acts_as_journalized" do
         let(:original4) { Date.new(2025, 2, 5)..Date.new(2025, 2, 7) }
 
         it "contains the change" do
-          phase1.update(start_date: Date.new(2025, 1, 1), finish_date: Date.new(2025, 1, 7))
-          phase2.update(start_date: Date.new(2025, 1, 16), finish_date: Date.new(2025, 1, 18))
-          phase3.update(start_date: Date.new(2025, 1, 25), finish_date: Date.new(2025, 1, 31))
+          phase1.update!(start_date: Date.new(2025, 1, 1), finish_date: Date.new(2025, 1, 7))
+          phase2.update!(start_date: Date.new(2025, 1, 16), finish_date: Date.new(2025, 1, 18))
+          phase3.update!(start_date: Date.new(2025, 1, 25), finish_date: Date.new(2025, 1, 31))
           project.save!
 
           expect(project.last_journal.details).to match(
@@ -313,8 +313,8 @@ RSpec.describe Project, "acts_as_journalized" do
         let(:original4) { Date.new(2025, 2, 5)..Date.new(2025, 2, 7) }
 
         it "contains the change" do
-          phase1.update(start_date: nil, finish_date: nil)
-          phase2.update(start_date: nil, finish_date: nil)
+          phase1.update!(start_date: nil, finish_date: nil)
+          phase2.update!(start_date: nil, finish_date: nil)
           project.save!
 
           expect(project.last_journal.details).to match(
@@ -396,7 +396,7 @@ RSpec.describe Project, "acts_as_journalized" do
     let!(:customizable_journals) { journal.customizable_journals }
 
     before do
-      project.destroy
+      project.destroy!
     end
 
     it "removes the journal" do
