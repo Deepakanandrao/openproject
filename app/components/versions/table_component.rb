@@ -39,7 +39,7 @@ module Versions
     end
 
     def sortable_column?(name)
-      %w[name start_date effective_date status].include?(name.to_s)
+      sortable_columns_correlation.key? name.to_s
     end
 
     def initial_sort
@@ -48,15 +48,15 @@ module Versions
 
     def sortable_columns_correlation
       {
-        'name' => 'versions.name',
-        'start_date' => 'versions.start_date',
-        'effective_date' => 'versions.effective_date',
-        'status' => 'versions.status'
+        "name" => "versions.name",
+        "start_date" => "versions.start_date",
+        "effective_date" => "versions.effective_date",
+        "status" => "versions.status"
       }.with_indifferent_access
     end
 
     def initial_sort_correlation
-      ['versions.name', 'asc']
+      ["versions.name", "asc"]
     end
 
     def headers
