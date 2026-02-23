@@ -27,43 +27,30 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
-#
 
 module Documents
   module Admin
-    module CollaborationSettings
-      class SettingsFormComponent < ApplicationComponent
-        include OpPrimer::FormHelpers
+    module Settings
+      class CollaborationServerSettingsParamsContract < ::ParamsContract
+        include RequiresAdminGuard
 
-        delegate :writable_setting?, to: :helpers
+        validate :validate_collaborative_editing_hocuspocus_url
 
-        def initialize(errors: nil)
-          super()
-          @errors = errors
-        end
-
-        def none_writable_settings?
-          settings.none? { writable_setting?(it) }
-        end
-
-        def some_unwritable_settings?
-          settings.any? { !writable_setting?(it) }
-        end
-
-        def validation_message_for(attribute)
-          if attribute == :collaborative_editing_hocuspocus_url && (@errors&.include?(attribute) || invalid_hocuspocus_url?)
-            I18n.t("documents.admin.collaboration_settings.hocuspocus_server_url.invalid_scheme")
-          elsif @errors&.include?(attribute)
-            @errors.full_messages_for(attribute).to_sentence
-          end
+        # Expose the param value as a method so that ActiveModel::Errors#full_messages
+        # can resolve the attribute without hitting Disposable::Twin's method_missing.
+        def collaborative_editing_hocuspocus_url
+          params[:collaborative_editing_hocuspocus_url]
         end
 
         private
 
-        def invalid_hocuspocus_url?
-          return false if Setting.collaborative_editing_hocuspocus_url.blank?
+        def validate_collaborative_editing_hocuspocus_url
+          url = params[:collaborative_editing_hocuspocus_url]
+          return if url.blank?
+          return if websocket_url?(url)
 
-          !websocket_url?(Setting.collaborative_editing_hocuspocus_url)
+          errors.add :collaborative_editing_hocuspocus_url, :invalid,
+                     message: I18n.t("documents.admin.collaboration_settings.hocuspocus_server_url.invalid_scheme")
         end
 
         def websocket_url?(url)
@@ -71,11 +58,6 @@ module Documents
           uri.is_a?(URI::WS) || uri.is_a?(URI::WSS)
         rescue URI::InvalidURIError
           false
-        end
-
-        def settings
-          %i[collaborative_editing_hocuspocus_url
-             collaborative_editing_hocuspocus_secret]
         end
       end
     end
