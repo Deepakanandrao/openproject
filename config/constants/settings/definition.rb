@@ -126,6 +126,13 @@ module Settings
         default: :quarantine,
         allowed: %i[quarantine delete]
       },
+      api_tokens_enabled: {
+        default: true,
+        description: "Decide whether users can create personal API tokens in their account settings",
+        # Keeping old name only for backwards-compatibility, can be removed in OpenProject 18.0
+        env_alias: "OPENPROJECT_REST__API__ENABLED",
+        format: :boolean
+      },
       auth_source_sso: {
         description: "Configuration for Header-based Single Sign-On",
         format: :hash,
@@ -568,6 +575,14 @@ module Settings
         format: :string,
         default: nil
       },
+      hashed_token_pepper: {
+        description: "Pepper used for HMAC-SHA256 hashing of hashed tokens (e.g. API tokens). " \
+                     "Auto-initialized on first use. " \
+                     "Changing this invalidates all existing hashed tokens.",
+        format: :string,
+        default: -> { SecureRandom.hex(32) },
+        persist_on_first_read: true
+      },
       host_name: {
         format: :string,
         default: -> { "#{ENV.fetch('HOST', 'localhost')}:#{ENV.fetch('PORT', 3000)}" },
@@ -649,7 +664,11 @@ module Settings
       },
       installation_uuid: {
         format: :string,
-        default: nil
+        default: -> { SecureRandom.uuid },
+        persist_on_first_read: true,
+        default_by_env: {
+          test: "test_uuid"
+        }
       },
       internal_password_confirmation: {
         description: "Require password confirmations for certain administrative actions",
@@ -737,6 +756,12 @@ module Settings
         writable: false,
         allowed: %w[danish dutch english finnish french german hungarian
                     italian norwegian portuguese romanian russian simple spanish swedish turkish]
+      },
+      mcp_tool_response_format: {
+        default: :full,
+        format: :symbol,
+        allowed: -> { McpTools::Base::RESPONSE_FORMATS },
+        description: "How to format responses for MCP tools. Using values other than full may improve language model performance."
       },
       migration_check_on_exceptions: {
         description: "Check for missing migrations in internal errors",
@@ -956,9 +981,6 @@ module Settings
       },
       repository_truncate_at: {
         default: 500
-      },
-      rest_api_enabled: {
-        default: true
       },
       scm: {
         format: :hash,
@@ -1285,13 +1307,19 @@ module Settings
         description: "Redirect external links through a warning page before leaving the application",
         default: false,
         writable: -> { EnterpriseToken.allows_to?(:capture_external_links) }
+      },
+      capture_external_links_require_login: {
+        description: "Require users to be logged in before being able to navigate to external links",
+        default: false,
+        writable: -> { EnterpriseToken.allows_to?(:capture_external_links) }
       }
     }.freeze
 
     attr_accessor :name,
                   :format,
                   :env_alias,
-                  :string_values
+                  :string_values,
+                  :persist_on_first_read
 
     attr_writer :value,
                 :description,
@@ -1305,7 +1333,8 @@ module Settings
                    writable: true,
                    allowed: nil,
                    env_alias: nil,
-                   string_values: false)
+                   string_values: false,
+                   persist_on_first_read: false)
       self.name = name.to_s
       self.value = derive_default default_by_env.fetch(Rails.env.to_sym, default)
       self.format = format ? format.to_sym : deduce_format(value)
@@ -1314,6 +1343,15 @@ module Settings
       self.env_alias = env_alias
       self.description = description.presence || :"setting_#{name}"
       self.string_values = string_values
+      self.persist_on_first_read = persist_on_first_read
+
+      if persist_on_first_read && !writable
+        raise ArgumentError, "Settings using persist_on_first_read need to be writable"
+      end
+
+      if persist_on_first_read && default.nil?
+        raise ArgumentError, "Settings using persist_on_first_read need to have a default value"
+      end
     end
 
     def derive_default(default)
@@ -1348,6 +1386,10 @@ module Settings
       else
         !!writable
       end
+    end
+
+    def persist_on_first_read?
+      persist_on_first_read
     end
 
     def unprefixed_env_var_name_allowed?
@@ -1419,6 +1461,7 @@ module Settings
               allowed: nil,
               env_alias: nil,
               string_values: false,
+              persist_on_first_read: false,
               disallow_override: false)
         name = name.to_sym
         return if exists?(name)
@@ -1431,7 +1474,8 @@ module Settings
                          writable:,
                          allowed:,
                          env_alias:,
-                         string_values:)
+                         string_values:,
+                         persist_on_first_read:)
         override_value(definition) unless disallow_override
         all[name] = definition
       end

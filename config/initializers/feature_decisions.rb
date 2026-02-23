@@ -49,9 +49,6 @@ OpenProject::FeatureDecisions.add :calculated_value_project_attribute,
                                   description: "Allows the use of calculated values as a project attribute.",
                                   force_active: true
 
-OpenProject::FeatureDecisions.add :beta_widgets,
-                                  description: "Enables BETA versions of widgets."
-
 OpenProject::FeatureDecisions.add :mcp_server,
                                   description: "Enables the experimental MCP API."
 
@@ -67,9 +64,10 @@ OpenProject::FeatureDecisions.add :new_project_overview,
                                   description: "Enables the new project overview experience.",
                                   force_active: true
 
-OpenProject::FeatureDecisions.add :project_initiation,
-                                  description: "Activate the project creation and initiation wizard"
-
 OpenProject::FeatureDecisions.add :jira_import,
                                   description: "Enables Jira Migration Tool.",
                                   force_active: false
+
+OpenProject::FeatureDecisions.add :scrum_projects,
+                                  description: "Enables an overhauled version of the backlogs module to " \
+                                               "support Scrum projects with a new sprint planning experience. "

@@ -34,6 +34,8 @@ module Meetings
   class IcalendarBuilder
     attr_reader :builder_internal_timezone, :calendar, :all_times, :calendar_generated_for_user
 
+    delegate :publish, to: :calendar
+
     def initialize(timezone:, user: User.current)
       @calendar_generated_for_user = user
       @builder_internal_timezone = timezone
@@ -304,6 +306,12 @@ module Meetings
 
     def add_virtual_occurences_for_interim_responses(recurring_meeting:) # rubocop:disable Metrics/AbcSize
       interim_responses_for(recurring_meeting).each do |start_time, responses|
+        # Ensure interim responses still match the meeting
+        unless recurring_meeting.schedule.occurs_at?(start_time)
+          warn "Interim response has start time that does not match #{recurring_meeting.id}, skipping."
+          next
+        end
+
         calendar.event do |e|
           e.uid = recurring_meeting.uid
           e.summary = recurring_meeting.title

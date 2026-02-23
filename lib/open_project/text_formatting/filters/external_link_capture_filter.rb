@@ -36,10 +36,10 @@ module OpenProject::TextFormatting
         return doc unless applicable?
 
         doc.css("a[href]").each do |node|
-          href = node["href"]
-          next if internal_link?(href)
+          url = node["href"]
+          next if internal_link?(url)
 
-          node["href"] = external_redirect_url(url: href)
+          node["href"] = external_redirect(url:)
           node["target"] = "_blank"
         end
 
@@ -51,6 +51,10 @@ module OpenProject::TextFormatting
       end
 
       private
+
+      def external_redirect(url:)
+        url_helpers.external_redirect_url(url:)
+      end
 
       def internal_link?(href)
         return true if href.blank?
@@ -70,12 +74,6 @@ module OpenProject::TextFormatting
         end
 
         false
-      end
-
-      def external_redirect_url(url:)
-        # Let Rails handle escaping for query params.
-        # Passing a pre-escaped value would cause double-escaping (% -> %25).
-        url_helpers.external_redirect_path(url:)
       end
 
       def url_helpers

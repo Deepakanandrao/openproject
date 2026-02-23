@@ -62,7 +62,7 @@ RSpec.describe OpenProject::TextFormatting::Filters::ExternalLinkCaptureFilter d
         filter = described_class.new(html, context)
         result = filter.call
 
-        expect(result.to_html).to include('href="/external_redirect?url=')
+        expect(result.to_html).to include('href="http://localhost:3000/external_redirect?url=')
         expect(result.to_html).to include(CGI.escape("https://example.com"))
       end
 
@@ -71,7 +71,7 @@ RSpec.describe OpenProject::TextFormatting::Filters::ExternalLinkCaptureFilter d
         filter = described_class.new(html, context)
         result = filter.call
 
-        expect(result.to_html).to include('href="/external_redirect?url=')
+        expect(result.to_html).to include('href="http://localhost:3000/external_redirect?url=')
         expect(result.to_html).to include(CGI.escape("https://example.org"))
       end
 

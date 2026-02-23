@@ -82,7 +82,6 @@
 
 @mixin widget-box--style
   background: var(--body-background)
-  margin: 10px
   border: var(--borderWidth-thin) solid var(--borderColor-default)
   box-shadow: var(--shadow-resting-small)
   border-radius: var(--borderRadius-medium)
@@ -383,8 +382,6 @@ $scrollbar-size: 10px
   display: inline-block
   width: 100%
   padding: var(--base-size-4, 4px) !important
-  @media (hover: none) and (pointer: coarse)
-    border-color: var(--borderColor-default) !important
   @media (hover: hover)
     &:hover
       border-color: var(--borderColor-default) !important
