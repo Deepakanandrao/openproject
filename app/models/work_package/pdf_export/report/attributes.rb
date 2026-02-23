@@ -78,8 +78,7 @@ module WorkPackage::PDFExport::Report::Attributes
   end
 
   def formattable_column?(column)
-    column.is_a?(Queries::WorkPackages::Selects::CustomFieldSelect) &&
-      column.respond_to?(:custom_field) && column.custom_field.formattable?
+    column.is_a?(Queries::WorkPackages::Selects::CustomFieldSelect) && column.custom_field&.formattable?
   end
 
   def relationship_column?(column)
