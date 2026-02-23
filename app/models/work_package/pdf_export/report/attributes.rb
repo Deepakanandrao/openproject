@@ -37,17 +37,23 @@ module WorkPackage::PDFExport::Report::Attributes
 
     field_groups.each do |non_formattable_fields, special_field|
       write_attributes_table(non_formattable_fields)
-      if special_field
-        if special_field[:relation]
-          write_relation_field(work_package, special_field)
-        elsif special_field[:formattable]
-          write_markdown_field!(work_package, special_field[:value], special_field[:label])
-        end
+      if relation_field?(special_field)
+        write_relation_field(work_package, special_field)
+      elsif formattable_field?(special_field)
+        write_markdown_field!(work_package, special_field[:value], special_field[:label])
       end
     end
   end
 
   private
+
+  def relation_field?(special_field)
+    special_field&.dig(:relation)
+  end
+
+  def formattable_field?(special_field)
+    special_field&.dig(:formattable)
+  end
 
   def collect_field_groups(work_package)
     field_groups = []
