@@ -100,7 +100,7 @@ RSpec.describe Projects::Exports::PDF do
     end
 
     context "without view_project_attributes permission" do
-      let(:permissions) { %i(view_projects export_projects) }
+      let(:permissions) { super() - %i[view_project_attributes] }
 
       it "does not include custom field values in the export" do
         expected_document = [
@@ -189,7 +189,7 @@ RSpec.describe Projects::Exports::PDF do
         :member,
         project: child_project,
         principal: current_user,
-        roles: [create(:project_role, permissions: %i[view_projects export_projects])]
+        roles: [create(:project_role, permissions: permissions - %i[view_project_attributes])]
       )
     end
 

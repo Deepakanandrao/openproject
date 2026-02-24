@@ -85,7 +85,7 @@ RSpec.describe Projects::Exports::CSV, "integration" do
     end
 
     context "without view_project_attributes permission" do
-      let(:permissions) { %i(view_projects export_projects) }
+      let(:permissions) { super() - %i[view_project_attributes] }
 
       it "does not render project custom fields in the header" do
         expect(parsed.size).to eq 2
