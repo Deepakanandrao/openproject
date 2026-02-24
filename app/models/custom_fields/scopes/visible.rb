@@ -35,7 +35,6 @@ module CustomFields::Scopes
     class_methods do
       def visible(user = User.current)
         known_subclasses
-          .select { |klass| klass.respond_to?(:visible) }
           .inject(none) do |scope, klass|
           scope.or(where(type: klass.name).and(klass.visible(user)))
         end
