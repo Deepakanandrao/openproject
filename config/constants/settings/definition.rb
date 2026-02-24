@@ -1275,6 +1275,15 @@ module Settings
       work_packages_bulk_request_limit: {
         default: 10
       },
+      work_packages_identifier: {
+        description: "Defines how work packages are identified in the UI (e.g. in links and titles). " \
+                     "The 'numeric' option uses the work package numerical ID, " \
+                     "while 'alphanumeric' uses the project identifier and the work package ID separated by a dash " \
+                     "(e.g. 'PROJA-123').",
+        format: :string,
+        allowed: %w[numeric alphanumeric],
+        default: "numeric"
+      },
       work_package_list_default_highlighted_attributes: {
         default: ["status", "priority", "due_date"],
         allowed: -> {
