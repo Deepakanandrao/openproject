@@ -202,6 +202,8 @@ zh-TW:
         add_table: "新增相關工作套件表格"
         edit_query: "編輯查詢"
         new_group: "新增群組"
+        delete_group: "刪除群組"
+        remove_attribute: "從群組中移除"
         reset_to_defaults: "重設為預設值"
       working_days:
         calendar:
@@ -390,8 +392,6 @@ zh-TW:
     label_me: "我"
     label_meeting_agenda: "會議大綱"
     label_meeting_minutes: "會議記錄"
-    label_menu_collapse: "收合"
-    label_menu_expand: "展開"
     label_more_than_ago: "超過幾天"
     label_moderate_comment: "審閱留言"
     label_next: "下一個"
@@ -425,6 +425,7 @@ zh-TW:
     label_remove_row: "移除列"
     label_report: "報表"
     label_repository_plural: "版本庫"
+    label_resize_project_menu: "調整專案功能表大小"
     label_save_as: "另存為"
     label_search_columns: "選取欄位"
     label_select_watcher: "選擇監看者"
@@ -1118,8 +1119,8 @@ zh-TW:
     global_search:
       all_projects: "在所有的專案"
       close_search: "關閉搜尋"
-      items_available: "%{count} items available"
-      direct_hit_available: "Work package with exact ID found. Press Enter to open it."
+      items_available: "%{count} 可提供的項目"
+      direct_hit_available: "找到具有精確 ID 的工作套件。按 Enter 開啟它。"
       current_project_and_all_descendants: "目前專案和子專案"
       current_project: "目前專案"
       recently_viewed: "最近檢視"

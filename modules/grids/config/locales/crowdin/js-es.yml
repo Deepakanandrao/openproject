@@ -6,6 +6,7 @@ es:
       configure: 'Configurar widget'
       widgets:
         missing_permission: "No tiene los permisos necesarios para ver este widget."
+        not_available: "This widget is currently unavailable."
         custom_text:
           title: 'Texto personalizado'
         documents:
@@ -16,10 +17,10 @@ es:
         news:
           title: 'Noticias'
         project_description:
-          title: 'Description'
+          title: 'Descripción'
           no_results: "Aún no se ha escrito ninguna descripción. Puede proporcionar una descripción en la configuración del proyecto."
         project_status:
-          title: 'Status'
+          title: 'Estado'
           not_started: 'No empezado'
           on_track: 'Según lo previsto'
           off_track: 'Fuera de lo previsto'
@@ -27,8 +28,6 @@ es:
           not_set: 'No establecido'
           finished: 'Terminado'
           discontinued: 'Discontinuado'
-        project_status_beta:
-          title: 'Status (BETA)'
         subprojects:
           title: 'Subelementos'
         project_favorites:
@@ -52,7 +51,7 @@ es:
           title: 'Tabla de paquetes de trabajo'
         work_packages_graph:
           title: 'Gráfico de paquetes de trabajo'
-          summary: "%{chartType} chart showing work packages which are %{description}."
+          summary: "Diagrama %{chartType} que muestra los paquetes de trabajo que son %{description}."
         work_packages_calendar:
           title: 'Calendario'
         work_packages_overview:

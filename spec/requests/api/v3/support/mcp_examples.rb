@@ -68,7 +68,7 @@ RSpec.shared_examples_for "MCP response with structured content" do
           properties: {
             isError: { type: "boolean" },
             content: { type: "array" },
-            structuredContent: { type: ["object", "array"] }
+            structuredContent: { type: ["object"] }
           }
         }
       }
@@ -79,7 +79,52 @@ RSpec.shared_examples_for "MCP response with structured content" do
 
   it "fulfills the schema of a structured MCP response" do
     subject
-    expect(last_response.body).to match_json_schema(json_rpc_response_schema)
+    expect(last_response.body).to match_json_schema(result_schema)
+  end
+end
+
+RSpec.shared_examples_for "MCP text resource response" do
+  let(:result_schema) do
+    {
+      required: %w[result],
+      properties: {
+        result: {
+          type: "object",
+          required: %w[contents],
+          properties: {
+            contents: {
+              type: "array",
+              items: {
+                type: "object",
+                required: %w[uri text],
+                properties: {
+                  uri: { type: "string" },
+                  mimeType: { type: "string" },
+                  text: { type: "string" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  end
+
+  include_context "MCP result response"
+
+  it "fulfills the schema of a text resource" do
+    subject
+    expect(last_response.body).to match_json_schema(result_schema)
+  end
+end
+
+RSpec.shared_examples_for "MCP empty resource response" do
+  include_context "MCP text resource response"
+
+  it "has no contents" do
+    subject
+    parsed = JSON.parse(last_response.body)
+    expect(parsed.dig("result", "contents")).to be_empty
   end
 end
 
@@ -128,5 +173,97 @@ RSpec.shared_examples_for "MCP unauthenticated response" do
   it "has a WWW-Authenticate header" do
     subject
     expect(last_response.headers["WWW-Authenticate"]).to be_present
+  end
+
+  it "indicates resource_metadata in the WWW-Authenticate header" do
+    subject
+    keys = last_response.headers["WWW-Authenticate"].split.select { |s| s.include?("=") }.map { |s| s.split("=").first }
+    expect(keys).to include("resource_metadata")
+  end
+end
+
+RSpec.shared_examples_for "MCP text tool" do
+  it_behaves_like "MCP response with structured content"
+
+  it "also includes text content" do
+    subject
+    content = parsed_results.fetch("content").first
+    expect(content).not_to be_nil
+    expect(content.fetch("type")).to eq("text")
+  end
+
+  context "when setting tool response format to structured_only", with_config: { mcp_tool_response_format: :structured_only } do
+    it_behaves_like "MCP response with structured content"
+
+    it "includes no content" do
+      subject
+      content = parsed_results.fetch("content").first
+      expect(content).to be_nil
+    end
+  end
+
+  context "when setting tool response format to content_only", with_config: { mcp_tool_response_format: :content_only } do
+    it_behaves_like "MCP result response"
+
+    it "includes text content" do
+      subject
+      content = parsed_results.fetch("content").first
+      expect(content).not_to be_nil
+      expect(content.fetch("type")).to eq("text")
+    end
+
+    it "includes no structured content" do
+      subject
+      expect(parsed_results.key?("structuredContent")).to be_falsey # rubocop:disable RSpec/PredicateMatcher
+    end
+  end
+
+  context "when the tool is disabled via configuration" do
+    let(:tool_config) { create(:mcp_configuration, identifier: described_class.qualified_name, enabled: false) }
+
+    it_behaves_like "MCP error response"
+  end
+end
+
+RSpec.shared_examples_for "MCP embedded resource tool" do
+  it_behaves_like "MCP response with structured content"
+
+  it "also includes resource content" do
+    subject
+    content = parsed_results.fetch("content").first
+    expect(content).not_to be_nil
+    expect(content.fetch("type")).to eq("resource")
+  end
+
+  context "when setting tool response format to structured_only", with_config: { mcp_tool_response_format: :structured_only } do
+    it_behaves_like "MCP response with structured content"
+
+    it "includes no content" do
+      subject
+      content = parsed_results.fetch("content").first
+      expect(content).to be_nil
+    end
+  end
+
+  context "when setting tool response format to content_only", with_config: { mcp_tool_response_format: :content_only } do
+    it_behaves_like "MCP result response"
+
+    it "includes resource content" do
+      subject
+      content = parsed_results.fetch("content").first
+      expect(content).not_to be_nil
+      expect(content.fetch("type")).to eq("resource")
+    end
+
+    it "includes no structured content" do
+      subject
+      expect(parsed_results.key?("structuredContent")).to be_falsey # rubocop:disable RSpec/PredicateMatcher
+    end
+  end
+
+  context "when the tool is disabled via configuration" do
+    let(:tool_config) { create(:mcp_configuration, identifier: described_class.qualified_name, enabled: false) }
+
+    it_behaves_like "MCP error response"
   end
 end

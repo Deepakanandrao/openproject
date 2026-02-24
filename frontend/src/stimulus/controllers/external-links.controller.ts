@@ -63,6 +63,7 @@ const shouldProcessLink = (link:HTMLAnchorElement) => {
  * Part B) for external links (pointing to a different domain than the current page):
  *   - Sets `target="_blank"` to open in a new tab.
  *   - Sets `rel="noopener noreferrer"` for security and performance.
+ *   - Rewrites the href to go through `/external_redirect` for link capture functionality.
  *   - and by virtue of setting `target="_blank"`, should be processed as in Part A.
  *
  * This ensures accessibility, security, and consistent behavior for all links, including
@@ -73,7 +74,7 @@ export default class ExternalLinksController extends ApplicationController {
     useMutation(this, { attributes: true, childList: true, subtree: true, attributeFilter: ['target', 'href'] });
 
     // Initial pass: handle existing external links (accessibility)
-    document.querySelectorAll<HTMLAnchorElement>(LINK_QUERY).forEach((link)=>{
+    this.element.querySelectorAll<HTMLAnchorElement>(LINK_QUERY).forEach((link)=>{
       if (!shouldProcessLink(link)) return;
 
       if (isLinkBlank(link)) updateBlankLink(link);
@@ -125,4 +126,12 @@ function updateExternalLink(link:HTMLAnchorElement) {
   // Ensure external link behavior
   link.target = '_blank';
   attributeTokenList(link, 'rel').add('noopener', 'noreferrer');
+
+  // Capture external links through redirect page
+  // The backend controller will redirect directly if the feature is disabled
+  if (!link.dataset.allowExternalLink) {
+    const originalHref = link.href;
+    const basePath = window.appBasePath ?? '';
+    link.href = `${basePath}/external_redirect?url=${encodeURIComponent(originalHref)}`;
+  }
 }

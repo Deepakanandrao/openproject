@@ -6,6 +6,7 @@ uk:
       configure: 'Налаштувати віджет'
       widgets:
         missing_permission: "У вас немає дозволів для перегляду цього віджета."
+        not_available: "This widget is currently unavailable."
         custom_text:
           title: 'Текстовий блок'
         documents:
@@ -16,10 +17,10 @@ uk:
         news:
           title: 'Новини'
         project_description:
-          title: 'Description'
+          title: 'Опис'
           no_results: "Опис ще не створено. Можна вказати в налаштуваннях проекту."
         project_status:
-          title: 'Status'
+          title: 'Статус'
           not_started: 'Не почато'
           on_track: 'За графіком'
           off_track: 'Не за графіком'
@@ -27,8 +28,6 @@ uk:
           not_set: 'Не встановлено'
           finished: 'Завершено'
           discontinued: 'Припинено'
-        project_status_beta:
-          title: 'Status (BETA)'
         subprojects:
           title: 'Піделементи'
         project_favorites:
@@ -52,7 +51,7 @@ uk:
           title: 'Таблиця робочих пакетів'
         work_packages_graph:
           title: 'Графік робочих пакетів'
-          summary: "%{chartType} chart showing work packages which are %{description}."
+          summary: "Графік %{chartType} показує пакети робіт, серед яких %{description}."
         work_packages_calendar:
           title: 'Календар'
         work_packages_overview:

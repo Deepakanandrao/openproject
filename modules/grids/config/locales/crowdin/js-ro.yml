@@ -6,6 +6,7 @@ ro:
       configure: 'Configurați widget-ul'
       widgets:
         missing_permission: "Nu ai drepturile necesare pentru a vizualiza acest widget."
+        not_available: "This widget is currently unavailable."
         custom_text:
           title: 'Text customizat'
         documents:
@@ -16,10 +17,10 @@ ro:
         news:
           title: 'Noutăţi'
         project_description:
-          title: 'Description'
+          title: 'Descriere'
           no_results: "Nu a fost scrisă încă nicio descriere. Aceasta poate fi adăugată în \"Setări proiect\"."
         project_status:
-          title: 'Status'
+          title: 'Stare'
           not_started: 'Neînceput'
           on_track: 'În lucru'
           off_track: 'Întârziat'
@@ -27,10 +28,8 @@ ro:
           not_set: 'Nesetat'
           finished: 'Finalizat'
           discontinued: 'Anulat'
-        project_status_beta:
-          title: 'Status (BETA)'
         subprojects:
-          title: 'Subitems'
+          title: 'Subelemente'
         project_favorites:
           title: 'Proiecte favorite'
           no_results: 'Nu ai niciun proiect favorit. Clic pe pictograma cu steluță din tabloul de bord al proiectului pentru a adăuga unul la favorite.'

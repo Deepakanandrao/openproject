@@ -34,6 +34,8 @@ module Meetings
   class IcalendarBuilder
     attr_reader :builder_internal_timezone, :calendar, :all_times, :calendar_generated_for_user
 
+    delegate :publish, to: :calendar
+
     def initialize(timezone:, user: User.current)
       @calendar_generated_for_user = user
       @builder_internal_timezone = timezone
@@ -90,9 +92,9 @@ module Meetings
         e.last_modified = [recurring_meeting.template.updated_at, recurring_meeting.updated_at].max.utc
         e.sequence = recurring_meeting.template.lock_version
 
-        e.rrule = recurring_meeting.schedule.rrules.first.to_ical # We currently only have one recurrence rule
-        e.dtstart = ical_datetime(recurring_meeting.template.start_time, timezone: recurring_meeting.time_zone)
-        e.dtend = ical_datetime(recurring_meeting.template.end_time, timezone: recurring_meeting.time_zone)
+        e.rrule = recurring_meeting.ical_schedule.rrules.first.to_ical # We currently only have one recurrence rule
+        e.dtstart = ical_datetime(recurring_meeting.current_schedule_start, timezone: recurring_meeting.time_zone)
+        e.dtend = ical_datetime(recurring_meeting.current_schedule_end, timezone: recurring_meeting.time_zone)
         e.location = recurring_meeting.template.location.presence
         e.status = if cancelled
                      "CANCELLED"
@@ -304,6 +306,12 @@ module Meetings
 
     def add_virtual_occurences_for_interim_responses(recurring_meeting:) # rubocop:disable Metrics/AbcSize
       interim_responses_for(recurring_meeting).each do |start_time, responses|
+        # Ensure interim responses still match the meeting
+        unless recurring_meeting.schedule.occurs_at?(start_time)
+          warn "Interim response has start time that does not match #{recurring_meeting.id}, skipping."
+          next
+        end
+
         calendar.event do |e|
           e.uid = recurring_meeting.uid
           e.summary = recurring_meeting.title

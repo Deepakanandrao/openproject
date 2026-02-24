@@ -192,18 +192,23 @@ module OpenProject
 
       before do
         allow(::I18n)
-          .to receive(:t)
-          .with("translation_with_a_link")
+          .to receive(:translate)
+          .with("translation_with_a_link", *any_args)
           .and_return("There is a [link](url_1) in this translation! Maybe even [two](url_2)?")
       end
 
       it "allows to insert links into translations" do
         translated = link_translate :translation_with_a_link, links: urls, external: false
+        fragment = Capybara.string(translated)
 
-        expect(translated).to eq(
-          'There is a <a href="http://openproject.com/foo" data-view-component="true" class="Link Link--underline">link</a>' +
-          ' in this translation! Maybe even <a href="/baz" data-view-component="true" class="Link Link--underline">two</a>?'
-        )
+        links = fragment.all("a")
+        expect(links.size).to eq(2)
+
+        expect(links[0].text).to eq("link")
+        expect(links[0][:href]).to eq("http://openproject.com/foo")
+
+        expect(links[1].text).to eq("two")
+        expect(links[1][:href]).to eq("/baz")
       end
 
       context "when passing URLs as a list of symbols" do
@@ -219,11 +224,16 @@ module OpenProject
 
         it "resolves the links from static links" do
           translated = link_translate :translation_with_a_link, links: urls, external: false
+          fragment = Capybara.string(translated)
 
-          expect(translated).to eq(
-            'There is a <a href="https://example.com/a-b" data-view-component="true" class="Link Link--underline">link</a>' +
-            ' in this translation! Maybe even <a href="/a-c" data-view-component="true" class="Link Link--underline">two</a>?'
-          )
+          links = fragment.all("a")
+          expect(links.size).to eq(2)
+
+          expect(links[0].text).to eq("link")
+          expect(links[0][:href]).to eq("https://example.com/a-b")
+
+          expect(links[1].text).to eq("two")
+          expect(links[1][:href]).to eq("/a-c")
         end
       end
     end

@@ -6,6 +6,7 @@ ko:
       configure: '위젯 구성'
       widgets:
         missing_permission: "이 위젯을 보는 데 필요한 권한이 없습니다."
+        not_available: "This widget is currently unavailable."
         custom_text:
           title: '사용자 지정 텍스트'
         documents:
@@ -16,10 +17,10 @@ ko:
         news:
           title: '뉴스'
         project_description:
-          title: 'Description'
+          title: '설명'
           no_results: "설명이 아직 작성되지 않았습니다. '프로젝트 설정'에서 입력할 수 있습니다."
         project_status:
-          title: 'Status'
+          title: '상태'
           not_started: '시작되지 않음'
           on_track: '정상 상태'
           off_track: '비정상 상태'
@@ -27,8 +28,6 @@ ko:
           not_set: '설정되지 않음'
           finished: '마침'
           discontinued: '중단됨'
-        project_status_beta:
-          title: 'Status (BETA)'
         subprojects:
           title: '하위 항목'
         project_favorites:
@@ -52,7 +51,7 @@ ko:
           title: '작업 패키지 테이블'
         work_packages_graph:
           title: '작업 패키지 그래프'
-          summary: "%{chartType} chart showing work packages which are %{description}."
+          summary: "%{description}인 작업 패키지를 보여주는 %{chartType} 차트입니다."
         work_packages_calendar:
           title: '달력'
         work_packages_overview:

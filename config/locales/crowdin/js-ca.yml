@@ -203,6 +203,8 @@ ca:
         add_table: "Afegeix una taula de paquets de treball relacionats"
         edit_query: "Editar consulta"
         new_group: "Nou grup"
+        delete_group: "Delete group"
+        remove_attribute: "Remove from group"
         reset_to_defaults: "Restableix als valors per defecte"
       working_days:
         calendar:
@@ -391,8 +393,6 @@ ca:
     label_me: "jo"
     label_meeting_agenda: "Agenda"
     label_meeting_minutes: "Acta"
-    label_menu_collapse: "col·lapsar"
-    label_menu_expand: "expandir"
     label_more_than_ago: "més que fa uns dies"
     label_moderate_comment: "Moderate comment"
     label_next: "Següent"
@@ -426,6 +426,7 @@ ca:
     label_remove_row: "Eliminar fila"
     label_report: "Reportar"
     label_repository_plural: "Repositoris"
+    label_resize_project_menu: "Resize project menu"
     label_save_as: "Desa com a"
     label_search_columns: "Search a column"
     label_select_watcher: "Seleccioneu un observador..."

@@ -59,6 +59,8 @@ de:
         end_after: "Ende der Terminserie"
         end_date: "Enddatum"
         iterations: "Ereignisse"
+      recurring_meeting_interim_response:
+        start_time: "Startzeit"
       meeting_participant:
         invited: "Eingeladen"
         attended: "Teilgenommen"
@@ -66,7 +68,11 @@ de:
     errors:
       models:
         meeting_participant:
-          invalid_user: "%{name} ist kein gültiger Teilnehmer."
+          user_invalid: "ist kein gültiger Teilnehmer."
+        meeting_agenda_item:
+          user_invalid: "ist kein gültiger Teilnehmer."
+        recurring_meeting_interim_response:
+          not_an_occurrence: "is not a valid occurrence time for this recurring meeting"
         recurring_meeting:
           must_cover_existing_meetings:
             one: "Es gibt eine offene Besprechung in der Terminserie, die nicht durch den neuen Zeitplan abgedeckt ist. Passen Sie den Zeitplan an, um alle bestehenden Meetings einzuschließen."
@@ -128,7 +134,7 @@ de:
   label_meeting_date_and_time: "Datum und Zeit"
   label_meeting_diff: "Differenz"
   label_meeting_send_updates: "E-Mail-Kalender-Aktualisierungen senden"
-  label_meeting_send_updates_caption: "Versenden Sie E-Mail-Einladungen an alle Teilnehmer dieser Besprechung"
+  label_meeting_send_updates_caption: "Versenden Sie E-Mail-Einladungen an alle Teilnehmenden dieser Besprechung"
   label_recurring_meeting: "Wiederkehrende Besprechung"
   label_recurring_meeting_part_of: "Teil einer Terminserie"
   label_recurring_meeting_new: "Neue Terminserie"
@@ -231,13 +237,23 @@ de:
         header: "Abgesagt: Besprechung '%{title}'"
         header_occurrence: "Abgesagt: Wiederkehrende Besprechung '%{title}'"
         header_series: "Abgesagt: Terminserie '%{title}'"
-        summary_occurrence: "Ein Vorkommen von '%{title}' wurde von %{actor} gelöscht."
-        summary_series: "Die Terminserie '%{title}' wurde von %{actor} abgesagt."
-        summary: "Besprechung '%{title}' wurde von %{actor} abgesagt."
+        summary_occurrence: "Eine Besprechung der Terminserie '%{title}' wurde von %{actor} abgesagt, oder Sie wurden als Teilnehmer entfernt"
+        summary_series: "Terminserie '%{title}' wurde von %{actor} gelöscht, oder Sie wurden als Teilnehmer entfernt"
+        summary: "'%{title}' wurde von %{actor} abgesagt, oder Sie wurden als Teilnehmer entfernt"
         date_time: "Geplanter Zeitpunkt"
+      participant_added:
+        header: "Besprechung '%{title}' - Teilnehmer hinzugefügt"
+        header_series: "Terminserie '%{title}' - Teilnehmer hinzugefügt"
+        summary: "%{actor} hat %{participant} zur Besprechung '%{title}' hinzugefügt"
+        summary_series: "%{actor} hat %{participant} zur Terminserie '%{title}' hinzugefügt"
+      participant_removed:
+        header: "Besprechung '%{title}' - Teilnehmer entfernt"
+        header_series: "Terminserie '%{title}' - Teilnehmer hinzugefügt"
+        summary: "%{actor} hat %{participant} aus Besprechung '%{title}' entfernt"
+        summary_series: "%{actor} hat %{participant} aus Terminserie '%{title}' entfernt"
       ended:
         header_series: "Beendet: Terminserie '%{title}'"
-        summary_series: "Die Terminserie '%{title}' wurde von %{actor} beendet."
+        summary_series: "Die Terminserie '%{title}' wurde von %{actor} beendet"
       updated:
         header: "Besprechung '%{title}' wurde aktualisiert"
         summary: "Die Besprechung '%{title}' wurde durch %{actor} aktualisiert"
@@ -248,7 +264,7 @@ de:
         new_date_time: "Neue(s) Datum/Zeit"
         old_location: "Alter Ort"
         new_location: "Neuer Ort"
-    label_mail_all_participants: "E-Mail an alle Teilnehmer senden"
+    label_mail_all_participants: "E-Mail Einladung an alle Teilnehmenden versenden"
     types:
       one_time: "Einmalig"
       recurring: "Terminserie"
@@ -398,8 +414,6 @@ de:
       blank_title: "Die Vorlage für die wiederkehrenden Besprechungen ist leer"
       description: >
         Diese Vorlage wird immer dann verwendet, wenn neue Besprechungen der Terminserie erstellt werden. Sie können zu dieser Vorlage Tagesordnungspunkte, Teilnehmer und Anhänge hinzufügen.
-      blankslate_finalize: >
-        Wenn Sie mit der Vorbereitung dieser Vorlage fertig sind, klicken Sie oben auf die Schaltfläche '%{button_title}', um die Einrichtung abzuschließen und die erste Besprechung der Terminserie anzulegen.
       label_view_template: "Vorlage ansehen"
       label_edit_template: "Vorlage bearbeiten"
       banner_html: >
@@ -522,8 +536,8 @@ de:
   label_agenda_item_move_up: "Nach oben verschieben"
   label_agenda_item_move_down: "Nach unten verschieben"
   label_agenda_item_duplicate: "Duplizieren"
-  label_agenda_item_duplicate_in_next: "In nächstem Vorkommen duplizieren"
-  label_agenda_item_duplicate_in_next_title: "Im nächsten Vorkommen duplizieren?"
+  label_agenda_item_duplicate_in_next: "In die nächste Besprechung duplizieren"
+  label_agenda_item_duplicate_in_next_title: "In die nächste Besprechung duplizieren?"
   label_agenda_item_add_notes: "Notiz hinzufügen"
   label_agenda_item_add_outcome: "Ergebnis hinzufügen"
   label_agenda_item_work_package_add: "Arbeitspaket hinzufügen"
@@ -534,6 +548,9 @@ de:
   label_agenda_outcome_actions: "Aktionen für die Ergebnisse von Agendapunkten"
   label_agenda_outcome_edit: "Ergebnis bearbeiten"
   label_agenda_outcome_delete: "Ergebnis entfernen"
+  label_added_as_outcome: "Als Ergebnis hinzugefügt"
+  label_write_outcome: "Ergebnis ergänzen"
+  label_existing_work_package: "Bestehendes Arbeitspaket"
   text_outcome_not_editable_anymore: "Dieses Ergebnis ist nicht mehr bearbeitbar."
   text_outcome_cannot_be_added: "Ein Ergebnis kann nicht mehr hinzugefügt werden."
   label_backlog_clear: "Backlog leeren"
@@ -600,7 +617,9 @@ de:
   text_agenda_item_duplicate_in_next_meeting: "Sind Sie sicher, dass Sie eine Kopie dieses Tagesordnungspunktes in die nächste Besprechung am %{date} um %{time} aufnehmen wollen? Ergebnisse dieses Eintrags werden nicht kopiert."
   text_agenda_item_duplicated_in_next_meeting: "Tagesordnungspunkt zum nächsten Besprechung am %{date} kopiert"
   text_work_package_has_no_upcoming_meeting_agenda_items: "Dieses Arbeitspaket ist bisher in keiner anstehenden Besprechung enthalten."
-  text_agenda_item_move_next_meeting_cancelled: "Der Tagesordnungspunkt konnte nicht in die nächste Besprechung verschoben werden da diese abgesagt wurde."
+  text_agenda_item_no_available_occurrence: "Alle kommenden Besprechungen wurden abgesagt."
+  text_agenda_item_dialog_skipping_cancelled_one: "Hinweis: Abgesagte Besprechung am %{date} wird übersprungen."
+  text_agenda_item_dialog_skipping_cancelled_many: "Hinweis: Überspringe %{count} abgesagte Besprechungen."
   text_work_package_add_to_meeting_hint: 'Über den Button "Zur Besprechung hinzufügen" können Sie dieses Arbeitspaket zu einer zukünftigen Besprechung hinzuzufügen.'
   text_work_package_has_no_past_meeting_agenda_items: "Dieses Arbeitspaket wurde in einer früheren Besprechung nicht als Tagesordnungspunkt hinzugefügt."
   text_email_updates_muted: "E-Mail-Kalenderaktualisierungen sind deaktiviert. Die Teilnehmer erhalten keine aktualisierten Einladungen per E-Mail, wenn Sie Änderungen vornehmen."
@@ -608,10 +627,12 @@ de:
   my_account:
     access_tokens:
       token/ical_meeting:
+        blank_description: "Sie können ein Token erstellen, indem sie auf die Schaltfläche unten klicken."
+        blank_title: "Kein iCalendar-Besprechungs-Token"
         title: "iCalendar für Besprechungen"
+        table_title: "iCalendar-Besprechungs-Token"
         text_hint: "iCalendar Besprechungs-Token ermöglichen es Benutzern, ihre Besprechungen zu abonnieren und aktuelle Informationen in externen Kalendern anzuzeigen."
         disabled_text: "iCalendar Besprechungs-Abonnements wurden nicht vom Administrator aktiviert. Bitte wenden Sie sich an Ihren Administrator, um diese Funktion zu nutzen."
-        empty_text_hint: 'Um ein iCalendar Besprechungs-Token hinzuzufügen, gehen Sie zum <a href="%{path}">Abschnitt zu Besprechungen</a> und erzeugen Sie dort einen Token.'
         add_button: "Im Kalender abonnieren"
   my:
     access_token:
@@ -626,7 +647,6 @@ de:
         token/ical_meeting:
           title: "Ein iCal-Abonnement-Token für Besprechungen wurde erstellt"
           body: "Behandeln Sie die folgende URL wie ein Passwort. Jeder, der Zugriff darauf hat, kann alle Ihre Meetings einsehen."
-          warning: "Dies ist das einzige Mal, dass dieses Token angezeigt wird. Stellen Sie sicher, dass Sie es jetzt kopieren."
       revocation:
         token/ical_meeting:
           notice_success: "Das iCal-Abonnement-Token für Besprechungen wurde erfolgreich widerrufen."

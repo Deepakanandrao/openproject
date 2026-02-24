@@ -58,6 +58,8 @@ zh-TW:
         end_after: "系列會議結束"
         end_date: "結束日期"
         iterations: "出現次數"
+      recurring_meeting_interim_response:
+        start_time: "Start time"
       meeting_participant:
         invited: "已邀請"
         attended: "已出席"
@@ -65,7 +67,11 @@ zh-TW:
     errors:
       models:
         meeting_participant:
-          invalid_user: "%{name} 不是有效的參與者。"
+          user_invalid: "不是有效的參與者。"
+        meeting_agenda_item:
+          user_invalid: "不是有效的參與者。"
+        recurring_meeting_interim_response:
+          not_an_occurrence: "is not a valid occurrence time for this recurring meeting"
         recurring_meeting:
           must_cover_existing_meetings:
             one: "該系列中有一個公開會議未包含在新的時間表中。調整時間表以包含所有現有會議。"
@@ -226,19 +232,29 @@ zh-TW:
         header: "取消：會議 '%{title}'"
         header_occurrence: "取消：會議發起 '%{title}'"
         header_series: "取消：系列會議 '%{title}'"
-        summary_occurrence: "%{title}' 已被 %{actor}取消。"
-        summary_series: "'%{title}' 系列會議已被 %{actor}取消。"
-        summary: "%{title}' 已被 %{actor}取消。"
+        summary_occurrence: "%{actor}已取消「%{title}」的發生，或您已被移除為參與者"
+        summary_series: "會議系列 '%{title}' 已被 %{actor}取消, 或您已被移除為參與者"
+        summary: "%{title}' 已被 %{actor}取消，或者您已被刪除為參賽者"
         date_time: "排定日期/時間"
+      participant_added:
+        header: "會議 '%{title}' - 與會者"
+        header_series: "系列會議 '%{title}' - 與會者"
+        summary: "%{actor} 加入 %{participant} 至會議 '%{title}'"
+        summary_series: "%{actor} 加入 %{participant} 至會議系列 '%{title}'"
+      participant_removed:
+        header: "會議 '%{title}' - 參與者已移除"
+        header_series: "會議系列 '%{title}' - 已移除參與者"
+        summary: "%{actor} 從會議中移除 %{participant} '%{title}'"
+        summary_series: "%{actor} 從會議系列中移除 %{participant} '%{title}'"
       ended:
         header_series: "結束：會議系列 '%{title}'"
-        summary_series: "會議系列 '%{title}' 已由 %{actor}結束。"
+        summary_series: "會議系列 '%{title}' 已由 %{actor}結束"
       updated:
         header: "會議 '%{title}' 已更新"
         summary: "會議 '%{title}' 已由 %{actor}更新"
         body: "會議 '%{title}' 已由 %{actor}更新。"
-        old_title: "Old title"
-        new_title: "New title"
+        old_title: "舊標題"
+        new_title: "新標題"
         old_date_time: "舊日期/時間"
         new_date_time: "新日期/時間"
         old_location: "舊位置"
@@ -393,8 +409,6 @@ zh-TW:
       blank_title: "您的會議範本是空的"
       description: >
         每當在系列中建立新會議時，都會使用此範本。您可以在此範本中加入議程項目、與會者和附件。
-      blankslate_finalize: >
-        準備完此範本後，按一下上方的 '%{button_title}' 按鈕，即可完成設定並排定系列會議的第一次會議。
       label_view_template: "查看範本"
       label_edit_template: "編輯範本"
       banner_html: >
@@ -515,8 +529,8 @@ zh-TW:
   label_agenda_item_move_up: "向上移 "
   label_agenda_item_move_down: "向下移 "
   label_agenda_item_duplicate: "複製"
-  label_agenda_item_duplicate_in_next: "在下次出現時重複"
-  label_agenda_item_duplicate_in_next_title: "下次發生時會重複嗎？"
+  label_agenda_item_duplicate_in_next: "在下次會議中重複"
+  label_agenda_item_duplicate_in_next_title: "在下次會議中重複？"
   label_agenda_item_add_notes: "新增註記"
   label_agenda_item_add_outcome: "新增結果"
   label_agenda_item_work_package_add: "新增工作套件"
@@ -527,6 +541,9 @@ zh-TW:
   label_agenda_outcome_actions: "議程結果行動"
   label_agenda_outcome_edit: "編輯結果"
   label_agenda_outcome_delete: "移除結果"
+  label_added_as_outcome: "新增為結果"
+  label_write_outcome: "編輯結果"
+  label_existing_work_package: "現有工作套件"
   text_outcome_not_editable_anymore: "此結果已不可編輯。"
   text_outcome_cannot_be_added: "無法再新增會議結果。"
   label_backlog_clear: "清除待辦事項"
@@ -593,7 +610,9 @@ zh-TW:
   text_agenda_item_duplicate_in_next_meeting: "您確定要在下次會議中加入此議程項目的副本， %{date} ，網址為 %{time}? 結果不會重複。"
   text_agenda_item_duplicated_in_next_meeting: "與下次會議重複的議程項目， %{date}"
   text_work_package_has_no_upcoming_meeting_agenda_items: "該工作套件尚未被安排到即將舉行的會議議程中。"
-  text_agenda_item_move_next_meeting_cancelled: "由於下次會議已被取消，因此無法轉到下次會議。"
+  text_agenda_item_no_available_occurrence: "所有即將舉行的活動均已取消。"
+  text_agenda_item_dialog_skipping_cancelled_one: "備註：已跳過 %{date} 的取消項目。"
+  text_agenda_item_dialog_skipping_cancelled_many: "備註：略過 %{count} 個已取消的發生項目。"
   text_work_package_add_to_meeting_hint: '使用"增加到會議"按鈕將此工作套件新增到即將舉行的會議。'
   text_work_package_has_no_past_meeting_agenda_items: "此工作套件未被新增為過去會議中的議程項目。"
   text_email_updates_muted: "將停止電子郵件通知「行事曆更新」。當您變更時，參與者將不會透過電子郵件收到更新的邀請。"
@@ -601,10 +620,12 @@ zh-TW:
   my_account:
     access_tokens:
       token/ical_meeting:
+        blank_description: "您可以使用下面的按鈕建立一個。"
+        blank_title: "沒有 iCalendar 會議代碼"
         title: "會議用 iCalendar"
+        table_title: "iCalendar 會議令牌"
         text_hint: "iCalendar 會議令牌(Tokens)可讓使用者訂閱其所有會議，並在外部用戶端中檢視最新的會議資訊。"
         disabled_text: "iCalendar 會議訂閱未由管理員啟用。若要使用此功能，請聯絡您的管理員。"
-        empty_text_hint: '若要新增 iCalendar 會議權杖，請前往 <a href="%{path}">會議區段</a> 並在那裡進行訂閱。'
         add_button: "訂閱行事曆"
   my:
     access_token:
@@ -619,7 +640,6 @@ zh-TW:
         token/ical_meeting:
           title: "已生成一個 iCal 會議訂閱令牌(Token)。"
           body: "請將以下 URL 視同密碼處理。任何擁有該連結的人都能檢視您的所有會議。"
-          warning: "這是您唯一一次看到此令牌(Token)的機會，請務必立即複製。"
       revocation:
         token/ical_meeting:
           notice_success: "iCalendar 會議訂閱已成功撤銷。"

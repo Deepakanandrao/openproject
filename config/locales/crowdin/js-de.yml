@@ -202,6 +202,8 @@ de:
         add_table: "Tabelle mit zugehörigen Arbeitspaketen hinzufügen"
         edit_query: "Abfrage bearbeiten"
         new_group: "Neue Gruppe"
+        delete_group: "Gruppe löschen"
+        remove_attribute: "Aus Gruppe entfernen"
         reset_to_defaults: "Auf Standardwerte zurücksetzen"
       working_days:
         calendar:
@@ -390,8 +392,6 @@ de:
     label_me: "ich"
     label_meeting_agenda: "Agenda"
     label_meeting_minutes: "Protokoll"
-    label_menu_collapse: "zusammenklappen"
-    label_menu_expand: "aufklappen"
     label_more_than_ago: "vor mehr Tagen als"
     label_moderate_comment: "Kommentar moderieren"
     label_next: "Weiter"
@@ -425,6 +425,7 @@ de:
     label_remove_row: "Zeile entfernen"
     label_report: "Auswertung"
     label_repository_plural: "Projektarchive"
+    label_resize_project_menu: "Größe des Projektmenüs ändern"
     label_save_as: "Speichern unter"
     label_search_columns: "Spalte suchen"
     label_select_watcher: "Beobachter auswählen ..."
@@ -1122,8 +1123,8 @@ de:
     global_search:
       all_projects: "In allen Projekten"
       close_search: "Suche schließen"
-      items_available: "%{count} items available"
-      direct_hit_available: "Work package with exact ID found. Press Enter to open it."
+      items_available: "%{count} Verfügbare Artikel"
+      direct_hit_available: "Arbeitspaket mit exakter ID gefunden. Drücken Sie Enter um es zu öffnen."
       current_project_and_all_descendants: "In diesem Projekt + Unterprojekten"
       current_project: "In diesem Projekt"
       recently_viewed: "Vor Kurzem angesehen"

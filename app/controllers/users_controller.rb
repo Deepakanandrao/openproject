@@ -81,14 +81,16 @@ class UsersController < ApplicationController
 
   def new
     @user = User.new(language: Setting.default_language)
+    @contract = Users::CreateContract.new(@user, current_user)
   end
 
   def edit
     @membership ||= Member.new
     @individual_principal = @user
+    @contract = Users::UpdateContract.new(@user, current_user)
   end
 
-  def create
+  def create # rubocop:disable Metrics/AbcSize
     call = Users::CreateService
            .new(user: current_user)
            .call(create_params)
@@ -99,6 +101,7 @@ class UsersController < ApplicationController
       flash[:notice] = I18n.t(:notice_successful_create)
       redirect_to(params[:continue] ? new_user_path : helpers.allowed_management_user_profile_path(@user))
     else
+      @contract = Users::CreateContract.new(@user, current_user)
       render action: :new, status: :unprocessable_entity
     end
   end
@@ -142,6 +145,7 @@ class UsersController < ApplicationController
 
       respond_to do |format|
         format.html do
+          @contract = Users::UpdateContract.new(@user, current_user)
           render action: :edit, status: :unprocessable_entity
         end
       end
@@ -157,6 +161,14 @@ class UsersController < ApplicationController
   def change_status # rubocop:disable Metrics/AbcSize, Metrics/PerceivedComplexity
     if @user.id == current_user.id
       # user is not allowed to change own status
+      flash[:error] = I18n.t("user.error_status_change_self")
+      redirect_back_or_default({ action: "edit", id: @user })
+      return
+    end
+
+    if @user.admin? && !current_user.admin?
+      # non-admin users are not allowed to change admin status
+      flash[:error] = I18n.t("user.error_admin_change_on_non_admin")
       redirect_back_or_default({ action: "edit", id: @user })
       return
     end
@@ -167,23 +179,28 @@ class UsersController < ApplicationController
       return redirect_back_or_default({ action: "edit", id: @user })
     end
 
+    activated_account = false
+
     if params[:unlock]
       @user.failed_login_count = 0
       @user.activate
+      activated_account = true
     elsif params[:lock]
       @user.lock
     elsif params[:activate]
       @user.activate
+      activated_account = true
     end
-    # Was the account activated? (do it before User#save clears the change)
-    was_activated = (@user.status_change == %w[registered active])
 
-    if params[:activate] && @user.missing_authentication_method?
+    # Was the account activated? (do it before User#save clears the change)
+    should_deliver_activation_mail = (@user.status_change == %w[registered active])
+
+    if activated_account && @user.missing_authentication_method?
       flash[:error] = I18n.t("user.error_status_change_failed",
                              errors: I18n.t(:notice_user_missing_authentication_method))
     elsif @user.save
       flash[:notice] = I18n.t(:notice_successful_update)
-      if was_activated
+      if should_deliver_activation_mail
         UserMailer.account_activated(@user).deliver_later
       end
     else
@@ -213,9 +230,13 @@ class UsersController < ApplicationController
     # true if the user deletes him/herself
     self_delete = (@user == User.current)
 
-    Users::DeleteService.new(model: @user, user: User.current).call
+    result = Users::DeleteService.new(model: @user, user: User.current).call
 
-    flash[:notice] = I18n.t("account.deletion_pending")
+    if result.success?
+      flash[:notice] = I18n.t("account.deletion_pending")
+    else
+      flash[:error] = result.errors.full_messages.join(", ")
+    end
 
     respond_to do |format|
       format.html do
@@ -270,7 +291,12 @@ class UsersController < ApplicationController
   end
 
   def check_if_deletion_allowed
-    render_404 unless Users::DeleteContract.deletion_allowed? @user, User.current
+    return if Users::DeleteContract.deletion_allowed?(@user, User.current)
+
+    render_error_flash_message_via_turbo_stream(message: I18n.t("user.error_cannot_delete_user"))
+    respond_with_turbo_streams(status: :not_found) do |format|
+      format.html { render_404 }
+    end
   end
 
   def my_or_admin_layout

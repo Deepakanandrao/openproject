@@ -83,7 +83,7 @@ module Projects
     end
 
     def custom_field_column(column) # rubocop:disable Metrics/AbcSize
-      return nil unless user_can_view_project?
+      return nil unless user_can_view_project_attributes?
 
       cf = column.custom_field
       custom_value = project.formatted_custom_value_for(cf)
@@ -93,7 +93,7 @@ module Projects
           "dialog-#{project.id}-cf-#{cf.id}",
           cf.name,
           custom_value,
-          formatted: true
+          format: false # already formatted
         )
       elsif custom_value.is_a?(Array)
         safe_join(Array(custom_value).compact_blank, ", ")
@@ -154,23 +154,49 @@ module Projects
     end
 
     def name
-      content = [content_tag(:i, "", class: "projects-table--hierarchy-icon")]
+      content = [
+        hierarchy_icon,
+        name_link_section,
+        archived_label,
+        workspace_type_badge
+      ].compact_blank
 
-      content << helpers.link_to_project(project, {}, { data: { turbo: false } }, false)
+      content_tag(:div, safe_join(content), class: "projects-table--name")
+    end
 
-      if project.archived?
-        content << content_tag(:span, "(#{I18n.t('project.archive.archived')})", class: "archived-label")
+    def hierarchy_icon
+      content_tag(:i, "", class: "projects-table--hierarchy-icon")
+    end
+
+    def name_link_section
+      content_tag(:span, class: "projects-table--name-text") do
+        helpers.link_to_project(project, {}, { data: { turbo: false } }, false)
       end
+    end
 
-      if workspace_type_badge && OpenProject::FeatureDecisions.portfolio_models_active?
-        content << workspace_type_badge
+    def workspace_type_badge
+      return unless OpenProject::FeatureDecisions.portfolio_models_active?
+      # Only show icon and type for non-project workspaces
+      return unless project.workspace_type.in?(["portfolio", "program"])
+
+      render(Primer::Beta::Text.new(classes: "projects-table--name-description")) do
+        icon = render(Primer::Beta::Octicon.new(
+                        icon: helpers.workspace_icon(project.workspace_type),
+                        size: :xsmall
+                      ))
+
+        safe_join([icon, " ", I18n.t(:"label_#{project.workspace_type}")])
       end
+    end
 
-      safe_join(content, " ")
+    def archived_label
+      return unless project.archived?
+
+      content_tag(:span, "(#{I18n.t('project.archive.archived')})", class: "archived-label")
     end
 
     def project_status
-      return nil unless user_can_view_project?
+      return nil unless user_can_view_project_attributes?
 
       content = "".html_safe
 
@@ -186,7 +212,7 @@ module Projects
     end
 
     def status_explanation
-      return nil unless user_can_view_project?
+      return nil unless user_can_view_project_attributes?
 
       if project.status_explanation.present? && project.status_explanation
         render OpenProject::Common::AttributeComponent.new("dialog-#{project.id}-status-explanation",
@@ -196,7 +222,7 @@ module Projects
     end
 
     def description
-      return nil unless user_can_view_project?
+      return nil unless user_can_view_project_attributes?
 
       if project.description.present?
         render OpenProject::Common::AttributeComponent.new("dialog-#{project.id}-description",
@@ -410,7 +436,7 @@ module Projects
       end
     end
 
-    def user_can_view_project?
+    def user_can_view_project_attributes?
       User.current.allowed_in_project?(:view_project_attributes, project)
     end
 
@@ -428,19 +454,6 @@ module Projects
 
     def current_page
       table.model.current_page.to_s
-    end
-
-    def workspace_type_badge
-      # Only show icon and type for non-project workspaces
-      return unless project.workspace_type.in?(["portfolio", "program"])
-
-      render(Primer::Beta::Text.new(classes: "description")) do
-        icon = render(Primer::Beta::Octicon.new(
-                        icon: helpers.workspace_icon(project.workspace_type),
-                        size: :xsmall
-                      ))
-        safe_join([icon, " ", I18n.t(:"label_#{project.workspace_type}")])
-      end
     end
   end
 end

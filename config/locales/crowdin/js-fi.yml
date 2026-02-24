@@ -203,6 +203,8 @@ fi:
         add_table: "Add table of related work packages"
         edit_query: "Edit query"
         new_group: "Uusi ryhmä"
+        delete_group: "Delete group"
+        remove_attribute: "Remove from group"
         reset_to_defaults: "Reset to defaults"
       working_days:
         calendar:
@@ -391,8 +393,6 @@ fi:
     label_me: "minä"
     label_meeting_agenda: "Esityslista"
     label_meeting_minutes: "Pöytäkirja"
-    label_menu_collapse: "pienennä"
-    label_menu_expand: "laajenna"
     label_more_than_ago: "enemän kuin päivää sitten"
     label_moderate_comment: "Moderate comment"
     label_next: "Seuraava"
@@ -426,6 +426,7 @@ fi:
     label_remove_row: "Poista rivi"
     label_report: "Raportti"
     label_repository_plural: "Tietovarastot"
+    label_resize_project_menu: "Resize project menu"
     label_save_as: "Tallenna nimellä"
     label_search_columns: "Search a column"
     label_select_watcher: "Valitse seuraaja..."

@@ -39,12 +39,12 @@ ja:
         unit_plural: "単位名"
         default: "デフォルトのコストタイプ"
       work_package:
-        costs_by_type: "使用済単価"
+        costs_by_type: "消費した予算"
         labor_costs: "作業員コスト"
         material_costs: "単価"
         overall_costs: "集計コスト"
         spent_costs: "使用済コスト"
-        spent_units: "使用済単価"
+        spent_units: "消費した予算"
       rate:
         rate: "原価率"
       user:
@@ -222,6 +222,15 @@ ja:
     errors:
       validation:
         start_time_different_date: "開始日(%{start_time})は消費日(%{spent_on})と同じである必要があります。"
+  costs:
+    widgets:
+      actual_costs:
+        title: "Actual costs by month"
+        blankslate:
+          heading: "Start tracking your time and costs"
+          description: "Get an overview of your costs and logged time to monitor progress of your project"
+          action: "Log time"
+        view_details: "View actual costs details"
   ee:
     features:
       time_entry_time_restrictions: 正確な作業時間の記録が必要

@@ -48,14 +48,14 @@
   @media screen and (min-width: $breakpoint-sm)
     scroll-behavior: smooth
 
-/* Remove margin-left: 2rem from Breadcrumbs */
+/* Remove margin-left: 2rem from Primer components using lists */
 page-header,
 sub-header,
 .op-work-package-details-tab-component,
 .UnderlineNav,
 .tabnav,
 .Box-header,
-action-menu anchored-position
+action-list
   ol, ul
     margin-left: 0
 
@@ -90,10 +90,6 @@ ul.SegmentedControl,
 .Button.op-app-header--primer-button
   align-self: center
   min-width: var(--control-medium-size)
-
-  &.op-app-header--modules-menu-button svg
-    height: 20px
-    width: 20px
 
   &:hover
     color: var(--header-item-font-hover-color)
@@ -152,3 +148,21 @@ ul.SegmentedControl,
       white-space: normal
       overflow: visible
       text-overflow: clip
+
+.ActionListContent[aria-disabled="true"]
+  .ActionListItem-label[class^="__hl_"], .ActionListItem-label[class*=" __hl_"]
+    color: var(--control-fgColor-disabled) !important
+
+.Box-row--focus-gray
+  &:focus-visible
+    background-color: var(--bgColor-muted)
+
+.Box-row--focus-blue
+  &:focus-visible
+    background-color: var(--bgColor-accent-muted)
+
+.Box-row--clickable
+  cursor: pointer
+
+.Box-row:is(.Box-row--draggable)
+  padding-left: 0
