@@ -33,9 +33,11 @@ require "spec_helper"
 RSpec.describe CustomFields::Scopes::Visible do
   shared_let(:project_cf) { create(:string_project_custom_field) }
   shared_let(:work_package_cf) { create(:string_wp_custom_field) }
+  shared_let(:user_cf) { create(:user_custom_field) }
 
   let(:project_cf_visible) { false }
   let(:work_package_cf_visible) { false }
+  let(:user_cf_visible) { false }
 
   # Since there would be very many tests here, we break the rule of testing
   # the scope as a black box. Knowing that the scope relies on the individual visible scopes of each
@@ -46,14 +48,14 @@ RSpec.describe CustomFields::Scopes::Visible do
     current_user { build_stubbed(:user) }
 
     before do
-      allow(ProjectCustomField)
-        .to receive(:visible)
-              .with(current_user)
-              .and_return(project_cf_visible ? ProjectCustomField.all : ProjectCustomField.none)
-      allow(WorkPackageCustomField)
-        .to receive(:visible)
-              .with(current_user)
-              .and_return(work_package_cf_visible ? WorkPackageCustomField.all : WorkPackageCustomField.none)
+      { ProjectCustomField => project_cf_visible,
+        WorkPackageCustomField => work_package_cf_visible,
+        UserCustomField => user_cf_visible }.each do |klass, visible|
+        allow(klass)
+          .to receive(:visible)
+                .with(current_user)
+                .and_return(visible ? klass.all : klass.none)
+      end
     end
 
     context "for a project custom field" do
@@ -62,12 +64,6 @@ RSpec.describe CustomFields::Scopes::Visible do
 
         it "returns the project custom field" do
           expect(subject).to contain_exactly(project_cf)
-        end
-
-        it "calls the visible scope of the project custom field" do
-          subject
-
-          expect(ProjectCustomField).to have_received(:visible).with(current_user)
         end
       end
 
@@ -87,18 +83,30 @@ RSpec.describe CustomFields::Scopes::Visible do
         it "returns the work package custom field" do
           expect(subject).to contain_exactly(work_package_cf)
         end
-
-        it "calls the visible scope of the work_package custom field" do
-          subject
-
-          expect(WorkPackageCustomField).to have_received(:visible).with(current_user)
-        end
       end
 
       context "if the fields are invisible" do
         let(:work_package_cf_visible) { false }
 
         it "does not return the work package custom field" do
+          expect(subject).to be_empty
+        end
+      end
+    end
+
+    context "for a user custom field" do
+      context "if the fields are visible" do
+        let(:user_cf_visible) { true }
+
+        it "returns the user custom field" do
+          expect(subject).to contain_exactly(user_cf)
+        end
+      end
+
+      context "if the fields are invisible" do
+        let(:user_cf_visible) { false }
+
+        it "does not return the user custom field" do
           expect(subject).to be_empty
         end
       end

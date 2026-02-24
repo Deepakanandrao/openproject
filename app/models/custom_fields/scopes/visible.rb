@@ -34,8 +34,21 @@ module CustomFields::Scopes
 
     class_methods do
       def visible(user = User.current)
-        where(type: ProjectCustomField.name).and(ProjectCustomField.visible(user))
-                                       .or(where(type: WorkPackageCustomField.name).and(WorkPackageCustomField.visible(user)))
+        known_subclasses.inject(none) do |scope, klass|
+          scope.or(where(type: klass.name).and(klass.visible(user)))
+        end
+      end
+
+      def known_subclasses
+        # In dev/test without eager loading, subclasses might not be loaded.
+        if Rails.env.local?
+          CustomField
+            .group(:type)
+            .pluck(:type)
+            .map(&:safe_constantize)
+        end
+
+        CustomField.subclasses
       end
     end
   end
