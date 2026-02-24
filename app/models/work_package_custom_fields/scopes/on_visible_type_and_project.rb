@@ -33,6 +33,12 @@ module WorkPackageCustomFields::Scopes
     extend ActiveSupport::Concern
 
     class_methods do
+      # Returns custom fields that are defined for visible types and projects.
+      #
+      # For a custom field to be returned, it will have to be defined:
+      # * on a type which in turn is active in a project the user has access to
+      # * on a project the user has access to
+      # Both conditions need to be met on the same project.
       def on_visible_type_and_project(user = User.current)
         where(<<~SQL.squish)
           EXISTS (
