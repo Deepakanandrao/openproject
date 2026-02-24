@@ -4510,6 +4510,12 @@ en:
   permission_manage_versions: "Manage versions"
   permission_manage_wiki: "Manage wiki"
   permission_manage_wiki_menu: "Manage wiki menu"
+  permission_manage_own_working_times: "Manage own working times"
+  permission_manage_own_working_times_explanation: >
+    Allows users to manage their own working times, and personal non-working days.
+  permission_manage_working_times: "Manage working times for all users"
+  permission_manage_working_times_explanation: >
+    Allows users to manage working times for all users, including personal non-working days.
   permission_move_work_packages: "Move work packages"
   permission_protect_wiki_pages: "Protect wiki pages"
   permission_rename_wiki_pages: "Rename wiki pages"
