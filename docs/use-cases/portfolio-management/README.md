@@ -1,9 +1,9 @@
 ---
 sidebar_navigation:
- title: Portfolio management and custom reporting
+ title: Portfolio management
  priority: 990
-description: Step-by-step instructions about portfolio management and custom reporting
-keywords: use-case, portfolio management
+description: Step-by-step instructions on portfolio management with OpenProject
+keywords: use-case, portfolio management, portfolio
 ---
 
 # Portfolio management with OpenProject
