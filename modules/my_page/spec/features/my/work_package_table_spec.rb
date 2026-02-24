@@ -72,6 +72,7 @@ RSpec.describe "Arbitrary WorkPackage query table widget on my page",
     login_as user
 
     my_page.visit!
+    wait_for_network_idle
   end
 
   context "with the permission to save queries" do
@@ -79,7 +80,6 @@ RSpec.describe "Arbitrary WorkPackage query table widget on my page",
       # This one always exists by default.
       # Using it here as a safeguard to govern speed.
       created_by_me_area = Components::Grids::GridArea.new(".grid--area.-widgeted:nth-of-type(2)")
-      sleep(2)
       expect(created_by_me_area.area)
         .to have_css(".subject", text: type_work_package.subject)
 
@@ -142,9 +142,9 @@ RSpec.describe "Arbitrary WorkPackage query table widget on my page",
 
       visit root_path
       my_page.visit!
+      wait_for_network_idle
 
       filter_area = Components::Grids::GridArea.new(".grid--area.-widgeted:nth-of-type(3)")
-      sleep(2)
       expect(filter_area.area)
         .to have_css(".id", text: type_work_package.id)
 
