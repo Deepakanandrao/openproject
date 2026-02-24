@@ -28,45 +28,39 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-FactoryBot.define do
-  factory :meeting, class: "Meeting" do |m|
-    author factory: :user
-    project
-    start_time { Date.tomorrow + 10.hours }
-    recurring_meeting { nil }
-    duration { 1.0 }
-    location { "https://some-url.com" }
-    m.sequence(:title) { |n| "Meeting #{n}" }
-
-    trait :author_participates do
-      after(:build) do |meeting|
-        meeting.participants << build(:meeting_participant, meeting: meeting, user: meeting.author, invited: true)
+class Meeting::TemplateAutocompleter < ApplicationForm
+  form do |f|
+    f.autocompleter(
+      name: :template_id,
+      label: I18n.t(:label_meeting_template),
+      caption: I18n.t(:caption_meeting_template_select),
+      autocomplete_options: {
+        decorated: true,
+        defaultData: false,
+        multiple: false,
+        appendTo: "#new-meeting-dialog",
+        data: {
+          "test-selector": "template_id"
+        }
+      }
+    ) do |select|
+      templates.each do |template|
+        select.option(
+          value: template.id,
+          label: template.title
+        )
       end
     end
+  end
 
-    after(:create) do |meeting, evaluator|
-      meeting.project = evaluator.project if evaluator.project
+  def initialize(project:)
+    super()
+    @project = project
+  end
 
-      # create backlog
-      create(:meeting_section, meeting:, backlog: true, title: I18n.t(:label_agenda_backlog))
-    end
+  private
 
-    factory :meeting_template do |meeting|
-      meeting.sequence(:title) { |n| "Meeting template #{n}" }
-      template { true }
-      recurring_meeting
-
-      after(:build) do |template, evaluator|
-        %w[author project start_time].each do |attr|
-          template.send(:"#{attr}=", evaluator.recurring_meeting.send(attr))
-        end
-      end
-    end
-
-    factory :onetime_template do |meeting|
-      meeting.sequence(:title) { |n| "Onetime template #{n}" }
-      template { true }
-      recurring_meeting { nil }
-    end
+  def templates
+    Meeting.onetime_templates.where(project: @project).visible.order(:title)
   end
 end
