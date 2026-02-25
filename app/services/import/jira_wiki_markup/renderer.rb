@@ -68,7 +68,7 @@ module Import
         parts = []
         blocks.each_with_index do |block, i|
           rendered = render_block(block)
-          parts << "\n" if i > 0 && block.is_a?(N::Paragraph) && blocks[i - 1].is_a?(N::Paragraph)
+          parts[-1] = "#{parts[-1]}\n" if i > 0 && block.is_a?(N::Paragraph) && blocks[i - 1].is_a?(N::Paragraph)
           parts << rendered
         end
         parts.join("\n")
