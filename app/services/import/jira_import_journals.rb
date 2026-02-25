@@ -79,25 +79,40 @@ module Import
       current = nil
 
       history.each do |entry|
-        author_name = entry.dig("author", "displayName")
-        created = entry["created"]
-        items = entry["items"] || []
-        has_description = items.any? { |item| item["field"]&.downcase == "description" }
-
-        if current &&
-           same_minute?(current["created"], created) &&
-           current["author"]["displayName"] == author_name &&
-           !(current[:has_description] && has_description)
-          current["items"].concat(items)
-          current[:has_description] ||= has_description
+        if mergeable_into_current?(current, entry)
+          merge_into_current(current, entry)
         else
           groups << current if current
-          current = { "created" => created, "author" => { "displayName" => author_name },
-                      "items" => items.dup, has_description: }
+          current = new_group_from(entry)
         end
       end
       groups << current if current
       groups
+    end
+
+    def mergeable_into_current?(current, entry)
+      return false unless current
+
+      same_minute?(current["created"], entry["created"]) &&
+        current["author"]["displayName"] == entry.dig("author", "displayName") &&
+        !(current[:has_description] && entry_has_description?(entry))
+    end
+
+    def merge_into_current(current, entry)
+      current["items"].concat(entry["items"] || [])
+      current[:has_description] ||= entry_has_description?(entry)
+    end
+
+    def new_group_from(entry)
+      items = entry["items"] || []
+      { "created" => entry["created"],
+        "author" => { "displayName" => entry.dig("author", "displayName") },
+        "items" => items.dup,
+        has_description: entry_has_description?(entry) }
+    end
+
+    def entry_has_description?(entry)
+      (entry["items"] || []).any? { |item| item["field"]&.downcase == "description" }
     end
 
     def create_history_journal(entry)

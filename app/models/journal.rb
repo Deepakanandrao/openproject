@@ -86,6 +86,7 @@ class Journal < ApplicationRecord
                  prefix: true
   VALID_CAUSE_TYPES = %w[
     default_attribute_written
+    import
     progress_mode_changed_to_status_based
     status_changed
     system_update
