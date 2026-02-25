@@ -27,31 +27,34 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
-#
 
 module WorkPackages
   module Admin
     module Settings
-      class IdentifierSettingsFormComponent < ApplicationComponent
-        include OpPrimer::FormHelpers
+      class IdentifierAutofixPreviewComponent < ApplicationComponent
+        include OpPrimer::ComponentHelpers
 
-        def initialize
-          super
-          @projects_data = WorkPackages::ProjectHandleSuggestionGenerator.call
-        end
+        DISPLAY_COUNT = 5
 
-        def has_problematic_projects?
-          @projects_data.any?
-        end
-
-        def projects_data
-          @projects_data
+        # projects_data: array of hashes from ProjectHandleSuggestionGenerator
+        # Each hash: { project:, current_identifier:, suggested_handle:, error_reason: }
+        def initialize(projects_data:)
+          super()
+          @displayed = projects_data.first(DISPLAY_COUNT)
+          @remaining_count = [projects_data.size - DISPLAY_COUNT, 0].max
         end
 
         private
 
-        def show_autofix_section?
-          Setting[:work_packages_identifier] == "alphanumeric" && has_problematic_projects?
+        attr_reader :displayed, :remaining_count
+
+        def error_label(error_reason)
+          case error_reason
+          when :too_long
+            I18n.t("admin.settings.work_packages_identifier.autofix_preview.error_too_long")
+          when :special_characters
+            I18n.t("admin.settings.work_packages_identifier.autofix_preview.error_special_characters")
+          end
         end
       end
     end

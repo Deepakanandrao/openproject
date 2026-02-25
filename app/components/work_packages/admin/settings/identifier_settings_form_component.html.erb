@@ -30,15 +30,57 @@
 %>
 
 <%=
-  settings_primer_form_with(scope: :settings, action: :update, method: :patch) do |f|
+  settings_primer_form_with(
+    scope: :settings, action: :update, method: :patch,
+    data: {
+      controller: "admin--work-packages-identifier",
+      admin__work_packages_identifier_has_problematic_projects_value: has_problematic_projects?,
+      admin__work_packages_identifier_autofix_label_value: t("admin.settings.work_packages_identifier.button_autofix"),
+      admin__work_packages_identifier_save_label_value: t("button_save")
+    }
+  ) do |f|
     render_inline_settings_form(f) do |form|
       form.radio_button_group(
         name: :work_packages_identifier,
         label: I18n.t("settings.work_packages.work_package_identifier"),
-        required: true
+        required: true,
+        button_options: {
+          data: { action: "change->admin--work-packages-identifier#handleChange" }
+        }
       )
 
-      form.submit
+      form.html_content do
+        tag.div(
+          hidden: !show_autofix_section?,
+          data: { admin__work_packages_identifier_target: "autofixSection" }
+        ) do
+          concat(
+            render(
+              Primer::Alpha::Banner.new(
+                scheme: :warning,
+                mb: 3
+              )
+            ) do
+              t(
+                "admin.settings.work_packages_identifier.banner.existing_identifiers_notice",
+                project_count: projects_data.size
+              )
+            end
+          )
+          concat(
+            render(
+              WorkPackages::Admin::Settings::IdentifierAutofixPreviewComponent.new(
+                projects_data:
+              )
+            )
+          )
+        end
+      end
+
+      form.submit(
+        label: show_autofix_section? ? t("admin.settings.work_packages_identifier.button_autofix") : t("button_save"),
+        data: { admin__work_packages_identifier_target: "submitButton" }
+      )
     end
   end
 %>
