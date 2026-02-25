@@ -275,6 +275,10 @@ Redmine::MenuManager.map :my_menu do |menu|
             { controller: "/my", action: "account" },
             caption: :label_account,
             icon: "person"
+  menu.push :working_hours,
+            { controller: "/my", action: "working_hours" },
+            caption: :label_schedule_and_availability,
+            icon: "calendar"
   menu.push :locale,
             { controller: "/my", action: "locale" },
             caption: :label_locale,

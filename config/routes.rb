@@ -1023,6 +1023,9 @@ Rails.application.routes.draw do
     get "/my/notifications", action: "notifications"
     get "/my/reminders", action: "reminders"
 
+    get "/my/working_hours", action: "working_hours"
+    get "/my/non_working_days", action: "non_working_days"
+
     patch "/my/account", action: "update_account"
     patch "/my/settings", action: "update_settings"
   end
