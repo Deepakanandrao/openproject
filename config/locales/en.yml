@@ -224,6 +224,9 @@ en:
         autofix_preview:
           error_too_long: Has to be fewer than 10 characters
           error_special_characters: Special characters not allowed
+          # FIXME(project_handles): Confirm final copy for these two labels
+          error_handle_reserved: Handle reserved by another project
+          error_identifier_taken: Identifier already used by another project
           remaining_projects:
             one: "... 1 more project"
             other: "... %{count} more projects"

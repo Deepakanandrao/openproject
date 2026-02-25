@@ -54,6 +54,9 @@ module WorkPackages
             I18n.t("admin.settings.work_packages_identifier.autofix_preview.error_too_long")
           when :special_characters
             I18n.t("admin.settings.work_packages_identifier.autofix_preview.error_special_characters")
+            # FIXME(project_handles): Add when :handle_reserved and :identifier_taken
+            # with their respective i18n keys (error_handle_reserved / error_identifier_taken)
+            # once the model and final copy are confirmed.
           end
         end
 

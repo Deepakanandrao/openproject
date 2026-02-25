@@ -30,12 +30,16 @@
 
 module WorkPackages
   # Scans projects for identifiers that do not meet alphanumeric handle
-  # requirements (too long or containing non-alphanumeric characters) and
-  # generates a short uppercase acronym suggestion for each one.
+  # requirements and generates a short uppercase acronym suggestion for each one.
   #
-  # A "problematic" identifier is one that:
-  #   - contains any character outside [a-zA-Z0-9], or
-  #   - is longer than HANDLE_MAX_LENGTH (10) characters
+  # A "problematic" identifier is one that (error_reason):
+  #   - is longer than HANDLE_MAX_LENGTH (10) characters          → :too_long
+  #   - contains any character outside [a-zA-Z0-9]                → :special_characters
+  #   FIXME(project_handles): Two further cases once model exists:
+  #   - the identifier string is already in project_handles for
+  #     another project (current or historical)                   → :handle_reserved
+  #   - the identifier is valid format but will be auto-adopted
+  #     as another project's handle during migration              → :identifier_taken
   #
   # The suggestion is derived from the project name: taking the first letter of
   # each word and uppercasing ("Flight Planning Algorithm" → "FPA"). When two
@@ -64,13 +68,18 @@ module WorkPackages
 
     # @return [Array<Hash>] one entry per project with a problematic identifier:
     #   { project:, current_identifier:, suggested_handle:, error_reason: }
-    #   error_reason is :too_long or :special_characters
+    #   error_reason is :too_long, :special_characters,
+    #   :handle_reserved, or :identifier_taken (last two: FIXME project_handles)
     def self.call
       new.call
     end
 
     def call
       # FIXME(project_handles): Replace with projects lacking a current handle — see class doc above.
+      # Note: the future query (Project.where.not(id: ProjectHandle.where(current:true)…))
+      # also naturally surfaces :handle_reserved and :identifier_taken projects because
+      # they too will have no valid current handle row. No extra WHERE filter is needed;
+      # the key change is pre-seeding used_handles in generate_suggestions (see below).
       Project
         .select(:id, :name, :identifier)
         .where("length(identifier) > ? OR identifier ~ ?", HANDLE_MAX_LENGTH, "[^a-zA-Z0-9]")
@@ -86,12 +95,35 @@ module WorkPackages
       else
         :special_characters
       end
+      # FIXME(project_handles): Add two further branches (checked after the above):
+      #
+      #   :handle_reserved  — identifier already in project_handles for another
+      #                        project (any row, current or historical)
+      #   :identifier_taken — identifier is valid format and will be auto-adopted
+      #                        as another project's handle during migration
+      #
+      # Priority order: :too_long > :special_characters >
+      #                 :handle_reserved > :identifier_taken
     end
 
     # Builds the suggestion list for a set of problematic projects.
     # Handles are generated in iteration order; duplicates are resolved in-place
     # so the final list is guaranteed to contain no two identical handles.
     def generate_suggestions(projects)
+      # FIXME(project_handles): Pre-seed used_handles from the DB before iterating
+      # so suggestions never collide with handles already in use across all projects:
+      #
+      #   used_handles.merge(ProjectHandle.pluck(:handle))
+      #   # ^ every handle ever assigned to any project (current + historical)
+      #   # → prevents :handle_reserved conflicts
+      #
+      #   used_handles.merge(
+      #     Project.where("length(identifier) <= ? AND identifier ~ ?",
+      #                   HANDLE_MAX_LENGTH, "^[A-Za-z0-9]+$")
+      #            .pluck(:identifier)
+      #   )
+      #   # ^ valid-format identifiers that will be auto-adopted as handles
+      #   # → prevents :identifier_taken conflicts
       used_handles = Set.new
 
       projects.map do |project|
