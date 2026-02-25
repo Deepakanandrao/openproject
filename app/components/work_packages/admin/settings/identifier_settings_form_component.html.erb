@@ -76,16 +76,8 @@
         data: { admin__work_packages_identifier_target: "autofixSection" }
       ) do %>
     <%=
-      render(Primer::Alpha::Banner.new(scheme: :warning, mb: 3)) do
-        t(
-          "admin.settings.work_packages_identifier.banner.existing_identifiers_notice",
-          project_count: projects_data.size
-        )
-      end
-    %>
-    <%=
       render(
-        WorkPackages::Admin::Settings::IdentifierAutofixPreviewComponent.new(projects_data:)
+        WorkPackages::Admin::Settings::IdentifierAutofixSectionComponent.new(projects_data:)
       )
     %>
   <% end %>

@@ -30,7 +30,7 @@
 
 require "rails_helper"
 
-RSpec.describe WorkPackages::Admin::Settings::IdentifierAutofixPreviewComponent, type: :component do
+RSpec.describe WorkPackages::Admin::Settings::IdentifierAutofixSectionComponent, type: :component do
   include OpenProject::StaticRouting::UrlHelpers
 
   def build_entry(name:, identifier:, handle:, error_reason:)
@@ -89,6 +89,16 @@ RSpec.describe WorkPackages::Admin::Settings::IdentifierAutofixPreviewComponent,
     it "shows the too long error caption" do
       render_inline(component)
       expect(page).to have_text(I18n.t("admin.settings.work_packages_identifier.autofix_preview.error_too_long"))
+    end
+
+    it "renders the warning banner with the total project count" do
+      render_inline(component)
+      expect(page).to have_text(
+        I18n.t(
+          "admin.settings.work_packages_identifier.banner.existing_identifiers_notice",
+          project_count: 2
+        )
+      )
     end
   end
 

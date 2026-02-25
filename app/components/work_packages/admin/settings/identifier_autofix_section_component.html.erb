@@ -30,6 +30,15 @@
 %>
 
 <%=
+  render(Primer::Alpha::Banner.new(scheme: :warning, my: 3)) do
+    I18n.t(
+      "admin.settings.work_packages_identifier.banner.existing_identifiers_notice",
+      project_count: total_count
+    )
+  end
+%>
+
+<%=
   render(border_box_container(mb: 3)) do |component|
     component.with_header(font_weight: :bold) do
       flex_layout do |header|

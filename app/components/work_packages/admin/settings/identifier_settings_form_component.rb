@@ -35,17 +35,15 @@ module WorkPackages
       class IdentifierSettingsFormComponent < ApplicationComponent
         include OpPrimer::FormHelpers
 
+        attr_reader :projects_data
+
         def initialize
           super
           @projects_data = WorkPackages::ProjectHandleSuggestionGenerator.call
         end
 
         def has_problematic_projects?
-          @projects_data.any?
-        end
-
-        def projects_data
-          @projects_data
+          projects_data.any?
         end
 
         private

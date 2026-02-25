@@ -31,7 +31,7 @@
 module WorkPackages
   module Admin
     module Settings
-      class IdentifierAutofixPreviewComponent < ApplicationComponent
+      class IdentifierAutofixSectionComponent < ApplicationComponent
         include OpPrimer::ComponentHelpers
 
         DISPLAY_COUNT = 5
@@ -40,13 +40,14 @@ module WorkPackages
         # Each hash: { project:, current_identifier:, suggested_handle:, error_reason: }
         def initialize(projects_data:)
           super()
+          @total_count = projects_data.size
           @displayed = projects_data.first(DISPLAY_COUNT)
           @remaining_count = [projects_data.size - DISPLAY_COUNT, 0].max
         end
 
         private
 
-        attr_reader :displayed, :remaining_count
+        attr_reader :total_count, :displayed, :remaining_count
 
         def error_label(error_reason)
           case error_reason
