@@ -185,9 +185,9 @@ RSpec.describe Import::JiraImportJournals, "integration" do
 
       before do
         service.add_history(history: [
-          history_entry(created: time1, author: "Alice", items: items1),
-          history_entry(created: time2, author: "Alice", items: items2)
-        ])
+                              history_entry(created: time1, author: "Alice", items: items1),
+                              history_entry(created: time2, author: "Alice", items: items2)
+                            ])
         service.call
       end
 
@@ -198,7 +198,7 @@ RSpec.describe Import::JiraImportJournals, "integration" do
       it "stores both items in the merged journal cause" do
         journal = work_package.journals.reload.last
         items = journal.cause_import_history.first["items"]
-        expect(items.map { _1["field"] }).to contain_exactly("assignee", "priority")
+        expect(items.pluck("field")).to contain_exactly("assignee", "priority")
       end
     end
 
@@ -208,9 +208,9 @@ RSpec.describe Import::JiraImportJournals, "integration" do
 
       before do
         service.add_history(history: [
-          history_entry(created: time1, author: "Alice"),
-          history_entry(created: time2, author: "Bob")
-        ])
+                              history_entry(created: time1, author: "Alice"),
+                              history_entry(created: time2, author: "Bob")
+                            ])
         service.call
       end
 
@@ -229,9 +229,9 @@ RSpec.describe Import::JiraImportJournals, "integration" do
 
       before do
         service.add_history(history: [
-          history_entry(created: time1, author: "Alice", items: items1),
-          history_entry(created: time2, author: "Alice", items: items2)
-        ])
+                              history_entry(created: time1, author: "Alice", items: items1),
+                              history_entry(created: time2, author: "Alice", items: items2)
+                            ])
         service.call
       end
 
@@ -248,9 +248,9 @@ RSpec.describe Import::JiraImportJournals, "integration" do
 
       before do
         service.add_history(history: [
-          history_entry(created: time1, author: "Alice", items: desc_item1),
-          history_entry(created: time2, author: "Alice", items: desc_item2)
-        ])
+                              history_entry(created: time1, author: "Alice", items: desc_item1),
+                              history_entry(created: time2, author: "Alice", items: desc_item2)
+                            ])
         service.call
       end
 
@@ -267,9 +267,9 @@ RSpec.describe Import::JiraImportJournals, "integration" do
 
       before do
         service.add_history(history: [
-          history_entry(created: time1, author: "Alice", items: desc_item),
-          history_entry(created: time2, author: "Alice", items: status_item)
-        ])
+                              history_entry(created: time1, author: "Alice", items: desc_item),
+                              history_entry(created: time2, author: "Alice", items: status_item)
+                            ])
         service.call
       end
 
@@ -280,7 +280,7 @@ RSpec.describe Import::JiraImportJournals, "integration" do
       it "converts description content via Jira markup converter" do
         journal = work_package.journals.reload.last
         items = journal.cause_import_history.first["items"]
-        desc = items.find { _1["field"] == "description" }
+        desc = items.find { it["field"] == "description" }
         expect(desc).to be_present
       end
     end

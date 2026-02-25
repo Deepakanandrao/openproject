@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -184,9 +186,13 @@ class OpenProject::JournalFormatter::Cause < JournalFormatter::Base
     to_string   = h(item["toString"])
     field = html? ? content_tag(:strong, field_label) : field_label
 
+    import_field_change_message(field, from_string, to_string)
+  end
+
+  def import_field_change_message(field, from_string, to_string)
     if from_string.present? && to_string.present?
       I18n.t("journals.cause_descriptions.import.field_changed",
-            field:, old_value: from_string, new_value: to_string)
+             field:, old_value: from_string, new_value: to_string)
     elsif to_string.present?
       I18n.t("journals.cause_descriptions.import.field_set", field:, value: to_string)
     elsif from_string.present?
