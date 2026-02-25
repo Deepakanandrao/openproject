@@ -28,8 +28,8 @@
  * ++
  */
 
-import {Controller} from "@hotwired/stimulus";
-import * as Turbo from "@hotwired/turbo";
+import {Controller} from '@hotwired/stimulus';
+import * as Turbo from '@hotwired/turbo';
 import {HttpErrorResponse} from '@angular/common/http';
 
 export default class extends Controller {
@@ -47,7 +47,7 @@ export default class extends Controller {
     pollTargetConnected() {
         this.interval ??= setInterval(() => {
             this.reload()
-                .catch((error) => this.handleError(error));
+                .catch((error) => this.handleError(error as HttpErrorResponse));
         }, this.pollingInterval);
     }
 
