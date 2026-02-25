@@ -103,8 +103,8 @@ module Admin::Import::Jira::ImportRuns
     private
 
     def find_jira_and_jira_import
-      @jira = Jira.find(params[:jira_id])
-      @jira_import = JiraImport.find(params[:run_id])
+      @jira = Import::Jira.find(params[:jira_id])
+      @jira_import = Import::JiraImport.find(params[:run_id])
       init_session if action_name == "show"
     end
 

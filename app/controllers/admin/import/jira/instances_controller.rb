@@ -40,31 +40,31 @@ module Admin::Import::Jira
     before_action :set_jira, only: %i[show edit update destroy delete_token]
 
     def index
-      @jira_instances = Jira.all
+      @jira_instances = Import::Jira.all
     end
 
     def show
-      @jira_imports = JiraImport.where(jira_id: @jira.id).order(id: :desc)
+      @jira_imports = Import::JiraImport.where(jira_id: @jira.id).order(id: :desc)
     end
 
     def new
-      @jira = Jira.new
+      @jira = Import::Jira.new
     end
 
     def edit; end
 
     def create
-      result = ::Jiras::CreateService.new(user: User.current).call(jira_params)
+      result = ::Import::Jiras::CreateService.new(user: User.current).call(jira_params)
       handle_service_result(result, success_path: -> { admin_import_jira_path(result.result.id) }, failure_view: :new)
     end
 
     def update
-      result = ::Jiras::UpdateService.new(user: User.current, model: @jira).call(jira_params)
+      result = ::Import::Jiras::UpdateService.new(user: User.current, model: @jira).call(jira_params)
       handle_service_result(result, success_path: -> { admin_import_jira_path(result.result.id) }, failure_view: :edit)
     end
 
     def destroy
-      if JiraImport.exists?(jira_id: @jira.id)
+      if Import::JiraImport.exists?(jira_id: @jira.id)
         flash[:error] = t(:"admin.jira.errors.cannot_delete_with_imports")
       else
         @jira.destroy!
@@ -90,7 +90,7 @@ module Admin::Import::Jira
     private
 
     def set_jira
-      @jira = Jira.find(params[:id])
+      @jira = Import::Jira.find(params[:id])
     end
 
     def jira_params
@@ -124,14 +124,14 @@ module Admin::Import::Jira
     def token_for_test
       return params[:personal_access_token] if params[:personal_access_token].present?
 
-      Jira.find(params[:id]).personal_access_token if params[:id].present?
+      Import::Jira.find(params[:id]).personal_access_token if params[:id].present?
     end
 
     def handle_test_error(error)
       message = case error
-                when JiraClient::ConnectionError then t(:"admin.jira.test.connection_error", message: error.message)
-                when JiraClient::ParseError then t(:"admin.jira.test.parse_error")
-                when JiraClient::ApiError then t(:"admin.jira.test.api_error", status: error.status)
+                when Import::JiraClient::ConnectionError then t(:"admin.jira.test.connection_error", message: error.message)
+                when Import::JiraClient::ParseError then t(:"admin.jira.test.parse_error")
+                when Import::JiraClient::ApiError then t(:"admin.jira.test.api_error", status: error.status)
                 else
                   Rails.logger.error("Unexpected error testing Jira configuration: #{error.class} - #{error.message}")
                   t(:"admin.jira.test.error")
@@ -147,12 +147,12 @@ module Admin::Import::Jira
         return render_error_flash_message_via_turbo_stream(message: t(:"admin.jira.test.invalid_url"))
       end
 
-      render_test_result(JiraClient.new(url:, personal_access_token:).server_info)
+      render_test_result(Import::JiraClient.new(url:, personal_access_token:).server_info)
     end
 
     def render_test_result(response)
       if response.is_a?(Hash)
-        server = response["serverTitle"] || Jira.model_name
+        server = response["serverTitle"] || Import::Jira.model_name
         version = response["version"] || "?"
         render_success_flash_message_via_turbo_stream(message: t(:"admin.jira.test.success", server:, version:))
       else

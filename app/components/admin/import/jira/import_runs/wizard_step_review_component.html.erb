@@ -28,26 +28,26 @@ See COPYRIGHT and LICENSE files for more details.
 ++#%>
 
 <%= flex_layout do |box|
-  if model.in_state?(JiraImportStateMachine::REVERTING, JiraImportStateMachine::REVERTED, JiraImportStateMachine::REVERT_ERROR)
+  if model.in_state?(:reverting, :reverted, :revert_error)
     box.with_row do
       concat(render(Primer::Beta::Text.new(font_weight: :semibold, tag: :div)) {
         I18n.t(:"admin.jira.run.wizard.sections.import_result.label_revert")
       })
     end
-    case model.current_state
-    when JiraImportStateMachine::REVERTING
+    case model.current_state.to_sym
+    when :reverting
       box.with_row(mt: 3) do
         render(Admin::Import::Jira::ImportRuns::ProgressBoxComponent.new(
           I18n.t(:"admin.jira.run.wizard.sections.import_result.label_revert_progress")
         ))
       end
-    when JiraImportStateMachine::REVERTED
+    when :reverted
       box.with_row(mt: 3) do
         render(Primer::Alpha::Banner.new(scheme: :success, icon: :"check-circle")) {
           I18n.t(:"admin.jira.run.wizard.sections.import_result.label_reverted")
         }
       end
-    when JiraImportStateMachine::REVERT_ERROR
+    when :revert_error
       box.with_row(mt: 3) do
         render(Admin::Import::Jira::ImportRuns::ErrorBannerComponent.new(model, 'revert'))
       end
@@ -57,20 +57,20 @@ See COPYRIGHT and LICENSE files for more details.
       concat(render(Primer::Beta::Text.new(font_weight: :semibold, tag: :div)) {
         I18n.t(:"admin.jira.run.wizard.sections.import_result.title")
       })
-      if model.status_before?(JiraImportStateMachine::IMPORTED)
+      if model.status_before?(:imported)
         concat(render(Primer::Beta::Text.new(font_size: :small, color: :subtle)) {
           I18n.t(:"admin.jira.run.wizard.sections.import_result.caption")
         })
       end
     end
-    if model.in_state?(JiraImportStateMachine::IMPORTED)
+    if model.in_state?(:imported)
       box.with_row(mt: 3) do
         render(Primer::Alpha::Banner.new(scheme: :success, icon: :"check-circle")) {
           I18n.t(:"admin.jira.run.wizard.sections.import_result.info")
         }
       end
     end
-    if model.in_state?(JiraImportStateMachine::IMPORTED, JiraImportStateMachine::COMPLETED)
+    if model.in_state?(:imported, :completed)
       box.with_row(mt: 3, mb: 3) do
         render(Admin::Import::Jira::ImportRuns::InfoListBoxComponent.new(
           title: I18n.t(:"admin.jira.run.wizard.sections.import_result.label_results"),
@@ -78,7 +78,7 @@ See COPYRIGHT and LICENSE files for more details.
         ))
       end
     end
-    if model.in_state?(JiraImportStateMachine::IMPORTED)
+    if model.in_state?(:imported)
       box.with_row(mb: 3) do
         render(Primer::Alpha::Banner.new(scheme: :default, icon: :info)) {
           I18n.t(:"admin.jira.run.wizard.sections.import_result.preview_description")

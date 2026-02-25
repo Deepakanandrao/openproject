@@ -38,7 +38,7 @@ module Admin::Import::Jira::ImportRuns
     end
 
     def mobile_title
-      JiraImport.model_name.human(count: 2)
+      Import::JiraImport.model_name.human(count: 2)
     end
 
     def row_class
@@ -56,7 +56,7 @@ module Admin::Import::Jira::ImportRuns
     def headers
       [
         [:id, { caption: I18n.t(:"admin.jira.run.title") }],
-        [:status, { caption: JiraImport.human_attribute_name(:status) }],
+        [:status, { caption: Import::JiraImport.human_attribute_name(:status) }],
         [:projects, { caption: I18n.t(:"admin.jira.columns.projects") }],
         [:last_changed, { caption: I18n.t(:"admin.jira.columns.last_change") }]
       ]

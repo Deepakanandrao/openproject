@@ -28,40 +28,21 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Admin::Import::Jira
-  class TableComponent < OpPrimer::BorderBoxTableComponent
-    columns :name, :last_change, :added
+module Import
+  class JiraImportTransition < ApplicationRecord
+    self.table_name = "jira_import_transitions"
 
-    def mobile_title
-      Import::Jira.model_name.human(count: 2)
-    end
+    belongs_to :jira_import, class_name: "Import::JiraImport", inverse_of: :transitions
 
-    def row_class
-      RowComponent
-    end
+    after_destroy :update_most_recent, if: :most_recent?
 
-    def has_header?
-      rows.any?
-    end
+    private
 
-    def headers
-      [
-        [:name, { caption: Import::Jira.human_attribute_name(:name) }],
-        [:last_change, { caption: I18n.t(:"admin.jira.columns.last_change") }],
-        [:added, { caption: I18n.t(:"admin.jira.columns.added") }]
-      ]
-    end
+    def update_most_recent
+      last_transition = jira_import.transitions.order(:sort_key).last
+      return unless last_transition.present?
 
-    def blank_title
-      I18n.t(:"admin.jira.blank.title")
-    end
-
-    def blank_description
-      I18n.t(:"admin.jira.blank.description")
-    end
-
-    def blank_icon
-      :tools
+      last_transition.update_column(:most_recent, true)
     end
   end
 end

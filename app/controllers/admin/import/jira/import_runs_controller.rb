@@ -56,8 +56,8 @@ module Admin::Import::Jira
     def show; end
 
     def new
-      jira = Jira.find(params[:jira_id])
-      jira_import = JiraImport.create!(author_id: current_user.id, jira_id: jira.id)
+      jira = Import::Jira.find(params[:jira_id])
+      jira_import = Import::JiraImport.create!(author_id: current_user.id, jira_id: jira.id)
       redirect_to(admin_import_jira_run_path(jira_id: jira.id, id: jira_import.id))
     end
 
@@ -130,7 +130,7 @@ module Admin::Import::Jira
     end
 
     def blocking_run
-      JiraImport
+      Import::JiraImport
         .joins(:transitions)
         .where.not(id: @jira_import.id)
         .where(
@@ -170,8 +170,8 @@ module Admin::Import::Jira
     end
 
     def find_jira_and_jira_import
-      @jira = Jira.find(params[:jira_id])
-      @jira_import = JiraImport.find(params[:id])
+      @jira = Import::Jira.find(params[:jira_id])
+      @jira_import = Import::JiraImport.find(params[:id])
     end
   end
 end

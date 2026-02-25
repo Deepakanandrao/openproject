@@ -28,40 +28,35 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Admin::Import::Jira
-  class TableComponent < OpPrimer::BorderBoxTableComponent
-    columns :name, :last_change, :added
+module Import
+  class JiraUser < ApplicationRecord
+    self.table_name = "jira_users"
 
-    def mobile_title
-      Import::Jira.model_name.human(count: 2)
+    belongs_to :jira, class_name: "Import::Jira"
+    belongs_to :jira_import, class_name: "Import::JiraImport"
+
+    def self.groups
+      all.map { |x| x.payload["groups"]["items"] }.flatten.uniq { |x| x["name"] }
     end
 
-    def row_class
-      RowComponent
+    def to_op_attributes
+      firstname = payload["displayName"].split(" ")[0..-2].join(" ")
+      lastname = payload["displayName"].split(" ")[-1]
+      {
+        login: payload["name"],
+        password: SecureRandom.uuid,
+        firstname:,
+        lastname:,
+        mail: payload["emailAddress"],
+        status: payload["active"] ? :active : :locked
+      }
     end
 
-    def has_header?
-      rows.any?
-    end
-
-    def headers
-      [
-        [:name, { caption: Import::Jira.human_attribute_name(:name) }],
-        [:last_change, { caption: I18n.t(:"admin.jira.columns.last_change") }],
-        [:added, { caption: I18n.t(:"admin.jira.columns.added") }]
-      ]
-    end
-
-    def blank_title
-      I18n.t(:"admin.jira.blank.title")
-    end
-
-    def blank_description
-      I18n.t(:"admin.jira.blank.description")
-    end
-
-    def blank_icon
-      :tools
+    def try_to_find_existing_op_users
+      op_attributes = to_op_attributes
+      User.where(login: op_attributes[:login]).or(
+        User.where(mail: op_attributes[:mail])
+      )
     end
   end
 end

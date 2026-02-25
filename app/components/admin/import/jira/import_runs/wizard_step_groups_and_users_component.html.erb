@@ -28,13 +28,13 @@ See COPYRIGHT and LICENSE files for more details.
 ++#%>
 
 <%= flex_layout do |box|
-  if model.status_before?("groups_and_users_init")
+  if model.status_before?(:groups_and_users_init)
     box.with_row do
       concat(render(Primer::Beta::Text.new(font_weight: :semibold, tag: :div)) {
                                                                                 "BEFORE"
       })
     end
-  elsif model.in_state?("groups_and_users_init")
+  elsif model.in_state?(:groups_and_users_init)
     box.with_row do
       render(Primer::Beta::Button.new(
         scheme: :primary,
@@ -46,19 +46,19 @@ See COPYRIGHT and LICENSE files for more details.
           "FETCH GROUPS AND USERS"
       }
     end
-  elsif model.in_state?("groups_and_users_fetching")
+  elsif model.in_state?(:groups_and_users_fetching)
     box.with_row(mt: 3) do
       render(Admin::Import::Jira::ImportRuns::ProgressBoxComponent.new(
         "FETCHING_GROUPS_AND_USERS: #{model.cursor}"
       ))
     end
-  elsif model.in_state?("groups_and_users_fetching_error")
+  elsif model.in_state?(:groups_and_users_fetching_error)
     box.with_row do
       concat(render(Primer::Beta::Text.new(font_weight: :semibold, tag: :div)) {
                                                                                 "FETCHING_ERROR"
       })
     end
-  elsif model.in_state?("groups_and_users_fetching_done")
+  elsif model.in_state?(:groups_and_users_fetching_done)
     box.with_row do
       concat(render(Primer::Beta::Text.new(font_weight: :semibold, tag: :div)) {
                                                                                 "FETCHING_DONE"
@@ -75,19 +75,19 @@ See COPYRIGHT and LICENSE files for more details.
           "IMPORT GROUPS AND USERS"
       }
     end
-  elsif model.in_state?("groups_and_users_importing")
+  elsif model.in_state?(:groups_and_users_importing)
     box.with_row(mt: 3) do
       render(Admin::Import::Jira::ImportRuns::ProgressBoxComponent.new(
         "IMPORTING_GROUPS_AND_USERS: #{model.cursor}"
       ))
     end
-  elsif model.in_state?("groups_and_users_importing_error")
+  elsif model.in_state?(:groups_and_users_importing_error)
     box.with_row do
       concat(render(Primer::Beta::Text.new(font_weight: :semibold, tag: :div)) {
                                                                                 "IMPORTING_ERROR"
       })
     end
-  elsif model.in_state?("groups_and_users_importing_done")
+  elsif model.in_state?(:groups_and_users_importing_done)
     box.with_row do
       concat(render(Primer::Beta::Text.new(font_weight: :semibold, tag: :div)) {
                                                                                 "IMPORTING_DONE"
@@ -102,7 +102,7 @@ See COPYRIGHT and LICENSE files for more details.
           "IMPORT SCOPE"
       })
     end
-  elsif model.status_after?("groups_and_users_importing_done")
+  elsif model.status_after?(:groups_and_users_importing_done)
     box.with_row do
       concat(render(Primer::Beta::Text.new(font_weight: :semibold, tag: :div)) {
                                                                                 "AFTER"

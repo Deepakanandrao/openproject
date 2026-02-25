@@ -28,40 +28,43 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Admin::Import::Jira
-  class TableComponent < OpPrimer::BorderBoxTableComponent
-    columns :name, :last_change, :added
+module Import
+  class JiraImport < ApplicationRecord
+    self.table_name = "jira_imports"
 
-    def mobile_title
-      Import::Jira.model_name.human(count: 2)
+    belongs_to :jira, class_name: "Import::Jira"
+    belongs_to :author, class_name: "User"
+
+    has_many :transitions, class_name: "Import::JiraImportTransition", autosave: false
+
+    def state_machine
+      @state_machine ||= Import::JiraImportStateMachine.new(
+        self,
+        transition_class: Import::JiraImportTransition,
+        association_name: :transitions
+      )
     end
 
-    def row_class
-      RowComponent
-    end
+    delegate :can_transition_to?,
+             :current_state,
+             :history,
+             :last_transition,
+             :last_transition_to,
+             :transition_to!,
+             :transition_to,
+             :in_state?,
+             :status_running?,
+             :status_equal_or_after?,
+             :status_equal_or_before?,
+             :status_after?,
+             :status_before?,
+             :deletable?,
+             to: :state_machine
 
-    def has_header?
-      rows.any?
-    end
+    delegate :client, to: :jira
 
-    def headers
-      [
-        [:name, { caption: Import::Jira.human_attribute_name(:name) }],
-        [:last_change, { caption: I18n.t(:"admin.jira.columns.last_change") }],
-        [:added, { caption: I18n.t(:"admin.jira.columns.added") }]
-      ]
-    end
-
-    def blank_title
-      I18n.t(:"admin.jira.blank.title")
-    end
-
-    def blank_description
-      I18n.t(:"admin.jira.blank.description")
-    end
-
-    def blank_icon
-      :tools
+    def project_ids
+      (projects || []).pluck("id")
     end
   end
 end

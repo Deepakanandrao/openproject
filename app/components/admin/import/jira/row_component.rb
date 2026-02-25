@@ -37,7 +37,7 @@ module Admin::Import::Jira
     end
 
     def last_change
-      last_run_updated_at = JiraImport.where(jira_id: model.id).maximum(:updated_at)
+      last_run_updated_at = Import::JiraImport.where(jira_id: model.id).maximum(:updated_at)
       updated_at = last_run_updated_at || model.updated_at
       updated_at.nil? ? "" : time_ago(updated_at)
     end

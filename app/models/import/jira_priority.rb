@@ -28,40 +28,11 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Admin::Import::Jira
-  class TableComponent < OpPrimer::BorderBoxTableComponent
-    columns :name, :last_change, :added
+module Import
+  class JiraPriority < ApplicationRecord
+    self.table_name = "jira_priorities"
 
-    def mobile_title
-      Import::Jira.model_name.human(count: 2)
-    end
-
-    def row_class
-      RowComponent
-    end
-
-    def has_header?
-      rows.any?
-    end
-
-    def headers
-      [
-        [:name, { caption: Import::Jira.human_attribute_name(:name) }],
-        [:last_change, { caption: I18n.t(:"admin.jira.columns.last_change") }],
-        [:added, { caption: I18n.t(:"admin.jira.columns.added") }]
-      ]
-    end
-
-    def blank_title
-      I18n.t(:"admin.jira.blank.title")
-    end
-
-    def blank_description
-      I18n.t(:"admin.jira.blank.description")
-    end
-
-    def blank_icon
-      :tools
-    end
+    belongs_to :jira, class_name: "Import::Jira"
+    belongs_to :jira_import, class_name: "Import::JiraImport"
   end
 end

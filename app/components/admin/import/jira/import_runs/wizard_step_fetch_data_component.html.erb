@@ -34,7 +34,7 @@ See COPYRIGHT and LICENSE files for more details.
         concat(render(Primer::Beta::Text.new(font_weight: :semibold, tag: :div)) {
           I18n.t(:"admin.jira.run.wizard.sections.fetch_data.title")
         })
-        if model.status_equal_or_after?(JiraImportStateMachine::INSTANCE_META_DONE)
+        if model.status_equal_or_after?(:instance_meta_done)
           concat(render(Primer::Beta::Text.new(font_size: :small, color: :subtle)) {
             I18n.t(:"admin.jira.run.wizard.sections.fetch_data.caption_done")
           })
@@ -56,7 +56,7 @@ See COPYRIGHT and LICENSE files for more details.
       end
     end
   end
-  if model.in_state?(JiraImportStateMachine::INITIAL)
+  if model.in_state?(:initial)
     box.with_row(mb: 3) do
       render(Primer::Beta::Text.new) {
         I18n.t(:"admin.jira.run.wizard.sections.fetch_data.description")

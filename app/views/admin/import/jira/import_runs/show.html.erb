@@ -27,7 +27,7 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
 
-<% html_title t(:label_administration), JiraImport.model_name, @jira_import.id %>
+<% html_title t(:label_administration), Import::JiraImport.model_name, @jira_import.id %>
 <%=
   render(Primer::OpenProject::PageHeader.new) do |header|
     header.with_title do

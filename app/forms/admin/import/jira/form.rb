@@ -33,14 +33,14 @@ module Admin::Import::Jira
     form do |client_form|
       client_form.text_field(
         name: :name,
-        label: Jira.human_attribute_name(:name),
+        label: Import::Jira.human_attribute_name(:name),
         required: true,
         input_width: :medium
       )
 
       client_form.text_field(
         name: :url,
-        label: Jira.human_attribute_name(:url),
+        label: Import::Jira.human_attribute_name(:url),
         required: true,
         input_width: :large,
         type: :url,
@@ -60,7 +60,7 @@ module Admin::Import::Jira
                 render(
                   Primer::Alpha::TextField.new(
                     name: :saved_personal_access_token,
-                    label: Jira.human_attribute_name(:personal_access_token),
+                    label: Import::Jira.human_attribute_name(:personal_access_token),
                     input_width: :large,
                     disabled: true,
                     value: "*********"
@@ -91,7 +91,7 @@ module Admin::Import::Jira
 
         client_form.text_field(
           name: :personal_access_token,
-          label: Jira.human_attribute_name(:personal_access_token),
+          label: Import::Jira.human_attribute_name(:personal_access_token),
           hidden: true,
           value: "",
           data: { "admin--jira-configuration-form-target": "tokenInput" }
@@ -99,7 +99,7 @@ module Admin::Import::Jira
       else
         client_form.text_field(
           name: :personal_access_token,
-          label: Jira.human_attribute_name(:personal_access_token),
+          label: Import::Jira.human_attribute_name(:personal_access_token),
           required: !model.persisted?,
           input_width: :large,
           autocomplete: "off",

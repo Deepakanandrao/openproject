@@ -72,10 +72,10 @@ RSpec.describe Admin::Import::Jira::ImportRunsController do
 
   before do
     login_as(admin)
-    allow(JiraInstanceMetaDataJob).to receive(:perform_later).and_return(double(job_id: "job-stub"))
-    allow(JiraProjectsMetaDataJob).to receive(:perform_later).and_return(double(job_id: "job-stub"))
-    allow(JiraFetchAndImportProjectsJob).to receive(:perform_later).and_return(double(job_id: "job-stub"))
-    allow(JiraRevertJiraImportJob).to receive(:perform_later).and_return(double(job_id: "job-stub"))
+    allow(Import::JiraInstanceMetaDataJob).to receive(:perform_later).and_return(double(job_id: "job-stub"))
+    allow(Import::JiraProjectsMetaDataJob).to receive(:perform_later).and_return(double(job_id: "job-stub"))
+    allow(Import::JiraFetchAndImportProjectsJob).to receive(:perform_later).and_return(double(job_id: "job-stub"))
+    allow(Import::JiraRevertImportJob).to receive(:perform_later).and_return(double(job_id: "job-stub"))
   end
 
   context "when user is not an admin" do
@@ -132,9 +132,9 @@ RSpec.describe Admin::Import::Jira::ImportRunsController do
     it "creates a new jira import and redirects to show" do
       expect do
         get :new, params: { jira_id: jira.id }
-      end.to change(JiraImport, :count).by(1)
+      end.to change(Import::JiraImport, :count).by(1)
 
-      new_import = JiraImport.last
+      new_import = Import::JiraImport.last
       expect(new_import.author).to eq(admin)
       expect(new_import.jira).to eq(jira)
       expect(new_import.current_state).to eq("initial")
@@ -149,7 +149,7 @@ RSpec.describe Admin::Import::Jira::ImportRunsController do
       it "transitions to instance_meta_fetching and triggers the job" do
         post :continue, params: { jira_id: jira.id, id: jira_import.id, step: "fetch" }, format: :turbo_stream
         expect(jira_import.current_state).to eq("instance_meta_fetching")
-        expect(JiraInstanceMetaDataJob).to have_received(:perform_later).with(jira_import.id)
+        expect(Import::JiraInstanceMetaDataJob).to have_received(:perform_later).with(jira_import.id)
       end
     end
 
@@ -168,7 +168,7 @@ RSpec.describe Admin::Import::Jira::ImportRunsController do
       it "transitions to projects_meta_fetching and triggers the job" do
         post :continue, params: { jira_id: jira.id, id: jira_import.id, step: "stats" }, format: :turbo_stream
         expect(jira_import.current_state).to eq("projects_meta_fetching")
-        expect(JiraProjectsMetaDataJob).to have_received(:perform_later).with(jira_import.id)
+        expect(Import::JiraProjectsMetaDataJob).to have_received(:perform_later).with(jira_import.id)
       end
     end
 
@@ -178,7 +178,7 @@ RSpec.describe Admin::Import::Jira::ImportRunsController do
       it "retries projects meta fetching" do
         post :continue, params: { jira_id: jira.id, id: jira_import.id, step: "stats" }, format: :turbo_stream
         expect(jira_import.current_state).to eq("projects_meta_fetching")
-        expect(JiraProjectsMetaDataJob).to have_received(:perform_later).with(jira_import.id).twice
+        expect(Import::JiraProjectsMetaDataJob).to have_received(:perform_later).with(jira_import.id).twice
       end
     end
 
@@ -188,7 +188,7 @@ RSpec.describe Admin::Import::Jira::ImportRunsController do
       it "transitions to importing and triggers the job" do
         post :continue, params: { jira_id: jira.id, id: jira_import.id, step: "import" }, format: :turbo_stream
         expect(jira_import.current_state).to eq("importing")
-        expect(JiraFetchAndImportProjectsJob).to have_received(:perform_later).with(jira_import.id)
+        expect(Import::JiraFetchAndImportProjectsJob).to have_received(:perform_later).with(jira_import.id)
       end
     end
 
@@ -198,7 +198,7 @@ RSpec.describe Admin::Import::Jira::ImportRunsController do
       it "retries the import" do
         post :continue, params: { jira_id: jira.id, id: jira_import.id, step: "import" }, format: :turbo_stream
         expect(jira_import.current_state).to eq("importing")
-        expect(JiraFetchAndImportProjectsJob).to have_received(:perform_later).with(jira_import.id).twice
+        expect(Import::JiraFetchAndImportProjectsJob).to have_received(:perform_later).with(jira_import.id).twice
       end
     end
 
@@ -231,7 +231,7 @@ RSpec.describe Admin::Import::Jira::ImportRunsController do
       it "transitions to reverting and triggers the job" do
         post :continue, params: { jira_id: jira.id, id: jira_import.id, step: "revert" }, format: :turbo_stream
         expect(jira_import.current_state).to eq("reverting")
-        expect(JiraRevertJiraImportJob).to have_received(:perform_later).with(jira_import.id)
+        expect(Import::JiraRevertImportJob).to have_received(:perform_later).with(jira_import.id)
       end
     end
 
@@ -354,7 +354,7 @@ RSpec.describe Admin::Import::Jira::ImportRunsController do
     it "destroys the jira import and redirects" do
       expect do
         delete :remove, params: { jira_id: jira.id, id: jira_import.id }
-      end.to change(JiraImport, :count).by(-1)
+      end.to change(Import::JiraImport, :count).by(-1)
       expect(response).to redirect_to(admin_import_jira_path(jira))
     end
 

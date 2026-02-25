@@ -28,40 +28,30 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Admin::Import::Jira
-  class TableComponent < OpPrimer::BorderBoxTableComponent
-    columns :name, :last_change, :added
+module Import
+  class Jira < ApplicationRecord
+    self.table_name = "jiras"
 
-    def mobile_title
-      Import::Jira.model_name.human(count: 2)
+    validate :url_must_be_http_or_https
+
+    def client
+      Import::JiraClient.new(
+        url:,
+        personal_access_token:
+      )
     end
 
-    def row_class
-      RowComponent
-    end
+    private
 
-    def has_header?
-      rows.any?
-    end
+    def url_must_be_http_or_https
+      return if url.blank?
 
-    def headers
-      [
-        [:name, { caption: Import::Jira.human_attribute_name(:name) }],
-        [:last_change, { caption: I18n.t(:"admin.jira.columns.last_change") }],
-        [:added, { caption: I18n.t(:"admin.jira.columns.added") }]
-      ]
-    end
-
-    def blank_title
-      I18n.t(:"admin.jira.blank.title")
-    end
-
-    def blank_description
-      I18n.t(:"admin.jira.blank.description")
-    end
-
-    def blank_icon
-      :tools
+      uri = URI.parse(url)
+      unless uri.is_a?(URI::HTTP) || uri.is_a?(URI::HTTPS)
+        errors.add(:url, :invalid_protocol)
+      end
+    rescue URI::InvalidURIError
+      errors.add(:url, :invalid)
     end
   end
 end

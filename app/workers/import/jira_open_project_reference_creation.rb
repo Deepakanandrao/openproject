@@ -28,40 +28,23 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Admin::Import::Jira
-  class TableComponent < OpPrimer::BorderBoxTableComponent
-    columns :name, :last_change, :added
+module Import
+  module JiraOpenProjectReferenceCreation
+    private
 
-    def mobile_title
-      Import::Jira.model_name.human(count: 2)
-    end
-
-    def row_class
-      RowComponent
-    end
-
-    def has_header?
-      rows.any?
-    end
-
-    def headers
-      [
-        [:name, { caption: Import::Jira.human_attribute_name(:name) }],
-        [:last_change, { caption: I18n.t(:"admin.jira.columns.last_change") }],
-        [:added, { caption: I18n.t(:"admin.jira.columns.added") }]
-      ]
-    end
-
-    def blank_title
-      I18n.t(:"admin.jira.blank.title")
-    end
-
-    def blank_description
-      I18n.t(:"admin.jira.blank.description")
-    end
-
-    def blank_icon
-      :tools
+    def create_reference!(op_leg:, jira_leg:, jira_import:, uses_existing:)
+      Import::JiraOpenProjectReference.insert_all(
+        [
+          op_entity_id: op_leg.id,
+          op_entity_class: op_leg.class.to_s,
+          jira_entity_id: jira_leg&.id,
+          jira_entity_class: jira_leg&.class&.to_s,
+          jira_import_id: jira_import.id,
+          jira_id: jira_import.jira.id,
+          uses_existing:
+        ],
+        unique_by: %i[op_entity_id op_entity_class]
+      )
     end
   end
 end

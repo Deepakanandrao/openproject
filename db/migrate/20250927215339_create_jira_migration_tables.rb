@@ -113,7 +113,7 @@ class CreateJiraMigrationTables < ActiveRecord::Migration[8.0]
       t.timestamps
     end
 
-    create_table :open_project_jira_references do |t|
+    create_table :jira_open_project_references do |t|
       t.string :op_entity_id
       t.string :op_entity_class
       t.string :jira_entity_id

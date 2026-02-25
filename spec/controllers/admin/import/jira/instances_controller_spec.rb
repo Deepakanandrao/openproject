@@ -159,7 +159,7 @@ RSpec.describe Admin::Import::Jira::InstancesController do
 
     it "assigns a new jira instance" do
       get :new
-      expect(assigns(:jira)).to be_a_new(Jira)
+      expect(assigns(:jira)).to be_a_new(Import::Jira)
     end
 
     it "uses admin layout" do
@@ -194,11 +194,11 @@ RSpec.describe Admin::Import::Jira::InstancesController do
   end
 
   describe "POST #create" do
-    let(:create_service) { instance_double(Jiras::CreateService) }
+    let(:create_service) { instance_double(Import::Jiras::CreateService) }
     let(:service_result) { ServiceResult.success(result: jira) }
 
     before do
-      allow(Jiras::CreateService).to receive(:new).with(user: admin).and_return(create_service)
+      allow(Import::Jiras::CreateService).to receive(:new).with(user: admin).and_return(create_service)
     end
 
     context "when creation succeeds" do
@@ -214,13 +214,13 @@ RSpec.describe Admin::Import::Jira::InstancesController do
 
       it "calls the create service with correct params" do
         post :create, params: { jira: jira_params }
-        expect(Jiras::CreateService).to have_received(:new).with(user: admin)
+        expect(Import::Jiras::CreateService).to have_received(:new).with(user: admin)
         expect(create_service).to have_received(:call)
       end
     end
 
     context "when creation fails" do
-      let(:failed_jira) { Jira.new(jira_params) }
+      let(:failed_jira) { Import::Jira.new(jira_params) }
       let(:failed_result) { ServiceResult.failure(result: failed_jira) }
 
       before do
@@ -241,12 +241,12 @@ RSpec.describe Admin::Import::Jira::InstancesController do
       it "does not create a jira instance" do
         expect do
           post :create, params: { jira: jira_params }
-        end.not_to change(Jira, :count)
+        end.not_to change(Import::Jira, :count)
       end
     end
 
     context "when turbo_stream format" do
-      let(:failed_jira) { Jira.new(jira_params) }
+      let(:failed_jira) { Import::Jira.new(jira_params) }
       let(:failed_result) { ServiceResult.failure(result: failed_jira) }
 
       before do
@@ -263,7 +263,7 @@ RSpec.describe Admin::Import::Jira::InstancesController do
   end
 
   describe "PATCH #update" do
-    let(:update_service) { instance_double(Jiras::UpdateService) }
+    let(:update_service) { instance_double(Import::Jiras::UpdateService) }
     let(:service_result) { ServiceResult.success(result: jira) }
     let(:update_params) do
       {
@@ -274,7 +274,7 @@ RSpec.describe Admin::Import::Jira::InstancesController do
     end
 
     before do
-      allow(Jiras::UpdateService).to receive(:new)
+      allow(Import::Jiras::UpdateService).to receive(:new)
         .with(user: admin, model: jira)
         .and_return(update_service)
     end
@@ -292,7 +292,7 @@ RSpec.describe Admin::Import::Jira::InstancesController do
 
       it "calls the update service with correct params" do
         patch :update, params: { id: jira.id, jira: update_params }
-        expect(Jiras::UpdateService).to have_received(:new).with(user: admin, model: jira)
+        expect(Import::Jiras::UpdateService).to have_received(:new).with(user: admin, model: jira)
         expect(update_service).to have_received(:call)
       end
     end
@@ -345,7 +345,7 @@ RSpec.describe Admin::Import::Jira::InstancesController do
         jira_to_delete = create(:jira)
         expect do
           delete :destroy, params: { id: jira_to_delete.id }
-        end.to change(Jira, :count).by(-1)
+        end.to change(Import::Jira, :count).by(-1)
       end
 
       it "sets a success flash message" do
@@ -367,7 +367,7 @@ RSpec.describe Admin::Import::Jira::InstancesController do
       it "does not destroy the jira instance" do
         expect do
           delete :destroy, params: { id: jira.id }
-        end.not_to change(Jira, :count)
+        end.not_to change(Import::Jira, :count)
       end
 
       it "sets an error flash message" do
@@ -452,10 +452,10 @@ RSpec.describe Admin::Import::Jira::InstancesController do
   end
 
   describe "POST #test" do
-    let(:jira_client) { instance_double(JiraClient) }
+    let(:jira_client) { instance_double(Import::JiraClient) }
 
     before do
-      allow(JiraClient).to receive(:new).and_return(jira_client)
+      allow(Import::JiraClient).to receive(:new).and_return(jira_client)
     end
 
     context "when credentials are valid" do
@@ -476,9 +476,9 @@ RSpec.describe Admin::Import::Jira::InstancesController do
         expect(response.body).to include(I18n.t(:"admin.jira.test.success", server: "My Jira Server", version: "9.0.0"))
       end
 
-      it "creates JiraClient with provided credentials" do
+      it "creates Import::JiraClient with provided credentials" do
         post :test, params: { url: "https://jira.example.com", personal_access_token: "token" }, format: :turbo_stream
-        expect(JiraClient).to have_received(:new).with(url: "https://jira.example.com", personal_access_token: "token")
+        expect(Import::JiraClient).to have_received(:new).with(url: "https://jira.example.com", personal_access_token: "token")
       end
     end
 
@@ -493,7 +493,7 @@ RSpec.describe Admin::Import::Jira::InstancesController do
       it "uses the stored token when personal_access_token param is blank" do
         post :test, params: { id: jira_with_token.id, url: "https://jira.example.com", personal_access_token: "" },
              format: :turbo_stream
-        expect(JiraClient).to have_received(:new).with(url: "https://jira.example.com", personal_access_token: "stored_token")
+        expect(Import::JiraClient).to have_received(:new).with(url: "https://jira.example.com", personal_access_token: "stored_token")
       end
     end
 
@@ -504,7 +504,7 @@ RSpec.describe Admin::Import::Jira::InstancesController do
 
       it "uses fallback values" do
         post :test, params: { url: "https://jira.example.com", personal_access_token: "token" }, format: :turbo_stream
-        expect(response.body).to include(I18n.t(:"admin.jira.test.success", server: Jira.model_name, version: "?"))
+        expect(response.body).to include(I18n.t(:"admin.jira.test.success", server: Import::Jira.model_name, version: "?"))
       end
     end
 
@@ -545,9 +545,9 @@ RSpec.describe Admin::Import::Jira::InstancesController do
       end
     end
 
-    context "when JiraClient raises ConnectionError" do
+    context "when Import::JiraClient raises ConnectionError" do
       before do
-        allow(jira_client).to receive(:server_info).and_raise(JiraClient::ConnectionError.new("Connection refused"))
+        allow(jira_client).to receive(:server_info).and_raise(Import::JiraClient::ConnectionError.new("Connection refused"))
       end
 
       it "returns a connection error message" do
@@ -556,9 +556,9 @@ RSpec.describe Admin::Import::Jira::InstancesController do
       end
     end
 
-    context "when JiraClient raises ParseError" do
+    context "when Import::JiraClient raises ParseError" do
       before do
-        allow(jira_client).to receive(:server_info).and_raise(JiraClient::ParseError.new("Invalid JSON"))
+        allow(jira_client).to receive(:server_info).and_raise(Import::JiraClient::ParseError.new("Invalid JSON"))
       end
 
       it "returns a parse error message" do
@@ -567,9 +567,9 @@ RSpec.describe Admin::Import::Jira::InstancesController do
       end
     end
 
-    context "when JiraClient raises ApiError" do
+    context "when Import::JiraClient raises ApiError" do
       before do
-        allow(jira_client).to receive(:server_info).and_raise(JiraClient::ApiError.new("Unauthorized", status: 401))
+        allow(jira_client).to receive(:server_info).and_raise(Import::JiraClient::ApiError.new("Unauthorized", status: 401))
       end
 
       it "returns an API error message" do
@@ -597,11 +597,11 @@ RSpec.describe Admin::Import::Jira::InstancesController do
   end
 
   describe "PATCH #update with blank token" do
-    let(:update_service) { instance_double(Jiras::UpdateService) }
+    let(:update_service) { instance_double(Import::Jiras::UpdateService) }
     let(:service_result) { ServiceResult.success(result: jira) }
 
     before do
-      allow(Jiras::UpdateService).to receive(:new)
+      allow(Import::Jiras::UpdateService).to receive(:new)
         .with(user: admin, model: jira)
         .and_return(update_service)
       allow(update_service).to receive(:call).and_return(service_result)

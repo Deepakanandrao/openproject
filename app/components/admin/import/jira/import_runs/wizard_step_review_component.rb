@@ -42,7 +42,7 @@ module Admin::Import::Jira::ImportRuns
     end
 
     def imported_projects
-      @imported_projects ||= OpenProjectJiraReference
+      @imported_projects ||= Import::JiraOpenProjectReference
         .where(jira_import: model, op_entity_class: "Project", uses_existing: false)
     end
 
@@ -54,7 +54,7 @@ module Admin::Import::Jira::ImportRuns
     end
 
     def imported_work_packages
-      @imported_work_packages ||= OpenProjectJiraReference
+      @imported_work_packages ||= Import::JiraOpenProjectReference
         .where(jira_import: model, op_entity_class: "WorkPackage", uses_existing: false)
     end
 
@@ -66,7 +66,7 @@ module Admin::Import::Jira::ImportRuns
     end
 
     def imported_users
-      @imported_users ||= OpenProjectJiraReference
+      @imported_users ||= Import::JiraOpenProjectReference
         .where(jira_import: model, op_entity_class: "User", uses_existing: false)
     end
 
