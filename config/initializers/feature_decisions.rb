@@ -68,3 +68,7 @@ OpenProject::FeatureDecisions.add :jira_import,
 OpenProject::FeatureDecisions.add :scrum_projects,
                                   description: "Enables an overhauled version of the backlogs module to " \
                                                "support Scrum projects with a new sprint planning experience. "
+
+OpenProject::FeatureDecisions.add :user_working_times,
+                                  description: "Enables tracking of user working hours and non-working days.",
+                                  force_active: true

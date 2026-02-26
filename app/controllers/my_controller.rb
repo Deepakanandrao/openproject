@@ -100,11 +100,15 @@ class MyController < ApplicationController
   def reminders; end
 
   def working_hours
+    render_403 unless OpenProject::FeatureDecisions.user_working_times_active?
+
     @current_working_hours = @user.working_hours.current
     @working_hours = @user.working_hours
   end
 
   def non_working_days
+    render_403 unless OpenProject::FeatureDecisions.user_working_times_active?
+
     year = (params[:year].presence || Date.current.year).to_i
     @non_working_days = @user.non_working_day_entities_for_year(year)
   end

@@ -278,7 +278,8 @@ Redmine::MenuManager.map :my_menu do |menu|
   menu.push :working_hours,
             { controller: "/my", action: "working_hours" },
             caption: :label_schedule_and_availability,
-            icon: "calendar"
+            icon: "calendar",
+            if: ->(_) { OpenProject::FeatureDecisions.user_working_times_active? }
   menu.push :locale,
             { controller: "/my", action: "locale" },
             caption: :label_locale,

@@ -33,6 +33,8 @@ class Users::WorkingHoursController < ApplicationController
 
   layout "admin"
 
+  before :check_working_times_feature_flag_is_active
+
   authorization_checked! :index, :create, :update, :destroy
 
   before_action :find_user
