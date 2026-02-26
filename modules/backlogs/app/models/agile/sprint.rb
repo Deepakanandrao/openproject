@@ -69,7 +69,6 @@ module Agile
     # TODO: validate sharing is set to an allowed value, e.g. only admins may share systemwide (#71374, #71253)
     # TODO: implement sharing logic once it has been defined (#71374)
 
-
     def date_range_set?
       start_date? && finish_date?
     end
