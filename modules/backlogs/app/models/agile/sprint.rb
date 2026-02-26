@@ -76,6 +76,10 @@ module Agile
 
     validate :validate_only_one_active_sprint_per_project
 
+    include ::Scopes::Scoped
+
+    scopes :visible
+
     # TODO: validate sharing is set to an allowed value, e.g. only admins may share systemwide (#71374, #71253)
     # TODO: implement sharing logic once it has been defined (#71374)
 

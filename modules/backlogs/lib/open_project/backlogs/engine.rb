@@ -180,6 +180,14 @@ module OpenProject::Backlogs
       "#{root}/backlogs_types/#{id}"
     end
 
+    add_api_path :sprint do |id|
+      "#{root}/sprints/#{id}"
+    end
+
+    add_api_endpoint "API::V3::Root" do
+      mount ::API::V3::Sprints::SprintsAPI
+    end
+
     config.to_prepare do
       OpenProject::Backlogs::Hooks::LayoutHook
       OpenProject::Backlogs::Hooks::UserSettingsHook

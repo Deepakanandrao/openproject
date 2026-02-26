@@ -40,6 +40,10 @@ en:
         goal: "Sprint goal"
         name: "Sprint name"
         sharing: "Sharing"
+        statuses:
+          in_planning: "In planning"
+          active: "Active"
+          completed: "Completed"
       sprint:
         duration: "Sprint duration"
       work_package:
