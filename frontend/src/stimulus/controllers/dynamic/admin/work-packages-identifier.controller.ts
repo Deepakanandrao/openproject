@@ -33,18 +33,15 @@ import { Controller } from '@hotwired/stimulus';
 export default class WorkPackagesIdentifierController extends Controller {
   static values = {
     hasProblematicProjects: Boolean,
-    autofixLabel: String,
-    saveLabel: String,
   };
 
-  static targets = ['autofixSection', 'submitButton'];
+  static targets = ['autofixSection', 'saveButton', 'autofixButton'];
 
   declare readonly hasProblematicProjectsValue:boolean;
-  declare readonly autofixLabelValue:string;
-  declare readonly saveLabelValue:string;
 
   declare readonly autofixSectionTarget:HTMLElement;
-  declare readonly submitButtonTarget:HTMLButtonElement;
+  declare readonly saveButtonTarget:HTMLButtonElement;
+  declare readonly autofixButtonTarget:HTMLButtonElement;
 
   connect() {
     this.updateVisibility();
@@ -54,11 +51,16 @@ export default class WorkPackagesIdentifierController extends Controller {
     this.updateVisibility();
   }
 
+  openConfirmDialog() {
+    (document.getElementById('change-identifiers-dialog') as HTMLDialogElement)?.showModal();
+  }
+
   private updateVisibility() {
     const showAutofix = this.isAlphanumericSelected() && this.hasProblematicProjectsValue;
 
     this.autofixSectionTarget.hidden = !showAutofix;
-    this.submitButtonTarget.textContent = showAutofix ? this.autofixLabelValue : this.saveLabelValue;
+    this.saveButtonTarget.hidden     =  showAutofix;
+    this.autofixButtonTarget.hidden  = !showAutofix;
   }
 
   private isAlphanumericSelected():boolean {

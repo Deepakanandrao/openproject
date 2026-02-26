@@ -35,39 +35,35 @@
       [settings_primer_form_with — 680px wrapper, radio buttons only]
         <form id="wp-identifier-settings-form">...</form>
       [full-width autofix section — banner + table, Stimulus target]
-      [op-admin-settings-form-wrapper — 680px, submit button linked via HTML5 form attr]
+      [op-admin-settings-form-wrapper — 680px, submit buttons]
+        "Save"          — type: :submit, visible when autofix section is hidden
+        "Autofix & save" — type: :button, visible when autofix section is shown;
+                           opens the confirmation dialog via Stimulus before POSTing
+    [change-identifiers-dialog — DangerDialog, opened by Stimulus on confirm]
 
-  The submit button sits outside the <form> element but is linked back to it via
-  the HTML5 `form="wp-identifier-settings-form"` attribute, so clicking it still
-  submits the form. This allows the banner + table to be full-width while keeping
-  the radio buttons and submit button constrained to the standard 680px admin width.
+  Two separate buttons are rendered (each fully Primer-accessible) rather than
+  overwriting textContent on a single button, which would purge Primer's inner
+  accessibility spans/aria nodes.
 %>
 
 <%= tag.div(
       data: {
         controller: "admin--work-packages-identifier",
-        admin__work_packages_identifier_has_problematic_projects_value: has_problematic_projects?,
-        admin__work_packages_identifier_autofix_label_value: t("admin.settings.work_packages_identifier.button_autofix"),
-        admin__work_packages_identifier_save_label_value: t("button_save")
+        admin__work_packages_identifier_has_problematic_projects_value: has_problematic_projects?
       }
     ) do %>
   <%# Constrained-width form: radio buttons only (no submit inside the form element) %>
   <%=
-    settings_primer_form_with(
-      scope: :settings, action: :update, method: :patch,
-      html: { id: "wp-identifier-settings-form" }
-    ) do |f|
-      render_inline_settings_form(f) do |form|
-        form.radio_button_group(
-          name: :work_packages_identifier,
-          label: I18n.t("settings.work_packages.work_package_identifier"),
-          required: true,
+    render(
+      WorkPackages::Admin::Settings::IdentifierRadioFormComponent.new(
+        form_html: { id: "wp-identifier-settings-form" },
+        radio_button_options: {
           button_options: {
             data: { action: "change->admin--work-packages-identifier#handleChange" }
           }
-        )
-      end
-    end
+        }
+      )
+    )
   %>
 
   <%# Full-width autofix section — outside the 680px settings_primer_form_with wrapper %>
@@ -82,7 +78,9 @@
     %>
   <% end %>
 
-  <%# Submit button: constrained to 680px, linked to the form via HTML5 `form` attribute %>
+  <%# Submit buttons: constrained to 680px %>
+  <%# "Save" — direct submit, shown when there is no autofix section %>
+  <%# "Autofix and save" — opens dialog, shown when autofix section is visible %>
   <div class="op-admin-settings-form-wrapper">
     <%=
       render(
@@ -90,11 +88,26 @@
           scheme: :primary,
           type: :submit,
           form: "wp-identifier-settings-form",
-          data: { admin__work_packages_identifier_target: "submitButton" }
+          hidden: show_autofix_section?,
+          data: { admin__work_packages_identifier_target: "saveButton" }
         )
-      ) do
-        show_autofix_section? ? t("admin.settings.work_packages_identifier.button_autofix") : t("button_save")
-      end
+      ) { t("button_save") }
+    %>
+    <%=
+      render(
+        Primer::Beta::Button.new(
+          scheme: :primary,
+          type: :button,
+          hidden: !show_autofix_section?,
+          data: {
+            admin__work_packages_identifier_target: "autofixButton",
+            action: "click->admin--work-packages-identifier#openConfirmDialog"
+          }
+        )
+      ) { t("admin.settings.work_packages_identifier.button_autofix") }
     %>
   </div>
+
+  <%# Confirmation dialog — opened by Stimulus when "Autofix and save" is clicked %>
+  <%= render(WorkPackages::Admin::Settings::ChangeIdentifiersDialogComponent.new) %>
 <% end %>
