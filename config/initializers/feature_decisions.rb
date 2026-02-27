@@ -70,5 +70,4 @@ OpenProject::FeatureDecisions.add :scrum_projects,
                                                "support Scrum projects with a new sprint planning experience. "
 
 OpenProject::FeatureDecisions.add :user_working_times,
-                                  description: "Enables tracking of user working hours and non-working days.",
-                                  force_active: true
+                                  description: "Enables tracking of user working hours and non-working days."
