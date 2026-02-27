@@ -45,25 +45,6 @@ $op-backlogs-header--points-min-width-narrow: 2rem
 .op-backlogs-header--menu
   margin-left: var(--stack-gap-normal)
 
-.op-backlogs-collapsible
-  display: flex
-  flex-wrap: wrap
-  align-items: center
-  column-gap: var(--stack-gap-normal)
-  row-gap: var(--base-size-4)
-  flex: 1
-
-  &--title-line
-    display: flex
-    align-items: center
-    gap: var(--stack-gap-condensed)
-    flex: 1
-    min-width: fit-content
-
-  &--description
-    display: inline
-    white-space: nowrap
-
 .op-backlogs-story
   display: grid
   grid-template-columns: var(--control-xsmall-size) 1fr minmax($op-backlogs-header--points-min-width, max-content) auto
@@ -122,14 +103,6 @@ $op-backlogs-header--points-min-width-narrow: 2rem
 @container backlogsListsContainer (max-width: 654px)
   .op-backlogs-header
     grid-template-columns: 1fr minmax($op-backlogs-header--points-min-width-narrow, max-content) auto
-
-  .op-backlogs-collapsible
-    flex-direction: column
-    align-items: flex-start
-
-    &--description
-      [data-collapsed] &
-        display: none
 
   .op-backlogs-points-label
     display: none
