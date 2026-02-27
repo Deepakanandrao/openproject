@@ -94,7 +94,7 @@ RSpec.describe "Create", :js do
           page.fill_in "Start date", with: start_date_fmt
           page.fill_in "Finish date", with: finish_date_fmt
 
-          click_on "Save"
+          click_on "Create"
         end
 
         sprint = project.reload.sprints.last
@@ -122,7 +122,7 @@ RSpec.describe "Create", :js do
           within_dialog "New sprint" do
             page.fill_in "Sprint name", with: ""
 
-            click_on "Save"
+            click_on "Create"
 
             expect(page).to have_field "Sprint name", validation_error: "can't be blank"
             expect(page).to have_field "Start date", validation_error: "can't be blank"
@@ -138,7 +138,7 @@ RSpec.describe "Create", :js do
             # Shows duration as zero if finish date is before start date:
             expect(page).to have_field "Duration", with: "0 days", readonly: true
 
-            click_on "Save"
+            click_on "Create"
 
             expect(page).to have_field("Finish date",
                                        validation_error: "must be greater than or equal to #{start_date_fmt}")
