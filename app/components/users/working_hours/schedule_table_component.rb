@@ -33,9 +33,12 @@ module Users
     class ScheduleTableComponent < OpPrimer::BorderBoxTableComponent
       columns :start_date, :work_days, :work_hours, :availability_factor, :effective_work_hours
 
-      def initialize(rows:, variant:, **)
+      attr_reader :variant, :user
+
+      def initialize(rows:, variant:, user:, **)
         super(rows:, **)
         @variant = variant
+        @user = user
       end
 
       def has_actions?
@@ -65,14 +68,16 @@ module Users
       end
 
       def action_row_header_content
-        return unless @variant == :future
+        return unless variant == :future
+        return unless UserWorkingHours::CreateContract.can_create?(user: User.current, target_user: user)
 
         render(Primer::Beta::IconButton.new(
                  icon: :plus,
                  scheme: :invisible,
                  tag: :a,
-                 href: "#",
-                 "aria-label": I18n.t("users.working_hours.future_schedules.add_button")
+                 href: new_user_working_hour_path(user),
+                 data: { turbo: true, controller: "async-dialog" },
+                 "aria-label": I18n.t("users.working_hours.future.add_button")
                ))
       end
 
@@ -89,9 +94,11 @@ module Users
           component.with_visual_icon(icon: :calendar, size: :medium)
           component.with_heading(tag: :h2) { blank_title }
           component.with_description { blank_description }
-          if @variant == :future
-            component.with_primary_action(href: "#") do
-              I18n.t("users.working_hours.future_schedules.add_button")
+          if variant == :future && UserWorkingHours::CreateContract.can_create?(user: User.current, target_user: user)
+            component.with_primary_action(href: new_user_working_hour_path(user),
+                                          data: { turbo: true,
+                                                  controller: "async-dialog" }) do
+              I18n.t("users.working_hours.future.add_button")
             end
           end
         end

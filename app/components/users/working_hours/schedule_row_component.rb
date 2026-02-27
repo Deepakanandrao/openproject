@@ -65,17 +65,44 @@ module Users
 
       def action_menu
         render(Primer::Alpha::ActionMenu.new) do |menu|
-          menu.with_show_button(icon: "kebab-horizontal",
-                                "aria-label": t(:label_more),
-                                scheme: :invisible)
+          menu.with_show_button(icon: "kebab-horizontal", "aria-label": t(:label_more), scheme: :invisible)
+          add_edit_item(menu) if can_update?
+          add_delete_item(menu) if can_delete?
+        end
+      end
 
-          menu.with_item(label: t(:button_edit), href: "#", tag: :a) do |item|
-            item.with_leading_visual_icon(icon: :pencil)
-          end
+      private
 
-          menu.with_item(label: t(:button_delete), href: "#", tag: :a, scheme: :danger) do |item|
-            item.with_leading_visual_icon(icon: :trash)
-          end
+      def can_update?
+        UserWorkingHours::UpdateContract.can_update?(user: User.current, working_hours:)
+      end
+
+      def can_delete?
+        UserWorkingHours::DeleteContract.can_delete?(user: User.current, target_user: table.user)
+      end
+
+      def add_edit_item(menu)
+        menu.with_item(label: t(:button_edit),
+                       href: edit_user_working_hour_path(table.user, working_hours),
+                       tag: :a,
+                       content_arguments: { data: { controller: "async-dialog" } }) do |item|
+          item.with_leading_visual_icon(icon: :pencil)
+        end
+      end
+
+      def add_delete_item(menu)
+        menu.with_item(label: t(:button_delete),
+                       href: user_working_hour_path(table.user, working_hours),
+                       tag: :a,
+                       scheme: :danger,
+                       content_arguments: {
+                         data: {
+                           "turbo-method": :delete,
+                           "turbo-stream": true,
+                           "turbo-confirm": t("users.working_hours.destroy.confirm")
+                         }
+                       }) do |item|
+          item.with_leading_visual_icon(icon: :trash)
         end
       end
     end

@@ -33,7 +33,7 @@ class Users::NonWorkingDaysController < ApplicationController
 
   layout "admin"
 
-  before :check_working_times_feature_flag_is_active
+  before_action :check_working_times_feature_flag_is_active
 
   authorization_checked! :index, :create, :destroy
 

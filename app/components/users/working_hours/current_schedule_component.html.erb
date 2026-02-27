@@ -28,50 +28,56 @@ See COPYRIGHT and LICENSE files for more details.
 ++#%>
 
 <%= render(Primer::Box.new(border: true, border_radius: 3, bg: :accent, p: 3)) do %>
-  <% if working_hours.nil? %>
-    <%= render(Primer::Beta::Text.new(color: :subtle)) do %>
-      <%= t("users.working_hours.current_schedule.no_schedule") %>
+  <%= render(Primer::Box.new(display: :flex, justify_content: :space_between, align_items: :center, mb: 3)) do %>
+    <%= render(Primer::Beta::Heading.new(tag: :h3)) do %>
+      <%= t("users.working_hours.current_schedule.title") %>
     <% end %>
-  <% else %>
-    <%= render(Primer::Box.new(display: :flex, justify_content: :space_between, align_items: :center, mb: 3)) do %>
-      <%= render(Primer::Beta::Heading.new(tag: :h3)) do %>
-        <%= t("users.working_hours.current_schedule.title") %>
-      <% end %>
+    <% if editable? %>
+      <%= render(
+            Primer::Beta::IconButton.new(
+              icon: :pencil,
+              tag: :a,
+              href: create_or_edit_path,
+              "aria-label": t("button_edit"),
+              data: { controller: "async-dialog" }
+            )
+          ) %>
+    <% else %>
       <%= render(Primer::Beta::IconButton.new(icon: :pencil, disabled: true, "aria-label": t("button_edit"))) %>
     <% end %>
+  <% end %>
 
-    <%= render(Primer::Box.new(display: :flex, style: "gap: 12px; flex-wrap: wrap;")) do %>
-      <%= render(
-            Users::WorkingHours::StatCardComponent.new(
-              label: t("users.working_hours.current_schedule.work_days"),
-              value: working_day_count,
-              subtitle: working_days_label
-            )
-          ) %>
+  <%= render(Primer::Box.new(display: :flex, style: "gap: 12px; flex-wrap: wrap;")) do %>
+    <%= render(
+          Users::WorkingHours::StatCardComponent.new(
+            label: t("users.working_hours.current_schedule.work_days"),
+            value: work_days_value,
+            subtitle: work_days_subtitle
+          )
+        ) %>
 
-      <%= render(
-            Users::WorkingHours::StatCardComponent.new(
-              label: t("users.working_hours.current_schedule.work_hours"),
-              value: weekly_hours_label,
-              subtitle: working_hours.working_days_summary
-            )
-          ) %>
+    <%= render(
+          Users::WorkingHours::StatCardComponent.new(
+            label: t("users.working_hours.current_schedule.work_hours"),
+            value: weekly_hours_value,
+            subtitle: weekly_hours_subtitle
+          )
+        ) %>
 
-      <%= render(
-            Users::WorkingHours::StatCardComponent.new(
-              label: t("users.working_hours.current_schedule.availability_factor"),
-              value: availability_label,
-              subtitle: t("users.working_hours.current_schedule.availability_subtitle")
-            )
-          ) %>
+    <%= render(
+          Users::WorkingHours::StatCardComponent.new(
+            label: t("users.working_hours.current_schedule.availability_factor"),
+            value: availability_value,
+            subtitle: t("users.working_hours.current_schedule.availability_subtitle")
+          )
+        ) %>
 
-      <%= render(
-            Users::WorkingHours::StatCardComponent.new(
-              label: t("users.working_hours.current_schedule.effective_hours"),
-              value: effective_hours_label,
-              subtitle: t("users.working_hours.current_schedule.effective_subtitle")
-            )
-          ) %>
-    <% end %>
+    <%= render(
+          Users::WorkingHours::StatCardComponent.new(
+            label: t("users.working_hours.current_schedule.effective_hours"),
+            value: effective_hours_value,
+            subtitle: t("users.working_hours.current_schedule.effective_subtitle")
+          )
+        ) %>
   <% end %>
 <% end %>

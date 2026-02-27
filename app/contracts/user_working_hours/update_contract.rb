@@ -29,18 +29,24 @@
 #++
 
 class UserWorkingHours::UpdateContract < UserWorkingHours::BaseContract
+  attribute :user_id, writable: false
+
+  def self.can_update?(user:, working_hours:)
+    can_manage?(user:, target_user: working_hours.user) && working_hours.valid_from >= Date.current
+  end
+
   validate :validate_valid_from_in_future
 
   private
 
-  # Records that are already in effect (valid_from in the past) cannot be edited.
+  # Records that started in the past (valid_from before today) cannot be edited.
   # Use valid_from_was to check the original value before any changes in this request.
   # Falls back to the current valid_from for new/unsaved records (e.g., in tests).
   def validate_valid_from_in_future
     original_valid_from = model.valid_from_was.presence || model.valid_from
     return if original_valid_from.nil?
 
-    unless original_valid_from > Date.current
+    unless original_valid_from >= Date.current
       errors.add :base, :not_editable
     end
   end

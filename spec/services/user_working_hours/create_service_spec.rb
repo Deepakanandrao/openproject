@@ -68,6 +68,15 @@ RSpec.describe UserWorkingHours::CreateService do
       expect(service_call.result.valid_from).to eq(Date.tomorrow)
       expect(service_call.result.monday_hours).to eq(8)
     end
+
+    context "when valid_from is not provided" do
+      let(:params) { super().except(:valid_from) }
+
+      it "defaults valid_from to today" do
+        expect(service_call).to be_success
+        expect(service_call.result.valid_from).to eq(Date.current)
+      end
+    end
   end
 
   context "when the current user has manage_own_working_times for their own record" do

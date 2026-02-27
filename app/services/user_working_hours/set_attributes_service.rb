@@ -29,4 +29,11 @@
 #++
 
 class UserWorkingHours::SetAttributesService < BaseServices::SetAttributes
+  private
+
+  def set_default_attributes(_params)
+    model.change_by_system do
+      model.valid_from = Date.current if model.valid_from.nil?
+    end
+  end
 end

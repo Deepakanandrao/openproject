@@ -1115,8 +1115,8 @@ en:
         availability_subtitle: "Dedicated to project work"
         effective_hours: "Effective work hours"
         effective_subtitle: "Per week"
-        no_schedule: "No working schedule configured yet"
-      future_schedules:
+        not_set: "Not set"
+      future:
         title: "Future schedules"
         description: "Plan working schedule changes ahead of time. Once the date arrives your working schedules will be updated automatically."
         add_button: "Add future schedule"
@@ -1127,6 +1127,26 @@ en:
         description: "View your past work schedule changes and restore previous working times"
         blank_title: "No schedule history yet"
         blank_description: "Past schedule changes will appear here"
+      destroy:
+        confirm: "Are you sure you want to delete this working schedule?"
+      form:
+        title: "Plan a future work schedule"
+        title_current: "Edit current work schedule"
+        start_date: "From"
+        work_days: "Work days"
+        working_hours_label: "Working hours"
+        hours_mode_label: "Hours mode"
+        same_hours_mode: "Same hours per day"
+        individual_hours_mode: "Individual hours per day"
+        work_hours: "Work hours"
+        hours_per_day: "Hours per day"
+        per_day: "per day"
+        per_week: "per week"
+        total_work_hours: "Total work hours"
+        availability_section: "Availability"
+        availability_description: "Adjust the percentage of time this user can dedicate to project work."
+        availability_factor: "Availability factor"
+        total_available_hours: "Total available work hours"
       table:
         mobile_title: "Working schedules"
         start_date: "Start date"

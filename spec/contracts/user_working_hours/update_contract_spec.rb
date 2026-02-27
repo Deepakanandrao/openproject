@@ -55,13 +55,23 @@ RSpec.describe UserWorkingHours::UpdateContract do
   context "when valid_from is today" do
     let(:valid_from) { Date.current }
 
-    it_behaves_like "contract is invalid", base: :not_editable
+    it_behaves_like "contract is valid"
   end
 
   context "when valid_from is in the past" do
     let(:valid_from) { Date.yesterday }
 
     it_behaves_like "contract is invalid", base: :not_editable
+  end
+
+  context "when valid_from was changed from today to future" do
+    let(:valid_from) { Date.current }
+
+    before do
+      working_hours.valid_from = Date.tomorrow
+    end
+
+    it_behaves_like "contract is valid"
   end
 
   context "when valid_from was changed from past to future" do
@@ -107,6 +117,14 @@ RSpec.describe UserWorkingHours::UpdateContract do
     end
 
     it_behaves_like "contract is invalid", base: :error_unauthorized
+  end
+
+  context "when the user is changed" do
+    before do
+      working_hours.user = build_stubbed(:user)
+    end
+
+    it_behaves_like "contract is invalid", user_id: :error_readonly
   end
 
   include_examples "contract reuses the model errors"

@@ -1,0 +1,202 @@
+<%#-- copyright
+OpenProject is an open source project management software.
+Copyright (C) the OpenProject GmbH
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License version 3.
+
+OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
+Copyright (C) 2006-2013 Jean-Philippe Lang
+Copyright (C) 2010-2013 the ChiliProject Team
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+See COPYRIGHT and LICENSE files for more details.
+
+++#%>
+
+<%= component_wrapper do %>
+  <%= form_with(
+        scope: :working_hours,
+        url: form_url,
+        method: form_method,
+        id: "working-hours-form",
+        data: {
+          controller: "users--working-hours-form",
+          "users--working-hours-form-hours-mode-value": all_same_hours? ? "same" : "individual"
+        }
+      ) do |f| %>
+
+    <% if working_hours.errors.any? %>
+      <%= render(Primer::Alpha::Banner.new(mb: 3, icon: :stop, scheme: :danger)) do %>
+        <%= working_hours.errors.full_messages.join(", ") %>
+      <% end %>
+    <% end %>
+
+    <%# Start date %>
+    <% if show_valid_from %>
+      <div class="FormControl mb-4">
+        <%= f.label :valid_from, t("users.working_hours.form.start_date"), class: "FormControl-label" %>
+        <%= f.date_field :valid_from, class: "FormControl-input" %>
+      </div>
+
+      <%= render(OpenProject::Common::DividerComponent.new(mb: 4)) %>
+    <% end %>
+
+    <%# Work days — horizontal checkboxes, rendered ABOVE the radio buttons %>
+    <div class="FormControl mb-4">
+      <span class="FormControl-label"><%= t("users.working_hours.form.work_days") %></span>
+      <div class="d-flex flex-wrap gap-4 mt-2">
+        <% UserWorkingHours::DAYS.each do |day| %>
+          <%# Hidden fallback — submits 0 when the number input for this day is disabled %>
+          <input type="hidden" name="working_hours[<%= day %>_hours]" value="0">
+
+          <label class="d-flex flex-column flex-items-center gap-1 cursor-pointer">
+            <input type="checkbox"
+                   id="day_enabled_<%= day %>"
+                   data-day="<%= day %>"
+                   data-users--working-hours-form-target="dayCheckbox"
+                   data-action="users--working-hours-form#dayToggled"
+                   <%= "checked" if day_enabled?(day) %>>
+            <span class="text-small color-fg-muted"><%= full_day_name(day).first(3) %></span>
+          </label>
+        <% end %>
+      </div>
+    </div>
+
+    <%# Working hours section %>
+    <%= render(Primer::Beta::Heading.new(tag: :h3, font_size: 4, mb: 3)) do %>
+      <%= t("users.working_hours.form.working_hours_label") %>
+    <% end %>
+
+    <%# Hours mode selection %>
+    <%= render(
+          Primer::Alpha::RadioButtonGroup.new(
+            name: "hours_mode",
+            label: t("users.working_hours.form.hours_mode_label"),
+            visually_hide_label: true,
+            mb: 3
+          )
+        ) do |group| %>
+      <% group.radio_button(
+           label: t("users.working_hours.form.same_hours_mode"),
+           value: "same",
+           checked: all_same_hours?,
+           data: { action: "users--working-hours-form#hoursModeChanged" }
+         ) %>
+      <% group.radio_button(
+           label: t("users.working_hours.form.individual_hours_mode"),
+           value: "individual",
+           checked: !all_same_hours?,
+           data: { action: "users--working-hours-form#hoursModeChanged" }
+         ) %>
+    <% end %>
+
+    <%# Shared hours input (visible in same hours mode) %>
+    <div class="FormControl mb-3"
+         data-users--working-hours-form-target="sameHoursSection"
+         <%= tag.attributes(hidden: !all_same_hours?) %>>
+      <%= label_tag "shared_hours", t("users.working_hours.form.work_hours"), class: "FormControl-label" %>
+      <div class="d-flex flex-items-center gap-2">
+        <input type="text"
+               id="shared_hours"
+               class="FormControl-input flex-auto"
+               autocomplete="off"
+               value="<%= shared_hours %>"
+               data-users--working-hours-form-target="sharedHoursInput"
+               data-action="input->users--working-hours-form#hoursChanged blur->users--working-hours-form#hoursFormatted">
+        <span class="color-fg-muted f5 text-no-wrap"><%= t("users.working_hours.form.per_day") %></span>
+      </div>
+    </div>
+
+    <%# Individual per-day inputs (visible in individual hours mode) %>
+    <div class="mb-3"
+         data-users--working-hours-form-target="individualSection"
+         <%= tag.attributes(hidden: all_same_hours?) %>>
+      <% UserWorkingHours::DAYS.each do |day| %>
+        <div class="FormControl mb-2"
+             data-users--working-hours-form-target="dayHoursSection"
+             data-day="<%= day %>"
+             <%= tag.attributes(hidden: !day_enabled?(day)) %>>
+          <%= label_tag "working_hours_#{day}_hours", full_day_name(day), class: "FormControl-label" %>
+          <div class="d-flex flex-items-center gap-2">
+            <input type="text"
+                   id="working_hours_<%= day %>_hours"
+                   name="working_hours[<%= day %>_hours]"
+                   class="FormControl-input flex-auto"
+                   autocomplete="off"
+                   value="<%= day_hours(day) %>"
+                   data-day="<%= day %>"
+                   data-users--working-hours-form-target="dayHoursInput"
+                   data-action="input->users--working-hours-form#hoursChanged blur->users--working-hours-form#hoursFormatted"
+                   <%= "disabled" unless day_enabled?(day) %>>
+            <span class="color-fg-muted f5 text-no-wrap"><%= t("users.working_hours.form.per_day") %></span>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <%# Total work hours (calculated, read-only) %>
+    <div class="FormControl mb-4">
+      <%= label_tag "total_work_hours", t("users.working_hours.form.total_work_hours"), class: "FormControl-label" %>
+      <div class="d-flex flex-items-center gap-2">
+        <input type="text"
+               id="total_work_hours"
+               class="FormControl-input flex-auto"
+               autocomplete="off"
+               disabled
+               data-users--working-hours-form-target="totalWorkHoursDisplay">
+        <span class="color-fg-muted f5 text-no-wrap"><%= t("users.working_hours.form.per_week") %></span>
+      </div>
+    </div>
+
+    <%= render(OpenProject::Common::DividerComponent.new(mb: 4)) %>
+
+    <%# Availability section %>
+    <%= render(Primer::Beta::Heading.new(tag: :h3, font_size: 4, mb: 1)) do %>
+      <%= t("users.working_hours.form.availability_section") %>
+    <% end %>
+    <p class="color-fg-muted f6 mb-3"><%= t("users.working_hours.form.availability_description") %></p>
+
+    <div class="FormControl mb-3">
+      <%= f.label :availability_factor, t("users.working_hours.form.availability_factor"), class: "FormControl-label" %>
+      <div class="d-flex flex-items-center gap-2">
+        <input type="number"
+               name="working_hours[availability_factor]"
+               class="FormControl-input flex-auto"
+               autocomplete="off"
+               min="0" max="100" step="1"
+               value="<%= working_hours.availability_factor %>"
+               data-users--working-hours-form-target="availabilityFactorInput"
+               data-action="input->users--working-hours-form#availabilityChanged">
+        <span class="color-fg-muted f5">%</span>
+      </div>
+    </div>
+
+    <div class="FormControl">
+      <%= label_tag "total_available_hours", t("users.working_hours.form.total_available_hours"), class: "FormControl-label" %>
+      <div class="d-flex flex-items-center gap-2">
+        <input type="text"
+               id="total_available_hours"
+               class="FormControl-input flex-auto"
+               autocomplete="off"
+               disabled
+               data-users--working-hours-form-target="totalAvailableHoursDisplay">
+        <span class="color-fg-muted f5 text-no-wrap"><%= t("users.working_hours.form.per_week") %></span>
+      </div>
+    </div>
+
+  <% end %>
+<% end %>

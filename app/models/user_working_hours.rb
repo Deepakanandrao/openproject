@@ -45,8 +45,11 @@ class UserWorkingHours < ApplicationRecord
 
   scope :for_user, ->(user) { where(user:) }
 
-  scope :past, -> { where(valid_from: ...Date.current).order(valid_from: :desc) }
-  scope :upcoming, -> { where(valid_from: Date.current..).order(valid_from: :asc) }
+  scope :past, ->(date = Date.current) { where(valid_from: ..date).order(valid_from: :desc) }
+  scope :upcoming, ->(date = Date.current) { where(valid_from: date..).order(valid_from: :asc) }
+
+  scope :upcoming_for_display, -> { upcoming(Date.current + 1).order(valid_from: :asc) }
+  scope :past_for_display, -> { past(Date.current).order(valid_from: :desc) }
 
   def self.valid_for_date(date)
     where(valid_from: ..date).order(valid_from: :desc).first

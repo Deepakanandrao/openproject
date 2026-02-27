@@ -29,4 +29,7 @@
 #++
 
 class UserWorkingHours::CreateContract < UserWorkingHours::BaseContract
+  def self.can_create?(user:, target_user:)
+    can_manage?(user:, target_user:)
+  end
 end

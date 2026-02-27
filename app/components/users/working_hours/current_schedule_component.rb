@@ -31,32 +31,55 @@
 module Users
   module WorkingHours
     class CurrentScheduleComponent < ApplicationComponent
-      def initialize(working_hours:, **)
+      attr_reader :working_hours, :user
+
+      def initialize(working_hours:, user:, **)
         super(working_hours, **)
         @working_hours = working_hours
+        @user = user
       end
 
-      def working_hours
-        @working_hours
+      def editable?
+        if working_hours && working_hours.valid_from == Date.current
+          UserWorkingHours::UpdateContract.can_update?(user: User.current, working_hours:)
+        else
+          UserWorkingHours::CreateContract.can_create?(user: User.current, target_user: user)
+        end
       end
 
-      def working_day_count
-        UserWorkingHours::DAYS.count { |day| working_hours.public_send(day) > 0 }
+      def work_days_value
+        return "–" unless working_hours
+
+        UserWorkingHours::DAYS.count { |day| working_hours.public_send(day) > 0 }.to_s
       end
 
-      def working_days_label
+      def work_days_subtitle
+        return t("users.working_hours.current_schedule.not_set") unless working_hours
+
         working_hours.working_day_ranges
       end
 
-      def availability_label
-        "#{working_hours.availability_factor}%"
-      end
+      def weekly_hours_value
+        return "–" unless working_hours
 
-      def weekly_hours_label
         format_hours(working_hours.weekly_working_hours)
       end
 
-      def effective_hours_label
+      def weekly_hours_subtitle
+        return t("users.working_hours.current_schedule.not_set") unless working_hours
+
+        working_hours.working_days_summary
+      end
+
+      def availability_value
+        return "–" unless working_hours
+
+        "#{working_hours.availability_factor}%"
+      end
+
+      def effective_hours_value
+        return "–" unless working_hours
+
         format_hours(working_hours.effective_weekly_working_hours)
       end
 
@@ -68,6 +91,14 @@ module Users
                                                   strip_insignificant_zeros: true,
                                                   separator: I18n.t("number.format.separator"))
         "#{formatted}h"
+      end
+
+      def create_or_edit_path
+        if working_hours && working_hours.valid_from == Date.current
+          edit_user_working_hour_path(user, working_hours, current: true)
+        else
+          new_user_working_hour_path(user, current: true)
+        end
       end
     end
   end

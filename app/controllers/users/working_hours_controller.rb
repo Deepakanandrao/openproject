@@ -30,22 +30,49 @@
 
 class Users::WorkingHoursController < ApplicationController
   include WorkingTimesAuthorization
+  include OpTurbo::ComponentStream
 
   layout "admin"
 
-  before :check_working_times_feature_flag_is_active
+  before_action :check_working_times_feature_flag_is_active
 
-  authorization_checked! :index, :create, :update, :destroy
+  authorization_checked! :index, :new, :edit, :create, :update, :destroy
 
   before_action :find_user
   before_action :authorize_manage_working_times
-  before_action :find_working_hours, only: %i[update destroy]
+  before_action :find_working_hours, only: %i[edit update destroy]
+  before_action :authorize_working_hours_create, only: %i[new create]
+  before_action :authorize_working_hours_edit, only: %i[edit update]
+  before_action :authorize_working_hours_delete, only: %i[destroy]
 
   def index
-    @working_hours = @user.working_hours.order(valid_from: :desc)
     @current_working_hours = @user.working_hours.current
 
+    @future_working_hours = @user.working_hours.upcoming_for_display
+
+    @past_working_hours = if @current_working_hours
+                            @user.working_hours.past_for_display
+                          else
+                            UserWorkingHours.none
+                          end
+
     render "users/edit"
+  end
+
+  def new
+    @user_working_hours = build_working_hours_from_system_settings(@user)
+
+    respond_with_dialog(
+      Users::WorkingHours::DialogComponent.new(user: @user, working_hours: @user_working_hours,
+                                               show_valid_from: !current_context?)
+    )
+  end
+
+  def edit
+    respond_with_dialog(
+      Users::WorkingHours::DialogComponent.new(user: @user, working_hours: @user_working_hours,
+                                               show_valid_from: !current_context?)
+    )
   end
 
   def create
@@ -54,12 +81,17 @@ class Users::WorkingHoursController < ApplicationController
              .call(working_hours_params.merge(user: @user))
 
     if call.success?
-      flash[:notice] = I18n.t(:notice_successful_create)
+      close_dialog_via_turbo_stream(Users::WorkingHours::DialogComponent::DIALOG_ID)
+      reload_page_via_turbo_stream
     else
-      flash[:error] = call.errors.full_messages.join(", ")
+      update_via_turbo_stream(
+        component: Users::WorkingHours::FormComponent.new(user: @user, working_hours: call.result,
+                                                          show_valid_from: !current_context?),
+        status: :unprocessable_entity
+      )
     end
 
-    redirect_to user_working_hours_index_path(@user)
+    respond_with_turbo_streams
   end
 
   def update
@@ -68,12 +100,17 @@ class Users::WorkingHoursController < ApplicationController
              .call(working_hours_params)
 
     if call.success?
-      flash[:notice] = I18n.t(:notice_successful_update)
+      close_dialog_via_turbo_stream(Users::WorkingHours::DialogComponent::DIALOG_ID)
+      reload_page_via_turbo_stream
     else
-      flash[:error] = call.errors.full_messages.join(", ")
+      update_via_turbo_stream(
+        component: Users::WorkingHours::FormComponent.new(user: @user, working_hours: call.result,
+                                                          show_valid_from: !current_context?),
+        status: :unprocessable_entity
+      )
     end
 
-    redirect_to user_working_hours_index_path(@user)
+    respond_with_turbo_streams
   end
 
   def destroy
@@ -82,15 +119,31 @@ class Users::WorkingHoursController < ApplicationController
              .call
 
     if call.success?
-      flash[:notice] = I18n.t(:notice_successful_delete)
+      reload_page_via_turbo_stream
     else
-      flash[:error] = call.errors.full_messages.join(", ")
+      render_error_flash_message_via_turbo_stream(message: call.errors.full_messages.join(", "))
     end
 
-    redirect_to user_working_hours_index_path(@user)
+    respond_with_turbo_streams
   end
 
   private
+
+  def current_context?
+    params[:current] == "true"
+  end
+
+  def authorize_working_hours_create
+    deny_access unless UserWorkingHours::CreateContract.can_create?(user: current_user, target_user: @user)
+  end
+
+  def authorize_working_hours_edit
+    deny_access unless UserWorkingHours::UpdateContract.can_update?(user: current_user, working_hours: @user_working_hours)
+  end
+
+  def authorize_working_hours_delete
+    deny_access unless UserWorkingHours::DeleteContract.can_delete?(user: current_user, target_user: @user)
+  end
 
   def find_user
     @user = User.visible.find(params[:user_id])
@@ -115,6 +168,22 @@ class Users::WorkingHoursController < ApplicationController
                         saturday_hours
                         sunday_hours
                         availability_factor]
+    )
+  end
+
+  def build_working_hours_from_system_settings(user)
+    working_day_names = Setting.working_day_names
+    hours_per_day     = Setting.hours_per_day
+
+    day_attrs = UserWorkingHours::DAYS.to_h do |day|
+      ["#{day}_hours", working_day_names.include?(day) ? hours_per_day : 0]
+    end
+
+    UserWorkingHours.new(
+      user: user,
+      availability_factor: 100,
+      valid_from: Date.current,
+      **day_attrs
     )
   end
 end

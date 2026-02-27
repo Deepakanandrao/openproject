@@ -28,13 +28,30 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class UserWorkingHours::DeleteContract < DeleteContract
-  delete_permission -> {
-    user.allowed_globally?(:manage_working_times) ||
-      (model.user_id == user.id && user.allowed_globally?(:manage_own_working_times))
-  }
+module Users
+  module WorkingHours
+    class DialogComponent < ApplicationComponent
+      include OpTurbo::Streamable
+      include OpPrimer::ComponentHelpers
 
-  def self.can_delete?(user:, target_user:)
-    UserWorkingHours::BaseContract.can_manage?(user:, target_user:)
+      DIALOG_ID = "working-hours-dialog"
+
+      attr_reader :user, :working_hours, :show_valid_from
+
+      def initialize(user:, working_hours:, show_valid_from: true, **)
+        super(nil, **)
+        @user = user
+        @working_hours = working_hours
+        @show_valid_from = show_valid_from
+      end
+
+      def title
+        if show_valid_from
+          t("users.working_hours.form.title")
+        else
+          t("users.working_hours.form.title_current")
+        end
+      end
+    end
   end
 end

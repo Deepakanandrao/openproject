@@ -104,14 +104,10 @@ class MyController < ApplicationController
 
     @current_working_hours = @user.working_hours.current
 
-    @future_working_hours = @user.working_hours
-                                  .where(valid_from: (Date.current + 1)..)
-                                  .order(valid_from: :asc)
+    @future_working_hours = @user.working_hours.upcoming_for_display
 
     @past_working_hours = if @current_working_hours
-                            @user.working_hours
-                                 .where(valid_from: ...@current_working_hours.valid_from)
-                                 .order(valid_from: :desc)
+                            @user.working_hours.past_for_display
                           else
                             UserWorkingHours.none
                           end

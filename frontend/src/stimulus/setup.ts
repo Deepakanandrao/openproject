@@ -25,6 +25,7 @@ import StemsController from './controllers/dynamic/work-packages/activities-tab/
 import EditorController from './controllers/dynamic/work-packages/activities-tab/editor.controller';
 import LazyPageController from './controllers/dynamic/work-packages/activities-tab/lazy-page.controller';
 import EditablePageHeaderTitleController from './controllers/dynamic/editable-page-header-title.controller';
+import WorkingHoursFormController from './controllers/dynamic/users/working-hours-form.controller';
 
 import AutoSubmit from '@stimulus-components/auto-submit';
 import RevealController from '@stimulus-components/reveal';
@@ -82,6 +83,7 @@ OpenProjectStimulusApplication.preregister('external-links', ExternalLinksContro
 OpenProjectStimulusApplication.preregister('highlight-target-element', HighlightTargetElementController);
 OpenProjectStimulusApplication.preregister('select-autosize', SelectAutosizeController);
 OpenProjectStimulusApplication.preregister('editable-page-header-title', EditablePageHeaderTitleController);
+OpenProjectStimulusApplication.preregister('users--working-hours-form', WorkingHoursFormController);
 OpenProjectStimulusApplication.preregister('check-all', CheckAllController);
 OpenProjectStimulusApplication.preregister('checkable', CheckableController);
 OpenProjectStimulusApplication.preregister('truncation', TruncationController);

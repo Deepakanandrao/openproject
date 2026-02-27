@@ -920,7 +920,7 @@ Rails.application.routes.draw do
 
   resources :users, constraints: { id: /(\d+|me)/ }, except: :edit do
     resources :memberships, controller: "users/memberships", only: %i[update create destroy]
-    resources :working_hours, controller: "users/working_hours", only: %i[index create update destroy]
+    resources :working_hours, controller: "users/working_hours"
     resources :non_working_days, controller: "users/non_working_days", only: %i[index create destroy]
 
     collection do
