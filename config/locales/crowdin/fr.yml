@@ -2675,6 +2675,7 @@ fr:
       gantt_pdf_export: Exportation PDF de diagramme de Gantt
       ldap_groups: Synchronisation des utilisateurs LDAP et des groupes
       mcp_server: Serveur MCP
+      meeting_templates: Reusable meeting templates
       nextcloud_sso: Authentification unique pour le stockage Nextcloud
       one_drive_sharepoint_file_storage: Stockage de fichiers OneDrive/SharePoint
       placeholder_users: Utilisateurs fictifs
@@ -2753,6 +2754,8 @@ fr:
         description: "Les actions personnalisées sont des raccourcis en un clic vers un ensemble d'actions prédéfinies que vous pouvez rendre disponibles sur certains lots de travaux en fonction de l'état, du rôle, du type ou du projet."
       mcp_server:
         description: "Intégrez des agents d'intelligence artificielle à votre instance OpenProject grâce à MCP."
+      meeting_templates:
+        description: "Define meeting templates with a set agenda structure and save time by reusing them when creating new meetings."
       nextcloud_sso:
         title: "Authentification unique pour le stockage Nextcloud"
         description: "Activez l'authentification transparente et sécurisée pour votre stockage Nextcloud avec l'authentification unique. Simplifiez la gestion des accès et augmentez la commodité des utilisateurs."

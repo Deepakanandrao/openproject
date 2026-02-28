@@ -2622,6 +2622,7 @@ ko:
       gantt_pdf_export: Gantt PDF 내보내기
       ldap_groups: LDAP 사용자 및 그룹 동기화
       mcp_server: MCP 서버
+      meeting_templates: Reusable meeting templates
       nextcloud_sso: Nextcloud 저장소용 Single Sign-On
       one_drive_sharepoint_file_storage: OneDrive/SharePoint 파일 저장소
       placeholder_users: 플레이스홀더 사용자
@@ -2700,6 +2701,8 @@ ko:
         description: "사용자 지정 작업은 상태, 역할, 유형 또는 프로젝트를 기반으로 특정 작업 패키지에서 사용할 수 있도록 미리 정의된 작업 세트에 대한 원클릭 바로 가기입니다."
       mcp_server:
         description: "MCP를 통해 AI 에이전트를 OpenProject 인스턴스와 통합합니다."
+      meeting_templates:
+        description: "Define meeting templates with a set agenda structure and save time by reusing them when creating new meetings."
       nextcloud_sso:
         title: "Nextcloud 저장소용 Single Sign-On"
         description: "Single Sign-On을 사용하여 Nextcloud 저장소에 대한 원활하고 안전한 인증을 활성화합니다. 액세스 관리를 간소화하고 사용자 편의성을 개선합니다."

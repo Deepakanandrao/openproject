@@ -2620,6 +2620,7 @@ vi:
       gantt_pdf_export: Xuất PDF Gantt
       ldap_groups: Đồng bộ hóa nhóm và người dùng LDAP
       mcp_server: Máy chủ MCP
+      meeting_templates: Reusable meeting templates
       nextcloud_sso: Đăng nhập một lần để lưu trữ Nextcloud
       one_drive_sharepoint_file_storage: Lưu trữ tệp OneDrive/SharePoint
       placeholder_users: Người dùng giữ chỗ
@@ -2698,6 +2699,8 @@ vi:
         description: "Hành động tùy chỉnh là các phím tắt bằng một cú nhấp chuột tới một tập hợp các hành động được xác định trước mà bạn có thể cung cấp trên các gói công việc nhất định dựa trên trạng thái, vai trò, loại hoặc dự án."
       mcp_server:
         description: "Tích hợp các tác nhân AI với phiên bản OpenProject của bạn thông qua MCP."
+      meeting_templates:
+        description: "Define meeting templates with a set agenda structure and save time by reusing them when creating new meetings."
       nextcloud_sso:
         title: "Đăng nhập một lần để lưu trữ Nextcloud"
         description: "Cho phép xác thực liền mạch và an toàn cho bộ lưu trữ Nextcloud của bạn bằng Đăng nhập một lần. Đơn giản hóa việc quản lý truy cập và nâng cao sự thuận tiện cho người dùng."

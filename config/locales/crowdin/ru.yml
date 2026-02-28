@@ -2785,6 +2785,7 @@ ru:
       gantt_pdf_export: Экспорт диаграммы Ганта в PDF
       ldap_groups: Синхронизация пользователей LDAP и групп
       mcp_server: MCP-сервер
+      meeting_templates: Reusable meeting templates
       nextcloud_sso: Единый вход для Nextcloud хранения
       one_drive_sharepoint_file_storage: Файловое хранилище OneDrive/SharePoint
       placeholder_users: Пользователи-заполнители
@@ -2863,6 +2864,8 @@ ru:
         description: "Пользовательские действия являются ярлыками к набору заранее определенных действий, которые вы можете сделать доступными для определенных пакетов работ на основе статуса, роли, типа или проекта."
       mcp_server:
         description: "Интегрируйте агентов искусственного интеллекта в Ваш OpenProject с помощью MCP."
+      meeting_templates:
+        description: "Define meeting templates with a set agenda structure and save time by reusing them when creating new meetings."
       nextcloud_sso:
         title: "Единый вход для Nextcloud хранения"
         description: "Включите бесшовную и безопасную аутентификацию для вашего Nextcloud хранилища с помощью Single Sign-On. Упростите управление доступом и сделайте удобным для пользователя."
