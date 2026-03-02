@@ -19,7 +19,6 @@ fr:
           title: 'Actualités'
         project_description:
           title: 'Description'
-          no_results: "Aucune description n'a encore été écrite. Vous pouvez en trouver une dans les \"Paramètres du projet\"."
         project_status:
           title: 'Statut'
           not_started: 'Non démarré'

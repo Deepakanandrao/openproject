@@ -2618,6 +2618,7 @@ ja:
       gantt_pdf_export: ガントPDFをエクスポート
       ldap_groups: LDAP ユーザーとグループ同期
       mcp_server: MCP Server
+      meeting_templates: Reusable meeting templates
       nextcloud_sso: Nextcloudストレージのシングルサインオン。
       one_drive_sharepoint_file_storage: OneDrive/SharePointファイルストレージ
       placeholder_users: プレースホルダー ユーザー
@@ -2696,6 +2697,8 @@ ja:
         description: "カスタムアクションは、ステータスに基づいて特定のワークパッケージで利用できる、事前に定義されたアクションです。"
       mcp_server:
         description: "Integrate AI agents with your OpenProject instance through MCP."
+      meeting_templates:
+        description: "Define meeting templates with a set agenda structure and save time by reusing them when creating new meetings."
       nextcloud_sso:
         title: "Nextcloudストレージへのシングルサインオン"
         description: "シングルサインオンでNextcloudストレージのシームレスかつセキュアな認証を可能にします。アクセス管理を簡素化し、ユーザーの利便性を向上させます。"

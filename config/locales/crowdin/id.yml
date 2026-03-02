@@ -2615,6 +2615,7 @@ id:
       gantt_pdf_export: Gantt PDF Export
       ldap_groups: LDAP users and group sync
       mcp_server: MCP Server
+      meeting_templates: Reusable meeting templates
       nextcloud_sso: Single Sign-On for Nextcloud Storage
       one_drive_sharepoint_file_storage: OneDrive/SharePoint File Storage
       placeholder_users: Placeholder Users
@@ -2693,6 +2694,8 @@ id:
         description: "Tindakan kustom adalah pintasan sekali klik ke serangkaian tindakan yang ditentukan sebelumnya yang dapat Anda sediakan pada paket kerja tertentu berdasarkan status, peran, jenis, atau proyek."
       mcp_server:
         description: "Integrate AI agents with your OpenProject instance through MCP."
+      meeting_templates:
+        description: "Define meeting templates with a set agenda structure and save time by reusing them when creating new meetings."
       nextcloud_sso:
         title: "Single Sign-On for Nextcloud Storage"
         description: "Enable seamless and secure authentication for your Nextcloud storage with Single Sign-On. Simplify access management and enhance user convenience."

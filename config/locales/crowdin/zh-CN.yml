@@ -2615,6 +2615,7 @@ zh-CN:
       gantt_pdf_export: 甘特图 PDF 导出
       ldap_groups: LDAP 用户和群组同步
       mcp_server: MCP 服务器
+      meeting_templates: Reusable meeting templates
       nextcloud_sso: Nextcloud存储的单点登录(SSO)
       one_drive_sharepoint_file_storage: OneDrive/SharePoint 文件存储
       placeholder_users: 占位符用户
@@ -2693,6 +2694,8 @@ zh-CN:
         description: "自定义操作是一键快捷方式，指向一组预定义的操作，您可以根据状态、角色、类型或项目在某些工作包上使用这些操作。"
       mcp_server:
         description: "通过 MCP 将 AI 智能体与 OpenProject 实例集成。"
+      meeting_templates:
+        description: "Define meeting templates with a set agenda structure and save time by reusing them when creating new meetings."
       nextcloud_sso:
         title: "Nextcloud存储的单点登录(SSO)"
         description: "使用单点登录为您的 Nextcloud 存储启用无缝且安全的身份验证。简化访问管理并提升用户便利性。"
