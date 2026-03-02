@@ -373,4 +373,24 @@ RSpec.describe RecurringMeetings::UpdateService, "integration", type: :model do
       end
     end
   end
+
+  describe "updating series title" do
+    let!(:scheduled_meetings) do
+      Array.new(3) do |i|
+        create(:scheduled_meeting,
+               :persisted,
+               recurring_meeting: series,
+               start_time: Time.zone.today + (i + 1).days + 10.hours)
+      end
+    end
+    let(:params) { { title: "Updated series title" } }
+
+    it "updates open future meeting occurrence titles" do
+      expect(service_result).to be_success
+
+      scheduled_meetings.each do |scheduled|
+        expect(scheduled.meeting.reload.title).to eq("Updated series title")
+      end
+    end
+  end
 end
