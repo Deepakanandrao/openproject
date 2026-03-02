@@ -921,7 +921,7 @@ Rails.application.routes.draw do
   resources :users, constraints: { id: /(\d+|me)/ }, except: :edit do
     resources :memberships, controller: "users/memberships", only: %i[update create destroy]
     resources :working_hours, controller: "users/working_hours"
-    resources :non_working_days, controller: "users/non_working_days", only: %i[index create destroy]
+    resources :non_working_times, controller: "users/non_working_times", only: %i[index create destroy]
 
     collection do
       get "/invite" => "users/invite#start_dialog"
@@ -1026,7 +1026,7 @@ Rails.application.routes.draw do
     get "/my/reminders", action: "reminders"
 
     get "/my/working_hours", action: "working_hours"
-    get "/my/non_working_days", action: "non_working_days"
+    get "/my/non_working_times", action: "non_working_times"
 
     patch "/my/account", action: "update_account"
     patch "/my/settings", action: "update_settings"

@@ -602,12 +602,12 @@ module API
             "#{user_working_hours(user_id)}/#{id}"
           end
 
-          def self.user_non_working_days(user_id)
-            "#{user(user_id)}/non_working_days"
+          def self.user_non_working_times(user_id)
+            "#{user(user_id)}/non_working_times"
           end
 
-          def self.user_non_working_day(user_id, date)
-            "#{user_non_working_days(user_id)}/#{date}"
+          def self.user_non_working_time(user_id, non_working_time_id)
+            "#{user_non_working_times(user_id)}/#{non_working_time_id}"
           end
 
           def self.my_preferences

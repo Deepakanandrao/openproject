@@ -1803,8 +1803,9 @@ en:
       users/invitation/form_model:
         principal_type: "Invitation type"
         id_or_email: "Name or email address"
-      user_non_working_days:
-        date: "Date"
+      user_non_working_time:
+        start_date: "Start date"
+        end_date: "End date"
       user_working_hours:
         valid_from: "Valid from"
         monday: "Monday"
@@ -1877,6 +1878,8 @@ en:
         before: "must be before %{date}."
         before_or_equal_to: "must be before or equal to %{date}."
         blank: "can't be blank."
+        not_before_start_date: "must not be before the start date."
+        overlapping_range: "overlaps with an existing non-working day range."
         blank_nested: "needs to have the property '%{property}' set."
         cannot_delete_mapping: "is required. Cannot be deleted."
         is_for_all_cannot_modify: "is for all projects and can therefore not be modified."
@@ -3885,6 +3888,7 @@ en:
   label_news_view_all: "View all news"
   label_next: "Next"
   label_next_week: "Next week"
+  label_next_year: "Next year"
   label_no_change_option: "(No change)"
   label_no_data: "No data to display"
   label_no_due_date: "no finish date"
@@ -3944,6 +3948,7 @@ en:
   label_preview_not_available: "Preview not available"
   label_previous: "Previous"
   label_previous_week: "Previous week"
+  label_previous_year: "Previous year"
   label_principal_invite_via_email: " or invite new users via email"
   label_principal_search: "Add existing users or groups"
   label_privacy_policy: "Data privacy and security policy"
@@ -4083,6 +4088,7 @@ en:
   label_title: "Title"
   label_projects_menu: "Projects"
   label_today: "today"
+  label_today_capitalized: "Today"
   label_token_version: "Token Version"
   label_today_as_start_date: "Select today as start date."
   label_today_as_due_date: "Select today as finish date."
@@ -4197,6 +4203,9 @@ en:
     one: "1 file"
     other: "%{count} files"
     zero: "no files"
+  label_x_days:
+    one: "1 day"
+    other: "%{count} days"
   label_yesterday: "yesterday"
   label_zen_mode: "Zen mode"
   label_role_type: "Type"
@@ -4208,6 +4217,11 @@ en:
   label_schedule_and_availability: "Schedule and availability"
   label_working_hours: "Work schedule"
   label_non_working_days: "Availability calendar"
+  label_non_working_days_with_count: "Non-working days (%{count})"
+  label_non_working_days_summary: "Summary"
+  label_total_user_non_working_times: "Total non-working days"
+  label_total_global_non_working_days: "Global non-working days"
+  label_total_days_off: "Total days off"
   macro_execution_error: "Error executing the macro %{macro_name}"
   macro_unavailable: "Macro %{macro_name} cannot be displayed."
   macros:

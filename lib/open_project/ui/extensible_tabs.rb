@@ -74,9 +74,9 @@ module OpenProject
               only_if: ->(*) { OpenProject::FeatureDecisions.user_working_times_active? && User.current.allowed_globally?(:manage_working_times) }
             },
             {
-              name: "non_working_days",
-              partial: "users/non_working_days/list",
-              path: ->(params) { user_non_working_days_path(params[:user]) },
+              name: "non_working_times",
+              partial: "users/non_working_times/list",
+              path: ->(params) { user_non_working_times_path(params[:user]) },
               label: :label_non_working_days,
               only_if: ->(*) { OpenProject::FeatureDecisions.user_working_times_active? && User.current.allowed_globally?(:manage_working_times) }
             },

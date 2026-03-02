@@ -91,7 +91,7 @@ module API
             mount ::API::V3::Users::UpdateFormAPI
             mount ::API::V3::UserPreferences::PreferencesByUserAPI
             mount ::API::V3::UserWorkingHours::WorkingHoursByUserAPI
-            mount ::API::V3::UserNonWorkingDays::NonWorkingDaysByUserAPI
+            mount ::API::V3::UserNonWorkingTimes::NonWorkingTimesByUserAPI
 
             namespace :lock do
               # Authenticate lock transitions

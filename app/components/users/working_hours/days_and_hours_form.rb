@@ -39,7 +39,7 @@ class Users::WorkingHours::DaysAndHoursForm < ApplicationForm
     end
 
     form.group(layout: :horizontal, mb: 2) do |group|
-      UserWorkingHours::DAYS.each do |day|
+      ordered_days.each do |day|
         group.hidden name: "#{day}_hours", value: 0
         group.check_box name: "day_enabled_#{day}",
                         data: {
@@ -81,7 +81,7 @@ class Users::WorkingHours::DaysAndHoursForm < ApplicationForm
     end
 
     form.group(data: { "users--working-hours-form-target": "individualSection" }) do |group|
-      UserWorkingHours::DAYS.each do |day|
+      ordered_days.each do |day|
         group.text_field name: "#{day}_hours",
                          label: UserWorkingHours.human_attribute_name("#{day}_hours"),
                          value: day_hours(day),
@@ -104,6 +104,17 @@ class Users::WorkingHours::DaysAndHoursForm < ApplicationForm
   end
 
   private
+
+  def ordered_days
+    # DAYS = [monday(0), tuesday(1), ..., saturday(5), sunday(6)]
+    # Setting.start_of_week: 1=Monday, 6=Saturday, 7=Sunday, nil=locale default (treat as Monday)
+    start_index = case Setting.start_of_week
+                  when 6 then UserWorkingHours::DAYS.index(:saturday)
+                  when 7 then UserWorkingHours::DAYS.index(:sunday)
+                  else 0 # Monday
+                  end
+    UserWorkingHours::DAYS.rotate(start_index)
+  end
 
   def day_enabled?(day)
     model.public_send(day) > 0

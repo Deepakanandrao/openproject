@@ -63,9 +63,9 @@ class User < Principal
   has_many :working_hours, class_name: "UserWorkingHours",
                            dependent: :destroy,
                            inverse_of: :user
-  has_many :non_working_days, class_name: "UserNonWorkingDay",
-                              dependent: :destroy,
-                              inverse_of: :user
+  has_many :non_working_times, class_name: "UserNonWorkingTime",
+                               dependent: :destroy,
+                               inverse_of: :user
 
   # The user might have one invitation token
   has_one :invitation_token, class_name: "::Token::Invitation", dependent: :destroy
@@ -680,15 +680,15 @@ class User < Principal
 
   include Scimitar::Resources::Mixin
 
-  def non_working_day_entities_for_year(year)
+  def non_working_time_entities_for_year(year)
     system_days = NonWorkingDay.for_year(year).to_a
-    user_days = non_working_days.for_year(year).to_a
+    user_days = non_working_times.for_year(year).to_a
     system_day_dates = system_days.to_set(&:date)
     system_days + user_days.reject { |d| system_day_dates.include?(d.date) }
   end
 
   def non_working_days_for_year(year)
-    non_working_day_entities_for_year(year).map(&:date)
+    non_working_time_entities_for_year(year).map(&:date)
   end
 
   protected

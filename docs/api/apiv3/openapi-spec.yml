@@ -482,10 +482,10 @@ paths:
     "$ref": "./paths/user_form.yml"
   "/api/v3/users/{id}/lock":
     "$ref": "./paths/user_lock.yml"
-  "/api/v3/users/{id}/non_working_days":
-    "$ref": "./paths/user_non_working_days.yml"
-  "/api/v3/users/{id}/non_working_days/{date}":
-    "$ref": "./paths/user_non_working_days_date.yml"
+  "/api/v3/users/{id}/non_working_times":
+    "$ref": "./paths/user_non_working_times.yml"
+  "/api/v3/users/{id}/non_working_times/{date}":
+    "$ref": "./paths/user_non_working_times_date.yml"
   "/api/v3/users/{id}/working_hours":
     "$ref": "./paths/user_working_hours.yml"
   "/api/v3/users/{id}/working_hours/{working_hours_id}":
@@ -1011,10 +1011,10 @@ components:
       "$ref": "./components/schemas/user_create_model.yml"
     UserModel:
       "$ref": "./components/schemas/user_model.yml"
-    UserNonWorkingDayCollectionModel:
-      "$ref": "./components/schemas/user_non_working_day_collection_model.yml"
-    UserNonWorkingDayModel:
-      "$ref": "./components/schemas/user_non_working_day_model.yml"
+    UserNonWorkingTimeCollectionModel:
+      "$ref": "./components/schemas/user_non_working_time_collection_model.yml"
+    UserNonWorkingTimeModel:
+      "$ref": "./components/schemas/user_non_working_time_model.yml"
     UserPreferencesModel:
       "$ref": "./components/schemas/user_preferences_model.yml"
     UserWorkingHoursCollectionModel:

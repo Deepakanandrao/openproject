@@ -51,7 +51,7 @@ class MyController < ApplicationController
                              :password_confirmation_dialog,
                              :notifications,
                              :reminders,
-                             :non_working_days,
+                             :non_working_times,
                              :working_hours
 
   menu_item :account, only: [:account]
@@ -60,7 +60,7 @@ class MyController < ApplicationController
   menu_item :password, only: [:password]
   menu_item :notifications, only: [:notifications]
   menu_item :reminders, only: [:reminders]
-  menu_item :working_hours, only: %i[working_hours non_working_days]
+  menu_item :working_hours, only: %i[working_hours non_working_times]
 
   def account; end
 
@@ -113,11 +113,11 @@ class MyController < ApplicationController
                           end
   end
 
-  def non_working_days
+  def non_working_times
     render_403 unless OpenProject::FeatureDecisions.user_working_times_active?
 
-    year = (params[:year].presence || Date.current.year).to_i
-    @non_working_days = @user.non_working_day_entities_for_year(year)
+    @year = (params[:year].presence || Date.current.year).to_i
+    @non_working_times = @user.non_working_time_entities_for_year(@year)
   end
 
   private

@@ -10,7 +10,7 @@ description: |-
   most recently effective record (i.e., the one with the latest `validFrom` that is not in the
   future) is used for capacity calculations.
 
-  A `UserNonWorkingDay` marks a specific calendar date as a non-working day for a user
+  A `UserNonWorkingTime` marks a specific calendar date as a non-working day for a user
   (e.g., a personal day off or a local holiday not covered by the system-wide non-working days).
   A user cannot have a personal non-working day on a date that is already a system-wide
   non-working day.
@@ -52,27 +52,27 @@ description: |-
   - All users can read their own working hours records even without a special permission.
   - Records that have already taken effect (i.e., `validFrom` is today or in the past) cannot be updated.
 
-  ## UserNonWorkingDay Actions
+  ## UserNonWorkingTime Actions
 
   | Link   | Description                      | Condition                |
   | :----: | -------------------------------- | ------------------------ |
   | delete | Delete this non-working day      | **Permission**: see below |
 
-  ## UserNonWorkingDay Linked Properties
+  ## UserNonWorkingTime Linked Properties
 
   | Link | Description                                          | Type               | Constraints | Supported operations |
   | :--: | ---------------------------------------------------- | ------------------ | ----------- | -------------------- |
-  | self | This non-working day                                 | UserNonWorkingDay  | not null    | READ                 |
+  | self | This non-working day                                 | UserNonWorkingTime  | not null    | READ                 |
   | user | The user this non-working day belongs to             | User               | not null    | READ                 |
 
-  ## UserNonWorkingDay Local Properties
+  ## UserNonWorkingTime Local Properties
 
   | Property | Description                                             | Type    | Constraints | Supported operations |
   | :------: | ------------------------------------------------------- | ------- | ----------- | -------------------- |
   | id       | The unique identifier of the record                     | Integer | x > 0       | READ                 |
   | date     | The date of the non-working day (ISO 8601 format)       | Date    | not null    | READ / WRITE         |
 
-  ## UserNonWorkingDay Permissions
+  ## UserNonWorkingTime Permissions
 
   - **Administrators** can read and manage personal non-working days for any user.
   - Users with the global **`manage_own_working_times`** permission can read and manage their own non-working days.
