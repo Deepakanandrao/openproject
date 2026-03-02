@@ -27,7 +27,7 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
 
-<%= render(Primer::Alpha::Dialog.new(id: DIALOG_ID, title:, size: :xlarge)) do |dialog| %>
+<%= render(Primer::Alpha::Dialog.new(id: DIALOG_ID, title:, position: :right, size: :xlarge)) do |dialog| %>
   <% dialog.with_header(variant: :large) %>
   <% dialog.with_body do %>
     <%= render(Users::WorkingHours::FormComponent.new(user:, working_hours:, show_valid_from:)) %>
@@ -37,7 +37,7 @@ See COPYRIGHT and LICENSE files for more details.
       <% footer.with_component(Primer::Beta::Button.new(data: { "close-dialog-id": DIALOG_ID })) do %>
         <%= t(:button_cancel) %>
       <% end %>
-      <% footer.with_component(Primer::Beta::Button.new(scheme: :primary, form: "working-hours-form", type: :submit)) do %>
+      <% footer.with_component(Primer::Beta::Button.new(scheme: :primary, form: Users::WorkingHours::FormComponent::FORM_ID, type: :submit)) do %>
         <%= working_hours.persisted? ? t(:button_save) : t(:button_create) %>
       <% end %>
     <% end %>

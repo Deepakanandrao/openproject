@@ -81,6 +81,32 @@ RSpec.describe UserWorkingHours do
       end
     end
 
+    # The following tests cover string parsing via `to_hours` for the `monday_hours=` setter.
+    # The same parsing logic applies to all `{day}_hours=` setters since they are generated identically.
+    describe "#monday_hours= string parsing" do
+      subject(:working_hours) { build(:user_working_hours) }
+
+      {
+        "8" => 480,
+        "7.5" => 450,
+        "7,5" => 450,
+        "8h" => 480,
+        "7.5h" => 450,
+        "7,5h" => 450,
+        "7:30" => 450,
+        "2h30" => 150,
+        "2h30m" => 150,
+        "2h 30m" => 150,
+        "2h" => 120,
+        "30m" => 30
+      }.each do |input, expected_minutes|
+        it "parses #{input.inspect} to #{expected_minutes} minutes" do
+          working_hours.monday_hours = input
+          expect(working_hours.monday).to eq(expected_minutes)
+        end
+      end
+    end
+
     it "returns 8.0 hours for a full work day of 480 minutes" do
       expect(working_hours.monday_hours).to eq(8.0)
     end

@@ -163,16 +163,16 @@ class Users::WorkingHoursController < ApplicationController
 
   def working_hours_params
     params.expect(
-      working_hours: %i[valid_from
-                        monday_hours
-                        tuesday_hours
-                        wednesday_hours
-                        thursday_hours
-                        friday_hours
-                        saturday_hours
-                        sunday_hours
-                        availability_factor]
-    )
+      user_working_hours: %i[valid_from
+                             monday_hours
+                             tuesday_hours
+                             wednesday_hours
+                             thursday_hours
+                             friday_hours
+                             saturday_hours
+                             sunday_hours
+                             availability_factor]
+    ).tap { Rails.logger.debug(it.to_h) }
   end
 
   def duplicate_current_working_hours(user)

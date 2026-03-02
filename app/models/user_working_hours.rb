@@ -71,7 +71,8 @@ class UserWorkingHours < ApplicationRecord
       (public_send(day) / 60.0).round(2)
     end
 
-    define_method("#{day}_hours=") do |hours|
+    define_method("#{day}_hours=") do |value|
+      hours = value.is_a?(String) ? (value.to_hours || value) : value
       public_send("#{day}=", (hours.to_f * 60).round)
     end
   end

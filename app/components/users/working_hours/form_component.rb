@@ -34,6 +34,8 @@ module Users
       include OpTurbo::Streamable
       include OpPrimer::ComponentHelpers
 
+      FORM_ID = "working-hours-form"
+
       attr_reader :user, :working_hours, :show_valid_from
 
       def initialize(user:, working_hours:, show_valid_from: true, **)
@@ -58,9 +60,13 @@ module Users
           model: working_hours,
           url: form_url,
           method: form_method,
-          data: {
-            turbo: true,
-            controller: "users--working-hours-form"
+
+          html: {
+            id: FORM_ID,
+            data: {
+              turbo: true,
+              controller: "users--working-hours-form"
+            }
           }
         }
       end

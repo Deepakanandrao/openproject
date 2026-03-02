@@ -32,6 +32,7 @@ module Users
   module WorkingHours
     class ScheduleTableComponent < OpPrimer::BorderBoxTableComponent
       columns :start_date, :work_days, :work_hours, :availability_factor, :effective_work_hours
+      main_column :work_days
 
       attr_reader :variant, :user
 

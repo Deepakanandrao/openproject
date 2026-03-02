@@ -29,7 +29,7 @@
  */
 
 import { Controller } from '@hotwired/stimulus';
-import { durationStringToSeconds } from 'core-stimulus/helpers/chronic-duration-helper';
+import { durationStringToSeconds, formattedHour } from 'core-stimulus/helpers/chronic-duration-helper';
 
 export default class WorkingHoursFormController extends Controller {
   static targets = [
@@ -44,27 +44,25 @@ export default class WorkingHoursFormController extends Controller {
     'totalAvailableHoursDisplay',
   ];
 
-  static values = {
-    hoursMode: { type: String, default: 'same' },
-  };
-
   declare readonly sameHoursSectionTarget:HTMLElement;
   declare readonly individualSectionTarget:HTMLElement;
   declare readonly sharedHoursInputTarget:HTMLInputElement;
   declare readonly dayCheckboxTargets:HTMLInputElement[];
-  declare readonly dayHoursSectionTargets:HTMLElement[];
   declare readonly dayHoursInputTargets:HTMLInputElement[];
   declare readonly totalWorkHoursDisplayTarget:HTMLInputElement;
   declare readonly availabilityFactorInputTarget:HTMLInputElement;
   declare readonly totalAvailableHoursDisplayTarget:HTMLInputElement;
-  declare hoursModeValue:string;
+
+  private hoursModeValue:'same'|'individual' = 'same';
 
   connect() {
+    this.detectHoursMode();
+    this.hideDisabledDayHours();
     this.recalculate();
   }
 
   hoursModeChanged(event:Event) {
-    this.hoursModeValue = (event.target as HTMLInputElement).value;
+    this.hoursModeValue = (event.target as HTMLInputElement).value as 'same' | 'individual';
     this.updateDisplayMode();
     if (this.hoursModeValue === 'same') {
       this.syncSameHoursToAllDays();
@@ -76,13 +74,12 @@ export default class WorkingHoursFormController extends Controller {
     const checkbox = event.target as HTMLInputElement;
     const day = checkbox.dataset.day!;
     const hoursInput = this.dayHoursInputForDay(day);
-    const hoursSection = this.dayHoursSectionForDay(day);
+
     if (hoursInput) {
       hoursInput.disabled = !checkbox.checked;
+      this.toggleDayHoursWrapperVisbility(day, checkbox.checked);
     }
-    if (hoursSection) {
-      hoursSection.hidden = !checkbox.checked;
-    }
+
     if (this.hoursModeValue === 'same') {
       this.syncSameHoursToAllDays();
     }
@@ -96,22 +93,39 @@ export default class WorkingHoursFormController extends Controller {
     this.recalculate();
   }
 
+
   // Triggered on blur: parse the entered duration string and reformat as a plain decimal hours value.
   // This lets users type "4:30", "4h30min", "4,5", etc. — same logic as the time entry form.
   hoursFormatted(event:Event) {
     const input = event.target as HTMLInputElement;
     const seconds = durationStringToSeconds(input.value);
-    const hours = Math.round(seconds / 3600 * 100) / 100;
-    input.value = hours > 0 ? String(hours) : '';
+    input.value = formattedHour(seconds);
 
     if (this.hoursModeValue === 'same') {
       this.syncSameHoursToAllDays();
     }
+
     this.recalculate();
   }
 
   availabilityChanged() {
     this.recalculate();
+  }
+
+  private detectHoursMode() {
+    const checked = document.querySelector<HTMLInputElement>('input[name="user_working_hours[hours_mode]"]:checked');
+    if (checked) {
+      this.hoursModeValue = checked.value as 'same' | 'individual';
+    }
+
+    this.updateDisplayMode();
+  }
+
+  private hideDisabledDayHours() {
+    this.dayCheckboxTargets.forEach((checkbox) => {
+      const day = checkbox.dataset.day!;
+      this.toggleDayHoursWrapperVisbility(day, checkbox.checked);
+    });
   }
 
   private updateDisplayMode() {
@@ -122,11 +136,11 @@ export default class WorkingHoursFormController extends Controller {
 
   private syncSameHoursToAllDays() {
     const seconds = durationStringToSeconds(this.sharedHoursInputTarget.value);
-    const hours = Math.round(seconds / 3600 * 100) / 100;
+
     this.dayHoursInputTargets.forEach((input) => {
       const checkbox = this.dayCheckboxForDay(input.dataset.day!);
       if (checkbox?.checked) {
-        input.value = String(hours);
+        input.value = formattedHour(seconds);
       }
     });
   }
@@ -163,8 +177,15 @@ export default class WorkingHoursFormController extends Controller {
     return this.dayHoursInputTargets.find((el) => el.dataset.day === day);
   }
 
-  private dayHoursSectionForDay(day:string):HTMLElement|undefined {
-    return this.dayHoursSectionTargets.find((el) => el.dataset.day === day);
+  private toggleDayHoursWrapperVisbility(day:string, visible:boolean ) {
+    const input = this.dayHoursInputForDay(day);
+
+    if (input) {
+      const wrapper = input.closest<HTMLElement>('primer-text-field');
+      if (wrapper) {
+        wrapper.classList.toggle('d-none', !visible);
+      }
+    }
   }
 
   private dayCheckboxForDay(day:string):HTMLInputElement|undefined {

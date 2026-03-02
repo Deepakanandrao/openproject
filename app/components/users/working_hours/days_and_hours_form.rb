@@ -40,9 +40,13 @@ class Users::WorkingHours::DaysAndHoursForm < ApplicationForm
 
     form.group(layout: :horizontal, mb: 2) do |group|
       UserWorkingHours::DAYS.each do |day|
-        group.hidden name: "working_hours[#{day}]", value: 0
+        group.hidden name: "#{day}_hours", value: 0
         group.check_box name: "day_enabled_#{day}",
-                        data: { day: day, action: "users--working-hours-form#dayToggled" },
+                        data: {
+                          "users--working-hours-form-target": "dayCheckbox",
+                          day: day,
+                          action: "users--working-hours-form#dayToggled"
+                        },
                         checked: day_enabled?(day),
                         label: full_day_name(day),
                         label_arguments: { mr: 3 }
@@ -64,35 +68,38 @@ class Users::WorkingHours::DaysAndHoursForm < ApplicationForm
       )
     end
 
-    form.text_field name: :shared_hours,
-                    label: I18n.t("users.working_hours.form.work_hours"),
-                    input_width: :large,
-                    value: shared_hours, # TODO: format with `h`
-                    data: {
-                      "users--working-hours-form-target": "sharedHoursInput",
-                      action: "input->users--working-hours-form#hoursChanged blur->users--working-hours-form#hoursFormatted"
-                    },
-                    trailing_visual: { text: { text: I18n.t("users.working_hours.form.per_day") } }
-    # wrapper_data_attributes: { "users--working-hours-form-target": "sameHoursSection" }
-
-    UserWorkingHours::DAYS.each do |day|
-      form.text_field name: "#{day}_hours",
-                      label: UserWorkingHours.human_attribute_name("#{day}_hours"),
-                      value: day_hours(day), # TODO: format with `h`
-                      input_width: :large,
-                      data: {
-                        "users--working-hours-form-target": "dayHoursInput",
-                        day: day,
-                        action: "input->users--working-hours-form#hoursChanged blur->users--working-hours-form#hoursFormatted"
-                      },
-                      disabled: !day_enabled?(day)
+    form.group(data: { "users--working-hours-form-target": "sameHoursSection" }) do |group|
+      group.text_field name: :shared_hours,
+                       label: I18n.t("users.working_hours.form.work_hours"),
+                       input_width: :large,
+                       value: shared_hours,
+                       data: {
+                         "users--working-hours-form-target": "sharedHoursInput",
+                         action: "input->users--working-hours-form#hoursChanged blur->users--working-hours-form#hoursFormatted"
+                       },
+                       trailing_visual: { text: { text: I18n.t("users.working_hours.form.per_day") } }
     end
 
-    form.text_field name: :total_available_hours,
-                    label: I18n.t("users.working_hours.form.total_available_hours"),
+    form.group(data: { "users--working-hours-form-target": "individualSection" }) do |group|
+      UserWorkingHours::DAYS.each do |day|
+        group.text_field name: "#{day}_hours",
+                         label: UserWorkingHours.human_attribute_name("#{day}_hours"),
+                         value: day_hours(day),
+                         input_width: :large,
+                         data: {
+                           "users--working-hours-form-target": "dayHoursInput",
+                           day: day,
+                           action: "input->users--working-hours-form#hoursChanged blur->users--working-hours-form#hoursFormatted"
+                         },
+                         disabled: !day_enabled?(day)
+      end
+    end
+
+    form.text_field name: :total_work_hours,
+                    label: I18n.t("users.working_hours.form.total_work_hours"),
                     input_width: :large,
                     disabled: true,
-                    data: { "users--working-hours-form-target": "totalAvailableHoursDisplay" },
+                    data: { "users--working-hours-form-target": "totalWorkHoursDisplay" },
                     trailing_visual: { text: { text: I18n.t("users.working_hours.form.per_week") } }
   end
 
@@ -103,7 +110,7 @@ class Users::WorkingHours::DaysAndHoursForm < ApplicationForm
   end
 
   def day_hours(day)
-    model.public_send("#{day}_hours")
+    "#{model.public_send("#{day}_hours").round(2)}h"
   end
 
   def all_same_hours?
@@ -115,7 +122,7 @@ class Users::WorkingHours::DaysAndHoursForm < ApplicationForm
 
   def shared_hours
     first_enabled = UserWorkingHours::DAYS.find { |d| day_enabled?(d) }
-    first_enabled ? day_hours(first_enabled) : Setting.hours_per_day
+    first_enabled ? day_hours(first_enabled) : "#{Setting.hours_per_day.round(2)}h"
   end
 
   def full_day_name(day)

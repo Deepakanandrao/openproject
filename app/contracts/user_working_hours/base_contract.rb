@@ -29,11 +29,9 @@
 #++
 
 class UserWorkingHours::BaseContract < ModelContract
-  DAYS = %i[monday tuesday wednesday thursday friday saturday sunday].freeze
-
   attribute :user_id
   attribute :valid_from
-  DAYS.each { |day| attribute :"#{day}_hours" }
+  ::UserWorkingHours::DAYS.each { |day| attribute :"#{day}_hours" }
   attribute :availability_factor
 
   validate :validate_manage_permission
@@ -64,7 +62,7 @@ class UserWorkingHours::BaseContract < ModelContract
   # map those raw column names back to their hours equivalents so the writable
   # attribute check passes correctly.
   def changed_by_user
-    day_names = DAYS.map(&:to_s)
+    day_names = ::UserWorkingHours::DAYS.map(&:to_s)
     super.map { |attr| day_names.include?(attr) ? "#{attr}_hours" : attr }
   end
 end
