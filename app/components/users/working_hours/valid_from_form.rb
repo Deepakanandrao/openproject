@@ -28,46 +28,23 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Users
-  module WorkingHours
-    class FormComponent < ApplicationComponent
-      include OpTurbo::Streamable
-      include OpPrimer::ComponentHelpers
-
-      attr_reader :user, :working_hours, :show_valid_from
-
-      def initialize(user:, working_hours:, show_valid_from: true, **)
-        super(nil, **)
-        @user = user
-        @working_hours = working_hours
-        @show_valid_from = show_valid_from
-      end
-
-      def form_url
-        url_params = show_valid_from ? {} : { current: true }
-
-        if working_hours.persisted?
-          user_working_hour_path(user, working_hours, **url_params)
-        else
-          user_working_hours_path(user, **url_params)
+class Users::WorkingHours::ValidFromForm < ApplicationForm
+  form do |f|
+    f.html_content do
+      render(Primer::Beta::Subhead.new) do |component|
+        component.with_heading(tag: :div, size: :medium) do
+          I18n.t("users.working_hours.form.title_future_dates")
         end
       end
-
-      def form_options
-        {
-          model: working_hours,
-          url: form_url,
-          method: form_method,
-          data: {
-            turbo: true,
-            controller: "users--working-hours-form"
-          }
-        }
-      end
-
-      def form_method
-        working_hours.persisted? ? :patch : :post
-      end
     end
+
+    f.single_date_picker name: :valid_from,
+                         type: "date",
+                         required: true,
+                         input_width: :large,
+                         datepicker_options: { inDialog: Users::WorkingHours::DialogComponent::DIALOG_ID },
+                         value: model.valid_from&.iso8601,
+                         caption: I18n.t("users.working_hours.form.start_date_caption"),
+                         label: I18n.t("users.working_hours.form.start_date")
   end
 end
