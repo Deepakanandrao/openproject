@@ -85,7 +85,7 @@ module Pages
         expect(page).to have_no_css("[data-test-selector='project-custom-field-#{custom_field.id}']")
       end
 
-      def open_edit_dialog_for_custom_field(custom_field)
+      def open_modal_for_custom_field(custom_field)
         scroll_to_element(page.find("[data-test-selector='project-custom-field-#{custom_field.id}']"))
         within_custom_field_container(custom_field) do
           # Link and user type custom fields might contain a clickable link inside the edit container.

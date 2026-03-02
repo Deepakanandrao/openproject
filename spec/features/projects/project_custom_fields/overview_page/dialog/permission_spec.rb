@@ -112,7 +112,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
     end
 
     it "responds with a permission denied message" do
-      overview_page.open_edit_dialog_for_custom_field(custom_field)
+      overview_page.open_modal_for_custom_field(custom_field)
       # Change role to project edit, so the user won't have the project attributes edit role
       member_with_project_attributes_edit_permissions.memberships.first.update(roles: [edit_project_role])
       member_with_project_attributes_edit_permissions.reload

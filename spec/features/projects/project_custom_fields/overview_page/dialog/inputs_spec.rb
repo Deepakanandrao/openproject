@@ -45,7 +45,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
     describe "with input fields" do
       shared_examples "a custom field checkbox" do
         it "shows the correct value if given" do
-          dialog = overview_page.open_edit_dialog_for_custom_field(custom_field)
+          dialog = overview_page.open_modal_for_custom_field(custom_field)
 
           dialog.within_async_content(close_after_yield: true) do
             if expected_initial_value
@@ -59,7 +59,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
         it "is unchecked if no value and no default value is given" do
           custom_field.custom_values.destroy_all
 
-          dialog = overview_page.open_edit_dialog_for_custom_field(custom_field)
+          dialog = overview_page.open_modal_for_custom_field(custom_field)
 
           dialog.within_async_content(close_after_yield: true) do
             expect(page).to have_no_checked_field(custom_field.name)
@@ -71,7 +71,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
 
           custom_field.update!(default_value: true)
 
-          dialog = overview_page.open_edit_dialog_for_custom_field(custom_field)
+          dialog = overview_page.open_modal_for_custom_field(custom_field)
 
           dialog.within_async_content(close_after_yield: true) do
             expect(page).to have_checked_field(custom_field.name)
@@ -79,7 +79,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
 
           custom_field.update!(default_value: false)
 
-          dialog = overview_page.open_edit_dialog_for_custom_field(custom_field)
+          dialog = overview_page.open_modal_for_custom_field(custom_field)
 
           dialog.within_async_content(close_after_yield: true) do
             expect(page).to have_no_checked_field(custom_field.name)
@@ -89,7 +89,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
 
       shared_examples "a custom field input" do
         it "shows the correct value if given" do
-          dialog = overview_page.open_edit_dialog_for_custom_field(custom_field)
+          dialog = overview_page.open_modal_for_custom_field(custom_field)
 
           dialog.within_async_content(close_after_yield: true) do
             expect(page).to have_field(custom_field.name, with: expected_initial_value)
@@ -99,7 +99,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
         it "shows a blank input if no value or default value is given" do
           custom_field.custom_values.destroy_all
 
-          dialog = overview_page.open_edit_dialog_for_custom_field(custom_field)
+          dialog = overview_page.open_modal_for_custom_field(custom_field)
 
           dialog.within_async_content(close_after_yield: true) do
             expect(page).to have_field(custom_field.name, with: expected_blank_value)
@@ -110,7 +110,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
           custom_field.custom_values.destroy_all
           custom_field.update!(default_value:)
 
-          dialog = overview_page.open_edit_dialog_for_custom_field(custom_field)
+          dialog = overview_page.open_modal_for_custom_field(custom_field)
 
           dialog.within_async_content(close_after_yield: true) do
             expect(page).to have_field(custom_field.name, with: default_value)
@@ -120,7 +120,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
 
       shared_examples "a rich text custom field input" do
         it "shows the correct value if given" do
-          dialog = overview_page.open_edit_dialog_for_custom_field(custom_field)
+          dialog = overview_page.open_modal_for_custom_field(custom_field)
 
           dialog.within_async_content(close_after_yield: true) do
             field.expect_value(expected_initial_value)
@@ -130,7 +130,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
         it "shows a blank input if no value or default value is given" do
           custom_field.custom_values.destroy_all
 
-          dialog = overview_page.open_edit_dialog_for_custom_field(custom_field)
+          dialog = overview_page.open_modal_for_custom_field(custom_field)
 
           dialog.within_async_content(close_after_yield: true) do
             field.expect_value(expected_blank_value)
@@ -141,7 +141,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
           custom_field.custom_values.destroy_all
           custom_field.update!(default_value:)
 
-          dialog = overview_page.open_edit_dialog_for_custom_field(custom_field)
+          dialog = overview_page.open_modal_for_custom_field(custom_field)
 
           dialog.within_async_content(close_after_yield: true) do
             field.expect_value(default_value)
@@ -248,7 +248,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
     describe "with single select fields" do
       shared_examples "a autocomplete single select field" do
         it "shows the correct value if given" do
-          overview_page.open_edit_dialog_for_custom_field(custom_field)
+          overview_page.open_modal_for_custom_field(custom_field)
 
           field.expect_selected(expected_initial_value)
         end
@@ -256,13 +256,13 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
         it "shows a blank input if no value or default value is given" do
           custom_field.custom_values.destroy_all
 
-          overview_page.open_edit_dialog_for_custom_field(custom_field)
+          overview_page.open_modal_for_custom_field(custom_field)
 
           field.expect_blank
         end
 
         it "filters the list based on the input" do
-          overview_page.open_edit_dialog_for_custom_field(custom_field)
+          overview_page.open_modal_for_custom_field(custom_field)
 
           field.search(second_option)
 
@@ -272,7 +272,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
         end
 
         it "enables the user to select a single value from a list" do
-          overview_page.open_edit_dialog_for_custom_field(custom_field)
+          overview_page.open_modal_for_custom_field(custom_field)
 
           field.search(second_option)
           field.select_option(second_option)
@@ -287,7 +287,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
         end
 
         it "clears the input if clicked on the clear button" do
-          overview_page.open_edit_dialog_for_custom_field(custom_field)
+          overview_page.open_modal_for_custom_field(custom_field)
 
           field.clear
 
@@ -312,7 +312,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
 
           custom_field.custom_options.first.update!(default_value: true)
 
-          overview_page.open_edit_dialog_for_custom_field(custom_field)
+          overview_page.open_modal_for_custom_field(custom_field)
 
           field.expect_selected(custom_field.custom_options.first.value)
         end
@@ -337,7 +337,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
             end
 
             it "shows only versions that are associated with this project" do
-              overview_page.open_edit_dialog_for_custom_field(custom_field)
+              overview_page.open_modal_for_custom_field(custom_field)
 
               field.search("Version 1")
               field.expect_option(first_version.name, grouping: project.name)
@@ -356,7 +356,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
               let(:allow_non_open_versions) { false }
 
               it "does not shows closed version option" do
-                overview_page.open_edit_dialog_for_custom_field(custom_field)
+                overview_page.open_modal_for_custom_field(custom_field)
                 field.open_options
 
                 field.expect_option(first_version.name)
@@ -368,7 +368,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
               let(:allow_non_open_versions) { true }
 
               it "shows closed version option" do
-                overview_page.open_edit_dialog_for_custom_field(custom_field)
+                overview_page.open_modal_for_custom_field(custom_field)
                 field.open_options
 
                 field.expect_option(first_version.name)
@@ -400,7 +400,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
           end
 
           it "shows only users that are members of the project" do
-            overview_page.open_edit_dialog_for_custom_field(custom_field)
+            overview_page.open_modal_for_custom_field(custom_field)
 
             field.search("Member 1")
 
@@ -426,7 +426,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
           end
 
           it "shows only groups that are associated with this project" do
-            overview_page.open_edit_dialog_for_custom_field(custom_field)
+            overview_page.open_modal_for_custom_field(custom_field)
 
             field.search("Group 1")
 
@@ -442,7 +442,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
           end
 
           it "shows the placeholder user" do
-            overview_page.open_edit_dialog_for_custom_field(custom_field)
+            overview_page.open_modal_for_custom_field(custom_field)
 
             field.search("Placeholder User")
 
@@ -455,7 +455,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
     describe "with multi select fields" do
       shared_examples "a autocomplete multi select field" do
         it "shows the correct value if given" do
-          overview_page.open_edit_dialog_for_custom_field(custom_field)
+          overview_page.open_modal_for_custom_field(custom_field)
 
           field.expect_selected(*expected_initial_value)
         end
@@ -463,13 +463,13 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
         it "shows a blank input if no value or default value is given" do
           custom_field.custom_values.destroy_all
 
-          overview_page.open_edit_dialog_for_custom_field(custom_field)
+          overview_page.open_modal_for_custom_field(custom_field)
 
           field.expect_blank
         end
 
         it "filters the list based on the input" do
-          overview_page.open_edit_dialog_for_custom_field(custom_field)
+          overview_page.open_modal_for_custom_field(custom_field)
 
           field.search(second_option)
 
@@ -481,7 +481,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
         it "allows to select multiple values" do
           custom_field.custom_values.destroy_all
 
-          overview_page.open_edit_dialog_for_custom_field(custom_field)
+          overview_page.open_modal_for_custom_field(custom_field)
 
           field.select_option(second_option)
           field.select_option(third_option)
@@ -493,7 +493,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
         it "allows to remove selected values" do
           custom_field.custom_values.destroy_all
 
-          overview_page.open_edit_dialog_for_custom_field(custom_field)
+          overview_page.open_modal_for_custom_field(custom_field)
 
           field.select_option(second_option)
           field.select_option(third_option)
@@ -507,7 +507,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
         it "allows to remove all selected values at once" do
           custom_field.custom_values.destroy_all
 
-          overview_page.open_edit_dialog_for_custom_field(custom_field)
+          overview_page.open_modal_for_custom_field(custom_field)
 
           field.select_option(second_option)
           field.select_option(third_option)
@@ -537,7 +537,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
           multi_list_project_custom_field.custom_options.first.update!(default_value: true)
           multi_list_project_custom_field.custom_options.second.update!(default_value: true)
 
-          overview_page.open_edit_dialog_for_custom_field(custom_field)
+          overview_page.open_modal_for_custom_field(custom_field)
 
           field.expect_selected(multi_list_project_custom_field.custom_options.first.value)
           field.expect_selected(multi_list_project_custom_field.custom_options.second.value)
@@ -563,7 +563,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
             end
 
             it "shows only versions that are associated with this project" do
-              overview_page.open_edit_dialog_for_custom_field(custom_field)
+              overview_page.open_modal_for_custom_field(custom_field)
 
               field.search("Version 1")
 
@@ -583,7 +583,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
               let(:allow_non_open_versions) { false }
 
               it "does not shows closed version option" do
-                overview_page.open_edit_dialog_for_custom_field(custom_field)
+                overview_page.open_modal_for_custom_field(custom_field)
                 field.open_options
 
                 field.expect_option(first_version.name)
@@ -595,7 +595,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
               let(:allow_non_open_versions) { true }
 
               it "shows closed version option" do
-                overview_page.open_edit_dialog_for_custom_field(custom_field)
+                overview_page.open_modal_for_custom_field(custom_field)
                 field.open_options
 
                 field.expect_option(first_version.name)
@@ -627,7 +627,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
           end
 
           it "shows only users that are members of the project" do
-            overview_page.open_edit_dialog_for_custom_field(custom_field)
+            overview_page.open_modal_for_custom_field(custom_field)
 
             field.search("Member 1")
 
@@ -657,7 +657,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
           end
 
           it "shows only groups that are associated with this project" do
-            overview_page.open_edit_dialog_for_custom_field(custom_field)
+            overview_page.open_modal_for_custom_field(custom_field)
 
             field.search("Group 1")
             field.expect_option(group.name)
@@ -665,7 +665,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
           end
 
           it "enables to select multiple user groups" do
-            overview_page.open_edit_dialog_for_custom_field(custom_field)
+            overview_page.open_modal_for_custom_field(custom_field)
 
             field.select_option("Group 1 in project")
             field.select_option("Group 2 in project")
@@ -690,7 +690,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
           end
 
           it "shows only placeholder users from this project" do
-            overview_page.open_edit_dialog_for_custom_field(custom_field)
+            overview_page.open_modal_for_custom_field(custom_field)
 
             field.search("Placeholder User")
 
@@ -700,7 +700,7 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
           end
 
           it "enables to select multiple placeholder users" do
-            overview_page.open_edit_dialog_for_custom_field(custom_field)
+            overview_page.open_modal_for_custom_field(custom_field)
 
             field.select_option(placeholder_user.name)
             field.select_option(another_placeholder_user.name)
