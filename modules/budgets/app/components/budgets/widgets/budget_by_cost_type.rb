@@ -55,8 +55,8 @@ module Budgets
         chart_entries.values
       end
 
-      def has_data?
-        chart_data.any?
+      def has_budgets_data?
+        has_budgets? && chart_data.any?
       end
 
       private
