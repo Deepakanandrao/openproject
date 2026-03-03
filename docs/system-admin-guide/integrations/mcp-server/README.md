@@ -69,7 +69,7 @@ the "Redirect URI" according to the instructions of your MCP client.
 
 You can customize the MCP server further under *Administration -> Artificial Intelligence (AI) -> Model Context Protocol (MCP)*. 
 
-Here you can enable or disable the entire MCP server. You can also change the MCP server titles and descriptions indicated towards MCP clients, and the response format. 
+Here you can enable or disable the entire MCP server and change the MCP server titles and descriptions indicated towards MCP clients. If you think that your MCP client is passing duplicated information to the language model, you can also change the response format, though for most purposes the default should work well.
 
 The available response format options are:
 
