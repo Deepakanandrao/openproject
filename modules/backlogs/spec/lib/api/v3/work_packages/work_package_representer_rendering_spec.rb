@@ -127,6 +127,22 @@ RSpec.describe API::V3::WorkPackages::WorkPackageRepresenter, "rendering" do
         it_behaves_like "has no link"
       end
     end
+
+    describe "update links" do
+      context "when user lacks edit permission but has manage_sprint_items" do
+        let(:permissions) { super() + [:manage_sprint_items] }
+
+        it_behaves_like "has an untitled link" do
+          let(:link) { "update" }
+          let(:href) { api_v3_paths.work_package_form(work_package.id) }
+        end
+
+        it_behaves_like "has an untitled link" do
+          let(:link) { "updateImmediately" }
+          let(:href) { api_v3_paths.work_package(work_package.id) }
+        end
+      end
+    end
   end
 
   describe "embedded" do

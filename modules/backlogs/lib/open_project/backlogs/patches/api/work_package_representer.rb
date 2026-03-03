@@ -32,7 +32,7 @@ module OpenProject::Backlogs
       module WorkPackageRepresenter
         module_function
 
-        def extension
+        def extension # rubocop:disable Metrics/AbcSize, Metrics/PerceivedComplexity
           ->(*) do
             property :position,
                      render_nil: true,
@@ -48,9 +48,7 @@ module OpenProject::Backlogs
 
             resource :sprint,
                      link_cache_if: ->(*) {
-                       # TODO: change permission to check for :view_sprints
-                       # TODO: apply the same permission check to position and story_points
-                       current_user.allowed_in_project?(:view_master_backlog, represented.project)
+                       current_user.allowed_in_project?(:view_sprints, represented.project)
                      },
                      link: ->(*) {
                        next unless represented.type&.passes_attribute_constraint?(:sprint)

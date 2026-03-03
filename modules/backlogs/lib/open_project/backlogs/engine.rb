@@ -142,6 +142,7 @@ module OpenProject::Backlogs
     patch_with_namespace :WorkPackages, :UpdateService
     patch_with_namespace :WorkPackages, :SetAttributesService
     patch_with_namespace :WorkPackages, :BaseContract
+    patch_with_namespace :WorkPackages, :UpdateContract
     patch_with_namespace :Versions, :RowComponent
     patch_with_namespace :API, :V3, :WorkPackages, :EagerLoading, :Checksum
 
@@ -168,13 +169,12 @@ module OpenProject::Backlogs
     extend_api_response(:v3, :work_packages, :work_package,
                         &::OpenProject::Backlogs::Patches::API::WorkPackageRepresenter.extension)
 
+    # TODO: check if this can be simply removed as it already gets its info by patching the WPRepresenter
     extend_api_response(:v3, :work_packages, :work_package_payload,
                         &::OpenProject::Backlogs::Patches::API::WorkPackageRepresenter.extension)
 
     extend_api_response(:v3, :work_packages, :schema, :work_package_schema,
                         &::OpenProject::Backlogs::Patches::API::WorkPackageSchemaRepresenter.extension)
-
-    add_api_attribute on: :work_package, ar_name: :story_points
 
     add_api_path :backlogs_type do |id|
       # There is no api endpoint for this url

@@ -1,4 +1,6 @@
-#-- copyright
+# frozen_string_literal: true
+
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -24,35 +26,20 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
-require "spec_helper"
-require_relative "shared_contract_examples"
+module OpenProject::Backlogs::Patches::UpdateContractPatch
+  extend ActiveSupport::Concern
 
-RSpec.describe WorkPackages::CreateContract do
-  let(:work_package) do
-    WorkPackage.new(project: work_package_project,
-                    subject: "Some subject",
-                    type: work_package_type,
-                    priority: work_package_priority,
-                    status: work_package_status,
-                    story_points: work_package_story_points,
-                    sprint: work_package_sprint) do |wp|
-      wp.extend(OpenProject::ChangedBySystem)
+  included do
+    singleton_class.prepend ClassMethods
 
-      wp.change_by_system do
-        wp.author = work_package_author
-      end
+    attribute_permission :lock_version, attribute_permissions[:lock_version] + [:manage_sprint_items]
+  end
+
+  module ClassMethods
+    def update_allowed?(user:, work_package:)
+      super || allowed_in_project?(user, work_package, :manage_sprint_items)
     end
   end
-
-  let(:permissions) do
-    %i[
-      view_work_packages
-      add_work_packages
-      manage_sprint_items
-    ]
-  end
-
-  it_behaves_like "work package contract with backlogs extensions"
 end
