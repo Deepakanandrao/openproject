@@ -67,8 +67,8 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
         end
       end
 
-      describe "does not loose the unpersisted values of the custom fields" do
-        shared_examples "keeps the cleared value" do
+      describe "does not loose the unpersisted values" do
+        shared_examples "keeps the unpersisted values" do
           it "keeps the value" do
             invalid_custom_field.update!(is_required: true)
             dialog = overview_page.open_modal_for_custom_field(invalid_custom_field)
@@ -78,13 +78,24 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
             invalid_field.expect_error(I18n.t("activerecord.errors.messages.blank"))
             invalid_field.expect_blank
           end
+
+          it "keeps the custom comment value" do
+            invalid_custom_field.update!(is_required: true, has_comment: true)
+            dialog = overview_page.open_modal_for_custom_field(invalid_custom_field)
+            invalid_field.clear
+            fill_in "Comment", with: "A helpful comment"
+            dialog.submit
+
+            invalid_field.expect_error(I18n.t("activerecord.errors.messages.blank"))
+            expect(page).to have_field("Comment", with: "A helpful comment")
+          end
         end
 
         context "with input fields" do
           let(:invalid_custom_field) { string_project_custom_field }
           let(:invalid_field) { FormFields::Primerized::InputField.new(invalid_custom_field) }
 
-          it_behaves_like "keeps the cleared value"
+          it_behaves_like "keeps the unpersisted values"
         end
 
         context "with select fields" do
@@ -92,21 +103,21 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
             let(:invalid_custom_field) { version_project_custom_field }
             let(:invalid_field) { FormFields::Primerized::AutocompleteField.new(invalid_custom_field) }
 
-            it_behaves_like "keeps the cleared value"
+            it_behaves_like "keeps the unpersisted values"
           end
 
           context "with user selected" do
             let(:invalid_custom_field) { user_project_custom_field }
             let(:invalid_field) { FormFields::Primerized::AutocompleteField.new(invalid_custom_field) }
 
-            it_behaves_like "keeps the cleared value"
+            it_behaves_like "keeps the unpersisted values"
           end
 
           context "with list selected" do
             let(:invalid_custom_field) { list_project_custom_field }
             let(:invalid_field) { FormFields::Primerized::AutocompleteField.new(invalid_custom_field) }
 
-            it_behaves_like "keeps the cleared value"
+            it_behaves_like "keeps the unpersisted values"
           end
         end
 
@@ -115,21 +126,21 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
             let(:invalid_custom_field) { multi_version_project_custom_field }
             let(:invalid_field) { FormFields::Primerized::AutocompleteField.new(invalid_custom_field) }
 
-            it_behaves_like "keeps the cleared value"
+            it_behaves_like "keeps the unpersisted values"
           end
 
           context "with multi user selected" do
             let(:invalid_custom_field) { multi_user_project_custom_field }
             let(:invalid_field) { FormFields::Primerized::AutocompleteField.new(invalid_custom_field) }
 
-            it_behaves_like "keeps the cleared value"
+            it_behaves_like "keeps the unpersisted values"
           end
 
           context "with multi list selected" do
             let(:invalid_custom_field) { multi_list_project_custom_field }
             let(:invalid_field) { FormFields::Primerized::AutocompleteField.new(invalid_custom_field) }
 
-            it_behaves_like "keeps the cleared value"
+            it_behaves_like "keeps the unpersisted values"
           end
         end
       end
