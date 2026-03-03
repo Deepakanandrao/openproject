@@ -40,7 +40,9 @@ module Costs
       def initialize(...)
         super
 
-        @aggregated_costs = Costs::AggregatedCosts.new(project:, current_user:, date_range: 11.months.ago.to_date..Date.current)
+        start_date = Date.current.beginning_of_month - 11.months
+        end_date   = Date.current.end_of_month
+        @aggregated_costs = Costs::AggregatedCosts.new(project:, current_user:, date_range: start_date..end_date)
       end
 
       def render?
