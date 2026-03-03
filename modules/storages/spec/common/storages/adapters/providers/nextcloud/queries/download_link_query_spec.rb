@@ -81,7 +81,7 @@ module Storages
                 end
               end
 
-              context "with outbound request returning 200 and an empty body" do
+              context "with outbound request returning 200 and an empty body", skip: "Pending investigation on NC behaviour" do
                 it "refreshes the token and returns success", vcr: "nextcloud/download_link_query_unauthorized" do
                   download_link = subject.call(auth_strategy:, input_data:)
                   expect(download_link).to be_success
