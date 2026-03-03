@@ -85,6 +85,12 @@ module Pages
         expect(page).to have_no_css("[data-test-selector='project-custom-field-#{custom_field.id}']")
       end
 
+      def expect_custom_field_without_modal_button(custom_field)
+        within_custom_field_container(custom_field) do
+          expect(page).to have_no_test_selector("[data-test-selector*='project-custom-field-modal-button-']")
+        end
+      end
+
       def open_modal_for_custom_field(custom_field)
         scroll_to_element(page.find("[data-test-selector='project-custom-field-#{custom_field.id}']"))
         within_custom_field_container(custom_field) do
