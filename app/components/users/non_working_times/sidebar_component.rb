@@ -40,7 +40,7 @@ module Users
 
       def user_ranges
         user_days = non_working_times
-          .grep(UserNonWorkingDay)
+          .grep(UserNonWorkingTime)
           .map(&:date)
           .sort
 

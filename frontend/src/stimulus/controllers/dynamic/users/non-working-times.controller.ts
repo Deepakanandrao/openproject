@@ -41,7 +41,7 @@ interface NonWorkingDayEvent {
   type:'global' | 'user';
 }
 
-export default class UsersNonWorkingDaysController extends Controller {
+export default class NonWorkingTimesController extends Controller {
   static targets = ['calendar'];
 
   static values = {
@@ -75,7 +75,7 @@ export default class UsersNonWorkingDaysController extends Controller {
     }
   }
 
-  private initializeCalendar() {
+  initializeCalendar() {
     this.calendar = new Calendar(this.calendarTarget, {
       plugins: [multiMonthPlugin],
       initialView: 'multiMonthYear',

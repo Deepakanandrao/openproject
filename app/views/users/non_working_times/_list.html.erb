@@ -27,13 +27,13 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
 
-<%= render(Users::NonWorkingDays::SubHeaderComponent.new(year: @year)) %>
+<%= render(Users::NonWorkingTimes::SubHeaderComponent.new(year: @year)) %>
 
 <%= render(Primer::OpenProject::FlexLayout.new(align_items: :flex_start, gap: :normal)) do |layout| %>
   <% layout.with_column(flex: 1) do %>
-    <%= render(Users::NonWorkingDays::CalendarComponent.new(non_working_times: @non_working_times, year: @year)) %>
+    <%= render(Users::NonWorkingTimes::CalendarComponent.new(non_working_times: @non_working_times, year: @year)) %>
   <% end %>
   <% layout.with_column do %>
-    <%= render(Users::NonWorkingDays::SidebarComponent.new(non_working_times: @non_working_times, year: @year)) %>
+    <%= render(Users::NonWorkingTimes::SidebarComponent.new(non_working_times: @non_working_times, year: @year)) %>
   <% end %>
 <% end %>

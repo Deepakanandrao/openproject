@@ -23,29 +23,31 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module My
-  class WorkingTimesHeaderComponent < ApplicationComponent
-    def call # rubocop:disable Metrics/AbcSize
-      render(Primer::OpenProject::PageHeader.new) do |header|
-        header.with_title { t(:label_schedule_and_availability) }
-        header.with_breadcrumbs(
-          [{ href: my_account_path, text: t(:label_my_account) },
-           t(:label_schedule_and_availability)]
-        )
-        header.with_tab_nav(label: "label") do |nav|
-          nav.with_tab(selected: params[:action] == "working_hours",
-                       href: my_working_hours_path) do |tab|
-            tab.with_text { t(:label_working_hours) }
+module Users
+  module NonWorkingTimes
+    class YearOverviewComponent < ApplicationComponent
+      attr_reader :non_working_times, :year
+
+      def initialize(year:, non_working_times:, **)
+        super(**)
+        @year = year
+        @non_working_times = non_working_times
+      end
+
+      def call
+        render(Users::NonWorkingTimes::SubHeaderComponent.new(year: year)) +
+        render(Primer::Alpha::Layout.new(classes: "users-non-working-times-year-overview")) do |layout|
+          layout.with_main do
+            render(Users::NonWorkingTimes::CalendarComponent.new(non_working_times: non_working_times, year: year))
           end
 
-          nav.with_tab(selected: params[:action] == "non_working_times",
-                       href: my_non_working_times_path(year: Date.current.year)) do |tab|
-            tab.with_text { t(:label_non_working_days) }
+          layout.with_sidebar(col_placement: :end) do
+            render(Users::NonWorkingTimes::SidebarComponent.new(non_working_times: non_working_times, year: year))
           end
         end
       end

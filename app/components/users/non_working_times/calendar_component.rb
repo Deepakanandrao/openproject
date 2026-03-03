@@ -41,12 +41,12 @@ module Users
 
       def wrapper_data
         {
-          "controller" => "users--non-working-days",
-          "users--non-working-days-events-value" => events_json,
-          "users--non-working-days-year-value" => year,
-          "users--non-working-days-locale-value" => I18n.locale,
-          "users--non-working-days-start-of-week-value" => first_day_of_week,
-          "users--non-working-days-working-days-value" => working_days.to_json
+          "controller" => "users--non-working-times",
+          "users--non-working-times-events-value" => events_json,
+          "users--non-working-times-year-value" => year,
+          "users--non-working-times-locale-value" => I18n.locale,
+          "users--non-working-times-start-of-week-value" => first_day_of_week,
+          "users--non-working-times-working-days-value" => working_days.to_json
         }
       end
 
@@ -70,7 +70,7 @@ module Users
 
       def user_events
         user_days = non_working_times
-          .grep(UserNonWorkingDay)
+          .grep(UserNonWorkingTime)
           .map(&:date)
           .sort
 

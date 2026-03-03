@@ -1,11 +1,2 @@
 <%= render(My::WorkingTimesHeaderComponent.new) %>
-<%= render(Users::NonWorkingDays::SubHeaderComponent.new(year: @year)) %>
-
-<%= render(Primer::OpenProject::FlexLayout.new(align_items: :flex_start, gap: :normal)) do |layout| %>
-  <% layout.with_column(flex: 1) do %>
-    <%= render(Users::NonWorkingDays::CalendarComponent.new(non_working_times: @non_working_times, year: @year)) %>
-  <% end %>
-  <% layout.with_column do %>
-    <%= render(Users::NonWorkingDays::SidebarComponent.new(non_working_times: @non_working_times, year: @year)) %>
-  <% end %>
-<% end %>
+<%= render(Users::NonWorkingTimes::YearOverviewComponent.new(year: @year, non_working_times: @non_working_times)) %>
