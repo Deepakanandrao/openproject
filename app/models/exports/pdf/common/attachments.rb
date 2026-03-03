@@ -60,20 +60,15 @@ module Exports::PDF::Common::Attachments
   def attachment_image_filepath(src)
     # images are embedded into markup with the api-path as img.src
     attachment = attachment_by_api_content_src(src)
-    return nil if attachment.nil? || !pdf_embeddable?(attachment.content_type)
+    return if attachment.nil? || !pdf_embeddable?(attachment.content_type)
 
     local_file = attachment_image_local_file(attachment)
-    return nil if local_file.nil?
+    return if local_file.nil?
 
     filename = local_file.path
-    if attachment.content_type == "image/gif"
-      filename = convert_gif_to_png(filename)
-    elsif attachment.content_type == "image/webp"
-      filename = convert_webp_to_png(filename)
-    end
-    return nil if filename.nil?
-
-    resize_image(filename)
+    filename = convert_gif_to_png(filename) if attachment.content_type == "image/gif"
+    filename = convert_webp_to_png(filename) if attachment.content_type == "image/webp"
+    filename ? resize_image(filename) : nil
   end
 
   def temp_image_file(extension)
@@ -113,7 +108,7 @@ module Exports::PDF::Common::Attachments
   # references), so the raw frame chunk is a valid standalone WebP image.
   def extract_first_webp_frame(filename) # rubocop:disable Metrics/AbcSize, Metrics/PerceivedComplexity
     data = File.binread(filename)
-    return nil unless data.bytesize > 12 && data[0, 4] == "RIFF".b && data[8, 4] == "WEBP".b
+    return unless data.bytesize > 12 && data[0, 4] == "RIFF".b && data[8, 4] == "WEBP".b
 
     webp_type = %W[VP8\x20 VP8L VP8X]
     pos = 12
@@ -147,7 +142,7 @@ module Exports::PDF::Common::Attachments
   end
 
   def attachment_by_api_content_src(src)
-    return nil if src.empty?
+    return if src.empty?
 
     # we accept absolut linked images
     # (but not hot-linked from elsewhere: https://example.com/another_api/attachments/1/somefile.png)
@@ -156,12 +151,12 @@ module Exports::PDF::Common::Attachments
     # #{api_url_helpers.root_path}attachments/:id/filename.ext (e.g. inserted by drag and drop from the files tab)
 
     attachment_regex = %r{/attachments/(\d+)/}
-    return nil unless src.start_with?(api_url_helpers.root_path) && src.match?(attachment_regex)
+    return unless src.start_with?(api_url_helpers.root_path) && src.match?(attachment_regex)
 
     attachments_id = src.scan(attachment_regex).first.first
     attachment = Attachment.find_by(id: attachments_id.to_i)
-    return nil if attachment.nil?
-    return nil unless attachment.visible?
+    return if attachment.nil?
+    return unless attachment.visible?
 
     attachment
   rescue StandardError
