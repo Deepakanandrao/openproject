@@ -46,14 +46,7 @@ module UserNonWorkingTimes
     private
 
     def validate_manage_permission
-      unless can_manage_working_times?
-        errors.add :base, :error_unauthorized
-      end
-    end
-
-    def can_manage_working_times?
-      user.allowed_globally?(:manage_working_times) ||
-        (model.user_id == user.id && user.allowed_globally?(:manage_own_working_times))
+      errors.add(:base, :error_unauthorized) unless self.class.can_manage?(user:, target_user: model.user)
     end
   end
 end

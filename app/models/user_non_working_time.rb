@@ -77,7 +77,7 @@ class UserNonWorkingTime < ApplicationRecord
 
   delegate :count, to: :working_days, prefix: true
 
-  def clip_to_year(year)
+  def clip_to_year(year, system_non_working_dates: nil)
     year_start = Date.new(year, 1, 1)
     year_end   = Date.new(year, 12, 31)
 
@@ -88,7 +88,7 @@ class UserNonWorkingTime < ApplicationRecord
       non_working_time: self,
       start_date: clipped_start,
       end_date: clipped_end,
-      working_days_count: working_days_in(clipped_start..clipped_end).count,
+      working_days_count: working_days_in(clipped_start..clipped_end, system_non_working_dates:).count,
       continues_from_previous_year: start_date < year_start,
       continues_into_next_year: end_date > year_end
     )
@@ -96,9 +96,9 @@ class UserNonWorkingTime < ApplicationRecord
 
   private
 
-  def working_days_in(date_range)
+  def working_days_in(date_range, system_non_working_dates: nil)
     working_wdays = Setting.working_days.map { |d| d % 7 }
-    system_wide = NonWorkingDay.where(date: date_range).pluck(:date).to_set
+    system_wide = system_non_working_dates || NonWorkingDay.where(date: date_range).pluck(:date).to_set
     date_range.select { |date| working_wdays.include?(date.wday) && system_wide.exclude?(date) }
   end
 

@@ -74,10 +74,11 @@ module Users
       end
 
       def user_events
+        system_dates = non_working_times.grep(NonWorkingDay).to_set(&:date)
         non_working_times
           .grep(UserNonWorkingTime)
           .map do |nwt|
-            clipped = nwt.clip_to_year(year)
+            clipped = nwt.clip_to_year(year, system_non_working_dates: system_dates)
             {
               start: clipped.start_date.iso8601,
               end: (clipped.end_date + 1.day).iso8601,

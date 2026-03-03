@@ -30,10 +30,7 @@
 
 module UserNonWorkingTimes
   class DeleteContract < ::DeleteContract
-    delete_permission -> {
-      user.allowed_globally?(:manage_working_times) ||
-        (model.user_id == user.id && user.allowed_globally?(:manage_own_working_times))
-    }
+    delete_permission -> { BaseContract.can_manage?(user:, target_user: model.user) }
 
     def self.can_delete?(user:, target_user:)
       BaseContract.can_manage?(user:, target_user:)

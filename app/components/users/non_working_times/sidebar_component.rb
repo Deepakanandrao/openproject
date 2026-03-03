@@ -40,10 +40,11 @@ module Users
       private
 
       def user_non_working_times
+        system_dates = non_working_times.grep(NonWorkingDay).to_set(&:date)
         non_working_times
           .grep(UserNonWorkingTime)
           .sort_by(&:start_date)
-          .map { |nwt| nwt.clip_to_year(year) }
+          .map { |nwt| nwt.clip_to_year(year, system_non_working_dates: system_dates) }
       end
 
       def global_day_count
