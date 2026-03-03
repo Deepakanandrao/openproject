@@ -38,8 +38,6 @@ module Admin::Import::Jira
     VALID_STEPS = %i[
       init
       fetch_instance_meta
-      fetch_groups_and_users
-      import_groups_and_users
       fetch_projects_meta
       import_scope
       configure
@@ -151,14 +149,6 @@ module Admin::Import::Jira
 
     def configure
       @jira_import.transition_to!(:configuring)
-    end
-
-    def fetch_groups_and_users
-      @jira_import.transition_to!(:groups_and_users_fetching)
-    end
-
-    def import_groups_and_users
-      @jira_import.transition_to!(:groups_and_users_importing)
     end
 
     def revert

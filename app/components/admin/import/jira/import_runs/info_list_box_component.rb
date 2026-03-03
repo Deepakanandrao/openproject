@@ -64,7 +64,7 @@ module Admin::Import::Jira::ImportRuns
                )
              ))
       if item[:url].present?
-        concat(render(Primer::Beta::Link.new(href: item[:url], ml: 1)) { item[:label] })
+        concat(render(Primer::Beta::Link.new(href: item[:url], ml: 1, target: "_blank")) { item[:label] })
       else
         concat(render(Primer::Beta::Text.new(ml: 1)) { item[:label] })
       end
