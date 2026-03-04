@@ -31,7 +31,6 @@
 module ProjectCustomFields
   class LoadService
     def initialize(project:, project_custom_fields:)
-      super()
       @project = project
       @project_custom_fields = project_custom_fields
       eager_load_project_custom_field_values
