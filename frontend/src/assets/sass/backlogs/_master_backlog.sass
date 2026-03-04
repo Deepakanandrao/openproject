@@ -100,6 +100,22 @@ $op-backlogs-header--points-min-width-narrow: 2rem
         flex: 1 1 auto
         min-width: 33%
 
+//------------------ Header responsive styling -----------------------
+// Note: 1143px is matching the the breakpoint we use within PVC for the container query.
+// Thus the layout switches at the exact same point.
+@container backlogsListsContainer (max-width: 1443px)
+  .op-backlogs-header
+    grid-template-rows: 1fr auto
+    grid-template-areas: "collapsible points menu" "collapsible . . "
+    align-items: baseline
+
+    &--menu
+      align-self: flex-start
+      // Unfortunately, the invisible button style bites us here again.
+      margin-top: -6px
+
+
+//------------------ Mobile responsive styling -----------------------
 @container backlogsListsContainer (max-width: 654px)
   .op-backlogs-header
     grid-template-columns: 1fr minmax($op-backlogs-header--points-min-width-narrow, max-content) auto
