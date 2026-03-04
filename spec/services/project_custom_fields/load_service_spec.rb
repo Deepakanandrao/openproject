@@ -33,20 +33,55 @@ require "spec_helper"
 RSpec.describe ProjectCustomFields::LoadService do
   let(:project) { create(:project) }
   let(:custom_field) { create(:list_project_custom_field, multi_value: true) }
+  let(:project_custom_fields) { ProjectCustomField.where(id: project_custom_field_ids) }
+  let(:project_custom_field_ids) { custom_field.id }
 
-  subject(:service) do
-    described_class.new(project:, project_custom_fields: ProjectCustomField.where(id: custom_field.id))
-  end
+  subject(:service) { described_class.new(project:, project_custom_fields:) }
 
   describe "#get_eager_loaded_project_custom_field_values_for" do
-    # intentionally out of order
-    let!(:cv2) { create(:custom_value, id: 1002, customized: project, custom_field:) }
-    let!(:cv1) { create(:custom_value, id: 1001, customized: project, custom_field:) }
-    let!(:cv3) { create(:custom_value, id: 1003, customized: project, custom_field:) }
+    context "when the custom field has no values" do
+      it "returns an empty array" do
+        expect(service.get_eager_loaded_project_custom_field_values_for(custom_field.id)).to eq([])
+      end
+    end
 
-    it "returns values for the given custom field ordered by id" do
-      values = service.get_eager_loaded_project_custom_field_values_for(custom_field.id)
-      expect(values).to eq([cv1, cv2, cv3])
+    context "when the custom field has values" do
+      # intentionally out of order
+      let!(:cv2) { create(:custom_value, id: 1002, customized: project, custom_field:) }
+      let!(:cv1) { create(:custom_value, id: 1001, customized: project, custom_field:) }
+      let!(:cv3) { create(:custom_value, id: 1003, customized: project, custom_field:) }
+
+      it "returns the values ordered by id" do
+        expect(service.get_eager_loaded_project_custom_field_values_for(custom_field.id))
+          .to eq([cv1, cv2, cv3])
+      end
+
+      it "returns empty array for other custom field" do
+        expect(service.get_eager_loaded_project_custom_field_values_for(0))
+          .to eq([])
+      end
+
+      context "when another custom field has values" do
+        let(:other_custom_field) { create(:list_project_custom_field, multi_value: true) }
+        let!(:other_cv) { create(:custom_value, customized: project, custom_field: other_custom_field) }
+        let(:project_custom_field_ids) { [custom_field.id, other_custom_field.id] }
+
+        it "returns values only for the requested custom field" do
+          expect(service.get_eager_loaded_project_custom_field_values_for(custom_field.id))
+            .to eq([cv1, cv2, cv3])
+          expect(service.get_eager_loaded_project_custom_field_values_for(other_custom_field.id))
+            .to eq([other_cv])
+        end
+      end
+
+      context "when another project has values for the same custom field" do
+        let!(:other_project_cv) { create(:custom_value, customized: create(:project), custom_field:) }
+
+        it "returns only values for the given project" do
+          expect(service.get_eager_loaded_project_custom_field_values_for(custom_field.id))
+            .to eq([cv1, cv2, cv3])
+        end
+      end
     end
   end
 end
