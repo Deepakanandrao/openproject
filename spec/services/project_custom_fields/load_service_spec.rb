@@ -28,30 +28,25 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module ProjectCustomFields
-  class LoadService
-    def initialize(project:, project_custom_fields:)
-      super()
-      @project = project
-      @project_custom_fields = project_custom_fields
-      eager_load_project_custom_field_values
-    end
+require "spec_helper"
 
-    def get_eager_loaded_project_custom_field_values_for(custom_field_id)
-      @eager_loaded_project_custom_field_values.select { |pcfv| pcfv.custom_field_id == custom_field_id }
-    end
+RSpec.describe ProjectCustomFields::LoadService do
+  let(:project) { create(:project) }
+  let(:custom_field) { create(:list_project_custom_field, multi_value: true) }
 
-    private
+  subject(:service) do
+    described_class.new(project:, project_custom_fields: ProjectCustomField.where(id: custom_field.id))
+  end
 
-    def eager_load_project_custom_field_values
-      @eager_loaded_project_custom_field_values = CustomValue
-                                                    .includes(custom_field: :custom_options)
-                                                    .where(
-                                                      custom_field_id: @project_custom_fields.pluck(:id),
-                                                      customized_id: @project.id
-                                                    )
-                                                    .order(:id)
-                                                    .to_a
+  describe "#get_eager_loaded_project_custom_field_values_for" do
+    # intentionally out of order
+    let!(:cv2) { create(:custom_value, id: 1002, customized: project, custom_field:) }
+    let!(:cv1) { create(:custom_value, id: 1001, customized: project, custom_field:) }
+    let!(:cv3) { create(:custom_value, id: 1003, customized: project, custom_field:) }
+
+    it "returns values for the given custom field ordered by id" do
+      values = service.get_eager_loaded_project_custom_field_values_for(custom_field.id)
+      expect(values).to eq([cv1, cv2, cv3])
     end
   end
 end
