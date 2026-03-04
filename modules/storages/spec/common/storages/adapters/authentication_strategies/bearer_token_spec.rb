@@ -44,6 +44,7 @@ module Storages
 
           Authentication[strategy].call(storage:) do |http|
             was_yielded = true
+            expect(http.instance_variable_get(:@options).auth_header_type).to eq("Bearer")
             expect(http.instance_variable_get(:@options).auth_header_value).to eq(access_token)
           end
 
