@@ -46,8 +46,8 @@ module ProjectCustomFields
       @eager_loaded_project_custom_field_values = CustomValue
                                                     .includes(custom_field: :custom_options)
                                                     .where(
-                                                      custom_field_id: @project_custom_fields.pluck(:id),
-                                                      customized_id: @project.id
+                                                      custom_field: @project_custom_fields,
+                                                      customized: @project
                                                     )
                                                     .order(:id)
                                                     .to_a
