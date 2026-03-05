@@ -65,6 +65,8 @@ module OpenProject
       @default = new
 
       class << self
+        attr_reader :default
+
         delegate :register, :registered?, :fetch_handler, :fetch_contract, :resolve_model_class, to: :@default
       end
     end

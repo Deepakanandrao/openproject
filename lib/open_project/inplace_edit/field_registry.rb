@@ -46,6 +46,8 @@ module OpenProject
       @default = new
 
       class << self
+        attr_reader :default
+
         delegate :register, :fetch, to: :@default
       end
     end

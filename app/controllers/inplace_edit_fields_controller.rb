@@ -122,7 +122,7 @@ class InplaceEditFieldsController < ApplicationController
   end
 
   def update_registry
-    @update_registry ||= OpenProject::InplaceEdit::UpdateRegistry
+    @update_registry ||= OpenProject::InplaceEdit::UpdateRegistry.default
   end
 
   def system_arguments

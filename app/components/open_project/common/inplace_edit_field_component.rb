@@ -36,7 +36,7 @@ module OpenProject
       attr_reader :model, :attribute, :enforce_edit_mode
 
       def initialize(model:, attribute:, enforce_edit_mode: false,
-                     update_registry: OpenProject::InplaceEdit::UpdateRegistry, **system_arguments)
+                     update_registry: OpenProject::InplaceEdit::UpdateRegistry.default, **system_arguments)
         super()
         @model = model
         @attribute = attribute
