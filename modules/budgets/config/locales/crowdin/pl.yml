@@ -80,12 +80,25 @@ pl:
           description: "Add details about your planned budget to see data here"
         caption:
           zero: "Brak danych budżetowych."
-          one: "Data aggregated from %{count} budget included in this %{workspace}."
-          other: "Data aggregated from %{count} budgets included in this %{workspace}."
-        caption_with_subitems:
-          zero: "No budget data."
-          one: "Data aggregated from %{count} budget included in this %{workspace} and its subitems."
-          other: "Data aggregated from %{count} budgets included in this %{workspace} and its subitems."
+          one: "Dane zagregowane z %{count} budżetu zawarte w %{portfolios}, %{subprograms} i %{subprojects}."
+          other: "Dane zagregowane z %{count} budżetów zawarte w %{portfolios}, %{subprograms} i %{subprojects}."
+        caption_simple:
+          one: "Dane zagregowane z %{count} budżetu."
+          few: "Dane zagregowane z %{count} budżetów."
+          many: "Dane zagregowane z %{count} budżetów."
+          other: "Dane zagregowane z %{count} budżetu."
+        portfolio:
+          zero: "brak portfoliów"
+          one: "1 portfolio"
+          other: "Liczba portfoliów: %{count}"
+        subprogram:
+          zero: "brak podprogramów"
+          one: "1 podprogram"
+          other: "Liczba podprogramów: %{count}"
+        subproject:
+          zero: "brak podprojektów"
+          one: "1 podprojekt"
+          other: "Liczba podprojektów: %{count}"
         view_details: "Wyświetl szczegóły budżetu"
   events:
     budget: "Budżet edytowany"

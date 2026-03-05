@@ -277,7 +277,7 @@ pl:
               label_revert: "Cofnij import"
               button_revert: "Cofnij import"
               button_done: "Sfinalizuj import"
-              preview_description: 'Zaimportowane dane są obecnie w trybie przeglądu. Kliknij przycisk „Sfinalizuj import”, aby zaimportować dane na stałe lub „Cofnij import”, aby cofnąć wszystkie zmiany wprowadzone wskutek importu.'
+              preview_description: "Zaimportowane dane są obecnie w trybie przeglądu. Kliknij przycisk „Sfinalizuj import”, aby zaimportować dane na stałe lub „Cofnij import”, aby cofnąć wszystkie zmiany wprowadzone wskutek importu."
               label_finalizing_progress: "Finalizowanie importu..."
               label_finalized: "Sfinalizowano import."
               label_revert_progress: "Cofanie importu..."
@@ -1385,9 +1385,6 @@ pl:
         dependencies: "Zależności"
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "Sharing"
-        finish_date: "End date"
       jira_import:
         projects: "Projekty"
       "import/jira":

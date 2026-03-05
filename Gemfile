@@ -69,10 +69,10 @@ gem "scimitar", "~> 2.13"
 gem "acts_as_list", "~> 1.2.6"
 gem "acts_as_tree", "~> 2.9.0"
 gem "awesome_nested_set", "~> 3.9.0"
-gem "closure_tree", "~> 9.5.0"
+gem "closure_tree", "~> 9.6.0"
 gem "rubytree", "~> 2.2.0"
 
-gem "addressable", "~> 2.8.0"
+gem "addressable", "~> 2.8.9"
 
 # Remove whitespace from model input
 gem "auto_strip_attributes", "~> 2.5"
@@ -127,7 +127,7 @@ gem "multi_json", "~> 1.19.0"
 gem "oj", "~> 3.16.12"
 
 gem "daemons"
-gem "good_job", "~> 4.12.0" # update should be done manually in sync with saas-openproject version.
+gem "good_job", "~> 4.13.3" # update should be done manually in sync with saas-openproject version.
 
 gem "rack-protection", "~> 3.2.0"
 
@@ -199,8 +199,8 @@ gem "rack-timeout", "~> 0.7.0", require: "rack/timeout/base"
 
 gem "nokogiri", "~> 1.19.1"
 
-gem "carrierwave", "~> 1.3.4"
-gem "carrierwave_direct", "~> 2.1.0"
+gem "carrierwave", "~> 2.2.6"
+gem "carrierwave_direct", "~> 3.0.0"
 gem "fog-aws"
 
 gem "aws-sdk-core", "~> 3.241"
@@ -276,7 +276,7 @@ group :test do
   gem "rspec-rails", "~> 8.0.3", group: :development
 
   # Retry failures within the same environment
-  gem "retriable", "~> 3.1.1"
+  gem "retriable", "~> 3.2.1"
   gem "rspec-retry", "~> 0.6.1"
 
   # Accessibility tests
@@ -388,7 +388,7 @@ end
 gem "bootsnap", "~> 1.23.0", require: false
 
 # API gems
-gem "grape", "~> 2.4.0"
+gem "grape", "~> 3.1.1"
 gem "grape_logging", "~> 3.0.0"
 gem "roar", "~> 1.2.0"
 
