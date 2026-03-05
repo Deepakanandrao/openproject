@@ -23,23 +23,22 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class ApplyWorkPackageAttachmentSettingsToExistingProjects < ActiveRecord::Migration[8.1]
+class FixEmptyDisplayRepresentationOnCfSections < ActiveRecord::Migration[8.1]
   def up
     execute <<~SQL.squish
-      UPDATE projects
-      SET settings = jsonb_set(
-        settings,
-        '{deactivate_work_package_attachments}',
-        (SELECT to_jsonb(not settings.value::boolean)
-         FROM settings
-         WHERE settings.name = 'show_work_package_attachments')
-      )
-      WHERE NOT (settings ? 'deactivate_work_package_attachments')
+      UPDATE custom_field_sections
+      SET display_representation = '{"overview": "#{CustomFieldSection::DEFAULT_OVERVIEW_KEY}"}'
+      WHERE display_representation = '{}'
     SQL
+  end
+
+  def down
+    # No rollback: we cannot distinguish sections that originally had {}
+    # from ones that legitimately had the default value set.
   end
 end
