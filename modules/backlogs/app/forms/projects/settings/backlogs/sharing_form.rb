@@ -39,7 +39,7 @@ module Projects
           ) do |group|
             Project::SPRINT_SHARING_OPTIONS.each do |option|
               group.radio_button(
-                label: I18n.t("projects.settings.backlog_sharing.options.#{option}.label"),
+                label: sharing_option_text(option, :label),
                 value: option,
                 checked: checked?(option),
                 disabled: disabled?(option),
@@ -69,14 +69,15 @@ module Projects
           option == Project::SHARE_ALL_PROJECTS && share_all_projects_disabled?
         end
 
+        def sharing_option_text(option, key, **)
+          I18n.t("projects.settings.backlog_sharing.options.#{option}.#{key}", **)
+        end
+
         def caption_for(option)
           if disabled?(option)
-            I18n.t(
-              "projects.settings.backlog_sharing.options.#{option}.disabled_caption",
-              name: sprint_sharer.name
-            )
+            sharing_option_text(option, :disabled_caption, name: global_sprint_sharer.name)
           else
-            I18n.t("projects.settings.backlog_sharing.options.#{option}.caption")
+            sharing_option_text(option, :caption)
           end
         end
 
@@ -98,7 +99,7 @@ module Projects
                    data: { value: option, "show-when-value-selected-target": "effect" }
                  )) do
             render(Primer::Alpha::Banner.new(**banner_arguments)) do
-              I18n.t("projects.settings.backlog_sharing.options.#{option}.#{type}")
+              sharing_option_text(option, type)
             end
           end
         end
