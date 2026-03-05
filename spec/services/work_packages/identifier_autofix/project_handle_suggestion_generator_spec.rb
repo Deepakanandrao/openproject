@@ -30,7 +30,7 @@
 
 require "rails_helper"
 
-RSpec.describe WorkPackages::ProjectHandleSuggestionGenerator do
+RSpec.describe WorkPackages::IdentifierAutofix::ProjectHandleSuggestionGenerator do
   describe ".call" do
     context "when given an empty array" do
       it "returns an empty array" do
