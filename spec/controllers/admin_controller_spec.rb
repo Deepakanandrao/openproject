@@ -145,7 +145,7 @@ RSpec.describe AdminController do
       end
     end
 
-    context "with an unsafe SMTP adress on the allowlist", with_ssrf_ip_allowlist: ['127.0.0.1'] do
+    context "with an unsafe SMTP adress on the allowlist", with_ssrf_ip_allowlist: %w(127.0.0.1) do
       before do
         allow(ActionMailer::Base).to receive(:smtp_settings).and_return({ address: "127.0.0.1" })
 

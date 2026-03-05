@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -29,8 +31,8 @@
 require "spec_helper"
 
 RSpec.describe OpenProject::SsrfProtection do
-  describe ".safe_ip_address" do
-    subject { described_class.safe_ip_address(input) }
+  describe ".safe_ip" do
+    subject { described_class.safe_ip(input) }
 
     context "with a public IPv4 string" do
       let(:input) { "1.1.1.1" }
@@ -92,10 +94,10 @@ RSpec.describe OpenProject::SsrfProtection do
       let(:input) { "example.com" }
 
       before do
-        allow(described_class).to receive(:resolver).and_return(->(host) { resolved_addresses })
+        allow(described_class).to receive(:resolver).and_return(proc { resolved_addresses })
       end
 
-      context "that resolves to a public IP" do
+      context "if it resolves to a public IP" do
         let(:resolved_addresses) { [IPAddr.new("93.184.216.34")] }
 
         it "returns the resolved IPAddr" do
@@ -103,7 +105,7 @@ RSpec.describe OpenProject::SsrfProtection do
         end
       end
 
-      context "that resolves to a private IP" do
+      context "if it resolves to a private IP" do
         let(:resolved_addresses) { [IPAddr.new("10.0.0.1")] }
 
         it "returns nil" do
@@ -111,7 +113,7 @@ RSpec.describe OpenProject::SsrfProtection do
         end
       end
 
-      context "that resolves to multiple IPs with both private and public" do
+      context "if it resolves to multiple IPs with both private and public" do
         let(:resolved_addresses) { [IPAddr.new("10.0.0.1"), IPAddr.new("1.2.3.4")] }
 
         it "returns the first public IPAddr" do
