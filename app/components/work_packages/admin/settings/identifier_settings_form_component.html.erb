@@ -29,30 +29,12 @@
   ++#
 %>
 
-<%#
-  Layout:
-    [outer div — Stimulus controller, full width]
-      [settings_primer_form_with — 680px wrapper, radio buttons only]
-        <form id="wp-identifier-settings-form">...</form>
-      [full-width autofix section — banner + table, Stimulus target]
-      [op-admin-settings-form-wrapper — 680px, submit buttons]
-        "Save"          — type: :submit, visible when autofix section is hidden
-        "Autofix & save" — type: :button, visible when autofix section is shown;
-                           opens the confirmation dialog via Stimulus before POSTing
-    [change-identifiers-dialog — DangerDialog, opened by Stimulus on confirm]
-
-  Two separate buttons are rendered (each fully Primer-accessible) rather than
-  overwriting textContent on a single button, which would purge Primer's inner
-  accessibility spans/aria nodes.
-%>
-
 <%= tag.div(
       data: {
         controller: "admin--work-packages-identifier",
         admin__work_packages_identifier_has_problematic_projects_value: has_problematic_projects?
       }
     ) do %>
-  <%# Constrained-width form: radio buttons only (no submit inside the form element) %>
   <%=
     render(
       WorkPackages::Admin::Settings::IdentifierRadioFormComponent.new(
@@ -66,7 +48,6 @@
     )
   %>
 
-  <%# Full-width autofix section — outside the 680px settings_primer_form_with wrapper %>
   <%= tag.div(
         hidden: !show_autofix_section?,
         data: { admin__work_packages_identifier_target: "autofixSection" }
@@ -81,9 +62,6 @@
     %>
   <% end %>
 
-  <%# Submit buttons: constrained to 680px %>
-  <%# "Save" — direct submit, shown when there is no autofix section %>
-  <%# "Autofix and save" — opens dialog, shown when autofix section is visible %>
   <div class="op-admin-settings-form-wrapper">
     <%=
       render(
@@ -110,7 +88,5 @@
       ) { t("admin.settings.work_packages_identifier.button_autofix") }
     %>
   </div>
-
-  <%# Confirmation dialog — opened by Stimulus when "Autofix and save" is clicked %>
   <%= render(WorkPackages::Admin::Settings::ChangeIdentifiersDialogComponent.new) %>
 <% end %>
