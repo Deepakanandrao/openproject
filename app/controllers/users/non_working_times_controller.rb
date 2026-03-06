@@ -36,18 +36,11 @@ class Users::NonWorkingTimesController < ApplicationController
 
   before_action :check_working_times_feature_flag_is_active
 
-  authorization_checked! :index, :new, :create, :edit, :update, :destroy, :working_days_preview
+  authorization_checked! :new, :create, :edit, :update, :destroy, :working_days_preview
 
   before_action :find_user
   before_action :authorize_manage_working_times
   before_action :find_non_working_time, only: %i[edit update destroy]
-
-  def index
-    @year = (params[:year].presence || Date.current.year).to_i
-    @non_working_times = @user.non_working_time_entities_for_year(@year)
-
-    render "users/edit"
-  end
 
   def new
     @non_working_time = @user.non_working_times.build(prefilled_params)

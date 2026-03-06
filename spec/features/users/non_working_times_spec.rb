@@ -31,80 +31,50 @@
 require "spec_helper"
 
 RSpec.describe "User non-working times", :js, with_flag: { user_working_times: true } do
-  shared_let(:admin) { create(:admin) }
+  shared_let(:user) { create(:user, global_permissions: %i[manage_user view_all_principals manage_working_times]) }
   shared_let(:managed_user) { create(:user) }
 
-  let(:dialog_selector) { "##{Users::NonWorkingTimes::DialogComponent::DIALOG_ID}" }
+  let(:nwt_page) { Pages::Users::NonWorkingTimes.new(user: managed_user, year: 2026) }
 
-  def visit_non_working_times(for_user: managed_user, year: 2026)
-    visit user_non_working_times_path(for_user, year:)
-  end
-
-  def open_create_dialog
-    click_on I18n.t(:button_add_non_working_time)
-    expect(page).to have_css(dialog_selector)
-  end
-
-  def set_date_in_dialog(field_name, date)
-    datepicker = Components::BasicDatepicker.new(dialog_selector)
-    datepicker.open("input[name='non_working_time[#{field_name}]']")
-    datepicker.set_date(date)
-  end
-
-  def submit_dialog
-    within(dialog_selector) { click_on I18n.t(:button_confirm) }
-    expect(page).to have_no_css(dialog_selector)
-  end
-
-  def expect_sidebar_entry(text)
-    expect(page).to have_css("a[data-controller='async-dialog']", text:)
-  end
-
-  def expect_no_sidebar_entry(text)
-    expect(page).to have_no_css("a[data-controller='async-dialog']", text:)
-  end
-
-  current_user { admin }
+  current_user { user }
 
   describe "creating a non-working time" do
-    before { visit_non_working_times }
+    before { nwt_page.visit! }
 
     it "creates a single-day entry" do
-      open_create_dialog
+      nwt_page.open_create_dialog
 
-      set_date_in_dialog(:start_date, Date.new(2026, 3, 10))
-      set_date_in_dialog(:end_date, Date.new(2026, 3, 10))
+      nwt_page.set_start_date(Date.new(2026, 3, 10))
+      nwt_page.set_end_date(Date.new(2026, 3, 10))
 
-      submit_dialog
+      nwt_page.confirm_dialog
 
-      expect_sidebar_entry("Mar 10")
+      nwt_page.expect_sidebar_entry("Mar 10")
       expect(managed_user.non_working_times.count).to eq(1)
     end
 
     it "creates a multi-day range and shows correct working day count" do
-      open_create_dialog
+      nwt_page.open_create_dialog
 
       # Monday to Friday = 5 working days
-      set_date_in_dialog(:start_date, Date.new(2026, 3, 9))
-      set_date_in_dialog(:end_date, Date.new(2026, 3, 13))
+      nwt_page.set_start_date(Date.new(2026, 3, 9))
+      nwt_page.set_end_date(Date.new(2026, 3, 13))
 
-      submit_dialog
+      nwt_page.confirm_dialog
 
-      expect_sidebar_entry("5 working days")
+      nwt_page.expect_sidebar_entry("5 working days")
     end
 
     it "shows a validation error when end date is before start date" do
-      open_create_dialog
+      nwt_page.open_create_dialog
 
-      set_date_in_dialog(:start_date, Date.new(2026, 3, 13))
-      set_date_in_dialog(:end_date, Date.new(2026, 3, 9))
+      nwt_page.set_start_date(Date.new(2026, 3, 13))
+      nwt_page.set_end_date(Date.new(2026, 3, 9))
 
-      within(dialog_selector) { click_on I18n.t(:button_confirm) }
+      within(nwt_page.dialog_selector) { click_on I18n.t(:button_confirm) }
 
-      expect(page).to have_css(dialog_selector)
-      within(dialog_selector) do
-        expect(page).to have_text(I18n.t("activerecord.errors.models.user_non_working_time.attributes.end_date.not_before_start_date"))
-      end
+      nwt_page.expect_dialog_open
+      nwt_page.expect_validation_error(I18n.t("activerecord.errors.messages.not_before_start_date"))
     end
   end
 
@@ -115,69 +85,144 @@ RSpec.describe "User non-working times", :js, with_flag: { user_working_times: t
                                      end_date: Date.new(2026, 3, 11))
     end
 
-    before { visit_non_working_times }
+    before { nwt_page.visit! }
 
     it "opens the edit dialog when clicking a sidebar entry" do
-      find("a[data-controller='async-dialog']").click
-      expect(page).to have_css(dialog_selector)
+      nwt_page.open_edit_dialog_from_sidebar
 
-      within(dialog_selector) do
-        expect(page).to have_field("non_working_time[start_date]", with: "2026-03-09")
-        expect(page).to have_field("non_working_time[end_date]", with: "2026-03-11")
-      end
+      nwt_page.expect_dialog_dates(start_date: "2026-03-09", end_date: "2026-03-11")
     end
 
     it "saves updated dates" do
-      find("a[data-controller='async-dialog']").click
-      expect(page).to have_css(dialog_selector)
+      nwt_page.open_edit_dialog_from_sidebar
 
-      set_date_in_dialog(:end_date, Date.new(2026, 3, 13))
-      submit_dialog
+      nwt_page.set_end_date(Date.new(2026, 3, 13))
+      nwt_page.confirm_dialog
 
       expect(non_working_time.reload.end_date).to eq(Date.new(2026, 3, 13))
     end
   end
 
   describe "deleting a non-working time" do
-    shared_let(:non_working_time) do
+    let!(:non_working_time) do
       create(:user_non_working_time, user: managed_user,
                                      start_date: Date.new(2026, 4, 1),
                                      end_date: Date.new(2026, 4, 3))
     end
 
-    before { visit_non_working_times }
+    before { nwt_page.visit! }
 
     it "deletes the entry via the delete button in the edit dialog" do
-      find("a[data-controller='async-dialog']").click
-      expect(page).to have_css(dialog_selector)
+      nwt_page.open_edit_dialog_from_sidebar
+      nwt_page.delete_in_dialog
 
-      accept_confirm do
-        within(dialog_selector) { click_on I18n.t(:button_delete) }
-      end
-
-      expect(page).to have_no_css(dialog_selector)
       expect(UserNonWorkingTime.exists?(non_working_time.id)).to be(false)
+    end
+  end
+
+  describe "calendar interaction" do
+    before { nwt_page.visit! }
+
+    it "pre-fills start and end date when clicking a single calendar day" do
+      nwt_page.click_calendar_day("2026-03-10")
+
+      nwt_page.expect_dialog_open
+      nwt_page.expect_dialog_dates(start_date: "2026-03-10", end_date: "2026-03-10")
+    end
+
+    it "passes the new URL to the calendar so day selection is enabled" do
+      nwt_page.expect_selectable_calendar
+    end
+  end
+
+  describe "calendar interaction - editing from the calendar event" do
+    shared_let(:non_working_time) do
+      create(:user_non_working_time, user: managed_user,
+                                     start_date: Date.new(2026, 3, 9),
+                                     end_date: Date.new(2026, 3, 11))
+    end
+
+    before { nwt_page.visit! }
+
+    it "opens the edit dialog when clicking a calendar event" do
+      nwt_page.open_edit_dialog_from_calendar
+
+      nwt_page.expect_dialog_dates(start_date: "2026-03-09", end_date: "2026-03-11")
+    end
+  end
+
+  describe "working days count preview" do
+    before { nwt_page.visit! }
+
+    it "updates the working days count in real time as dates change" do
+      nwt_page.open_create_dialog
+
+      # Monday to Friday = 5 working days
+      nwt_page.set_start_date(Date.new(2026, 3, 9))
+      nwt_page.set_end_date(Date.new(2026, 3, 13))
+
+      nwt_page.expect_working_days_count(5)
+    end
+  end
+
+  describe "overlap validation" do
+    shared_let(:existing_nwt) do
+      create(:user_non_working_time, user: managed_user,
+                                     start_date: Date.new(2026, 3, 9),
+                                     end_date: Date.new(2026, 3, 15))
+    end
+
+    before { nwt_page.visit! }
+
+    it "shows a validation error when the new range overlaps an existing entry" do
+      nwt_page.open_create_dialog
+
+      nwt_page.set_start_date(Date.new(2026, 3, 12))
+      nwt_page.set_end_date(Date.new(2026, 3, 20))
+
+      within(nwt_page.dialog_selector) { click_on I18n.t(:button_confirm) }
+
+      nwt_page.expect_dialog_open
+      nwt_page.expect_validation_error(I18n.t("activerecord.errors.messages.overlapping_range"))
+    end
+  end
+
+  describe "global non-working days exclusion" do
+    shared_let(:holiday) do
+      create(:non_working_day, date: Date.new(2026, 3, 11)) # Wednesday
+    end
+
+    before { nwt_page.visit! }
+
+    it "excludes system non-working days from the working day count preview" do
+      nwt_page.open_create_dialog
+
+      # Mon Mar 9 to Fri Mar 13 would be 5 days, but Wed Mar 11 is a system holiday
+      nwt_page.set_start_date(Date.new(2026, 3, 9))
+      nwt_page.set_end_date(Date.new(2026, 3, 13))
+
+      nwt_page.expect_working_days_count(4)
     end
   end
 
   describe "access control" do
     context "with manage_own_working_times permission" do
       current_user { create(:user, global_permissions: [:manage_own_working_times]) }
+      let(:nwt_page) { Pages::Users::NonWorkingTimes.new(user: current_user, year: 2026) }
 
-      it "can view and manage their own non-working times" do
-        visit user_non_working_times_path(current_user, year: 2026)
-
-        expect(page).to have_button(I18n.t(:button_add_non_working_time))
+      it "is denied access to their own non-working times on the users page" do
+        nwt_page.visit!
+        nwt_page.expect_not_authorized
       end
 
       it "is denied access to another user's non-working times" do
-        visit_non_working_times
-        expect(page).to have_text(I18n.t(:notice_not_authorized))
+        Pages::Users::NonWorkingTimes.new(user: managed_user, year: 2026).visit!
+        nwt_page.expect_not_authorized
       end
     end
 
-    context "with manage_working_times permission" do
-      current_user { create(:user, global_permissions: [:manage_working_times]) }
+    context "with manage_user, view_all_principals, and manage_working_times permissions" do
+      current_user { create(:user, global_permissions: %i[manage_user view_all_principals manage_working_times]) }
 
       shared_let(:other_user_nwt) do
         create(:user_non_working_time, user: managed_user,
@@ -185,29 +230,26 @@ RSpec.describe "User non-working times", :js, with_flag: { user_working_times: t
                                        end_date: Date.new(2026, 5, 8))
       end
 
-      before { visit_non_working_times }
+      before { nwt_page.visit! }
 
       it "can view another user's non-working times page with the add button" do
-        expect(page).to have_button(I18n.t(:button_add_non_working_time))
+        nwt_page.expect_add_button
       end
 
       it "can open the edit dialog for another user's entry via the sidebar" do
-        find("a[data-controller='async-dialog']").click
-        expect(page).to have_css(dialog_selector)
+        nwt_page.open_edit_dialog_from_sidebar
 
-        within(dialog_selector) do
-          expect(page).to have_field("non_working_time[start_date]", with: "2026-05-04")
-          expect(page).to have_button(I18n.t(:button_delete))
-        end
+        nwt_page.expect_dialog_start_date("2026-05-04")
+        nwt_page.expect_dialog_has_delete_button
       end
 
       it "can create a new entry for another user" do
-        open_create_dialog
+        nwt_page.open_create_dialog
 
-        set_date_in_dialog(:start_date, Date.new(2026, 6, 1))
-        set_date_in_dialog(:end_date, Date.new(2026, 6, 5))
+        nwt_page.set_start_date(Date.new(2026, 6, 1))
+        nwt_page.set_end_date(Date.new(2026, 6, 5))
 
-        submit_dialog
+        nwt_page.confirm_dialog
 
         expect(managed_user.non_working_times.count).to eq(2)
       end
@@ -217,8 +259,8 @@ RSpec.describe "User non-working times", :js, with_flag: { user_working_times: t
       current_user { create(:user) }
 
       it "is denied access" do
-        visit_non_working_times
-        expect(page).to have_text(I18n.t(:notice_not_authorized))
+        nwt_page.visit!
+        nwt_page.expect_not_authorized
       end
     end
   end

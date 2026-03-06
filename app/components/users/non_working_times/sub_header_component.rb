@@ -62,7 +62,7 @@ module Users
       private
 
       def path_for(year:)
-        url_for(controller: params[:controller], action: params[:action], user_id: params[:user_id], year:)
+        url_for(controller: params[:controller], action: params[:action], user_id: params[:user_id], year:, tab: params[:tab])
       end
     end
   end

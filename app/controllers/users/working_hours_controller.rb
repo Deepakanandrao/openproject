@@ -36,7 +36,7 @@ class Users::WorkingHoursController < ApplicationController
 
   before_action :check_working_times_feature_flag_is_active
 
-  authorization_checked! :index, :new, :edit, :create, :update, :destroy
+  authorization_checked! :new, :edit, :create, :update, :destroy
 
   before_action :find_user
   before_action :authorize_manage_working_times
@@ -44,20 +44,6 @@ class Users::WorkingHoursController < ApplicationController
   before_action :authorize_working_hours_create, only: %i[new create]
   before_action :authorize_working_hours_edit, only: %i[edit update]
   before_action :authorize_working_hours_delete, only: %i[destroy]
-
-  def index
-    @current_working_hours = @user.working_hours.current
-
-    @future_working_hours = @user.working_hours.upcoming(Date.current + 1)
-
-    @past_working_hours = if @current_working_hours
-                            @user.working_hours.history_for(@current_working_hours)
-                          else
-                            UserWorkingHours.none
-                          end
-
-    render "users/edit"
-  end
 
   def new
     @user_working_hours = if current_context?
