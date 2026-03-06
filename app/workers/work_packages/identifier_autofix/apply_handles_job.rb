@@ -28,12 +28,9 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module WorkPackages
-  module Admin
-    module Settings
-      class IdentifierChangeInProgressComponent < ApplicationComponent
-        include OpPrimer::ComponentHelpers
-      end
-    end
+class WorkPackages::IdentifierAutofix::ApplyHandlesJob < ApplicationJob
+  def perform
+    # FIXME: replace with actual project handle migration
+    sleep 5
   end
 end

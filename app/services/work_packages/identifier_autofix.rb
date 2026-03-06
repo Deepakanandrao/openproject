@@ -29,21 +29,11 @@
 #++
 
 module WorkPackages
-  module Admin
-    module Settings
-      class IdentifierRadioFormComponent < ApplicationComponent
-        include OpPrimer::FormHelpers
-
-        def initialize(form_html: {}, radio_button_options: {})
-          super()
-          @form_html = form_html
-          @radio_button_options = radio_button_options
-        end
-
-        private
-
-        attr_reader :form_html, :radio_button_options
-      end
+  module IdentifierAutofix
+    def self.job_in_progress?
+      GoodJob::Job
+        .where(job_class: WorkPackages::IdentifierAutofix::ApplyHandlesJob.name)
+        .exists?(finished_at: nil)
     end
   end
 end

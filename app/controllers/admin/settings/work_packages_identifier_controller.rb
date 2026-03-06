@@ -30,10 +30,42 @@
 
 module Admin::Settings
   class WorkPackagesIdentifierController < ::Admin::SettingsController
+    include OpTurbo::ComponentStream
+
     before_action :check_feature_flag
 
     current_menu_item :show do
       :work_packages_identifier
+    end
+
+    def show
+      @form_state = WorkPackages::IdentifierAutofix.job_in_progress? ? :change_in_progress : :edit
+    end
+
+    def update
+      return unless params[:settings]
+
+      if ActiveRecord::Type::Boolean.new.cast(params[:confirm_dangerous_action])
+        call = update_service.new(user: current_user).call(settings_params)
+        call.on_success do
+          WorkPackages::IdentifierAutofix::ApplyHandlesJob.perform_later
+          redirect_to action: "show"
+        end
+        call.on_failure { failure_callback(call) }
+      else
+        super
+      end
+    end
+
+    def status
+      if WorkPackages::IdentifierAutofix.job_in_progress?
+        head :no_content
+      else
+        replace_via_turbo_stream(
+          component: WorkPackages::Admin::Settings::IdentifierSettingsFormComponent.new(state: :completed)
+        )
+        respond_with_turbo_streams
+      end
     end
 
     private

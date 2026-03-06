@@ -34,11 +34,17 @@ module WorkPackages
     module Settings
       class IdentifierSettingsFormComponent < ApplicationComponent
         include OpPrimer::FormHelpers
+        include OpTurbo::Streamable
 
-        attr_reader :projects_data, :total_count
+        STATES = %i[edit change_in_progress completed].freeze
 
-        def initialize
-          super
+        attr_reader :projects_data, :total_count, :state
+
+        def initialize(state: :edit)
+          raise ArgumentError, "Unknown state: #{state}" unless STATES.include?(state)
+
+          super()
+          @state         = state
           result         = WorkPackages::IdentifierAutofix::PreviewQuery.new.call
           @projects_data = result.projects_data
           @total_count   = result.total_count
@@ -51,7 +57,41 @@ module WorkPackages
         private
 
         def show_autofix_section?
-          Setting::WorkPackageIdentifier.alphanumeric? && has_problematic_projects?
+          state == :edit && Setting::WorkPackageIdentifier.alphanumeric? && has_problematic_projects?
+        end
+
+        def change_in_progress? = state == :change_in_progress
+        def completed?          = state == :completed
+
+        def wrapper_data_attrs
+          return {} unless change_in_progress?
+
+          {
+            data: {
+              controller: "poll-for-changes",
+              poll_for_changes_url_value: helpers.status_admin_settings_work_packages_identifier_path,
+              poll_for_changes_interval_value: 5000
+            }
+          }
+        end
+
+        def stimulus_div_data_attrs
+          return {} if change_in_progress?
+
+          {
+            data: {
+              controller: "admin--work-packages-identifier",
+              admin__work_packages_identifier_has_problematic_projects_value: has_problematic_projects?
+            }
+          }
+        end
+
+        def radio_button_options
+          if change_in_progress?
+            { button_options: { disabled: true } }
+          else
+            { button_options: { data: { action: "change->admin--work-packages-identifier#handleChange" } } }
+          end
         end
       end
     end

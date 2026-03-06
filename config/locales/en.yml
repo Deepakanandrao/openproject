@@ -239,8 +239,9 @@ en:
             This change will take some time to complete.
           confirm_button: Change identifiers
           checkbox_label: I understand that this will permanently change all work package IDs
+        success_banner: Successfully updated work package identifier format.
         in_progress:
-          banner_message: Project identifiers are currently being updated...
+          banner_message: Project identifiers are currently being updated to project-based alphanumerical identifiers. This may take some time.
 
     workflows:
       tabs:
