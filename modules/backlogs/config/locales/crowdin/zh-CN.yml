@@ -91,9 +91,9 @@ zh-CN:
       label_actions: "待办清单操作"
       action_menu:
         edit_sprint: "编辑冲刺"
-        new_story: "New story"
-        stories_tasks: "Stories/Tasks"
-        task_board: "Task board"
+        new_story: "新故事"
+        stories_tasks: "故事/任务"
+        task_board: "任务板"
         burndown_chart: "Burndown chart"
         wiki: "Wiki"
         properties: "Properties"
