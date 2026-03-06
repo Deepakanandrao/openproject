@@ -122,6 +122,7 @@ class Meeting < ApplicationRecord
   accepts_nested_attributes_for :participants, allow_destroy: true
 
   validates :title, :project_id, presence: true
+  validates :sharing, absence: true, unless: :onetime_template?
 
   validates :duration, numericality: { greater_than: 0 }
 
@@ -140,10 +141,10 @@ class Meeting < ApplicationRecord
   }
 
   enum :sharing, {
-    none: 0,
-    descendants: 1,
-    system: 2
-  }, prefix: :sharing
+    none: "none",
+    descendants: "descendants",
+    system: "system"
+  }, prefix: :sharing, validate: { allow_nil: true }
 
   def self.templates_visible_in_project(project, user = User.current)
     accessible_ids = Project.allowed_to(user, :view_meetings).select(:id)

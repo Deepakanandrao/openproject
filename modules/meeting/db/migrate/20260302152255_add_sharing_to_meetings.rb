@@ -30,6 +30,6 @@
 
 class AddSharingToMeetings < ActiveRecord::Migration[8.1]
   def change
-    add_column :meetings, :sharing, :integer, null: false, default: 0
+    add_column :meetings, :sharing, :string, null: true, default: nil
   end
 end
