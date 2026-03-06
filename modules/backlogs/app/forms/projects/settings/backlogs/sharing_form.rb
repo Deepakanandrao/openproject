@@ -33,6 +33,16 @@ module Projects
     module Backlogs
       class SharingForm < ApplicationForm
         form do |sharing_form|
+          # TODO: Remove this hidden field, once the `radio_button_group` supports rendering
+          # the hidden empty field.
+          # The purpose of the hidden field is to ensure we submit the `sprint_sharing` field
+          # even if no radio button is chosen. Otherwise, the submitted form will not include
+          # the field at all and the save request will return success when in fact no setting
+          # is saved.
+          # Ideally the hidden field should automatically be rendered by the `radio_button_group`
+          # helper, similar to how the `collection_radio_buttons` rails helper does.
+          sharing_form.hidden(name: :sprint_sharing, value: "")
+
           sharing_form.radio_button_group(
             name: :sprint_sharing,
             label: I18n.t("projects.settings.backlog_sharing.sprint_sharing")

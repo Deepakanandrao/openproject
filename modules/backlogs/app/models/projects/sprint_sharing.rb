@@ -39,7 +39,14 @@ module Projects::SprintSharing
   SPRINT_SHARING_OPTIONS = [NO_SHARING, SHARE_ALL_PROJECTS, SHARE_SUBPROJECTS, RECEIVE_SHARED].freeze
 
   included do
-    store_attribute :settings, :sprint_sharing, :string
+    # TODO: Change the global store_attribute_unset_values_fallback_to_default to true
+    # in the config/initializers/store_attribute.rb.
+    # Otherwise defaults set on the setting declaration are not working correctly:
+    # `store_attribute :settings, :sprint_sharing, :string, default: "no_sharing"`.
+    # The method getter override below is required to provide the default value.
+    self.store_attribute_unset_values_fallback_to_default = true
+
+    store_attribute :settings, :sprint_sharing, :string, default: NO_SHARING
 
     scope :sprint_sharing, ->(value) { where("settings->>'sprint_sharing' = ?", value) }
     scope :share_sprints_with_all_projects, -> { sprint_sharing(SHARE_ALL_PROJECTS) }
@@ -52,15 +59,6 @@ module Projects::SprintSharing
     def global_sprint_sharer
       share_sprints_with_all_projects.active.first
     end
-  end
-
-  # TODO: Change the store_attribute_unset_values_fallback_to_default to true in the
-  # config/initializers/store_attribute.rb.
-  # Otherwise defaults set on the setting declaration are not working correctly:
-  # `store_attribute :settings, :sprint_sharing, :string, default: "no_sharing"`.
-  # The method getter override below is required to provide the default value.
-  def sprint_sharing
-    super.presence || NO_SHARING
   end
 
   def share_sprints_with_all_projects?

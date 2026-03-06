@@ -6,9 +6,10 @@ require "contracts/shared/model_contract_shared_context"
 RSpec.describe Projects::BacklogSettingsContract, type: :model do
   include_context "ModelContract shared context"
 
-  shared_let(:current_user) { build_stubbed(:user) }
+  let(:current_user) { build_stubbed(:user) }
   let(:project) { create(:project) }
   let(:can_share_sprint) { true }
+
   subject(:contract) { described_class.new(project, current_user) }
 
   before do
@@ -21,14 +22,18 @@ RSpec.describe Projects::BacklogSettingsContract, type: :model do
   it_behaves_like "contract is valid"
 
   describe "validations" do
-    it { is_expected.to validate_presence_of(:sprint_sharing) }
+    it_behaves_like "contract is valid"
 
     it do
       expect(subject)
         .to validate_inclusion_of(:sprint_sharing).in_array(Project::SPRINT_SHARING_OPTIONS)
     end
 
-    it_behaves_like "contract is valid"
+    context "when sprint_sharing is empty" do
+      before { project.sprint_sharing = "" }
+
+      it_behaves_like "contract is invalid", sprint_sharing: :blank
+    end
 
     describe "permissions" do
       context "when user can share sprint" do
