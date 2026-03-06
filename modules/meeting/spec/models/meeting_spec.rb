@@ -241,4 +241,33 @@ RSpec.describe Meeting do
       it { expect(subject).to include(template_system) }
     end
   end
+
+  describe "sharing" do
+    context "for a regular meeting" do
+      let(:meeting) { build(:meeting, project:, sharing: :none) }
+
+      it "is invalid" do
+        expect(meeting).not_to be_valid
+        expect(meeting.errors[:sharing]).to be_present
+      end
+    end
+
+    context "for a series template" do
+      let(:recurring) { create(:recurring_meeting, project:) }
+      let(:meeting) { build(:meeting_template, sharing: :none, recurring_meeting: recurring) }
+
+      it "is invalid" do
+        expect(meeting).not_to be_valid
+        expect(meeting.errors[:sharing]).to be_present
+      end
+    end
+
+    context "for an onetime template" do
+      let(:meeting) { build(:onetime_template, project:, sharing: :none) }
+
+      it "is valid" do
+        expect(meeting).to be_valid
+      end
+    end
+  end
 end

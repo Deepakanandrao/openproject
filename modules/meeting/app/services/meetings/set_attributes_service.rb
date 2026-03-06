@@ -47,7 +47,7 @@ module Meetings
         model.duration ||= 1
         model.state = "draft" if !model.recurring? || model.template?
         model.notify = false
-        model.sharing = "none"
+        model.sharing = "none" if model.onetime_template?
       end
     end
 
