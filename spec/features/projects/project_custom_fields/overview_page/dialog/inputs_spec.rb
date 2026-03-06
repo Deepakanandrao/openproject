@@ -35,15 +35,57 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
   include_context "with seeded projects, members and project custom fields"
 
   let(:overview_page) { Pages::Projects::Show.new(project) }
+  let(:user) { member_with_project_attributes_edit_permissions }
 
   before do
-    login_as member_with_project_attributes_edit_permissions
+    login_as user
     overview_page.visit_page
   end
 
   describe "with correct initialization and input behaviour" do
     # not using let as dialog is closed every time, so new should be opened
     def dialog = overview_page.open_modal_for_custom_field(custom_field)
+
+    shared_examples "shows comment input only when comments are allowed by custom field" do
+      it "shows comment input only when comments are allowed by custom field" do
+        dialog.within_async_content(close_after_yield: true) do
+          expect(page).to have_no_field("Comment")
+        end
+
+        custom_field.update!(has_comment: true)
+
+        dialog.within_async_content(close_after_yield: true) do
+          expect(page).to have_field("Comment", with: "")
+        end
+
+        create(:custom_comment, custom_field:, customized: project, text: "bar")
+
+        dialog.within_async_content(close_after_yield: true) do
+          expect(page).to have_field("Comment", with: "bar")
+        end
+      end
+    end
+
+    shared_examples "displays readonly modal for user without edit permission" do
+      let(:user) { member_without_project_attributes_edit_permissions }
+      let(:value_text) { expected_initial_value }
+      let(:value_expectation) { have_text(value_text) }
+
+      it "opens show modal with readonly comment input and readonly custom field value" do
+        custom_field.update!(has_comment: true)
+        create(:custom_comment, custom_field:, customized: project, text: "baz")
+        refresh
+
+        dialog.within_dialog(close_after_yield: true) do
+          overview_page.within_custom_field_container(custom_field) do
+            expect(page).to have_no_field(custom_field.name)
+            expect(page).to value_expectation
+          end
+
+          expect(page).to have_field("Comment", with: "baz", readonly: true)
+        end
+      end
+    end
 
     describe "with input fields" do
       shared_examples "a custom field checkbox" do
@@ -80,6 +122,8 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
             expect(page).to have_no_checked_field(custom_field.name)
           end
         end
+
+        include_examples "shows comment input only when comments are allowed by custom field"
       end
 
       shared_examples "a custom field input" do
@@ -105,6 +149,8 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
             expect(page).to have_field(custom_field.name, with: default_value)
           end
         end
+
+        include_examples "shows comment input only when comments are allowed by custom field"
       end
 
       shared_examples "a rich text custom field input" do
@@ -130,6 +176,8 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
             field.expect_value(default_value)
           end
         end
+
+        include_examples "shows comment input only when comments are allowed by custom field"
       end
 
       describe "with boolean CF" do
@@ -137,6 +185,10 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
         let(:expected_initial_value) { true }
 
         it_behaves_like "a custom field checkbox"
+
+        it_behaves_like "displays readonly modal for user without edit permission" do
+          let(:value_text) { "Yes" }
+        end
       end
 
       describe "with string CF" do
@@ -146,6 +198,8 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
         let(:expected_initial_value) { "Foo" }
 
         it_behaves_like "a custom field input"
+
+        it_behaves_like "displays readonly modal for user without edit permission"
       end
 
       describe "with integer CF" do
@@ -155,6 +209,8 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
         let(:expected_initial_value) { 123 }
 
         it_behaves_like "a custom field input"
+
+        it_behaves_like "displays readonly modal for user without edit permission"
       end
 
       describe "with float CF" do
@@ -164,6 +220,8 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
         let(:expected_initial_value) { 123.456 }
 
         it_behaves_like "a custom field input"
+
+        it_behaves_like "displays readonly modal for user without edit permission"
       end
 
       describe "with date CF" do
@@ -173,6 +231,10 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
         let(:expected_initial_value) { Date.new(2024, 1, 1) }
 
         it_behaves_like "a custom field input"
+
+        it_behaves_like "displays readonly modal for user without edit permission" do
+          let(:value_text) { "01/01/2024" }
+        end
       end
 
       describe "with link CF" do
@@ -189,6 +251,10 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
             expect(page).to have_link("https://www.openproject.org", href: "https://www.openproject.org")
           end
         end
+
+        it_behaves_like "displays readonly modal for user without edit permission" do
+          let(:value_expectation) { have_link("https://www.openproject.org", href: "https://www.openproject.org") }
+        end
       end
 
       describe "with text CF" do
@@ -199,32 +265,53 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
         let(:expected_initial_value) { "Lorem\nipsum" } # TBD: why is the second newline missing?
 
         it_behaves_like "a rich text custom field input"
+
+        it_behaves_like "displays readonly modal for user without edit permission" do
+          let(:value_text) { "Lorem" } # only first line is shown
+        end
       end
 
       describe "with calculated value CFs" do
-        describe "using int" do
-          let(:custom_field) { calculated_from_int_project_custom_field }
-          let(:expected_blank_value) { "" }
-          let(:expected_initial_value) { 234 }
+        let(:custom_field) { calculated_from_int_project_custom_field }
+        let(:expected_blank_value) { "" }
+        let(:expected_initial_value) { 234 }
 
-          it "shows the disabled input with the correct value if given" do
-            overview_page.within_project_attributes_sidebar do
-              overview_page.within_custom_field_container(custom_field) do
-                expect(page).to have_text(expected_initial_value)
-              end
-            end
-          end
-
-          it "shows the disabled input with a blank value if no value is given" do
-            custom_field.custom_values.destroy_all
-
-            overview_page.within_project_attributes_sidebar do
-              overview_page.within_custom_field_container(custom_field) do
-                expect(page).to have_text(expected_blank_value)
-              end
+        it "shows the disabled input with the correct value if given" do
+          overview_page.within_project_attributes_sidebar do
+            overview_page.within_custom_field_container(custom_field) do
+              expect(page).to have_text(expected_initial_value)
             end
           end
         end
+
+        it "shows the disabled input with a blank value if no value is given" do
+          custom_field.custom_values.destroy_all
+
+          overview_page.within_project_attributes_sidebar do
+            overview_page.within_custom_field_container(custom_field) do
+              expect(page).to have_text(expected_blank_value)
+            end
+          end
+        end
+
+        it "allows the modal only when comments are allowed by custom field" do
+          overview_page.expect_custom_field_without_modal_button(custom_field)
+
+          custom_field.update!(has_comment: true)
+          refresh
+
+          dialog.within_async_content(close_after_yield: true) do
+            expect(page).to have_field("Comment", with: "")
+          end
+
+          create(:custom_comment, custom_field:, customized: project, text: "bar")
+
+          dialog.within_async_content(close_after_yield: true) do
+            expect(page).to have_field("Comment", with: "bar")
+          end
+        end
+
+        it_behaves_like "displays readonly modal for user without edit permission"
       end
     end
 
@@ -276,6 +363,8 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
 
           field.expect_blank
         end
+
+        include_examples "shows comment input only when comments are allowed by custom field"
       end
 
       describe "with single select list CF" do
@@ -299,6 +388,8 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
 
           field.expect_selected(custom_field.custom_options.first.value)
         end
+
+        it_behaves_like "displays readonly modal for user without edit permission"
       end
 
       describe "with single version select list CF" do
@@ -360,6 +451,8 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
             end
           end
         end
+
+        it_behaves_like "displays readonly modal for user without edit permission"
       end
 
       describe "with single user select list CF" do
@@ -432,6 +525,8 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
             field.expect_option(placeholder_user.name)
           end
         end
+
+        it_behaves_like "displays readonly modal for user without edit permission"
       end
     end
 
@@ -500,6 +595,8 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
           field.expect_not_selected(second_option)
           field.expect_not_selected(third_option)
         end
+
+        include_examples "shows comment input only when comments are allowed by custom field"
       end
 
       describe "with multi select list CF" do
@@ -524,6 +621,10 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
 
           field.expect_selected(multi_list_project_custom_field.custom_options.first.value)
           field.expect_selected(multi_list_project_custom_field.custom_options.second.value)
+        end
+
+        it_behaves_like "displays readonly modal for user without edit permission" do
+          let(:value_text) { expected_initial_value.join(", ") }
         end
       end
 
@@ -586,6 +687,10 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
               end
             end
           end
+        end
+
+        it_behaves_like "displays readonly modal for user without edit permission" do
+          let(:value_text) { expected_initial_value.join(", ") }
         end
       end
 
@@ -690,6 +795,16 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
 
             field.expect_selected(placeholder_user.name)
             field.expect_selected(another_placeholder_user.name)
+          end
+        end
+
+        it_behaves_like "displays readonly modal for user without edit permission" do
+          let(:value_text) do
+            /
+              #{Regexp.escape(member_in_project.name)}
+              .*
+              #{Regexp.escape(another_member_in_project.name)}
+            /mx
           end
         end
       end
