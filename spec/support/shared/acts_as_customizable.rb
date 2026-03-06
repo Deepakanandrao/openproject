@@ -129,6 +129,22 @@ RSpec.shared_examples_for "acts_as_customizable included" do |admin_only_allowed
       end
     end
 
+    context "with a default value" do
+      let(:custom_field) { create(:string_wp_custom_field, default_value: "foobar") }
+
+      it "returns no changes" do
+        expect(model_instance.custom_field_changes).to be_empty
+      end
+    end
+
+    context "with a bool custom_field having a default value" do
+      let(:custom_field) { create(:boolean_wp_custom_field, default_value: "0") }
+
+      it "returns no changes" do
+        expect(model_instance.custom_field_changes).to be_empty
+      end
+    end
+
     if comments
       context "when a comment is changed" do
         before { model_instance.custom_comments = { custom_field.id => "text" } }
@@ -138,22 +154,6 @@ RSpec.shared_examples_for "acts_as_customizable included" do |admin_only_allowed
             .to include(custom_field.comment_attribute_name => [nil, "text"])
         end
       end
-    end
-  end
-
-  context "with a default value" do
-    let(:custom_field) { create(:string_wp_custom_field, default_value: "foobar") }
-
-    it "returns no changes" do
-      expect(model_instance.custom_field_changes).to be_empty
-    end
-  end
-
-  context "with a bool custom_field having a default value" do
-    let(:custom_field) { create(:boolean_wp_custom_field, default_value: "0") }
-
-    it "returns no changes" do
-      expect(model_instance.custom_field_changes).to be_empty
     end
   end
 
