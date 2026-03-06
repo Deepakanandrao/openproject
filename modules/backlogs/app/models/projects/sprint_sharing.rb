@@ -85,11 +85,10 @@ module Projects::SprintSharing
     # Senders and non-sharing projects only see their own sprints.
     # Receivers see external sprints from the closest ancestor sharing
     # subprojects, falling back to the global sharer.
-    case sprint_sharing
-    when nil, NO_SHARING, SHARE_SUBPROJECTS, SHARE_ALL_PROJECTS
-      [self]
-    when RECEIVE_SHARED
-      [ancestors.share_sprints_with_subprojects.last || self.class.global_sprint_sharer].compact
+    if receive_shared_sprints?
+      ancestors.share_sprints_with_subprojects.last || self.class.global_sprint_sharer
+    else
+      self
     end
   end
 
