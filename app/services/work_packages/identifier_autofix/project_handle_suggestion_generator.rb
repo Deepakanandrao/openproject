@@ -46,6 +46,7 @@ module WorkPackages
     #
     class ProjectHandleSuggestionGenerator
       HANDLE_MAX_LENGTH = 5
+      SINGLE_WORD_LENGTH = 3
       FALLBACK_HANDLE = "PROJ"
       SUFFIX_LIMIT = 10_000
 
@@ -84,12 +85,22 @@ module WorkPackages
         words = name.to_s.scan(/[[:alpha:][:digit:]]+/)
         return FALLBACK_HANDLE if words.empty?
 
-        # Transliterate each word's first character to ASCII (é→e, ñ→n) then upcase.
+        words.size == 1 ? handle_from_single_word(words.first) : handle_from_words(words)
+      end
+
+      def handle_from_single_word(word)
+        # e.g. "Banana" → "BAN", "Kiwi" → "KIW", "日本語" → FALLBACK_HANDLE
+        t = I18n.with_locale(:en) { I18n.transliterate(word) }
+        chars = t.scan(/[A-Za-z0-9]/).first(SINGLE_WORD_LENGTH).map(&:upcase).join
+        chars.empty? ? FALLBACK_HANDLE : chars
+      end
+
+      def handle_from_words(words)
+        # Multi-word names: take initials (first letter of each word), truncated.
         acronym = words.filter_map do |word|
           ch = I18n.with_locale(:en) { I18n.transliterate(word[0]) }.upcase[0]
           ch if ch&.match?(/\A[A-Z0-9]\z/)
         end.join
-
         return FALLBACK_HANDLE if acronym.empty?
 
         acronym.slice(0, HANDLE_MAX_LENGTH)

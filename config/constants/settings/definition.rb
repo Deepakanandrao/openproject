@@ -1597,7 +1597,7 @@ module Settings
           .scan(/(?:[a-zA-Z0-9]|__)+/)
           .map do |seg|
             unescape_underscores(seg.downcase)
-        end
+          end
       end
 
       # takes the path provided and transforms it into a deeply nested hash

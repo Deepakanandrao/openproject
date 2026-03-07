@@ -83,6 +83,12 @@ RSpec.describe WorkPackages::IdentifierAutofix::ProjectHandleSuggestionGenerator
 
   describe "handle generation from project name" do
     {
+      # Single-word names: first SINGLE_WORD_LENGTH (3) transliterated chars
+      "Banana" => "BAN",
+      "Kiwi" => "KIW",
+      "Strawberry" => "STR",
+      "Cécile" => "CEC", # single word with accented letter
+      # Multi-word names: initials, truncated to HANDLE_MAX_LENGTH (5)
       "Flight Planning Algorithm" => "FPA",
       "Fly & Sky" => "FS",
       "Social media marketing" => "SMM",
