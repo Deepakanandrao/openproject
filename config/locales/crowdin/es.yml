@@ -1357,8 +1357,8 @@ es:
   activerecord:
     attributes:
       agile/sprint:
-        sharing: "Sharing"
-        finish_date: "End date"
+        sharing: "Uso compartido"
+        finish_date: "Fecha de finalización"
       jira_import:
         projects: "Projects"
       "import/jira":
