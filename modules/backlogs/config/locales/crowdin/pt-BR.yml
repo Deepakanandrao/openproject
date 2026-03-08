@@ -30,7 +30,7 @@ pt-BR:
         finish_date: "Data de conclusão"
         goal: "Objetivo da sprint"
         name: "Nome da sprint"
-        sharing: "Sharing"
+        sharing: "Compartilhamento"
       sprint:
         duration: "Duração da sprint"
       work_package:

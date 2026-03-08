@@ -30,7 +30,7 @@ ko:
         finish_date: "완료 날짜"
         goal: "스프린트 목표"
         name: "스프린트 이름"
-        sharing: "Sharing"
+        sharing: "공유"
       sprint:
         duration: "스프린트 기간"
       work_package:
