@@ -34,7 +34,7 @@ class AdminController < ApplicationController
 
   before_action :require_admin, except: %i[index]
   before_action :authorize_global, only: %i[index]
-  before_action :validate_email_settings, only: %i[test_email]
+  before_action :validate_smtp_settings, only: %i[test_email]
 
   menu_item :plugins, only: [:plugins]
   menu_item :info, only: [:info]
@@ -68,7 +68,13 @@ class AdminController < ApplicationController
     # Force ActionMailer to raise delivery errors so we can catch it
     ActionMailer::Base.raise_delivery_errors = true
     begin
-      @test = UserMailer.test_mail(User.current).deliver_now
+      delivery_method_options = {}
+
+      if validated_smtp_settings?
+        delivery_method_options.merge! address: @safe_ip.to_s, tls_hostname: @smtp_addr
+      end
+
+      @test = UserMailer.test_mail(User.current, delivery_method_options:).deliver_now
       flash[:notice] = I18n.t(:notice_email_sent, value: User.current.mail)
     rescue StandardError => e
       flash[:error] = I18n.t(:notice_email_error, value: Redmine::CodesetUtil.replace_invalid_utf8(e.message.dup))
@@ -95,14 +101,28 @@ class AdminController < ApplicationController
 
   private
 
-  def validate_email_settings
-    smtp_addr = ActionMailer::Base.smtp_settings[:address]
+  ##
+  # When using SMTP, we make sure the used address is safe to use, preventing SSRF attacks.
+  # This does not apply when sendmail is used.
+  def validate_smtp_settings
+    return unless using_smtp?
 
-    if !OpenProject::SsrfProtection.safe_ip?(smtp_addr)
-      flash[:error] = I18n.t :notice_smtp_address_unsafe, address: smtp_addr
+    @smtp_addr = ActionMailer::Base.smtp_settings[:address]
+    @safe_ip = OpenProject::SsrfProtection.safe_ip?(@smtp_addr)
+
+    if !@safe_ip
+      flash[:error] = I18n.t :notice_smtp_address_unsafe, address: @smtp_addr
 
       redirect_to admin_settings_mail_notifications_path, status: :see_other
     end
+  end
+
+  def validated_smtp_settings?
+    @smtp_addr.present? && @safe_ip.present?
+  end
+
+  def using_smtp?
+    ActionMailer::Base.delivery_method == :smtp
   end
 
   def hidden_admin_menu_items

@@ -132,10 +132,13 @@ RSpec.describe AdminController do
   end
 
   describe "#test_email" do
+    before do
+      allow(ActionMailer::Base).to receive(:delivery_method).and_return(:smtp)
+      allow(ActionMailer::Base).to receive(:smtp_settings).and_return({ address: "localhost" })
+    end
+
     context "with an unsafe SMTP address" do
       before do
-        allow(ActionMailer::Base).to receive(:smtp_settings).and_return({ address: "127.0.0.1" })
-
         get :test_email
       end
 
@@ -146,10 +149,20 @@ RSpec.describe AdminController do
     end
 
     context "with an unsafe SMTP adress on the allowlist", with_ssrf_ip_allowlist: %w(127.0.0.1) do
+      let(:mail_double) { instance_double(ActionMailer::MessageDelivery) }
+
       before do
-        allow(ActionMailer::Base).to receive(:smtp_settings).and_return({ address: "127.0.0.1" })
+        allow(UserMailer).to receive(:test_mail).and_return(mail_double)
+        allow(mail_double).to receive(:deliver_now)
 
         get :test_email
+      end
+
+      it "overrides address and tls_hostname to pin the resolved IP" do
+        expect(UserMailer).to have_received(:test_mail).with(
+          user,
+          delivery_method_options: { address: "127.0.0.1", tls_hostname: "localhost" }
+        )
       end
 
       it "redirects back, showing an email has been sent" do
