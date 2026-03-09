@@ -109,6 +109,7 @@ module Import
         PROJECTS_META_FETCHING,
         IMPORTING,
         REVERTING,
+        REVERT_CANCELLING,
         FINALIZING
       ].include?(current_state)
     end

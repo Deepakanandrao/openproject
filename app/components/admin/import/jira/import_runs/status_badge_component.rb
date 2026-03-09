@@ -54,7 +54,8 @@ module Admin::Import::Jira::ImportRuns
            Import::JiraImportStateMachine::PROJECTS_META_FETCHING,
            Import::JiraImportStateMachine::IMPORTING,
            Import::JiraImportStateMachine::FINALIZING,
-           Import::JiraImportStateMachine::REVERTING
+           Import::JiraImportStateMachine::REVERTING,
+           Import::JiraImportStateMachine::REVERT_CANCELLING
         :accent
       else
         :attention
