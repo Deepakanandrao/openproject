@@ -28,10 +28,10 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module ProjectHelper
-  def project_creation_wizard_name(project)
-    I18n.t(project.project_creation_wizard_artifact_name,
-           default: :project_initiation_request,
-           scope: "settings.project_initiation_request.name.options")
+require "spec_helper"
+
+RSpec.describe CustomFieldSection do
+  it "uses the sidebar as default overview" do
+    expect(described_class.new).to be_shown_in_overview_sidebar
   end
 end
