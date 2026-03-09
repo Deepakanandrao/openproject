@@ -28,23 +28,31 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Import
-  module JiraOpenProjectReferenceCreation
-    private
+require "spec_helper"
+require "contracts/shared/model_contract_shared_context"
 
-    def create_reference!(op_leg:, jira_leg:, jira_import:, uses_existing:)
-      Import::JiraOpenProjectReference.upsert_all(
-        [
-          { op_entity_id: op_leg.id,
-            op_entity_class: op_leg.class.to_s,
-            jira_entity_id: jira_leg&.id,
-            jira_entity_class: jira_leg&.class&.to_s,
-            jira_import_id: jira_import.id,
-            jira_id: jira_import.jira.id,
-            uses_existing: }
-        ],
-        unique_by: %i[op_entity_id op_entity_class jira_id]
-      )
+RSpec.describe Users::JiraImportUpdateContract do
+  include_context "ModelContract shared context"
+
+  let(:current_user) { build_stubbed(:admin) }
+  let(:user) { build_stubbed(:user) }
+  let(:contract) { described_class.new(user, current_user) }
+
+  describe "validation" do
+    context "when user limit is not reached" do
+      before do
+        allow(OpenProject::Enterprise).to receive(:user_limit_reached?).and_return(false)
+      end
+
+      it_behaves_like "contract is valid"
+    end
+
+    context "when user limit is reached" do
+      before do
+        allow(OpenProject::Enterprise).to receive(:user_limit_reached?).and_return(true)
+      end
+
+      it_behaves_like "contract is invalid", base: :user_limit_reached
     end
   end
 end
