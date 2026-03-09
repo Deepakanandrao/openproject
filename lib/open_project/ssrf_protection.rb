@@ -75,7 +75,7 @@ module OpenProject
       #     http_options: { open_timeout: 5, read_timeout: 10 }
       #   )
       def post(url, options = {}, &)
-        super(url, { max_redirects: 0 }.merge(options), &)
+        super(url, { max_redirects: 0, resolver: resolver }.merge(options), &)
       end
 
       ##
