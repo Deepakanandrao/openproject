@@ -71,7 +71,8 @@ class AdminController < ApplicationController
       delivery_method_options = {}
 
       if validated_smtp_settings?
-        delivery_method_options.merge! address: @safe_ip.to_s, tls_hostname: @smtp_addr
+        delivery_method_options[:address] = @safe_ip.to_s
+        delivery_method_options[:tls_hostname] = @smtp_addr
       end
 
       @test = UserMailer.test_mail(User.current, delivery_method_options:).deliver_now

@@ -133,8 +133,7 @@ RSpec.describe AdminController do
 
   describe "#test_email" do
     before do
-      allow(ActionMailer::Base).to receive(:delivery_method).and_return(:smtp)
-      allow(ActionMailer::Base).to receive(:smtp_settings).and_return({ address: "localhost" })
+      allow(ActionMailer::Base).to receive_messages(delivery_method: :smtp, smtp_settings: { address: "localhost" })
     end
 
     context "with an unsafe SMTP address" do
