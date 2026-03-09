@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -26,38 +28,12 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require "spec_helper"
-require_relative "../support/pages/projects/settings/backlogs"
+require Rails.root.join("db/migrate/migration_utils/permission_adder")
 
-RSpec.describe "Resolved status" do
-  let!(:project) do
-    create(:project,
-           enabled_module_names: %w(backlogs))
-  end
-  let!(:status) { create(:status, is_default: true) }
-  let(:role) do
-    create(:project_role,
-           permissions: %i[select_done_statuses view_sprints])
-  end
-  let!(:current_user) do
-    create(:user,
-           member_with_roles: { project => role })
-  end
-  let(:settings_page) { Pages::Projects::Settings::Backlogs.new(project) }
-
-  before do
-    login_as current_user
-  end
-
-  it "allows setting a status as done although it is not closed" do
-    settings_page.visit!
-
-    check status.name
-    click_button "Save"
-
-    expect_flash(type: :success, message: "Successful update")
-
-    expect(page)
-      .to have_checked_field(status.name)
+class FixSprintRoleDependencies < ActiveRecord::Migration[8.1]
+  def change
+    ::Migration::MigrationUtils::PermissionAdder.add(:manage_sprint_items, :view_sprints)
+    ::Migration::MigrationUtils::PermissionAdder.add(:create_sprints, :view_sprints)
+    ::Migration::MigrationUtils::PermissionAdder.add(:view_sprints, :view_work_packages)
   end
 end
