@@ -49,6 +49,7 @@ class RbStoriesController < RbApplicationController
       render_error_flash_message_via_turbo_stream(
         message: I18n.t(:notice_unsuccessful_update_with_reason, reason: call.message)
       )
+      return respond_with_turbo_streams(status: :unprocessable_entity)
     end
 
     replace_backlog_component_via_turbo_stream(sprint: @sprint)
@@ -74,6 +75,7 @@ class RbStoriesController < RbApplicationController
       render_error_flash_message_via_turbo_stream(
         message: I18n.t(:notice_unsuccessful_update_with_reason, reason: call.message)
       )
+      return respond_with_turbo_streams(status: :unprocessable_entity)
     end
 
     replace_backlog_component_via_turbo_stream(sprint: @sprint)

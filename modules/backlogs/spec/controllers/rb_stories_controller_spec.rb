@@ -112,7 +112,7 @@ RSpec.describe RbStoriesController do
           .and_return(update_service)
       end
 
-      it "renders an error flash", :aggregate_failures do
+      it "renders an error flash with 422", :aggregate_failures do
         put :move, params: {
                      project_id: project.id,
                      sprint_id: sprint.id,
@@ -122,9 +122,9 @@ RSpec.describe RbStoriesController do
                    },
                    format: :turbo_stream
 
-        expect(response).to be_successful
-        expect(response).to have_turbo_stream action: "replace", target: "backlogs-backlog-component-#{sprint.id}"
+        expect(response).to have_http_status :unprocessable_entity
         expect(response).to have_turbo_stream action: "flash", target: "op-primer-flash-component"
+        expect(response).not_to have_turbo_stream action: "replace", target: "backlogs-backlog-component-#{sprint.id}"
       end
     end
   end
@@ -154,13 +154,13 @@ RSpec.describe RbStoriesController do
           .and_return(update_service)
       end
 
-      it "renders an error flash", :aggregate_failures do
+      it "renders an error flash with 422", :aggregate_failures do
         post :reorder, params: { project_id: project.id, sprint_id: sprint.id, id: story.id, direction: "highest" },
                        format: :turbo_stream
 
-        expect(response).to be_successful
-        expect(response).to have_turbo_stream action: "replace", target: "backlogs-backlog-component-#{sprint.id}"
+        expect(response).to have_http_status :unprocessable_entity
         expect(response).to have_turbo_stream action: "flash", target: "op-primer-flash-component"
+        expect(response).not_to have_turbo_stream action: "replace", target: "backlogs-backlog-component-#{sprint.id}"
       end
     end
   end
