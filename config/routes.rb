@@ -662,6 +662,7 @@ Rails.application.routes.draw do
       resource :work_packages_general, controller: "/admin/settings/work_packages_general", only: %i[show update]
       resource :work_packages_identifier, controller: "/admin/settings/work_packages_identifier", only: %i[show update] do
         get :status, on: :member
+        get :confirm_dialog, on: :member, defaults: { format: :turbo_stream }
       end
       resources :work_package_priorities, except: [:show] do
         member do

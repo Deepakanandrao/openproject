@@ -57,6 +57,10 @@ module Admin::Settings
       end
     end
 
+    def confirm_dialog
+      respond_with_dialog WorkPackages::Admin::Settings::ChangeIdentifiersDialogComponent.new
+    end
+
     def status
       if WorkPackages::IdentifierAutofix.job_in_progress?
         head :no_content

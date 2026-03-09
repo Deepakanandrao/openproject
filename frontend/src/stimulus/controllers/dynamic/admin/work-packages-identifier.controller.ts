@@ -51,10 +51,6 @@ export default class WorkPackagesIdentifierController extends Controller {
     this.updateVisibility();
   }
 
-  openConfirmDialog() {
-    (document.getElementById('change-identifiers-dialog') as HTMLDialogElement)?.showModal();
-  }
-
   private updateVisibility() {
     const showAutofix = this.isAlphanumericSelected() && this.hasProblematicProjectsValue;
 

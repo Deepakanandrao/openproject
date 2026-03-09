@@ -33,6 +33,7 @@ module WorkPackages
     module Settings
       class ChangeIdentifiersDialogComponent < ApplicationComponent
         include OpPrimer::ComponentHelpers
+        include OpTurbo::Streamable
       end
     end
   end

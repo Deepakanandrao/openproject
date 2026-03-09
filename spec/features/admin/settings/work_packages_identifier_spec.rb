@@ -43,15 +43,14 @@ RSpec.describe "Work packages identifier admin settings", :js do
   def visit_settings
     visit settings_path
     # Wait for the radio group legend to confirm the page has loaded
-    expect(page).to have_css("legend", text: I18n.t("settings.work_packages.work_package_identifier"),
-                                       wait: 10)
+    expect(page).to have_css("legend", text: "Work package identifier", wait: 10)
   end
 
   context "when no projects have problematic identifiers" do
     it "saves the setting without showing a dialog" do
       visit_settings
 
-      click_button I18n.t("button_save")
+      click_button "Save"
 
       expect(page).to have_current_path(settings_path)
       expect(page).to have_no_dialog
@@ -70,7 +69,7 @@ RSpec.describe "Work packages identifier admin settings", :js do
           "[data-admin--work-packages-identifier-target=autofixSection][hidden]",
           visible: :all
         )
-        click_button I18n.t("button_save")
+        click_button "Save"
 
         expect(page).to have_current_path(settings_path)
         expect(page).to have_no_dialog
@@ -80,7 +79,7 @@ RSpec.describe "Work packages identifier admin settings", :js do
     context "when switching to alphanumeric" do
       before do
         visit_settings
-        choose I18n.t("setting_work_packages_identifier_alphanumeric")
+        choose "Project-based alphanumerical identifiers"
       end
 
       it "shows the autofix section after selecting alphanumeric" do
@@ -91,43 +90,38 @@ RSpec.describe "Work packages identifier admin settings", :js do
       end
 
       it "opens the confirmation dialog when 'Autofix and save' is clicked" do
-        click_button I18n.t("admin.settings.work_packages_identifier.button_autofix")
+        click_on "Autofix and save"
 
         expect(page).to have_dialog "Change work package identifiers"
       end
 
       it "shows the dialog heading and checkbox" do
-        click_button I18n.t("admin.settings.work_packages_identifier.button_autofix")
+        click_on "Autofix and save"
 
         within_dialog "Change work package identifiers" do
-          expect(page).to have_text(I18n.t("admin.settings.work_packages_identifier.dialog.heading"))
+          expect(page).to have_text("Enable project-based work package IDs?")
           expect(page).to have_field(
-            I18n.t("admin.settings.work_packages_identifier.dialog.checkbox_label"),
+            "I understand that this will permanently change all work package IDs",
             type: :checkbox
           )
         end
       end
 
       it "enables the confirm button only after checking the checkbox" do
-        click_button I18n.t("admin.settings.work_packages_identifier.button_autofix")
+        click_on "Autofix and save"
 
         within "[role=alertdialog]" do
-          confirm_text = I18n.t("admin.settings.work_packages_identifier.dialog.confirm_button")
+          expect(page).to have_button("Change identifiers", disabled: true)
 
-          expect(page).to have_button(confirm_text, disabled: true)
+          check "I understand that this will permanently change all work package IDs"
 
-          check I18n.t("admin.settings.work_packages_identifier.dialog.checkbox_label")
-
-          expect(page).to have_button(confirm_text, disabled: false)
+          expect(page).to have_button("Change identifiers", disabled: false)
         end
       end
 
       it "hides the plain Save button when autofix section is visible" do
-        expect(page).to have_no_button(I18n.t("button_save"))
-        expect(page).to have_button(
-          I18n.t("admin.settings.work_packages_identifier.button_autofix"),
-          disabled: false
-        )
+        expect(page).to have_no_button("Save")
+        expect(page).to have_link("Autofix and save")
       end
     end
   end

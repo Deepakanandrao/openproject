@@ -84,16 +84,16 @@
 
       <%= render(
             Primer::Beta::Button.new(
+              tag: :a,
+              href: confirm_dialog_admin_settings_work_packages_identifier_path,
               scheme: :primary,
-              type: :button,
               hidden: !show_autofix_section?,
               data: {
-                admin__work_packages_identifier_target: "autofixButton",
-                action: "click->admin--work-packages-identifier#openConfirmDialog"
+                turbo_stream: true,
+                admin__work_packages_identifier_target: "autofixButton"
               }
             )
           ) { t("admin.settings.work_packages_identifier.button_autofix") } %>
     </div>
-    <%= render(WorkPackages::Admin::Settings::ChangeIdentifiersDialogComponent.new) %>
   <% end %>
 <% end %>
