@@ -624,11 +624,13 @@ uk:
   op_dry_validation:
     or: "або"
     errors:
+      unexpected_key: "is not allowed."
       array?: "має бути масивом."
       decimal?: "має бути десятковим числом."
       defined: "не має визначатися."
       eql?: "має бути «%{left}»."
       filled?: "— слід заповнити."
+      format?: "is in invalid format."
       greater_or_equal_zero: "має бути більше ніж 0 або дорівнювати йому."
       gteq?: "має бути більше ніж %{num} або дорівнювати цьому значенню."
       hash?: "має бути гешом."
@@ -655,7 +657,9 @@ uk:
         parent:
           not_descendant: "має бути нащадком кореня ієрархії."
       str?: "має бути рядком."
+      time?: "must be a time."
       type?: "має бути типом «%{type}»."
+      uri?: "is not a valid URI."
     rules:
       copy_workflow_from: "Тип копії робочого процесу"
       enabled: "Увімкнено"

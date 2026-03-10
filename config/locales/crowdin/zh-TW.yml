@@ -608,11 +608,13 @@ zh-TW:
   op_dry_validation:
     or: "或"
     errors:
+      unexpected_key: "is not allowed."
       array?: "必須是陣列。"
       decimal?: "必須是有效的小數數值。"
       defined: "不可被定義。"
       eql?: "必須等於 %{left}。"
       filled?: "必填。"
+      format?: "is in invalid format."
       greater_or_equal_zero: "必須大於或等於 0。"
       gteq?: "必須大於或等於 %{num}。"
       hash?: "必須是一個 hash 值。"
@@ -639,7 +641,9 @@ zh-TW:
         parent:
           not_descendant: "必須是階層根節點的子層。"
       str?: "必須為字串。"
+      time?: "must be a time."
       type?: "必須是 %{type}。"
+      uri?: "is not a valid URI."
     rules:
       copy_workflow_from: "工作流程複製的類型"
       enabled: "啟用"

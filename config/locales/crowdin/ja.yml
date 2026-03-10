@@ -607,11 +607,13 @@ ja:
   op_dry_validation:
     or: "または"
     errors:
+      unexpected_key: "is not allowed."
       array?: "must be an array."
       decimal?: "10進数である必要があります。"
       defined: "を定義してはならない。"
       eql?: "must be equal to %{left}."
       filled?: "を入力する必要があります。"
+      format?: "is in invalid format."
       greater_or_equal_zero: "は 0 以上でなければなりません。"
       gteq?: "must be greater than or equal to %{num}."
       hash?: "must be a hash."
@@ -638,7 +640,9 @@ ja:
         parent:
           not_descendant: "階層ルートの子孫でなければなりません。"
       str?: "must be a string."
+      time?: "must be a time."
       type?: "must be %{type}."
+      uri?: "is not a valid URI."
     rules:
       copy_workflow_from: "ワークフローコピーのタイプ"
       enabled: "有効"

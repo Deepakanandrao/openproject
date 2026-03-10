@@ -606,11 +606,13 @@ zh-CN:
   op_dry_validation:
     or: "或"
     errors:
+      unexpected_key: "is not allowed."
       array?: "必须为一个数组。"
       decimal?: "必须为小数。"
       defined: "不得定义。"
       eql?: "必须等于 %{left}。"
       filled?: "必须填写"
+      format?: "is in invalid format."
       greater_or_equal_zero: "必须大于或等于 0"
       gteq?: "必须大于或等于 %{num}。"
       hash?: "必须是一个哈希值。"
@@ -637,7 +639,9 @@ zh-CN:
         parent:
           not_descendant: "必须是层级根节点的后代。"
       str?: "必须是一个字符串。"
+      time?: "must be a time."
       type?: "必须是 %{type}。"
+      uri?: "is not a valid URI."
     rules:
       copy_workflow_from: "工作流副本的类型"
       enabled: "已启用"

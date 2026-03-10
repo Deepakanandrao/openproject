@@ -614,11 +614,13 @@ pt-BR:
   op_dry_validation:
     or: "ou"
     errors:
+      unexpected_key: "is not allowed."
       array?: "deve ser um array."
       decimal?: "deve ser um número decimal."
       defined: "não deve ser definido."
       eql?: "deve ser igual a %{left}."
       filled?: "deve ser preenchido."
+      format?: "is in invalid format."
       greater_or_equal_zero: "deve ser maior ou igual a 0."
       gteq?: "deve ser maior ou igual a %{num}."
       hash?: "deve ser um hash."
@@ -645,7 +647,9 @@ pt-BR:
         parent:
           not_descendant: "deve ser um descendente da raiz da hierarquia."
       str?: "deve ser uma cadeia de caracteres."
+      time?: "must be a time."
       type?: "dever ser %{type}."
+      uri?: "is not a valid URI."
     rules:
       copy_workflow_from: "Tipo de cópia do fluxo de trabalho"
       enabled: "Habilitado"

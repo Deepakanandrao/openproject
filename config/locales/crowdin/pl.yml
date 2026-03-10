@@ -624,11 +624,13 @@ pl:
   op_dry_validation:
     or: "lub"
     errors:
+      unexpected_key: "is not allowed."
       array?: "musi być tablicą."
       decimal?: "musi być liczbą dziesiętną."
       defined: "nie może być zdefiniowany."
       eql?: "musi być równy %{left}."
       filled?: "musi być wypełniony."
+      format?: "is in invalid format."
       greater_or_equal_zero: "musi mieć wartość większą lub równą 0."
       gteq?: "musi być większe niż lub równe %{num}."
       hash?: "musi być hashem."
@@ -655,7 +657,9 @@ pl:
         parent:
           not_descendant: "musi być potomkiem katalogu głównego hierarchii."
       str?: "musi być ciągiem znaków."
+      time?: "must be a time."
       type?: "musi być %{type}."
+      uri?: "is not a valid URI."
     rules:
       copy_workflow_from: "Typ kopii przepływu pracy"
       enabled: "Włączone"
