@@ -175,6 +175,7 @@ fr:
           instance_meta_fetching: "Récupération des métadonnées"
           instance_meta_error: "Erreur lors de la récupération des métadonnées"
           instance_meta_done: "Métadonnées récupérées"
+          import_scope: "Select scope"
           configuring: "Sélectionnez la portée"
           projects_meta_fetching: "Récupération des données du projet"
           projects_meta_error: "Erreur lors de la récupération des données du projet"
@@ -184,8 +185,12 @@ fr:
           imported: "Mode révision"
           reverting: "Rétablissement en cours"
           revert_error: "Erreur lors de la restauration"
+          revert_cancelling: "Cancelling revert"
+          revert_cancelled: "Revert cancelled"
           reverted: "Restauré"
-          completed: "Terminé"
+          finalizing: "Finalizing"
+          finalizing_error: "Error during finalizing"
+          finalizing_done: "Completed"
         wizard:
           button_retry: "Réessayer"
           parts:
@@ -266,8 +271,9 @@ fr:
               button_revert: "Annuler l'importation"
               button_done: "Finaliser l'importation"
               preview_description: 'Les données importées sont actuellement en mode révision. Cliquez sur « Finaliser l''importation » pour rendre l''importation permanente ou sur « Annuler l''importation » pour annuler toutes les modifications apportées lors de ce cycle d''importation.'
-              label_finalizing_progress: "Finalisation de l'importation..."
-              label_finalized: "Importation finalisée."
+              label_finalize_import: "Finalize import"
+              label_finalizing: "Finalizing import..."
+              label_finalizing_done: "Import finalized."
               label_revert_progress: "Annulation de l'importation..."
               label_reverted: "Importation annulée."
           select_dialog:
@@ -1369,6 +1375,9 @@ fr:
         name: "Nom de l'instance Jira"
         url: "URL de l'instance Jira"
         personal_access_token: "Jeton d'accès personnel"
+      "import/jira_open_project_reference":
+        jira: "Jira"
+        jira_import: "Jira import"
       announcements:
         show_until: "Afficher jusqu'à"
       attachment:
@@ -4203,6 +4212,7 @@ fr:
   notice_parent_item_not_found: "L'élément parent est introuvable."
   notice_project_not_deleted: "Le projet n'a pas été supprimé."
   notice_project_not_found: "Projet introuvable."
+  notice_smtp_address_unsafe: "SMTP address %{address} is not safe. Please add it to OPENPROJECT_SSRF_PROTECTION_ALLOWLIST."
   notice_successful_connection: "Connection réussie."
   notice_successful_create: "Création réussie."
   notice_successful_delete: "Suppression réussie."

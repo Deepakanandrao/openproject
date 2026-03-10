@@ -175,6 +175,7 @@ zh-CN:
           instance_meta_fetching: "正在获取元数据"
           instance_meta_error: "获取元数据时出错"
           instance_meta_done: "元数据已获取"
+          import_scope: "Select scope"
           configuring: "选择范围"
           projects_meta_fetching: "正在获取项目数据"
           projects_meta_error: "获取项目数据时出错"
@@ -184,8 +185,12 @@ zh-CN:
           imported: "审核模式"
           reverting: "正在撤消"
           revert_error: "撤消过程中出错"
+          revert_cancelling: "Cancelling revert"
+          revert_cancelled: "Revert cancelled"
           reverted: "已撤消"
-          completed: "已完成"
+          finalizing: "Finalizing"
+          finalizing_error: "Error during finalizing"
+          finalizing_done: "Completed"
         wizard:
           button_retry: "重试"
           parts:
@@ -260,8 +265,9 @@ zh-CN:
               button_revert: "撤消导入"
               button_done: "完成导入"
               preview_description: '导入的数据当前处于审核模式。点击“完成导入”可永久导入，点击“撤消导入”可撤消本次导入运行中的所有更改。'
-              label_finalizing_progress: "正在完成导入…"
-              label_finalized: "导入已完成。"
+              label_finalize_import: "Finalize import"
+              label_finalizing: "Finalizing import..."
+              label_finalizing_done: "Import finalized."
               label_revert_progress: "正在撤消导入…"
               label_reverted: "导入已撤消。"
           select_dialog:
@@ -1352,6 +1358,9 @@ zh-CN:
         name: "Jira 实例名称"
         url: "Jira 实例 URL"
         personal_access_token: "个人访问令牌"
+      "import/jira_open_project_reference":
+        jira: "Jira"
+        jira_import: "Jira import"
       announcements:
         show_until: "显示截止日期"
       attachment:
@@ -4142,6 +4151,7 @@ zh-CN:
   notice_parent_item_not_found: "未找到父项"
   notice_project_not_deleted: "项目没有被删除"
   notice_project_not_found: "未找到项目。"
+  notice_smtp_address_unsafe: "SMTP address %{address} is not safe. Please add it to OPENPROJECT_SSRF_PROTECTION_ALLOWLIST."
   notice_successful_connection: "成功连接。"
   notice_successful_create: "成功创建。"
   notice_successful_delete: "成功删除。"

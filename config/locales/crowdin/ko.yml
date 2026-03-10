@@ -175,6 +175,7 @@ ko:
           instance_meta_fetching: "메타 데이터를 가져오는 중"
           instance_meta_error: "메타 데이터를 가져오는 중에 오류 발생"
           instance_meta_done: "메타 데이터 가져옴"
+          import_scope: "Select scope"
           configuring: "범위 선택"
           projects_meta_fetching: "프로젝트 데이터를 가져오는 중"
           projects_meta_error: "프로젝트 데이터를 가져오는 중에 오류 발생"
@@ -184,8 +185,12 @@ ko:
           imported: "검토 모드"
           reverting: "되돌리는 중"
           revert_error: "되돌리는 중에 오류 발생"
+          revert_cancelling: "Cancelling revert"
+          revert_cancelled: "Revert cancelled"
           reverted: "되돌림"
-          completed: "완료됨"
+          finalizing: "Finalizing"
+          finalizing_error: "Error during finalizing"
+          finalizing_done: "Completed"
         wizard:
           button_retry: "다시 시도"
           parts:
@@ -260,8 +265,9 @@ ko:
               button_revert: "가져오기 되돌리기"
               button_done: "가져오기 완료"
               preview_description: '가져온 데이터는 현재 검토 모드에 있습니다. 가져오기를 영구적으로 적용하려면 "가져오기 완료"를 클릭하고, 가져오기 실행에서 변경된 모든 사항을 취소하려면 "가져오기 되돌리기"를 클릭합니다.'
-              label_finalizing_progress: "가져오기를 완료하는 중..."
-              label_finalized: "가져오기가 완료되었습니다."
+              label_finalize_import: "Finalize import"
+              label_finalizing: "Finalizing import..."
+              label_finalizing_done: "Import finalized."
               label_revert_progress: "가져오기를 되돌리는 중..."
               label_reverted: "가져오기를 되돌렸습니다."
           select_dialog:
@@ -1356,6 +1362,9 @@ ko:
         name: "Jira 인스턴스 이름"
         url: "Jira 인스턴스 URL"
         personal_access_token: "개인 액세스 토큰"
+      "import/jira_open_project_reference":
+        jira: "Jira"
+        jira_import: "Jira import"
       announcements:
         show_until: "표시 기한"
       attachment:
@@ -4148,6 +4157,7 @@ ko:
   notice_parent_item_not_found: "부모 항목을 찾을 수 없습니다."
   notice_project_not_deleted: "프로젝트가 삭제되지 않았습니다."
   notice_project_not_found: "프로젝트를 찾을 수 없습니다."
+  notice_smtp_address_unsafe: "SMTP address %{address} is not safe. Please add it to OPENPROJECT_SSRF_PROTECTION_ALLOWLIST."
   notice_successful_connection: "연결에 성공했습니다."
   notice_successful_create: "생성에 성공했습니다."
   notice_successful_delete: "삭제에 성공했습니다."

@@ -175,6 +175,7 @@ pl:
           instance_meta_fetching: "Pobieranie metadanych"
           instance_meta_error: "Błąd podczas pobierania metadanych"
           instance_meta_done: "Pobrano metadane"
+          import_scope: "Select scope"
           configuring: "Wybierz zakres"
           projects_meta_fetching: "Pobieranie danych projektu"
           projects_meta_error: "Błąd podczas pobierania danych projektu"
@@ -184,8 +185,12 @@ pl:
           imported: "Tryb przeglądu"
           reverting: "Cofanie"
           revert_error: "Błąd podczas cofania"
+          revert_cancelling: "Cancelling revert"
+          revert_cancelled: "Revert cancelled"
           reverted: "Cofnięto"
-          completed: "Ukończono"
+          finalizing: "Finalizing"
+          finalizing_error: "Error during finalizing"
+          finalizing_done: "Completed"
         wizard:
           button_retry: "Ponów próbę"
           parts:
@@ -278,8 +283,9 @@ pl:
               button_revert: "Cofnij import"
               button_done: "Sfinalizuj import"
               preview_description: 'Zaimportowane dane są obecnie w trybie przeglądu. Kliknij przycisk „Sfinalizuj import”, aby zaimportować dane na stałe lub „Cofnij import”, aby cofnąć wszystkie zmiany wprowadzone wskutek importu.'
-              label_finalizing_progress: "Finalizowanie importu..."
-              label_finalized: "Sfinalizowano import."
+              label_finalize_import: "Finalize import"
+              label_finalizing: "Finalizing import..."
+              label_finalizing_done: "Import finalized."
               label_revert_progress: "Cofanie importu..."
               label_reverted: "Cofnięto import."
           select_dialog:
@@ -1397,6 +1403,9 @@ pl:
         name: "Nazwa wystąpienia Jira"
         url: "Adres URL wystąpienia Jira"
         personal_access_token: "Osobisty token dostępu"
+      "import/jira_open_project_reference":
+        jira: "Jira"
+        jira_import: "Jira import"
       announcements:
         show_until: "Wyświetlaj do"
       attachment:
@@ -4314,6 +4323,7 @@ pl:
   notice_parent_item_not_found: "Nie znaleziono elementu nadrzędnego."
   notice_project_not_deleted: "Projekt nie został usunięty."
   notice_project_not_found: "Nie znaleziono projektu."
+  notice_smtp_address_unsafe: "SMTP address %{address} is not safe. Please add it to OPENPROJECT_SSRF_PROTECTION_ALLOWLIST."
   notice_successful_connection: "Połączenie zakończone sukcesem."
   notice_successful_create: "Tworzenie zakończone sukcesem."
   notice_successful_delete: "Usuwanie zakończone sukcesem."

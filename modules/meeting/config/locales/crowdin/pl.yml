@@ -226,7 +226,8 @@ pl:
         heading: "Brak uczestników"
         description: "Nie ma jeszcze żadnych uczestników."
     attachments:
-      template: "Załączone pliki zostaną uwzględnione we wszystkich przyszłych spotkaniach z tej serii."
+      onetime_template: "These attached files will be included in all future meetings using this template."
+      series_template: "These attached files will be included in all future meetings in the series."
       text: "Załączone pliki są dostępne dla wszystkich uczestników spotkania. Można je również przeciągać i upuszczać w notatkach do punktów planu spotkania."
     copy:
       title: "Kopiuj spotkanie: %{title}"
@@ -302,6 +303,8 @@ pl:
         template:
           title: "Usuń szablon"
           heading: "Usunąć ten szablon?"
+          confirmation_message_html: >
+            This action is not reversible. Please proceed with caution. Existing meetings that were created using this template will not be affected.
       occurrence:
         title: "Anuluj wystąpienie spotkania"
         heading: "Anulować to wystąpienie spotkania?"
