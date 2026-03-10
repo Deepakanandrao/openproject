@@ -1399,9 +1399,6 @@ ru:
         dependencies: "Связи"
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "Совместное использование"
-        finish_date: "Дата окончания"
       jira_import:
         projects: "Проекты"
       "import/jira":
