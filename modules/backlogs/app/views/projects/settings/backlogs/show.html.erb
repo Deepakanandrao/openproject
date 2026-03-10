@@ -39,7 +39,8 @@ See COPYRIGHT and LICENSE files for more details.
     settings_primer_form_with(
       url: project_settings_backlogs_path(@project),
       model: @project,
-      method: :patch
+      method: :patch,
+      data: { turbo_frame: "_top" }
     ) do |f|
   %>
     <%= render Projects::Settings::BacklogsSettingsForm.new(f) %>

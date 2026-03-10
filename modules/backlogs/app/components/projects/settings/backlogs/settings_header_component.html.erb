@@ -66,7 +66,7 @@ See COPYRIGHT and LICENSE files for more details.
           tag: :button,
           href: rebuild_positions_project_settings_backlogs_path(@project),
           label: t(:"backlogs.rebuild_positions"),
-          form_arguments: { method: :post }
+          form_arguments: { method: :post, data: { turbo_frame: "_top" } }
         ) do |item|
           item.with_leading_visual_icon(icon: :sync)
         end

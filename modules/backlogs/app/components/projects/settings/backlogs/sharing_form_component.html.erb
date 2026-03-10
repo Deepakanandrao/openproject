@@ -38,7 +38,7 @@ See COPYRIGHT and LICENSE files for more details.
     model: project,
     url: project_settings_backlog_sharing_path(project),
     method: :patch,
-    data: { controller: "show-when-value-selected" }
+    data: { turbo_frame: "_top", controller: "show-when-value-selected" }
   ) do |f|
     render(Projects::Settings::Backlogs::SharingForm.new(f))
   end
