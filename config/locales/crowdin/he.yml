@@ -1401,9 +1401,6 @@ he:
         dependencies: "Dependencies"
   activerecord:
     attributes:
-      agile/sprint:
-        sharing: "Sharing"
-        finish_date: "End date"
       jira_import:
         projects: "Projects"
       "import/jira":
