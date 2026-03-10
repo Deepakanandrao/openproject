@@ -27,19 +27,21 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
 
-<%= render(
-      Projects::Settings::Backlogs::SettingsHeaderComponent.new(
-        project: @project,
-        selected_tab: :done_status
-      )
-    ) %>
+<%= turbo_frame_tag "backlogs-settings" do %>
+  <%= render(
+        Projects::Settings::Backlogs::SettingsHeaderComponent.new(
+          project: @project,
+          selected_tab: :done_status
+        )
+      ) %>
 
-<%=
-  settings_primer_form_with(
-    url: project_settings_backlogs_path(@project),
-    model: @project,
-    method: :patch
-  ) do |f|
-%>
-  <%= render Projects::Settings::BacklogsSettingsForm.new(f) %>
+  <%=
+    settings_primer_form_with(
+      url: project_settings_backlogs_path(@project),
+      model: @project,
+      method: :patch
+    ) do |f|
+  %>
+    <%= render Projects::Settings::BacklogsSettingsForm.new(f) %>
+  <% end %>
 <% end %>
