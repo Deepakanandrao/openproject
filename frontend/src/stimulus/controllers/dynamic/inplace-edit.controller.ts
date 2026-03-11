@@ -43,6 +43,11 @@ export default class extends Controller {
   declare hasDialogUrlValue:boolean;
 
   async request(e:Event):Promise<void> {
+    // Don't trigger edit mode if the user is selecting text or just finished a selection
+    if (window.getSelection()?.toString()) {
+      return;
+    }
+
     // Don't trigger edit mode if clicking on a link
     const target = e.target as HTMLElement;
     if (target.tagName === 'a' || target.closest('a')) {
@@ -62,7 +67,12 @@ export default class extends Controller {
     }
   }
 
-  open(event:Event) {
+  openDialog(event:Event) {
+    // Don't trigger edit mode if the user is selecting text or just finished a selection
+    if (window.getSelection()?.toString()) {
+      return;
+    }
+
     const target = event.target as HTMLElement;
 
     // Check if the event is on an interactive element that should be ignored

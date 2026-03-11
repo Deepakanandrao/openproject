@@ -73,7 +73,9 @@ module OpenProject
           def base_arguments
             {
               classes: "op-inplace-edit--display-field #{'op-inplace-edit--display-field_editable' if writable?}",
-              id: @system_arguments[:id]
+              id: @system_arguments[:id],
+              role: "button",
+              tabindex: 0
             }
           end
 
@@ -82,10 +84,7 @@ module OpenProject
               data: {
                 controller: "inplace-edit async-dialog",
                 inplace_edit_dialog_url_value: @system_arguments[:dialog_url],
-                action: "click->inplace-edit#open " \
-                        "keydown.enter->inplace-edit#open " \
-                        "keydown.space->inplace-edit#open " \
-                        "inplace-edit:open-dialog->async-dialog#handleOpenDialog",
+                action: dialog_controller_actions,
                 test_selector: @system_arguments[:dialog_test_selector]
               },
               aria: {
@@ -93,9 +92,7 @@ module OpenProject
                   I18n.t(:label_edit_x, x: @system_arguments[:label]),
                   I18n.t(:label_value_x, x: render_display_value)
                 ].join(", ")
-              },
-              role: "button",
-              tabindex: 0
+              }
             }
           end
 
@@ -104,7 +101,7 @@ module OpenProject
               data: {
                 controller: "inplace-edit",
                 inplace_edit_url_value: edit_url,
-                action: writable? ? "click->inplace-edit#request" : ""
+                action: inline_controller_actions
               }
             }
           end
@@ -156,6 +153,23 @@ module OpenProject
                 customized_id: model.id
               )
               .to_a
+          end
+
+          def dialog_controller_actions
+            return "" unless writable?
+
+            "click->inplace-edit#openDialog " \
+              "keydown.enter->inplace-edit#openDialog " \
+              "keydown.space->inplace-edit#openDialog " \
+              "inplace-edit:open-dialog->async-dialog#handleOpenDialog"
+          end
+
+          def inline_controller_actions
+            return "" unless writable?
+
+            "click->inplace-edit#request " \
+              "keydown.enter->inplace-edit#request " \
+              "keydown.space->inplace-edit#request"
           end
         end
       end
