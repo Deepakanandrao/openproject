@@ -201,6 +201,7 @@ gem "nokogiri", "~> 1.19.1"
 
 gem "carrierwave", "~> 2.2.6"
 gem "carrierwave_direct", "~> 3.0.0"
+gem "ssrf_filter", "~> 1.3"
 gem "fog-aws"
 
 gem "aws-sdk-core", "~> 3.241"
@@ -255,7 +256,7 @@ gem "turbo-rails", "~> 2.0.20"
 
 # There is a problem with version 1.4.0. Do not update until you're sure there is no infinite hang
 # happenning in failing tests when WebMock or VCR stub cannot be found.
-gem "httpx", "~> 1.6.3"
+gem "httpx", "~> 1.7.3"
 
 # Brings actual deep-freezing to most ruby objects
 gem "ice_nine"

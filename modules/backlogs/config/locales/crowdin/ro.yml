@@ -56,6 +56,7 @@ ro:
     any: "Oricare"
     column_width: "Column width"
     definition_of_done: "Procent realizat"
+    definition_of_done_caption: "Work packages with these statuses are treated as completed in backlog views and reporting."
     impediment: "Impediment"
     label_versions_default_fold_state: "Afișare versiuni complete"
     caption_versions_default_fold_state: "Versiunile nu vor fi extinse în mod implicit la vizualizarea restanțelor. Fiecare versiune trebuie să fie extinsă manual."
@@ -85,12 +86,21 @@ ro:
     backlog_component:
       blankslate_title: "%{name} is empty"
       blankslate_description: "No items planned yet. Drag items here to add them."
+    sprint_component:
+      blankslate_title: "%{name} is empty"
+      blankslate_description: "No items planned yet. Drag items here to add them."
     backlog_header_component:
       label_toggle_backlog: "Collapse/Expand %{name}"
       label_story_count:
         zero: "No stories in backlog"
         one: "%{count} story in backlog"
         other: "%{count} stories in backlog"
+    sprint_header_component:
+      label_toggle_backlog: "Collapse/Expand %{name}"
+      label_story_count:
+        zero: "No stories in sprint"
+        one: "%{count} story in sprint"
+        other: "%{count} stories in sprint"
     backlog_menu_component:
       label_actions: "Backlog actions"
       action_menu:
@@ -101,6 +111,14 @@ ro:
         burndown_chart: "Burndown chart"
         wiki: "Wiki"
         properties: "Properties"
+    sprint_menu_component:
+      label_actions: "Sprint actions"
+      action_menu:
+        edit_sprint: "Edit sprint"
+        new_story: "New story"
+        stories_tasks: "Stories/Tasks"
+        task_board: "Task board"
+        burndown_chart: "Burndown chart"
     story_component:
       label_drag_story: "Move %{name}"
     story_menu_component:
@@ -128,16 +146,19 @@ ro:
   label_backlogs_unconfigured: "Nu ai configurat încă Backlogs. Te rog să mergi la %{administration} > %{plugins}, apoi dă clic pe link-ul %{configure} pentru acest plugin. După ce ai configurat câmpurile, revino la această pagină pentru a începe să utilizezi instrumentul."
   label_blocks_ids: "ID-urile pachetelor de lucru blocate"
   label_column_in_backlog: "Coloană în backlog"
+  label_used_as_backlog: "Used as backlog"
   label_points_burn_down: "Jos"
   label_points_burn_up: "Sus"
+  label_sprint_edit: "Edit sprint"
   label_sprint_impediments: "Impedimentele Sprint"
   label_sprint_new: "New sprint"
   label_task_board: "Tablă de sarcini"
-  permission_view_sprints: "View sprints"
   permission_create_sprints: "Create sprints"
-  permission_start_complete_sprint: "Start/complete sprint"
   permission_manage_sprint_items: "Manage sprint items"
+  permission_select_done_statuses: "Selectează stările realizate"
   permission_share_sprint: "Share sprint"
+  permission_start_complete_sprint: "Start/complete sprint"
+  permission_view_sprints: "View sprints"
   project_module_backlogs: "Restanțe"
   rb_burndown_charts:
     show:

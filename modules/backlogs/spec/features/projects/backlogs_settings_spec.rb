@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -27,23 +29,25 @@
 #++
 
 require "spec_helper"
-require_relative "../support/pages/projects/settings/backlogs"
+require_relative "../../support/pages/projects/settings/backlogs"
 
-RSpec.describe "Resolved status" do
+RSpec.describe "Backlogs Project Settings", :js do
   let!(:project) do
     create(:project,
            enabled_module_names: %w(backlogs))
   end
-  let!(:status) { create(:status, is_default: true) }
+  let!(:closed_status)      { create(:status, name: "Closed", is_closed: true) }
+  let!(:closed_like_status) { create(:status, name: "Sorta kinda Finished", is_default: true) }
   let(:role) do
     create(:project_role,
-           permissions: %i[create_sprints view_sprints])
+           permissions: %i[select_done_statuses])
   end
   let!(:current_user) do
     create(:user,
            member_with_roles: { project => role })
   end
   let(:settings_page) { Pages::Projects::Settings::Backlogs.new(project) }
+  let(:done_status_ids_autocompleter) { FormFields::Primerized::AutocompleteField.new("story_types", selector: "[data-test-selector='done_status_ids_autocomplete']") }
 
   before do
     login_as current_user
@@ -52,12 +56,41 @@ RSpec.describe "Resolved status" do
   it "allows setting a status as done although it is not closed" do
     settings_page.visit!
 
-    check status.name
+    expect(page).to have_heading "Backlogs"
+
+    wait_for_network_idle
+    wait_for_autocompleter_options_to_be_loaded
+
+    done_status_ids_autocompleter.expect_blank
+    done_status_ids_autocompleter.select_option "Closed"
+    done_status_ids_autocompleter.select_option "Sorta kinda Finished"
+
+    done_status_ids_autocompleter.expect_selected "Closed"
+    done_status_ids_autocompleter.expect_selected "Sorta kinda Finished"
+    done_status_ids_autocompleter.expect_not_disabled "Definition of Done"
+
+    done_status_ids_autocompleter.close_autocompleter
+
     click_button "Save"
 
     expect_flash(type: :success, message: "Successful update")
 
-    expect(page)
-      .to have_checked_field(status.name)
+    wait_for_network_idle
+    wait_for_autocompleter_options_to_be_loaded
+
+    done_status_ids_autocompleter.expect_selected "Closed"
+    done_status_ids_autocompleter.expect_selected "Sorta kinda Finished"
+
+    done_status_ids_autocompleter.deselect_option "Sorta kinda Finished"
+
+    click_button "Save"
+
+    wait_for_network_idle
+    wait_for_autocompleter_options_to_be_loaded
+
+    expect_flash(type: :success, message: "Successful update")
+
+    done_status_ids_autocompleter.expect_selected "Closed"
+    done_status_ids_autocompleter.expect_not_selected "Sorta kinda Finished"
   end
 end

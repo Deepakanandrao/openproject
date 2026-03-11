@@ -56,6 +56,7 @@ sv:
     any: "någon"
     column_width: "Column width"
     definition_of_done: "Definition av klart"
+    definition_of_done_caption: "Work packages with these statuses are treated as completed in backlog views and reporting."
     impediment: "Hinder"
     label_versions_default_fold_state: "Visa ihopfällda versioner"
     caption_versions_default_fold_state: "Versioner kommer inte att utökas som standard när du visar backloggar. Var och en måste utökas manuellt."
@@ -83,12 +84,21 @@ sv:
     backlog_component:
       blankslate_title: "%{name} is empty"
       blankslate_description: "No items planned yet. Drag items here to add them."
+    sprint_component:
+      blankslate_title: "%{name} is empty"
+      blankslate_description: "No items planned yet. Drag items here to add them."
     backlog_header_component:
       label_toggle_backlog: "Collapse/Expand %{name}"
       label_story_count:
         zero: "No stories in backlog"
         one: "%{count} story in backlog"
         other: "%{count} stories in backlog"
+    sprint_header_component:
+      label_toggle_backlog: "Collapse/Expand %{name}"
+      label_story_count:
+        zero: "No stories in sprint"
+        one: "%{count} story in sprint"
+        other: "%{count} stories in sprint"
     backlog_menu_component:
       label_actions: "Backlog actions"
       action_menu:
@@ -99,6 +109,14 @@ sv:
         burndown_chart: "Burndown chart"
         wiki: "Wiki"
         properties: "Properties"
+    sprint_menu_component:
+      label_actions: "Sprint actions"
+      action_menu:
+        edit_sprint: "Edit sprint"
+        new_story: "New story"
+        stories_tasks: "Stories/Tasks"
+        task_board: "Task board"
+        burndown_chart: "Burndown chart"
     story_component:
       label_drag_story: "Move %{name}"
     story_menu_component:
@@ -126,16 +144,19 @@ sv:
   label_backlogs_unconfigured: "Du har inte konfigurerat backloggar ännu. Gå till %{administration} > %{plugins}, klicka på %{configure} länken för denna plugin. När du har ställt in fälten, kan du komma tillbaka till denna sida för att börja använda verktyget."
   label_blocks_ids: "ID:n för blockerade arbetspaket"
   label_column_in_backlog: "Kolumn i backlog"
+  label_used_as_backlog: "Used as backlog"
   label_points_burn_down: "Ner"
   label_points_burn_up: "Upp"
+  label_sprint_edit: "Edit sprint"
   label_sprint_impediments: "Sprint hinder"
   label_sprint_new: "New sprint"
   label_task_board: "Aktivitetstavla"
-  permission_view_sprints: "View sprints"
   permission_create_sprints: "Create sprints"
-  permission_start_complete_sprint: "Start/complete sprint"
   permission_manage_sprint_items: "Manage sprint items"
+  permission_select_done_statuses: "Välj klar status"
   permission_share_sprint: "Share sprint"
+  permission_start_complete_sprint: "Start/complete sprint"
+  permission_view_sprints: "View sprints"
   project_module_backlogs: "Backloggar"
   rb_burndown_charts:
     show:

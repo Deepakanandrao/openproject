@@ -39,6 +39,13 @@ module Agile
     has_many :work_packages, dependent: :nullify
 
     scope :for_project, ->(project) { where(project:) }
+    scope :not_completed, -> { !completed }
+    scope :order_by_date, -> do
+      order(arel_table[:start_date].asc.nulls_last,
+            arel_table[:finish_date].asc.nulls_last)
+    end
+    # FIXME: replace this stub with a meaningful implementation.
+    scope :visible, -> { all }
 
     enum :status,
          {

@@ -28,54 +28,43 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Storages
-  StorageFileInfo = Data.define(
-    :status,
-    :status_code,
-    :id,
-    :name,
-    :last_modified_at,
-    :created_at,
-    :mime_type,
-    :size,
-    :owner_name,
-    :owner_id,
-    :last_modified_by_name,
-    :last_modified_by_id,
-    :permissions,
-    :location
-  ) do
-    def initialize(
-      status:,
-      status_code:,
-      id:,
-      name: nil,
-      last_modified_at: nil,
-      created_at: nil,
-      mime_type: nil,
-      size: nil,
-      owner_name: nil,
-      owner_id: nil,
-      last_modified_by_name: nil,
-      last_modified_by_id: nil,
-      permissions: nil,
-      location: nil
-    )
-      super
-    end
+module Projects
+  module Settings
+    class BacklogsSettingsForm < ApplicationForm
+      form do |f|
+        f.autocompleter(
+          name: :done_status_ids,
+          label: I18n.t(:"backlogs.definition_of_done"),
+          caption: I18n.t(:"backlogs.definition_of_done_caption"),
+          autocomplete_options: {
+            multiple: true,
+            closeOnSelect: false,
+            clearable: false,
+            decorated: true,
+            data: {
+              test_selector: "done_status_ids_autocomplete"
+            }
+          }
+        ) do |list|
+          available_statuses.each do |label, value|
+            active = value.in?(model.done_status_ids)
 
-    def clean_location
-      return if location.nil?
+            list.option(
+              label:,
+              value:,
+              selected: active
+            )
+          end
+        end
 
-      if location.starts_with? "/"
-        CGI.unescape(location)
-      else
-        CGI.unescape("/#{location}")
+        f.submit(scheme: :primary, name: :apply, label: I18n.t(:button_save))
       end
-    end
 
-    def self.from_id(file_id)
-      new(id: file_id, status: "OK", status_code: 200)
+      private
+
+      def available_statuses
+        Status.pluck(:name, :id)
+      end
     end
   end
 end

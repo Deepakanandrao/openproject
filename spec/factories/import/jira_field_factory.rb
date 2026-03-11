@@ -28,6 +28,8 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Storages
-  UploadLink = Data.define(:destination, :method)
+FactoryBot.define do
+  factory :jira_field, class: "Import::JiraField" do
+    sequence(:jira_field_id) { |n| "field_#{n}" }
+  end
 end

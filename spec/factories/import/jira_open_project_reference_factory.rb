@@ -28,21 +28,11 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Storages::Peripherals
-  module StorageFileInfoConverter
-    def to_storage_file(storage_file_info)
-      Storages::StorageFile.new(
-        id: storage_file_info.id,
-        name: storage_file_info.name,
-        size: storage_file_info.size,
-        mime_type: storage_file_info.mime_type,
-        created_at: storage_file_info.created_at,
-        last_modified_at: storage_file_info.last_modified_at,
-        created_by_name: storage_file_info.owner_name,
-        last_modified_by_name: storage_file_info.last_modified_by_name,
-        location: storage_file_info.location,
-        permissions: storage_file_info.permissions
-      )
-    end
+FactoryBot.define do
+  factory :jira_open_project_reference, class: "Import::JiraOpenProjectReference" do
+    sequence(:op_entity_id, &:to_s)
+    op_entity_class { "User" }
+    sequence(:jira_entity_id, &:to_s)
+    jira_entity_class { "Import::JiraUser" }
   end
 end

@@ -78,10 +78,16 @@ module OpenProject::Backlogs
                    permissible_on: :project,
                    dependencies: :view_work_packages
 
+        permission :select_done_statuses,
+                   {
+                     "projects/settings/backlogs": %i[show update rebuild_positions]
+                   },
+                   permissible_on: :project,
+                   require: :member
+
         permission :create_sprints,
-                   { rb_sprints: %i[new_dialog refresh_form create edit_name update],
-                     rb_wikis: %i[edit update],
-                     "projects/settings/backlogs": %i[show update rebuild_positions] },
+                   { rb_sprints: %i[new_dialog refresh_form create edit_name update edit_dialog update_agile_sprint],
+                     rb_wikis: %i[edit update] },
                    permissible_on: :project,
                    require: :member,
                    dependencies: :view_sprints
@@ -97,7 +103,7 @@ module OpenProject::Backlogs
                    { rb_stories: %i[move reorder] },
                    permissible_on: :project,
                    require: :member,
-                   dependencies: %i[view_sprints add_work_packages edit_work_packages]
+                   dependencies: :view_sprints
 
         permission :share_sprint,
                    {},

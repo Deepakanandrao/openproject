@@ -28,6 +28,16 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Storages
-  StorageFiles = Data.define(:files, :parent, :ancestors)
+module Users
+  class JiraImportUpdateContract < BaseContract
+    validate :user_limit_not_exceeded
+
+    private
+
+    def user_limit_not_exceeded
+      if OpenProject::Enterprise.user_limit_reached?
+        errors.add :base, :user_limit_reached
+      end
+    end
+  end
 end
