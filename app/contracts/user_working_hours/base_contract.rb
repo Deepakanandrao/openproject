@@ -35,6 +35,9 @@ class UserWorkingHours::BaseContract < ModelContract
   attribute :availability_factor
 
   validate :validate_manage_permission
+  # TODO: Possibly add a validation that we only add working hours for future dates. We will start without it for
+  #       now, but let's consider adding it in the future to prevent users from accidentally changing their historic
+  #       data.
 
   def self.model = ::UserWorkingHours
 
