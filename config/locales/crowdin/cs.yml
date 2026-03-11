@@ -627,11 +627,13 @@ cs:
   op_dry_validation:
     or: "nebo"
     errors:
+      unexpected_key: "is not allowed."
       array?: "must be an array."
       decimal?: "must be a decimal."
       defined: "must not be defined."
       eql?: "must be equal to %{left}."
       filled?: "musí být vyplněno"
+      format?: "is in invalid format."
       greater_or_equal_zero: "musí být větší nebo rovno 0."
       gteq?: "must be greater than or equal to %{num}."
       hash?: "must be a hash."
@@ -658,7 +660,9 @@ cs:
         parent:
           not_descendant: "musí být potomkem kořenu hierarchie."
       str?: "must be a string."
+      time?: "must be a time."
       type?: "must be %{type}."
+      uri?: "is not a valid URI."
     rules:
       copy_workflow_from: "Type for workflow copy"
       enabled: "Zapnuto"

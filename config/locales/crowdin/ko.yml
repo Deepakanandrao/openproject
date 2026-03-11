@@ -609,11 +609,13 @@ ko:
   op_dry_validation:
     or: "또는"
     errors:
+      unexpected_key: "is not allowed."
       array?: "- 배열이어야 합니다."
       decimal?: "- 소수여야 합니다."
       defined: "- 정의해서는 안 됩니다."
       eql?: "- %{left}과(와) 같아야 합니다."
       filled?: "- 입력해야 합니다."
+      format?: "is in invalid format."
       greater_or_equal_zero: "- 0보다 크거나 같아야 합니다."
       gteq?: "- %{num}보다 크거나 같아야 합니다."
       hash?: "- 해시여야 합니다."
@@ -640,7 +642,9 @@ ko:
         parent:
           not_descendant: "- 계층 루트의 하위 항목이어야 합니다."
       str?: "- 문자열이어야 합니다."
+      time?: "must be a time."
       type?: "- %{type}이어야(여야) 합니다."
+      uri?: "is not a valid URI."
     rules:
       copy_workflow_from: "워크플로 복사의 유형"
       enabled: "활성화됨"

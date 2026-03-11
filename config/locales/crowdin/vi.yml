@@ -609,11 +609,13 @@ vi:
   op_dry_validation:
     or: "hoặc"
     errors:
+      unexpected_key: "is not allowed."
       array?: "phải là một mảng."
       decimal?: "phải là số thập phân."
       defined: "không được xác định."
       eql?: "phải bằng %{left}."
       filled?: "phải được lấp đầy."
+      format?: "is in invalid format."
       greater_or_equal_zero: "phải lớn hơn hoặc bằng 0."
       gteq?: "phải lớn hơn hoặc bằng %{num}."
       hash?: "phải là một hàm băm."
@@ -640,7 +642,9 @@ vi:
         parent:
           not_descendant: "phải là hậu duệ của gốc phân cấp."
       str?: "phải là một chuỗi."
+      time?: "must be a time."
       type?: "phải là %{type}."
+      uri?: "is not a valid URI."
     rules:
       copy_workflow_from: "Loại bản sao quy trình công việc"
       enabled: "đã bật"

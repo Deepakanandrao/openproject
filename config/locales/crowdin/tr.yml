@@ -616,11 +616,13 @@ tr:
   op_dry_validation:
     or: "ya da"
     errors:
+      unexpected_key: "is not allowed."
       array?: "bir dizi olmalıdır."
       decimal?: "ondalık sayı olmalıdır."
       defined: "tanımlanmamış olmalıdır."
       eql?: "%{left}'e eşit olmalıdır."
       filled?: "doldurulmalı."
+      format?: "is in invalid format."
       greater_or_equal_zero: "sıfıra eşit ya da büyük olmalı."
       gteq?: "%{num} değerine eşit ya da daha büyük olması gerekir."
       hash?: "bir hash olmalıdır."
@@ -647,7 +649,9 @@ tr:
         parent:
           not_descendant: "hiyerarşi kökünü takip etmeli."
       str?: "bir dize olmalıdır."
+      time?: "must be a time."
       type?: "%{type} olmalıdır."
+      uri?: "is not a valid URI."
     rules:
       copy_workflow_from: "İş akışı kopyası için tür"
       enabled: "Etkin"
