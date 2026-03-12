@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-# -- copyright
+#-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2010-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -29,12 +29,17 @@
 # ++
 
 module Projects
-  class CopyFormComponent < ApplicationComponent
-    include ApplicationHelper
-    include OpPrimer::ComponentHelpers
-    include OpTurbo::Streamable
-    include Projects::Concerns::IdentifierSuggestion
-
-    options :source_project, :target_project, :copy_options
+  module Concerns
+    module IdentifierSuggestion
+      def identifier_suggestion_data
+        flag_active = OpenProject::FeatureDecisions.semantic_work_package_ids_active?
+        data = {
+          controller: "projects--identifier-suggestion",
+          "projects--identifier-suggestion-mode-value": Project.semantic_alphanumeric_identifier? ? "semantic" : "legacy"
+        }
+        data[:"projects--identifier-suggestion-url-value"] = projects_identifier_suggestion_path if flag_active
+        data
+      end
+    end
   end
 end
