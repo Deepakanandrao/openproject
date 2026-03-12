@@ -44,5 +44,13 @@ RSpec.describe "Sprint displayed and selectable on work package view", :js, with
     wp_page.visit!
 
     wp_page.expect_attributes sprint: sprint.name
+
+    wp_page.set_attributes({ sprint: other_sprint.name })
+    wp_page.expect_and_dismiss_toaster message: I18n.t(:notice_successful_update)
+
+    # Ensure the sprint association is persisted
+    wp_page.visit!
+
+    wp_page.expect_attributes sprint: other_sprint.name
   end
 end
