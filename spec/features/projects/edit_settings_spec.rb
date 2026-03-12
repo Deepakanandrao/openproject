@@ -79,6 +79,26 @@ RSpec.describe "Projects", "editing settings", :js do
       expect(page).to have_content "Identifier is invalid."
       expect(page).to have_current_path "/projects/foo-project/identifier"
     end
+
+    context "with the semantic work package IDs flag enabled", with_flag: { semantic_work_package_ids: true } do
+      it "updates the project identifier via dialog" do
+        visit project_settings_general_path(project)
+
+        click_on "Change identifier"
+
+        expect(page).to have_dialog "Change project identifier"
+
+        within "dialog" do
+          expect(page).to have_text "This will permanently change identifiers and URLs"
+          fill_in "project[identifier]", with: "foo-bar"
+          click_on "Change identifier"
+        end
+
+        expect(page).to have_content "Successful update."
+        expect(page).to have_current_path %r{/projects/foo-bar/settings/general}
+        expect(project.reload.identifier).to eq "foo-bar"
+      end
+    end
   end
 
   describe "editing basic details" do
