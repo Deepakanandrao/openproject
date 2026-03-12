@@ -31,9 +31,11 @@ module Projects
   module Settings
     class IdentifierForm < ApplicationForm
       form do |f|
-        caption_key = Project.semantic_alphanumeric_identifier? ?
-                        :text_project_identifier_description :
+        caption_key = if Project.semantic_alphanumeric_identifier?
+                        :text_project_identifier_description
+                      else
                         :text_project_identifier_url_description
+                      end
         f.text_field(
           name: :identifier,
           label: attribute_name(:identifier),
