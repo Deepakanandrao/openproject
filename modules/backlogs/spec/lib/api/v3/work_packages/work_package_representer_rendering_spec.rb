@@ -85,10 +85,18 @@ RSpec.describe API::V3::WorkPackages::WorkPackageRepresenter, "rendering", with_
         end
       end
 
-      context "when it is a task" do
+      context "when it is a task with the feature flag off", with_flag: { scrum_projects: false } do
         let(:type) { task_type }
 
         it_behaves_like "no property", :storyPoints
+      end
+
+      context "when it is a task with the feature flag on" do
+        let(:type) { task_type }
+
+        it_behaves_like "property", :storyPoints do
+          let(:value) { story_points }
+        end
       end
     end
 
@@ -97,10 +105,18 @@ RSpec.describe API::V3::WorkPackages::WorkPackageRepresenter, "rendering", with_
         let(:value) { position }
       end
 
-      context "when it is a task" do
+      context "when it is a task with the feature flag off", with_flag: { scrum_projects: false } do
         let(:type) { task_type }
 
         it_behaves_like "no property", :position
+      end
+
+      context "when it is a task with the feature flag on" do
+        let(:type) { task_type }
+
+        it_behaves_like "property", :position do
+          let(:value) { position }
+        end
       end
     end
   end
@@ -125,10 +141,16 @@ RSpec.describe API::V3::WorkPackages::WorkPackageRepresenter, "rendering", with_
         it_behaves_like "has no link"
       end
 
-      context "when it is a task" do
+      context "when it is a task with the feature flag off", with_flag: { scrum_projects: false } do
         let(:type) { task_type }
 
         it_behaves_like "has no link"
+      end
+
+      context "when it is a task with the feature flag on" do
+        let(:type) { task_type }
+
+        it_behaves_like "has a titled link"
       end
     end
 
@@ -169,10 +191,16 @@ RSpec.describe API::V3::WorkPackages::WorkPackageRepresenter, "rendering", with_
         it_behaves_like "has the resource not embedded"
       end
 
-      context "when it is a type" do
+      context "when it is a type with the feature flag off", with_flag: { scrum_projects: false } do
         let(:type) { task_type }
 
         it_behaves_like "has the resource not embedded"
+      end
+
+      context "when it is a type with the feature flag on" do
+        let(:type) { task_type }
+
+        it_behaves_like "has the resource embedded"
       end
     end
   end

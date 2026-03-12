@@ -211,14 +211,16 @@ module OpenProject::Backlogs
     config.to_prepare do
       enabled_backlogs_story = ->(type, project: nil) do
         if project.present?
-          project.backlogs_enabled? && type.story?
+          project.backlogs_enabled? && (type.story? || OpenProject::FeatureDecisions.scrum_projects_active?)
         else
           # Allow globally configuring the attribute if story
-          type.story?
+          type.story? || OpenProject::FeatureDecisions.scrum_projects_active?
         end
       end
 
       story_and_sprint_permission = ->(type, project: nil) do
+        return true if OpenProject::FeatureDecisions.scrum_projects_active?
+
         if project.present?
           type.story? && User.current.allowed_in_project?(:view_sprints, project)
         else
@@ -227,12 +229,14 @@ module OpenProject::Backlogs
         end
       end
 
+      # TODO: upon removal of the scrum_projects feature flag, remove these constraints
       ::Type.add_constraint :position, enabled_backlogs_story
       ::Type.add_constraint :story_points, enabled_backlogs_story
       ::Type.add_constraint :sprint, story_and_sprint_permission
 
       ::Type.add_default_mapping(:estimates_and_progress, :story_points)
       ::Type.add_default_mapping(:other, :position)
+      ::Type.add_default_mapping(:details, :sprint)
 
       ::Queries::Register.register(::Query) do
         filter OpenProject::Backlogs::WorkPackageFilter
