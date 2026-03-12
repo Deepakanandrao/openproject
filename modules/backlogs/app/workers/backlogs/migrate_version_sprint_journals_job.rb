@@ -27,11 +27,29 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
-#
-class Journal::CausedBySystemUpdate < CauseOfChange::Base
-  def initialize(feature:, **additional_attributes)
-    system_update_attributes =
-      { "feature" => feature }.merge(additional_attributes.deep_stringify_keys)
-    super("system_update", system_update_attributes)
+
+# Writes a journal entry on each work package that was associated with a sprint
+# during the version-to-sprint migration. Runs asynchronously after the migration
+# so that the migration itself does not block on journal creation.
+module Backlogs
+  class MigrateVersionSprintJournalsJob < ApplicationJob
+    # wp_version_map: { work_package_id (Integer) => version_name (String) }
+    def perform(wp_version_map)
+      system_user = User.system
+
+      work_packages = WorkPackage.where(id: wp_version_map.keys).index_by(&:id)
+
+      Journal::NotificationConfiguration.with(false) do
+        wp_version_map.each do |wp_id_str, version_name|
+          wp_id = wp_id_str.to_i
+          work_package = work_packages[wp_id]
+          next unless work_package
+
+          Journals::CreateService
+            .new(work_package, system_user)
+            .call(cause: Journal::CausedBySystemUpdate.new(feature: "sprint_migration", version_name:))
+        end
+      end
+    end
   end
 end

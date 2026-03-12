@@ -550,6 +550,30 @@ RSpec.describe OpenProject::JournalFormatter::Cause do
     end
   end
 
+  context "when the change was caused by a sprint migration" do
+    subject(:cause) do
+      {
+        "type" => "system_update",
+        "feature" => "sprint_migration",
+        "version_name" => "Sprint 1"
+      }
+    end
+
+    it do
+      expect(cause).to render_html_variant(
+        "<strong>#{I18n.t('journals.caused_changes.system_update')}</strong> " \
+        "#{I18n.t('journals.cause_descriptions.system_update.sprint_migration', version_name: 'Sprint 1')}"
+      )
+    end
+
+    it do
+      expect(cause).to render_raw_variant(
+        "#{I18n.t('journals.caused_changes.system_update')} " \
+        "#{I18n.t('journals.cause_descriptions.system_update.sprint_migration', version_name: 'Sprint 1')}"
+      )
+    end
+  end
+
   context "when the change was caused by an import" do
     subject(:cause) do
       {

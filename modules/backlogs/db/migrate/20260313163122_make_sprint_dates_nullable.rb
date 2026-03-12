@@ -27,11 +27,10 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
-#
-class Journal::CausedBySystemUpdate < CauseOfChange::Base
-  def initialize(feature:, **additional_attributes)
-    system_update_attributes =
-      { "feature" => feature }.merge(additional_attributes.deep_stringify_keys)
-    super("system_update", system_update_attributes)
+
+class MakeSprintDatesNullable < ActiveRecord::Migration[8.0]
+  def change
+    change_column_null :sprints, :start_date, true
+    change_column_null :sprints, :finish_date, true
   end
 end

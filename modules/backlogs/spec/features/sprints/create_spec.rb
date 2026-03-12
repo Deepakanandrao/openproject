@@ -121,20 +121,6 @@ RSpec.describe "Create", :js do
       describe "validations" do
         let(:too_early_finish_date) { start_date - 1.day }
 
-        it "validates required fields are present" do
-          backlogs_page.open_create_sprint_dialog
-
-          within_dialog "New sprint" do
-            page.fill_in "Sprint name", with: ""
-
-            click_on "Create"
-
-            expect(page).to have_field "Sprint name", validation_error: "can't be blank"
-            expect(page).to have_field "Start date", validation_error: "can't be blank"
-            expect(page).to have_field "Finish date", validation_error: "can't be blank"
-          end
-        end
-
         it "validates finish date is not before start date" do
           backlogs_page.open_create_sprint_dialog
 
