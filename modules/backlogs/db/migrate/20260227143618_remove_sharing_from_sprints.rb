@@ -29,11 +29,7 @@
 #++
 
 class RemoveSharingFromSprints < ActiveRecord::Migration[8.1]
-  def up
-    remove_column :sprints, :sharing
-  end
-
-  def down
-    add_column :sprints, :sharing, :string, null: false, default: "none"
+  def change
+    remove_column :sprints, :sharing, :string, null: false, default: "none"
   end
 end
