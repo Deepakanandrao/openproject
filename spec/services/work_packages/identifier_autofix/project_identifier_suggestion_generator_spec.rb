@@ -47,7 +47,7 @@ RSpec.describe WorkPackages::IdentifierAutofix::ProjectIdentifierSuggestionGener
         expect(result.first[:project]).to eq(project)
         expect(result.first[:current_identifier]).to eq("verylongidentifier")
         expect(result.first[:suggested_identifier]).to be_present
-        expect(result.first[:suggested_identifier].length).to be <= described_class::DEFAULT_IDENTIFIER_BASE_LENGTH
+        expect(result.first[:suggested_identifier].length).to be <= described_class::MAX_IDENTIFIER_LENGTH
       end
     end
 
@@ -70,34 +70,35 @@ RSpec.describe WorkPackages::IdentifierAutofix::ProjectIdentifierSuggestionGener
         expect(identifiers.uniq.size).to eq(identifiers.size)
       end
 
-      it "appends a numeric suffix to resolve conflicts" do
+      it "resolves conflicts by widening the acronym, not numeric suffixes" do
         identifiers = described_class.call([project_sc1, project_sc2]).pluck(:suggested_identifier)
         expect(identifiers).to include("SC")
-        expect(identifiers.any? { it.match?(/\ASC\d+\z/) }).to be true
+        # Second project expands to "STC" (Stream → ST, Channel → C) instead of "SC2"
+        expect(identifiers).to include("STC")
       end
     end
   end
 
   describe "identifier generation from project name" do
     {
-      # Single-word names: first SINGLE_WORD_LENGTH (3) transliterated chars
+      # Single-word names: first SINGLE_WORD_BASE_LENGTH (3) transliterated chars
       "Banana" => "BAN",
       "Kiwi" => "KIW",
       "Strawberry" => "STR",
-      "Cécile" => "CEC", # single word with accented letter
-      # Multi-word names: initials, truncated to IDENTIFIER_MAX_LENGTH (5)
+      "Cécile" => "CEC",
+      # Multi-word names: initials (truncated to DEFAULT_IDENTIFIER_BASE_LENGTH = 5)
       "Flight Planning Algorithm" => "FPA",
       "Fly & Sky" => "FS",
       "Social media marketing" => "SMM",
       "Arcanos (mobile-web-app)" => "AMWA",
       "Flight Planning Training" => "FPT",
-      "A B C D E F G H I J K" => "ABCDE", # truncated to DEFAULT_IDENTIFIER_BASE_LENGTH (5)
-      "Cécile Martin" => "CM", # Unicode: "Cécile" is one word, not ["C","cile"]
-      "étude de cas" => "EDC", # Unicode: é→E via transliteration
-      # Non-Latin scripts have no transliteration entries (I18n.transliterate → "?").
-      # All initials are dropped and the name falls back to FALLBACK_IDENTIFIER.
-      "日本語プロジェクト" => "PROJ", # Japanese: every initial → "?" → fallback
-      "Plan 日本" => "P" # Mixed: Latin "P" survives; "日" is dropped
+      "A B C D E F G H I J K" => "ABCDE",
+      "Cécile Martin" => "CM",
+      "étude de cas" => "EDC",
+      # Non-Latin scripts: every initial → "?" → fallback
+      "日本語プロジェクト" => "PROJ",
+      # Mixed: only "Plan" survives transliteration → single-word → starts at 3 chars
+      "Plan 日本" => "PLA"
     }.each do |project_name, expected_identifier|
       it "generates '#{expected_identifier}' from '#{project_name}'" do
         project = create(:project, identifier: "bad-id", name: project_name)
@@ -106,33 +107,72 @@ RSpec.describe WorkPackages::IdentifierAutofix::ProjectIdentifierSuggestionGener
     end
   end
 
-  describe "unique_identifier conflict resolution" do
+  describe "must start with a letter" do
+    it "strips leading digits from generated identifiers" do
+      project = create(:project, identifier: "bad-id", name: "3D Printing Lab")
+      result = described_class.call([project]).first[:suggested_identifier]
+      expect(result).to match(/\A[A-Z]/)
+    end
+
+    it "falls back to PROJ for all-digit names" do
+      project = create(:project, identifier: "bad-id", name: "123 456")
+      result = described_class.call([project]).first[:suggested_identifier]
+      expect(result).to eq("PROJ")
+    end
+  end
+
+  describe "minimum identifier length" do
+    it "never generates identifiers shorter than MIN_IDENTIFIER_LENGTH" do
+      # Single letter word — too short on its own
+      project = create(:project, identifier: "bad-id", name: "A")
+      result = described_class.call([project]).first[:suggested_identifier]
+      expect(result.length).to be >= described_class::MIN_IDENTIFIER_LENGTH
+    end
+  end
+
+  describe "collision resolution by widening" do
     it "uses the base identifier when not yet taken" do
       project = create(:project, identifier: "sc-app", name: "Stream Communicator")
       expect(described_class.call([project]).first[:suggested_identifier]).to eq("SC")
     end
 
-    it "increments the suffix until unique" do
+    it "widens the acronym instead of appending numeric suffixes" do
       p1 = create(:project, identifier: "sc-a", name: "Stream Communicator")
       p2 = create(:project, identifier: "sc-b", name: "Stream Channel")
       p3 = create(:project, identifier: "sc-c", name: "Something Cool")
-      expect(described_class.call([p1, p2, p3]).pluck(:suggested_identifier)).to contain_exactly("SC", "SC2", "SC3")
+      identifiers = described_class.call([p1, p2, p3]).pluck(:suggested_identifier)
+      expect(identifiers).to contain_exactly("SC", "STC", "SOC")
     end
 
-    it "trims the base to fit within DEFAULT_IDENTIFIER_BASE_LENGTH when adding a suffix" do
+    it "expands single-word identifiers on collision" do
+      p1 = create(:project, identifier: "bad-a", name: "Banana")
+      p2 = create(:project, identifier: "bad-b", name: "Banking")
+      identifiers = described_class.call([p1, p2]).pluck(:suggested_identifier)
+      # Both start as "BAN"; second expands to "BANK"
+      expect(identifiers).to contain_exactly("BAN", "BANK")
+    end
+
+    it "keeps all identifiers within MAX_IDENTIFIER_LENGTH" do
       p1 = create(:project, identifier: "a-b-c-d-e-f-g-h-i-j", name: "A B C D E F G H I J")
       p2 = create(:project, identifier: "a-b-c-d-e-f-g-h-i-j-x", name: "A B C D E F G H I J")
       identifiers = described_class.call([p1, p2]).pluck(:suggested_identifier)
-      expect(identifiers.all? { it.length <= described_class::DEFAULT_IDENTIFIER_BASE_LENGTH }).to be true
+      expect(identifiers.all? { it.length <= described_class::MAX_IDENTIFIER_LENGTH }).to be true
       expect(identifiers.uniq.size).to eq(2)
     end
 
     it "does not suggest an identifier that is already in use (pre-seeded collision)" do
-      # "SC" is pre-seeded as an in-use identifier; the generator must skip it and use "SC2".
       project = create(:project, identifier: "sc-app", name: "Stream Communicator")
       result = described_class.call([project], in_use_identifiers: Set["SC"])
-      expect(result.first[:suggested_identifier]).not_to eq("SC")
-      expect(result.first[:suggested_identifier]).to match(/\ASC\d+\z/) # e.g. "SC2"
+      # "SC" is taken, so it widens to "STC" (Stream → ST, Communicator → C)
+      expect(result.first[:suggested_identifier]).to eq("STC")
+    end
+
+    it "falls back to numeric suffix only when all expansion candidates are exhausted" do
+      # Reserve all expansion candidates for "Go" (a 2-char word)
+      project = create(:project, identifier: "bad-id", name: "Go")
+      result = described_class.call([project], in_use_identifiers: Set["GO"])
+      # "GO" is taken, no further expansion possible, so numeric suffix
+      expect(result.first[:suggested_identifier]).to eq("GO2")
     end
   end
 

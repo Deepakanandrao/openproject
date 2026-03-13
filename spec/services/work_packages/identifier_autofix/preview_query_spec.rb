@@ -52,6 +52,15 @@ RSpec.describe WorkPackages::IdentifierAutofix::PreviewQuery do
     end
   end
 
+  context "when a project has underscores in its identifier" do
+    before { create_valid_project(name: "My Project", identifier: "my_proj") }
+
+    it "does not flag it as problematic" do
+      expect(result.total_count).to eq(0)
+      expect(result.projects_data).to be_empty
+    end
+  end
+
   context "when there are fewer than DISPLAY_COUNT problematic projects" do
     let!(:problematic) do
       [
