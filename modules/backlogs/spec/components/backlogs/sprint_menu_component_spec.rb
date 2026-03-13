@@ -30,7 +30,7 @@
 
 require "rails_helper"
 
-RSpec.describe Backlogs::SprintMenuComponent, type: :component do
+RSpec.describe Backlogs::SprintMenuComponent, type: :component, with_flag: { scrum_projects: true } do
   shared_let(:type_feature) { create(:type_feature) }
   shared_let(:type_task) { create(:type_task) }
 
@@ -108,15 +108,6 @@ RSpec.describe Backlogs::SprintMenuComponent, type: :component do
 
   describe "task board actions" do
     let(:permissions) { %i[view_sprints view_work_packages] }
-
-    context "with the feature flag inactive", with_flag: { scrum_projects: false } do
-      it "shows Task board after Stories/Tasks" do
-        render_component
-
-        expect(menu_items).to include("Stories/Tasks", "Task board")
-        expect(menu_items.index("Task board")).to be > menu_items.index("Stories/Tasks")
-      end
-    end
 
     context "with the feature flag active", with_flag: { scrum_projects: true } do
       context "when the sprint is active" do

@@ -56,26 +56,20 @@ module Backlogs
 
     private
 
-    def scrum_projects_active?
-      OpenProject::FeatureDecisions.scrum_projects_active?
-    end
-
     def show_task_board_link?
-      !scrum_projects_active? || !sprint.in_planning?
+      !sprint.in_planning?
     end
 
     def show_start_sprint_action?
-      scrum_projects_active? && sprint.in_planning? && user_allowed?(:start_complete_sprint)
+      sprint.in_planning? && user_allowed?(:start_complete_sprint)
     end
 
     def show_finish_sprint_action?
-      scrum_projects_active? && sprint.active? && user_allowed?(:start_complete_sprint)
+      sprint.active? && user_allowed?(:start_complete_sprint)
     end
 
     def disable_start_sprint_action?
-      scrum_projects_active? &&
-        sprint.in_planning? &&
-        project_has_another_active_sprint?
+      sprint.in_planning? && project_has_another_active_sprint?
     end
 
     def start_sprint_action_description

@@ -30,7 +30,7 @@
 
 require "rails_helper"
 
-RSpec.describe Backlogs::SprintComponent, type: :component do
+RSpec.describe Backlogs::SprintComponent, type: :component, with_flag: { scrum_projects: true } do
   include Rails.application.routes.url_helpers
 
   shared_let(:type_feature) { create(:type_feature) }
