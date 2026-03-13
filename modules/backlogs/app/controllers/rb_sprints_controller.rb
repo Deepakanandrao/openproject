@@ -116,7 +116,7 @@ class RbSprintsController < RbApplicationController
     if result.success?
       @sprint = result.result
       redirect_to project_work_package_board_path(@project, @sprint.task_board),
-                  notice: I18n.t(:notice_successful_update)
+                  notice: I18n.t(:notice_successful_start)
     else
       respond_with_start_failure(message: start_failure_message(result.message))
     end
@@ -130,7 +130,7 @@ class RbSprintsController < RbApplicationController
 
     if result.success?
       redirect_to backlogs_project_backlogs_path(@project),
-                  notice: I18n.t(:notice_successful_update)
+                  notice: I18n.t(:notice_successful_finish)
     else
       respond_with_finish_failure(message: finish_failure_message(result.message))
     end

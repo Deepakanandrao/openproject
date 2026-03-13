@@ -487,7 +487,7 @@ RSpec.describe RbSprintsController do
           patch :finish, params: request_params
 
           expect(response).to redirect_to(backlogs_project_backlogs_path(project))
-          expect(flash[:notice]).to eq(I18n.t(:notice_successful_update))
+          expect(flash[:notice]).to eq(I18n.t(:notice_successful_finish))
           expect(service).to have_received(:call)
         end
 

@@ -153,7 +153,7 @@ RSpec.describe "Edit", :js do
         it "starts the sprint and redirects to the board" do
           backlogs_page.click_in_sprint_menu(first_sprint, "Start sprint")
 
-          expect_and_dismiss_flash type: :success, message: "Successful update."
+          expect_and_dismiss_flash type: :success, message: "The sprint was started."
 
           expect(page).to have_current_path(%r{/projects/#{project.identifier}/boards/\d+})
           expect(first_sprint.reload.task_board).to be_present
@@ -201,7 +201,7 @@ RSpec.describe "Edit", :js do
             end
 
             backlogs_page.expect_current_path
-            expect_and_dismiss_flash type: :success, message: "Successful update."
+            expect_and_dismiss_flash type: :success, message: "The sprint was completed."
             expect(first_sprint.reload).to be_completed
             backlogs_page.expect_sprint_names_in_order(second_sprint.name)
           end
