@@ -41,12 +41,14 @@ See COPYRIGHT and LICENSE files for more details.
         label: t(".action_menu.start_sprint"),
         tag: :button,
         href: start_project_sprint_path(project, sprint),
+        disabled: disable_start_sprint_action?,
         form_arguments: {
           method: :patch,
           data: { turbo: false }
         }
       ) do |item|
         item.with_leading_visual_icon(icon: :play)
+        item.with_description(start_sprint_action_description) if start_sprint_action_description.present?
       end
     end
 

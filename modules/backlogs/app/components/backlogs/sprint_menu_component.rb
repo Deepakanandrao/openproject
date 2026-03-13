@@ -68,12 +68,32 @@ module Backlogs
       scrum_projects_active? && sprint.in_planning? && user_allowed?(:start_complete_sprint)
     end
 
+    def disable_start_sprint_action?
+      scrum_projects_active? &&
+        sprint.in_planning? &&
+        project_has_another_active_sprint?
+    end
+
+    def start_sprint_action_description
+      return unless disable_start_sprint_action?
+
+      t(".action_menu.start_sprint_disabled_description")
+    end
+
     def user_allowed?(permission)
       current_user.allowed_in_project?(permission, project)
     end
 
     def available_story_types
       @available_story_types ||= story_types & project.types
+    end
+
+    def project_has_another_active_sprint?
+      @project_has_another_active_sprint ||= Agile::Sprint
+                                               .for_project(project)
+                                               .where(status: "active")
+                                               .where.not(id: sprint.id)
+                                               .exists?
     end
   end
 end

@@ -142,6 +142,7 @@ en:
       label_actions: "Sprint actions"
       action_menu:
         start_sprint: "Start sprint"
+        start_sprint_disabled_description: "Another sprint is already active."
         edit_sprint: "Edit sprint"
         new_story: "New story"
         stories_tasks: "Stories/Tasks"

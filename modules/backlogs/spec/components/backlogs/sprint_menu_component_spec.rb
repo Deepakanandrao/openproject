@@ -151,6 +151,29 @@ RSpec.describe Backlogs::SprintMenuComponent, type: :component do
             visible: :hidden
           )
         end
+
+        context "when another sprint is already active" do
+          let!(:active_sprint) do
+            create(:agile_sprint,
+                   project:,
+                   name: "Sprint 2",
+                   start_date: Date.yesterday,
+                   finish_date: Date.tomorrow,
+                   status: "active")
+          end
+
+          it "shows Start sprint disabled with a description" do
+            render_component
+
+            expect(menu_items.first).to include("Start sprint")
+            expect(page).to have_selector(
+              :menuitem,
+              text: "Start sprint",
+              disabled: true
+            )
+            expect(page).to have_text("Another sprint is already active.")
+          end
+        end
       end
 
       context "when the sprint is in planning and the user cannot start it" do
