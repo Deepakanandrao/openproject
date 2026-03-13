@@ -141,6 +141,7 @@ en:
     sprint_menu_component:
       label_actions: "Sprint actions"
       action_menu:
+        start_sprint: "Start sprint"
         edit_sprint: "Edit sprint"
         new_story: "New story"
         stories_tasks: "Stories/Tasks"
@@ -188,6 +189,8 @@ en:
   label_sprint_new: "New sprint"
   label_task_board: "Task board"
   error_task_board_creation_failed: "The task board could not be created automatically."
+  notice_unsuccessful_start: "The sprint could not be started."
+  notice_unsuccessful_start_with_reason: "The sprint could not be started: %{reason}"
 
   permission_create_sprints: "Create sprints"
   permission_manage_sprint_items: "Manage sprint items"

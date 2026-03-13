@@ -157,7 +157,7 @@ RSpec.describe RbSprintsController do
     shared_let(:type_feature) { create(:type_feature) }
     shared_let(:type_task) { create(:type_task) }
 
-    let(:all_permissions) { %i[view_sprints view_work_packages create_sprints] }
+    let(:all_permissions) { %i[view_sprints view_work_packages create_sprints start_complete_sprint] }
     let(:permissions) { all_permissions }
     let(:user) do
       create(:user, member_with_permissions: { project => permissions })
@@ -326,6 +326,131 @@ RSpec.describe RbSprintsController do
 
             expect(response).not_to be_successful
             expect(response).to have_http_status :forbidden
+          end
+        end
+      end
+    end
+
+    describe "PATCH #start" do
+      let!(:sprint) { create(:agile_sprint, project:) }
+      let(:service_result) { ServiceResult.success(result: sprint.tap { it.status = "active" }) }
+      let(:service) { instance_double(Sprints::StartService, call: service_result) }
+      let(:request_params) { { project_id: project.id, id: sprint.id } }
+
+      before do
+        allow(Sprints::StartService)
+          .to receive(:new)
+          .with(user:, model: sprint)
+          .and_return(service)
+      end
+
+      context "with the feature flag inactive" do
+        it "responds with not found" do
+          patch :start, params: request_params, format: :turbo_stream
+
+          expect(response).not_to be_successful
+          expect(response).to have_http_status(:not_found)
+        end
+      end
+
+      context "with the feature flag active", with_flag: { scrum_projects: true } do
+        context "when a board already exists" do
+          let!(:existing_board) do
+            create(:board_grid_with_query,
+                   project:,
+                   linked: sprint)
+          end
+
+          it "starts the sprint and redirects to the board", :aggregate_failures do
+            patch :start, params: request_params
+
+            expect(response).to redirect_to(project_work_package_board_path(project, existing_board))
+            expect(service).to have_received(:call)
+          end
+        end
+
+        context "when board creation succeeds" do
+          let(:board) { create(:board_grid_with_query, project:, linked: sprint) }
+          let(:service_result) do
+            ServiceResult.success(
+              result: sprint.tap do |started_sprint|
+                started_sprint.status = "active"
+                started_sprint.task_board = board
+              end
+            )
+          end
+
+          it "creates the board, starts the sprint, and redirects to the board", :aggregate_failures do
+            patch :start, params: request_params
+
+            expect(response).to redirect_to(project_work_package_board_path(project, board))
+            expect(service).to have_received(:call)
+          end
+        end
+
+        context "when board creation fails" do
+          let(:service_result) { ServiceResult.failure(message: "something went wrong") }
+
+          it "redirects back to the backlog and leaves the sprint in planning", :aggregate_failures do
+            patch :start, params: request_params
+
+            expect(response).to redirect_to(backlogs_project_backlogs_path(project))
+            expect(flash[:alert]).to eq(
+              I18n.t(:notice_unsuccessful_start_with_reason, reason: "something went wrong")
+            )
+            expect(sprint.reload).to be_in_planning
+          end
+        end
+
+        context "when sprint start fails without an explicit message" do
+          let(:service_result) { ServiceResult.failure }
+
+          it "redirects back with the default start failure message", :aggregate_failures do
+            patch :start, params: request_params
+
+            expect(response).to redirect_to(backlogs_project_backlogs_path(project))
+            expect(flash[:alert]).to eq(I18n.t(:notice_unsuccessful_start))
+            expect(service).to have_received(:call)
+          end
+        end
+
+        context "when another sprint is already active" do
+          let!(:active_sprint) { create(:agile_sprint, project:, status: "active") }
+          let(:service_result) do
+            ServiceResult.failure(
+              result: sprint,
+              message: sprint.errors.full_messages.to_sentence
+            )
+          end
+
+          it "redirects back to the backlog and leaves the sprint in planning", :aggregate_failures do
+            patch :start, params: request_params
+
+            expect(response).to redirect_to(backlogs_project_backlogs_path(project))
+            expect(flash[:alert]).to eq(I18n.t(:notice_unsuccessful_start))
+            expect(service).to have_received(:call)
+          end
+        end
+
+        context "without the 'start_complete_sprint' permission" do
+          let(:permissions) { all_permissions - [:start_complete_sprint] }
+
+          it "responds with forbidden" do
+            patch :start, params: request_params
+
+            expect(response).not_to be_successful
+            expect(response).to have_http_status(:forbidden)
+          end
+        end
+
+        context "when the sprint is already active" do
+          let!(:sprint) { create(:agile_sprint, project:, status: "active") }
+
+          it "responds with not found" do
+            patch :start, params: request_params
+
+            expect(response).not_to be_successful
+            expect(response).to have_http_status(:not_found)
           end
         end
       end

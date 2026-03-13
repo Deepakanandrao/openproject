@@ -36,16 +36,15 @@ RSpec.describe Backlogs::SprintMenuComponent, type: :component do
 
   let(:project) { create(:project, types: [type_feature, type_task]) }
   let(:sprint) { create(:agile_sprint, project:, name: "Sprint 1", start_date: Date.yesterday, finish_date: Date.tomorrow) }
-  let(:stories) { [] }
   let(:user) { create(:user) }
   let(:permissions) { [] }
+  let(:start_sprint_path) { Rails.application.routes.url_helpers.start_project_sprint_path(project, sprint) }
 
   before do
     allow(Setting)
       .to receive(:plugin_openproject_backlogs)
       .and_return("story_types" => [type_feature.id.to_s], "task_type" => type_task.id.to_s)
 
-    # Set up user with specific permissions
     create(:member,
            project:,
            principal: user,
@@ -55,6 +54,10 @@ RSpec.describe Backlogs::SprintMenuComponent, type: :component do
 
   def render_component
     render_inline(described_class.new(sprint:, project:, current_user: user))
+  end
+
+  def menu_items
+    page.all(:role, :menuitem).map { it.text.squish }
   end
 
   describe "permission-based items" do
@@ -98,6 +101,83 @@ RSpec.describe Backlogs::SprintMenuComponent, type: :component do
         render_component
 
         expect(page).to have_no_text(I18n.t("backlogs.backlog_menu_component.action_menu.edit_sprint"))
+      end
+    end
+  end
+
+  describe "task board actions" do
+    let(:permissions) { %i[view_sprints view_work_packages] }
+
+    context "with the feature flag inactive", with_flag: { scrum_projects: false } do
+      it "shows Task board after Stories/Tasks" do
+        render_component
+
+        expect(menu_items).to include("Stories/Tasks", "Task board")
+        expect(menu_items.index("Task board")).to be > menu_items.index("Stories/Tasks")
+      end
+    end
+
+    context "with the feature flag active", with_flag: { scrum_projects: true } do
+      context "when the sprint is active" do
+        let(:sprint) do
+          create(:agile_sprint,
+                 project:,
+                 name: "Sprint 1",
+                 start_date: Date.yesterday,
+                 finish_date: Date.tomorrow,
+                 status: "active")
+        end
+
+        it "shows Task board after Stories/Tasks" do
+          render_component
+
+          expect(menu_items).to include("Stories/Tasks", "Task board")
+          expect(menu_items.index("Task board")).to be > menu_items.index("Stories/Tasks")
+        end
+      end
+
+      context "when the sprint is in planning and the user can start it" do
+        let(:permissions) { %i[view_sprints view_work_packages start_complete_sprint] }
+
+        it "shows Start sprint as the first item" do
+          render_component
+
+          expect(menu_items.first).to eq("Start sprint")
+          expect(page).to have_octicon(:play)
+          expect(page).to have_no_selector(:menuitem, text: "Task board")
+          expect(page).to have_css(
+            "form[action='#{start_sprint_path}'][data-turbo='false'] " \
+            "input[name='_method'][value='patch']",
+            visible: :hidden
+          )
+        end
+      end
+
+      context "when the sprint is in planning and the user cannot start it" do
+        it "does not show task-board-related items" do
+          render_component
+
+          expect(page).to have_no_selector(:menuitem, text: "Start sprint")
+          expect(page).to have_no_selector(:menuitem, text: "Task board")
+        end
+      end
+
+      context "when the sprint is completed" do
+        let(:sprint) do
+          create(:agile_sprint,
+                 project:,
+                 name: "Sprint 1",
+                 start_date: Date.yesterday,
+                 finish_date: Date.tomorrow,
+                 status: "completed")
+        end
+
+        it "shows Task board after Stories/Tasks" do
+          render_component
+
+          expect(menu_items).to include("Stories/Tasks", "Task board")
+          expect(menu_items.index("Task board")).to be > menu_items.index("Stories/Tasks")
+        end
       end
     end
   end

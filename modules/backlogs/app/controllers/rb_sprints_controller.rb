@@ -36,12 +36,13 @@ class RbSprintsController < RbApplicationController
                           create
                           refresh_form
                           update_agile_sprint].freeze
+  START_ACTIONS = %i[start].freeze
 
   skip_before_action :load_sprint_and_project, only: NEW_SPRINT_ACTIONS
 
   before_action :not_authorized_on_feature_flag_inactive,
                 :load_project,
-                only: NEW_SPRINT_ACTIONS
+                only: NEW_SPRINT_ACTIONS + START_ACTIONS
 
   def new_dialog
     call = Sprints::SetAttributesService.new(
@@ -104,6 +105,20 @@ class RbSprintsController < RbApplicationController
     end
 
     respond_with_turbo_streams
+  end
+
+  def start
+    return render_404 unless @sprint.in_planning?
+
+    result = start_sprint
+
+    if result.success?
+      @sprint = result.result
+      redirect_to project_work_package_board_path(@project, @sprint.task_board),
+                  notice: I18n.t(:notice_successful_update)
+    else
+      respond_with_start_failure(message: start_failure_message(result.message))
+    end
   end
 
   def edit_name
@@ -172,8 +187,14 @@ class RbSprintsController < RbApplicationController
 
   # Overrides load_sprint_and_project to load the sprint from :id instead of :sprint_id
   def load_sprint_and_project
-    @sprint = Sprint.visible.find(params[:id])
     load_project
+
+    @sprint = if OpenProject::FeatureDecisions.scrum_projects_active? &&
+                 (NEW_SPRINT_ACTIONS + START_ACTIONS).include?(action_name.to_sym)
+                Agile::Sprint.for_project(@project).visible.find(params[:id])
+              else
+                Sprint.visible.find(params[:id])
+              end
   end
 
   def sprint_params
@@ -196,6 +217,29 @@ class RbSprintsController < RbApplicationController
     converted_sprint_params
   end
 
+  def start_sprint
+    Sprints::StartService
+      .new(user: current_user, model: @sprint)
+      .call
+  end
+
+  def respond_with_start_failure(message:)
+    render_error_flash_message_via_turbo_stream(message:)
+
+    respond_with_turbo_streams(status: :unprocessable_entity) do |format|
+      format.html do
+        redirect_back_or_to(backlogs_project_backlogs_path(@project), alert: message)
+      end
+    end
+  end
+
+  def start_failure_message(reason)
+    if reason.present?
+      I18n.t(:notice_unsuccessful_start_with_reason, reason:)
+    else
+      I18n.t(:notice_unsuccessful_start)
+    end
+  end
   def not_authorized_on_feature_flag_inactive
     render_403 unless OpenProject::FeatureDecisions.scrum_projects_active?
   end

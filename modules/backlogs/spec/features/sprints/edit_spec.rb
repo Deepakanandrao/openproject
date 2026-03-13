@@ -33,7 +33,11 @@ require_relative "../../support/pages/backlogs"
 
 RSpec.describe "Edit", :js do
   let(:project) { create(:project) }
-  let(:all_permissions) { %i[view_sprints add_work_packages view_work_packages create_sprints manage_sprint_items] }
+  let(:all_permissions) do
+    %i[view_sprints add_work_packages view_work_packages create_sprints manage_sprint_items
+       start_complete_sprint show_board_views manage_board_views save_queries
+       manage_public_queries]
+  end
   let(:permissions) { all_permissions }
   let(:user) do
     create(:user, member_with_permissions: { project => permissions })
@@ -102,6 +106,8 @@ RSpec.describe "Edit", :js do
                                           inactive_story_type.id.to_s],
                         "task_type" => task_type.id.to_s)
 
+    create(:workflow, type: task_type, old_status: default_status, new_status: default_status, role: create(:project_role))
+
     backlogs_page.visit!
   end
 
@@ -135,11 +141,23 @@ RSpec.describe "Edit", :js do
       context "when editing a sprint" do
         it "displays all menu entries" do
           backlogs_page.within_sprint_menu(first_sprint) do |menu|
-            expect(menu).to have_selector :menuitem, count: 3
+            expect(menu).to have_selector :menuitem, count: 4
+            expect(menu).to have_selector :menuitem, "Start sprint"
             expect(menu).to have_selector :menuitem, "Edit sprint"
             expect(menu).to have_selector :menuitem, "New story"
             expect(menu).to have_selector :menuitem, "Stories/Tasks"
+            expect(menu).to have_css "form[action='#{start_project_sprint_path(project, first_sprint)}'][data-turbo='false']"
           end
+        end
+
+        it "starts the sprint and redirects to the board" do
+          backlogs_page.click_in_sprint_menu(first_sprint, "Start sprint")
+
+          expect_and_dismiss_flash type: :success, message: "Successful update."
+
+          expect(page).to have_current_path(%r{/projects/#{project.identifier}/boards/\d+})
+          expect(first_sprint.reload.task_board).to be_present
+          expect(first_sprint.reload).to be_active
         end
 
         it "edits the sprint name" do
@@ -162,7 +180,8 @@ RSpec.describe "Edit", :js do
 
           it "has no menu entry for creating a new story" do
             backlogs_page.within_sprint_menu(first_sprint) do |menu|
-              expect(menu).to have_selector :menuitem, count: 2
+              expect(menu).to have_selector :menuitem, count: 3
+              expect(menu).to have_selector :menuitem, "Start sprint"
               expect(menu).to have_selector :menuitem, "Edit sprint"
               expect(menu).to have_selector :menuitem, "Stories/Tasks"
 
@@ -174,7 +193,7 @@ RSpec.describe "Edit", :js do
     end
 
     context "without the necessary permissions" do
-      let(:permissions) { all_permissions - [:create_sprints] }
+      let(:permissions) { all_permissions - %i[create_sprints start_complete_sprint] }
 
       it "is missing the 'new sprint' button" do
         expect(page).to have_no_button "Create"
@@ -185,6 +204,7 @@ RSpec.describe "Edit", :js do
         backlogs_page.within_sprint_menu(first_sprint) do |menu|
           expect(menu).to have_selector :menuitem, "Stories/Tasks"
           expect(menu).to have_no_selector :menuitem, "Edit sprint"
+          expect(menu).to have_no_selector :menuitem, "Start sprint"
         end
       end
     end

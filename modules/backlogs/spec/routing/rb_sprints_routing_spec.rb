@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -53,6 +55,15 @@ RSpec.describe RbSprintsController do
                                                                  action: "update",
                                                                  project_id: "project_42",
                                                                  id: "21")
+    }
+
+    it {
+      expect(patch("/projects/project_42/sprints/21/start")).to route_to(
+        controller: "rb_sprints",
+        action: "start",
+        project_id: "project_42",
+        id: "21"
+      )
     }
   end
 end

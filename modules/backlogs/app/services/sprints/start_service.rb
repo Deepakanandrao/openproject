@@ -28,52 +28,53 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Backlogs
-  class SprintMenuComponent < ApplicationComponent
-    include RbCommonHelper
+class Sprints::StartService < BaseServices::BaseCallable
+  include Shared::ServiceContext
 
-    attr_reader :sprint, :project, :current_user
+  attr_reader :user, :model
 
-    def initialize(sprint:, project:, current_user: User.current, **system_arguments)
-      super()
+  def initialize(user:, model:)
+    super()
+    @user = user
+    @model = model
+  end
 
-      @sprint = sprint
-      @project = project
-      @current_user = current_user
-
-      @system_arguments = system_arguments
-      @system_arguments[:menu_id] = dom_target(sprint, :menu)
-      @system_arguments[:anchor_align] = :end
-      @system_arguments[:classes] = class_names(
-        @system_arguments[:classes],
-        "hide-when-print"
-      )
+  def perform
+    in_context(model, send_notifications: false) do
+      start_sprint
     end
+  end
 
-    def stories
-      @sprint.work_packages
-    end
+  private
 
-    private
+  def start_sprint
+    return unsuccessful_start_result unless model.in_planning?
 
-    def scrum_projects_active?
-      OpenProject::FeatureDecisions.scrum_projects_active?
-    end
+    result = ensure_task_board
+    return result if result.failure?
 
-    def show_task_board_link?
-      !scrum_projects_active? || !sprint.in_planning?
-    end
+    model.active!
 
-    def show_start_sprint_action?
-      scrum_projects_active? && sprint.in_planning? && user_allowed?(:start_complete_sprint)
-    end
+    ServiceResult.success(result: model)
+  rescue ActiveRecord::RecordInvalid
+    unsuccessful_start_result
+  end
 
-    def user_allowed?(permission)
-      current_user.allowed_in_project?(permission, project)
-    end
+  def unsuccessful_start_result
+    ServiceResult.failure(result: model,
+                          errors: model.errors,
+                          message: unsuccessful_start_message)
+  end
 
-    def available_story_types
-      @available_story_types ||= story_types & project.types
-    end
+  def ensure_task_board
+    return ServiceResult.success(result: model.task_board) if model.task_board?
+
+    Boards::SprintTaskBoardCreateService
+      .new(user:)
+      .call(project: model.project, sprint: model, name: model.board_name)
+  end
+
+  def unsuccessful_start_message
+    model.errors.full_messages.to_sentence if model.errors.any?
   end
 end

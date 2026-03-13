@@ -33,11 +33,13 @@ class RbTaskboardsController < RbApplicationController
 
   helper :taskboards
 
-  before_action :load_or_create_board, if: -> { OpenProject::FeatureDecisions.scrum_projects_active? }
-
   def show
     if OpenProject::FeatureDecisions.scrum_projects_active?
-      redirect_to project_work_package_board_path(@project, @board)
+      @board = @sprint.task_board
+
+      return redirect_to(project_work_package_board_path(@project, @board)) if @board
+
+      render_404
     else
       @statuses     = Type.find(Task.type).statuses
       @story_ids    = @sprint.stories(@project).map(&:id)
@@ -48,19 +50,6 @@ class RbTaskboardsController < RbApplicationController
   end
 
   private
-
-  def load_or_create_board
-    result = Boards::SprintTaskBoardCreateService
-      .new(user: current_user)
-      .call(project: @project, sprint: @sprint, name: @sprint.board_name)
-
-    if result.success?
-      @board = result.result
-    else
-      flash[:error] = t(:error_task_board_creation_failed)
-      return redirect_back_or_to(backlogs_project_backlogs_path(@project)) # rubocop:disable Style/RedundantReturn
-    end
-  end
 
   def load_sprint_and_project
     @project = Project.visible.find(params[:project_id])
