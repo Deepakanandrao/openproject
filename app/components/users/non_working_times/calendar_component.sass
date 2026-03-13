@@ -1,15 +1,11 @@
-.users-non-working-times-year-overview
-  height: 75vh
-
 .users-non-working-times-calendar-view
-  height: 100%
-
   .op-fc-wrapper
-    flex-grow: 1
-
     // Rounded corners for the entire calendar
+    // Remove the inner scroll
     .fc-multiMonthYear-view
+      overflow: unset !important
       border-radius: var(--borderRadius-medium) !important
+      inset: unset !important
 
     // Global non-working days rendered as FullCalendar background events
     .fc-bg-event.non-working-day--global
