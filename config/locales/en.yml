@@ -415,6 +415,9 @@ en:
           other: "Remove %{count} statuses?"
         description: "Removing these statuses will make them unavailable to this type and delete existing workflows. Are you sure you want to proceed?"
         confirm: "Remove"
+      role_selector:
+        label: "Role: %{role}"
+        no_role: "Select role"
 
   authentication:
     login_and_registration: "Login and registration"

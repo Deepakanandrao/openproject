@@ -32,11 +32,12 @@ module Workflows
   class EditSubHeaderComponent < ApplicationComponent
     include OpPrimer::ComponentHelpers
 
-    def initialize(tab:, role: nil, type: nil)
+    def initialize(tab:, current_role: nil, type: nil, available_roles: [])
       super
       @tab = tab
-      @role = role
+      @current_role = current_role
       @type = type
+      @available_roles = available_roles
     end
   end
 end

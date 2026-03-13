@@ -32,34 +32,7 @@ See COPYRIGHT and LICENSE files for more details.
   <%= render Workflows::EditPageHeaderComponent.new(@type, tabs: workflow_tabs(@type)) %>
 <% end %>
 
-<%= styled_form_tag({}, method: "get") do %>
-  <%= hidden_field_tag "tab", params[:tab] || "always" %>
-
-  <fieldset class="simple-filters--container">
-    <legend><%= t(:text_workflow_edit) %></legend>
-    <ul class="simple-filters--filters">
-      <li class="simple-filters--filter">
-        <%= styled_label_tag :role_id, Role.model_name.human, class: "simple-filters--filter-name" %>
-        <div class="simple-filters--filter-value">
-          <%= styled_select_tag "role_id", options_from_collection_for_select(@roles, "id", "name", @role && @role.id) %>
-        </div>
-      </li>
-      <li class="simple-filters--controls">
-        <%= render(
-              Primer::Beta::Button.new(
-                scheme: :primary,
-                type: :submit,
-                name: nil,
-                accesskey: accesskey(:edit),
-                size: :small
-              )
-            ) { t(:button_edit) } %>
-      </li>
-    </ul>
-  </fieldset>
-<% end %>
-
-<%= render Workflows::EditSubHeaderComponent.new(tab: params[:tab], role: @role, type: @type) %>
+<%= render Workflows::EditSubHeaderComponent.new(tab: params[:tab], current_role: @role, type: @type, available_roles: @roles) %>
 
 <% if @type && @role %>
   <%= turbo_frame_tag "workflow-table" do %>
