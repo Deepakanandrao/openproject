@@ -29,42 +29,26 @@
 #++
 require "rails_helper"
 
-RSpec.describe OpenProject::InplaceEdit::UpdateRegistry do
-  subject(:registry) { described_class.new }
+RSpec.describe OpenProject::Common::InplaceEditFields::DisplayFields::CalculatedValueInputComponent,
+               type: :component do
+  include ViewComponent::TestHelpers
 
-  let(:handler) { class_double(OpenProject::InplaceEdit::Handlers::ProjectUpdate) }
-  let(:contract) { class_double(Projects::UpdateContract) }
+  let(:project) { build_stubbed(:project, name: "42") }
 
-  describe "#register" do
-    it "registers handler and contract for a model" do
-      registry.register(Project, handler:, contract:)
+  it "never attaches the inplace-edit Stimulus controller, even when writable is passed" do
+    render_inline(
+      described_class.new(model: project, attribute: :name, writable: true, truncated: false, id: "cf-42")
+    )
 
-      expect(registry.fetch_handler(Project.new)).to eq(handler)
-      expect(registry.fetch_contract(Project.new)).to eq(contract)
-    end
+    expect(rendered_content).not_to include("click->inplace-edit#request")
+    expect(rendered_content).to have_no_css(".op-inplace-edit--display-field_editable")
   end
 
-  describe "#registered?" do
-    it "returns true for registered model" do
-      registry.register(Project, handler:, contract:)
+  it "renders the not-editable tooltip" do
+    render_inline(
+      described_class.new(model: project, attribute: :name, writable: false, truncated: false, id: "cf-42")
+    )
 
-      expect(registry.registered?(Project)).to be(true)
-    end
-
-    it "returns false for unregistered model" do
-      expect(registry.registered?(Project)).to be(false)
-    end
-  end
-
-  describe "#resolve_model_class" do
-    it "returns the model class for a registered param string" do
-      registry.register(Project, handler:, contract:)
-
-      expect(registry.resolve_model_class("project")).to eq(Project)
-    end
-
-    it "returns nil for an unregistered param string" do
-      expect(registry.resolve_model_class("unknown")).to be_nil
-    end
+    expect(rendered_content).to have_text(I18n.t("custom_fields.calculated_field_not_editable"))
   end
 end

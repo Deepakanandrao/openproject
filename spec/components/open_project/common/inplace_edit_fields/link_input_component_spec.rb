@@ -29,42 +29,22 @@
 #++
 require "rails_helper"
 
-RSpec.describe OpenProject::InplaceEdit::UpdateRegistry do
-  subject(:registry) { described_class.new }
+RSpec.describe OpenProject::Common::InplaceEditFields::LinkInputComponent,
+               type: :component do
+  include ViewComponent::TestHelpers
 
-  let(:handler) { class_double(OpenProject::InplaceEdit::Handlers::ProjectUpdate) }
-  let(:contract) { class_double(Projects::UpdateContract) }
+  let(:project) { build_stubbed(:project) }
 
-  describe "#register" do
-    it "registers handler and contract for a model" do
-      registry.register(Project, handler:, contract:)
-
-      expect(registry.fetch_handler(Project.new)).to eq(handler)
-      expect(registry.fetch_contract(Project.new)).to eq(contract)
-    end
-  end
-
-  describe "#registered?" do
-    it "returns true for registered model" do
-      registry.register(Project, handler:, contract:)
-
-      expect(registry.registered?(Project)).to be(true)
+  it "renders a URL input for the attribute" do
+    component_class = described_class
+    render_in_view_context(project) do |model|
+      primer_form_with(url: "/foo", model:) do |f|
+        render_inline_form(f) do |form|
+          render component_class.new(form:, model:, attribute: :name, label: "Name")
+        end
+      end
     end
 
-    it "returns false for unregistered model" do
-      expect(registry.registered?(Project)).to be(false)
-    end
-  end
-
-  describe "#resolve_model_class" do
-    it "returns the model class for a registered param string" do
-      registry.register(Project, handler:, contract:)
-
-      expect(registry.resolve_model_class("project")).to eq(Project)
-    end
-
-    it "returns nil for an unregistered param string" do
-      expect(registry.resolve_model_class("unknown")).to be_nil
-    end
+    expect(rendered_content).to have_field("project[name]", type: "url")
   end
 end

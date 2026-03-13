@@ -29,32 +29,28 @@
 #++
 require "rails_helper"
 
-RSpec.describe OpenProject::Common::InplaceEditFields::TextInputComponent,
+RSpec.describe OpenProject::Common::InplaceEditFields::SelectListComponent,
                type: :component do
   include ViewComponent::TestHelpers
 
   let(:project) { build_stubbed(:project) }
 
-  it "renders a text input for the attribute" do
+  it "renders save and cancel buttons" do
     component_class = described_class
     render_in_view_context(project) do |model|
       primer_form_with(url: "/foo", model:) do |f|
         render_inline_form(f) do |form|
-          render component_class.new(
-            form:,
-            model:,
-            attribute: :name,
-            label: "Name"
-          )
+          render component_class.new(form:, model:, attribute: :name, label: "Name")
         end
       end
     end
 
-    expect(rendered_content).to have_field("project[name]", type: "text")
-    expect(rendered_content).to include("keydown.esc-&gt;inplace-edit#request")
+    expect(rendered_content).to have_css("opce-autocompleter")
+    expect(rendered_content).to have_button(I18n.t(:button_save))
+    expect(rendered_content).to have_button(I18n.t(:button_cancel))
   end
 
-  it "does not add a submit-on-change Stimulus action whe show_action_buttons is false" do
+  it "omits action buttons when show_action_buttons is false" do
     component_class = described_class
     render_in_view_context(project) do |model|
       primer_form_with(url: "/foo", model:) do |f|
@@ -64,6 +60,8 @@ RSpec.describe OpenProject::Common::InplaceEditFields::TextInputComponent,
       end
     end
 
-    expect(rendered_content).not_to include("keydown.esc-&gt;inplace-edit#request")
+    expect(rendered_content).to have_css("opce-autocompleter")
+    expect(rendered_content).to have_no_button(I18n.t(:button_save))
+    expect(rendered_content).to have_no_button(I18n.t(:button_cancel))
   end
 end

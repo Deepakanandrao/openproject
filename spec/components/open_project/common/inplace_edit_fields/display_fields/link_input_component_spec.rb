@@ -29,42 +29,27 @@
 #++
 require "rails_helper"
 
-RSpec.describe OpenProject::InplaceEdit::UpdateRegistry do
-  subject(:registry) { described_class.new }
+RSpec.describe OpenProject::Common::InplaceEditFields::DisplayFields::LinkInputComponent,
+               type: :component do
+  include ViewComponent::TestHelpers
 
-  let(:handler) { class_double(OpenProject::InplaceEdit::Handlers::ProjectUpdate) }
-  let(:contract) { class_double(Projects::UpdateContract) }
+  let(:project) { build_stubbed(:project) }
 
-  describe "#register" do
-    it "registers handler and contract for a model" do
-      registry.register(Project, handler:, contract:)
+  it "renders a link for a URL value" do
+    without_partial_double_verification do
+      allow(project).to receive(:homepage).and_return("https://example.com")
+      render_inline(described_class.new(model: project, attribute: :homepage, writable: false, truncated: false))
 
-      expect(registry.fetch_handler(Project.new)).to eq(handler)
-      expect(registry.fetch_contract(Project.new)).to eq(contract)
+      expect(rendered_content).to have_link("https://example.com", href: "https://example.com")
     end
   end
 
-  describe "#registered?" do
-    it "returns true for registered model" do
-      registry.register(Project, handler:, contract:)
+  it "renders a placeholder when the value is blank" do
+    without_partial_double_verification do
+      allow(project).to receive(:homepage).and_return(nil)
+      render_inline(described_class.new(model: project, attribute: :homepage, writable: false, truncated: false))
 
-      expect(registry.registered?(Project)).to be(true)
-    end
-
-    it "returns false for unregistered model" do
-      expect(registry.registered?(Project)).to be(false)
-    end
-  end
-
-  describe "#resolve_model_class" do
-    it "returns the model class for a registered param string" do
-      registry.register(Project, handler:, contract:)
-
-      expect(registry.resolve_model_class("project")).to eq(Project)
-    end
-
-    it "returns nil for an unregistered param string" do
-      expect(registry.resolve_model_class("unknown")).to be_nil
+      expect(rendered_content).to have_text(I18n.t("placeholders.default"))
     end
   end
 end

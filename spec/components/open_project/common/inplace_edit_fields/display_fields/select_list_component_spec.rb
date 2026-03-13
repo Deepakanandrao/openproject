@@ -29,42 +29,36 @@
 #++
 require "rails_helper"
 
-RSpec.describe OpenProject::InplaceEdit::UpdateRegistry do
-  subject(:registry) { described_class.new }
+RSpec.describe OpenProject::Common::InplaceEditFields::DisplayFields::SelectListComponent,
+               type: :component do
+  include ViewComponent::TestHelpers
 
-  let(:handler) { class_double(OpenProject::InplaceEdit::Handlers::ProjectUpdate) }
-  let(:contract) { class_double(Projects::UpdateContract) }
+  let(:project) { build_stubbed(:project) }
 
-  describe "#register" do
-    it "registers handler and contract for a model" do
-      registry.register(Project, handler:, contract:)
+  it "renders a single string value" do
+    without_partial_double_verification do
+      allow(project).to receive(:status_label).and_return("Active")
+      render_inline(described_class.new(model: project, attribute: :status_label, writable: false, truncated: false))
 
-      expect(registry.fetch_handler(Project.new)).to eq(handler)
-      expect(registry.fetch_contract(Project.new)).to eq(contract)
+      expect(rendered_content).to have_text("Active")
     end
   end
 
-  describe "#registered?" do
-    it "returns true for registered model" do
-      registry.register(Project, handler:, contract:)
+  it "renders multiple values joined by comma" do
+    without_partial_double_verification do
+      allow(project).to receive(:tag_list).and_return(%w[Alpha Beta])
+      render_inline(described_class.new(model: project, attribute: :tag_list, writable: false, truncated: false))
 
-      expect(registry.registered?(Project)).to be(true)
-    end
-
-    it "returns false for unregistered model" do
-      expect(registry.registered?(Project)).to be(false)
+      expect(rendered_content).to have_text("Alpha, Beta")
     end
   end
 
-  describe "#resolve_model_class" do
-    it "returns the model class for a registered param string" do
-      registry.register(Project, handler:, contract:)
+  it "renders a placeholder when the value is blank" do
+    without_partial_double_verification do
+      allow(project).to receive(:status_label).and_return(nil)
+      render_inline(described_class.new(model: project, attribute: :status_label, writable: false, truncated: false))
 
-      expect(registry.resolve_model_class("project")).to eq(Project)
-    end
-
-    it "returns nil for an unregistered param string" do
-      expect(registry.resolve_model_class("unknown")).to be_nil
+      expect(rendered_content).to have_text(I18n.t("placeholders.default"))
     end
   end
 end

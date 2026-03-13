@@ -29,42 +29,29 @@
 #++
 require "rails_helper"
 
-RSpec.describe OpenProject::InplaceEdit::UpdateRegistry do
-  subject(:registry) { described_class.new }
+RSpec.describe OpenProject::Common::InplaceEditFields::DisplayFields::UserSelectListComponent,
+               type: :component do
+  include ViewComponent::TestHelpers
 
-  let(:handler) { class_double(OpenProject::InplaceEdit::Handlers::ProjectUpdate) }
-  let(:contract) { class_double(Projects::UpdateContract) }
+  let(:user_admin) { create(:admin) }
+  let(:project) { create(:project) }
+  let(:custom_field) { create(:project_custom_field, :user, projects: [project]) }
+  let(:attribute) { custom_field.attribute_name.to_sym }
+  let(:selected_user) { create(:user) }
 
-  describe "#register" do
-    it "registers handler and contract for a model" do
-      registry.register(Project, handler:, contract:)
+  before { allow(User).to receive(:current).and_return(user_admin) }
 
-      expect(registry.fetch_handler(Project.new)).to eq(handler)
-      expect(registry.fetch_contract(Project.new)).to eq(contract)
-    end
+  it "renders the user avatar for a single-value user custom field" do
+    create(:custom_value, :skip_validations, customized: project, custom_field:, value: selected_user.id.to_s)
+    render_inline(described_class.new(model: Project.find(project.id), attribute:, writable: false, truncated: false))
+
+    expect(rendered_content).to have_css "opce-principal"
+    expect(rendered_content).to have_no_text(I18n.t("placeholders.default"))
   end
 
-  describe "#registered?" do
-    it "returns true for registered model" do
-      registry.register(Project, handler:, contract:)
+  it "renders the placeholder when no user is selected" do
+    render_inline(described_class.new(model: project, attribute:, writable: false, truncated: false))
 
-      expect(registry.registered?(Project)).to be(true)
-    end
-
-    it "returns false for unregistered model" do
-      expect(registry.registered?(Project)).to be(false)
-    end
-  end
-
-  describe "#resolve_model_class" do
-    it "returns the model class for a registered param string" do
-      registry.register(Project, handler:, contract:)
-
-      expect(registry.resolve_model_class("project")).to eq(Project)
-    end
-
-    it "returns nil for an unregistered param string" do
-      expect(registry.resolve_model_class("unknown")).to be_nil
-    end
+    expect(rendered_content).to have_text(I18n.t("placeholders.default"))
   end
 end
