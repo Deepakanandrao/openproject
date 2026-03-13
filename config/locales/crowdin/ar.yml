@@ -175,6 +175,7 @@ ar:
           instance_meta_fetching: "Fetching meta data"
           instance_meta_error: "Error fetching meta data"
           instance_meta_done: "Meta data fetched"
+          import_scope: "Select scope"
           configuring: "Select scope"
           projects_meta_fetching: "Fetching project data"
           projects_meta_error: "Error fetching project data"
@@ -184,8 +185,12 @@ ar:
           imported: "Review mode"
           reverting: "Reverting"
           revert_error: "Error during revert"
+          revert_cancelling: "Cancelling revert"
+          revert_cancelled: "Revert cancelled"
           reverted: "Reverted"
-          completed: "Completed"
+          finalizing: "Finalizing"
+          finalizing_error: "Error during finalizing"
+          finalizing_done: "Completed"
         wizard:
           button_retry: "Retry"
           parts:
@@ -290,8 +295,9 @@ ar:
               button_revert: "Revert import"
               button_done: "Finalize import"
               preview_description: 'The imported data is currently in review mode. Click "Finalize import" to make the import permanent or "Revert import" to undo all changes made in this import run.'
-              label_finalizing_progress: "Finalizing import..."
-              label_finalized: "Import finalized."
+              label_finalize_import: "Finalize import"
+              label_finalizing: "Finalizing import..."
+              label_finalizing_done: "Import finalized."
               label_revert_progress: "Reverting import..."
               label_reverted: "Import reverted."
           select_dialog:
@@ -633,11 +639,13 @@ ar:
   op_dry_validation:
     or: "أو"
     errors:
+      unexpected_key: "is not allowed."
       array?: "must be an array."
       decimal?: "must be a decimal."
       defined: "must not be defined."
       eql?: "must be equal to %{left}."
       filled?: "must be filled."
+      format?: "is in invalid format."
       greater_or_equal_zero: "must be greater or equal to 0."
       gteq?: "must be greater than or equal to %{num}."
       hash?: "must be a hash."
@@ -664,7 +672,9 @@ ar:
         parent:
           not_descendant: "must be a descendant of the hierarchy root."
       str?: "must be a string."
+      time?: "must be a time."
       type?: "must be %{type}."
+      uri?: "is not a valid URI."
     rules:
       copy_workflow_from: "Type for workflow copy"
       enabled: "Enabled"
@@ -1431,6 +1441,9 @@ ar:
         name: "Jira instance name"
         url: "Jira instance URL"
         personal_access_token: "Personal access token"
+      "import/jira_open_project_reference":
+        jira: "Jira"
+        jira_import: "Jira import"
       announcements:
         show_until: "أظهِر حتّى"
       attachment:
@@ -3723,7 +3736,6 @@ ar:
   label_float: "عدد عشري"
   label_folder: "مجلد"
   label_follows: "تتبع"
-  label_force_user_language_to_default: "إعطاء لغة للمستخدمين غير اللغة المسموح بها بشكل افتراضي"
   label_form_configuration: "تشكيل النموذج"
   label_formula: "Formula"
   label_gantt_chart: "Gantt chart"
@@ -4102,12 +4114,6 @@ ar:
   label_user_named: "User %{name}"
   label_user_activity: "نشاط %{value}'s"
   label_user_anonymous: "مجهول"
-  label_user_mail_option_all: "من أجل أي حدث في كافة المشاريع"
-  label_user_mail_option_none: "لا يوجد أحداث"
-  label_user_mail_option_only_assigned: "فقط لأشياء موكلة لي"
-  label_user_mail_option_only_my_events: "فقط لأشياء أشاهدها أو أشارك فيها"
-  label_user_mail_option_only_owner: "فقط لأشياء أملكها"
-  label_user_mail_option_selected: "من أجل أي حدث في المشاريع المحددة فقط"
   label_user_menu: "User menu"
   label_user_new: "مستخدم جديد"
   label_user_plural: "المستخدمين"
@@ -4147,7 +4153,6 @@ ar:
   label_wiki_show_index_page_link: "إظهار عنصر القائمة الفرعية ’جدول المحتويات’"
   label_wiki_show_menu_item: "إظهار كعنصر قائمة في مشروع الملاحة"
   label_wiki_show_new_page_link: "إظهار عنصر القائمة الفرعية 'إنشاء صفحة فرعية جديدة'"
-  label_wiki_show_submenu_item: "إظهار كعنصر قائمة فرعية من "
   label_wiki_start: "صفحة البداية"
   label_work: "Work"
   label_work_package: "مجموعة العمل"
@@ -4433,6 +4438,7 @@ ar:
   notice_parent_item_not_found: "Parent item not found."
   notice_project_not_deleted: "لم يتم حذف المشروع."
   notice_project_not_found: "Project not found."
+  notice_smtp_address_unsafe: "SMTP address %{address} is not safe. Please add it to OPENPROJECT_SSRF_PROTECTION_ALLOWLIST."
   notice_successful_connection: "اتصال ناجح."
   notice_successful_create: "إنشاء ناجح."
   notice_successful_delete: "حذف ناجح."
@@ -5224,7 +5230,7 @@ ar:
   text_default_administrator_account_changed: "تغيير حساب المسؤول الافتراضي"
   text_default_encoding: "الافتراضي: UTF-8"
   text_destroy: "احذف"
-  text_destroy_with_associated: "وهناك كائنات إضافية مرتبطة مع الحزمة (الحزم) العمل الموجودة المراد حذفها. هذه الكائنات من الأنواع التالية: "
+  text_destroy_with_associated: "There are additional objects associated with the work package(s) that are to be deleted. Those objects are of the following types:"
   text_destroy_what_to_do: "ماذا تريد أن تفعل؟"
   text_diff_truncated: "... تم اقتطاعه لأنه يتجاوز الحد الأقصى للحجم التي يمكن عرضها."
   text_email_delivery_not_configured: "Email delivery is not configured, and notifications are disabled.\nConfigure your SMTP server to enable them."

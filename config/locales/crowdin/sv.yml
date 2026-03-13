@@ -175,6 +175,7 @@ sv:
           instance_meta_fetching: "Fetching meta data"
           instance_meta_error: "Error fetching meta data"
           instance_meta_done: "Meta data fetched"
+          import_scope: "Select scope"
           configuring: "Select scope"
           projects_meta_fetching: "Fetching project data"
           projects_meta_error: "Error fetching project data"
@@ -184,8 +185,12 @@ sv:
           imported: "Review mode"
           reverting: "Reverting"
           revert_error: "Error during revert"
+          revert_cancelling: "Cancelling revert"
+          revert_cancelled: "Revert cancelled"
           reverted: "Reverted"
-          completed: "Completed"
+          finalizing: "Finalizing"
+          finalizing_error: "Error during finalizing"
+          finalizing_done: "Completed"
         wizard:
           button_retry: "Retry"
           parts:
@@ -266,8 +271,9 @@ sv:
               button_revert: "Revert import"
               button_done: "Finalize import"
               preview_description: 'The imported data is currently in review mode. Click "Finalize import" to make the import permanent or "Revert import" to undo all changes made in this import run.'
-              label_finalizing_progress: "Finalizing import..."
-              label_finalized: "Import finalized."
+              label_finalize_import: "Finalize import"
+              label_finalizing: "Finalizing import..."
+              label_finalizing_done: "Import finalized."
               label_revert_progress: "Reverting import..."
               label_reverted: "Import reverted."
           select_dialog:
@@ -609,11 +615,13 @@ sv:
   op_dry_validation:
     or: "eller"
     errors:
+      unexpected_key: "is not allowed."
       array?: "must be an array."
       decimal?: "måste vara en decimal."
       defined: "must not be defined."
       eql?: "must be equal to %{left}."
       filled?: "must be filled."
+      format?: "is in invalid format."
       greater_or_equal_zero: "must be greater or equal to 0."
       gteq?: "must be greater than or equal to %{num}."
       hash?: "must be a hash."
@@ -640,7 +648,9 @@ sv:
         parent:
           not_descendant: "must be a descendant of the hierarchy root."
       str?: "must be a string."
+      time?: "must be a time."
       type?: "must be %{type}."
+      uri?: "is not a valid URI."
     rules:
       copy_workflow_from: "Type for workflow copy"
       enabled: "Aktiverad"
@@ -1371,6 +1381,9 @@ sv:
         name: "Jira instance name"
         url: "Jira instance URL"
         personal_access_token: "Personal access token"
+      "import/jira_open_project_reference":
+        jira: "Jira"
+        jira_import: "Jira import"
       announcements:
         show_until: "Visa fram till"
       attachment:
@@ -3499,7 +3512,6 @@ sv:
   label_float: "Flyttal"
   label_folder: "Mapp"
   label_follows: "följer"
-  label_force_user_language_to_default: "Välj standardspråk för användare som har ett icke tillåtet språk"
   label_form_configuration: "Ställ in formulär"
   label_formula: "Formel"
   label_gantt_chart: "Gantt-schema"
@@ -3878,12 +3890,6 @@ sv:
   label_user_named: "Användare %{name}"
   label_user_activity: "%{value}s aktivitet"
   label_user_anonymous: "Anonym"
-  label_user_mail_option_all: "För alla händelser i alla mina projekt"
-  label_user_mail_option_none: "Inga händelser"
-  label_user_mail_option_only_assigned: "Bara är saker jag tilldelade"
-  label_user_mail_option_only_my_events: "Endast för saker jag bevakar eller deltar i"
-  label_user_mail_option_only_owner: "Endast för saker är jag ägare till"
-  label_user_mail_option_selected: "Endast för alla händelser i valda projekt"
   label_user_menu: "Användarmeny"
   label_user_new: "Ny användare"
   label_user_plural: "Användare"
@@ -3923,7 +3929,6 @@ sv:
   label_wiki_show_index_page_link: "Visa undermenyn \"Innehållsförteckning\""
   label_wiki_show_menu_item: "Visa som menyobjekt i projektets meny"
   label_wiki_show_new_page_link: "Visa undermenyn \"Skapa ny underordnad sida\""
-  label_wiki_show_submenu_item: "Visa som undermenyalternativ för "
   label_wiki_start: "Startsida"
   label_work: "Arbete"
   label_work_package: "Arbetspaket"
@@ -4205,6 +4210,7 @@ sv:
   notice_parent_item_not_found: "Parent item not found."
   notice_project_not_deleted: "Projektet raderades ej."
   notice_project_not_found: "Projektet hittas inte."
+  notice_smtp_address_unsafe: "SMTP address %{address} is not safe. Please add it to OPENPROJECT_SSRF_PROTECTION_ALLOWLIST."
   notice_successful_connection: "Lyckad anslutning."
   notice_successful_create: "Skapades utan problem."
   notice_successful_delete: "Raderades utan problem."
@@ -4992,7 +4998,7 @@ sv:
   text_default_administrator_account_changed: "Standardadministratörskontot har ändrats"
   text_default_encoding: "Standard: UTF-8"
   text_destroy: "Ta bort"
-  text_destroy_with_associated: "Det finns ytterligare objekt kopplade med det/de arbetspaket som ska tas bort. Dessa objekt är av följande typer:"
+  text_destroy_with_associated: "There are additional objects associated with the work package(s) that are to be deleted. Those objects are of the following types:"
   text_destroy_what_to_do: "Vad vill du göra?"
   text_diff_truncated: "... Denna diff trunkerades eftersom den överskrider den maximala storleken som kan visas."
   text_email_delivery_not_configured: "Email delivery is not configured, and notifications are disabled.\nConfigure your SMTP server to enable them."

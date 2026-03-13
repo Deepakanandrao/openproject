@@ -175,6 +175,7 @@ el:
           instance_meta_fetching: "Fetching meta data"
           instance_meta_error: "Error fetching meta data"
           instance_meta_done: "Meta data fetched"
+          import_scope: "Select scope"
           configuring: "Select scope"
           projects_meta_fetching: "Fetching project data"
           projects_meta_error: "Error fetching project data"
@@ -184,8 +185,12 @@ el:
           imported: "Review mode"
           reverting: "Reverting"
           revert_error: "Error during revert"
+          revert_cancelling: "Cancelling revert"
+          revert_cancelled: "Revert cancelled"
           reverted: "Reverted"
-          completed: "Completed"
+          finalizing: "Finalizing"
+          finalizing_error: "Error during finalizing"
+          finalizing_done: "Completed"
         wizard:
           button_retry: "Retry"
           parts:
@@ -266,8 +271,9 @@ el:
               button_revert: "Revert import"
               button_done: "Finalize import"
               preview_description: 'The imported data is currently in review mode. Click "Finalize import" to make the import permanent or "Revert import" to undo all changes made in this import run.'
-              label_finalizing_progress: "Finalizing import..."
-              label_finalized: "Import finalized."
+              label_finalize_import: "Finalize import"
+              label_finalizing: "Finalizing import..."
+              label_finalizing_done: "Import finalized."
               label_revert_progress: "Reverting import..."
               label_reverted: "Import reverted."
           select_dialog:
@@ -605,11 +611,13 @@ el:
   op_dry_validation:
     or: "ή"
     errors:
+      unexpected_key: "is not allowed."
       array?: "must be an array."
       decimal?: "must be a decimal."
       defined: "must not be defined."
       eql?: "must be equal to %{left}."
       filled?: "must be filled."
+      format?: "is in invalid format."
       greater_or_equal_zero: "must be greater or equal to 0."
       gteq?: "must be greater than or equal to %{num}."
       hash?: "must be a hash."
@@ -636,7 +644,9 @@ el:
         parent:
           not_descendant: "must be a descendant of the hierarchy root."
       str?: "must be a string."
+      time?: "must be a time."
       type?: "must be %{type}."
+      uri?: "is not a valid URI."
     rules:
       copy_workflow_from: "Type for workflow copy"
       enabled: "Enabled"
@@ -1367,6 +1377,9 @@ el:
         name: "Jira instance name"
         url: "Jira instance URL"
         personal_access_token: "Personal access token"
+      "import/jira_open_project_reference":
+        jira: "Jira"
+        jira_import: "Jira import"
       announcements:
         show_until: "Εμφάνιση μέχρι"
       attachment:
@@ -3495,7 +3508,6 @@ el:
   label_float: "Float"
   label_folder: "Φάκελος"
   label_follows: "ακολουθεί"
-  label_force_user_language_to_default: "Ορίστε την γλώσσα των χρηστών που έχουν μια μη επιτρεπόμενη γλώσσα ως προεπιλογή"
   label_form_configuration: "Διαμόρφωση φόρμας"
   label_formula: "Formula"
   label_gantt_chart: "Διάγραμμα Gantt"
@@ -3874,12 +3886,6 @@ el:
   label_user_named: "Χρήστης %{name}"
   label_user_activity: "δραστηριότητα του %{value}"
   label_user_anonymous: "Ανώνυμος"
-  label_user_mail_option_all: "Για όλα τα συμβάντα σε όλα τα έργα μου"
-  label_user_mail_option_none: "Κανένα συμβάν"
-  label_user_mail_option_only_assigned: "Μόνο για αντικείμενα που έχουν ανατεθεί σε μένα"
-  label_user_mail_option_only_my_events: "Μόνο για αντικείμενα που παρακολουθώ ή συμμετέχω"
-  label_user_mail_option_only_owner: "Μόνο για αντικείμενα που μου ανήκουν"
-  label_user_mail_option_selected: "Για όλες τις εξελίξεις μόνο στα επιλεγμένα έργα"
   label_user_menu: "User menu"
   label_user_new: "Νέος χρήστης"
   label_user_plural: "Χρήστες"
@@ -3919,7 +3925,6 @@ el:
   label_wiki_show_index_page_link: "Εμφάνιση του αντικειμένου υπομενού 'Πίνακας Περιεχομένων'"
   label_wiki_show_menu_item: "Εμφάνιση ως αντικείμενο μενού στην πλοήγηση έργου"
   label_wiki_show_new_page_link: "Εμφάνιση του αντικειμένου υπομενού 'Δημιουργία καινούργιας σελίδας παιδιού'"
-  label_wiki_show_submenu_item: "Εμφάνιση ως αντικείμενο υπομενού του "
   label_wiki_start: "Σελίδα έναρξης"
   label_work: "Work"
   label_work_package: "Εργασία"
@@ -4200,6 +4205,7 @@ el:
   notice_parent_item_not_found: "Parent item not found."
   notice_project_not_deleted: "Το έργο δεν διαγράφηκε."
   notice_project_not_found: "Project not found."
+  notice_smtp_address_unsafe: "SMTP address %{address} is not safe. Please add it to OPENPROJECT_SSRF_PROTECTION_ALLOWLIST."
   notice_successful_connection: "Επιτυχής σύνδεση."
   notice_successful_create: "Επιτυχής δημιουργία."
   notice_successful_delete: "Επιτυχής διαγραφή."
@@ -4989,7 +4995,7 @@ el:
   text_default_administrator_account_changed: "Ο προεπιλεγμένος λογαριασμός του διαχειριστή άλλαξε"
   text_default_encoding: "Προεπιλογή: UTF-8"
   text_destroy: "Διαγραφή"
-  text_destroy_with_associated: "Υπάρχουν επιπλέον αντικείμενα μαζί με το πακέτο εργασίας που πρόκειται να διαγραφεί. Τα αντικείμενα αυτά είναι των παρακάτω τύπων:"
+  text_destroy_with_associated: "There are additional objects associated with the work package(s) that are to be deleted. Those objects are of the following types:"
   text_destroy_what_to_do: "Τι θέλετε να κάνετε;"
   text_diff_truncated: "... Αυτό το diff περικόπηκε επειδή υπερβαίνει το μέγιστο μέγεθος που μπορεί να εμφανιστεί."
   text_email_delivery_not_configured: "Η διανομή email δεν είναι διαμορφωμένη και οι ειδοποιήσεις είναι απενεργοποιημένες.\nΔιαμορφώστε τον SMTP εξυπηρετητή για τις ενεργοποιήσετε."

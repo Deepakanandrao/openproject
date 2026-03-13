@@ -175,6 +175,7 @@ zh-TW:
           instance_meta_fetching: "Fetching meta data"
           instance_meta_error: "Error fetching meta data"
           instance_meta_done: "Meta data fetched"
+          import_scope: "Select scope"
           configuring: "Select scope"
           projects_meta_fetching: "Fetching project data"
           projects_meta_error: "Error fetching project data"
@@ -184,8 +185,12 @@ zh-TW:
           imported: "Review mode"
           reverting: "Reverting"
           revert_error: "Error during revert"
+          revert_cancelling: "Cancelling revert"
+          revert_cancelled: "Revert cancelled"
           reverted: "Reverted"
-          completed: "Completed"
+          finalizing: "Finalizing"
+          finalizing_error: "Error during finalizing"
+          finalizing_done: "Completed"
         wizard:
           button_retry: "Retry"
           parts:
@@ -260,8 +265,9 @@ zh-TW:
               button_revert: "Revert import"
               button_done: "Finalize import"
               preview_description: 'The imported data is currently in review mode. Click "Finalize import" to make the import permanent or "Revert import" to undo all changes made in this import run.'
-              label_finalizing_progress: "Finalizing import..."
-              label_finalized: "Import finalized."
+              label_finalize_import: "Finalize import"
+              label_finalizing: "Finalizing import..."
+              label_finalizing_done: "Import finalized."
               label_revert_progress: "Reverting import..."
               label_reverted: "Import reverted."
           select_dialog:
@@ -602,11 +608,13 @@ zh-TW:
   op_dry_validation:
     or: "或"
     errors:
+      unexpected_key: "is not allowed."
       array?: "必須是陣列。"
       decimal?: "必須是有效的小數數值。"
       defined: "不可被定義。"
       eql?: "必須等於 %{left}。"
       filled?: "必填。"
+      format?: "is in invalid format."
       greater_or_equal_zero: "必須大於或等於 0。"
       gteq?: "必須大於或等於 %{num}。"
       hash?: "必須是一個 hash 值。"
@@ -633,7 +641,9 @@ zh-TW:
         parent:
           not_descendant: "必須是階層根節點的子層。"
       str?: "必須為字串。"
+      time?: "must be a time."
       type?: "必須是 %{type}。"
+      uri?: "is not a valid URI."
     rules:
       copy_workflow_from: "工作流程複製的類型"
       enabled: "啟用"
@@ -1352,6 +1362,9 @@ zh-TW:
         name: "Jira instance name"
         url: "Jira instance URL"
         personal_access_token: "Personal access token"
+      "import/jira_open_project_reference":
+        jira: "Jira"
+        jira_import: "Jira import"
       announcements:
         show_until: "只顯示到"
       attachment:
@@ -3439,7 +3452,6 @@ zh-TW:
   label_float: "浮點數"
   label_folder: "資料夾"
   label_follows: "關注"
-  label_force_user_language_to_default: "設置使用者使用預設語言"
   label_form_configuration: "表單設置"
   label_formula: "公式"
   label_gantt_chart: "甘特圖"
@@ -3818,12 +3830,6 @@ zh-TW:
   label_user_named: "用戶名 %{name}"
   label_user_activity: "%{value} 的活動"
   label_user_anonymous: "匿名者"
-  label_user_mail_option_all: "對於我所有的專案的任何事件"
-  label_user_mail_option_none: "沒有事件"
-  label_user_mail_option_only_assigned: "只針對我被指派的事情"
-  label_user_mail_option_only_my_events: "只針對我關注的或者與我有關的事情"
-  label_user_mail_option_only_owner: "針對我是擁有者的事情"
-  label_user_mail_option_selected: "只有在已選取的專案的任何事件"
   label_user_menu: "使用者選單"
   label_user_new: "新增使用者"
   label_user_plural: "使用者"
@@ -3863,7 +3869,6 @@ zh-TW:
   label_wiki_show_index_page_link: "顯示子功能表 '表格內容'"
   label_wiki_show_menu_item: "在專案導覽中以子功能表呈現"
   label_wiki_show_new_page_link: "顯示子功能表 '新增子頁面'"
-  label_wiki_show_submenu_item: "呈現於子功能表的 "
   label_wiki_start: "開始頁面"
   label_work: "工時"
   label_work_package: "工作套件"
@@ -4143,6 +4148,7 @@ zh-TW:
   notice_parent_item_not_found: "未找到父項目。"
   notice_project_not_deleted: "專案沒有被刪除"
   notice_project_not_found: "未找到專案。"
+  notice_smtp_address_unsafe: "SMTP address %{address} is not safe. Please add it to OPENPROJECT_SSRF_PROTECTION_ALLOWLIST."
   notice_successful_connection: "連接成功"
   notice_successful_create: "建立成功"
   notice_successful_delete: "刪除成功"
@@ -4930,7 +4936,7 @@ zh-TW:
   text_default_administrator_account_changed: "預設管理者帳號已更改"
   text_default_encoding: "預設值: UTF-8"
   text_destroy: "删除"
-  text_destroy_with_associated: "欲刪除的工作套件還關聯有其他物件，這些物件類型如下："
+  text_destroy_with_associated: "There are additional objects associated with the work package(s) that are to be deleted. Those objects are of the following types:"
   text_destroy_what_to_do: "您想要做什麼？"
   text_diff_truncated: "... 此差異被截斷, 因為它超出了可以顯示的最大大小。"
   text_email_delivery_not_configured: "電子郵件傳送未配置，通知已禁用。\n配置您的 SMTP 服務器將其啓用。"

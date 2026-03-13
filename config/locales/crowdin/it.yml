@@ -175,6 +175,7 @@ it:
           instance_meta_fetching: "Recupero dei metadati"
           instance_meta_error: "Errore nel recupero dei metadati"
           instance_meta_done: "Metadati recuperati"
+          import_scope: "Select scope"
           configuring: "Seleziona l'ambito"
           projects_meta_fetching: "Recupero dei dati di progetto"
           projects_meta_error: "Errore nel recupero dei dati di progetto"
@@ -184,8 +185,12 @@ it:
           imported: "Modalità di revisione"
           reverting: "Ripristino"
           revert_error: "Errore durante il ripristino"
+          revert_cancelling: "Cancelling revert"
+          revert_cancelled: "Revert cancelled"
           reverted: "Ripristinato"
-          completed: "Completato"
+          finalizing: "Finalizing"
+          finalizing_error: "Error during finalizing"
+          finalizing_done: "Completed"
         wizard:
           button_retry: "Riprova"
           parts:
@@ -266,8 +271,9 @@ it:
               button_revert: "Annulla l'importazione"
               button_done: "Finalizza l'importazione"
               preview_description: 'I dati importati sono attualmente in modalità di revisione. Fare clic su "Finalizza l''importazione" per rendere l''importazione permanente o su "Annulla l''importazione" per annullare tutte le modifiche apportate in questa importazione.'
-              label_finalizing_progress: "Completamento dell'importazione..."
-              label_finalized: "Importazione finalizzata."
+              label_finalize_import: "Finalize import"
+              label_finalizing: "Finalizing import..."
+              label_finalizing_done: "Import finalized."
               label_revert_progress: "Annullamento dell'importazione in corso..."
               label_reverted: "Importazione annullata."
           select_dialog:
@@ -607,11 +613,13 @@ it:
   op_dry_validation:
     or: "oppure"
     errors:
+      unexpected_key: "is not allowed."
       array?: "deve essere un array."
       decimal?: "deve essere un decimale."
       defined: "non deve essere definito."
       eql?: "deve essere uguale a %{left}."
       filled?: "deve essere compilato."
+      format?: "is in invalid format."
       greater_or_equal_zero: "deve essere maggiore o uguale a 0."
       gteq?: "deve essere maggiore o uguale di %{num}."
       hash?: "deve essere un hash."
@@ -638,7 +646,9 @@ it:
         parent:
           not_descendant: "deve essere un discendente della radice gerarchica."
       str?: "deve essere una stringa."
+      time?: "must be a time."
       type?: "deve essere %{type}."
+      uri?: "is not a valid URI."
     rules:
       copy_workflow_from: "Tipo per la copia del flusso di lavoro"
       enabled: "Attivata"
@@ -1368,6 +1378,9 @@ it:
         name: "Nome dell'istanza Jira"
         url: "URL dell'istanza Jira"
         personal_access_token: "Token di accesso personale"
+      "import/jira_open_project_reference":
+        jira: "Jira"
+        jira_import: "Jira import"
       announcements:
         show_until: "Visualizza fino a"
       attachment:
@@ -3496,7 +3509,6 @@ it:
   label_float: "Virgola mobile"
   label_folder: "Cartella"
   label_follows: "segue"
-  label_force_user_language_to_default: "Imposta la lingua degli utenti che non hanno una lingua consentita a quella predefinita"
   label_form_configuration: "Configurazione del modulo"
   label_formula: "Formula"
   label_gantt_chart: "Diagramma di Gantt"
@@ -3875,12 +3887,6 @@ it:
   label_user_named: "Utente %{name}"
   label_user_activity: "attività di %{value}"
   label_user_anonymous: "Anonimo"
-  label_user_mail_option_all: "Per qualsiasi evento su tutti i miei progetti"
-  label_user_mail_option_none: "Per nessun evento"
-  label_user_mail_option_only_assigned: "Solo per cose alle quali sono stato assegnato"
-  label_user_mail_option_only_my_events: "Solo per le cose che osservo o nelle quali sono coinvolto"
-  label_user_mail_option_only_owner: "Solo per le cose di cui sono proprietario"
-  label_user_mail_option_selected: "Per qualsiasi evento solo nei progetti selezionati"
   label_user_menu: "Menu utente"
   label_user_new: "Nuovo utente"
   label_user_plural: "Utenti"
@@ -3920,7 +3926,6 @@ it:
   label_wiki_show_index_page_link: "Mostra voce del sotto-menù 'Sommario'"
   label_wiki_show_menu_item: "Mostra come voce del menù nella navigazione del progetto"
   label_wiki_show_new_page_link: "Mostra voce del sotto-menù 'Crea nuova pagina figlio'"
-  label_wiki_show_submenu_item: "Mostra come voce di sottomenù di "
   label_wiki_start: "Pagina iniziale"
   label_work: "Lavoro"
   label_work_package: "Macro-attività"
@@ -4202,6 +4207,7 @@ it:
   notice_parent_item_not_found: "L'elemento genitore non è stato trovato."
   notice_project_not_deleted: "Il progetto non è stato eliminato."
   notice_project_not_found: "Progetto non trovato."
+  notice_smtp_address_unsafe: "SMTP address %{address} is not safe. Please add it to OPENPROJECT_SSRF_PROTECTION_ALLOWLIST."
   notice_successful_connection: "Connesso con successo."
   notice_successful_create: "Creato con successo."
   notice_successful_delete: "Cancellato con successo."
@@ -4991,7 +4997,7 @@ it:
   text_default_administrator_account_changed: "Account amministratore predefinito cambiato"
   text_default_encoding: "Predefinito: UTF-8"
   text_destroy: "Cancella"
-  text_destroy_with_associated: "Ci sono ulteriori oggetti associati con la/le macro-attività che devono essere eliminati. Tali oggetti sono dei seguenti tipi:"
+  text_destroy_with_associated: "There are additional objects associated with the work package(s) that are to be deleted. Those objects are of the following types:"
   text_destroy_what_to_do: "Cosa vuoi fare?"
   text_diff_truncated: "... Questo diff è stato troncato perché supera la dimensione massima che può essere visualizzata."
   text_email_delivery_not_configured: "Consegna email non configurata. Le notifiche sono state disabilitate.\nConfigura il tuo server SMTP per abilitarle."

@@ -40,6 +40,7 @@ RSpec.describe Admin::Import::Jira::ImportRunsController do
   # All after_transition job callbacks are stubbed.
   def transition_to_state(jira_import, target_state)
     prefix = %w[instance_meta_fetching instance_meta_done]
+    imported_prefix = prefix + %w[configuring projects_meta_fetching projects_meta_done importing imported]
 
     paths = {
       "initial" => [],
@@ -52,13 +53,15 @@ RSpec.describe Admin::Import::Jira::ImportRunsController do
       "projects_meta_done" => prefix + %w[configuring projects_meta_fetching projects_meta_done],
       "importing" => prefix + %w[configuring projects_meta_fetching projects_meta_done importing],
       "import_error" => prefix + %w[configuring projects_meta_fetching projects_meta_done importing import_error],
-      "imported" => prefix + %w[configuring projects_meta_fetching projects_meta_done importing imported],
-      "completed" => prefix + %w[configuring projects_meta_fetching projects_meta_done importing imported completed],
-      "reverting" => prefix + %w[configuring projects_meta_fetching projects_meta_done importing imported reverting],
-      "revert_error" => prefix + %w[configuring projects_meta_fetching projects_meta_done
-                                    importing imported reverting revert_error],
-      "reverted" => prefix + %w[configuring projects_meta_fetching projects_meta_done
-                                importing imported reverting reverted]
+      "imported" => imported_prefix,
+      "finalizing" => imported_prefix + %w[finalizing],
+      "finalizing_error" => imported_prefix + %w[finalizing finalizing_error],
+      "finalizing_done" => imported_prefix + %w[finalizing finalizing_done],
+      "reverting" => imported_prefix + %w[reverting],
+      "revert_error" => imported_prefix + %w[reverting revert_error],
+      "revert_cancelling" => imported_prefix + %w[reverting revert_cancelling],
+      "revert_cancelled" => imported_prefix + %w[reverting revert_cancelling revert_cancelled],
+      "reverted" => imported_prefix + %w[reverting reverted]
     }
 
     steps = paths.fetch(target_state.to_s)
@@ -71,6 +74,7 @@ RSpec.describe Admin::Import::Jira::ImportRunsController do
     allow(Import::JiraProjectsMetaDataJob).to receive(:perform_later).and_return(double(job_id: "job-stub"))
     allow(Import::JiraFetchAndImportProjectsJob).to receive(:perform_later).and_return(double(job_id: "job-stub"))
     allow(Import::JiraRevertImportJob).to receive(:perform_later).and_return(double(job_id: "job-stub"))
+    allow(Import::JiraFinalizeImportJob).to receive(:perform_later).and_return(double(job_id: "job-stub"))
   end
 
   context "when user is not an admin" do
@@ -245,9 +249,20 @@ RSpec.describe Admin::Import::Jira::ImportRunsController do
     context "when step is finalize" do
       before { transition_to_state(jira_import, "imported") }
 
-      it "transitions to completed" do
+      it "transitions to finalizing and triggers the job" do
         post :continue, params: { jira_id: jira.id, id: jira_import.id, step: "finalize" }, format: :turbo_stream
-        expect(jira_import.current_state).to eq("completed")
+        expect(jira_import.current_state).to eq("finalizing")
+        expect(Import::JiraFinalizeImportJob).to have_received(:perform_later).with(jira_import.id)
+      end
+    end
+
+    context "when step is finalize from finalizing_error" do
+      before { transition_to_state(jira_import, "finalizing_error") }
+
+      it "retries the finalize" do
+        post :continue, params: { jira_id: jira.id, id: jira_import.id, step: "finalize" }, format: :turbo_stream
+        expect(jira_import.current_state).to eq("finalizing")
+        expect(Import::JiraFinalizeImportJob).to have_received(:perform_later).with(jira_import.id).twice
       end
     end
 
@@ -274,6 +289,15 @@ RSpec.describe Admin::Import::Jira::ImportRunsController do
       it "does not change the step" do
         post :continue, params: { jira_id: jira.id, id: jira_import.id, step: "finalize" }, format: :turbo_stream
         expect(jira_import.current_state).to eq("importing")
+      end
+    end
+
+    context "when finalizing is running (status_running? is true)" do
+      before { transition_to_state(jira_import, "finalizing") }
+
+      it "does not change the step" do
+        post :continue, params: { jira_id: jira.id, id: jira_import.id, step: "finalize" }, format: :turbo_stream
+        expect(jira_import.current_state).to eq("finalizing")
       end
     end
 

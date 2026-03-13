@@ -175,6 +175,7 @@ zh-CN:
           instance_meta_fetching: "正在获取元数据"
           instance_meta_error: "获取元数据时出错"
           instance_meta_done: "元数据已获取"
+          import_scope: "选择范围"
           configuring: "选择范围"
           projects_meta_fetching: "正在获取项目数据"
           projects_meta_error: "获取项目数据时出错"
@@ -184,8 +185,12 @@ zh-CN:
           imported: "审核模式"
           reverting: "正在撤消"
           revert_error: "撤消过程中出错"
+          revert_cancelling: "正在取消撤消"
+          revert_cancelled: "已取消撤消"
           reverted: "已撤消"
-          completed: "已完成"
+          finalizing: "正在完成"
+          finalizing_error: "完成过程中出错"
+          finalizing_done: "已完成"
         wizard:
           button_retry: "重试"
           parts:
@@ -225,7 +230,7 @@ zh-CN:
               title: "导入范围"
               caption: "选择要导入 OpenProject 的内容"
               caption_done: "已完成"
-              label_info: "请注意，此导入工具仍处于测试阶段，不能导入所有类型的数据。以下是主机 Jira 实例提供的导入功能摘要，以及此工具目前能够导入的内容。"
+              label_info: "请注意，此导入工具仍处于测试阶段，不能导入所有类型的数据。以下是主机 Jira 实例提供的导入摘要，以及此工具目前能够导入的内容。"
               description: "在从主机 Jira 实例获取的可用数据中选择要导入的数据。"
               label_available_data: "可用数据"
               label_not_available_data: "不可导入"
@@ -260,8 +265,9 @@ zh-CN:
               button_revert: "撤消导入"
               button_done: "完成导入"
               preview_description: '导入的数据当前处于审核模式。点击“完成导入”可永久导入，点击“撤消导入”可撤消本次导入运行中的所有更改。'
-              label_finalizing_progress: "正在完成导入…"
-              label_finalized: "导入已完成。"
+              label_finalize_import: "完成导入"
+              label_finalizing: "正在完成导入…"
+              label_finalizing_done: "导入已完成。"
               label_revert_progress: "正在撤消导入…"
               label_reverted: "导入已撤消。"
           select_dialog:
@@ -270,7 +276,7 @@ zh-CN:
             title: "是否开始此导入？"
             confirm_button: "开始导入"
             description: >
-              此导入器是一项 alpha 功能。它还不能从 Jira 导入所有数据，可能会在此 OpenProject 实例上留下不完整的数据。 <b>请勿在生产环境中使用，在开始之前，请先创建 OpenProject 数据备份。</b>
+              此导入功能是一项 alpha 功能。它还不能从 Jira 导入所有数据，可能会在此 OpenProject 实例上留下不完整的数据。 <b>请勿在生产环境中使用，在开始之前，请先创建 OpenProject 数据备份。</b>
             confirm: "我明白，我已做好了必要的准备"
           revert_dialog:
             title: "是否永久撤消此导入？"
@@ -600,11 +606,13 @@ zh-CN:
   op_dry_validation:
     or: "或"
     errors:
+      unexpected_key: "is not allowed."
       array?: "必须为一个数组。"
       decimal?: "必须为小数。"
       defined: "不得定义。"
       eql?: "必须等于 %{left}。"
       filled?: "必须填写"
+      format?: "is in invalid format."
       greater_or_equal_zero: "必须大于或等于 0"
       gteq?: "必须大于或等于 %{num}。"
       hash?: "必须是一个哈希值。"
@@ -631,7 +639,9 @@ zh-CN:
         parent:
           not_descendant: "必须是层级根节点的后代。"
       str?: "必须是一个字符串。"
+      time?: "must be a time."
       type?: "必须是 %{type}。"
+      uri?: "is not a valid URI."
     rules:
       copy_workflow_from: "工作流副本的类型"
       enabled: "已启用"
@@ -1352,6 +1362,9 @@ zh-CN:
         name: "Jira 实例名称"
         url: "Jira 实例 URL"
         personal_access_token: "个人访问令牌"
+      "import/jira_open_project_reference":
+        jira: "Jira"
+        jira_import: "Jira 导入"
       announcements:
         show_until: "显示截止日期"
       attachment:
@@ -3439,7 +3452,6 @@ zh-CN:
   label_float: "浮点数"
   label_folder: "文件夹"
   label_follows: "跟踪"
-  label_force_user_language_to_default: "设置拥有非允许语言的用户的默认语言"
   label_form_configuration: "表格配置"
   label_formula: "公式"
   label_gantt_chart: "甘特图"
@@ -3818,12 +3830,6 @@ zh-CN:
   label_user_named: "用户 %{name}"
   label_user_activity: "%{value} 的活动"
   label_user_anonymous: "匿名"
-  label_user_mail_option_all: "对于我所有项目的任何事件"
-  label_user_mail_option_none: "没有事件"
-  label_user_mail_option_only_assigned: "仅为指派给我的内容"
-  label_user_mail_option_only_my_events: "仅为我关注或参与的内容"
-  label_user_mail_option_only_owner: "仅为我是所有者的内容"
-  label_user_mail_option_selected: "只对于所选项目的任何事件......"
   label_user_menu: "用户菜单"
   label_user_new: "新用户"
   label_user_plural: "用户"
@@ -3863,7 +3869,6 @@ zh-CN:
   label_wiki_show_index_page_link: "显示‘目录’子菜单项"
   label_wiki_show_menu_item: "显示为项目导航中的菜单项"
   label_wiki_show_new_page_link: "显示‘创建新的子页面’子菜单项"
-  label_wiki_show_submenu_item: "显示为子菜单项"
   label_wiki_start: "起始页"
   label_work: "工时"
   label_work_package: "工作包"
@@ -4142,6 +4147,7 @@ zh-CN:
   notice_parent_item_not_found: "未找到父项"
   notice_project_not_deleted: "项目没有被删除"
   notice_project_not_found: "未找到项目。"
+  notice_smtp_address_unsafe: "SMTP 地址 %{address} 不安全。请将其添加到 OPENPROJECT_SSRF_PROTECTION_ALLOWLIST。"
   notice_successful_connection: "成功连接。"
   notice_successful_create: "成功创建。"
   notice_successful_delete: "成功删除。"
@@ -4927,7 +4933,7 @@ zh-CN:
   text_default_administrator_account_changed: "更改默认管理员帐户"
   text_default_encoding: "默认值： UTF-8"
   text_destroy: "删除"
-  text_destroy_with_associated: "有额外的对象关联到要删除的工作包。这些对象是以下类型："
+  text_destroy_with_associated: "There are additional objects associated with the work package(s) that are to be deleted. Those objects are of the following types:"
   text_destroy_what_to_do: "你想做什么？"
   text_diff_truncated: "...这个比较被截断，因为它超出了可显示的最大大小。"
   text_email_delivery_not_configured: "电子邮件传送未配置，通知已禁用。\n配置您的 SMTP 服务器将其启用。"

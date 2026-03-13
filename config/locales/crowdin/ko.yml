@@ -167,7 +167,7 @@ ko:
           title: "가져오기 실행이 아직 설정되지 않음"
           description: "가져오기 실행을 만들어서 이 Jira 인스턴스에서 정보 가져오기를 시작하세요"
         index:
-          description: "가져오기를 실행할 때마다 다른 데이터 세트를 가져올 수 있습니다. 검토 모드에서 가져오기 실행은 직후에 실행 취소할 수 있지만 완료한 후에는 실행 취소할 수 없습니다."
+          description: "가져오기를 실행할 때마다 다른 데이터 세트를 가져올 수 있습니다. 검토 모드에서 가져오기 실행은 직후에 실행 취소할 수 있지만 마무리한 후에는 실행 취소할 수 없습니다."
           button_import_run: "가져오기 실행"
           button_edit_configuration: "구성 편집"
         status:
@@ -175,6 +175,7 @@ ko:
           instance_meta_fetching: "메타 데이터를 가져오는 중"
           instance_meta_error: "메타 데이터를 가져오는 중에 오류 발생"
           instance_meta_done: "메타 데이터 가져옴"
+          import_scope: "범위 선택"
           configuring: "범위 선택"
           projects_meta_fetching: "프로젝트 데이터를 가져오는 중"
           projects_meta_error: "프로젝트 데이터를 가져오는 중에 오류 발생"
@@ -184,8 +185,12 @@ ko:
           imported: "검토 모드"
           reverting: "되돌리는 중"
           revert_error: "되돌리는 중에 오류 발생"
+          revert_cancelling: "되돌리기 취소 중"
+          revert_cancelled: "되돌리기 취소됨"
           reverted: "되돌림"
-          completed: "완료됨"
+          finalizing: "마무리 중"
+          finalizing_error: "마무리 중 오류 발생"
+          finalizing_done: "완료됨"
         wizard:
           button_retry: "다시 시도"
           parts:
@@ -258,10 +263,11 @@ ko:
               label_results: "가져옴"
               label_revert: "가져오기 되돌리기"
               button_revert: "가져오기 되돌리기"
-              button_done: "가져오기 완료"
-              preview_description: '가져온 데이터는 현재 검토 모드에 있습니다. 가져오기를 영구적으로 적용하려면 "가져오기 완료"를 클릭하고, 가져오기 실행에서 변경된 모든 사항을 취소하려면 "가져오기 되돌리기"를 클릭합니다.'
-              label_finalizing_progress: "가져오기를 완료하는 중..."
-              label_finalized: "가져오기가 완료되었습니다."
+              button_done: "가져오기 마무리"
+              preview_description: '가져온 데이터는 현재 검토 모드에 있습니다. 가져오기를 영구적으로 적용하려면 "가져오기 마무리"를 클릭하고, 가져오기 실행에서 변경된 모든 사항을 취소하려면 "가져오기 되돌리기"를 클릭합니다.'
+              label_finalize_import: "가져오기 마무리"
+              label_finalizing: "가져오기 마무리 중..."
+              label_finalizing_done: "가져오기가 마무리되었습니다."
               label_revert_progress: "가져오기를 되돌리는 중..."
               label_reverted: "가져오기를 되돌렸습니다."
           select_dialog:
@@ -277,8 +283,8 @@ ko:
             description: "이렇게 하면 OpenProject의 가져오기 후 해당 프로젝트에 사용자 활동이 있더라도 가져온 모든 개체(전체 프로젝트 포함)가 삭제됩니다."
             confirm: "이 되돌리기를 통해 데이터가 영구적으로 삭제됨을 이해합니다"
           finalize_dialog:
-            title: "이 가져오기를 완료하시겠습니까?"
-            description: "가져오기가 완료되면 더 이상 되돌릴 수 없습니다. 가져온 모든 데이터는 영구적으로 가져오게 됩니다."
+            title: "이 가져오기를 마무리하시겠습니까?"
+            description: "이 가져오기가 마무리되면 더 이상 되돌릴 수 없습니다. 가져온 모든 데이터는 영구적으로 가져오게 됩니다."
             confirm: "이 작업을 취소할 수 없음을 이해합니다."
             confirm_button: "이해함"
           select_projects:
@@ -603,11 +609,13 @@ ko:
   op_dry_validation:
     or: "또는"
     errors:
+      unexpected_key: "is not allowed."
       array?: "- 배열이어야 합니다."
       decimal?: "- 소수여야 합니다."
       defined: "- 정의해서는 안 됩니다."
       eql?: "- %{left}과(와) 같아야 합니다."
       filled?: "- 입력해야 합니다."
+      format?: "is in invalid format."
       greater_or_equal_zero: "- 0보다 크거나 같아야 합니다."
       gteq?: "- %{num}보다 크거나 같아야 합니다."
       hash?: "- 해시여야 합니다."
@@ -634,7 +642,9 @@ ko:
         parent:
           not_descendant: "- 계층 루트의 하위 항목이어야 합니다."
       str?: "- 문자열이어야 합니다."
+      time?: "must be a time."
       type?: "- %{type}이어야(여야) 합니다."
+      uri?: "is not a valid URI."
     rules:
       copy_workflow_from: "워크플로 복사의 유형"
       enabled: "활성화됨"
@@ -1356,6 +1366,9 @@ ko:
         name: "Jira 인스턴스 이름"
         url: "Jira 인스턴스 URL"
         personal_access_token: "개인 액세스 토큰"
+      "import/jira_open_project_reference":
+        jira: "Jira"
+        jira_import: "Jira 가져오기"
       announcements:
         show_until: "표시 기한"
       attachment:
@@ -3443,7 +3456,6 @@ ko:
   label_float: "부동"
   label_folder: "폴더"
   label_follows: "팔로우"
-  label_force_user_language_to_default: "허용되지 않는 언어가 있는 사용자의 언어를 기본값으로 설정"
   label_form_configuration: "양식 구성"
   label_formula: "공식"
   label_gantt_chart: "Gantt 차트"
@@ -3822,12 +3834,6 @@ ko:
   label_user_named: "사용자 %{name}"
   label_user_activity: "%{value}의 작업"
   label_user_anonymous: "익명"
-  label_user_mail_option_all: "모든 내 프로젝트의 이벤트에 대해"
-  label_user_mail_option_none: "이벤트 없음"
-  label_user_mail_option_only_assigned: "나에게 할당된 사항만"
-  label_user_mail_option_only_my_events: "내가 주시하거나 관련된 사항만"
-  label_user_mail_option_only_owner: "내가 소유자인 사항만"
-  label_user_mail_option_selected: "선택된 프로젝트에서 발생하는 이벤트만"
   label_user_menu: "사용자 메뉴"
   label_user_new: "새 사용자"
   label_user_plural: "사용자"
@@ -3867,7 +3873,6 @@ ko:
   label_wiki_show_index_page_link: "하위 메뉴 항목 '목차' 표시"
   label_wiki_show_menu_item: "프로젝트 탐색에서 메뉴 항목으로 표시"
   label_wiki_show_new_page_link: "하위 메뉴 항목 '새 자식 페이지 만들기' 표시"
-  label_wiki_show_submenu_item: "다음의 하위 메뉴 항목으로 표시: "
   label_wiki_start: "시작 페이지"
   label_work: "작업"
   label_work_package: "작업 패키지"
@@ -4148,6 +4153,7 @@ ko:
   notice_parent_item_not_found: "부모 항목을 찾을 수 없습니다."
   notice_project_not_deleted: "프로젝트가 삭제되지 않았습니다."
   notice_project_not_found: "프로젝트를 찾을 수 없습니다."
+  notice_smtp_address_unsafe: "SMTP 주소 %{address}은(는) 안전하지 않습니다. OPENPROJECT_SSRF_PROTECTION_ALLOWLIST에 추가하세요."
   notice_successful_connection: "연결에 성공했습니다."
   notice_successful_create: "생성에 성공했습니다."
   notice_successful_delete: "삭제에 성공했습니다."
@@ -4933,7 +4939,7 @@ ko:
   text_default_administrator_account_changed: "기본 관리자 계정 변경됨"
   text_default_encoding: "기본: UTF-8"
   text_destroy: "삭제"
-  text_destroy_with_associated: "삭제할 작업 패키지와 연결된 추가 개체가 있습니다. 이러한 개체의 유형은 다음과 같습니다."
+  text_destroy_with_associated: "There are additional objects associated with the work package(s) that are to be deleted. Those objects are of the following types:"
   text_destroy_what_to_do: "어떤 작업을 수행하시겠습니까?"
   text_diff_truncated: "... 이 차이점은 표시할 수 있는 최대 크기를 초과하므로 잘렸습니다."
   text_email_delivery_not_configured: "이메일 배달이 구성되지 않았고, 알림이 비활성화되었습니다.\nSMTP 서버를 구성하여 활성화하세요."

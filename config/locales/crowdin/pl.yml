@@ -175,6 +175,7 @@ pl:
           instance_meta_fetching: "Pobieranie metadanych"
           instance_meta_error: "Błąd podczas pobierania metadanych"
           instance_meta_done: "Pobrano metadane"
+          import_scope: "Select scope"
           configuring: "Wybierz zakres"
           projects_meta_fetching: "Pobieranie danych projektu"
           projects_meta_error: "Błąd podczas pobierania danych projektu"
@@ -184,8 +185,12 @@ pl:
           imported: "Tryb przeglądu"
           reverting: "Cofanie"
           revert_error: "Błąd podczas cofania"
+          revert_cancelling: "Cancelling revert"
+          revert_cancelled: "Revert cancelled"
           reverted: "Cofnięto"
-          completed: "Ukończono"
+          finalizing: "Finalizing"
+          finalizing_error: "Error during finalizing"
+          finalizing_done: "Completed"
         wizard:
           button_retry: "Ponów próbę"
           parts:
@@ -278,8 +283,9 @@ pl:
               button_revert: "Cofnij import"
               button_done: "Sfinalizuj import"
               preview_description: 'Zaimportowane dane są obecnie w trybie przeglądu. Kliknij przycisk „Sfinalizuj import”, aby zaimportować dane na stałe lub „Cofnij import”, aby cofnąć wszystkie zmiany wprowadzone wskutek importu.'
-              label_finalizing_progress: "Finalizowanie importu..."
-              label_finalized: "Sfinalizowano import."
+              label_finalize_import: "Finalize import"
+              label_finalizing: "Finalizing import..."
+              label_finalizing_done: "Import finalized."
               label_revert_progress: "Cofanie importu..."
               label_reverted: "Cofnięto import."
           select_dialog:
@@ -618,11 +624,13 @@ pl:
   op_dry_validation:
     or: "lub"
     errors:
+      unexpected_key: "is not allowed."
       array?: "musi być tablicą."
       decimal?: "musi być liczbą dziesiętną."
       defined: "nie może być zdefiniowany."
       eql?: "musi być równy %{left}."
       filled?: "musi być wypełniony."
+      format?: "is in invalid format."
       greater_or_equal_zero: "musi mieć wartość większą lub równą 0."
       gteq?: "musi być większe niż lub równe %{num}."
       hash?: "musi być hashem."
@@ -649,7 +657,9 @@ pl:
         parent:
           not_descendant: "musi być potomkiem katalogu głównego hierarchii."
       str?: "musi być ciągiem znaków."
+      time?: "must be a time."
       type?: "musi być %{type}."
+      uri?: "is not a valid URI."
     rules:
       copy_workflow_from: "Typ kopii przepływu pracy"
       enabled: "Włączone"
@@ -1397,6 +1407,9 @@ pl:
         name: "Nazwa wystąpienia Jira"
         url: "Adres URL wystąpienia Jira"
         personal_access_token: "Osobisty token dostępu"
+      "import/jira_open_project_reference":
+        jira: "Jira"
+        jira_import: "Jira import"
       announcements:
         show_until: "Wyświetlaj do"
       attachment:
@@ -3607,7 +3620,6 @@ pl:
   label_float: "Liczba rzeczywista"
   label_folder: "Katalog"
   label_follows: "Następujący"
-  label_force_user_language_to_default: "Ustaw język domyślny dla użytkowników o innych ustawieniach językowych niż dozwolone"
   label_form_configuration: "Konfiguracja formularza"
   label_formula: "Wzór"
   label_gantt_chart: "Wykres Gantta"
@@ -3986,12 +3998,6 @@ pl:
   label_user_named: "Użytkownik %{name}"
   label_user_activity: "Aktywność użytkownika: %{value}"
   label_user_anonymous: "Anonimowy"
-  label_user_mail_option_all: "Dla każdego zdarzenia we wszystkich moich projektach"
-  label_user_mail_option_none: "Brak zdarzeń"
-  label_user_mail_option_only_assigned: "Tylko do rzeczy do których jestem przydzielony"
-  label_user_mail_option_only_my_events: "Tylko to co obserwuję lub jestem zaangażowany"
-  label_user_mail_option_only_owner: "Tylko do rzeczy, których jestem właścicielem"
-  label_user_mail_option_selected: "Dla każdego zdarzenia w wybranych projektach"
   label_user_menu: "Menu użytkownika"
   label_user_new: "Nowy użytkownik"
   label_user_plural: "Użytkownicy"
@@ -4031,7 +4037,6 @@ pl:
   label_wiki_show_index_page_link: "Pokaż element podmenu \"Spis treści\""
   label_wiki_show_menu_item: "Pokaż jako element menu w nawigacji projektu"
   label_wiki_show_new_page_link: "Pokaż element podmenu \"Utwórz nową stronę podrzędną\""
-  label_wiki_show_submenu_item: "Pokaż jako pozycję podmenu "
   label_wiki_start: "Strona startowa"
   label_work: "Praca"
   label_work_package: "Zadanie"
@@ -4314,6 +4319,7 @@ pl:
   notice_parent_item_not_found: "Nie znaleziono elementu nadrzędnego."
   notice_project_not_deleted: "Projekt nie został usunięty."
   notice_project_not_found: "Nie znaleziono projektu."
+  notice_smtp_address_unsafe: "SMTP address %{address} is not safe. Please add it to OPENPROJECT_SSRF_PROTECTION_ALLOWLIST."
   notice_successful_connection: "Połączenie zakończone sukcesem."
   notice_successful_create: "Tworzenie zakończone sukcesem."
   notice_successful_delete: "Usuwanie zakończone sukcesem."
@@ -5103,7 +5109,7 @@ pl:
   text_default_administrator_account_changed: "Domyślne konto administratora zostało zmienione"
   text_default_encoding: "Domyślnie: UTF-8"
   text_destroy: "Usuń"
-  text_destroy_with_associated: "Istnieją dodatkowe obiekty powiązane z pakietami roboczymi, które będą usunięte. Te obiekty są następujących typów:"
+  text_destroy_with_associated: "There are additional objects associated with the work package(s) that are to be deleted. Those objects are of the following types:"
   text_destroy_what_to_do: "Co chcesz zrobić?"
   text_diff_truncated: "... This diff was truncated because it exceeds the maximum size that can be displayed."
   text_email_delivery_not_configured: "Dostarczanie poczty elektronicznej nie jest skonfigurowane, a powiadomienia są wyłączone.\nSkonfiguruj swój serwer SMTP, aby je włączyć."

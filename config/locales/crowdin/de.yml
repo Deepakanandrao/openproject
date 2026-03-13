@@ -175,6 +175,7 @@ de:
           instance_meta_fetching: "Abrufen von Metadaten"
           instance_meta_error: "Fehler beim Abrufen von Metadaten"
           instance_meta_done: "Metadaten abgerufen"
+          import_scope: "Umfang auswählen"
           configuring: "Umfang auswählen"
           projects_meta_fetching: "Abrufen von Projektdaten"
           projects_meta_error: "Fehler beim Abrufen von Projektdaten"
@@ -184,8 +185,12 @@ de:
           imported: "Überprüfungsmodus"
           reverting: "Rückgängig machen"
           revert_error: "Fehler beim Revertieren"
+          revert_cancelling: "Rückgängig machen abbrechen"
+          revert_cancelled: "Rückgängig machen abgebrochen"
           reverted: "Rückgängig gemacht"
-          completed: "Abgeschlossen"
+          finalizing: "Abschließen"
+          finalizing_error: "Fehler beim Abschließen"
+          finalizing_done: "Abgeschlossen"
         wizard:
           button_retry: "Erneut versuchen"
           parts:
@@ -266,8 +271,9 @@ de:
               button_revert: "Import rückgängig machen"
               button_done: "Import abschließen"
               preview_description: 'Die importierten Daten befinden sich derzeit im Überprüfungsmodus. Klicken Sie auf "Import abschließen", um den Import dauerhaft zu machen, oder auf "Import rückgängig machen", um alle in diesem Importlauf vorgenommenen Änderungen rückgängig zu machen.'
-              label_finalizing_progress: "Import wird abgeschlossen..."
-              label_finalized: "Import abgeschlossen."
+              label_finalize_import: "Import abschließen"
+              label_finalizing: "Import wird abgeschlossen..."
+              label_finalizing_done: "Import abgeschlossen."
               label_revert_progress: "Import wird rückgängig gemacht..."
               label_reverted: "Import rückgängig gemacht."
           select_dialog:
@@ -304,13 +310,13 @@ de:
         description_caption: "Wie der MCP-Server gegenüber anderen Anwendungen beschrieben wird, die sich damit verbinden."
         title_caption: "Ein kurzer Titel, der Anwendungen angezeigt wird, die sich mit dem MCP-Server verbinden."
         tool_response_format: "Antwortformat des Tools"
-        tool_response_format_content_only_label: "Nur Inhalt"
+        tool_response_format_content_only_label: "Nur unstrukturiert (content)"
         tool_response_format_content_only_caption: >
           Wählen Sie diese Option, wenn MCP-Clients, die sich mit dieser Instanz verbinden, keine strukturierten Inhalte unterstützen. Die Antworten des Tools enthalten dann nur den reinen Textinhalt und lassen die strukturierte Inhalte aus.
         tool_response_format_full_label: "Vollständig"
         tool_response_format_full_caption: >
           Die kompatibelste Option. Die Antworten des Tools enthalten sowohl reguläre als auch strukturierte Inhalte, so dass MCP-Clients wählen können, welches Format sie lesen möchten. Dies kann die Anzahl der Token erhöhen, die das Sprachmodell verarbeiten muss, was die Kosten erhöhen und die Leistung verringern kann.
-        tool_response_format_structured_only_label: "Nur strukturierte Inhalte"
+        tool_response_format_structured_only_label: "Nur strukturiert (structured content)"
         tool_response_format_structured_only_caption: >
           Wählen Sie diese Option, wenn Sie sicher sind, dass MCP-Clients, die sich mit dieser Instanz verbinden, strukturierte Inhalte unterstützen. Die Antworten des Tools enthalten dann nur strukturierte Inhalte und nicht deren Textdarstellung.
       update:
@@ -606,11 +612,13 @@ de:
   op_dry_validation:
     or: "oder"
     errors:
+      unexpected_key: "is not allowed."
       array?: "muss ein Array sein."
       decimal?: "muss eine Dezimalzahl sein."
       defined: "darf nicht definiert werden."
       eql?: "muss gleich %{left} sein."
       filled?: "muss ausgefüllt werden."
+      format?: "is in invalid format."
       greater_or_equal_zero: "muss größer oder gleich 0 sein."
       gteq?: "muss größer oder gleich %{num} sein."
       hash?: "muss ein Hash sein."
@@ -637,7 +645,9 @@ de:
         parent:
           not_descendant: "muss ein Unterelement der Hierarchiewurzel sein."
       str?: "muss eine Zeichenkette sein."
+      time?: "must be a time."
       type?: "muss %{type} sein."
+      uri?: "is not a valid URI."
     rules:
       copy_workflow_from: "Typ für Workflow-Kopie"
       enabled: "Aktiviert"
@@ -1363,6 +1373,9 @@ de:
         name: "Name der Jira-Instanz"
         url: "URL der Jira-Instanz"
         personal_access_token: "Persönlicher Zugangs-Token"
+      "import/jira_open_project_reference":
+        jira: "Jira"
+        jira_import: "Jira Import"
       announcements:
         show_until: "Anzeigen bis"
       attachment:
@@ -3491,7 +3504,6 @@ de:
   label_float: "Gleitkommazahl"
   label_folder: "Ordner"
   label_follows: "folgt"
-  label_force_user_language_to_default: "Setze Sprache für Nutzer, die eine nicht erlaubte Sprache gewählt haben, auf die Standard-Sprache"
   label_form_configuration: "Formularkonfiguration"
   label_formula: "Formel"
   label_gantt_chart: "Gantt-Diagramm"
@@ -3870,12 +3882,6 @@ de:
   label_user_named: "Benutzer %{name}"
   label_user_activity: "Aktivität von %{value}"
   label_user_anonymous: "Anonym"
-  label_user_mail_option_all: "Für alle Ereignisse in all meinen Projekten"
-  label_user_mail_option_none: "Für keine Ereignisse"
-  label_user_mail_option_only_assigned: "Nur für Aufgaben, für die ich zuständig bin."
-  label_user_mail_option_only_my_events: "Nur für Aufgaben, die ich beobachte oder an welchen ich mitarbeite"
-  label_user_mail_option_only_owner: "Nur für Aufgaben, die ich angelegt habe"
-  label_user_mail_option_selected: "Für alle Ereignisse in den ausgewählten Projekten"
   label_user_menu: "Benutzermenü"
   label_user_new: "Neuer Benutzer"
   label_user_plural: "Benutzer"
@@ -3915,7 +3921,6 @@ de:
   label_wiki_show_index_page_link: "'Inhaltsverzeichnis' Link als Untermenüpunkt anzeigen"
   label_wiki_show_menu_item: "als Menüpunkt in der Projektnavigation anzeigen"
   label_wiki_show_new_page_link: "'Neue Unterseite anlegen' Link als Untermenüpunkt anzeigen"
-  label_wiki_show_submenu_item: "als Untermenüpunkt anzeigen von "
   label_wiki_start: "Hauptseite"
   label_work: "Aufwand"
   label_work_package: "Arbeitspaket"
@@ -4197,6 +4202,7 @@ de:
   notice_parent_item_not_found: "Übergeordnetes Element nicht gefunden."
   notice_project_not_deleted: "Das Projekt wurde nicht gelöscht."
   notice_project_not_found: "Projekt nicht gefunden."
+  notice_smtp_address_unsafe: "Die SMTP-Adresse %{address} ist nicht sicher. Bitte fügen Sie sie zu OPENPROJECT_SSRF_PROTECTION_ALLOWLIST hinzu."
   notice_successful_connection: "Verbindung erfolgreich."
   notice_successful_create: "Erfolgreich angelegt."
   notice_successful_delete: "Erfolgreich gelöscht."
@@ -4988,7 +4994,7 @@ de:
   text_default_administrator_account_changed: "Administrator-Kennwort geändert"
   text_default_encoding: "Default: UTF-8"
   text_destroy: "Löschen"
-  text_destroy_with_associated: "Es sind weitere Datenobjekte mit den bzw. dem zu löschenden Arbeitpaket(en) verbunden. Es handelt sich dabei um Objekte der folgenden Typen:"
+  text_destroy_with_associated: "There are additional objects associated with the work package(s) that are to be deleted. Those objects are of the following types:"
   text_destroy_what_to_do: "Was soll mit den Objekten geschehen?"
   text_diff_truncated: "... Dieser Diff wurde abgeschnitten, weil er die maximale Anzahl anzuzeigender Zeilen überschreitet."
   text_email_delivery_not_configured: "E-Mail-Zustellung ist nicht konfiguriert und Benachrichtigungen sind deaktiviert.\nKonfigurieren Sie Ihren SMTP-Server, um sie zu aktivieren."
