@@ -28,7 +28,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class Wikis::Diff < Redmine::Helpers::Diff
+class WikiPage::Diff < Redmine::Helpers::Diff
   attr_reader :content_to, :content_from
 
   def initialize(content_to, content_from)
