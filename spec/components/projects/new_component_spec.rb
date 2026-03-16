@@ -94,7 +94,7 @@ RSpec.describe Projects::NewComponent, type: :component do
     end
 
     it "includes the set_name_first translation" do
-      translation = I18n.t('js.projects.identifier_suggestion.set_name_first')
+      translation = I18n.t("js.projects.identifier_suggestion.set_name_first")
       expect(rendered).to have_css(
         "[data-projects--identifier-suggestion-set-name-first-value='#{translation}']"
       )

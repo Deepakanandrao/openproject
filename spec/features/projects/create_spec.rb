@@ -577,6 +577,7 @@ RSpec.describe "Projects", "creation",
 
       fill_in "Name", with: "Flight Planning Algorithm"
       find("body").click
+      expect(page).to have_field "Identifier", with: "FPA"
 
       fill_in "Identifier", with: "MYIDENT"
       click_on "Complete"
