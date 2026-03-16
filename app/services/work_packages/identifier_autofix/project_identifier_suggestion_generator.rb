@@ -136,7 +136,7 @@ module WorkPackages
         return [] if max_len < IDENTIFIER_LENGTH[:min]
 
         start_len = IDENTIFIER_LENGTH[:single_word].clamp(IDENTIFIER_LENGTH[:min], max_len)
-        (start_len..max_len).map { |len| chars[0, len] }
+        (start_len..max_len).map { chars[0, it] }
       end
 
       # "Stream Communicator" → ["SC", "STC", "STCO", "STRCO", …]
@@ -155,7 +155,7 @@ module WorkPackages
       def initial_candidates(upcased_words)
         initials = upcased_words.pluck(0).join[0, IDENTIFIER_LENGTH[:max]]
         start = [IDENTIFIER_LENGTH[:base], initials.length].min
-        (start..initials.length).map { |len| initials[0, len] }
+        (start..initials.length).map { initials[0, it] }
       end
 
       # Progressively pulls more characters from each word left-to-right.
@@ -182,8 +182,7 @@ module WorkPackages
       # For names like "3D Printing Lab", initials "3PL" become "PL".
       # This is lossy but acceptable for auto-generated suggestions.
       def ensure_starts_with_letter(candidate)
-        stripped = candidate.sub(/\A\d+/, "")
-        stripped.presence
+        candidate.sub(/\A\d+/, "").presence
       end
 
       # Iterates through expansion candidates, then falls back to numeric suffix.
