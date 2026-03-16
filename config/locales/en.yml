@@ -394,7 +394,7 @@ en:
         box_header:
           label_project: Project
           label_previous_identifier: Previous identifier
-          label_autofixed_suggestion: Autofixed suggestion
+          label_autofixed_suggestion: Future identifier
           label_example_work_package_id: Example work package ID
         autofix_preview:
           error_too_long: Has to be fewer than 5 characters
@@ -837,7 +837,7 @@ en:
           Sub-projects are not affected and have their own settings.
       change_identifier: Change identifier
       change_identifier_dialog_title: Change project identifier
-      change_identifier_format_hint_semantic: "Only uppercase letters (A–Z), numbers or underscores. Max 10 characters. The first character has to be a letter."
+      change_identifier_format_hint_semantic: "Only uppercase letters (A–Z), numbers or underscores. Max 10 characters. Must start with a letter."
       change_identifier_format_hint_legacy: "Only lowercase letters (a–z), numbers, dashes or underscores."
       change_identifier_warning: >
         This will permanently change identifiers and URLs of all work packages in this project.
@@ -2023,8 +2023,8 @@ en:
             types:
               in_use_by_work_packages: "still in use by work packages: %{types}"
             identifier:
-              must_start_with_letter: "The first character has to be a letter."
-              no_special_characters: "Special characters not allowed."
+              must_start_with_letter: "must start with a letter"
+              no_special_characters: "may only contain uppercase letters, numbers, and underscores"
             enabled_modules:
               dependency_missing: "The module '%{dependency}' needs to be enabled as well since the module '%{module}' depends on it."
               format: "%{message}"

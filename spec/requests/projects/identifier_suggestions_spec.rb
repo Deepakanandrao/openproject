@@ -33,22 +33,29 @@ require "rails_helper"
 RSpec.describe "GET /projects/identifier_suggestion", type: :rails_request do
   current_user { create(:user) }
 
-  context "when the feature flag is off" do
-    before { with_flags(semantic_work_package_ids: false) }
-
-    it "returns 404" do
-      get "/projects/identifier_suggestion", params: { name: "My Project" }, as: :json
-      expect(response).to have_http_status(:not_found)
-    end
-  end
-
-  context "when the feature flag is on" do
-    before { with_flags(semantic_work_package_ids: true) }
-
+  context "with alphanumeric identifiers", with_settings: { work_packages_identifier: "alphanumeric" } do
     it "returns a suggested identifier derived from the name" do
       get "/projects/identifier_suggestion", params: { name: "Flight Planning Algorithm" }, as: :json
       expect(response).to have_http_status(:ok)
       expect(response.parsed_body["identifier"]).to eq("FPA")
+    end
+
+    it "returns a single-word suggestion for single-word names" do
+      get "/projects/identifier_suggestion", params: { name: "Banana" }, as: :json
+      expect(response).to have_http_status(:ok)
+      expect(response.parsed_body["identifier"]).to eq("BAN")
+    end
+
+    it "returns an identifier starting with a letter for digit-prefixed names" do
+      get "/projects/identifier_suggestion", params: { name: "3D Printing Lab" }, as: :json
+      expect(response).to have_http_status(:ok)
+      expect(response.parsed_body["identifier"]).to match(/\A[A-Z]/)
+    end
+
+    it "transliterates accented characters" do
+      get "/projects/identifier_suggestion", params: { name: "Équipe Réseau" }, as: :json
+      expect(response).to have_http_status(:ok)
+      expect(response.parsed_body["identifier"]).to match(/\A[A-Z][A-Z0-9_]*\z/)
     end
 
     it "returns 422 when name is blank" do
@@ -63,6 +70,19 @@ RSpec.describe "GET /projects/identifier_suggestion", type: :rails_request do
         get "/projects/identifier_suggestion", params: { name: "Test" }, as: :json
         expect(response).to have_http_status(:unauthorized).or have_http_status(:redirect)
       end
+    end
+  end
+
+  context "with numeric (legacy) identifiers", with_settings: { work_packages_identifier: "numeric" } do
+    it "returns a slugified lowercase identifier" do
+      get "/projects/identifier_suggestion", params: { name: "My Cool Project" }, as: :json
+      expect(response).to have_http_status(:ok)
+      expect(response.parsed_body["identifier"]).to eq("my-cool-project")
+    end
+
+    it "returns 422 when name is blank" do
+      get "/projects/identifier_suggestion", params: { name: "" }, as: :json
+      expect(response).to have_http_status(:unprocessable_entity)
     end
   end
 end
