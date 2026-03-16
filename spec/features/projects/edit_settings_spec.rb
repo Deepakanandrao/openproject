@@ -101,7 +101,7 @@ RSpec.describe "Projects", "editing settings", :js do
           fill_in "project[identifier]", with: "123ABC"
           click_on "Change identifier"
 
-          expect(page).to have_text "The first character has to be a letter."
+          expect(page).to have_text "Identifier must start with a letter"
         end
       end
 

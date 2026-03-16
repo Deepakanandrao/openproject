@@ -112,5 +112,9 @@ module OpenProject
                                writable: !force_active,
                                disallow_override: force_active
     end
+
+    def self.semantic_work_package_ids_active?
+      # code here
+    end
   end
 end
