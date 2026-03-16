@@ -153,14 +153,20 @@ module HasPrincipalDetails
 
       @_detail_delegation_set_up = true
 
-      # Delegate all non-internal columns
+      delegate_detail_columns(association_name, detail_class)
+      delegate_detail_associations(association_name, detail_class)
+    end
+
+    def delegate_detail_columns(association_name, detail_class)
       (detail_class.column_names - DETAIL_INTERNAL_COLUMNS).each do |col|
         delegate col.to_sym, to: association_name
         define_detail_writer(association_name, :"#{col}=")
       end
+    end
 
-      # For belongs_to associations, also delegate the object reader/writer
-      # (columns like parent_id are already covered above)
+    # Delegate belongs_to object readers/writers from the detail.
+    # Column-level keys (e.g. parent_id) are already covered by delegate_detail_columns.
+    def delegate_detail_associations(association_name, detail_class)
       detail_class.reflect_on_all_associations(:belongs_to).each do |reflection|
         next if reflection.name == model_name.element.to_sym # skip the back-reference
 
