@@ -801,6 +801,8 @@ Rails.application.routes.draw do
         post :delete_token
       end
     end
+
+    resources :departments, only: %i[index]
   end
 
   resources :workflows, only: %i[index edit update], param: :type_id do

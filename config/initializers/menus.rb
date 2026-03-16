@@ -362,6 +362,12 @@ Redmine::MenuManager.map :admin_menu do |menu|
             caption: :label_group_plural,
             parent: :users_and_permissions
 
+  menu.push :organization,
+            { controller: "/admin/departments" },
+            if: ->(_) { User.current.admin? },
+            caption: :label_organization,
+            parent: :users_and_permissions
+
   menu.push :roles,
             { controller: "/roles" },
             if: ->(_) { User.current.admin? },
