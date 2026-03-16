@@ -41,11 +41,13 @@ export default class extends Controller {
     url: String,
     debounce: {type: Number, default: 300},
     mode: {type: String, default: 'legacy'},
+    setNameFirst: {type: String, default: ''},
   };
 
   declare urlValue:string;
   declare debounceValue:number;
   declare modeValue:string;
+  declare setNameFirstValue:string;
 
   private nameInput:HTMLInputElement | null = null;
   private identifierInput:HTMLInputElement | null = null;
@@ -64,7 +66,7 @@ export default class extends Controller {
 
     if (this.urlValue) {
       if (!this.identifierInput.value) {
-        this.identifierInput.placeholder = I18n.t('js.projects.identifier_suggestion.set_name_first');
+        this.identifierInput.placeholder = this.setNameFirstValue;
         this.identifierInput.readOnly = true;
       }
 

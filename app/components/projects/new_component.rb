@@ -47,12 +47,12 @@ module Projects
     def identifier_suggestion_data
       suggestion_mode = Setting::WorkPackageIdentifier.alphanumeric? ? "semantic" : "legacy"
 
-      data = {
+      {
         controller: "projects--identifier-suggestion",
-        "projects--identifier-suggestion-mode-value": suggestion_mode
+        "projects--identifier-suggestion-mode-value": suggestion_mode,
+        "projects--identifier-suggestion-url-value": projects_identifier_suggestion_path,
+        "projects--identifier-suggestion-set-name-first-value": I18n.t("js.projects.identifier_suggestion.set_name_first")
       }
-      data[:"projects--identifier-suggestion-url-value"] = projects_identifier_suggestion_path
-      data
     end
 
     def workspaces_path
