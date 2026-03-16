@@ -29,7 +29,7 @@
 #++
 
 module Groups::Scopes
-  module OrganizationalUnit
+  module OrganizationalUnits
     extend ActiveSupport::Concern
 
     class_methods do

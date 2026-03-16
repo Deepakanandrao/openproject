@@ -116,10 +116,27 @@ module HasPrincipalDetails
     end
 
     def setup_detail_delegation(association_name, detail_class)
-      # Defer schema introspection until first instantiation so that tasks like
-      # db:create can load the model without a database connection being available.
+      # Try to set up delegation eagerly so that writer methods exist
+      # during assign_attributes in new/create. Requires DB + table.
+      if ActiveRecord::Base.connected? && detail_class.table_exists?
+        finalize_detail_delegation!(association_name, detail_class)
+      end
+
+      # Fallback for when eager setup was skipped (db:create, db:migrate).
+      # finalize_detail_delegation! is idempotent via @_detail_delegation_set_up.
       after_initialize do
         self.class.send(:finalize_detail_delegation!, association_name, detail_class)
+      end
+    end
+
+    # Defines a writer method that auto-builds the detail record.
+    # This is necessary because `assign_attributes` runs before
+    # `after_initialize`, so `allow_nil: true` delegation would
+    # silently discard values when the detail hasn't been built yet.
+    def define_detail_writer(association_name, writer)
+      define_method(writer) do |value|
+        record = send(association_name) || send(:"build_#{association_name}")
+        record.send(writer, value)
       end
     end
 
@@ -130,7 +147,8 @@ module HasPrincipalDetails
 
       # Delegate all non-internal columns
       (detail_class.column_names - DETAIL_INTERNAL_COLUMNS).each do |col|
-        delegate col.to_sym, :"#{col}=", to: association_name, allow_nil: true
+        delegate col.to_sym, to: association_name
+        define_detail_writer(association_name, :"#{col}=")
       end
 
       # For belongs_to associations, also delegate the object reader/writer
@@ -138,7 +156,8 @@ module HasPrincipalDetails
       detail_class.reflect_on_all_associations(:belongs_to).each do |reflection|
         next if reflection.name == model_name.element.to_sym # skip the back-reference
 
-        delegate reflection.name, :"#{reflection.name}=", to: association_name, allow_nil: true
+        delegate reflection.name, to: association_name
+        define_detail_writer(association_name, :"#{reflection.name}=")
       end
     end
   end

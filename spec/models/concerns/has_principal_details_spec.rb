@@ -126,6 +126,33 @@ RSpec.describe HasPrincipalDetails do
     end
   end
 
+  describe "attribute assignment during creation" do
+    it "persists detail attributes passed to Group.create" do
+      created = Group.create!(lastname: "Creation Test", organizational_unit: true)
+      expect(created.reload.organizational_unit).to be true
+    end
+
+    it "persists detail attributes passed to Group.new + save" do
+      new_group = Group.new(lastname: "New Test", organizational_unit: true)
+      expect(new_group.organizational_unit).to be true
+
+      new_group.save!
+      expect(new_group.reload.organizational_unit).to be true
+    end
+
+    it "persists belongs_to associations passed to Group.create" do
+      parent = create(:group)
+      created = Group.create!(lastname: "Child Group", parent:)
+
+      expect(created.reload.parent).to eq(parent)
+    end
+
+    it "defaults detail attributes to their column defaults when not specified" do
+      created = Group.create!(lastname: "Default Test")
+      expect(created.reload.organizational_unit).to be false
+    end
+  end
+
   describe "error promotion" do
     it "promotes detail validation errors onto the principal" do
       group.parent_id = 0
