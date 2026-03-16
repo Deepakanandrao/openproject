@@ -40,6 +40,12 @@ Rails.application.routes.draw do
         get :edit_dialog
         put :update_agile_sprint
       end
+
+      resources :stories, controller: :rb_stories, only: [] do
+        member do
+          put :move
+        end
+      end
     end
   end
 
@@ -71,7 +77,7 @@ Rails.application.routes.draw do
 
         resources :stories, controller: :rb_stories, only: [] do
           member do
-            put :move
+            put :move_legacy
             post :reorder
           end
         end
