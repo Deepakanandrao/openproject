@@ -109,8 +109,10 @@ module WorkPackages
         return [FALLBACK_IDENTIFIER] if words.empty?
 
         candidates = words.size == 1 ? single_word_candidates(words.first) : multi_word_candidates(words)
-        candidates = candidates.filter_map { ensure_starts_with_letter(it) }
-        candidates = candidates.select { it.length >= IDENTIFIER_LENGTH[:min] }
+        candidates = candidates.filter_map do |c|
+          stripped = ensure_starts_with_letter(c)
+          stripped if stripped&.length.to_i >= IDENTIFIER_LENGTH[:min]
+        end
         candidates.presence || [FALLBACK_IDENTIFIER]
       end
 
@@ -122,7 +124,7 @@ module WorkPackages
         raw_words = name.to_s.scan(/[[:alpha:][:digit:]]+/)
         raw_words.filter_map do |word|
           t = I18n.with_locale(:en) { I18n.transliterate(word) }
-          clean = t.scan(/[A-Za-z0-9]/).join
+          clean = t.gsub(/[^A-Za-z0-9]/, "")
           clean.presence
         end
       end
@@ -143,36 +145,36 @@ module WorkPackages
       # Starts with initials truncated to IDENTIFIER_LENGTH[:base], progressively
       # includes more initials, then expands words beyond single chars.
       def multi_word_candidates(words)
-        clean_words = words.map { |w| w.upcase.chars }
-        candidates = initial_candidates(clean_words)
+        upcased_words = words.map(&:upcase)
+        candidates = initial_candidates(upcased_words)
 
-        expand_words_into(candidates, clean_words) if candidates.last.length < IDENTIFIER_LENGTH[:max]
+        append_expansion_candidates!(candidates, upcased_words) if candidates.last.length < IDENTIFIER_LENGTH[:max]
         candidates
       end
 
-      def initial_candidates(clean_words)
-        initials = clean_words.map(&:first).join[0, IDENTIFIER_LENGTH[:max]]
+      def initial_candidates(upcased_words)
+        initials = upcased_words.pluck(0).join[0, IDENTIFIER_LENGTH[:max]]
         start = [IDENTIFIER_LENGTH[:base], initials.length].min
         (start..initials.length).map { |len| initials[0, len] }
       end
 
       # Progressively pulls more characters from each word left-to-right.
-      def expand_words_into(candidates, clean_words)
-        chars_per_word = clean_words.map { 1 }
+      def append_expansion_candidates!(candidates, upcased_words)
+        chars_per_word = upcased_words.map { 1 }
 
         loop do
-          expandable = clean_words.index.with_index { |cw, i| chars_per_word[i] < cw.length }
+          expandable = upcased_words.each_index.find { |i| chars_per_word[i] < upcased_words[i].length }
           break unless expandable
 
           chars_per_word[expandable] += 1
-          candidate = build_candidate(clean_words, chars_per_word)
+          candidate = build_candidate(upcased_words, chars_per_word)
           candidates << candidate unless candidates.include?(candidate)
           break if candidate.length >= IDENTIFIER_LENGTH[:max]
         end
       end
 
-      def build_candidate(clean_words, chars_per_word)
-        parts = clean_words.each_with_index.map { |cw, i| cw.first(chars_per_word[i]).join }
+      def build_candidate(upcased_words, chars_per_word)
+        parts = upcased_words.each_with_index.map { |w, i| w[0, chars_per_word[i]] }
         parts.join[0, IDENTIFIER_LENGTH[:max]]
       end
 
@@ -212,8 +214,8 @@ module WorkPackages
         end
       end
 
-      def combined_identifiers(*sets)
-        sets.reduce(Set.new, :merge)
+      def combined_identifiers(set_a, set_b)
+        set_a | set_b
       end
     end
   end
