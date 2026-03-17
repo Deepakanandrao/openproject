@@ -30,9 +30,15 @@
 
 require "spec_helper"
 require_relative "../../support/pages/backlogs"
+require_relative "../../../../boards/spec/features/support/board_page"
 
-RSpec.describe "Start and finish sprints", :js, with_flag: { scrum_projects: true } do
-  let(:project) { create(:project) }
+RSpec.describe "Start and finish sprints",
+               :js,
+               with_ee: %i[board_view],
+               with_flag: { scrum_projects: true } do
+  let(:project) do
+    create(:project, enabled_module_names: %i[backlogs work_package_tracking board_view])
+  end
   let(:permissions) do
     %i[view_sprints add_work_packages view_work_packages create_sprints manage_sprint_items
        start_complete_sprint show_board_views manage_board_views save_queries
@@ -42,6 +48,7 @@ RSpec.describe "Start and finish sprints", :js, with_flag: { scrum_projects: tru
     create(:user, member_with_permissions: { project => permissions })
   end
   let(:backlogs_page) { Pages::Backlogs.new(project) }
+  let(:task_statuses) { Type.find(Task.type).statuses }
   let(:story_type) { create(:type_feature) }
   let(:task_type) do
     type = create(:type_task)
@@ -90,9 +97,40 @@ RSpec.describe "Start and finish sprints", :js, with_flag: { scrum_projects: tru
 
     expect_and_dismiss_flash type: :success, message: "The sprint was started."
 
+    sprint = first_sprint.reload
+    board = sprint.task_board
+    board_page = Pages::Board.new(board)
+
     expect(page).to have_current_path(%r{/projects/#{project.identifier}/boards/\d+})
-    expect(first_sprint.reload.task_board).to be_present
-    expect(first_sprint.reload).to be_active
+    expect(sprint).to be_active
+    expect(board).to be_present
+
+    board_page.expect_path
+    task_statuses.each do |status|
+      board_page.expect_list(status.name)
+    end
+
+    board_page.board(reload: true) do |persisted_board|
+      expect(persisted_board.linked).to eq(sprint)
+      expect(persisted_board.options[:type]).to eq("action")
+      expect(persisted_board.options[:attribute]).to eq("status")
+      expect(persisted_board.options[:filters]).to eq(
+        [{ sprint_id: { operator: "=", values: [sprint.id.to_s] } }]
+      )
+
+      queries = persisted_board.contained_queries.to_a
+      expect(queries.count).to eq(task_statuses.count)
+
+      query_status_values = queries.map do |query|
+        status_filter = query.filters.find { |filter| filter.name == :status_id }
+
+        expect(status_filter).not_to be_nil
+
+        status_filter.values
+      end
+
+      expect(query_status_values).to match_array(task_statuses.map { |status| [status.id.to_s] })
+    end
   end
 
   context "when the sprint is active" do
