@@ -40,6 +40,17 @@ module Groups
         autocomplete: "off"
       )
 
+      f.select_list(
+        name: :parent_id,
+        label: Group.human_attribute_name(:parent),
+        include_blank: I18n.t(:label_no_parent_group),
+        input_width: :medium
+      ) do |list|
+        Group.where.not(id: model.self_and_descendants.select(:id)).each do |group|
+          list.option(label: group.name, value: group.id, selected: model.parent_id == group.id)
+        end
+      end
+
       render_custom_fields(form: f)
 
       f.submit(
