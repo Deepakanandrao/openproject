@@ -418,6 +418,9 @@ en:
       role_selector:
         label: "Role: %{role}"
         no_role: "Select role"
+      blankslate:
+        title: "No status transitions configured"
+        description: "Add statuses to start configuring workflows for this role"
 
   authentication:
     login_and_registration: "Login and registration"

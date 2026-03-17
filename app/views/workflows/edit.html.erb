@@ -55,6 +55,8 @@ See COPYRIGHT and LICENSE files for more details.
             end
           %>
         <% end %>
-      <% end %>
+    <% else %>
+      <%= render Workflows::BlankslateComponent.new(role: @role, type: @type, tab: params[:tab]) %>
+    <% end %>
   <% end %>
 <% end %>

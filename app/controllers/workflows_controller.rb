@@ -154,7 +154,11 @@ class WorkflowsController < ApplicationController
   end
 
   def role_type_statuses
-    @type.statuses(role: @role)
+    @type.statuses(role: @role, tab: current_tab)
+  end
+
+  def current_tab
+    params[:tab] || "always"
   end
 
   def workflows_for_form
