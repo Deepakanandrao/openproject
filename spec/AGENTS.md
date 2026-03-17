@@ -14,7 +14,7 @@
 bundle exec rspec spec/models/user_spec.rb              # Single file
 bundle exec rspec spec/models/user_spec.rb:42           # Single line
 bundle exec rspec spec/features                         # Directory
-bundle exec rake parallel:spec                          # Parallel execution
+RAILS_ENV=test ./bin/rails parallel:spec                # Parallel execution
 ```
 
 ### Docker

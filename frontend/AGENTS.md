@@ -2,15 +2,15 @@
 
 ## Directory Structure
 
-- `frontend/src/` - Frontend code
-  - `frontend/src/app/` - Legacy Angular modules/components
-  - `frontend/src/stimulus/` - Stimulus controllers
-  - `frontend/src/turbo/` - Turbo integration
+- `./src/` - Frontend code
+  - `./src/app/` - Legacy Angular modules/components
+  - `./src/stimulus/` - Stimulus controllers
+  - `./src/turbo/` - Turbo integration
 
 ## Configuration Files
 
-- `frontend/eslint.config.mjs` - JavaScript/TypeScript linting
-- `package.json` / `frontend/package.json` - Node.js dependencies
+- `eslint.config.mjs` - JavaScript/TypeScript linting
+- `../package.json` / `./frontend/package.json` - Node.js dependencies
 
 ## Version Requirements
 
@@ -19,7 +19,7 @@
 ## Setup
 
 ```bash
-cd frontend && npm ci && cd ..   # Install Node packages
+npm ci && cd ..   # Install Node packages
 ```
 
 ## Code Style
@@ -35,12 +35,12 @@ cd frontend && npm ci && cd ..   # Install Node packages
 
 ```bash
 # JavaScript/TypeScript
-cd frontend && npx eslint src/ && cd ..
+npx eslint src/ && cd ..
 ```
 
 ## Testing
 
 ```bash
 # Frontend (Jasmine/Karma)
-cd frontend && npm test && cd ..
+npm test && cd ..
 ```

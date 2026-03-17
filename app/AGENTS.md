@@ -29,14 +29,3 @@
 ## Translations
 
 - UI strings must use translation keys (never hard-coded)
-
-## Linting
-
-```bash
-# Ruby
-bundle exec rubocop                              # Check all files
-bin/dirty-rubocop --uncommitted                  # Check only uncommitted changes
-
-# ERB Templates
-erb_lint {files}
-```

@@ -38,15 +38,15 @@ See [`docker/dev/AGENTS.md`](docker/dev/AGENTS.md) for full Docker setup and com
 
 ### Key Directories
 
-- `app/` — Rails application code (see [`app/AGENTS.md`](app/AGENTS.md))
-- `config/` — Rails configuration, routes, locales (see [`config/AGENTS.md`](config/AGENTS.md))
-- `db/` — Database migrations and seeds (see [`db/AGENTS.md`](db/AGENTS.md))
-- `docker/dev/` — Docker development environment (see [`docker/dev/AGENTS.md`](docker/dev/AGENTS.md))
-- `frontend/` — TypeScript/Angular/Stimulus frontend (see [`frontend/AGENTS.md`](frontend/AGENTS.md))
+- `app/` — Rails application code
+- `config/` — Rails configuration, routes, locales
+- `db/` — Database migrations and seeds
+- `docker/dev/` — Docker development environment
+- `frontend/` — TypeScript/Angular/Stimulus frontend
 - `lib/` — Ruby libraries and extensions
 - `lookbook/` — ViewComponent previews (<https://qa.openproject-edge.com/lookbook/>)
 - `modules/` — OpenProject plugin modules
-- `spec/` — RSpec test suite (see [`spec/AGENTS.md`](spec/AGENTS.md))
+- `spec/` — RSpec test suite
 
 ### Configuration Files
 
@@ -61,8 +61,18 @@ See [`docker/dev/AGENTS.md`](docker/dev/AGENTS.md) for full Docker setup and com
 ### Linting (Run Before Committing)
 
 ```bash
+# Ruby
+bundle exec rubocop                              # Check all files
+bin/dirty-rubocop --uncommitted                  # Check only uncommitted changes
+
+# JavaScript/TypeScript
+cd frontend && npx eslint src/ && cd ..
+
+# ERB Templates
+erb_lint {files}
+
 # Install Git Hooks (recommended)
-bundle exec lefthook install   # Install Git hooks (run once after cloning)
+bundle exec lefthook install
 ```
 
 ## Commit Messages
