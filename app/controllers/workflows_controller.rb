@@ -102,7 +102,13 @@ class WorkflowsController < ApplicationController
 
   def status_dialog
     all_statuses = Status.order(:position)
-    current_statuses = @type && @role ? role_type_statuses : Status.none
+    current_statuses = if params[:status_ids].present?
+                         Status.where(id: params[:status_ids].map(&:to_i)).order(:position)
+                       elsif @type && @role
+                         role_type_statuses
+                       else
+                         Status.none
+                       end
 
     respond_with_dialog Workflows::StatusDialogComponent.new(
       all_statuses:,

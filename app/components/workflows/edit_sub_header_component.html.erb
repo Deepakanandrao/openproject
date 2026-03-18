@@ -41,7 +41,8 @@ See COPYRIGHT and LICENSE files for more details.
               label: role.name,
               tag: :a,
               href: helpers.edit_workflow_path(@type, role_id: role.id, tab: @tab || "always"),
-              active: role == @current_role
+              active: role == @current_role,
+              data: { turbo_frame: "_top" }
             )
           end
         end
@@ -53,7 +54,7 @@ See COPYRIGHT and LICENSE files for more details.
       scheme: :secondary,
       leading_icon: :plus,
       label: t("admin.workflows.status_button"),
-      href: helpers.status_dialog_workflows_path(role_id: @current_role&.id, type_id: @type&.id, tab: @tab),
+      href: helpers.status_dialog_workflows_path(role_id: @current_role&.id, type_id: @type&.id, tab: @tab, status_ids: @status_ids.presence),
       data: { controller: "async-dialog" }
     ) do
       t("admin.workflows.status_button")

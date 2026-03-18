@@ -32,10 +32,10 @@ See COPYRIGHT and LICENSE files for more details.
   <%= render Workflows::EditPageHeaderComponent.new(@type, tabs: workflow_tabs(@type)) %>
 <% end %>
 
-<%= render Workflows::EditSubHeaderComponent.new(tab: params[:tab], current_role: @role, type: @type, available_roles: @roles) %>
-
 <% if @type && @role %>
   <%= turbo_frame_tag "workflow-table" do %>
+    <%= render Workflows::EditSubHeaderComponent.new(tab: params[:tab], current_role: @role, type: @type, available_roles: @roles, status_ids: @statuses.pluck(:id)) %>
+
     <% if @statuses.any? %>
       <%= form_tag(
             { action: :update },
