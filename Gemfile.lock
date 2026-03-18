@@ -359,8 +359,8 @@ GEM
     aws-sdk-kms (1.122.0)
       aws-sdk-core (~> 3, >= 3.241.4)
       aws-sigv4 (~> 1.5)
-    aws-sdk-s3 (1.214.0)
-      aws-sdk-core (~> 3, >= 3.241.4)
+    aws-sdk-s3 (1.216.0)
+      aws-sdk-core (~> 3, >= 3.243.0)
       aws-sdk-kms (~> 1)
       aws-sigv4 (~> 1.5)
     aws-sdk-sns (1.112.0)
@@ -1827,7 +1827,7 @@ CHECKSUMS
   aws-partitions (1.1227.0) sha256=122dd20fe108cb38d38cccbc1f2592408bc1b30ca6e0d05797a7af2501567e29
   aws-sdk-core (3.243.0) sha256=a014eef785124b71d28325783fa422a1512f8421ec9b6e3931c8b0ca3fbb0f1c
   aws-sdk-kms (1.122.0) sha256=47ce3f51b26bd7d76f1270cfdfca17b40073ecd3219c8c9400788712abfb4eb8
-  aws-sdk-s3 (1.214.0) sha256=923135327634c873ecedbd8f396ea9939874d524b14fa65eced766660c8dd62e
+  aws-sdk-s3 (1.216.0) sha256=a3bf6191e6f7a3dfb04b7cc73409f059394be559e4aff92d2a764341e4d90af4
   aws-sdk-sns (1.112.0) sha256=aff1b1b5bbcb4229599221c558a41790c1cd1a1fed47ac3d27d27512ad24b254
   aws-sigv4 (1.12.1) sha256=6973ff95cb0fd0dc58ba26e90e9510a2219525d07620c8babeb70ef831826c00
   axe-core-api (4.11.1) sha256=a6460506449a692030620a0574fee7afa6cd38cfbbf6620d20bf4d53d33a80cc
