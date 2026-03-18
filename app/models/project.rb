@@ -215,7 +215,7 @@ class Project < ApplicationRecord
               p.identifier_changed? && p.identifier.present? && !Setting::WorkPackageIdentifier.alphanumeric?
             }
 
-  # When semantic work package IDs with alphanumeric mode are active, identifiers must follow JIRA-style key rules.
+  # When semantic work package IDs with alphanumeric mode are active, identifiers must follow semantic style key rules.
   validates :identifier,
             format: { with: /\A[A-Z]/, message: :must_start_with_letter },
             if: ->(p) { p.identifier_changed? && p.identifier.present? && Setting::WorkPackageIdentifier.alphanumeric? }
