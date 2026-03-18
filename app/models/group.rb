@@ -34,7 +34,7 @@ class Group < Principal
 
   attr_accessor :hierarchy_depth
 
-  has_principal_details do
+  has_details_table(foreign_key: :principal_id) do
     belongs_to :parent, class_name: "Group", optional: true
 
     validates :parent, presence: true, if: -> { parent_id.present? }

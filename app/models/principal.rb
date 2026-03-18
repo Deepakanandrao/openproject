@@ -30,7 +30,7 @@
 
 class Principal < ApplicationRecord
   include ::Scopes::Scoped
-  include HasPrincipalDetails
+  include HasDetailsTable
 
   default_scope -> { where.not(status: Principal.statuses[:deleted]) }
 

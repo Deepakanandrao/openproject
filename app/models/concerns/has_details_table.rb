@@ -28,15 +28,11 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module HasPrincipalDetails
+module HasDetailsTable
   extend ActiveSupport::Concern
 
-  # Columns on the detail table that are managed automatically
-  # and should not be delegated to the principal.
-  DETAIL_INTERNAL_COLUMNS = %w[id principal_id created_at updated_at].freeze
-
   class_methods do
-    # Declares a detail table for this principal subclass.
+    # Declares a detail table for this model.
     # The detail model class is generated automatically — no separate file needed.
     #
     # The block is evaluated in the context of the generated detail class,
@@ -45,41 +41,37 @@ module HasPrincipalDetails
     # The back-reference belongs_to, uniqueness constraint, and attribute
     # delegation are set up automatically.
     #
+    # +foreign_key+ defaults to the Rails convention (<model_name>_id).
+    # Override for STI or other cases where the FK doesn't match.
+    #
     # Example:
-    #   has_principal_details do
+    #   has_details_table do
     #     belongs_to :parent, class_name: "Group", optional: true
     #     validates :parent, presence: true, if: -> { parent_id.present? }
     #   end
     #
-    def has_principal_details(&) # rubocop:disable Naming/PredicatePrefix
-      detail_class = build_detail_class(&)
+    def has_details_table(foreign_key: "#{model_name.element}_id", &) # rubocop:disable Naming/PredicatePrefix
+      foreign_key = foreign_key.to_s
+
+      detail_class = build_detail_class(foreign_key, &)
       association_name = detail_class.name.underscore.to_sym
 
-      setup_detail_association(association_name, detail_class)
+      setup_detail_association(association_name, detail_class, foreign_key)
       setup_detail_aliases(association_name)
-      setup_detail_delegation(detail_class)
+      setup_detail_delegation(detail_class, foreign_key)
       setup_detail_dup
     end
 
     private
 
-    # AR's dup doesn't copy associations, so the detail would be lost.
-    # Duplicate it so the copy behaves like a normal AR dup with all attributes.
-    def setup_detail_dup
-      define_method(:dup) do
-        super().tap do |copy|
-          copy.detail = detail.dup if detail.present?
-        end
-      end
-    end
-
-    def build_detail_class(&block)
+    def build_detail_class(foreign_key, &block)
       owner_name = model_name.element.to_sym # e.g. :group
+      fk = foreign_key
 
       klass = Class.new(ApplicationRecord) do
         belongs_to owner_name,
                    inverse_of: :"#{owner_name}_detail",
-                   foreign_key: :principal_id
+                   foreign_key: fk
 
         validates owner_name, presence: true, uniqueness: true
 
@@ -90,8 +82,8 @@ module HasPrincipalDetails
       Object.const_set("#{name}Detail", klass)
     end
 
-    def setup_detail_association(association_name, detail_class) # rubocop:disable Metrics/AbcSize
-      has_one association_name, foreign_key: :principal_id,
+    def setup_detail_association(association_name, detail_class, foreign_key) # rubocop:disable Metrics/AbcSize
+      has_one association_name, foreign_key:,
                                 dependent: :destroy,
                                 inverse_of: model_name.element.to_sym,
                                 class_name: detail_class.name,
@@ -104,7 +96,7 @@ module HasPrincipalDetails
         joins(association_name).where(detail_class.table_name => conditions)
       }
 
-      # Validate the detail record and promote its errors onto the principal
+      # Validate the detail record and promote its errors onto the owner
       # so they appear as direct attributes (e.g. group.errors[:parent]).
       validate do
         next if detail.nil? || detail.valid?
@@ -126,17 +118,28 @@ module HasPrincipalDetails
       alias_method :build_detail, :"build_#{association_name}"
     end
 
-    def setup_detail_delegation(detail_class)
+    def setup_detail_delegation(detail_class, foreign_key)
       # Try to set up delegation eagerly so that writer methods exist
       # during assign_attributes in new/create. Requires DB + table.
       if ActiveRecord::Base.connected? && detail_class.table_exists?
-        finalize_detail_delegation!(detail_class)
+        finalize_detail_delegation!(detail_class, foreign_key)
       end
 
       # Fallback for when eager setup was skipped (db:create, db:migrate).
       # finalize_detail_delegation! is idempotent via @_detail_delegation_set_up.
+      fk = foreign_key
       after_initialize do
-        self.class.send(:finalize_detail_delegation!, detail_class)
+        self.class.send(:finalize_detail_delegation!, detail_class, fk)
+      end
+    end
+
+    # AR's dup doesn't copy associations, so the detail would be lost.
+    # Duplicate it so the copy behaves like a normal AR dup with all attributes.
+    def setup_detail_dup
+      define_method(:dup) do
+        super().tap do |copy|
+          copy.detail = detail.dup if detail.present?
+        end
       end
     end
 
@@ -151,17 +154,19 @@ module HasPrincipalDetails
       end
     end
 
-    def finalize_detail_delegation!(detail_class)
+    def finalize_detail_delegation!(detail_class, foreign_key)
       return if @_detail_delegation_set_up
 
       @_detail_delegation_set_up = true
 
-      delegate_detail_columns(detail_class)
+      delegate_detail_columns(detail_class, foreign_key)
       delegate_detail_associations(detail_class)
     end
 
-    def delegate_detail_columns(detail_class)
-      (detail_class.column_names - DETAIL_INTERNAL_COLUMNS).each do |col|
+    def delegate_detail_columns(detail_class, foreign_key)
+      internal_columns = %w[id created_at updated_at] + [foreign_key]
+
+      (detail_class.column_names - internal_columns).each do |col|
         delegate col.to_sym, to: :detail
         define_detail_writer(:"#{col}=")
       end
