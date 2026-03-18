@@ -4018,6 +4018,7 @@ en:
   label_start_to_start: "start to start"
   label_statistics: "Statistics"
   label_status: "Status"
+  label_status_plural: "Statuses"
   label_storage_free_space: "Remaining disk space"
   label_storage_used_space: "Used disk space"
   label_storage_group: "Storage filesystem %{identifier}"
