@@ -37,12 +37,14 @@ module OpenProject
 
           attr_reader :model, :attribute, :writable, :truncated
 
-          def initialize(model:, attribute:, writable:, truncated:, **system_arguments)
+          def initialize(model:, attribute:, writable:, truncated:, has_comment: false, show_comment: false, **system_arguments)
             super()
             @model = model
             @attribute = attribute
             @writable = writable
             @truncated = truncated
+            @has_comment = has_comment
+            @show_comment = show_comment
             @system_arguments = system_arguments
           end
 
@@ -54,11 +56,7 @@ module OpenProject
             elsif value.is_a?(Date) || value.is_a?(Time)
               helpers.format_date(value)
             elsif value.present? && value != [nil]
-              if custom_field?
-                helpers.format_value(value, custom_field)
-              else
-                value.to_s
-              end
+              format_present_value(value)
             else
               t("placeholders.default")
             end
@@ -78,7 +76,7 @@ module OpenProject
 
           def base_arguments
             {
-              classes: "op-inplace-edit--display-field #{'op-inplace-edit--display-field_editable' if writable?}",
+              classes: display_field_classes,
               id: @system_arguments[:id],
               role: "button",
               tabindex: 0
@@ -86,7 +84,7 @@ module OpenProject
           end
 
           def dialog_field_arguments
-            return {} unless writable?
+            return {} unless writable? || @has_comment
 
             {
               data: {
@@ -121,6 +119,10 @@ module OpenProject
             # no-op — subclasses may override to render a calculation error row
           end
 
+          def show_comment?
+            @show_comment
+          end
+
           def input_specific_call
             render(Primer::BaseComponent.new(tag: :div, **display_field_arguments)) do
               render_display_value
@@ -142,6 +144,24 @@ module OpenProject
           end
 
           private
+
+          def display_field_classes
+            # The later check catches non-editable users which should still see the comment in a dialog
+            clickable = writable? || open_in_dialog?
+            "op-inplace-edit--display-field#{' op-inplace-edit--display-field_clickable' if clickable}"
+          end
+
+          def format_present_value(value)
+            if custom_field?
+              helpers.format_value(value, custom_field)
+            else
+              value.to_s
+            end
+          end
+
+          def comment_text
+            model.custom_comment_for(custom_field)&.text.presence || t("placeholders.default")
+          end
 
           def edit_url
             inplace_edit_field_edit_path(
@@ -171,7 +191,7 @@ module OpenProject
           end
 
           def dialog_controller_actions
-            return "" unless writable?
+            return "" unless writable? || @has_comment
 
             "click->inplace-edit#openDialog " \
               "keydown.enter->inplace-edit#openDialog " \

@@ -8,5 +8,14 @@
       border-color: var(--borderColor-default)
       box-shadow: var(--shadow-inset)
 
-    &:not(&_editable)
+    &:not(&_clickable)
       cursor: not-allowed
+      &:hover, &:focus
+        background-color: var(--bgColor-muted)
+
+  &--dialog
+    .op-inplace-edit--display-field
+      &:not(&_clickable)
+          &:hover, &:focus
+            border-color: transparent
+            box-shadow: none

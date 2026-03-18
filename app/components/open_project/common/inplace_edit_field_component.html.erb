@@ -9,7 +9,7 @@
         inplace_edit_system_arguments: @system_arguments.to_json
       }
     ) do %>
-  <% if display_field_component.present? && !enforce_edit_mode %>
+  <% if display_field_component.present? && (!enforce_edit_mode || !writable?) %>
       <%= render display_field_component %>
   <% else %>
     <%= primer_form_with(**form_options) do |form|

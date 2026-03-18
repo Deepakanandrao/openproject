@@ -30,6 +30,19 @@
       )
     end
 
+    if show_comment?
+      flex.with_row(w: :full, mt: 2) do
+        flex_layout do |inner_flex|
+          inner_flex.with_row do
+            render(Primer::Beta::Text.new(tag: :label, font_weight: :bold)) { t("attributes.comment") }
+          end
+          inner_flex.with_row(mt: 1) do
+            render(Primer::Beta::Text.new) { comment_text }
+          end
+        end
+      end
+    end
+
     if (error_html = render_calculation_error).present?
       flex.with_row(w: :full) { error_html }
     end

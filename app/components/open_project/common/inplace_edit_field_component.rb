@@ -85,8 +85,19 @@ module OpenProject
         return nil if display_field_class.nil?
 
         @display_field_component ||= begin
+          has_comment = custom_field? && custom_field&.has_comment?
           additional_args = open_in_dialog? ? dialog_display_arguments : {}
-          display_field_class.new(model:, attribute:, writable: writable?, truncated:, **@system_arguments.merge(additional_args))
+          display_field_class.new(
+            model:,
+            attribute:,
+            writable: writable?,
+            truncated:,
+            has_comment:,
+            # Show comment as read-only text when a non-writable user opens the dialog.
+            # enforce_edit_mode identifies the dialog context.
+            show_comment: enforce_edit_mode && !writable? && has_comment,
+            **@system_arguments.merge(additional_args)
+          )
         end
       end
 
@@ -139,7 +150,10 @@ module OpenProject
           model: model.class.name,
           id: model.id,
           attribute:,
-          system_arguments_json: @system_arguments.except(:id).merge(page_component_id: @system_arguments[:id]).to_json
+          system_arguments_json: @system_arguments
+            .except(:id)
+            .merge(page_component_id: @system_arguments[:id], writable: writable?)
+            .to_json
         )
       end
 
@@ -149,11 +163,19 @@ module OpenProject
 
       private
 
-      def dialog_display_arguments
+      def dialog_trigger_arguments
         {
           dialog_controller_name: "inplace-edit",
           dialog_url: dialog_edit_url
         }
+      end
+
+      # When inside a dialog and the field is not writable, strip dialog trigger args
+      # to prevent opening a nested dialog from the display component.
+      def dialog_display_arguments
+        return {} if enforce_edit_mode && !writable?
+
+        dialog_trigger_arguments
       end
 
       def writable?

@@ -73,7 +73,7 @@ RSpec.describe OpenProject::Common::InplaceEditFieldComponent, type: :component 
       render_inline(described_class.new(model: project, attribute: :description, update_registry:))
 
       expect(rendered_content)
-        .to have_css(".op-inplace-edit--display-field.op-inplace-edit--display-field_editable")
+        .to have_css(".op-inplace-edit--display-field.op-inplace-edit--display-field_clickable")
     end
 
     it "renders edit field when enforce_edit_mode is true" do
@@ -100,7 +100,7 @@ RSpec.describe OpenProject::Common::InplaceEditFieldComponent, type: :component 
       expect(rendered_content)
         .not_to include("click-&gt;inplace-edit#request")
       expect(rendered_content)
-        .to have_no_css(".op-inplace-edit--display-field.op-inplace-edit--display-field_editable")
+        .to have_no_css(".op-inplace-edit--display-field.op-inplace-edit--display-field_clickable")
     end
   end
 

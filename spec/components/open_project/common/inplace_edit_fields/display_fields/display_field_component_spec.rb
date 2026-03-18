@@ -68,14 +68,14 @@ RSpec.describe OpenProject::Common::InplaceEditFields::DisplayFields::DisplayFie
     it "marks the display field as editable when writable" do
       render_inline(described_class.new(model: project, attribute: :name, writable: true, truncated: false))
 
-      expect(rendered_content).to have_css(".op-inplace-edit--display-field_editable")
+      expect(rendered_content).to have_css(".op-inplace-edit--display-field_clickable")
       expect(rendered_content).to include("click-&gt;inplace-edit#request")
     end
 
     it "does not mark the display field as editable when not writable" do
       render_inline(described_class.new(model: project, attribute: :name, writable: false, truncated: false))
 
-      expect(rendered_content).to have_no_css(".op-inplace-edit--display-field_editable")
+      expect(rendered_content).to have_no_css(".op-inplace-edit--display-field_clickable")
       expect(rendered_content).not_to include("click-&gt;inplace-edit#request")
     end
   end

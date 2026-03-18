@@ -45,7 +45,7 @@ The component resolves the edit field via the `FieldRegistry` and optionally a d
 |---|---|---|
 | `model` | — | The ActiveRecord model instance |
 | `attribute` | — | The attribute name as a symbol |
-| `enforce_edit_mode` | `false` | Always render in edit mode, skip display component |
+| `enforce_edit_mode` | `false` | Render in edit mode when writable. Non-writable users always see the display component, even with `enforce_edit_mode: true`. Used by the dialog to skip the display→edit click. |
 | `open_in_dialog` | `false` | Force edit form to open in a dialog |
 | `show_action_buttons` | `true` | Show save/cancel buttons inside the field component |
 | `truncated` | `false` | Pass truncation hint to the display component |
@@ -62,7 +62,7 @@ This allows individual field components to declare that they always require a di
 **Simplified HTML of the `InplaceEditFieldComponent`:**
 ```html
 &lt;%= component_wrapper(tag: :div, class: "op-inplace-edit") do
-  if display_field_component.present? && !enforce_edit_mode
+  if display_field_component.present? && (!enforce_edit_mode || !writable?)
     render display_field_component
   else
     primer_form_with(
@@ -308,9 +308,12 @@ end
 
 When a field is configured to open in dialog mode, the display component renders a trigger button instead of a direct click target. Clicking the button fetches and opens the `InplaceEditFieldDialogComponent` via a lazy-loaded Turbo request.
 
-The dialog wraps an `InplaceEditFieldComponent` in `enforce_edit_mode: true` and renders save/cancel buttons in its footer. The edit form inside the dialog is linked to the footer buttons via a shared `form_id`.
+The dialog wraps an `InplaceEditFieldComponent` in `enforce_edit_mode: true`. The body and footer buttons differ based on writability:
 
-This is used automatically for custom fields that have comments enabled, ensuring the comment textarea is presented together with the value in a dialog rather than inline.
+- **Writable user**: the edit form is shown with Save and Cancel buttons.
+- **Non-writable user**: the display component is shown (read-only value, and comment as plain text if `has_comment?`) with only a Close button.
+
+The `writable` flag is computed once when building the dialog URL and embedded in `system_arguments_json`, so the dialog component does not need to re-query the registry.
 
 ```
 Display component (with dialog trigger)
@@ -318,10 +321,12 @@ Display component (with dialog trigger)
                └─ InplaceEditFieldDialogComponent
                     ├─ Primer::Alpha::Dialog
                     │    ├─ body: InplaceEditFieldComponent (enforce_edit_mode: true)
-                    │    │         └─ EditFieldComponent
-                    │    │              ├─ value field
-                    │    │              └─ comment textarea (if has_comment?)
-                    │    └─ footer: Save / Cancel buttons
+                    │    │         ├─ [writable]     EditFieldComponent
+                    │    │         │                   ├─ value field
+                    │    │         │                   └─ comment textarea (if has_comment?)
+                    │    │         └─ [non-writable] DisplayFieldComponent
+                    │    │                             └─ comment as text (if has_comment?)
+                    │    └─ footer: [writable] Save / Cancel — [non-writable] Close
 ```
 
 **`page_component_id` convention:**

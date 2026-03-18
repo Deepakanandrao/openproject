@@ -41,7 +41,7 @@ RSpec.describe OpenProject::Common::InplaceEditFields::DisplayFields::Calculated
     )
 
     expect(rendered_content).not_to include("click->inplace-edit#request")
-    expect(rendered_content).to have_no_css(".op-inplace-edit--display-field_editable")
+    expect(rendered_content).to have_no_css(".op-inplace-edit--display-field_clickable")
   end
 
   it "renders the not-editable tooltip" do

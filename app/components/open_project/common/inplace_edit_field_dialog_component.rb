@@ -43,6 +43,10 @@ module OpenProject
 
       private
 
+      def writable?
+        @system_arguments[:writable] == true
+      end
+
       def dialog_title
         @system_arguments[:label] || @model.class.human_attribute_name(@attribute)
       end

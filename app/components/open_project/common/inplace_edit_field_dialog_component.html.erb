@@ -2,7 +2,7 @@
   render(
     Primer::Alpha::Dialog.new(
       title: dialog_title,
-      classes: "Overlay--size-large-portrait",
+      classes: "Overlay--size-large-portrait op-inplace-edit--dialog",
       size: :large,
       id: dialog_id
     )
@@ -17,18 +17,20 @@
         footer_collection.with_component(
           Primer::Beta::Button.new(data: { "close-dialog-id": dialog_id })
         ) do
-          t("button_cancel")
+          writable? ? t("button_cancel") : t("button_close")
         end
-        footer_collection.with_component(
-          Primer::Beta::Button.new(scheme: :primary,
-                                   type: :submit,
-                                   form: form_id,
-                                   data: {
-                                     test_selector: "save-inplace-edit-field-button",
-                                     turbo: true
-                                   })
-        ) do
-          t("button_save")
+        if writable?
+          footer_collection.with_component(
+            Primer::Beta::Button.new(scheme: :primary,
+                                     type: :submit,
+                                     form: form_id,
+                                     data: {
+                                       test_selector: "save-inplace-edit-field-button",
+                                       turbo: true
+                                     })
+          ) do
+            t("button_save")
+          end
         end
       end
     end

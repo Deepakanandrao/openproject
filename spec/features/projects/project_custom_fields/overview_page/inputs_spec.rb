@@ -81,7 +81,8 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
             expect(page).to value_expectation
           end
 
-          expect(page).to have_field("Comment", with: "baz", readonly: true)
+          expect(page).to have_text("Comment")
+          expect(page).to have_text("baz")
         end
       end
     end
