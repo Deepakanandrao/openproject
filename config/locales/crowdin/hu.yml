@@ -107,9 +107,8 @@ hu:
         trial: "Trial"
     jemalloc_allocator: Jemalloc memory allocator
     journal_aggregation:
-      explanation:
-        text: "A felhasználó egyes műveletei (pl. egy munkacsomag kétszeri frissítése) egyetlen műveletté egyesülnek, ha korkülönbségük kisebb, mint a megadott időtartam. Ezek egyetlen műveletként jelennek meg az alkalmazásban. Ez ugyanannyi idővel késlelteti az értesítéseket, csökkenti az elküldött emailek számát, valamint befolyásolja a %{webhook_link} késleltetését is.\n"
-        link: "webhook"
+      caption: >
+        Individual actions of a user (e.g. updating a work package twice) are aggregated into a single action if their age difference is less than the specified timespan. They will be displayed as a single action within the application. This will also delay notifications by the same amount of time reducing the number of emails being sent and will also affect the [webhook](webhook_link) delay.
     import:
       title: "Import"
     jira:
