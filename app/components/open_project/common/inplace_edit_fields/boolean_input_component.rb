@@ -33,8 +33,12 @@ module OpenProject
     module InplaceEditFields
       class BooleanInputComponent < BaseFieldComponent
         def call
+          @system_arguments[:data] = merge_data(
+            @system_arguments,
+            **additional_arguments
+          )
+
           form.check_box name: attribute,
-                         **additional_arguments,
                          **@system_arguments
 
           comment_field_if_enabled(form)
@@ -55,8 +59,11 @@ module OpenProject
           if show_action_buttons
             {
               data: { controller: "inplace-edit",
-                      action: "click->inplace-edit#submitForm" }
+                      action: "click->inplace-edit#submitForm keydown.esc->inplace-edit#request",
+                      qa_field_name: }
             }
+          else
+            { data: { qa_field_name: } }
           end
         end
       end

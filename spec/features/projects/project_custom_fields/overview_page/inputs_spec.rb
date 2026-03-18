@@ -49,8 +49,6 @@ RSpec.describe "Edit project custom fields on project overview page", :js do
 
     shared_examples "shows comment input only when comments are allowed by custom field" do
       it "shows comment input only when comments are allowed by custom field" do
-        dialog.expect_closed
-
         custom_field.update!(has_comment: true)
 
         dialog.within_async_content(close_after_yield: true) do

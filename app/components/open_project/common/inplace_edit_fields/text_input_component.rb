@@ -33,9 +33,13 @@ module OpenProject
     module InplaceEditFields
       class TextInputComponent < BaseFieldComponent
         def call
+          @system_arguments[:data] = merge_data(
+            @system_arguments,
+            **additional_arguments
+          )
+
           form.text_field name: attribute,
                           autofocus: true,
-                          **additional_arguments,
                           **@system_arguments
 
           comment_field_if_enabled(form)
@@ -57,8 +61,11 @@ module OpenProject
             {
               data: { controller: "inplace-edit",
                       inplace_edit_url_value: reset_url,
-                      action: "keydown.esc->inplace-edit#request" }
+                      action: "keydown.esc->inplace-edit#request",
+                      qa_field_name: }
             }
+          else
+            { data: { qa_field_name: } }
           end
         end
       end

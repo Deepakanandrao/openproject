@@ -70,11 +70,13 @@ module Components
         end
       end
 
-      def close
+      def expect_close
         if show_in_dialog
-          dialog.close
+          dialog.expect_close
         else
-          # todo
+          within_field do
+            expect(page).not_to have_test_selector("op-inplace-edit-field--form")
+          end
         end
       end
 
@@ -93,20 +95,40 @@ module Components
         link.click
       end
 
-      def fill_and_submit_value(name, val)
-        fill_in(name, with: val).send_keys(:return)
+      def fill_and_submit_value(name:, val:, ckeditor: false)
+        if ckeditor
+          find(".ck-content").base.send_keys val
+        else
+          fill_in(name, with: val)
+        end
+
+        submit
+      end
+
+      def submit
+        if show_in_dialog
+          dialog.submit
+        elsif save_button_present?
+          within_field { click_on "Save" }
+        else
+          # Fields that auto-submit (e.g. boolean checkboxes) may have already closed the form.
+          # Use `first` with minimum: 0 to return nil instead of raising when no input is present.
+          within_field { page.first("input, textarea", minimum: 0)&.send_keys(:return) }
+        end
+
         wait_for_network_idle
       end
 
-      def fill_and_submit_value_via_button(name:, val:, ckeditor: false)
-        within_field do
-          if ckeditor
-            find(".ck-content").base.send_keys val
-          else
-            fill_in(name, with: val)
-          end
-          click_on "Save"
+      def close
+        if show_in_dialog
+          dialog.close
+        elsif cancel_button_present?
+          within_field { click_on "Cancel" }
+        else
+          within_field { find("input, textarea").send_keys(:escape) }
         end
+
+        wait_for_network_idle
       end
 
       def dialog
@@ -118,6 +140,14 @@ module Components
       end
 
       private
+
+      def save_button_present?
+        within_field { page.has_button?("Save") }
+      end
+
+      def cancel_button_present?
+        within_field { page.has_button?("Cancel") }
+      end
 
       def expect_field_label(label_text)
         expect(page).to have_element :label, text: label_text

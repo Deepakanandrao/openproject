@@ -54,7 +54,8 @@ RSpec.describe OpenProject::Common::InplaceEditFieldDialogComponent, type: :comp
   before { allow(User).to receive(:current).and_return(build_stubbed(:user)) }
 
   it "renders a dialog with the expected ID and label" do
-    render_inline(described_class.new(model: project, attribute: :description, system_arguments: { update_registry: }))
+    render_inline(described_class.new(model: project, attribute: :description,
+                                      system_arguments: { update_registry:, writable: true }))
 
     expect(rendered_content).to have_css("#inplace-edit-field-dialog--project-#{project.id}--description")
     expect(rendered_content).to have_text(Project.human_attribute_name(:description))
@@ -65,17 +66,50 @@ RSpec.describe OpenProject::Common::InplaceEditFieldDialogComponent, type: :comp
       described_class.new(
         model: project,
         attribute: :description,
-        system_arguments: { update_registry:, label: "My Label" }
+        system_arguments: { update_registry:, writable: true, label: "My Label" }
       )
     )
 
     expect(rendered_content).to have_text("My Label")
   end
 
-  it "renders Cancel and Save buttons" do
-    render_inline(described_class.new(model: project, attribute: :description, system_arguments: { update_registry: }))
+  context "when the user has write access" do
+    let(:allowed_attributes) { %w[description] }
 
-    expect(rendered_content).to have_button(I18n.t(:button_cancel))
-    expect(rendered_content).to have_button(I18n.t(:button_save))
+    it "renders the edit form in the dialog body" do
+      render_inline(described_class.new(model: project, attribute: :description,
+                                        system_arguments: { update_registry:, writable: true }))
+
+      expect(rendered_content).to have_test_selector("op-inplace-edit-field--form")
+    end
+
+    it "renders Cancel and Save buttons in the footer" do
+      render_inline(described_class.new(model: project, attribute: :description,
+                                        system_arguments: { update_registry:, writable: true }))
+
+      expect(rendered_content).to have_button(I18n.t(:button_cancel))
+      expect(rendered_content).to have_button(I18n.t(:button_save))
+    end
+  end
+
+  context "when the user does not have write access" do
+    let(:allowed_attributes) { [] }
+
+    it "renders the display component in the dialog body instead of the edit form" do
+      render_inline(described_class.new(model: project, attribute: :description,
+                                        system_arguments: { update_registry:, writable: false }))
+
+      expect(rendered_content).not_to have_test_selector("op-inplace-edit-field--form")
+      expect(rendered_content).to have_css(".op-inplace-edit--display-field")
+    end
+
+    it "renders only a Close button in the footer" do
+      render_inline(described_class.new(model: project, attribute: :description,
+                                        system_arguments: { update_registry:, writable: false }))
+
+      expect(rendered_content).to have_button(I18n.t(:button_close))
+      expect(rendered_content).to have_no_button(I18n.t(:button_cancel))
+      expect(rendered_content).to have_no_button(I18n.t(:button_save))
+    end
   end
 end

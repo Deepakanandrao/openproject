@@ -663,7 +663,7 @@ RSpec.describe "Show project custom fields on project overview page", :js do
 
           # Remove value that is used in a formula:
           field = overview_page.open_inplace_edit_field_for_custom_field(float_project_custom_field)
-          field.fill_and_submit_value float_project_custom_field.name, ""
+          field.fill_and_submit_value name: float_project_custom_field.name, val: ""
 
           overview_page.within_project_attributes_sidebar do
             overview_page.within_custom_field_container(calculated_from_int_project_custom_field) do
@@ -680,7 +680,7 @@ RSpec.describe "Show project custom fields on project overview page", :js do
 
           # Change the value so that the calculation succeeds.
           field.open_field
-          field.fill_and_submit_value float_project_custom_field.name, "0.2"
+          field.fill_and_submit_value name: float_project_custom_field.name, val: "0.2"
 
           overview_page.within_project_attributes_sidebar do
             overview_page.within_custom_field_container(calculated_from_int_project_custom_field) do

@@ -42,12 +42,12 @@ export default class extends Controller {
   declare dialogUrlValue:string;
   declare hasDialogUrlValue:boolean;
 
-  private boundFormDataHandler: ((e: FormDataEvent) => void) | null = null;
+  private boundFormDataHandler:((e:FormDataEvent) => void) | null = null;
 
   connect() {
     const form = this.element.closest('form');
     if (form) {
-      this.boundFormDataHandler = (e: FormDataEvent) => this.appendStableKeySystemArguments(e);
+      this.boundFormDataHandler = (e:FormDataEvent) => this.appendStableKeySystemArguments(e);
       form.addEventListener('formdata', this.boundFormDataHandler);
     }
   }
@@ -111,8 +111,8 @@ export default class extends Controller {
     }
   }
 
-  private appendStableKeySystemArguments(e: FormDataEvent): void {
-    const result: Record<string, unknown> = {};
+  private appendStableKeySystemArguments(e:FormDataEvent):void {
+    const result:Record<string, unknown> = {};
     document.querySelectorAll<HTMLElement>('[data-inplace-edit-stable-key][data-inplace-edit-system-arguments]').forEach((el) => {
       const key = el.dataset.inplaceEditStableKey;
       const raw = el.dataset.inplaceEditSystemArguments;
@@ -124,7 +124,7 @@ export default class extends Controller {
         }
       }
     });
-    e.formData.append('stable_key_system_arguments', JSON.stringify(result));
+    e.formData.set('stable_key_system_arguments', JSON.stringify(result));
   }
 
   private isInteractiveElement(element:HTMLElement):boolean {

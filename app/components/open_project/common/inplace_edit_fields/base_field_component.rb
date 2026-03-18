@@ -32,6 +32,8 @@ module OpenProject
   module Common
     module InplaceEditFields
       class BaseFieldComponent < ViewComponent::Base
+        include Primer::AttributesHelper
+
         attr_reader :form, :attribute, :model, :show_action_buttons
 
         def self.display_class
@@ -73,6 +75,12 @@ module OpenProject
           return @custom_field if defined?(@custom_field)
 
           @custom_field = CustomField.find_by(id: attribute.to_s.sub("custom_field_", "").to_i)
+        end
+
+        def qa_field_name
+          if custom_field?
+            "custom-field-#{custom_field.id}"
+          end
         end
       end
     end

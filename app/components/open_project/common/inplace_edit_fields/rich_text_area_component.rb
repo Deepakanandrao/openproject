@@ -45,6 +45,11 @@ module OpenProject
 
           @system_arguments[:rich_text_options] ||= {}
           @system_arguments[:rich_text_options][:primerized] = true
+
+          @system_arguments[:data] = merge_data(
+            @system_arguments,
+            data: { qa_field_name: }
+          )
         end
 
         def call
