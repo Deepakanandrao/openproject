@@ -67,14 +67,20 @@ class Members::CreateService < BaseServices::Create
   def add_group_memberships(member)
     return unless member.principal.is_a?(Group)
 
+    group = member.principal
     project_ids = member.project_id.nil? ? nil : [member.project_id]
-    group_ids = member.principal.descendants.pluck(:id)
-    user_ids = member.principal.self_and_descendants.flat_map(&:user_ids).uniq
-    principal_ids = (user_ids + group_ids).uniq
+    principal_ids = inheritable_principal_ids(group)
 
     Groups::CreateInheritedRolesService
-      .new(member.principal, current_user: user, contract_class: EmptyContract)
+      .new(group, current_user: user, contract_class: EmptyContract)
       .call(user_ids: principal_ids, send_notifications: false, project_ids:)
+  end
+
+  def inheritable_principal_ids(group)
+    group_ids = group.descendants.pluck(:id)
+    user_ids = group.self_and_descendants.flat_map(&:user_ids).uniq
+
+    (user_ids + group_ids).uniq
   end
 
   def event_type
