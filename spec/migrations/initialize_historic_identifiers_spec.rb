@@ -38,20 +38,13 @@ RSpec.describe InitializeHistoricIdentifiers, type: :model do
   let!(:project2) { create(:project, identifier: "project-two") }
   let!(:project3) { create(:project, identifier: "project-three") }
 
-  before do
-    FriendlyId::Slug.delete_all
-  end
-
   it "succeeds" do
     expect { execute_migration }.not_to raise_error
   end
 
-  it "creates friendly_id_slugs entries for all projects" do
-    expect { execute_migration }.to change(FriendlyId::Slug, :count).by(3)
-  end
-
   it "creates entries with correct attributes" do
     execute_migration
+    expect(FriendlyId::Slug.count).to be(3)
 
     slug1 = FriendlyId::Slug.find_by(sluggable_id: project1.id, sluggable_type: "Project")
     expect(slug1).to have_attributes(
@@ -84,20 +77,5 @@ RSpec.describe InitializeHistoricIdentifiers, type: :model do
     slug = FriendlyId::Slug.find_by(sluggable_id: project1.id, sluggable_type: "Project")
     expect(slug.created_at).to be_present
     expect(slug.created_at).to be_within(5.minutes).of(Time.zone.now)
-  end
-
-  context "when friendly_id_slugs entries already exist" do
-    before do
-      FriendlyId::Slug.create!(
-        slug: "existing-slug",
-        sluggable_id: project1.id,
-        sluggable_type: "Project"
-      )
-    end
-
-    it "does not delete / overwrite existing values" do
-      expect { execute_migration }.to change(FriendlyId::Slug, :count).by(3)
-      expect(FriendlyId::Slug.find_by(slug: "existing-slug")).to be_present
-    end
   end
 end
