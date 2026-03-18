@@ -1395,7 +1395,7 @@ GEM
     sanitize (7.0.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.16.8)
-    scimitar (2.14.0)
+    scimitar (2.15.0)
       rails (>= 7.0)
     securerandom (0.4.1)
     selenium-devtools (0.143.0)
@@ -2249,7 +2249,7 @@ CHECKSUMS
   rubyzip (2.4.1) sha256=8577c88edc1fde8935eb91064c5cb1aef9ad5494b940cf19c775ee833e075615
   safety_net_attestation (0.5.0) sha256=c8cd01dd550dbe8553862918af6355a04672db11d218ec96104ce3955293f2aa
   sanitize (7.0.0) sha256=269d1b9d7326e69307723af5643ec032ff86ad616e72a3b36d301ac75a273984
-  scimitar (2.14.0) sha256=93b29132ebd50d78e61d56c8a17406b1c01857448f2d075560fd6c7660ac9aa9
+  scimitar (2.15.0) sha256=700901afab9303b705a8f37644cd733ee3c3819b168d24a14a48dec060b16d63
   securerandom (0.4.1) sha256=cc5193d414a4341b6e225f0cb4446aceca8e50d5e1888743fac16987638ea0b1
   selenium-devtools (0.143.0) sha256=23e8b364e1074a93a56ea0365ff739022a23a72e9033ad69832400c884417dc4
   selenium-webdriver (4.41.0) sha256=cdc1173cd55cf186022cea83156cc2d0bec06d337e039b02ad25d94e41bedd22
