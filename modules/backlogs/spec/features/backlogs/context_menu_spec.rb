@@ -134,7 +134,7 @@ RSpec.describe "Backlogs context menu", :js do
     end
   end
 
-  context "when the user does not have manage_sprint_items permission" do
+  context "when the user does not have assign_versions permission" do
     before do
       RolePermission.where(permission: "assign_versions").delete_all
     end

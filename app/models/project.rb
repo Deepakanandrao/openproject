@@ -77,7 +77,7 @@ class Project < ApplicationRecord
   has_many :principals, through: :member_principals, source: :principal
   has_many :calculated_value_errors, dependent: :delete_all, as: :customized
 
-  has_many :enabled_modules, dependent: :delete_all
+  has_many :enabled_modules, dependent: :delete_all, after_remove: :module_disabled
   has_and_belongs_to_many :types, -> {
     order("#{::Type.table_name}.position")
   }
@@ -212,16 +212,29 @@ class Project < ApplicationRecord
             format: { with: /\A(?!^\d+\z)[a-z0-9\-_]+\z/ },
             if: ->(p) { p.identifier_changed? && p.identifier.present? }
 
+  # Complements the uniqueness validation above: once an identifier has been used by a
+  # project, it remains reserved for that project even after the project moves to a new
+  # identifier. This prevents another project from claiming a "retired" identifier.
+  validate :identifier_not_historically_reserved, if: ->(p) { p.identifier_changed? }
+
   validates_associated :repository, :wiki
 
-  friendly_id :identifier, use: :finders
+  friendly_id :identifier, use: %i[finders history], slug_column: :identifier
+
+  # FriendlyId::Slugged adds after_validation :unset_slug_if_invalid, which reverts the
+  # slug column to its previous value when validation fails. With slug_column: :identifier,
+  # this would reset a manually-set identifier back to nil on new records. Since the
+  # identifier is managed by acts_as_url and user input (not FriendlyId's slug generator),
+  # we disable this behaviour entirely.
+  def unset_slug_if_invalid; end
 
   scopes :activated_in_storage,
          :allowed_to,
          :assignable_parents,
          :available_custom_fields,
          :available_templates,
-         :visible
+         :visible,
+         :with_settings
 
   scope :has_module, ->(mod) {
     where(["#{Project.table_name}.id IN (SELECT em.project_id FROM #{EnabledModule.table_name} em WHERE em.name=?)", mod.to_s])
@@ -348,5 +361,27 @@ class Project < ApplicationRecord
     @allowed_actions ||= allowed_permissions.flat_map do |permission|
       OpenProject::AccessControl.allowed_actions(permission)
     end
+  end
+
+  def module_disabled(disabled_module)
+    OpenProject::Notifications.send(
+      OpenProject::Events::MODULE_DISABLED, disabled_module:
+    )
+  end
+
+  private
+
+  # Checks friendly_id_slugs for any project that previously used this identifier and
+  # has since changed it. It allows to switch back to an identifier the project itself
+  # has used before.
+  def identifier_not_historically_reserved
+    return if errors.any? { |error| error.attribute == :identifier && error.type == :taken }
+
+    already_existing = FriendlyId::Slug
+                         .where(slug: identifier, sluggable_type: self.class.to_s)
+                         .where.not(sluggable_id: id)
+                         .exists?
+
+    errors.add(:identifier, :taken) if already_existing
   end
 end
