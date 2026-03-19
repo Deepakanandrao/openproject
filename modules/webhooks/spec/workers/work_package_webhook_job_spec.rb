@@ -36,11 +36,11 @@ RSpec.describe WorkPackageWebhookJob, :webmock, type: :model do
   shared_let(:request_url) { "http://example.net/test/42" }
   shared_let(:work_package) { create(:work_package, subject: title) }
   shared_let(:webhook) { create(:webhook, all_projects: true, url: request_url, secret: nil) }
-  shared_let(:journal) { work_package.journals.first }
 
   shared_examples "a work package webhook call" do
     let(:event) { "work_package:created" }
-    let(:job) { described_class.perform_now webhook.id, journal, event }
+    let(:actor) { nil }
+    let(:job) { described_class.perform_now webhook.id, work_package, event, actor: }
 
     let(:stubbed_url) { request_url }
 
@@ -172,14 +172,15 @@ RSpec.describe WorkPackageWebhookJob, :webmock, type: :model do
     let(:author) { create(:user, firstname: "Original", lastname: "Author") }
     let(:updater) { create(:user, firstname: "Update", lastname: "User") }
     let(:work_package) { create(:work_package, author:, subject: title) }
-    let(:journal) do
+
+    before do
       work_package.add_journal(user: updater, notes: "Updated the work package")
       work_package.save!
-      work_package.journals.last
     end
 
     it_behaves_like "a work package webhook call" do
       let(:event) { "work_package:updated" }
+      let(:actor) { updater }
 
       it "includes actor matching the journal user, not the work package author" do
         subject
@@ -203,10 +204,10 @@ RSpec.describe WorkPackageWebhookJob, :webmock, type: :model do
   describe "actor field on created event" do
     let(:creator) { create(:user, firstname: "Creator", lastname: "Person") }
     let(:work_package) { User.execute_as(creator) { create(:work_package, author: creator, subject: title) } }
-    let(:journal) { work_package.journals.first }
 
     it_behaves_like "a work package webhook call" do
       let(:event) { "work_package:created" }
+      let(:actor) { creator }
 
       it "includes actor matching the creator" do
         subject
@@ -221,18 +222,10 @@ RSpec.describe WorkPackageWebhookJob, :webmock, type: :model do
     end
   end
 
-  describe "actor absent when journal user has been deleted" do
-    let(:updater) { create(:user) }
-    let(:journal) do
-      work_package.add_journal(user: updater, notes: "Updated")
-      work_package.save!
-      work_package.journals.last
-    end
-
-    before { updater.destroy }
-
+  describe "actor absent when actor is nil" do
     it_behaves_like "a work package webhook call" do
       let(:event) { "work_package:updated" }
+      let(:actor) { nil }
 
       it "fires the webhook without an actor key" do
         expect { subject }.not_to raise_error
@@ -245,7 +238,7 @@ RSpec.describe WorkPackageWebhookJob, :webmock, type: :model do
     end
   end
 
-  describe "admin custom field regression with journal (PR #16912)" do
+  describe "admin custom field regression with actor (PR #16912)" do
     shared_let(:project) { work_package.project }
     shared_let(:custom_field) do
       create(:project_custom_field, :string, admin_only: true, projects: [project])
@@ -257,14 +250,10 @@ RSpec.describe WorkPackageWebhookJob, :webmock, type: :model do
              value: "wat")
     end
     let(:updater) { create(:admin) }
-    let(:journal) do
-      work_package.add_journal(user: updater, notes: "Updated")
-      work_package.save!
-      work_package.journals.last
-    end
 
     it_behaves_like "a work package webhook call" do
       let(:event) { "work_package:updated" }
+      let(:actor) { updater }
 
       it "includes the custom field value" do
         subject

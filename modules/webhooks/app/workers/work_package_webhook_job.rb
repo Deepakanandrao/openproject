@@ -29,26 +29,11 @@
 #++
 
 class WorkPackageWebhookJob < RepresentedWebhookJob
-  attr_reader :journal
-
-  def perform(webhook_id, journal, event_name)
-    @journal = journal
-    @resource = journal.journable
-    super(webhook_id, @resource, event_name)
-  end
-
   def payload_key
     :work_package
   end
 
   def payload_representer_class
     ::API::V3::WorkPackages::WorkPackageRepresenter
-  end
-
-  def actor_payload
-    user = User.find_by(id: journal.user_id)
-    return nil unless user
-
-    ::API::V3::Users::UserRepresenter.create(user, current_user: User.current)
   end
 end

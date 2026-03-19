@@ -31,8 +31,9 @@
 class RepresentedWebhookJob < WebhookJob
   attr_reader :resource
 
-  def perform(webhook_id, resource, event_name)
+  def perform(webhook_id, resource, event_name, actor: nil)
     @resource = resource
+    @actor = actor
     super(webhook_id, event_name)
 
     return unless accepted_in_project?
@@ -95,6 +96,8 @@ class RepresentedWebhookJob < WebhookJob
   end
 
   def actor_payload
-    nil
+    return nil unless @actor
+
+    ::API::V3::Users::UserRepresenter.create(@actor, current_user: User.current)
   end
 end
