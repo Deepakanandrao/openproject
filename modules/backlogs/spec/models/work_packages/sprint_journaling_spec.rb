@@ -33,66 +33,47 @@ require "spec_helper"
 RSpec.describe "WorkPackage sprint association journaling", # rubocop:disable RSpec/DescribeClass
                with_settings: { journal_aggregation_time_minutes: 0 } do
   shared_let(:project) { create(:project) }
-  shared_let(:user) { create(:user, member_with_permissions: { project => %i[view_work_packages edit_work_packages] }) }
   shared_let(:sprint1) { create(:agile_sprint, name: "Sprint 1", project:) }
   shared_let(:sprint2) { create(:agile_sprint, name: "Sprint 2", project:) }
-  shared_let(:work_package) { create(:work_package, project:) }
-
-  before do
-    login_as(user)
+  shared_let(:work_package_with_sprint) do
+    create(:work_package, :created_in_past, created_at: 1.day.ago, project:, sprint: sprint1)
   end
+  shared_let(:work_package_without_sprint) { create(:work_package, :created_in_past, created_at: 1.day.ago, project:) }
 
   it "creates a journal entry when sprint is assigned" do
     expect do
-      WorkPackages::UpdateService
-        .new(user:, model: work_package)
-        .call(sprint: sprint1)
+      work_package_without_sprint.update!(sprint: sprint1)
     end.to change(Journal::WorkPackageJournal, :count).by(1)
 
-    last_journal = work_package.journals.last
+    last_journal = work_package_without_sprint.journals.last
     expect(last_journal.details).to have_key("sprint_id")
     expect(last_journal.details["sprint_id"]).to eq([nil, sprint1.id])
   end
 
   it "creates a journal entry when sprint is changed" do
-    work_package.update!(sprint: sprint1)
-    work_package.reload
-
     expect do
-      WorkPackages::UpdateService
-        .new(user:, model: work_package)
-        .call(sprint: sprint2)
+      work_package_with_sprint.update!(sprint: sprint2)
     end.to change(Journal::WorkPackageJournal, :count).by(1)
 
-    last_journal = work_package.journals.last
+    last_journal = work_package_with_sprint.journals.last
     expect(last_journal.details).to have_key("sprint_id")
     expect(last_journal.details["sprint_id"]).to eq([sprint1.id, sprint2.id])
   end
 
   it "creates a journal entry when sprint is removed" do
-    work_package.update!(sprint: sprint1)
-    work_package.reload
-
     expect do
-      WorkPackages::UpdateService
-        .new(user:, model: work_package)
-        .call(sprint: nil)
+      work_package_with_sprint.update!(sprint: nil)
     end.to change(Journal::WorkPackageJournal, :count).by(1)
 
-    last_journal = work_package.journals.last
+    last_journal = work_package_with_sprint.journals.last
     expect(last_journal.details).to have_key("sprint_id")
     expect(last_journal.details["sprint_id"]).to eq([sprint1.id, nil])
   end
 
   it "formats the sprint change in the journal" do
-    work_package.update!(sprint: sprint1)
-    work_package.reload
+    work_package_with_sprint.update!(sprint: sprint2)
 
-    WorkPackages::UpdateService
-      .new(user:, model: work_package)
-      .call(sprint: sprint2)
-
-    last_journal = work_package.journals.last
+    last_journal = work_package_with_sprint.journals.last
     formatted = last_journal.render_detail("sprint_id", no_html: true)
 
     expect(formatted).to include("Sprint 1")
