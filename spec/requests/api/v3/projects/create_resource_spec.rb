@@ -476,8 +476,8 @@ RSpec.describe "API v3 Project resource create", content_type: :json do
 
       it "explains the identifier format error" do
         expect(last_response.body)
-          .to be_json_eql("Identifier must start with a capital letter.".to_json)
-          .at_path("message")
+          .to be_json_eql("identifier".to_json)
+          .at_path("_embedded/errors/0/details/attribute")
       end
     end
   end
