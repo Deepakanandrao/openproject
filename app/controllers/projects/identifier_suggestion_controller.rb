@@ -29,7 +29,7 @@
 #++
 
 module Projects
-  class IdentifierSuggestionsController < ApplicationController
+  class IdentifierSuggestionController < ApplicationController
     before_action :require_login
     before_action :authorize
 

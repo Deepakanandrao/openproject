@@ -283,9 +283,8 @@ Rails.application.routes.draw do
   namespace :projects do
     resource :menu, only: %i[show]
     resource :filters, only: %i[show]
+    resource :identifier_suggestion, only: %i[show], controller: "identifier_suggestion"
   end
-
-  get "projects/identifier_suggestion", to: "projects/identifier_suggestions#show", as: :projects_identifier_suggestion
 
   %w[portfolio project program].each do |workspace_type|
     resources workspace_type.pluralize,

@@ -33,7 +33,7 @@ Rails.application.reloader.to_prepare do
     map.project_module nil, order: 100 do
       map.permission :add_project,
                      { projects: %i[new create],
-                       "projects/identifier_suggestions": %i[show] },
+                       "projects/identifier_suggestion": %i[show] },
                      permissible_on: :global,
                      require: :loggedin,
                      contract_actions: { projects: %i[create] }
