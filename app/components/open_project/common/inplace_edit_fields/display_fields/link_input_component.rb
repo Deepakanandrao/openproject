@@ -51,8 +51,7 @@ module OpenProject
             link = Addressable::URI.parse(href)
             return href unless link
 
-            target = link.host == Setting.host_without_protocol ? "_top" : "_blank"
-            render(Primer::Beta::Link.new(href:, rel: "noopener noreferrer", target:)) do
+            render(Primer::Beta::Link.new(href:, rel: "noopener noreferrer")) do
               href
             end
           end

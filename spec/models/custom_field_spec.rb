@@ -742,28 +742,4 @@ RSpec.describe CustomField do
       end
     end
   end
-
-  describe "after_create callback" do
-    it "registers the custom field in the inplace edit field registry" do
-      custom_field = build(:custom_field, field_format: "string")
-
-      allow(OpenProject::InplaceEdit::FieldRegistry).to receive(:register_custom_field)
-
-      custom_field.save!
-
-      expect(OpenProject::InplaceEdit::FieldRegistry)
-        .to have_received(:register_custom_field)
-        .with(anything, "string")
-    end
-
-    it "does not re-register when updated" do
-      custom_field = create(:custom_field, field_format: "string")
-
-      allow(OpenProject::InplaceEdit::FieldRegistry).to receive(:register_custom_field)
-
-      custom_field.update!(name: "Updated name")
-
-      expect(OpenProject::InplaceEdit::FieldRegistry).not_to have_received(:register_custom_field)
-    end
-  end
 end

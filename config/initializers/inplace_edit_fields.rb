@@ -53,12 +53,6 @@ Rails.application.config.to_prepare do
 
   OpenProject::InplaceEdit::FieldRegistry.register_custom_field_format_mappings(custom_field_format_mappings)
 
-  if CustomField.table_exists?
-    CustomField.pluck(:id, :field_format).each do |id, field_format|
-      OpenProject::InplaceEdit::FieldRegistry.register_custom_field(id, field_format)
-    end
-  end
-
   # Register the update handler per model
   OpenProject::InplaceEdit::UpdateRegistry.register(Project,
                                                     handler: OpenProject::InplaceEdit::Handlers::ProjectUpdate,

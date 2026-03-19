@@ -38,10 +38,14 @@ module OpenProject
 
           attr_reader :model, :attribute
 
+          # If the writable attribute is not explicitly listed as an argument,
+          # it will be interpreted as one of the system_arguments and thus overwrite the `writable: false`
+          # rubocop:disable Lint/UnusedMethodArgument
           def initialize(model:, attribute:, writable: nil, truncated: false, has_comment: false, show_comment: false,
                          **system_arguments)
             super(model:, attribute:, writable: false, truncated:, has_comment:, show_comment:, **system_arguments)
           end
+          # rubocop:enable Lint/UnusedMethodArgument
 
           def render_calculation_error
             error = custom_field&.first_calculation_error(model)

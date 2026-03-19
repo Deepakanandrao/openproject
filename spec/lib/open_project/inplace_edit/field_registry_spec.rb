@@ -63,33 +63,32 @@ RSpec.describe OpenProject::InplaceEdit::FieldRegistry do
   end
 
   describe "#register_custom_field_format_mappings" do
-    it "stores format-to-component mappings used by register_custom_field" do
+    it "stores format-to-component mappings used by fetch_for_custom_field_format" do
       text_component = Class.new
       registry.register_custom_field_format_mappings("text" => text_component)
 
-      registry.register_custom_field(42, "text")
-
-      expect(registry.fetch("custom_field_42")).to eq(text_component)
+      expect(registry.fetch_for_custom_field_format("text")).to eq(text_component)
     end
   end
 
-  describe "#register_custom_field" do
+  describe "#fetch_for_custom_field_format" do
     let(:text_component) { Class.new }
 
     before do
       registry.register_custom_field_format_mappings("text" => text_component)
     end
 
-    it "registers the correct component for the given field format" do
-      registry.register_custom_field(1, "text")
-
-      expect(registry.fetch("custom_field_1")).to eq(text_component)
+    it "returns the correct component for the given field format" do
+      expect(registry.fetch_for_custom_field_format("text")).to eq(text_component)
     end
 
-    it "does nothing when the format has no mapping" do
-      registry.register_custom_field(2, "unknown_format")
+    it "falls back to TextInputComponent when the format has no mapping" do
+      expect(registry.fetch_for_custom_field_format("unknown_format"))
+        .to eq(OpenProject::Common::InplaceEditFields::TextInputComponent)
+    end
 
-      expect(registry.fetch("custom_field_2"))
+    it "falls back to TextInputComponent when field_format is nil" do
+      expect(registry.fetch_for_custom_field_format(nil))
         .to eq(OpenProject::Common::InplaceEditFields::TextInputComponent)
     end
   end

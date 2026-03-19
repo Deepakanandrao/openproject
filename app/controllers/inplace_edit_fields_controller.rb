@@ -46,27 +46,8 @@ class InplaceEditFieldsController < ApplicationController
 
   def update
     success = invoke_update_handler
-
-    if success
-      render_success_flash_message_via_turbo_stream(
-        message: I18n.t(:notice_successful_update)
-      )
-      close_dialog_via_turbo_stream(dialog_id) if dialog_id
-      refresh_calculated_dependents
-    end
-
-    if !success && dialog_id
-      replace_via_turbo_stream(
-        component: dialog_field_component,
-        status: :unprocessable_entity
-      )
-    else
-      replace_via_turbo_stream(
-        component: component(enforce_edit_mode: !success),
-        status: success ? :ok : :unprocessable_entity
-      )
-    end
-
+    handle_update_success if success
+    replace_field_component(success)
     respond_with_turbo_streams
   rescue ArgumentError
     head :not_found
@@ -94,6 +75,28 @@ class InplaceEditFieldsController < ApplicationController
     raise ArgumentError, "Missing update handler for #{@model}" if handler.blank?
 
     handler.call(model: @model, params: permitted_params, user: current_user)
+  end
+
+  def handle_update_success
+    render_success_flash_message_via_turbo_stream(
+      message: I18n.t(:notice_successful_update)
+    )
+    close_dialog_via_turbo_stream(dialog_id) if dialog_id
+    refresh_calculated_dependents
+  end
+
+  def replace_field_component(success)
+    if !success && dialog_id
+      replace_via_turbo_stream(
+        component: dialog_field_component,
+        status: :unprocessable_entity
+      )
+    else
+      replace_via_turbo_stream(
+        component: component(enforce_edit_mode: !success),
+        status: success ? :ok : :unprocessable_entity
+      )
+    end
   end
 
   def find_model

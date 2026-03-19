@@ -44,13 +44,14 @@ module OpenProject
         @custom_field_format_mappings = mappings
       end
 
-      def register_custom_field(id, field_format)
-        component = @custom_field_format_mappings[field_format]
-        register("custom_field_#{id}", component) if component
-      end
-
       def fetch(attribute_name)
         @registry.fetch(attribute_name.to_s) { Common::InplaceEditFields::TextInputComponent }
+      end
+
+      def fetch_for_custom_field_format(field_format)
+        return Common::InplaceEditFields::TextInputComponent if field_format.nil?
+
+        @custom_field_format_mappings.fetch(field_format.to_s) { Common::InplaceEditFields::TextInputComponent }
       end
 
       @default = new
@@ -58,7 +59,7 @@ module OpenProject
       class << self
         attr_reader :default
 
-        delegate :register, :fetch, :register_custom_field_format_mappings, :register_custom_field, to: :@default
+        delegate :register, :fetch, :fetch_for_custom_field_format, :register_custom_field_format_mappings, to: :@default
       end
     end
   end

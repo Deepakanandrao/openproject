@@ -60,7 +60,11 @@ module OpenProject
       end
 
       def field_class
-        OpenProject::InplaceEdit::FieldRegistry.fetch(attribute)
+        if custom_field?
+          OpenProject::InplaceEdit::FieldRegistry.fetch_for_custom_field_format(custom_field&.field_format)
+        else
+          OpenProject::InplaceEdit::FieldRegistry.fetch(attribute)
+        end
       end
 
       def edit_field_component(form)
@@ -212,8 +216,7 @@ module OpenProject
                       # For custom fields, check the is_required attribute
                       custom_field&.is_required || false
                     else
-                      # For regular model attributes, check ActiveRecord validations
-                      model.class.validators_on(attribute).any?(ActiveRecord::Validations::PresenceValidator)
+                      false
                     end
       end
 
