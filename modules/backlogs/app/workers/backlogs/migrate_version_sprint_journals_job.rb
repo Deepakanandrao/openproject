@@ -33,18 +33,20 @@
 # so that the migration itself does not block on journal creation.
 module Backlogs
   class MigrateVersionSprintJournalsJob < ApplicationJob
-    # wp_version_map: { work_package_id (String) => version_name (String) }
-    def perform(wp_version_map)
+    def perform
       system_user = User.system
 
       Journal::NotificationConfiguration.with(false) do
-        WorkPackage.where(id: wp_version_map.keys).find_each do |work_package|
-          version_name = wp_version_map[work_package.id.to_s]
-          next unless version_name
-
+        WorkPackage.joins(:sprint, :version)
+                   .select("work_packages.*, versions.name AS version_name")
+                   .find_each do |work_package|
+          cause = Journal::CausedBySystemUpdate.new(
+            feature: "sprint_migration",
+            version_name: work_package.version_name
+          )
           Journals::CreateService
             .new(work_package, system_user)
-            .call(cause: Journal::CausedBySystemUpdate.new(feature: "sprint_migration", version_name:))
+            .call(cause:)
         end
       end
     end

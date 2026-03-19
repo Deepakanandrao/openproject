@@ -30,16 +30,14 @@
 
 class MigrateVersionsToSprints < ActiveRecord::Migration[8.0]
   def up
-    wp_version_map = {}
+    return if sprint_versions_with_work_package_ids.none?
 
     sprint_versions_with_work_package_ids.find_each do |version|
       sprint = create_sprint(version)
-      wp_ids = version.wp_ids
-      migrate_work_packages_to_sprint(sprint, wp_ids)
-      wp_ids.each { |wp_id| wp_version_map[wp_id.to_s] = sprint.name }
+      migrate_work_packages_to_sprint(sprint, version.wp_ids)
     end
 
-    Backlogs::MigrateVersionSprintJournalsJob.perform_later(wp_version_map) if wp_version_map.any?
+    Backlogs::MigrateVersionSprintJournalsJob.perform_later
   end
 
   def down

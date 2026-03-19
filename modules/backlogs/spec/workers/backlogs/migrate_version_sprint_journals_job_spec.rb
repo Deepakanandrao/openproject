@@ -31,21 +31,19 @@
 require "spec_helper"
 
 RSpec.describe Backlogs::MigrateVersionSprintJournalsJob, type: :model do
-  let(:project) { create(:project) }
-  let(:wp1) { create(:work_package, project:) }
-  let(:wp2) { create(:work_package, project:) }
+  shared_let(:project) { create(:project) }
+  shared_let(:version_a) { create(:version, project:, name: "Version A") }
+  shared_let(:version_b) { create(:version, project:, name: "Version B") }
+  shared_let(:sprint_a) { create(:agile_sprint, name: "Sprint A", project:) }
+  shared_let(:sprint_b) { create(:agile_sprint, name: "Sprint B", project:) }
+  shared_let(:wp1) { create(:work_package, project:, version: version_a, sprint: sprint_a) }
+  shared_let(:wp2) { create(:work_package, project:, version: version_b, sprint: sprint_b) }
+  shared_let(:wp_no_version) { create(:work_package, project:, sprint: sprint_a) }
 
-  subject(:perform) { described_class.new.perform(wp_version_map) }
+  subject(:perform) { described_class.new.perform }
 
   describe "#perform" do
-    context "with multiple work packages" do
-      let(:wp_version_map) do
-        {
-          wp1.id.to_s => "Sprint A",
-          wp2.id.to_s => "Sprint B"
-        }
-      end
-
+    context "when there are work packages associated with a sprint and a version" do
       it "creates a journal entry for each work package authored by the system user" do
         perform
         expect(wp1.reload.last_journal.user).to eq(User.system)
@@ -66,8 +64,8 @@ RSpec.describe Backlogs::MigrateVersionSprintJournalsJob, type: :model do
 
       it "stores the originating version name in the cause" do
         perform
-        expect(wp1.reload.last_journal.cause["version_name"]).to eq("Sprint A")
-        expect(wp2.reload.last_journal.cause["version_name"]).to eq("Sprint B")
+        expect(wp1.reload.last_journal.cause["version_name"]).to eq("Version A")
+        expect(wp2.reload.last_journal.cause["version_name"]).to eq("Version B")
       end
 
       it "suppresses journal notifications" do
@@ -77,17 +75,11 @@ RSpec.describe Backlogs::MigrateVersionSprintJournalsJob, type: :model do
       end
     end
 
-    context "when the map contains an id that no longer exists" do
-      let(:wp_version_map) do
-        {
-          "0" => "Ghost Sprint",
-          wp1.id.to_s => "Sprint A"
-        }
-      end
-
-      it "skips the missing id and still journals the existing work package" do
-        expect { perform }.not_to raise_error
-        expect(wp1.reload.last_journal.cause["version_name"]).to eq("Sprint A")
+    context "when there is a work package associated with a sprint but no version" do
+      it "does not create a system update journal entry" do
+        perform
+        expect(wp_no_version.reload.last_journal.cause_type).not_to eq("system_update")
+        expect(wp_no_version.reload.last_journal.cause_feature).not_to eq("sprint_migration")
       end
     end
   end

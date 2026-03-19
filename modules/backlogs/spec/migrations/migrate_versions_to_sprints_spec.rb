@@ -196,14 +196,24 @@ RSpec.describe MigrateVersionsToSprints, type: :model do
   end
 
   describe "journal job" do
-    it "enqueues MigrateVersionSprintJournalsJob with the work package mapping" do
+    it "enqueues MigrateVersionSprintJournalsJob" do
       allow(Backlogs::MigrateVersionSprintJournalsJob).to receive(:perform_later)
 
       migrate
 
-      expect(Backlogs::MigrateVersionSprintJournalsJob)
-        .to have_received(:perform_later)
-        .with({ wp1.id.to_s => "Test Sprint" })
+      expect(Backlogs::MigrateVersionSprintJournalsJob).to have_received(:perform_later)
+    end
+
+    context "when no sprint-versions exist" do
+      let(:version_type) { :backlog }
+
+      it "does not enqueue MigrateVersionSprintJournalsJob" do
+        allow(Backlogs::MigrateVersionSprintJournalsJob).to receive(:perform_later)
+
+        migrate
+
+        expect(Backlogs::MigrateVersionSprintJournalsJob).not_to have_received(:perform_later)
+      end
     end
   end
 end
