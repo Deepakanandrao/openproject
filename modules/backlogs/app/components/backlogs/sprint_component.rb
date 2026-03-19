@@ -34,14 +34,13 @@ module Backlogs
     include OpTurbo::Streamable
     include RbCommonHelper
 
-    attr_reader :sprint, :current_user
+    attr_reader :sprint, :project, :current_user
 
-    delegate :project, to: :sprint
-
-    def initialize(sprint:, current_user: User.current, **system_arguments)
+    def initialize(sprint:, project: sprint.project, current_user: User.current, **system_arguments)
       super()
 
       @sprint = sprint
+      @project = project
       @current_user = current_user
 
       @system_arguments = system_arguments

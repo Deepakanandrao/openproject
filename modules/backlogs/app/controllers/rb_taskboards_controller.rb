@@ -35,7 +35,7 @@ class RbTaskboardsController < RbApplicationController
 
   def show
     if OpenProject::FeatureDecisions.scrum_projects_active?
-      @board = @sprint.task_board
+      @board = @sprint.task_board_for(@project)
 
       return redirect_to(project_work_package_board_path(@project, @board)) if @board
 

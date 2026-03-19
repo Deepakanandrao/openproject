@@ -52,6 +52,9 @@ RSpec.describe RbTaskboardsController do
       let(:sprint) { create(:agile_sprint, project:) }
 
       context "when the board exists" do
+        let!(:other_project) { create(:project) }
+        let!(:other_board) { create(:board_grid_with_query, project: other_project, linked: sprint) }
+
         before do
           board.update!(linked: sprint)
         end
@@ -66,6 +69,11 @@ RSpec.describe RbTaskboardsController do
           it "redirects to the board" do
             expect(response).to redirect_to(project_work_package_board_path(project, board))
           end
+
+          it "uses the board for the current project" do
+            expect(response).to redirect_to(project_work_package_board_path(project, board))
+            expect(response).not_to redirect_to(project_work_package_board_path(other_project, other_board))
+          end
         end
       end
 
@@ -77,6 +85,26 @@ RSpec.describe RbTaskboardsController do
         end
 
         it "returns not found" do
+          expect(response).to have_http_status(:not_found)
+        end
+      end
+
+      context "when the sprint is rendered in a receiving project" do
+        let(:source_project) { create(:project, sprint_sharing: "share_all_projects") }
+        let(:project) do
+          create(:project,
+                 sprint_sharing: "receive_shared",
+                 member_with_permissions: { user => permissions })
+        end
+        let(:permissions) { %i[view_sprints view_work_packages] }
+        let(:sprint) { create(:agile_sprint, project: source_project) }
+
+        before do
+          create(:board_grid_with_query, project: source_project, linked: sprint)
+          get :show, params: { project_id: project.identifier, sprint_id: sprint.id }
+        end
+
+        it "returns not found when the receiving project has no task board" do
           expect(response).to have_http_status(:not_found)
         end
       end

@@ -119,6 +119,7 @@ RSpec.describe Backlogs::SprintMenuComponent, type: :component do
                status: "active")
       end
       let(:permissions) { %i[view_sprints view_work_packages start_complete_sprint] }
+      let!(:task_board) { create(:board_grid_with_query, project:, linked: sprint) }
 
       it "shows Finish sprint first and Task board after Stories/Tasks" do
         render_component
@@ -194,6 +195,7 @@ RSpec.describe Backlogs::SprintMenuComponent, type: :component do
                  finish_date: Date.tomorrow,
                  status: "completed")
         end
+        let!(:task_board) { create(:board_grid_with_query, project:, linked: sprint) }
 
         it "shows Task board after Stories/Tasks" do
           render_component
@@ -201,6 +203,50 @@ RSpec.describe Backlogs::SprintMenuComponent, type: :component do
           expect(menu_items).to include("Stories/Tasks", "Task board")
           expect(menu_items.index("Task board")).to be > menu_items.index("Stories/Tasks")
         end
+      end
+    end
+
+    context "when the sprint is rendered in a receiving project" do
+      let(:source_project) { create(:project, sprint_sharing: "share_all_projects", types: [type_feature, type_task]) }
+      let(:project) { create(:project, sprint_sharing: "receive_shared", types: [type_feature, type_task]) }
+      let(:sprint) do
+        create(:agile_sprint,
+               project: source_project,
+               name: "Shared Sprint",
+               start_date: Date.yesterday,
+               finish_date: Date.tomorrow,
+               status: "active")
+      end
+      let(:permissions) { %i[view_sprints view_work_packages create_sprints manage_sprint_items start_complete_sprint] }
+
+      before do
+        create(:member,
+               project: source_project,
+               principal: user,
+               roles: [create(:project_role, permissions: %i[start_complete_sprint])])
+      end
+
+      it "hides Start sprint and Finish sprint" do
+        render_component
+
+        expect(page).to have_no_selector(:menuitem, text: "Start sprint")
+        expect(page).to have_no_selector(:menuitem, text: "Finish sprint")
+      end
+
+      it "does not show Task board for a board in the source project" do
+        create(:board_grid_with_query, project: source_project, linked: sprint)
+
+        render_component
+
+        expect(page).to have_no_selector(:menuitem, text: "Task board")
+      end
+
+      it "shows Task board for a board in the rendered project" do
+        create(:board_grid_with_query, project:, linked: sprint)
+
+        render_component
+
+        expect(page).to have_selector(:menuitem, text: "Task board")
       end
     end
   end

@@ -57,15 +57,15 @@ module Backlogs
     private
 
     def show_task_board_link?
-      !sprint.in_planning?
+      sprint.task_board_for(project).present?
     end
 
     def show_start_sprint_action?
-      sprint.in_planning? && user_allowed?(:start_complete_sprint)
+      sprint.project == project && sprint.in_planning? && user_allowed_in_source_project?(:start_complete_sprint)
     end
 
     def show_finish_sprint_action?
-      sprint.active? && user_allowed?(:start_complete_sprint)
+      sprint.project == project && sprint.active? && user_allowed_in_source_project?(:start_complete_sprint)
     end
 
     def disable_start_sprint_action?
@@ -82,13 +82,17 @@ module Backlogs
       current_user.allowed_in_project?(permission, project)
     end
 
+    def user_allowed_in_source_project?(permission)
+      current_user.allowed_in_project?(permission, sprint.project)
+    end
+
     def available_story_types
       @available_story_types ||= story_types & project.types
     end
 
     def project_has_another_active_sprint?
       @project_has_another_active_sprint ||= Agile::Sprint
-                                               .for_project(project)
+                                               .for_project(sprint.project)
                                                .where(status: "active")
                                                .where.not(id: sprint.id)
                                                .exists?

@@ -70,7 +70,8 @@ class Sprints::StartService < BaseServices::BaseCallable
   end
 
   def ensure_task_board
-    return ServiceResult.success(result: model.task_board) if model.task_board?
+    existing_board = model.task_board_for(model.project)
+    return ServiceResult.success(result: existing_board) if existing_board.present?
 
     Boards::SprintTaskBoardCreateService
       .new(user:)

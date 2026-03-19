@@ -54,7 +54,7 @@ RSpec.describe Sprints::StartService do
     it "creates the board and starts the sprint", :aggregate_failures do
       expect(result).to be_success
       expect(sprint.reload).to be_active
-      expect(sprint.task_board).to be_present
+      expect(sprint.task_board_for(project)).to be_present
     end
   end
 
@@ -65,7 +65,21 @@ RSpec.describe Sprints::StartService do
       expect { result }.not_to change(Boards::Grid, :count)
       expect(result).to be_success
       expect(sprint.reload).to be_active
-      expect(sprint.task_board).to eq(existing_board)
+      expect(sprint.task_board_for(project)).to eq(existing_board)
+    end
+  end
+
+  context "when a task board exists for another project" do
+    let!(:other_project) { create(:project) }
+    let!(:other_board) { create(:board_grid_with_query, project: other_project, linked: sprint) }
+
+    it "creates a board for the sprint project", :aggregate_failures do
+      expect { result }.to change(Boards::Grid, :count).by(1)
+      expect(result).to be_success
+      expect(sprint.reload).to be_active
+      expect(sprint.task_board_for(project)).to be_present
+      expect(sprint.task_board_for(project)).not_to eq(other_board)
+      expect(sprint.task_board_for(other_project)).to eq(other_board)
     end
   end
 
@@ -84,7 +98,7 @@ RSpec.describe Sprints::StartService do
       expect(result).not_to be_success
       expect(result.message).to eq("something went wrong")
       expect(sprint.reload).to be_in_planning
-      expect(sprint.task_board).to be_nil
+      expect(sprint.task_board_for(project)).to be_nil
     end
   end
 
@@ -94,7 +108,7 @@ RSpec.describe Sprints::StartService do
     it "rolls back the created board", :aggregate_failures do
       expect(result).not_to be_success
       expect(sprint.reload).to be_in_planning
-      expect(sprint.task_board).to be_nil
+      expect(sprint.task_board_for(project)).to be_nil
       expect(result.message).to eq(sprint.errors.full_messages.to_sentence)
     end
   end
@@ -111,7 +125,7 @@ RSpec.describe Sprints::StartService do
       expect(result.errors[:status]).to include("only one active sprint is allowed per project.")
       expect(result.message).to eq(sprint.errors.full_messages.to_sentence)
       expect(sprint.reload).to be_in_planning
-      expect(sprint.task_board).to be_nil
+      expect(sprint.task_board_for(project)).to be_nil
     end
   end
 
@@ -122,7 +136,7 @@ RSpec.describe Sprints::StartService do
       expect(result).not_to be_success
       expect(result.message).to be_blank
       expect(sprint.reload).to be_active
-      expect(sprint.task_board).to be_nil
+      expect(sprint.task_board_for(project)).to be_nil
     end
   end
 
@@ -133,7 +147,7 @@ RSpec.describe Sprints::StartService do
       expect(result).not_to be_success
       expect(result.message).to be_blank
       expect(sprint.reload).to be_completed
-      expect(sprint.task_board).to be_nil
+      expect(sprint.task_board_for(project)).to be_nil
     end
   end
 end

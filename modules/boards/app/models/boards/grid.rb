@@ -31,7 +31,7 @@
 module Boards
   class Grid < ::Grids::Grid
     belongs_to :project
-    belongs_to :linked, polymorphic: true, optional: true, inverse_of: :task_board
+    belongs_to :linked, polymorphic: true, optional: true, inverse_of: :task_boards
     validates :name, presence: true
 
     before_destroy :delete_queries, prepend: true

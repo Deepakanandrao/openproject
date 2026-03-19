@@ -34,9 +34,12 @@ RSpec.describe Boards::Grid do
   let(:instance) { described_class.new }
   let(:project) { build_stubbed(:project) }
 
-  describe "attributes" do
-    it { is_expected.to belong_to(:linked).optional }
+  describe "associations" do
+    it { is_expected.to belong_to(:project) }
+    it { is_expected.to belong_to(:linked).inverse_of(:task_boards).optional }
+  end
 
+  describe "attributes" do
     it "#project" do
       instance.project = project
       expect(instance.project)

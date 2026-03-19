@@ -106,13 +106,14 @@ class RbSprintsController < RbApplicationController
   end
 
   def start
+    return render_404 unless @project == @sprint.project
     return render_404 unless @sprint.in_planning?
 
     result = start_sprint
 
     if result.success?
       @sprint = result.result
-      redirect_to project_work_package_board_path(@project, @sprint.task_board),
+      redirect_to project_work_package_board_path(@project, @sprint.task_board_for(@project)),
                   notice: I18n.t(:notice_successful_start)
     else
       respond_with_start_failure(message: start_failure_message(result.message))
@@ -120,6 +121,7 @@ class RbSprintsController < RbApplicationController
   end
 
   def finish
+    return render_404 unless @project == @sprint.project
     return render_404 unless @sprint.active?
 
     result = finish_sprint
@@ -181,7 +183,7 @@ class RbSprintsController < RbApplicationController
 
   def update_sprint_header_component_via_turbo_stream(sprint:)
     update_via_turbo_stream(
-      component: Backlogs::SprintHeaderComponent.new(sprint:),
+      component: Backlogs::SprintHeaderComponent.new(sprint:, project: @project),
       method: :morph
     )
   end

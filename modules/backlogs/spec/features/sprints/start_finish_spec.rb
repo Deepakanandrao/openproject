@@ -98,7 +98,7 @@ RSpec.describe "Start and finish sprints",
     expect_and_dismiss_flash type: :success, message: "The sprint was started."
 
     sprint = first_sprint.reload
-    board = sprint.task_board
+    board = sprint.task_board_for(project)
     board_page = Pages::Board.new(board)
 
     expect(page).to have_current_path(%r{/projects/#{project.identifier}/boards/\d+})

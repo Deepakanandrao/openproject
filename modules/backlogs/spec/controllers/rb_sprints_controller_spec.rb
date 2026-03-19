@@ -309,6 +309,20 @@ RSpec.describe RbSprintsController do
       end
 
       context "with the feature flag active", with_flag: { scrum_projects: true } do
+        context "when the sprint is rendered in a receiving project" do
+          let(:source_project) { create(:project, sprint_sharing: "share_all_projects") }
+          let(:project) { create(:project, sprint_sharing: "receive_shared") }
+          let!(:sprint) { create(:agile_sprint, project: source_project) }
+
+          it "responds with not found and does not call the service", :aggregate_failures do
+            patch :start, params: request_params
+
+            expect(response).not_to be_successful
+            expect(response).to have_http_status(:not_found)
+            expect(service).not_to have_received(:call)
+          end
+        end
+
         context "when a board already exists" do
           let!(:existing_board) do
             create(:board_grid_with_query,
@@ -327,11 +341,11 @@ RSpec.describe RbSprintsController do
         context "when board creation succeeds" do
           let(:board) { create(:board_grid_with_query, project:, linked: sprint) }
           let(:service_result) do
+            started_sprint = sprint.tap { it.status = "active" }
+            allow(started_sprint).to receive(:task_board_for).with(project).and_return(board)
+
             ServiceResult.success(
-              result: sprint.tap do |started_sprint|
-                started_sprint.status = "active"
-                started_sprint.task_board = board
-              end
+              result: started_sprint
             )
           end
 
@@ -429,6 +443,20 @@ RSpec.describe RbSprintsController do
       end
 
       context "with the feature flag active", with_flag: { scrum_projects: true } do
+        context "when the sprint is rendered in a receiving project" do
+          let(:source_project) { create(:project, sprint_sharing: "share_all_projects") }
+          let(:project) { create(:project, sprint_sharing: "receive_shared") }
+          let!(:sprint) { create(:agile_sprint, project: source_project, status: "active") }
+
+          it "responds with not found and does not call the service", :aggregate_failures do
+            patch :finish, params: request_params
+
+            expect(response).not_to be_successful
+            expect(response).to have_http_status(:not_found)
+            expect(service).not_to have_received(:call)
+          end
+        end
+
         it "finishes the sprint and redirects to the backlog", :aggregate_failures do
           patch :finish, params: request_params
 
