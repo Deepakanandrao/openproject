@@ -1,4 +1,4 @@
-<%# -- copyright
+<%#-- copyright
 OpenProject is an open source project management software.
 Copyright (C) the OpenProject GmbH
 
@@ -25,34 +25,36 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 See COPYRIGHT and LICENSE files for more details.
 
-++# %>
-<% columns.each.with_index do |column, index| %>
-  <%=
-    render(
-      Primer::BaseComponent.new(
-        tag: :div,
-        classes: cell_classes(column),
-        role: cell_role(column, index),
-        aria: { colindex: index + 1 }
-      )
-    ) do %>
-    <% label = mobile_label(column) %>
-    <% if label.present? %>
-      <%= render(Primer::Beta::Text.new(classes: "op-border-box-grid__row-label")) { "#{label}: " } %>
-    <% end %>
-    <%= column_value(column) %>
-  <% end %>
-<% end %>
+++#%>
+<% html_title t(:label_administration), t(:label_workflow_plural) -%>
 
-<% if table.has_actions? %>
-  <%=
-    flex_layout(
-      classes: "op-border-box-grid__row-action gap-1",
-      role: :cell,
-      aria: { colindex: columns.size + 1 }
-    ) do |flex| %>
-    <% button_links.each do |link| %>
-      <% flex.with_column { link } %>
-    <% end %>
-  <% end %>
-<% end %>
+<%= render Workflows::PageHeaderComponent.new(state: :index) %>
+
+<%=
+  flex_layout data: { controller: "filter--filter-list", "filter--filter-list-clear-button-id-value": "type-filter-clear-button" } do |flex|
+    flex.with_row do
+      render(Primer::OpenProject::SubHeader.new) do |subheader|
+        subheader.with_filter_input(
+          name: "type-filter-input",
+          label: t("admin.workflows.index.type_filter.label"),
+          visually_hide_label: true,
+          placeholder: t("admin.workflows.index.type_filter.label"),
+          leading_visual: {
+            icon: :search,
+            size: :small
+          },
+          show_clear_button: true,
+          clear_button_id: "type-filter-clear-button",
+          data: {
+            action: "input->filter--filter-list#filterLists",
+            "filter--filter-list-target": "filter"
+          }
+        )
+      end
+    end
+
+    flex.with_row do
+      render Workflows::TableComponent.new(@types)
+    end
+  end
+%>

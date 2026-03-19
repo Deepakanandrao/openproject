@@ -1,4 +1,4 @@
-<%# -- copyright
+<%#-- copyright
 OpenProject is an open source project management software.
 Copyright (C) the OpenProject GmbH
 
@@ -25,34 +25,27 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 See COPYRIGHT and LICENSE files for more details.
 
-++# %>
-<% columns.each.with_index do |column, index| %>
-  <%=
-    render(
-      Primer::BaseComponent.new(
-        tag: :div,
-        classes: cell_classes(column),
-        role: cell_role(column, index),
-        aria: { colindex: index + 1 }
-      )
-    ) do %>
-    <% label = mobile_label(column) %>
-    <% if label.present? %>
-      <%= render(Primer::Beta::Text.new(classes: "op-border-box-grid__row-label")) { "#{label}: " } %>
-    <% end %>
-    <%= column_value(column) %>
-  <% end %>
-<% end %>
+++#%>
 
-<% if table.has_actions? %>
-  <%=
-    flex_layout(
-      classes: "op-border-box-grid__row-action gap-1",
-      role: :cell,
-      aria: { colindex: columns.size + 1 }
-    ) do |flex| %>
-    <% button_links.each do |link| %>
-      <% flex.with_column { link } %>
-    <% end %>
-  <% end %>
-<% end %>
+<%=
+  render(Primer::Beta::BorderBox.new) do |component|
+    component.with_header do |header|
+      header.with_title(tag: :h2) do
+        Type.model_name.human
+      end
+    end
+    types.each do |type|
+      component.with_row(data: { "filter--filter-list-target": "searchItem" }) do
+        link_to type.name, edit_workflow_path(type), class: "text-bold"
+      end
+    end
+    if types.empty?
+      component.with_row do
+        render(Primer::Beta::Blankslate.new(border: false)) do |component|
+          component.with_heading(tag: :h2) { I18n.t(:label_nothing_display) }
+          component.with_description { I18n.t(:no_results_title_text) }
+        end
+      end
+    end
+  end
+%>
