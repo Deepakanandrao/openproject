@@ -33,17 +33,14 @@
 # so that the migration itself does not block on journal creation.
 module Backlogs
   class MigrateVersionSprintJournalsJob < ApplicationJob
-    # wp_version_map: { work_package_id (Integer) => version_name (String) }
+    # wp_version_map: { work_package_id (String) => version_name (String) }
     def perform(wp_version_map)
       system_user = User.system
 
-      work_packages = WorkPackage.where(id: wp_version_map.keys).index_by(&:id)
-
       Journal::NotificationConfiguration.with(false) do
-        wp_version_map.each do |wp_id_str, version_name|
-          wp_id = wp_id_str.to_i
-          work_package = work_packages[wp_id]
-          next unless work_package
+        WorkPackage.where(id: wp_version_map.keys).find_each do |work_package|
+          version_name = wp_version_map[work_package.id.to_s]
+          next unless version_name
 
           Journals::CreateService
             .new(work_package, system_user)
