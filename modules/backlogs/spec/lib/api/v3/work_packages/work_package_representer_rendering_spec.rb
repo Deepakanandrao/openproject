@@ -32,7 +32,7 @@ require "spec_helper"
 
 # Only tests the links/properties added by the backlogs plugin. It does not retest the properties already
 # covered in the core.
-RSpec.describe API::V3::WorkPackages::WorkPackageRepresenter, "rendering", with_flag: { scrum_projects: true } do
+RSpec.describe API::V3::WorkPackages::WorkPackageRepresenter, "rendering" do
   include API::V3::Utilities::PathHelper
 
   let(:work_package) do
@@ -46,8 +46,9 @@ RSpec.describe API::V3::WorkPackages::WorkPackageRepresenter, "rendering", with_
   let(:type) { story_type }
   let(:story_type) { build_stubbed(:type) }
   let(:task_type) { build_stubbed(:type) }
+  let(:enabled_module_names) { %w[backlogs] }
   let(:project) do
-    build_stubbed(:project, enabled_module_names: %w[backlogs])
+    build_stubbed(:project, enabled_module_names:)
   end
 
   let(:story_points) { 23 }
@@ -79,26 +80,68 @@ RSpec.describe API::V3::WorkPackages::WorkPackageRepresenter, "rendering", with_
 
   describe "properties" do
     describe "storyPoints" do
-      context "when it is a story" do
+      context "when it is a story (without the feature flag on)", with_flag: { scrum_projects: false } do
         it_behaves_like "property", :storyPoints do
           let(:value) { story_points }
         end
       end
 
-      context "when it is a task" do
+      context "when it is a story (with the feature flag on)", with_flag: { scrum_projects: true } do
+        it_behaves_like "property", :storyPoints do
+          let(:value) { story_points }
+        end
+      end
+
+      context "when it is a task (without the feature flag on)", with_flag: { scrum_projects: false } do
         let(:type) { task_type }
+
+        it_behaves_like "no property", :storyPoints
+      end
+
+      context "when it is a task (with the feature flag on)", with_flag: { scrum_projects: true } do
+        let(:type) { task_type }
+
+        it_behaves_like "property", :storyPoints do
+          let(:value) { story_points }
+        end
+      end
+
+      context "when backlogs is disabled" do
+        let(:enabled_module_names) { [] }
 
         it_behaves_like "no property", :storyPoints
       end
     end
 
     describe "position" do
-      it_behaves_like "property", :position do
-        let(:value) { position }
+      context "when it is a story (without the feature flag on)", with_flag: { scrum_projects: false } do
+        it_behaves_like "property", :position do
+          let(:value) { position }
+        end
       end
 
-      context "when it is a task" do
+      context "when it is a story (with the feature flag on)", with_flag: { scrum_projects: true } do
+        it_behaves_like "property", :position do
+          let(:value) { position }
+        end
+      end
+
+      context "when it is a task (with the feature flag on)", with_flag: { scrum_projects: true } do
         let(:type) { task_type }
+
+        it_behaves_like "property", :position do
+          let(:value) { position }
+        end
+      end
+
+      context "when it is a task (without the feature flag on)", with_flag: { scrum_projects: false } do
+        let(:type) { task_type }
+
+        it_behaves_like "no property", :position
+      end
+
+      context "when backlogs is disabled" do
+        let(:enabled_module_names) { [] }
 
         it_behaves_like "no property", :position
       end
@@ -106,12 +149,18 @@ RSpec.describe API::V3::WorkPackages::WorkPackageRepresenter, "rendering", with_
   end
 
   describe "links" do
-    describe "sprint" do
+    describe "sprint", with_flag: { scrum_projects: true } do
       let(:link) { "sprint" }
       let(:href) { api_v3_paths.sprint(sprint.id) }
       let(:title) { sprint.name }
 
       context "when it is a story" do
+        it_behaves_like "has a titled link"
+      end
+
+      context "when it is a task" do
+        let(:type) { task_type }
+
         it_behaves_like "has a titled link"
       end
 
@@ -122,12 +171,6 @@ RSpec.describe API::V3::WorkPackages::WorkPackageRepresenter, "rendering", with_
       end
 
       context "when the feature flag is inactive", with_flag: { scrum_projects: false } do
-        it_behaves_like "has no link"
-      end
-
-      context "when it is a task" do
-        let(:type) { task_type }
-
         it_behaves_like "has no link"
       end
     end
@@ -150,7 +193,7 @@ RSpec.describe API::V3::WorkPackages::WorkPackageRepresenter, "rendering", with_
   end
 
   describe "embedded" do
-    describe "sprint" do
+    describe "sprint", with_flag: { scrum_projects: true } do
       let(:embedded_path) { "_embedded/sprint" }
       let(:embedded_resource) { sprint }
       let(:embedded_resource_type) { "Sprint" }
@@ -172,7 +215,7 @@ RSpec.describe API::V3::WorkPackages::WorkPackageRepresenter, "rendering", with_
       context "when it is a type" do
         let(:type) { task_type }
 
-        it_behaves_like "has the resource not embedded"
+        it_behaves_like "has the resource embedded"
       end
     end
   end

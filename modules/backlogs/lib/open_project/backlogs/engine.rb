@@ -226,20 +226,17 @@ module OpenProject::Backlogs
     config.to_prepare do
       enabled_backlogs_story = ->(type, project: nil) do
         if project.present?
-          project.backlogs_enabled? && type.story?
+          project.backlogs_enabled? && (OpenProject::FeatureDecisions.scrum_projects_active? || type.story?)
         else
           # Allow globally configuring the attribute if story
-          type.story?
+          OpenProject::FeatureDecisions.scrum_projects_active? || type.story?
         end
       end
 
-      story_and_sprint_permission = ->(type, project: nil) do
-        if project.present?
-          type.story? && User.current.allowed_in_project?(:view_sprints, project)
-        else
-          # Allow globally configuring the attribute if story
-          type.story?
-        end
+      story_and_sprint_permission = ->(_type, project: nil) do
+        return false unless OpenProject::FeatureDecisions.scrum_projects_active?
+
+        project.nil? || User.current.allowed_in_project?(:view_sprints, project)
       end
 
       ::Type.add_constraint :position, enabled_backlogs_story
