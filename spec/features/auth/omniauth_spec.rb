@@ -115,7 +115,7 @@ RSpec.describe "Omniauth authentication" do
       visit signout_path
 
       expect(page).to have_content(I18n.t(:notice_logged_out))
-      expect(page).to have_content I18n.t(:instructions_after_logout)
+      expect(page).to have_content "You can sign in again by clicking"
     end
 
     it "sign-in after previous sign-out shows my page" do
@@ -262,7 +262,7 @@ RSpec.describe "Omniauth authentication" do
 
       it_behaves_like "omniauth signin error" do
         let(:login_path) { signin_path }
-        let(:instructions) { I18n.t(:instructions_after_error) }
+        let(:instructions) { "You can try to sign in again by clicking" }
       end
     end
   end

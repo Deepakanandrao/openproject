@@ -19,7 +19,7 @@
       <span><%= t("ldap_groups.synchronized_groups.destroy.info") %></span>
       <br>
       <%= t(
-            "ldap_groups.synchronized_groups.destroy.verification",
+            "ldap_groups.synchronized_groups.destroy.verification_html",
             name: content_tag(:em, @group.dn, class: "danger-zone--expected-value")
           ) %>
     </p>

@@ -285,12 +285,13 @@ module Redmine
       # when rendering this in e.g., a before action.
       # Note: ActionController::Renderer#render does not pass blocks through to
       # ViewComponent, so slots and content must be set before rendering.
+      link_arguments[:data] ||= {}
+      link_arguments[:data][:allow_external_link] = true
       component = Primer::Beta::Link.new(
         **link_arguments,
         href:,
         target:,
-        underline:,
-        data: { allow_external_link: true }
+        underline:
       )
       component.with_trailing_visual_icon(icon: :"link-external") if external
       component.with_content(text)
