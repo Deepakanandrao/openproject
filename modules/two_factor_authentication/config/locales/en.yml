@@ -75,7 +75,7 @@ en:
       error_invalid_settings: "The 2FA strategies you selected are invalid"
       failed_to_save_settings: "Failed to update 2FA settings: %{message}"
     admin:
-      self_edit_path: "To add or modify your own 2FA devices, please go to the [Two-factor authentication on your account page](self_edit_link)"
+      self_edit_path_html: "To add or modify your own 2FA devices, please go to the [Two-factor authentication on your account page](self_edit_link)"
       self_edit_forbidden: "You may not edit your own 2FA devices on this path. Go to My Account > Two factor authentication instead."
       no_devices_for_user: "No 2FA device has been registered for this user."
       all_devices_deleted: "All 2FA devices of this user have been deleted"

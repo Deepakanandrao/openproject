@@ -115,7 +115,7 @@ module Statuses
     end
 
     def percent_complete_field_caption
-      helpers.link_translate("statuses.edit.status_percent_complete_text",
+      helpers.link_translate("statuses.edit.status_percent_complete_text_html",
                              links: { setting_url: url_helpers.admin_settings_progress_tracking_path })
     end
 

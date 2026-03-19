@@ -17,7 +17,7 @@
 
   <% header.with_description(test_selector: 'storage-new-page-header--description') do %>
     <%=
-      link_translate("storages.instructions.new_storage",
+      link_translate("storages.instructions.new_storage_html",
                      i18n_args: { provider_name: I18n.t("storages.provider_types.#{@storage}.name") },
                      links: { docs_url: [:storage_docs, :"#{@storage}_setup"] },
                      external: true)

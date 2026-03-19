@@ -51,7 +51,7 @@ module Projects::Settings::WorkPackages::Activities
     private
 
     def caption_text
-      helpers.link_translate("settings.work_packages.activities.helper_text",
+      helpers.link_translate("settings.work_packages.activities.helper_text_html",
                              links: { docs_url: %i[enterprise_features internal_comments] })
     end
   end

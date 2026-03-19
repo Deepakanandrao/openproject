@@ -1283,7 +1283,7 @@ en:
       status_excluded_from_totals_text: |-
         Check this option to exclude work packages with this status from totals of Work,
         Remaining work, and % Complete in a hierarchy.
-      status_percent_complete_text: |-
+      status_percent_complete_text_html: |-
         In [status-based progress calculation mode](setting_url), the % Complete of a work
         package is automatically set to this value when this status is selected.
         Ignored in work-based mode.
@@ -3473,9 +3473,9 @@ en:
     configuration_guide: "Configuration guide"
     get_in_touch: "You have questions? Get in touch with us."
 
-  instructions_after_registration: "You can sign in as soon as your account has been activated by clicking [here](signin_url)."
-  instructions_after_logout: "You can sign in again by clicking [here](signin_url)."
-  instructions_after_error: "You can try to sign in again by clicking [here](signin_url). If the error persists, ask your admin for help."
+  instructions_after_registration_link: "You can sign in as soon as your account has been activated by clicking [here](signin_url)."
+  instructions_after_logout_link: "You can sign in again by clicking [here](signin_url)."
+  instructions_after_error_link: "You can try to sign in again by clicking [here](signin_url). If the error persists, ask your admin for help."
 
   menus:
     admin:
@@ -4896,7 +4896,7 @@ en:
     storage:
       not_available: "Disk storage consumption is not available for this repository."
       update_timeout: "Keep the last required disk space information for a repository for N minutes.\nAs counting the required disk space of a repository may be costly, increase this value to reduce performance impact."
-      oauth_application_details: "The client secret value will not be accessible again after you close this window. Please copy these values into the Nextcloud OpenProject Integration settings:"
+      oauth_application_details_html: "The client secret value will not be accessible again after you close this window. Please copy these values into the Nextcloud OpenProject Integration settings:"
       oauth_application_details_link_text: "Go to settings page"
       setup_documentation_details: "If you need help configuring a new file storage please check the documentation: "
       setup_documentation_details_link_text: "File storages setup"
@@ -4952,7 +4952,7 @@ en:
   setting_apiv3_cors_title: "Cross-Origin Resource Sharing (CORS)"
   setting_apiv3_cors_enabled: "Enable CORS"
   setting_apiv3_cors_origins: "API V3 Cross-Origin Resource Sharing (CORS) allowed origins"
-  setting_apiv3_cors_origins_text_html: >
+  setting_apiv3_cors_origins_instructions_html: >
     If CORS is enabled, these are the origins that are allowed to access OpenProject API.
     <br/>
     Please check the [Documentation on the Origin header](docs_url) on how to specify the expected values.
@@ -4964,7 +4964,7 @@ en:
     This setting has a use-case for e.g., importing data, but allows
     administrators to impersonate the creation of items as other users. All creation requests are being
     logged however with the true author.
-  setting_apiv3_write_readonly_attributes_additional: >
+  setting_apiv3_write_readonly_attributes_additional_html: >
     For more information on attributes and supported resources, please see the [API documentation](api_documentation_link).
   setting_apiv3_max_page_size: "Maximum API page size"
   setting_apiv3_max_page_size_instructions: >
@@ -5375,7 +5375,7 @@ en:
       not_allowed_text: "You do not have the necessary permissions to view this page."
       activities:
         enable_internal_comments: "Enable internal comments"
-        helper_text: >
+        helper_text_html: >
           Internal comments allow an internal team to communicate amongst themselves privately. 
           These are only visible to selected roles that have the necessary permissions and will not be visible publicly.
           [Click here to learn more](docs_url)
@@ -5659,10 +5659,10 @@ en:
   version_status_open: "open"
 
   note: Note
-  note_password_login_disabled: "Password login has been disabled through a [configuration setting](configuration_url)."
+  note_password_login_disabled_link: "Password login has been disabled through a [configuration setting](configuration_url)."
   warning: Warning
   warning_attachments_not_saved: "%{count} file(s) could not be saved."
-  warning_imminent_user_limit: >
+  warning_imminent_user_limit_html: >
     You invited more users than are supported by your current plan.
     Invited users may not be able to join your OpenProject environment.
     Please [upgrade your plan](upgrade_url) or block existing
@@ -5673,7 +5673,7 @@ en:
   warning_user_limit_reached: >
     Adding additional users will exceed the current limit. 
     Please contact an administrator to increase the user limit to ensure external users are able to access this instance.
-  warning_user_limit_reached_admin: >
+  warning_user_limit_reached_admin_html: >
     Adding additional users will exceed the current limit. 
     Please [upgrade your plan](upgrade_url) to be able to ensure external users are able to access this instance.
   warning_user_limit_reached_instructions: >
@@ -5776,7 +5776,7 @@ en:
     warning_user_limit_reached: >
       Adding additional users will exceed the current limit.
       Please contact an administrator to increase the user limit to ensure external users are able to access this %{entity}.
-    warning_user_limit_reached_admin: >
+    warning_user_limit_reached_admin_html: >
       Adding additional users will exceed the current limit. 
       Please [upgrade your plan](upgrade_url) to be able to ensure external users are able to access this %{entity}.
     warning_no_selected_user: "Please select users to share this %{entity} with"

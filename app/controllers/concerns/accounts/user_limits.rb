@@ -93,7 +93,7 @@ module Accounts::UserLimits
   def user_limit_warning
     if current_user.admin?
       link_translate(
-        :warning_user_limit_reached_admin,
+        :warning_user_limit_reached_admin_html,
         links: { upgrade_url: OpenProject::Enterprise.upgrade_url }
       )
     else
@@ -114,7 +114,7 @@ module Accounts::UserLimits
   # but if all invited users were to activate their accounts it would be reached.
   def imminent_user_limit_warning
     link_translate(
-      :warning_imminent_user_limit,
+      :warning_imminent_user_limit_html,
       links: { upgrade_url: OpenProject::Enterprise.upgrade_url }
     )
   end
