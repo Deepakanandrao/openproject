@@ -77,7 +77,7 @@ RSpec.describe API::V3::WorkPackages::Schema::WorkPackageSchemaRepresenter, with
       end
     end
 
-    context "when not a story" do
+    context "when not a story", with_flag: { scrum_projects: false } do
       before do
         allow(schema.type).to receive(:story?).and_return(false)
       end
@@ -107,7 +107,7 @@ RSpec.describe API::V3::WorkPackages::Schema::WorkPackageSchemaRepresenter, with
       end
     end
 
-    context "when not a story" do
+    context "when not a story", with_flag: { scrum_projects: false } do
       before do
         allow(schema.type).to receive(:story?).and_return(false)
       end
@@ -159,7 +159,7 @@ RSpec.describe API::V3::WorkPackages::Schema::WorkPackageSchemaRepresenter, with
       end
     end
 
-    context "when not a story" do
+    context "when not a story", with_flag: { scrum_projects: false } do
       before do
         allow(schema.type).to receive(:story?).and_return(false)
       end
