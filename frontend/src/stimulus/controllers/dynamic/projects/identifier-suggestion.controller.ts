@@ -37,6 +37,7 @@ const ALLOWED_CHARS:Record<string, RegExp> = {
 
 export default class extends ApplicationController {
   static debounces = ['fetchSuggestion'];
+  static targets = ['name', 'identifier'];
 
   static values = {
     url: String,
@@ -50,68 +51,64 @@ export default class extends ApplicationController {
   declare modeValue:string;
   declare setNameFirstValue:string;
 
-  private nameInput:HTMLInputElement | null = null;
-  private identifierInput:HTMLInputElement | null = null;
+  declare readonly nameTarget:HTMLInputElement;
+  declare readonly identifierTarget:HTMLInputElement;
+  declare readonly hasNameTarget:boolean;
+  declare readonly hasIdentifierTarget:boolean;
+
   private handleBlur:((event:Event) => void) | null = null;
   private handleInput:((event:Event) => void) | null = null;
 
   connect():void {
-    this.nameInput = this.element.querySelector<HTMLInputElement>('[name="project[name]"]');
-    this.identifierInput = this.element.querySelector<HTMLInputElement>('[name="project[identifier]"]');
-
-    if (!this.nameInput || !this.identifierInput) return;
+    if (!this.hasNameTarget || !this.hasIdentifierTarget) return;
 
     this.handleInput = () => this.filterInput();
-    this.identifierInput.addEventListener('input', this.handleInput);
+    this.identifierTarget.addEventListener('input', this.handleInput);
 
     if (this.urlValue) {
-      if (!this.identifierInput.value) {
-        this.identifierInput.placeholder = this.setNameFirstValue;
-        this.identifierInput.readOnly = true;
+      if (!this.identifierTarget.value) {
+        this.identifierTarget.placeholder = this.setNameFirstValue;
+        this.identifierTarget.readOnly = true;
       }
 
       useDebounce(this, { wait: this.debounceValue });
 
       this.handleBlur = () => {
-        const name = this.nameInput!.value.trim();
+        const name = this.nameTarget.value.trim();
         if (name) void this.fetchSuggestion(name);
       };
 
-      this.nameInput.addEventListener('blur', this.handleBlur);
+      this.nameTarget.addEventListener('blur', this.handleBlur);
     }
   }
 
   disconnect():void {
-    if (this.nameInput && this.handleBlur) {
-      this.nameInput.removeEventListener('blur', this.handleBlur);
+    if (this.hasNameTarget && this.handleBlur) {
+      this.nameTarget.removeEventListener('blur', this.handleBlur);
     }
-    if (this.identifierInput && this.handleInput) {
-      this.identifierInput.removeEventListener('input', this.handleInput);
+    if (this.hasIdentifierTarget && this.handleInput) {
+      this.identifierTarget.removeEventListener('input', this.handleInput);
     }
   }
 
   private filterInput():void {
-    if (!this.identifierInput) return;
-
     const pattern = ALLOWED_CHARS[this.modeValue] ?? ALLOWED_CHARS.legacy;
-    const current = this.identifierInput.value;
+    const current = this.identifierTarget.value;
     const filtered = current.replace(pattern, '');
 
     if (filtered !== current) {
-      const pos = this.identifierInput.selectionStart ?? filtered.length;
-      this.identifierInput.value = filtered;
+      const pos = this.identifierTarget.selectionStart ?? filtered.length;
+      this.identifierTarget.value = filtered;
       const newPos = Math.min(pos, filtered.length);
-      this.identifierInput.setSelectionRange(newPos, newPos);
+      this.identifierTarget.setSelectionRange(newPos, newPos);
     }
   }
 
   private async fetchSuggestion(name:string):Promise<void> {
     if (!this.urlValue) return;
 
-    if (this.identifierInput) {
-      this.identifierInput.readOnly = true;
-      this.identifierInput.placeholder = I18n.t('js.projects.identifier_suggestion.loading');
-    }
+    this.identifierTarget.readOnly = true;
+    this.identifierTarget.placeholder = I18n.t('js.projects.identifier_suggestion.loading');
 
     try {
       const url = `${this.urlValue}?name=${encodeURIComponent(name)}`;
@@ -120,14 +117,10 @@ export default class extends ApplicationController {
       if (!response.ok) return;
 
       const data = await response.json() as { identifier:string };
-      if (this.identifierInput) {
-        this.identifierInput.value = data.identifier;
-      }
+      this.identifierTarget.value = data.identifier;
     } finally {
-      if (this.identifierInput) {
-        this.identifierInput.readOnly = false;
-        this.identifierInput.placeholder = '';
-      }
+      this.identifierTarget.readOnly = false;
+      this.identifierTarget.placeholder = '';
     }
   }
 }
