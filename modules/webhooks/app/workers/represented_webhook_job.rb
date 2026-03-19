@@ -29,7 +29,7 @@
 #++
 
 class RepresentedWebhookJob < WebhookJob
-  attr_reader :resource
+  attr_reader :resource, :actor
 
   def perform(webhook_id, resource, event_name, actor: nil)
     @resource = resource
@@ -89,15 +89,14 @@ class RepresentedWebhookJob < WebhookJob
     # have all the custom field visibility permissions set up correctly.
     User.system.run_given do
       payload = { action: event_name, payload_key => represented_payload }
-      actor = actor_payload
-      payload[:actor] = actor if actor
+      payload[:actor] = actor_payload if actor
       payload.to_json
     end
   end
 
   def actor_payload
-    return nil unless @actor
+    return nil unless actor
 
-    ::API::V3::Users::UserRepresenter.create(@actor, current_user: User.current)
+    ::API::V3::Users::UserRepresenter.create(actor, current_user: User.current)
   end
 end

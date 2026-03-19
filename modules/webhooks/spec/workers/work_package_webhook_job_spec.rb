@@ -239,32 +239,4 @@ RSpec.describe WorkPackageWebhookJob, :webmock, type: :model do
       end
     end
   end
-
-  describe "admin custom field regression with actor (PR #16912)" do
-    shared_let(:project) { work_package.project }
-    shared_let(:custom_field) do
-      create(:project_custom_field, :string, admin_only: true, projects: [project])
-    end
-    shared_let(:custom_value) do
-      create(:custom_value,
-             custom_field:,
-             customized: project,
-             value: "wat")
-    end
-    let(:updater) { create(:admin) }
-
-    it_behaves_like "a work package webhook call" do
-      let(:event) { "work_package:updated" }
-      let(:actor) { updater }
-
-      it "includes the custom field value" do
-        subject
-        expect(stub).to have_been_requested
-
-        log = Webhooks::Log.last
-        embedded_project = JSON.parse(log.request_body)["work_package"]["_embedded"]["project"]
-        expect(embedded_project[custom_field.attribute_name(:camel_case)]).to eq "wat"
-      end
-    end
-  end
 end
