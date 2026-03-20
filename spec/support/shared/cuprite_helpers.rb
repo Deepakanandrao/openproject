@@ -77,6 +77,37 @@ def clear_input_field_contents(input_element)
   input_element.native.node.type(*backspaces)
 end
 
+# Executes the given block and waits for a Turbo stream to be rendered.
+#
+# Sets up a JS event listener BEFORE yielding, avoiding the race condition
+# where the stream renders before the listener is registered.
+#
+# @example
+#   wait_for_turbo_stream { click_button "Save" }
+#   expect(page).to have_text("Saved")
+#
+def wait_for_turbo_stream(&block)
+  unless using_cuprite?
+    yield if block
+    return
+  end
+
+  page.execute_script(<<~JS)
+    window.__opTurboStreamRendered = new Promise((resolve) => {
+      document.addEventListener('op:turbo-stream-rendered', () => resolve(true), { once: true });
+    });
+  JS
+
+  yield
+
+  page.driver.evaluate_async_script(<<~JS)
+    window.__opTurboStreamRendered.then(() => {
+      delete window.__opTurboStreamRendered;
+      arguments[0](true);
+    });
+  JS
+end
+
 # Executes the given block and waits for a Turbo Drive navigation to complete.
 #
 # Sets up a listener for turbo:load BEFORE yielding, avoiding the race
@@ -86,12 +117,7 @@ end
 #   wait_for_turbo { click_link_or_button "Save" }
 #   expect(page).to have_text("Saved")
 #
-def wait_for_turbo(&block)
-  unless using_cuprite?
-    yield if block
-    return
-  end
-
+def wait_for_turbo(&)
   page.execute_script(<<~JS)
     window.__opTurboLoaded = new Promise((resolve) => {
       document.addEventListener('turbo:load', () => resolve(true), { once: true });
