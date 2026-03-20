@@ -86,15 +86,17 @@ end
 #   wait_for_turbo_stream { click_button "Save" }
 #   expect(page).to have_text("Saved")
 #
-def wait_for_turbo_stream(&block)
+def wait_for_turbo_stream(timeout: 10, &block)
   unless using_cuprite?
     yield if block
     return
   end
 
-  page.execute_script(<<~JS)
-    window.__opTurboStreamRendered = new Promise((resolve) => {
-      document.addEventListener('op:turbo-stream-rendered', () => resolve(true), { once: true });
+  timeout_ms = timeout * 1000
+  page.execute_script(<<~JS, timeout_ms)
+    window.__opTurboStreamRendered = new Promise((resolve, reject) => {
+      const timer = setTimeout(() => reject(new Error('wait_for_turbo_stream: no turbo stream rendered within #{timeout}s')), arguments[0]);
+      document.addEventListener('op:turbo-stream-rendered', () => { clearTimeout(timer); resolve(true); }, { once: true });
     });
   JS
 
@@ -117,10 +119,17 @@ end
 #   wait_for_turbo { click_link_or_button "Save" }
 #   expect(page).to have_text("Saved")
 #
-def wait_for_turbo(&)
-  page.execute_script(<<~JS)
-    window.__opTurboLoaded = new Promise((resolve) => {
-      document.addEventListener('turbo:load', () => resolve(true), { once: true });
+def wait_for_turbo(timeout: 10, &block)
+  unless using_cuprite?
+    yield if block
+    return
+  end
+
+  timeout_ms = timeout * 1000
+  page.execute_script(<<~JS, timeout_ms)
+    window.__opTurboLoaded = new Promise((resolve, reject) => {
+      const timer = setTimeout(() => reject(new Error('wait_for_turbo: no turbo:load event within #{timeout}s')), arguments[0]);
+      document.addEventListener('turbo:load', () => { clearTimeout(timer); resolve(true); }, { once: true });
     });
   JS
 
