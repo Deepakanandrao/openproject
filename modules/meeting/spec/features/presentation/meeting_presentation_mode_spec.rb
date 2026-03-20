@@ -210,7 +210,9 @@ RSpec.describe "Meeting Presentation Mode", :js do
     # Delete the outcome
     show_page.in_outcome_component(item) do
       show_page.expect_outcome "Updated outcome"
-      show_page.select_outcome_action "Remove outcome"
+      accept_confirm(I18n.t(:text_are_you_sure)) do
+        show_page.select_outcome_action "Remove outcome"
+      end
 
       show_page.expect_no_outcome "Updated outcome"
     end
