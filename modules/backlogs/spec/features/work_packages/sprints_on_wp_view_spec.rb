@@ -36,9 +36,10 @@ RSpec.describe "Sprint displayed and selectable on work package view", :js, with
   shared_let(:other_sprint) { create(:agile_sprint, project:) }
   shared_let(:work_package) { create(:work_package, project:, sprint:) }
 
-  current_user { create(:user, member_with_permissions: { project => %i(view_work_packages view_sprints manage_sprint_items) }) }
-
+  let(:permissions) { %i(view_work_packages view_sprints manage_sprint_items) }
   let(:wp_page) { Pages::FullWorkPackage.new(work_package) }
+
+  current_user { create(:user, member_with_permissions: { project => permissions }) }
 
   it "shows sprints and allows changing them" do
     wp_page.visit!
@@ -52,5 +53,23 @@ RSpec.describe "Sprint displayed and selectable on work package view", :js, with
     wp_page.visit!
 
     wp_page.expect_attributes sprint: other_sprint.name
+  end
+
+  context "with the feature flag disabled", with_flag: { scrum_projects: false } do
+    it "does not show a sprints property" do
+      wp_page.visit!
+
+      wp_page.expect_no_attribute "Sprint"
+    end
+  end
+
+  context "when lacking the permission to see sprints" do
+    let(:permissions) { %i(view_work_packages) }
+
+    it "does not show a sprints property" do
+      wp_page.visit!
+
+      wp_page.expect_no_attribute "Sprint"
+    end
   end
 end
