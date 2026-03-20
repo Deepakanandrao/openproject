@@ -139,12 +139,10 @@ RSpec.describe "Dashboard page managing", :js do
       # Resizing leads to the table area now spanning a larger area
       table_area.expect_to_span(4, 1, 5, 3)
 
-
-        expect(page)
-          .to have_content(created_work_package.subject)
-        expect(page)
-          .to have_content(assigned_work_package.subject)
-
+      expect(page)
+        .to have_content(created_work_package.subject)
+      expect(page)
+        .to have_content(assigned_work_package.subject)
 
       sleep(0.1)
 

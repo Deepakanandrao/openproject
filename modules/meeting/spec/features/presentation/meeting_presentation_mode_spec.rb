@@ -173,9 +173,10 @@ RSpec.describe "Meeting Presentation Mode", :js do
     # 2. Edit an agenda item (add notes)
     item = MeetingAgendaItem.find(first_agenda_item.id)
 
-    # Find and click the edit action for notes
+    # Find and click the edit action for notes and add a body (was empty before)
     show_page.select_action(item, "Edit")
     editor.set_markdown "# Hello there"
+
     show_page.in_edit_form(item) do
       click_link_or_button "Save"
     end
