@@ -143,21 +143,21 @@ RSpec.describe WorkPackages::IdentifierAutofix::PreviewQuery do
       expect(result.projects_data.first[:error_reason]).to eq(:starts_with_number)
     end
 
-    it "assigns :not_uppercase when identifier is lowercase but otherwise valid" do
+    it "assigns :not_fully_uppercased when identifier is lowercase but otherwise valid" do
       create_problematic_project(name: "Test", identifier: "proj")
-      expect(result.projects_data.first[:error_reason]).to eq(:not_uppercase)
+      expect(result.projects_data.first[:error_reason]).to eq(:not_fully_uppercased)
     end
 
     it "assigns :unknown when an identifier in the scope matches no known classification" do
       project = create_valid_project(name: "Oddball", identifier: "ODDBALL")
 
-      # Simulate a new problematic_scope condition that catches a project
+      # Simulate a new scope condition that catches a project
       # not covered by any error_reason branch (drift scenario).
-      query = described_class.new
+      analysis = WorkPackages::IdentifierAutofix::ProblematicIdentifiers.new
       forced_scope = Project.where(id: project.id)
-      allow(query).to receive(:problematic_scope).and_return(forced_scope)
+      allow(analysis).to receive(:scope).and_return(forced_scope)
+      allow(WorkPackages::IdentifierAutofix::ProblematicIdentifiers).to receive(:new).and_return(analysis)
 
-      result = query.call
       expect(result.projects_data.first[:error_reason]).to eq(:unknown)
     end
   end
