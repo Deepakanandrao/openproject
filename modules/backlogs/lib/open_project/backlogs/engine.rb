@@ -233,15 +233,10 @@ module OpenProject::Backlogs
         end
       end
 
-      story_and_sprint_permission = ->(type, project: nil) do
-        return true if OpenProject::FeatureDecisions.scrum_projects_active?
+      story_and_sprint_permission = ->(_type, project: nil) do
+        return false unless OpenProject::FeatureDecisions.scrum_projects_active?
 
-        if project.present?
-          type.story? && User.current.allowed_in_project?(:view_sprints, project)
-        else
-          # Allow globally configuring the attribute if story
-          type.story?
-        end
+        project.nil? || User.current.allowed_in_project?(:view_sprints, project)
       end
 
       # TODO: upon removal of the scrum_projects feature flag, remove these constraints
