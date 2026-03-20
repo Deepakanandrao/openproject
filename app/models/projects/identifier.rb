@@ -38,14 +38,14 @@ module Projects::Identifier
   included do
     extend FriendlyId
 
+    normalizes :identifier, with: OpenProject::RemoveAsciiControlCharacters
+
     ### ID generators
     # There are two supported formats:
     # 1. legacy slug identifiers (e.g. "project_one"),
     #   with work packages identified by global ID (e.g. "#123")
     # 2. semantic identifiers (e.g. "PROJ1"), with work packages identified by
     #   a combination of project identifier and local ID (e.g. "PROJ1-123")
-
-    # Generate legacy slug identifier (when in the legacy mode)
     acts_as_url :name,
                 url_attribute: :identifier,
                 sync_url: false, # Don't update identifier when name changes
@@ -75,7 +75,6 @@ module Projects::Identifier
                 p.identifier_changed? && p.identifier.present? && Setting::WorkPackageIdentifier.numeric?
               }
 
-    # Validators for the semantic format
     validates :identifier,
               format: { with: /\A[A-Z]/, message: :must_start_with_letter },
               if: ->(p) { p.identifier_changed? && p.identifier.present? && Setting::WorkPackageIdentifier.alphanumeric? }
