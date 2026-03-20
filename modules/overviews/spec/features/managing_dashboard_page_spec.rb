@@ -114,7 +114,7 @@ RSpec.describe "Dashboard page managing", :js do
       # We cannot use expect_and_dismiss_toaster for the first toast because its internal
       # expect_no_toaster check races with the second toast appearing immediately after dismiss.
       dashboard_page.expect_toast message: I18n.t("js.notice_successful_update")
-      dashboard_page.dismiss_toaster!
+      dashboard_page.dismiss_specific_toaster!(message: I18n.t("js.notice_successful_update"))
 
       # Fixing flaky spec: for some reason, the second request to load the table is not executed until
       # some activity happens on the page. Sending an enter key to trigger the second request.
