@@ -36,9 +36,11 @@ RSpec.describe "Start and finish sprints",
                :js,
                with_ee: %i[board_view],
                with_flag: { scrum_projects: true } do
-  let(:project) do
+  shared_let(:project) do
     create(:project, enabled_module_names: %i[backlogs work_package_tracking board_view])
   end
+  shared_let(:default_status) { create(:default_status) }
+
   let(:permissions) do
     %i[view_sprints add_work_packages view_work_packages create_sprints manage_sprint_items
        start_complete_sprint show_board_views manage_board_views save_queries
@@ -75,10 +77,6 @@ RSpec.describe "Start and finish sprints",
            start_date: Date.new(2025, 8, 25),
            finish_date: Date.new(2025, 9, 4))
   end
-
-  # Necessary so that work packages can be created via dialog
-  shared_let(:default_status) { create(:default_status) }
-  shared_let(:default_priority) { create(:default_priority) }
 
   before do
     login_as(user)
@@ -154,6 +152,37 @@ RSpec.describe "Start and finish sprints",
       expect_and_dismiss_flash type: :success, message: "The sprint was completed."
       expect(first_sprint.reload).to be_completed
       planning_page.expect_sprint_names_in_order(second_sprint.name)
+    end
+
+    context "with unfinished work packages" do
+      let(:closed_status) { create(:status, is_closed: true) }
+      let!(:closed_work_package) do
+        create(:work_package,
+               project:,
+               sprint: first_sprint,
+               status: closed_status)
+      end
+      let!(:unfinished_work_package1) do
+        create(:work_package,
+               sprint: first_sprint,
+               project:)
+      end
+      let!(:unfinished_work_package2) do
+        create(:work_package,
+               sprint: first_sprint,
+               project:)
+      end
+      let!(:wp_in_next_sprint) do
+        create(:work_package,
+               sprint: second_sprint,
+               project:)
+      end
+
+      it "allows moving unfinished work packages to the next sprint" do
+        planning_page.click_to_finish_sprint(first_sprint)
+
+        planning_page.expect_sprint_finishing_modal
+      end
     end
   end
 end

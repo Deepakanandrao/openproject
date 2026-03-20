@@ -198,8 +198,12 @@ module Pages
       expect(page).to have_css("#create-work-package-dialog")
     end
 
-    def within_sprint_menu(backlog, &)
-      within_sprint(backlog) do
+    def expect_sprint_finishing_modal
+      expect(page).to have_content "There are work in progress items"
+    end
+
+    def within_sprint_menu(sprint, &)
+      within_sprint(sprint) do
         button = find(:button, accessible_name: "Sprint actions")
         button.click
 
@@ -209,6 +213,12 @@ module Pages
 
     def within_work_package_row(work_package, &)
       within(work_package_selector(work_package), &)
+    end
+
+    def click_to_finish_sprint(sprint)
+      within_sprint_menu(sprint) do |menu|
+        menu.find(:button, "Finish sprint").click
+      end
     end
 
     private
