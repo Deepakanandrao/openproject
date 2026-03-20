@@ -144,7 +144,6 @@ RSpec.describe "Start and finish sprints",
     it "finishes the sprint and returns to the backlog" do
       planning_page.within_sprint_menu(first_sprint) do |menu|
         expect(menu).to have_selector :menuitem, "Finish sprint"
-        expect(menu).to have_css "form[action='#{finish_project_sprint_path(project, first_sprint)}'][data-turbo='false']"
         menu.find(:button, "Finish sprint").click
       end
 
@@ -182,6 +181,8 @@ RSpec.describe "Start and finish sprints",
         planning_page.click_to_finish_sprint(first_sprint)
 
         planning_page.expect_sprint_finishing_modal
+
+        planning_page.choose_to_move_unfinished_work_packages second_sprint.name
       end
     end
   end

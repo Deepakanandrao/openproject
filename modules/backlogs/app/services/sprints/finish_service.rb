@@ -50,11 +50,37 @@ class Sprints::FinishService < BaseServices::BaseCallable
   def finish_sprint
     return unsuccessful_finish_result unless model.active?
 
+    move_results = nil
+
+    if params[:move_to_sprint_id].present?
+      target_sprint = Agile::Sprint.find_by(id: params[:move_to_sprint_id])
+      unless target_sprint
+        model.errors.add(:base, :move_to_sprint_not_found)
+        return ServiceResult.failure(result: model, errors: model.errors)
+      end
+
+      move_results = move_open_work_packages(target_sprint)
+    end
+
+    open_count = model.work_packages.with_status_open.count
+    if open_count > 0
+      model.errors.add(:base, :unfinished_work_packages, count: open_count)
+      return ServiceResult.failure(result: model, errors: model.errors)
+    end
+
     model.completed!
 
-    ServiceResult.success(result: model)
+    ServiceResult.success(result: model).tap do |result|
+      move_results&.each { |r| result.add_dependent!(r) }
+    end
   rescue ActiveRecord::RecordInvalid
     unsuccessful_finish_result
+  end
+
+  def move_open_work_packages(target_sprint)
+    model.work_packages.with_status_open.map do |wp|
+      WorkPackages::UpdateService.new(user:, model: wp).call(sprint_id: target_sprint.id)
+    end
   end
 
   def unsuccessful_finish_result

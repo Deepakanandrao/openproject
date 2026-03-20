@@ -124,8 +124,17 @@ class RbSprintsController < RbApplicationController
     result = finish_sprint
 
     if result.success?
-      redirect_to backlogs_project_backlogs_path(@project),
-                  notice: I18n.t(:notice_successful_finish)
+      flash[:notice] = I18n.t(:notice_successful_finish)
+      render turbo_stream: turbo_stream.redirect_to(backlogs_project_backlogs_path(@project))
+    elsif result.includes_error?(:base, :unfinished_work_packages)
+      respond_with_dialog(
+        Backlogs::FinishSprintDialogComponent.new(
+          sprint: @sprint,
+          project: @project,
+          unfinished_count: @sprint.work_packages.with_status_open.count,
+          available_sprints: Agile::Sprint.for_project(@project).not_completed.where.not(id: @sprint.id)
+        )
+      )
     else
       respond_with_start_finish_failure(message: start_finish_failure_message(:finish, result.message))
     end
@@ -235,7 +244,7 @@ class RbSprintsController < RbApplicationController
   def finish_sprint
     Sprints::FinishService
       .new(user: current_user, model: @sprint)
-      .call
+      .call(move_to_sprint_id: params[:move_to_sprint_id])
   end
 
   def respond_with_start_finish_failure(message:)

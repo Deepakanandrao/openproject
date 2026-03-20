@@ -199,7 +199,7 @@ module Pages
     end
 
     def expect_sprint_finishing_modal
-      expect(page).to have_content "There are work in progress items"
+      expect(page).to have_css sprint_finish_modal_selector
     end
 
     def within_sprint_menu(sprint, &)
@@ -218,6 +218,14 @@ module Pages
     def click_to_finish_sprint(sprint)
       within_sprint_menu(sprint) do |menu|
         menu.find(:button, "Finish sprint").click
+      end
+    end
+
+    def choose_to_move_unfinished_work_packages(sprint_name)
+      within sprint_finish_modal_selector do
+        select sprint_name, from: "Select sprint"
+
+        click_button "Close sprint"
       end
     end
 
@@ -245,6 +253,10 @@ module Pages
 
     def work_package_selector(work_package)
       test_selector("work-package-#{work_package.id}")
+    end
+
+    def sprint_finish_modal_selector
+      "##{::Backlogs::FinishSprintDialogComponent::DIALOG_ID}"
     end
 
     def within_menu_controlled_by(button)
