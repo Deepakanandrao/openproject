@@ -116,7 +116,7 @@ class RbSprintsController < RbApplicationController
       redirect_to project_work_package_board_path(@project, @sprint.task_board_for(@project)),
                   notice: I18n.t(:notice_successful_start)
     else
-      respond_with_start_failure(message: start_failure_message(result.message))
+      respond_with_start_finish_failure(message: start_finish_failure_message(:start, result.message))
     end
   end
 
@@ -130,7 +130,7 @@ class RbSprintsController < RbApplicationController
       redirect_to backlogs_project_backlogs_path(@project),
                   notice: I18n.t(:notice_successful_finish)
     else
-      respond_with_finish_failure(message: finish_failure_message(result.message))
+      respond_with_start_finish_failure(message: start_finish_failure_message(:finish, result.message))
     end
   end
 
@@ -241,39 +241,23 @@ class RbSprintsController < RbApplicationController
       .call
   end
 
-  def respond_with_start_failure(message:)
+  def respond_with_start_finish_failure(message:)
     render_error_flash_message_via_turbo_stream(message:)
 
     respond_with_turbo_streams(status: :unprocessable_entity) do |format|
-      format.html do
-        redirect_back_or_to(backlogs_project_backlogs_path(@project), alert: message)
-      end
+      fallback_responses_for(format, alert: message)
     end
   end
 
-  def start_failure_message(reason)
+  def fallback_responses_for(format, **)
+    format.html { redirect_back_or_to(backlogs_project_backlogs_path(@project), **) }
+  end
+
+  def start_finish_failure_message(action, reason)
     if reason.present?
-      I18n.t(:notice_unsuccessful_start_with_reason, reason:)
+      I18n.t(:"notice_unsuccessful_#{action}_with_reason", reason:)
     else
-      I18n.t(:notice_unsuccessful_start)
-    end
-  end
-
-  def respond_with_finish_failure(message:)
-    render_error_flash_message_via_turbo_stream(message:)
-
-    respond_with_turbo_streams(status: :unprocessable_entity) do |format|
-      format.html do
-        redirect_back_or_to(backlogs_project_backlogs_path(@project), alert: message)
-      end
-    end
-  end
-
-  def finish_failure_message(reason)
-    if reason.present?
-      I18n.t(:notice_unsuccessful_finish_with_reason, reason:)
-    else
-      I18n.t(:notice_unsuccessful_finish)
+      I18n.t(:"notice_unsuccessful_#{action}")
     end
   end
 end
