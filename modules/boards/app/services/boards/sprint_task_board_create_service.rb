@@ -35,7 +35,12 @@ module Boards
     def before_perform(_service_result)
       create_queries_results = create_queries(params)
 
-      return create_queries_results.find(&:failure?) if create_queries_results.any?(&:failure?)
+      failures = create_queries_results.select(&:failure?)
+      if failures.any?
+        return ServiceResult.failure.tap do |result|
+          failures.each { |f| result.add_dependent!(f) }
+        end
+      end
 
       set_attributes(params.merge(query_ids: create_queries_results.map { it.result.id })).tap do |service_result|
         service_result.result.linked = params[:sprint] if service_result.success?
