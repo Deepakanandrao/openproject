@@ -35,12 +35,8 @@ module Boards
     def before_perform(_service_result)
       create_queries_results = create_queries(params)
 
-      failures = create_queries_results.select(&:failure?)
-      if failures.any?
-        return ServiceResult.failure.tap do |result|
-          failures.each { |f| result.add_dependent!(f) }
-        end
-      end
+      failure_result = aggregate_failures(create_queries_results)
+      return failure_result if failure_result
 
       set_attributes(params.merge(query_ids: create_queries_results.map { it.result.id })).tap do |service_result|
         service_result.result.linked = params[:sprint] if service_result.success?
@@ -48,6 +44,15 @@ module Boards
     end
 
     private
+
+    def aggregate_failures(results)
+      failures = results.select(&:failure?)
+      return nil if failures.empty?
+
+      ServiceResult.failure.tap do |result|
+        failures.each { |f| result.add_dependent!(f) }
+      end
+    end
 
     def create_query_params(params, status)
       default_create_query_params(params).merge(
