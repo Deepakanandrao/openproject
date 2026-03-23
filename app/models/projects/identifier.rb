@@ -147,14 +147,14 @@ module Projects::Identifier
   end
 
   # Checks friendly_id_slugs for any project that previously used this identifier and
-  # has since changed it. It allows to switch back to an identifier the project itself
-  # has used before. Uses case-insensitive comparison to prevent cross-case collisions.
+  # has since changed it. It allows a project to switch back to an identifier it has
+  # used before. Plain equality works because `normalizes :identifier` ensures consistent
+  # casing before FriendlyId records the slug.
   def identifier_not_historically_reserved
     return if errors.any? { |error| error.attribute == :identifier && error.type == :taken }
 
     already_existing = FriendlyId::Slug
-                         .where("LOWER(slug) = LOWER(?)", identifier)
-                         .where(sluggable_type: self.class.to_s)
+                         .where(slug: identifier, sluggable_type: self.class.to_s)
                          .where.not(sluggable_id: id)
                          .exists?
 
