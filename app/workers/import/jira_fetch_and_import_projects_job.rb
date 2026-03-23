@@ -130,19 +130,32 @@ module Import
       jira_client = jira_import.client
       updated_at = Time.zone.now
       created_at = updated_at
-      user_keys.compact.map do |jira_user_key|
-        # here we send a direct user request to get group memberships
-        # which are not returned by users_search endpoint
-        jira_user_by_key = jira_client.user_by_key(key: jira_user_key)
-        {
-          payload: jira_user_by_key,
-          jira_id: jira_import.jira_id,
-          jira_import_id: jira_import.id,
-          jira_user_key:,
-          created_at:,
-          updated_at:
-        }
+      user_keys.compact.filter_map do |jira_user_key|
+        build_user_upsert_data(
+          jira_user_key,
+          created_at,
+          updated_at,
+          jira_import,
+          jira_client
+        )
       end
+    end
+
+    def build_user_upsert_data(jira_user_key, created_at, updated_at, jira_import, jira_client)
+      # here we send a direct user request to get group memberships
+      # which are not returned by users_search endpoint
+      jira_user_by_key = jira_client.user_by_key(key: jira_user_key)
+      {
+        payload: jira_user_by_key,
+        jira_id: jira_import.jira_id,
+        jira_import_id: jira_import.id,
+        jira_user_key:,
+        created_at:,
+        updated_at:
+      }
+    rescue StandardError => e
+      Rails.logger.error "Error fetching user data for user key #{jira_user_key}: #{e.message}"
+      nil
     end
 
     def import_users(jira_import)
