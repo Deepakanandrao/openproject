@@ -29,7 +29,7 @@
 #++
 
 require "spec_helper"
-require_relative "../../support/pages/backlogs"
+require_relative "../../support/pages/sprint_planning"
 
 RSpec.describe "Create work package in sprint", :js, with_flag: { scrum_projects: true } do
   let!(:project) do
@@ -64,7 +64,7 @@ RSpec.describe "Create work package in sprint", :js, with_flag: { scrum_projects
   let!(:sprint1_wp2) { create(:work_package, sprint: sprint1, type:, project:) }
   let!(:sprint1_other_project_wp1) { create(:work_package, sprint: sprint1, type:, project: project2) }
 
-  let(:backlogs_page) { Pages::Backlogs.new(project) }
+  let(:backlogs_page) { Pages::SprintPlanning.new(project) }
 
   current_user do
     create(:user,
@@ -87,7 +87,7 @@ RSpec.describe "Create work package in sprint", :js, with_flag: { scrum_projects
 
   context "in a non shared sprint" do
     it "allows creating a new story" do
-      backlogs_page.click_in_sprint_menu(sprint1, "New story")
+      backlogs_page.click_in_sprint_menu(sprint1, "Add work package")
 
       within_dialog "New work package" do
         fill_in "Subject", with: "The new item"
@@ -109,7 +109,7 @@ RSpec.describe "Create work package in sprint", :js, with_flag: { scrum_projects
       # xpect(page).to have_css(".velocity", text: "12")
 
       # this will ensure that the page refresh is through before we check the order
-      backlogs_page.click_in_sprint_menu(sprint1, "New story")
+      backlogs_page.click_in_sprint_menu(sprint1, "Add work package")
 
       within_dialog "New work package" do
         fill_in "Subject", with: "Another story"
@@ -136,7 +136,7 @@ RSpec.describe "Create work package in sprint", :js, with_flag: { scrum_projects
 
   context "in an empty non shared sprint" do
     it "allows creating a new story" do
-      backlogs_page.click_in_sprint_menu(sprint2, "New story")
+      backlogs_page.click_in_sprint_menu(sprint2, "Add work package")
 
       within_dialog "New work package" do
         fill_in "Subject", with: "The new item"
@@ -155,10 +155,10 @@ RSpec.describe "Create work package in sprint", :js, with_flag: { scrum_projects
   end
 
   context "in a shared sprint" do
-    let(:backlogs_page) { Pages::Backlogs.new(project2) }
+    let(:backlogs_page) { Pages::SprintPlanning.new(project2) }
 
     it "allows creating a new story" do
-      backlogs_page.click_in_sprint_menu(sprint1, "New story")
+      backlogs_page.click_in_sprint_menu(sprint1, "Add work package")
 
       within_dialog "New work package" do
         fill_in "Subject", with: "The new item"
@@ -186,7 +186,7 @@ RSpec.describe "Create work package in sprint", :js, with_flag: { scrum_projects
     end
 
     it "does not show a menu item for creating a new work package" do
-      backlogs_page.expect_no_sprint_menu_item(sprint1, "New story")
+      backlogs_page.expect_no_sprint_menu_item(sprint1, "Add work package")
     end
   end
 end

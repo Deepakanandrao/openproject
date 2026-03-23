@@ -106,21 +106,6 @@ module Pages
       end
     end
 
-    def drag_work_package(moved, before: nil, into: nil)
-      raise ArgumentError, "You must specify a either before or into" unless before || into || (before && into)
-
-      moved_element = find("#{work_package_selector(moved)} .DragHandle")
-      target_element = if before
-                         find(work_package_selector(before))
-                       else
-                         find(sprint_selector(into))
-                       end
-
-      moved_element.native.drag_to(target_element.native, delay: 0.1)
-    rescue Capybara::Cuprite::ObsoleteNode
-      retry
-    end
-
     def fold_backlog(backlog)
       within_backlog(backlog) do
         find(:button, aria: { controls: "backlog_#{backlog.id}-list" }).click
@@ -168,34 +153,10 @@ module Pages
       end
     end
 
-    def expect_work_packages_in_sprint_in_order(sprint,
-                                                work_packages: [])
-      raise ArgumentError, "work_packages should not be empty" if work_packages.empty?
-
-      within_sprint(sprint) do
-        selectors = work_packages.map { |wp| work_package_selector(wp) }
-
-        expect(page)
-          .to have_css(selectors.join(" + "))
-      end
-    end
-
-    def expect_work_package_not_draggable(work_package)
-      expect(page)
-        .to have_no_css("#{work_package_selector(work_package)} .DragHandle")
-    end
-
     def expect_and_dismiss_error(message)
       expect(page).to have_content message
 
       click_on "Cancel"
-    end
-
-    def expect_no_sprint_menu_item(sprint, item_name)
-      within_sprint_menu(sprint) do |_menu|
-        expect(page)
-          .to have_no_selector(:menuitem, text: item_name)
-      end
     end
 
     def path
@@ -235,22 +196,6 @@ module Pages
       wait_for_network_idle
 
       details_view
-    end
-
-    def expect_create_work_package_dialog
-      expect(page).to have_css("#create-work-package-dialog")
-    end
-
-    def within_sprint_menu(backlog, &)
-      within_sprint(backlog) do
-        find(:button, accessible_name: "Sprint actions").click
-
-        within(:menu, &)
-      end
-    end
-
-    def within_work_package_row(work_package, &)
-      within(work_package_selector(work_package), &)
     end
 
     private
