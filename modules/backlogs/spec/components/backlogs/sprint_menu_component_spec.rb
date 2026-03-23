@@ -132,7 +132,7 @@ RSpec.describe Backlogs::SprintMenuComponent, type: :component do
     end
 
     context "when the sprint is in planning and the user can start it" do
-      let(:permissions) { %i[view_sprints view_work_packages start_complete_sprint] }
+      let(:permissions) { %i[view_sprints view_work_packages show_board_views start_complete_sprint] }
 
       it "shows Start sprint as the first item" do
         render_component
@@ -215,20 +215,21 @@ RSpec.describe Backlogs::SprintMenuComponent, type: :component do
                finish_date: Date.tomorrow,
                status: "active")
       end
-      let(:permissions) { %i[view_sprints view_work_packages create_sprints manage_sprint_items start_complete_sprint] }
+      let(:permissions) do
+        %i[view_sprints view_work_packages show_board_views create_sprints manage_sprint_items start_complete_sprint]
+      end
 
       before do
         create(:member,
                project: source_project,
                principal: user,
-               roles: [create(:project_role, permissions: %i[start_complete_sprint])])
+               roles: [create(:project_role, permissions: %i[view_sprints start_complete_sprint])])
       end
 
-      it "hides Start sprint and Finish sprint" do
+      it "shows Finish sprint" do
         render_component
 
-        expect(page).to have_no_selector(:menuitem, text: "Start sprint")
-        expect(page).to have_no_selector(:menuitem, text: "Finish sprint")
+        expect(page).to have_selector(:menuitem, text: "Finish sprint")
       end
 
       it "does not show Task board for a board in the source project" do
@@ -245,6 +246,33 @@ RSpec.describe Backlogs::SprintMenuComponent, type: :component do
         render_component
 
         expect(page).to have_selector(:menuitem, text: "Task board")
+      end
+
+      context "when the sprint is in planning" do
+        let(:sprint) do
+          create(:agile_sprint,
+                 project: source_project,
+                 name: "Shared Sprint",
+                 start_date: Date.yesterday,
+                 finish_date: Date.tomorrow,
+                 status: "in_planning")
+        end
+
+        it "shows Start sprint" do
+          render_component
+
+          expect(page).to have_selector(:menuitem, text: "Start sprint")
+        end
+
+        context "without rendered-project board access" do
+          let(:permissions) { %i[view_sprints view_work_packages create_sprints manage_sprint_items] }
+
+          it "hides Start sprint" do
+            render_component
+
+            expect(page).to have_no_selector(:menuitem, text: "Start sprint")
+          end
+        end
       end
     end
   end

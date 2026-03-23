@@ -62,11 +62,11 @@ module Backlogs
     end
 
     def show_start_sprint_action?
-      sprint.project == project && sprint.in_planning? && user_allowed_in_source_project?(:start_complete_sprint)
+      sprint.in_planning? && ::Sprints::StartContract.can_start?(user: current_user, sprint:, project:)
     end
 
     def show_finish_sprint_action?
-      sprint.project == project && sprint.active? && user_allowed_in_source_project?(:start_complete_sprint)
+      sprint.active? && ::Sprints::StartContract.can_start_or_finish?(user: current_user, sprint:)
     end
 
     def disable_start_sprint_action?
@@ -81,10 +81,6 @@ module Backlogs
 
     def user_allowed?(permission)
       current_user.allowed_in_project?(permission, project)
-    end
-
-    def user_allowed_in_source_project?(permission)
-      current_user.allowed_in_project?(permission, sprint.project)
     end
 
     def available_story_types

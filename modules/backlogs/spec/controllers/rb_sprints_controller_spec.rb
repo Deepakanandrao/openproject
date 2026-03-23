@@ -157,7 +157,7 @@ RSpec.describe RbSprintsController do
     shared_let(:type_feature) { create(:type_feature) }
     shared_let(:type_task) { create(:type_task) }
 
-    let(:all_permissions) { %i[view_sprints view_work_packages create_sprints start_complete_sprint] }
+    let(:all_permissions) { %i[view_sprints view_work_packages create_sprints start_complete_sprint show_board_views] }
     let(:permissions) { all_permissions }
     let(:user) do
       create(:user, member_with_permissions: { project => permissions })
@@ -313,13 +313,45 @@ RSpec.describe RbSprintsController do
           let(:source_project) { create(:project, sprint_sharing: "share_all_projects") }
           let(:project) { create(:project, sprint_sharing: "receive_shared") }
           let!(:sprint) { create(:agile_sprint, project: source_project) }
+          let(:source_permissions) { %i[view_sprints start_complete_sprint] }
+          let!(:board) { create(:board_grid_with_query, project:, linked: sprint) }
 
-          it "responds with not found and does not call the service", :aggregate_failures do
+          before do
+            create(:member,
+                   project: source_project,
+                   principal: user,
+                   roles: [create(:project_role, permissions: source_permissions)])
+          end
+
+          it "starts the sprint and redirects to the board", :aggregate_failures do
             post :start, params: request_params
 
-            expect(response).not_to be_successful
-            expect(response).to have_http_status(:not_found)
-            expect(service).not_to have_received(:call)
+            expect(response).to redirect_to(project_work_package_board_path(project, board))
+            expect(service).to have_received(:call)
+          end
+
+          context "without source-project start permission" do
+            let(:source_permissions) { %i[view_sprints] }
+
+            it "responds with forbidden and does not call the service", :aggregate_failures do
+              post :start, params: request_params
+
+              expect(response).not_to be_successful
+              expect(response).to have_http_status(:forbidden)
+              expect(service).not_to have_received(:call)
+            end
+          end
+
+          context "without rendered-project board access" do
+            let(:permissions) { all_permissions - [:show_board_views] }
+
+            it "responds with forbidden and does not call the service", :aggregate_failures do
+              post :start, params: request_params
+
+              expect(response).not_to be_successful
+              expect(response).to have_http_status(:forbidden)
+              expect(service).not_to have_received(:call)
+            end
           end
         end
 
@@ -414,12 +446,14 @@ RSpec.describe RbSprintsController do
 
         context "when the sprint is already active" do
           let!(:sprint) { create(:agile_sprint, project:, status: "active") }
+          let(:service_result) { ServiceResult.failure }
 
-          it "responds with not found", :aggregate_failures do
+          it "redirects back with the default start failure message", :aggregate_failures do
             post :start, params: request_params
 
-            expect(response).not_to be_successful
-            expect(response).to have_http_status(:not_found)
+            expect(response).to redirect_to(backlogs_project_backlogs_path(project))
+            expect(flash[:alert]).to eq(I18n.t(:notice_unsuccessful_start))
+            expect(service).to have_received(:call)
           end
         end
       end
@@ -447,13 +481,33 @@ RSpec.describe RbSprintsController do
           let(:source_project) { create(:project, sprint_sharing: "share_all_projects") }
           let(:project) { create(:project, sprint_sharing: "receive_shared") }
           let!(:sprint) { create(:agile_sprint, project: source_project, status: "active") }
+          let(:source_permissions) { %i[view_sprints start_complete_sprint] }
 
-          it "responds with not found and does not call the service", :aggregate_failures do
+          before do
+            create(:member,
+                   project: source_project,
+                   principal: user,
+                   roles: [create(:project_role, permissions: source_permissions)])
+          end
+
+          it "finishes the sprint and redirects to the backlog", :aggregate_failures do
             post :finish, params: request_params
 
-            expect(response).not_to be_successful
-            expect(response).to have_http_status(:not_found)
-            expect(service).not_to have_received(:call)
+            expect(response).to redirect_to(backlogs_project_backlogs_path(project))
+            expect(flash[:notice]).to eq(I18n.t(:notice_successful_finish))
+            expect(service).to have_received(:call)
+          end
+
+          context "without source-project start permission" do
+            let(:source_permissions) { %i[view_sprints] }
+
+            it "responds with forbidden and does not call the service", :aggregate_failures do
+              post :finish, params: request_params
+
+              expect(response).not_to be_successful
+              expect(response).to have_http_status(:forbidden)
+              expect(service).not_to have_received(:call)
+            end
           end
         end
 
@@ -504,12 +558,14 @@ RSpec.describe RbSprintsController do
 
         context "when the sprint is already completed" do
           let!(:sprint) { create(:agile_sprint, project:, status: "completed") }
+          let(:service_result) { ServiceResult.failure }
 
-          it "responds with not found", :aggregate_failures do
+          it "redirects back with the default finish failure message", :aggregate_failures do
             post :finish, params: request_params
 
-            expect(response).not_to be_successful
-            expect(response).to have_http_status(:not_found)
+            expect(response).to redirect_to(backlogs_project_backlogs_path(project))
+            expect(flash[:alert]).to eq(I18n.t(:notice_unsuccessful_finish))
+            expect(service).to have_received(:call)
           end
         end
       end

@@ -34,10 +34,19 @@ module Sprints
     validate :validate_status_in_planning
     validate :validate_no_other_active_sprint
 
+    def self.can_start_or_finish?(user:, sprint:)
+      user.allowed_in_project?(:start_complete_sprint, sprint.project)
+    end
+
+    def self.can_start?(user:, sprint:, project:)
+      can_start_or_finish?(user:, sprint:) &&
+        user.allowed_in_project?(:show_board_views, project)
+    end
+
     private
 
     def validate_permission
-      return if user.allowed_in_project?(:start_complete_sprint, model.project)
+      return if self.class.can_start_or_finish?(user:, sprint: model)
 
       errors.add :base, :error_unauthorized
     end

@@ -39,8 +39,11 @@ class RbSprintsController < RbApplicationController
   SPRINT_STATE_ACTIONS = %i[start finish].freeze
 
   skip_before_action :load_sprint_and_project, only: NEW_SPRINT_ACTIONS
+  skip_before_action :authorize, only: SPRINT_STATE_ACTIONS
 
   before_action :load_project, only: NEW_SPRINT_ACTIONS
+  before_action :authorize_start!, only: :start
+  before_action :authorize_finish!, only: :finish
 
   def new_dialog
     call = Sprints::SetAttributesService.new(
@@ -106,9 +109,6 @@ class RbSprintsController < RbApplicationController
   end
 
   def start
-    return render_404 unless @project == @sprint.project
-    return render_404 unless @sprint.in_planning?
-
     result = start_sprint
 
     if result.success?
@@ -121,9 +121,6 @@ class RbSprintsController < RbApplicationController
   end
 
   def finish
-    return render_404 unless @project == @sprint.project
-    return render_404 unless @sprint.active?
-
     result = finish_sprint
 
     if result.success?
@@ -259,5 +256,15 @@ class RbSprintsController < RbApplicationController
     else
       I18n.t(:"notice_unsuccessful_#{action}")
     end
+  end
+
+  def authorize_start!
+    deny_access unless current_user.allowed_in_project?(:view_sprints, @project) &&
+      Sprints::StartContract.can_start?(user: current_user, sprint: @sprint, project: @project)
+  end
+
+  def authorize_finish!
+    deny_access unless current_user.allowed_in_project?(:view_sprints, @project) &&
+      Sprints::StartContract.can_start_or_finish?(user: current_user, sprint: @sprint)
   end
 end
