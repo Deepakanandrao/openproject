@@ -29,7 +29,7 @@
 #++
 
 require "spec_helper"
-require_relative "../../support/pages/backlogs"
+require_relative "../../support/pages/sprint_planning"
 require_relative "../../../../boards/spec/features/support/board_page"
 
 RSpec.describe "Start and finish sprints",
@@ -47,7 +47,7 @@ RSpec.describe "Start and finish sprints",
   let(:user) do
     create(:user, member_with_permissions: { project => permissions })
   end
-  let(:backlogs_page) { Pages::Backlogs.new(project) }
+  let(:planning_page) { Pages::SprintPlanning.new(project) }
   let(:task_statuses) { Type.find(Task.type).statuses }
   let(:story_type) { create(:type_feature) }
   let(:task_type) do
@@ -89,11 +89,11 @@ RSpec.describe "Start and finish sprints",
 
     create(:workflow, type: task_type, old_status: default_status, new_status: default_status, role: create(:project_role))
 
-    backlogs_page.visit!
+    planning_page.visit!
   end
 
   it "starts the sprint and redirects to the board" do
-    backlogs_page.click_in_sprint_menu(first_sprint, "Start sprint")
+    planning_page.click_in_sprint_menu(first_sprint, "Start sprint")
 
     expect_and_dismiss_flash type: :success, message: "The sprint was started."
 
@@ -144,16 +144,16 @@ RSpec.describe "Start and finish sprints",
     let!(:task_board) { create(:board_grid_with_query, project:, linked: first_sprint) }
 
     it "finishes the sprint and returns to the backlog" do
-      backlogs_page.within_sprint_menu(first_sprint) do |menu|
+      planning_page.within_sprint_menu(first_sprint) do |menu|
         expect(menu).to have_selector :menuitem, "Finish sprint"
         expect(menu).to have_css "form[action='#{finish_project_sprint_path(project, first_sprint)}'][data-turbo='false']"
         menu.find(:button, "Finish sprint").click
       end
 
-      backlogs_page.expect_current_path
+      planning_page.expect_current_path
       expect_and_dismiss_flash type: :success, message: "The sprint was completed."
       expect(first_sprint.reload).to be_completed
-      backlogs_page.expect_sprint_names_in_order(second_sprint.name)
+      planning_page.expect_sprint_names_in_order(second_sprint.name)
     end
   end
 end
