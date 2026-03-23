@@ -165,25 +165,28 @@ class InplaceEditFieldsController < ApplicationController
     cf_values = params.dig(model_key, :custom_field_values)
     raw_value = cf_values.is_a?(Array) ? cf_values : cf_values&.dig(custom_field_id)
 
-    { @attribute => process_cf_raw_value(raw_value) }
+    { @attribute => process_cf_raw_value(raw_value, custom_field_id) }
   end
 
-  def process_cf_raw_value(raw_value)
+  def process_cf_raw_value(raw_value, custom_field_id)
     return raw_value unless raw_value.is_a?(Array)
 
-    # Remove empty strings from the hidden field, then extract the actual value.
+    cleaned_values = raw_value.compact_blank
     # FilterableTreeView encodes each selected item as a JSON payload
     # {"path":[...],"value":"<id>"} — extract only the "value" field.
-    cleaned_values = raw_value.compact_blank.filter_map { |v| extract_tree_view_value(v) }
+    # Only hierarchy-format fields use this encoding, so we check the field format first.
+    values = if hierarchy_format_custom_field?(custom_field_id)
+               cleaned_values.map { |v| JSON.parse(v)["value"] }
+             else
+               cleaned_values
+             end
     # For single-select, unwrap the array to get the single value
-    cleaned_values.size <= 1 ? cleaned_values.first : cleaned_values
+    values.size <= 1 ? values.first : values
   end
 
-  def extract_tree_view_value(raw)
-    parsed = JSON.parse(raw)
-    parsed.is_a?(Hash) ? parsed["value"] : raw
-  rescue JSON::ParserError
-    raw
+  def hierarchy_format_custom_field?(custom_field_id)
+    custom_field = @model.available_custom_fields.find { |cf| cf.id.to_s == custom_field_id }
+    custom_field&.field_format.in?(%w[hierarchy weighted_item_list])
   end
 
   def component(enforce_edit_mode: false)
