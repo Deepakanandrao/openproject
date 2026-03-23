@@ -85,8 +85,6 @@ RSpec.describe "Create", :js do
     end
 
     it "renders the menu" do
-      pending "flaky spec, for whatever reason"
-
       within "#main-menu" do
         expect(page).to have_css(".selected", text: "Sprint planning")
       end

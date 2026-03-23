@@ -31,12 +31,12 @@
 class RbMasterBacklogsController < RbApplicationController
   include WorkPackages::WithSplitView
 
-  if OpenProject::FeatureDecisions.scrum_projects_active?
-    current_menu_item [:sprint_planning] do
-      :sprint_planning
-    end
-  else
-    menu_item :backlogs
+  # Without the feature flag, there is only the top level menu item, select it
+  menu_item :backlogs_legacy
+
+  # With the feature flag, we have a proper menu, select the correct sub entry
+  current_menu_item [:sprint_planning] do
+    :sprint_planning
   end
 
   before_action :not_authorized_on_feature_flag_inactive, only: :sprint_planning
