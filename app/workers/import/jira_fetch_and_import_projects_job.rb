@@ -153,9 +153,15 @@ module Import
         created_at:,
         updated_at:
       }
-    rescue StandardError => e
-      Rails.logger.error "Error fetching user data for user key #{jira_user_key}: #{e.message}"
-      nil
+    rescue JiraClient::ApiError => e
+      if e.status == 404
+        # The user for jira_user_key was not found, this may happen for a user in the Jira issue history
+        # no longer available in the Jira instance
+        Rails.logger.error "Error fetching user data for user key #{jira_user_key}: #{e.message}"
+        nil
+      else
+        raise "Error fetching user data for user key #{jira_user_key}: #{e.message}"
+      end
     end
 
     def import_users(jira_import)
