@@ -202,6 +202,12 @@ module Pages
       expect(page).to have_css sprint_finish_modal_selector
     end
 
+    def expect_sprints_to_choose_for_moving_unfinished_work_packages_to(*sprints)
+      within sprint_finish_modal_selector do
+        expect(page).to have_select("Select sprint", options: sprints.map(&:name))
+      end
+    end
+
     def within_sprint_menu(sprint, &)
       within_sprint(sprint) do
         button = find(:button, accessible_name: "Sprint actions")

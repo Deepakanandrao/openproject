@@ -181,16 +181,32 @@ RSpec.describe "Start and finish sprints",
                project:)
       end
 
+      # This exists to test that sprints just present in the project
+      # because of work packages but not because they are genuinely shared, are not options to move
+      # work packages to.
+      let!(:sprint_from_other_project) do
+        create(:agile_sprint,
+               project: create(:project),
+               start_date: Date.new(2025, 9, 5),
+               finish_date: Date.new(2025, 9, 15)) do |sprint|
+          create(:work_package,
+                 subject: "Work package in other sprint",
+                 sprint:,
+                 project:)
+        end
+      end
+
       it "allows moving unfinished work packages to the next sprint" do
         planning_page.click_to_finish_sprint(first_sprint)
 
         planning_page.expect_sprint_finishing_modal
 
+        planning_page.expect_sprints_to_choose_for_moving_unfinished_work_packages_to second_sprint
         planning_page.choose_to_move_unfinished_work_packages second_sprint.name
 
         planning_page.expect_and_dismiss_flash type: :success, message: "The sprint was completed."
 
-        planning_page.expect_sprint_names_in_order(second_sprint.name)
+        planning_page.expect_sprint_names_in_order(sprint_from_other_project.name, second_sprint.name)
 
         # Replace this by the commented out code
         planning_page.expect_story_in_sprint(unfinished_work_package1, second_sprint)
