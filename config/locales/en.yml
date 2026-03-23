@@ -410,9 +410,8 @@ en:
         title: "Statuses"
         label: "Statuses enabled for this type"
         caption: "Add or remove statuses you would like to associate with this type. Removing a status will also delete the workflow associated with it."
-        apply: "Apply"
       statuses_removal_dialog:
-        title: "Remove statuses?"
+        title: "Remove statuses"
         heading:
           one: "Remove 1 status?"
           other: "Remove %{count} statuses?"
@@ -4023,7 +4022,7 @@ en:
   label_status: "Status"
   label_status_plural: "Statuses"
   label_storage_free_space: "Remaining disk space"
-  label_storage_used_space: "Used disk space"
+  label_storage_used_space: "UsedA disk space"
   label_storage_group: "Storage filesystem %{identifier}"
   label_storage_for: "Encompasses storage for"
   label_string: "Text"
