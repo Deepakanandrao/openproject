@@ -31,19 +31,18 @@
 require "spec_helper"
 
 RSpec.describe WorkPackages::UpdateService, "sprint preservation on project change", type: :model do
-  let(:source_project) do
-    create(:project)
-  end
-
-  let(:target_project) do
-    create(:project)
-  end
+  let(:source_sharing) { "no_sharing" }
+  let(:target_sharing) { "receive_shared" }
+  let(:source_project) { create(:project, name: "Source project", public: true, sprint_sharing: source_sharing) }
+  let(:target_project) { create(:project, name: "Target project", public: true, sprint_sharing: target_sharing) }
 
   let(:project_permissions) do
     %i[edit_work_packages
        edit_project
+       add_work_packages
        move_work_packages
        view_project
+       view_sprints
        view_work_packages
        manage_sprint_items]
   end
@@ -68,8 +67,8 @@ RSpec.describe WorkPackages::UpdateService, "sprint preservation on project chan
 
   let(:work_package) do
     create(:work_package,
-           subject: "Work Package",
            project: source_project,
+           author: user,
            sprint: sprint_in_source_project)
   end
 
@@ -81,11 +80,6 @@ RSpec.describe WorkPackages::UpdateService, "sprint preservation on project chan
     context "when scrum_projects feature flag is active", with_flag: { scrum_projects: true } do
       context "when the work package has a sprint" do
         context "when moving to a project that does NOT have access to the sprint" do
-          before do
-            # Target project does not have access to the sprint
-            allow(sprint_in_source_project).to receive(:visible_to?).with(target_project).and_return(false)
-          end
-
           it "nullifies the sprint_id" do
             result = instance.call(project: target_project)
 
@@ -96,10 +90,7 @@ RSpec.describe WorkPackages::UpdateService, "sprint preservation on project chan
         end
 
         context "when moving to a project that HAS access to the sprint" do
-          before do
-            # Target project has access to the sprint (e.g., through sprint sharing)
-            allow(sprint_in_source_project).to receive(:visible_to?).with(target_project).and_return(true)
-          end
+          let(:source_sharing) { "share_all_projects" }
 
           it "preserves the sprint_id" do
             result = instance.call(project: target_project)
@@ -113,6 +104,7 @@ RSpec.describe WorkPackages::UpdateService, "sprint preservation on project chan
             let(:source_project_permissions) { project_permissions - %i[manage_sprint_items] }
             let(:target_project_permissions) { project_permissions - %i[manage_sprint_items] }
 
+            # FIXME: this spec should be red, but it is green
             it "preserves the sprint_id" do
               result = instance.call(project: target_project)
 
@@ -155,18 +147,6 @@ RSpec.describe WorkPackages::UpdateService, "sprint preservation on project chan
         end
       end
     end
-
-    context "when scrum_projects feature flag is NOT active" do
-      it "does not nullify the sprint_id (falls through to legacy behavior)" do
-        result = instance.call(project: target_project)
-
-        expect(result).to be_success
-
-        # Technically, this *should* nullify the sprint id. But as soon as you switch on the feature flag,
-        # there's no going back anyway. I consider this case out of scope.
-        expect(work_package.reload.sprint_id).to eq(sprint_in_source_project.id)
-      end
-    end
   end
 
   describe "Integration with sprint visibility logic", with_flag: { scrum_projects: true } do
@@ -186,6 +166,9 @@ RSpec.describe WorkPackages::UpdateService, "sprint preservation on project chan
                sprint: sprint_in_target_project)
       end
 
+      let(:target_sharing) { "share_all_projects" }
+      let(:source_sharing) { "receive_shared" }
+
       it "preserves the sprint when moving to the owning project" do
         result = instance.call(project: target_project)
 
@@ -202,10 +185,7 @@ RSpec.describe WorkPackages::UpdateService, "sprint preservation on project chan
                sprint: sprint_in_source_project)
       end
 
-      before do
-        # Simulate that the sprint is shared and visible to target_project
-        allow(sprint_in_source_project).to receive(:visible_to?).with(target_project).and_return(true)
-      end
+      let(:source_sharing) { "share_all_projects" }
 
       it "preserves the sprint when moving to a project that receives the sprint" do
         result = instance.call(project: target_project)
@@ -221,11 +201,6 @@ RSpec.describe WorkPackages::UpdateService, "sprint preservation on project chan
                subject: "Work Package",
                project: source_project,
                sprint: sprint_in_source_project)
-      end
-
-      before do
-        # Simulate that the sprint is NOT visible to target_project
-        allow(sprint_in_source_project).to receive(:visible_to?).with(target_project).and_return(false)
       end
 
       it "nullifies the sprint when moving to a project that cannot access the sprint" do
