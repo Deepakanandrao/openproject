@@ -50,25 +50,19 @@ class Sprints::StartService < BaseServices::BaseContracted
 
   def ensure_task_boards
     projects = Agile::Sprint.receiving_projects(model)
+    result = ServiceResult.success
 
-    results = projects.map do |project|
-      next ServiceResult.success if model.task_board_for(project).present?
+    projects.each do |project|
+      next if model.task_board_for(project).present?
 
-      Boards::SprintTaskBoardCreateService
-        .new(user: User.system)
-        .call(project:, sprint: model, name: board_name)
+      result.add_dependent!(
+        Boards::SprintTaskBoardCreateService
+          .new(user: User.system)
+          .call(project:, sprint: model, name: board_name)
+      )
     end
 
-    aggregate_failures(results)
-  end
-
-  def aggregate_failures(results)
-    failed = results.select(&:failure?)
-    return ServiceResult.success if failed.empty?
-
-    failed.each_with_object(ServiceResult.failure) do |result, combined|
-      combined.add_dependent!(result)
-    end
+    result
   end
 
   def board_name
