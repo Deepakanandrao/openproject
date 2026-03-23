@@ -33,11 +33,8 @@ require "spec_helper"
 RSpec.describe WorkPackages::IdentifierAutofix::ProblematicIdentifiers do
   subject(:analysis) { described_class.new }
 
-  let(:max_length) { WorkPackages::IdentifierAutofix::ProjectIdentifierSuggestionGenerator::IDENTIFIER_LENGTH[:max] }
-
-  # Store identifiers bypassing normalizes (which would downcase/upcase them)
   def set_raw_identifier(project, identifier)
-    Project.where(id: project.id).update_all(Arel.sql("identifier = #{Project.connection.quote(identifier)}"))
+    Project.where(id: project.id).update_all(identifier:)
     project
   end
 
@@ -118,7 +115,7 @@ RSpec.describe WorkPackages::IdentifierAutofix::ProblematicIdentifiers do
 
     it "returns :reserved when identifier is a historical slug of another project" do
       project = create_valid_project(name: "Gamma", identifier: "GAMMA")
-      FriendlyId::Slug.create!(slug: "OLDIE", sluggable: Project.find(project.id), sluggable_type: "Project")
+      FriendlyId::Slug.create!(slug: "OLDIE", sluggable: project)
 
       expect(analysis.error_reason("OLDIE")).to eq(:reserved)
     end

@@ -35,9 +35,8 @@ RSpec.describe WorkPackages::IdentifierAutofix::PreviewQuery do
 
   let(:display_count) { described_class::DISPLAY_COUNT }
 
-  # Store identifiers bypassing normalizes (which would downcase/upcase them)
   def set_raw_identifier(project, identifier)
-    Project.where(id: project.id).update_all(Arel.sql("identifier = #{Project.connection.quote(identifier)}"))
+    Project.where(id: project.id).update_all(identifier:)
     project
   end
 

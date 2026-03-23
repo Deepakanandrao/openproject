@@ -28,7 +28,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require "rails_helper"
+require "spec_helper"
 
 RSpec.describe Projects::Identifier do
   describe "identifier normalization" do
