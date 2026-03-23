@@ -31,6 +31,7 @@
 module Admin
   module Departments
     class PageHeaderComponent < ApplicationComponent
+      include ApplicationHelper
     end
   end
 end

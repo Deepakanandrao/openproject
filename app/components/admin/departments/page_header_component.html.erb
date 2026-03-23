@@ -31,7 +31,9 @@ See COPYRIGHT and LICENSE files for more details.
 
 <%= render(Primer::OpenProject::PageHeader.new) do |header|
       header.with_title { t(:label_departments) }
-      header.with_description { t(:label_departments_description_html) }
+      header.with_description do
+        link_translate(:label_departments_description_html, links: { ldap_docs_article: "#" })
+      end
       header.with_breadcrumbs(
         [
           { href: admin_index_path, text: t("label_administration") },
