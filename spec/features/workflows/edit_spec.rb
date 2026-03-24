@@ -296,7 +296,7 @@ RSpec.describe "Workflow edit" do
     end
 
     expect(page).to have_heading "Copy workflow"
-    expect(page).to have_current_path(new_workflow_copy_from_role_path(type))
+    expect(page).to have_current_path(new_workflow_copy_from_role_path(type, source_role_id: role.id))
   end
 
   context "with status dialog", :js do

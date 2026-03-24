@@ -66,8 +66,9 @@ RSpec.describe "Configuring the workflow for work package sharing", :js,
     end
 
     # On the copy workflow form, select the already existing workflow for copying
-    click_link type.name
-    click_link "Copy"
+    within "li", text: type.name do
+      click_link "Copy to other roles"
+    end
     select role.name, from: "source_role_id"
     target_roles_autocompleter.select_option work_package_role.name
 
