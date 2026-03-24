@@ -107,7 +107,9 @@ RSpec.describe "Role creation", :js do
     # Workflow should be copied over.
     # Workflow routes are not resource-oriented.
     visit(url_for(controller: :workflows, action: :index, only_path: true))
-    click_link type.name
+    within "li", text: type.name do
+      click_link "Edit"
+    end
 
     click_button existing_role.name
     click_button "New role name"

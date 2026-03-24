@@ -67,6 +67,7 @@ RSpec.describe "Configuring the workflow for work package sharing", :js,
 
     # On the copy workflow form, select the already existing workflow for copying
     within "li", text: type.name do
+      find("button[aria-haspopup=true]").click
       click_link "Copy to other roles"
     end
     select role.name, from: "source_role_id"
@@ -84,6 +85,11 @@ RSpec.describe "Configuring the workflow for work package sharing", :js,
                           new_status_id: end_status.id,
                           author: false,
                           assignee: false).count).to eq(1)
+
+    # Need to navigate because the Turbo response does not remove the warning
+    within "page-header" do
+      click_link "Workflows"
+    end
 
     expect(page)
       .to have_no_css(".warning-bar--item")
