@@ -63,6 +63,6 @@ RSpec.describe "Workflow copy from type" do
     end
 
     expect(page).to have_heading "Summary"
-    expect(page).to have_current_path(summarized_workflows_path)
+    expect(page).to have_current_path(workflows_summary_path)
   end
 end

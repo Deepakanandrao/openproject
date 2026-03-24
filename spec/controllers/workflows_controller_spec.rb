@@ -78,48 +78,6 @@ RSpec.describe WorkflowsController do
 
   current_user { build_stubbed(:admin) }
 
-  describe "#summarized" do
-    let(:counts) { [] }
-
-    before do
-      allow(Workflow)
-        .to receive(:count_by_type_and_role)
-        .and_return(counts)
-
-      get :summarized
-    end
-
-    it "is successful" do
-      expect(response)
-        .to be_successful
-    end
-
-    context "when counts is empty" do
-      it "assigns the workflows by type and role" do
-        expect(assigns[:workflow_counts]).to eql counts
-      end
-
-      it "assigns roles" do
-        expect(assigns[:roles]).to be_nil
-      end
-    end
-
-    context "when counts is present" do
-      let(:type) { build_stubbed(:type) }
-      let(:project_role) { build_stubbed(:project_role) }
-      let(:global_role) { build_stubbed(:global_role) }
-      let(:counts) { [[type, [[project_role, 25], [global_role, 0]]]] }
-
-      it "assigns the workflows by type and role" do
-        expect(assigns[:workflow_counts]).to eql counts
-      end
-
-      it "assigns roles" do
-        expect(assigns[:roles]).to contain_exactly(project_role, global_role)
-      end
-    end
-  end
-
   describe "#edit" do
     let(:non_type_status) { build_stubbed(:status) }
     let(:type_status) { build_stubbed(:status) }

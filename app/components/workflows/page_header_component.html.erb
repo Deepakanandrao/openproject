@@ -48,13 +48,13 @@ See COPYRIGHT and LICENSE files for more details.
       end
     end
 
-    if @state != :summarized
+    if @state != :summary
       header.with_action_button(
         tag: :a,
         mobile_icon: :info,
         mobile_label: t(:label_workflow_summary),
         size: :medium,
-        href: summarized_workflows_path,
+        href: workflows_summary_path,
         aria: { label: I18n.t(:label_workflow_summary) },
         title: I18n.t(:label_workflow_summary)
       ) do |button|

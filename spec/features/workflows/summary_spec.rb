@@ -47,7 +47,7 @@ RSpec.describe "Workflow summary", :js do
   current_user { admin }
 
   before do
-    visit url_for(controller: "/workflows", action: :summarized)
+    visit url_for(controller: "workflows/summaries", action: :show)
   end
 
   it "displays a simple summary" do

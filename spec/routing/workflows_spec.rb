@@ -48,5 +48,5 @@ RSpec.describe "workflows routes" do
 
   it { expect(post("/workflows/42/copy/from_role")).to route_to("workflows/copies/from_roles#create", workflow_type_id: "42") }
 
-  it { expect(get("/workflows/summarized")).to route_to("workflows#summarized") }
+  it { expect(get("/workflows/summary")).to route_to("workflows/summaries#show") }
 end

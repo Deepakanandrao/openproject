@@ -43,11 +43,6 @@ class WorkflowsController < ApplicationController
 
   def index; end
 
-  def summarized
-    @workflow_counts = Workflow.count_by_type_and_role
-    @roles = @workflow_counts.first&.last&.map(&:first)
-  end
-
   def edit
     @used_statuses_only = params[:used_statuses_only] == "1"
 
