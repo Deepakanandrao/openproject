@@ -52,18 +52,18 @@ Rails.application.routes.draw do
           end
         end
       end
+
+      resources :inbox, only: [] do
+        member do
+          put :move
+          post :reorder
+        end
+      end
     end
 
     scope "projects/:project_id", as: "project", module: "projects" do
       namespace "settings" do
         resource :backlog_sharing, only: %i[show update]
-      end
-    end
-
-    resources :inbox, only: [] do
-      member do
-        put :move
-        post :reorder
       end
     end
   end
