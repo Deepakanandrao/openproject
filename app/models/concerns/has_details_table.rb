@@ -169,6 +169,10 @@ module HasDetailsTable
       (detail_class.column_names - internal_columns).each do |col|
         delegate col.to_sym, to: :detail
         define_detail_writer(:"#{col}=")
+
+        if detail_class.columns_hash[col]&.type == :boolean
+          delegate :"#{col}?", to: :detail
+        end
       end
     end
 

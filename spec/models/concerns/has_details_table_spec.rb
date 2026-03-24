@@ -140,6 +140,14 @@ RSpec.describe HasDetailsTable do
       expect(widget.detail.fancy).to be true
     end
 
+    it "delegates boolean predicate methods" do
+      widget.fancy = true
+      expect(widget.fancy?).to be true
+
+      widget.fancy = false
+      expect(widget.fancy?).to be false
+    end
+
     describe "belongs_to association delegation" do
       let(:related) { TestWidget.create!(name: "Related") }
 
