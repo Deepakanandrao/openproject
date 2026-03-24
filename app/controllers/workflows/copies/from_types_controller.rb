@@ -55,7 +55,7 @@ class Workflows::Copies::FromTypesController < ApplicationController
       )
       @turbo_status = :unprocessable_entity
     else
-      eligible_roles.each do |role|
+      Workflow.eligible_roles.each do |role|
         Workflow.copy_one(@source_type, role, @target_type, role)
       end
       render_flash_message_via_turbo_stream(
@@ -79,15 +79,5 @@ class Workflows::Copies::FromTypesController < ApplicationController
 
   def set_target_type
     @target_type = ::Type.find(params[:target_type_id])
-  end
-
-  def eligible_roles
-    roles = Role.where(type: ProjectRole.name)
-
-    if EnterpriseToken.allows_to?(:work_package_sharing)
-      roles.or(Role.where(builtin: Role::BUILTIN_WORK_PACKAGE_EDITOR))
-    else
-      roles
-    end
   end
 end

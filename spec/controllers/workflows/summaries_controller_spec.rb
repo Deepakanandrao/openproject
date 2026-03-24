@@ -31,7 +31,6 @@
 require "spec_helper"
 
 RSpec.describe Workflows::SummariesController do
-
   current_user { build_stubbed(:admin) }
 
   describe "#show" do

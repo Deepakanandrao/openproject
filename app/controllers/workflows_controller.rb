@@ -167,13 +167,7 @@ class WorkflowsController < ApplicationController
   end
 
   def eligible_roles
-    roles = Role.where(type: ProjectRole.name)
-
-    if EnterpriseToken.allows_to?(:work_package_sharing)
-      roles.or(Role.where(builtin: Role::BUILTIN_WORK_PACKAGE_EDITOR))
-    else
-      roles
-    end
+    @eligible_roles ||= Workflow.eligible_roles
   end
 
   def permitted_status_params
