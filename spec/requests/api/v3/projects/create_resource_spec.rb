@@ -464,6 +464,19 @@ RSpec.describe "API v3 Project resource create", content_type: :json do
 
 
 
+    context "when auto-generated identifier already exists" do
+      # The outer before already created a project with identifier "FPA".
+      # A second request with the same name must fail with a conflict.
+      let(:body) do
+        { name: "Flight Planning Algorithm" }.to_json
+      end
+
+      it "responds with 422" do
+        post path, body
+        expect(last_response).to have_http_status(:unprocessable_entity)
+      end
+    end
+
     context "when an invalid identifier is provided" do
       let(:body) do
         {
