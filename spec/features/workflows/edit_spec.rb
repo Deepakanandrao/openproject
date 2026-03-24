@@ -183,7 +183,7 @@ RSpec.describe "Workflow edit" do
 
   it "allows navigating to Workflow copy page" do
     within ".PageHeader-actions" do
-      click_on "Copy"
+      click_on "Copy to other roles"
     end
 
     expect(page).to have_heading "Copy workflow"

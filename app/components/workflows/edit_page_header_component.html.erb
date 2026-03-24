@@ -35,14 +35,14 @@ See COPYRIGHT and LICENSE files for more details.
     header.with_action_button(
       tag: :a,
       mobile_icon: :copy,
-      mobile_label: t(:button_copy),
+      mobile_label: t(:label_copy_workflow_from_role),
       size: :medium,
       href: new_workflow_copy_from_role_path(@type, source_role_id: @role&.id),
-      aria: { label: I18n.t(:button_copy) },
-      title: I18n.t(:button_copy)
+      aria: { label: I18n.t(:label_copy_workflow_from_role) },
+      title: I18n.t(:label_copy_workflow_from_role)
     ) do |button|
       button.with_leading_visual_icon(icon: :copy)
-      t(:button_copy)
+      t(:label_copy_workflow_from_role)
     end
 
     header.with_action_button(

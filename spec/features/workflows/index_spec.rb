@@ -65,10 +65,40 @@ RSpec.describe "Workflows index" do
 
     some_type = types.sample
     within "ul.Box-list" do
-      click_link some_type.name
+      within "li", text: some_type.name do
+        click_link "Edit"
+      end
     end
 
     expect(page).to have_heading some_type.name
+  end
+
+  it "allows navigating to any copy-from-type page" do
+    expect(page).to have_heading("Workflows")
+
+    some_type = types.sample
+    within "ul.Box-list" do
+      within "li", text: some_type.name do
+        find("button[aria-haspopup=true]").click
+        click_link "Copy to another type"
+      end
+    end
+
+    expect(page).to have_heading "Copy workflow"
+  end
+
+  it "allows navigating to any copy-from-role page" do
+    expect(page).to have_heading("Workflows")
+
+    some_type = types.sample
+    within "ul.Box-list" do
+      within "li", text: some_type.name do
+        find("button[aria-haspopup=true]").click
+        click_link "Copy to other roles"
+      end
+    end
+
+    expect(page).to have_heading "Copy workflow"
   end
 
   it "allows navigating to Workflow summary page" do
