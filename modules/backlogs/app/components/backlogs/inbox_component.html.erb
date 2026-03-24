@@ -65,10 +65,23 @@ See COPYRIGHT and LICENSE files for more details.
         ) %>
 
     <% if paginate? %>
-      <% border_box.with_row(id: "inbox-more-row-#{project.id}") do %>
-        <%= link_to t(".show_more", count: middle_count),
-                    sprint_planning_backlogs_project_backlogs_path(project, all: 1),
-                    class: "btn-transparent width-full text-center" %>
+      <% border_box.with_row(
+           id: "inbox-more-row-#{project.id}", scheme: :neutral,
+           classes: "backlogs-inbox-component--show-more-row"
+         ) do %>
+        <%=
+          render(
+            Primer::Beta::Button.new(
+              scheme: :link,
+              tag: :a,
+              size: :large,
+              block: true,
+              align_content: :start,
+              underline: true,
+              href: sprint_planning_backlogs_project_backlogs_path(project, all: 1)
+            )
+          ) { t(".show_more", count: middle_count) }
+        %>
       <% end %>
 
       <%= render Backlogs::InboxItemComponent.with_collection(
