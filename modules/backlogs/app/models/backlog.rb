@@ -41,9 +41,8 @@ class Backlog
   def self.inbox_for(project:)
     WorkPackage
       .visible
-      .where(project:)
       .with_status_open
-      .where(sprint_id: nil)
+      .where(project:, sprint_id: nil)
       .order(Arel.sql(Story::ORDER))
   end
 
