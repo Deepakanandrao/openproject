@@ -478,6 +478,7 @@ RSpec.describe "API v3 Project resource create", content_type: :json do
         expect(response_identifier).not_to eq(existing_project.identifier)
       end
     end
+
     context "when an invalid identifier is provided" do
       let(:body) do
         {
