@@ -36,9 +36,6 @@ RSpec.describe "workflows routes" do
   it { expect(get("/workflows/42/edit")).to route_to("workflows#edit", type_id: "42") }
   it { expect(patch("/workflows/42")).to route_to("workflows#update", type_id: "42") }
 
-  it { expect(get("/workflows/copy/new")).to route_to("workflows/copies#new") }
-  it { expect(post("/workflows/copy")).to route_to("workflows/copies#create") }
-
   it { expect(get("/workflows/42/copy/from_type/new")).to route_to("workflows/copies/from_types#new", workflow_type_id: "42") }
   it { expect(post("/workflows/42/copy/from_type")).to route_to("workflows/copies/from_types#create", workflow_type_id: "42") }
 

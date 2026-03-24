@@ -802,10 +802,6 @@ Rails.application.routes.draw do
       resource :from_role, only: %i[new create]
     end
     collection do
-      scope module: :workflows, as: :workflows do
-        resource :copy, only: %i[new create]
-      end
-
       get "summarized"
     end
   end

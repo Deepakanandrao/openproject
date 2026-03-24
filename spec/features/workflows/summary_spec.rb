@@ -67,13 +67,4 @@ RSpec.describe "Workflow summary", :js do
     expect(page).to have_heading "Workflow"
     expect(page).to have_current_path(workflows_path)
   end
-
-  it "allows navigating to Workflow copy page" do
-    within ".PageHeader-actions" do
-      click_on "Copy"
-    end
-
-    expect(page).to have_heading "Copy workflow"
-    expect(page).to have_current_path(new_workflows_copy_path)
-  end
 end
