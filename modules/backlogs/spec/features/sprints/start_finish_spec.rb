@@ -213,6 +213,38 @@ RSpec.describe "Start and finish sprints",
                                                                               unfinished_work_package2,
                                                                               wp_in_next_sprint])
       end
+
+      it "allows moving unfinished work packages to the top of the backlog" do
+        planning_page.click_to_finish_sprint(first_sprint)
+
+        planning_page.expect_sprint_finishing_modal
+        planning_page.choose_to_move_unfinished_work_packages_to_top_of_backlog
+
+        planning_page.expect_and_dismiss_flash type: :success, message: "The sprint was completed."
+
+        expect(first_sprint.reload).to be_completed
+        # TODO: once the "Inbox" exists, write an
+        # expect_work_packages_in_backlog_in_order assertion
+        expect(unfinished_work_package1.reload.sprint).to be_nil
+        expect(unfinished_work_package2.reload.sprint).to be_nil
+        expect(closed_work_package.reload.sprint).to eq(first_sprint)
+      end
+
+      it "allows moving unfinished work packages to the bottom of the backlog" do
+        planning_page.click_to_finish_sprint(first_sprint)
+
+        planning_page.expect_sprint_finishing_modal
+        planning_page.choose_to_move_unfinished_work_packages_to_bottom_of_backlog
+
+        planning_page.expect_and_dismiss_flash type: :success, message: "The sprint was completed."
+
+        expect(first_sprint.reload).to be_completed
+        # TODO: once the "Inbox" exists, write an
+        # expect_work_packages_in_backlog_in_order assertion
+        expect(unfinished_work_package1.reload.sprint).to be_nil
+        expect(unfinished_work_package2.reload.sprint).to be_nil
+        expect(closed_work_package.reload.sprint).to eq(first_sprint)
+      end
     end
   end
 end

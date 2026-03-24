@@ -28,35 +28,12 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Backlogs
-  class FinishSprintDialogComponent < ApplicationComponent
-    include OpTurbo::Streamable
-    include OpPrimer::ComponentHelpers
-
-    DIALOG_ID = "finish-sprint-dialog"
-    FORM_ID = "finish-sprint-dialog-form"
-
-    attr_reader :sprint, :project, :available_sprints
-
-    def initialize(sprint:, project:, available_sprints:)
-      super
-      @sprint = sprint
-      @project = project
-      @available_sprints = available_sprints
-    end
-
-    private
-
-    def sprints_available?
-      @available_sprints.any?
-    end
-
-    def title
-      t(".title")
-    end
-
-    def message
-      t(".body", message: sprint.errors[:base].join)
-    end
+module WorkPackages
+  # Contract used for moving work packages to the product backlog (sprint = nil)
+  # at the end of a sprint. It does not enforce permissions as this change is
+  # carried out in the background.
+  class MoveToBacklogContract < ModelContract
+    attribute :sprint
+    attribute :position
   end
 end

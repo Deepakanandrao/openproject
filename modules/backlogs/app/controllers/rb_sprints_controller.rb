@@ -247,7 +247,11 @@ class RbSprintsController < RbApplicationController
   def finish_sprint
     Sprints::FinishService
       .new(user: current_user, model: @sprint)
-      .call(move_to_sprint_id: params[:move_to_sprint_id], send_notifications: false)
+      .call(
+        unfinished_action: params[:unfinished_action],
+        move_to_sprint_id: params[:move_to_sprint_id],
+        send_notifications: false
+      )
   end
 
   def respond_with_start_finish_failure(message:)

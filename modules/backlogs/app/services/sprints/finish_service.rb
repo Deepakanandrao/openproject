@@ -37,12 +37,14 @@ class Sprints::FinishService < BaseServices::BaseContracted
   protected
 
   def before_perform(service_call)
-    if params[:move_to_sprint_id].present?
+    case params[:unfinished_action]
+    when "move_to_sprint"
       @target_sprint = Agile::Sprint.find_by(id: params[:move_to_sprint_id])
-
-      move_open_work_packages(@target_sprint).each do |result|
-        service_call.add_dependent!(result)
-      end
+      move_to_sprint(@target_sprint).each { |result| service_call.add_dependent!(result) }
+    when "move_to_top_of_backlog"
+      move_to_backlog(position: 1).each { |result| service_call.add_dependent!(result) }
+    when "move_to_bottom_of_backlog"
+      move_to_backlog(position: nil).each { |result| service_call.add_dependent!(result) }
     end
 
     service_call
@@ -59,11 +61,25 @@ class Sprints::FinishService < BaseServices::BaseContracted
 
   private
 
-  def move_open_work_packages(target_sprint)
+  def move_to_sprint(target_sprint)
     model.work_packages.with_status_open.order(position: :desc).map do |wp|
       WorkPackages::UpdateService
         .new(user:, model: wp, contract_class: WorkPackages::MoveBetweenSprintsContract)
         .call(sprint: target_sprint, position: 1)
+    end
+  end
+
+  def move_to_backlog(position:)
+    # Process descending for top (each inserted at 1 preserves original order at top),
+    # ascending for bottom (each appended to end preserves original order at bottom).
+    order_direction = position ? :desc : :asc
+    call_args = { sprint: nil }
+    call_args[:position] = position if position
+
+    model.work_packages.with_status_open.order(position: order_direction).map do |wp|
+      WorkPackages::UpdateService
+        .new(user:, model: wp, contract_class: WorkPackages::MoveToBacklogContract)
+        .call(**call_args)
     end
   end
 end

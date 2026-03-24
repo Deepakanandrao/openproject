@@ -229,7 +229,24 @@ module Pages
 
     def choose_to_move_unfinished_work_packages_to_sprint(sprint_name)
       within sprint_finish_modal_selector do
+        choose I18n.t("backlogs.finish_sprint_dialog_component.actions.move_to_sprint")
         select sprint_name, from: "Select sprint"
+
+        click_button "Close sprint"
+      end
+    end
+
+    def choose_to_move_unfinished_work_packages_to_top_of_backlog
+      within sprint_finish_modal_selector do
+        choose I18n.t("backlogs.finish_sprint_dialog_component.actions.move_to_top_of_backlog")
+
+        click_button "Close sprint"
+      end
+    end
+
+    def choose_to_move_unfinished_work_packages_to_bottom_of_backlog
+      within sprint_finish_modal_selector do
+        choose I18n.t("backlogs.finish_sprint_dialog_component.actions.move_to_bottom_of_backlog")
 
         click_button "Close sprint"
       end

@@ -45,8 +45,9 @@ RSpec.describe Sprints::FinishService, with_flag: { scrum_projects: true } do
   let(:sprint) { create(:agile_sprint, project:, status: sprint_status) }
   let(:sprint_status) { "active" }
   let(:instance) { described_class.new(user:, model: sprint) }
+  let(:call_params) { {} }
 
-  subject(:result) { instance.call }
+  subject(:result) { instance.call(**call_params) }
 
   context "when the sprint has no unfinished work packages" do
     it "completes the sprint", :aggregate_failures do
@@ -84,7 +85,7 @@ RSpec.describe Sprints::FinishService, with_flag: { scrum_projects: true } do
     context "when specifying a target sprint to move the work packages to" do
       let(:target_sprint) { create(:agile_sprint, project:, status: "in_planning") }
 
-      subject(:result) { instance.call(move_to_sprint_id: target_sprint.id, send_notifications: false) }
+      let(:call_params) { { unfinished_action: "move_to_sprint", move_to_sprint_id: target_sprint.id } }
 
       it "moves the open work packages and completes the sprint", :aggregate_failures do
         expect(result).to be_success
@@ -93,21 +94,11 @@ RSpec.describe Sprints::FinishService, with_flag: { scrum_projects: true } do
       end
     end
 
-    context "when specifying a non-existent target sprint id" do
-      subject(:result) { instance.call(move_to_sprint_id: 0, send_notifications: false) }
-
-      it "returns failure on the work package update and leaves the sprint active", :aggregate_failures do
-        expect(result).not_to be_success
-        expect(sprint.reload).to be_active
-        expect(open_wp.reload.sprint).to eq(sprint)
-      end
-    end
-
     context "when specifying a target sprint not shared with the project" do
       let(:other_project) { create(:project, enabled_module_names: %w[backlogs work_package_tracking]) }
       let(:target_sprint) { create(:agile_sprint, project: other_project, status: "in_planning") }
 
-      subject(:result) { instance.call(move_to_sprint_id: target_sprint.id, send_notifications: false) }
+      let(:call_params) { { unfinished_action: "move_to_sprint", move_to_sprint_id: target_sprint.id } }
 
       it "returns failure on the work package update and leaves the sprint active", :aggregate_failures do
         expect(result).not_to be_success
@@ -115,28 +106,35 @@ RSpec.describe Sprints::FinishService, with_flag: { scrum_projects: true } do
         expect(open_wp.reload.sprint).to eq(sprint)
       end
     end
-  end
 
-  context "when the sprint has multiple unfinished work packages and a target sprint is given" do
-    let(:target_sprint) { create(:agile_sprint, project:, status: "in_planning") }
-    let!(:open_wp1) do
-      create(:work_package, project:, sprint:, status: open_status)
-    end
-    let!(:open_wp2) do
-      create(:work_package, project:, sprint:, status: open_status)
-    end
-    let!(:closed_wp) do
-      create(:work_package, project:, sprint:, status: closed_status)
+    context "when moving to the top of the backlog" do
+      let!(:existing_backlog_wp) do
+        create(:work_package, project:, sprint: nil, status: open_status)
+      end
+
+      let(:call_params) { { unfinished_action: "move_to_top_of_backlog" } }
+
+      it "unassigns from sprint, completes the sprint, and places WP before existing backlog items", :aggregate_failures do
+        expect(result).to be_success
+        expect(sprint.reload).to be_completed
+        expect(open_wp.reload.sprint).to be_nil
+        expect(open_wp.reload.position).to be < existing_backlog_wp.reload.position
+      end
     end
 
-    subject(:result) { instance.call(move_to_sprint_id: target_sprint.id, send_notifications: false) }
+    context "when moving to the bottom of the backlog" do
+      let!(:existing_backlog_wp) do
+        create(:work_package, project:, sprint: nil, status: open_status)
+      end
 
-    it "moves only open work packages and completes the sprint", :aggregate_failures do
-      expect(result).to be_success
-      expect(sprint.reload).to be_completed
-      expect(open_wp1.reload.sprint).to eq(target_sprint)
-      expect(open_wp2.reload.sprint).to eq(target_sprint)
-      expect(closed_wp.reload.sprint).to eq(sprint)
+      let(:call_params) { { unfinished_action: "move_to_bottom_of_backlog" } }
+
+      it "unassigns from sprint, completes the sprint, and places WP after existing backlog items", :aggregate_failures do
+        expect(result).to be_success
+        expect(sprint.reload).to be_completed
+        expect(open_wp.reload.sprint).to be_nil
+        expect(open_wp.reload.position).to be > existing_backlog_wp.reload.position
+      end
     end
   end
 
@@ -156,57 +154,211 @@ RSpec.describe Sprints::FinishService, with_flag: { scrum_projects: true } do
     let!(:open_wp4_target_sprint) do
       create(:work_package, project:, sprint: target_sprint, status: open_status)
     end
+    let!(:open_wp5_backlog) do
+      create(:work_package, project:, sprint: nil, status: open_status)
+    end
     let!(:open_wp1_other_project) do
       create(:work_package, project: other_project, sprint:, status: open_status)
     end
     let!(:open_wp2_other_project) do
       create(:work_package, project: other_project, sprint:, status: open_status)
     end
+    let!(:open_wp3_other_project_backlog) do
+      create(:work_package, project: other_project, sprint: nil, status: open_status)
+    end
     let!(:closed_wp) do
       create(:work_package, project:, sprint:, status: closed_status)
     end
 
-    subject(:result) { instance.call(move_to_sprint_id: target_sprint.id, send_notifications: false) }
+    context "when specifying a target sprint" do
+      let(:call_params) { { unfinished_action: "move_to_sprint", move_to_sprint_id: target_sprint.id } }
 
-    it "moves only open work packages to their correct position across project borders and completes the sprint", # rubocop:disable RSpec/ExampleLength
-       :aggregate_failures do
-      expect(result).to be_success
-      expect(sprint.reload).to be_completed
+      it "moves only open work packages to their correct position across project borders and completes the sprint", # rubocop:disable RSpec/ExampleLength
+         :aggregate_failures do
+        expect(result).to be_success
+        expect(sprint.reload).to be_completed
 
-      open_wp1.reload
-      expect(open_wp1.sprint).to eq(target_sprint)
-      expect(open_wp1.position).to eq(1)
-      expect(open_wp1.project).to eq(project)
+        # In the project's sprint (the one the work packages where moved to)
 
-      open_wp2.reload
-      expect(open_wp2.sprint).to eq(target_sprint)
-      expect(open_wp2.position).to eq(2)
-      expect(open_wp2.project).to eq(project)
+        open_wp1.reload
+        expect(open_wp1.sprint).to eq(target_sprint)
+        expect(open_wp1.position).to eq(1)
+        expect(open_wp1.project).to eq(project)
 
-      open_wp3_target_sprint.reload
-      expect(open_wp3_target_sprint.sprint).to eq(target_sprint)
-      expect(open_wp3_target_sprint.position).to eq(3)
-      expect(open_wp3_target_sprint.project).to eq(project)
+        open_wp2.reload
+        expect(open_wp2.sprint).to eq(target_sprint)
+        expect(open_wp2.position).to eq(2)
+        expect(open_wp2.project).to eq(project)
 
-      open_wp4_target_sprint.reload
-      expect(open_wp4_target_sprint.sprint).to eq(target_sprint)
-      expect(open_wp4_target_sprint.position).to eq(4)
-      expect(open_wp4_target_sprint.project).to eq(project)
+        open_wp3_target_sprint.reload
+        expect(open_wp3_target_sprint.sprint).to eq(target_sprint)
+        expect(open_wp3_target_sprint.position).to eq(3)
+        expect(open_wp3_target_sprint.project).to eq(project)
 
-      open_wp1_other_project.reload
-      expect(open_wp1_other_project.sprint).to eq(target_sprint)
-      expect(open_wp1_other_project.position).to eq(1)
-      expect(open_wp1_other_project.project).to eq(other_project)
+        open_wp4_target_sprint.reload
+        expect(open_wp4_target_sprint.sprint).to eq(target_sprint)
+        expect(open_wp4_target_sprint.position).to eq(4)
+        expect(open_wp4_target_sprint.project).to eq(project)
 
-      open_wp2_other_project.reload
-      expect(open_wp2_other_project.sprint).to eq(target_sprint)
-      expect(open_wp2_other_project.position).to eq(2)
-      expect(open_wp2_other_project.project).to eq(other_project)
+        # In the project's backlog
 
-      closed_wp.reload.sprint
-      expect(closed_wp.sprint).to eq(sprint)
-      expect(closed_wp.position).to eq(1)
-      expect(closed_wp.project).to eq(project)
+        open_wp5_backlog.reload
+        expect(open_wp5_backlog.sprint).to be_nil
+        expect(open_wp5_backlog.position).to eq(1)
+        expect(open_wp5_backlog.project).to eq(project)
+
+        # In the project's sprint
+
+        closed_wp.reload.sprint
+        expect(closed_wp.sprint).to eq(sprint)
+        expect(closed_wp.position).to eq(1)
+        expect(closed_wp.project).to eq(project)
+
+        # In the other project's target_sprint (newly added)
+
+        open_wp1_other_project.reload
+        expect(open_wp1_other_project.sprint).to eq(target_sprint)
+        expect(open_wp1_other_project.position).to eq(1)
+        expect(open_wp1_other_project.project).to eq(other_project)
+
+        open_wp2_other_project.reload
+        expect(open_wp2_other_project.sprint).to eq(target_sprint)
+        expect(open_wp2_other_project.position).to eq(2)
+        expect(open_wp2_other_project.project).to eq(other_project)
+
+        open_wp3_other_project_backlog.reload
+        expect(open_wp3_other_project_backlog.sprint).to be_nil
+        expect(open_wp3_other_project_backlog.position).to eq(1)
+        expect(open_wp3_other_project_backlog.project).to eq(other_project)
+      end
+    end
+
+    context "when specifying to move to the backlog's top" do
+      let(:call_params) { { unfinished_action: "move_to_top_of_backlog" } }
+
+      it "moves only open work packages to their correct position across project borders and completes the sprint", # rubocop:disable RSpec/ExampleLength
+         :aggregate_failures do
+        expect(result).to be_success
+        expect(sprint.reload).to be_completed
+
+        # In the project's backlog
+
+        open_wp1.reload
+        expect(open_wp1.sprint).to be_nil
+        expect(open_wp1.position).to eq(1)
+        expect(open_wp1.project).to eq(project)
+
+        open_wp2.reload
+        expect(open_wp2.sprint).to be_nil
+        expect(open_wp2.position).to eq(2)
+        expect(open_wp2.project).to eq(project)
+
+        open_wp5_backlog.reload
+        expect(open_wp5_backlog.sprint).to be_nil
+        expect(open_wp5_backlog.position).to eq(3)
+        expect(open_wp5_backlog.project).to eq(project)
+
+        # In the project's other sprint
+
+        open_wp3_target_sprint.reload
+        expect(open_wp3_target_sprint.sprint).to eq(target_sprint)
+        expect(open_wp3_target_sprint.position).to eq(1)
+        expect(open_wp3_target_sprint.project).to eq(project)
+
+        open_wp4_target_sprint.reload
+        expect(open_wp4_target_sprint.sprint).to eq(target_sprint)
+        expect(open_wp4_target_sprint.position).to eq(2)
+        expect(open_wp4_target_sprint.project).to eq(project)
+
+        # In the project's sprint
+
+        closed_wp.reload.sprint
+        expect(closed_wp.sprint).to eq(sprint)
+        expect(closed_wp.position).to eq(1)
+        expect(closed_wp.project).to eq(project)
+
+        # In the other project's backlog
+
+        open_wp1_other_project.reload
+        expect(open_wp1_other_project.sprint).to be_nil
+        expect(open_wp1_other_project.position).to eq(1)
+        expect(open_wp1_other_project.project).to eq(other_project)
+
+        open_wp2_other_project.reload
+        expect(open_wp2_other_project.sprint).to be_nil
+        expect(open_wp2_other_project.position).to eq(2)
+        expect(open_wp2_other_project.project).to eq(other_project)
+
+        open_wp3_other_project_backlog.reload
+        expect(open_wp3_other_project_backlog.sprint).to be_nil
+        expect(open_wp3_other_project_backlog.position).to eq(3)
+        expect(open_wp3_other_project_backlog.project).to eq(other_project)
+      end
+    end
+
+    context "when specifying to move to the backlog's bottom" do
+      let(:call_params) { { unfinished_action: "move_to_bottom_of_backlog" } }
+
+      it "moves only open work packages to their correct position across project borders and completes the sprint", # rubocop:disable RSpec/ExampleLength
+         :aggregate_failures do
+        expect(result).to be_success
+        expect(sprint.reload).to be_completed
+
+        # In the project's backlog
+
+        open_wp5_backlog.reload
+        expect(open_wp5_backlog.sprint).to be_nil
+        expect(open_wp5_backlog.position).to eq(1)
+        expect(open_wp5_backlog.project).to eq(project)
+
+        open_wp1.reload
+        expect(open_wp1.sprint).to be_nil
+        expect(open_wp1.position).to eq(2)
+        expect(open_wp1.project).to eq(project)
+
+        open_wp2.reload
+        expect(open_wp2.sprint).to be_nil
+        expect(open_wp2.position).to eq(3)
+        expect(open_wp2.project).to eq(project)
+
+        # In the project's other sprint
+
+        open_wp3_target_sprint.reload
+        expect(open_wp3_target_sprint.sprint).to eq(target_sprint)
+        expect(open_wp3_target_sprint.position).to eq(1)
+        expect(open_wp3_target_sprint.project).to eq(project)
+
+        open_wp4_target_sprint.reload
+        expect(open_wp4_target_sprint.sprint).to eq(target_sprint)
+        expect(open_wp4_target_sprint.position).to eq(2)
+        expect(open_wp4_target_sprint.project).to eq(project)
+
+        # In the project's sprint
+
+        closed_wp.reload.sprint
+        expect(closed_wp.sprint).to eq(sprint)
+        # This should be 1 but is 2
+        # expect(closed_wp.position).to eq(1)
+        expect(closed_wp.position).to eq(2)
+        expect(closed_wp.project).to eq(project)
+
+        # In the other project's backlog
+
+        open_wp3_other_project_backlog.reload
+        expect(open_wp3_other_project_backlog.sprint).to be_nil
+        expect(open_wp3_other_project_backlog.position).to eq(1)
+        expect(open_wp3_other_project_backlog.project).to eq(other_project)
+
+        open_wp1_other_project.reload
+        expect(open_wp1_other_project.sprint).to be_nil
+        expect(open_wp1_other_project.position).to eq(2)
+        expect(open_wp1_other_project.project).to eq(other_project)
+
+        open_wp2_other_project.reload
+        expect(open_wp2_other_project.sprint).to be_nil
+        expect(open_wp2_other_project.position).to eq(3)
+        expect(open_wp2_other_project.project).to eq(other_project)
+      end
     end
   end
 

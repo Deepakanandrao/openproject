@@ -572,6 +572,32 @@ RSpec.describe RbSprintsController do
             expect(service).to have_received(:call)
           end
         end
+
+        context "when moving to the top of the backlog" do
+          let(:request_params) { { project_id: project.id, id: sprint.id, unfinished_action: "move_to_top_of_backlog" } }
+
+          it "passes unfinished_action to the service and redirects via turbo stream", :aggregate_failures do
+            post :finish, format: :turbo_stream, params: request_params
+
+            expect(response).to be_successful
+            expect(response.body).to include("action=\"redirect_to\"")
+            expect(service).to have_received(:call)
+              .with(hash_including(unfinished_action: "move_to_top_of_backlog"))
+          end
+        end
+
+        context "when moving to the bottom of the backlog" do
+          let(:request_params) { { project_id: project.id, id: sprint.id, unfinished_action: "move_to_bottom_of_backlog" } }
+
+          it "passes unfinished_action to the service and redirects via turbo stream", :aggregate_failures do
+            post :finish, format: :turbo_stream, params: request_params
+
+            expect(response).to be_successful
+            expect(response.body).to include("action=\"redirect_to\"")
+            expect(service).to have_received(:call)
+              .with(hash_including(unfinished_action: "move_to_bottom_of_backlog"))
+          end
+        end
       end
     end
 

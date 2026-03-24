@@ -31,27 +31,21 @@ See COPYRIGHT and LICENSE files for more details.
   render(
     Primer::Alpha::Dialog.new(
       title:,
+      size: :large,
       id: DIALOG_ID
     )
   ) do |d|
     d.with_header(variant: :large)
 
     d.with_body do
-      concat(tag.p(body_message))
-
-      concat(
-        form_with(
-          url: finish_project_sprint_path(project, sprint),
-          method: :post,
-          id: FORM_ID
-        ) do
-          render(Primer::Alpha::Select.new(name: :move_to_sprint_id, label: t(".select_sprint_label"))) do |select|
-            available_sprints.each do |s|
-              select.option(label: s.name, value: s.id)
-            end
-          end
-        end
-      )
+      primer_form_with(
+        url: finish_project_sprint_path(project, sprint),
+        method: :post,
+        id: FORM_ID,
+        data: { controller: "show-when-value-selected" }
+      ) do |f|
+        render(Backlogs::Sprints::FinishForm.new(f, message:, available_sprints:))
+      end
     end
 
     d.with_footer do
