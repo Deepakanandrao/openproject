@@ -46,6 +46,18 @@ module Backlogs
 
     private
 
+    def story_points
+      work_package.story_points || 0
+    end
+
+    def wrapper_uniq_by
+      "inbox-frame-#{project.id}"
+    end
+
+    def draggable?
+      current_user.allowed_in_project?(:manage_sprint_items, project)
+    end
+
     def row_options
       {
         id: dom_id(work_package),
