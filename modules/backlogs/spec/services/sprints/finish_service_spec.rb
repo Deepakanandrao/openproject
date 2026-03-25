@@ -178,7 +178,7 @@ RSpec.describe Sprints::FinishService, with_flag: { scrum_projects: true } do
         expect(result).to be_success
         expect(sprint.reload).to be_completed
 
-        # In the project's sprint (the one the work packages where moved to)
+        # In the project's sprint (the one the work packages were moved to)
 
         open_wp1.reload
         expect(open_wp1.sprint).to eq(target_sprint)

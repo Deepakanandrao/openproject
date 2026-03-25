@@ -47,10 +47,6 @@ module Backlogs
 
     private
 
-    def sprints_available?
-      @available_sprints.any?
-    end
-
     def title
       t(".title")
     end
