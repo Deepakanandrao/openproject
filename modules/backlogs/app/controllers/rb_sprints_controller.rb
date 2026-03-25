@@ -125,7 +125,7 @@ class RbSprintsController < RbApplicationController
 
     if result.success?
       flash[:notice] = I18n.t(:notice_successful_finish)
-      render turbo_stream: turbo_stream.redirect_to(backlogs_project_backlogs_path(@project))
+      render turbo_stream: turbo_stream.redirect_to(sprint_planning_backlogs_project_backlogs_path(@project))
     elsif result.includes_error?(:base, :unfinished_work_packages)
       show_finish_sprint_dialog
     else
