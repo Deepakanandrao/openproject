@@ -180,6 +180,12 @@ RSpec.describe "Start and finish sprints",
                sprint: second_sprint,
                project:)
       end
+      let!(:backlog_work_package) do
+        create(:work_package,
+               subject: "Backlog work package",
+               sprint: nil,
+               project:)
+      end
 
       # This exists to test that sprints just present in the project
       # because of work packages but not because they are genuinely shared, are not options to move
@@ -212,6 +218,8 @@ RSpec.describe "Start and finish sprints",
                                                               work_packages: [unfinished_work_package1,
                                                                               unfinished_work_package2,
                                                                               wp_in_next_sprint])
+
+        planning_page.expect_work_packages_in_inbox_in_order(work_packages: [backlog_work_package])
       end
 
       it "allows moving unfinished work packages to the top of the backlog" do
@@ -222,12 +230,11 @@ RSpec.describe "Start and finish sprints",
 
         planning_page.expect_and_dismiss_flash type: :success, message: "The sprint was completed."
 
-        expect(first_sprint.reload).to be_completed
-        # TODO: once the "Inbox" exists, write an
-        # expect_work_packages_in_backlog_in_order assertion
-        expect(unfinished_work_package1.reload.sprint).to be_nil
-        expect(unfinished_work_package2.reload.sprint).to be_nil
-        expect(closed_work_package.reload.sprint).to eq(first_sprint)
+        planning_page.expect_sprint_names_in_order(sprint_from_other_project.name, second_sprint.name)
+
+        planning_page.expect_work_packages_in_inbox_in_order(work_packages: [unfinished_work_package1,
+                                                                             unfinished_work_package2,
+                                                                             backlog_work_package])
       end
 
       it "allows moving unfinished work packages to the bottom of the backlog" do
@@ -238,12 +245,11 @@ RSpec.describe "Start and finish sprints",
 
         planning_page.expect_and_dismiss_flash type: :success, message: "The sprint was completed."
 
-        expect(first_sprint.reload).to be_completed
-        # TODO: once the "Inbox" exists, write an
-        # expect_work_packages_in_backlog_in_order assertion
-        expect(unfinished_work_package1.reload.sprint).to be_nil
-        expect(unfinished_work_package2.reload.sprint).to be_nil
-        expect(closed_work_package.reload.sprint).to eq(first_sprint)
+        planning_page.expect_sprint_names_in_order(sprint_from_other_project.name, second_sprint.name)
+
+        planning_page.expect_work_packages_in_inbox_in_order(work_packages: [backlog_work_package,
+                                                                             unfinished_work_package1,
+                                                                             unfinished_work_package2])
       end
     end
   end
