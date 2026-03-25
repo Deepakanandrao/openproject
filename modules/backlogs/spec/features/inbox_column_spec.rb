@@ -123,6 +123,30 @@ RSpec.describe "Inbox column in sprint planning view", :js, with_flag: { scrum_p
       planning_page.expect_inbox_items_in_order(middle_item, top_item, bottom_item)
     end
 
+    describe "moving backlog items to a sprint via the 'Move to sprint' menu item" do
+      let!(:sprint2) { create(:agile_sprint, name: "Sprint 2", project:) }
+      let!(:sprint_wp) { create(:work_package, project:, sprint:) }
+
+      before { planning_page.visit! }
+
+      it "moves the item to the bottom of the selected sprint" do
+        planning_page.click_in_inbox_move_menu(inbox_wp1, "Move to sprint")
+
+        within("#move-to-sprint-dialog") do
+          # Expect to have all sprints listed
+          expect(page).to have_select("target_id", with_options: ["Sprint 1", "Sprint 2"])
+
+          select sprint.name, from: "target_id"
+          click_button I18n.t("button_save")
+        end
+
+        planning_page.expect_no_inbox_item(inbox_wp1)
+        expect_and_dismiss_flash(message: "Successful move from Inbox to Sprint 1.")
+        planning_page.expect_story_in_sprint(inbox_wp1, sprint)
+        planning_page.expect_work_packages_in_sprint_in_order(sprint, work_packages: [sprint_wp, inbox_wp1])
+      end
+    end
+
     describe "moving backlog items to a sprint via drag-and-drop" do
       it "moves multiple items into the sprint one by one" do
         planning_page.drag_inbox_item_to_sprint(inbox_wp1, sprint)

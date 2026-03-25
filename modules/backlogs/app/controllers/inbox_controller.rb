@@ -36,6 +36,11 @@ class InboxController < RbApplicationController
   before_action :not_authorized_on_feature_flag_inactive
   prepend_before_action :load_work_package, :load_project
 
+  def move_to_sprint_dialog
+    sprints = Agile::Sprint.for_project(@project).not_completed.order_by_date
+    respond_with_dialog Backlogs::MoveToSprintDialogComponent.new(work_package: @work_package, project: @project, sprints:)
+  end
+
   def reorder
     call = Stories::UpdateService
       .new(user: current_user, story: @work_package)
@@ -54,7 +59,7 @@ class InboxController < RbApplicationController
 
     call = Stories::UpdateService
       .new(user: current_user, story: @work_package)
-      .call(attributes:, position: move_params[:position].to_i)
+      .call(attributes:, **position_attributes)
 
     return failure_response(call.message) unless call.success?
 
@@ -96,8 +101,12 @@ class InboxController < RbApplicationController
   end
 
   def move_params
-    params.require(%i[position target_id])
+    params.require(%i[target_id])
     params.permit(:position, :target_id)
+  end
+
+  def position_attributes
+    move_params[:position].present? ? { position: move_params[:position].to_i } : {}
   end
 
   def reorder_param
