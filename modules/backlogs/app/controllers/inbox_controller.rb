@@ -31,10 +31,8 @@
 class InboxController < RbApplicationController
   include OpTurbo::ComponentStream
 
-  skip_before_action :load_sprint_and_project
-
   before_action :not_authorized_on_feature_flag_inactive
-  prepend_before_action :load_work_package, :load_project
+  before_action :load_work_package
 
   def move_to_sprint_dialog
     respond_with_dialog Backlogs::MoveToSprintDialogComponent.new(
