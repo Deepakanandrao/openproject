@@ -79,18 +79,6 @@ RSpec.shared_context "as sprint contract" do
       it_behaves_like "contract is invalid", name: :blank
     end
 
-    context "when start_date is blank" do
-      let(:sprint_start_date) { nil }
-
-      it_behaves_like "contract is invalid", start_date: :blank
-    end
-
-    context "when finish_date is blank" do
-      let(:sprint_finish_date) { nil }
-
-      it_behaves_like "contract is invalid", finish_date: :blank
-    end
-
     context "when finish_date is before start_date" do
       let(:sprint_start_date) { Time.zone.today }
       let(:sprint_finish_date) { Time.zone.today - 1.day }
@@ -103,6 +91,36 @@ RSpec.shared_context "as sprint contract" do
       let(:sprint_finish_date) { sprint_start_date }
 
       it_behaves_like "contract is valid"
+    end
+
+    context "when the sprint is active" do
+      let(:sprint_status) { "active" }
+
+      context "when start_date is blank" do
+        let(:sprint_start_date) { nil }
+
+        it_behaves_like "contract is invalid", start_date: :blank
+      end
+
+      context "when finish_date is blank" do
+        let(:sprint_finish_date) { nil }
+
+        it_behaves_like "contract is invalid", finish_date: :blank
+      end
+    end
+
+    context "when the sprint is in_planning" do
+      context "when start_date is blank" do
+        let(:sprint_start_date) { nil }
+
+        it_behaves_like "contract is valid"
+      end
+
+      context "when finish_date is blank" do
+        let(:sprint_finish_date) { nil }
+
+        it_behaves_like "contract is valid"
+      end
     end
 
     context "when user is admin without project permission" do

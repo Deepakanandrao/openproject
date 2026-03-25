@@ -27,11 +27,28 @@
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
-#
-class Journal::CausedBySystemUpdate < CauseOfChange::Base
-  def initialize(feature:, **additional_attributes)
-    system_update_attributes =
-      { "feature" => feature }.merge(additional_attributes.deep_stringify_keys)
-    super("system_update", system_update_attributes)
+
+# Writes a journal entry on each work package that was associated with a sprint
+# during the version-to-sprint migration. Runs asynchronously after the migration
+# so that the migration itself does not block on journal creation.
+module Backlogs
+  class MigrateVersionSprintJournalsJob < ApplicationJob
+    def perform
+      system_user = User.system
+
+      Journal::NotificationConfiguration.with(false) do
+        WorkPackage.joins(:sprint, :version)
+                   .select("work_packages.*, versions.name AS version_name")
+                   .find_each do |work_package|
+          cause = Journal::CausedBySystemUpdate.new(
+            feature: "sprint_migration",
+            version_name: work_package.version_name
+          )
+          Journals::CreateService
+            .new(work_package, system_user)
+            .call(cause:)
+        end
+      end
+    end
   end
 end
