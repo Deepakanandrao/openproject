@@ -35,9 +35,7 @@ module Sprints
     private
 
     def no_receiving_project
-      return if model.project.nil?
-
-      if model.project.receive_shared_sprints?
+      if model.project&.receive_shared_sprints?
         errors.add :project, :receiving_sprints
       end
     end

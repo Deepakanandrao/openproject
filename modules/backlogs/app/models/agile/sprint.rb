@@ -66,7 +66,7 @@ module Agile
     validates :finish_date, presence: true
     validates :finish_date,
               comparison: { greater_than_or_equal_to: :start_date },
-              if: :start_date?
+              if: :date_range_set?
     validates :status,
               uniqueness: {
                 scope: :project_id,
