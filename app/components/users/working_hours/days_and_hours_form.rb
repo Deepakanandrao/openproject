@@ -129,7 +129,7 @@ class Users::WorkingHours::DaysAndHoursForm < ApplicationForm
   end
 
   def day_enabled?(day)
-    model.public_send(day) > 0
+    model.public_send(day).to_i > 0
   end
 
   def day_hours(day)
