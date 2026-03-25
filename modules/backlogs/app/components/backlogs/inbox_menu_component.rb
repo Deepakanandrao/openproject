@@ -29,20 +29,19 @@
 #++
 
 module Backlogs
-  class StoryMenuComponent < ApplicationComponent
-    attr_reader :story, :sprint, :project, :max_position, :current_user
+  class InboxMenuComponent < ApplicationComponent
+    attr_reader :work_package, :project, :max_position, :current_user
 
-    def initialize(story:, sprint:, project:, max_position:, current_user: User.current, **system_arguments)
+    def initialize(work_package:, project:, max_position:, current_user: User.current, **system_arguments)
       super()
 
-      @story = story
-      @sprint = sprint
+      @work_package = work_package
       @project = project
       @max_position = max_position
       @current_user = current_user
 
       @system_arguments = system_arguments
-      @system_arguments[:menu_id] = dom_target(story, :menu)
+      @system_arguments[:menu_id] = dom_target(work_package, :menu)
       @system_arguments[:anchor_align] = :end
       @system_arguments[:classes] = class_names(
         @system_arguments[:classes],
@@ -74,10 +73,10 @@ module Backlogs
 
     def build_move_item(menu, label:, direction:, icon:)
       menu.with_item(
-        id: dom_target(story, :menu, direction),
+        id: dom_target(work_package, :menu, direction),
         label:,
         tag: :button,
-        href: reorder_backlogs_project_sprint_story_path(project, sprint, story),
+        href: reorder_project_inbox_path(project, work_package),
         form_arguments: { method: :post, inputs: [{ name: "direction", value: direction }] }
       ) do |item|
         item.with_leading_visual_icon(icon:)
@@ -85,11 +84,11 @@ module Backlogs
     end
 
     def first_item?
-      story.position == 1
+      work_package.position == 1
     end
 
     def last_item?
-      story.position == max_position
+      work_package.position == max_position
     end
   end
 end
