@@ -60,13 +60,11 @@ module Agile
          default: "in_planning",
          validate: true
 
-    validates :name, presence: true
-    validates :project, presence: true
-    validates :start_date, presence: true
-    validates :finish_date, presence: true
+    validates :name, :project, presence: true
+    validates :start_date, :finish_date, presence: true, if: :active?
     validates :finish_date,
               comparison: { greater_than_or_equal_to: :start_date },
-              if: :start_date?
+              if: -> { start_date? && finish_date? }
     validates :status,
               uniqueness: {
                 scope: :project_id,
