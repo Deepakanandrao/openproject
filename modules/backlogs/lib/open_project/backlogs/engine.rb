@@ -273,7 +273,6 @@ module OpenProject::Backlogs
       ::Queries::Register.register(::Query) do
         filter Queries::WorkPackages::Filter::SprintFilter
         filter OpenProject::Backlogs::WorkPackageFilter
-        filter OpenProject::Backlogs::SprintFilter
 
         select OpenProject::Backlogs::QueryBacklogsSelect
       end
