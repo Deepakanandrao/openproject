@@ -61,20 +61,16 @@ module Projects::Identifier
                       if: -> { Setting::WorkPackageIdentifier.alphanumeric? && identifier.blank? }
 
     ### ID validators
-    # Validators for the legacy underscored identifier format (e.g. "project_one")
+    # Shared validators for all identifier formats
     validates :identifier,
               presence: true,
               uniqueness: { case_sensitive: false },
               length: { maximum: IDENTIFIER_MAX_LENGTH },
               if: ->(p) { p.persisted? || p.identifier.present? }
 
-    # Validators for the numeric identifier format (e.g. "project_one")
-    # Contains only a-z, 0-9, dashes and underscores but cannot consist of numbers only as it would clash with the id.
-    validates :identifier,
-              format: { with: /\A(?!^\d+\z)[a-z0-9\-_]+\z/ },
-              if: ->(p) {
-                p.identifier_changed? && p.identifier.present? && Setting::WorkPackageIdentifier.numeric?
-              }
+    # Validators for the numeric (legacy) identifier format (e.g. "my-project", "project_one")
+    validate :identifier_numeric_format,
+             if: ->(p) { p.identifier_changed? && p.identifier.present? && Setting::WorkPackageIdentifier.numeric? }
 
     # Validators for the semantic (alphanumeric) identifier format (e.g. "PROJ1")
     validate :identifier_alphanumeric_format,
@@ -127,6 +123,14 @@ module Projects::Identifier
   end
 
   private
+
+  # Contains only a-z, 0-9, dashes and underscores but cannot consist of numbers only
+  # as that would clash with the numeric id.
+  def identifier_numeric_format
+    unless identifier.match?(/\A(?!^\d+\z)[a-z0-9\-_]+\z/)
+      errors.add(:identifier, :invalid)
+    end
+  end
 
   def identifier_alphanumeric_format
     unless identifier.match?(/\A[A-Z]/)
