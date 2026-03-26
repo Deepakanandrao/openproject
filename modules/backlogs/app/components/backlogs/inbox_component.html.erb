@@ -38,7 +38,14 @@ See COPYRIGHT and LICENSE files for more details.
         classes: "gap-2"
       ) do
         concat t(:label_backlog)
-        concat render(Primer::Beta::Counter.new(count: total, scheme: :default))
+        concat render(
+          Primer::Beta::Counter.new(
+            scheme: :default,
+            count: total,
+            round: true,
+            limit: 1_000
+          )
+        )
       end
 
       if allow_sprint_creation?(project)

@@ -83,6 +83,10 @@ RSpec.describe Backlogs::InboxComponent, type: :component do
       # does not show the blankslate
       expect(page).to have_no_css("h4", text: "Backlog inbox is empty")
     end
+
+    it "shows the counter with the work package count" do
+      expect(page).to have_css(".Counter", text: "2")
+    end
   end
 
   describe "pagination" do
