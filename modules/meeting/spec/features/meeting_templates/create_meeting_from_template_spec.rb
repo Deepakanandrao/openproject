@@ -250,6 +250,38 @@ RSpec.describe "Create meeting from template", :js do
         expect(page).to have_no_css('[data-test-selector="template_id"]')
       end
     end
+
+    it "keeps the template selector visible with the template preselected on failed submission" do
+      template
+
+      global_meetings_page.click_on "add-meeting-button"
+      global_meetings_page.click_on "One-time"
+
+      expect(page).to have_dialog("New one-time meeting")
+
+      wait_for_turbo_stream do
+        global_meetings_page.set_project(project)
+      end
+
+      within_dialog "New one-time meeting" do
+        select_autocomplete find('[data-test-selector="template_id"]'),
+                            query: template.title,
+                            select_text: template.title,
+                            results_selector: "body"
+
+        # Submit without a title to trigger validation failure
+        wait_for_turbo_stream do
+          click_button "Create"
+        end
+      end
+
+      within_dialog "New one-time meeting" do
+        expect(page).to have_text("Title can't be blank.")
+
+        # Template selector must still be visible with the previously selected template preselected
+        expect(page).to have_css('[data-test-selector="template_id"]', text: template.title)
+      end
+    end
   end
 
   describe "creating meeting from template using 'Create from template' button" do

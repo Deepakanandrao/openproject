@@ -16,7 +16,7 @@
 
         if show_template_selector?
           modal_body.with_row(mb: 3) do
-            render(Meeting::TemplateAutocompleter.new(f, project: effective_project, disabled: template_selector_disabled?, placeholder: template_selector_placeholder))
+            render(Meeting::TemplateAutocompleter.new(f, project: effective_project, disabled: template_selector_disabled?, placeholder: template_selector_placeholder, selected_id: @copy_from&.id))
           end
         end
 

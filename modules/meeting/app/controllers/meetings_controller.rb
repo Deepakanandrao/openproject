@@ -145,7 +145,8 @@ class MeetingsController < ApplicationController
             component: Meetings::Index::FormComponent.new(
               meeting: @meeting,
               project: @project,
-              copy_from: @copy_from
+              copy_from: @copy_from,
+              template_selected_via_dropdown: params.dig(:meeting, :template_id).present?
             ),
             status: :bad_request
           )
@@ -594,7 +595,8 @@ class MeetingsController < ApplicationController
     # Check for template selection from form submission
     template_id = params[:meeting][:template_id]
     if template_id.present?
-      @copy_from = Meeting.templates_visible_in_project(@project).find_by(id: template_id)
+      templates = @project ? Meeting.templates_visible_in_project(@project) : Meeting.templates_visible_globally
+      @copy_from = templates.find_by(id: template_id)
       return
     end
 

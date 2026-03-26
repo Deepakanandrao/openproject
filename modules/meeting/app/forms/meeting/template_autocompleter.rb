@@ -49,17 +49,19 @@ class Meeting::TemplateAutocompleter < ApplicationForm
       templates.each do |template|
         select.option(
           value: template.id,
-          label: template.title
+          label: template.title,
+          selected: template.id == @selected_id
         )
       end
     end
   end
 
-  def initialize(project:, disabled: false, placeholder: nil)
+  def initialize(project:, disabled: false, placeholder: nil, selected_id: nil)
     super()
     @project = project
     @disabled = disabled
     @placeholder = placeholder
+    @selected_id = selected_id
   end
 
   private

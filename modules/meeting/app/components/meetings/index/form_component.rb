@@ -33,13 +33,14 @@ module Meetings
     include OpTurbo::Streamable
     include OpPrimer::ComponentHelpers
 
-    def initialize(meeting:, project:, copy_from: nil, template: false)
+    def initialize(meeting:, project:, copy_from: nil, template: false, template_selected_via_dropdown: false)
       super
 
       @meeting = meeting
       @project = project
       @copy_from = copy_from
       @template = template
+      @template_selected_via_dropdown = template_selected_via_dropdown
     end
 
     private
@@ -100,7 +101,7 @@ module Meetings
     end
 
     def no_preselection?
-      !@copy_from
+      !@copy_from || @template_selected_via_dropdown
     end
 
     def show_template_selector?
