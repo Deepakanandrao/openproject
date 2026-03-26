@@ -133,12 +133,8 @@ module Projects::Identifier
   end
 
   def identifier_alphanumeric_format
-    unless identifier.match?(/\A[A-Z]/)
-      errors.add(:identifier, :must_start_with_letter)
-      return
-    end
-
-    errors.add(:identifier, :no_special_characters) unless identifier.match?(/\A[A-Z][A-Z0-9_]*\z/)
+    errors.add(:identifier, :must_start_with_letter) unless identifier.match?(/\A[A-Z]/)
+    errors.add(:identifier, :no_special_characters) unless identifier.match?(/\A[A-Z0-9_]*\z/)
     if identifier.length > SEMANTIC_IDENTIFIER_MAX_LENGTH
       errors.add(:identifier, :too_long, count: SEMANTIC_IDENTIFIER_MAX_LENGTH)
     end

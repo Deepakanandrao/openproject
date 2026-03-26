@@ -217,7 +217,7 @@ RSpec.describe "API::V3::Projects::Copy::CopyAPI", content_type: :json, with_goo
         let(:params) do
           {
             name: "My copied project",
-            identifier: "invalid-lowercase"
+            identifier: "1ABC"
           }
         end
 

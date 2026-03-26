@@ -479,7 +479,7 @@ RSpec.describe "API v3 Project resource create", content_type: :json do
       let(:body) do
         {
           name: "Flight Planning Algorithm",
-          identifier: "invalid-lowercase"
+          identifier: "1ABC"
         }.to_json
       end
 
