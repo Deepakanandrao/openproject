@@ -67,10 +67,10 @@ module ScimV2
         end
       end
 
-      # Builds the base query for the SCIM index action,
-      # applying any SCIM filter params if present.
       private
 
+      # Builds the base query for the SCIM index action,
+      # applying any SCIM filter params if present.
       def scim_index_storage_query
         return storage_scope if params[:filter].blank?
 
