@@ -80,6 +80,8 @@ module AuthenticationHelpers
     else
       page.driver.clear_cookies
     end
+
+    allow(RequestStore).to receive(:[]).with(:current_user).and_call_original
   end
 
   private
