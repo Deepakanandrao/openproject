@@ -30,7 +30,7 @@
 
 class My::Reminders::ImmediateRemindersForm < ApplicationForm
   form do |f|
-    f.fieldset_group(title: helpers.t("my_account.email_reminders.immediate_reminders.title")) do |fg|
+    f.fieldset_group(title: helpers.t("my_account.email_reminders.immediate_reminders.title"), mt: 2) do |fg|
       fg.check_box(
         name: :mentioned,
         label: helpers.t("my_account.email_reminders.immediate_reminders.mentioned")

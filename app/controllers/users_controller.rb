@@ -39,6 +39,7 @@ class UsersController < ApplicationController
   before_action :find_user, only: %i[show
                                      edit
                                      update
+                                     update_email_alerts
                                      change_status_info
                                      change_status
                                      destroy
@@ -107,6 +108,17 @@ class UsersController < ApplicationController
       @contract = Users::CreateContract.new(@user, current_user)
       render action: :new, status: :unprocessable_entity
     end
+  end
+
+  def update_email_alerts
+    global_setting = @user.notification_settings.find_or_initialize_by(project: nil)
+    if global_setting.update(permitted_params.notification_setting_email_alerts)
+      flash[:notice] = I18n.t(:notice_successful_update)
+    else
+      flash[:error] = I18n.t(:notice_failed_to_save_messages, count: global_setting.errors.count,
+                                                              object: global_setting.class.model_name.human)
+    end
+    redirect_back_or_to edit_user_path(@user, tab: "reminders")
   end
 
   def update # rubocop:disable Metrics/AbcSize, Metrics/PerceivedComplexity

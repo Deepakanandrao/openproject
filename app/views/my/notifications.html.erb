@@ -32,7 +32,14 @@ See COPYRIGHT and LICENSE files for more details.
 <%= render(My::Notifications::ShowPageHeaderComponent.new) %>
 
 <% if params[:tab] == "reminders" %>
-  <%= render(My::Reminders::ShowPageComponent.new(user: @user, global_notification_setting: @global_notification_setting)) %>
+  <%= render(
+        My::Reminders::ShowPageComponent.new(
+          user: @user,
+          global_notification_setting: @global_notification_setting,
+          update_url: { action: "update_settings" },
+          update_email_alerts_url: { action: "update_email_alerts" }
+        )
+      ) %>
 <% else %>
   <%= angular_component_tag "opce-notification-settings" %>
 <% end %>

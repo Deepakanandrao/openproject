@@ -48,12 +48,12 @@ module My
           {
             name: "notifications",
             path: helpers.my_notifications_path(tab: "notifications"),
-            label: I18n.t("js.notifications.settings.title")
+            label: t("my_account.notifications_and_email.tabs.notifications")
           },
           {
             name: "reminders",
             path: helpers.my_notifications_path(tab: "reminders"),
-            label: I18n.t("js.reminders.settings.title")
+            label: t("my_account.notifications_and_email.tabs.email_reminders")
           }
         ]
       end

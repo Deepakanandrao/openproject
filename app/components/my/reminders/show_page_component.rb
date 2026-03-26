@@ -33,13 +33,15 @@ module My
     class ShowPageComponent < ApplicationComponent
       include OpPrimer::FormHelpers
 
-      attr_reader :global_notification_setting
+      attr_reader :global_notification_setting, :update_url, :update_email_alerts_url
 
-      def initialize(user:, global_notification_setting:)
+      def initialize(user:, global_notification_setting:, update_url:, update_email_alerts_url:)
         super
 
         @user = user
         @global_notification_setting = global_notification_setting
+        @update_url = update_url
+        @update_email_alerts_url = update_email_alerts_url
       end
 
       def daily_reminders_form_model

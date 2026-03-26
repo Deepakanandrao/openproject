@@ -31,7 +31,7 @@ See COPYRIGHT and LICENSE files for more details.
   settings_primer_form_with(
     model: @user.pref,
     scope: "pref[immediate_reminders]",
-    url: { action: "update_settings" },
+    url: update_url,
     method: :patch,
     data: { turbo: false }
   ) do |form|
@@ -43,7 +43,7 @@ See COPYRIGHT and LICENSE files for more details.
   settings_primer_form_with(
     model: daily_reminders_form_model,
     scope: "pref[daily_reminders]",
-    url: { action: "update_settings" },
+    url: update_url,
     method: :patch,
     data: {
       turbo: false,
@@ -59,7 +59,7 @@ See COPYRIGHT and LICENSE files for more details.
   settings_primer_form_with(
     model: @user.pref,
     scope: :pref,
-    url: { action: "update_settings" },
+    url: update_url,
     method: :patch,
     data: { turbo: false }
   ) do |form|
@@ -71,7 +71,7 @@ See COPYRIGHT and LICENSE files for more details.
   settings_primer_form_with(
     model: pause_reminders_form_model,
     scope: "pref[pause_reminders]",
-    url: { action: "update_settings" },
+    url: update_url,
     method: :patch,
     data: {
       turbo: false,
@@ -87,7 +87,7 @@ See COPYRIGHT and LICENSE files for more details.
   settings_primer_form_with(
     model: global_notification_setting,
     scope: :notification_setting,
-    url: { action: "update_email_alerts" },
+    url: update_email_alerts_url,
     method: :patch,
     data: { turbo: false }
   ) do |form|

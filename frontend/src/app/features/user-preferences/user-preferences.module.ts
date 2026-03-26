@@ -15,18 +15,6 @@ import {
 import {
   NotificationSettingsTableComponent,
 } from './notifications-settings/table/notification-settings-table.component';
-import { ReminderSettingsPageComponent } from './reminder-settings/page/reminder-settings-page.component';
-import {
-  ReminderSettingsDailyTimeComponent,
-} from 'core-app/features/user-preferences/reminder-settings/reminder-time/reminder-settings-daily-time.component';
-import {
-  ImmediateReminderSettingsComponent,
-} from 'core-app/features/user-preferences/reminder-settings/immediate-reminders/immediate-reminder-settings.component';
-import {
-  EmailAlertsSettingsComponent,
-} from 'core-app/features/user-preferences/reminder-settings/email-alerts/email-alerts-settings.component';
-import { WorkdaysSettingsComponent } from './reminder-settings/workdays/workdays-settings.component';
-import { PauseRemindersComponent } from './reminder-settings/pause-reminders/pause-reminders.component';
 import { OpenprojectEnterpriseModule } from 'core-app/features/enterprise/openproject-enterprise.module';
 
 @NgModule({
@@ -37,12 +25,6 @@ import { OpenprojectEnterpriseModule } from 'core-app/features/enterprise/openpr
     NotificationsSettingsPageComponent,
     NotificationSettingInlineCreateComponent,
     NotificationSettingsTableComponent,
-    ReminderSettingsPageComponent,
-    ReminderSettingsDailyTimeComponent,
-    ImmediateReminderSettingsComponent,
-    EmailAlertsSettingsComponent,
-    WorkdaysSettingsComponent,
-    PauseRemindersComponent,
   ],
   imports: [
     CommonModule,
