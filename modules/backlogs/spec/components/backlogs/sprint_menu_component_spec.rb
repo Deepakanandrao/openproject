@@ -118,7 +118,7 @@ RSpec.describe Backlogs::SprintMenuComponent, type: :component do
                finish_date: Date.tomorrow,
                status: "active")
       end
-      let(:permissions) { %i[view_sprints view_work_packages start_complete_sprint] }
+      let(:permissions) { %i[view_sprints view_work_packages start_complete_sprint create_sprints manage_sprint_items] }
       let!(:task_board) { create(:board_grid_with_query, project:, linked: sprint) }
 
       it "shows Finish sprint and Task board" do
@@ -128,6 +128,14 @@ RSpec.describe Backlogs::SprintMenuComponent, type: :component do
         expect(page).to have_octicon(:check)
         expect(page).to have_element(:form, action: finish_sprint_path, method: "post")
         expect(menu_items).to include("Task board")
+      end
+
+      it "renders dividers between each menu section" do
+        render_component
+
+        expect(menu_items).to eq(["Finish sprint", "Edit sprint", "Add work package", "Task board"])
+        expect(page).to have_list_item position: 3, role: "presentation"
+        expect(page).to have_list_item position: 5, role: "presentation"
       end
     end
 
@@ -230,6 +238,12 @@ RSpec.describe Backlogs::SprintMenuComponent, type: :component do
           render_component
 
           expect(menu_items).to include("Task board")
+        end
+
+        it "does not render a divider when task board is the only visible item" do
+          render_component
+
+          expect(page).not_to have_list_item(role: "presentation")
         end
       end
     end
