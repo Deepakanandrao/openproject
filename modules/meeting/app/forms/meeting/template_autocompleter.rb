@@ -38,6 +38,8 @@ class Meeting::TemplateAutocompleter < ApplicationForm
         decorated: true,
         defaultData: false,
         multiple: false,
+        disabled: @disabled,
+        placeholder: @placeholder,
         appendTo: "#new-meeting-dialog",
         data: {
           "test-selector": "template_id"
@@ -47,20 +49,26 @@ class Meeting::TemplateAutocompleter < ApplicationForm
       templates.each do |template|
         select.option(
           value: template.id,
-          label: template.title
+          label: template.title,
+          selected: template.id == @selected_id
         )
       end
     end
   end
 
-  def initialize(project:)
+  def initialize(project:, disabled: false, placeholder: nil, selected_id: nil)
     super()
     @project = project
+    @disabled = disabled
+    @placeholder = placeholder
+    @selected_id = selected_id
   end
 
   private
 
   def templates
+    return [] if @disabled
+
     Meeting.templates_visible_in_project(@project).order(:title)
   end
 end
