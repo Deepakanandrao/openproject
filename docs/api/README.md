@@ -26,7 +26,7 @@ The API v3 is a general purpose API supporting multiple use cases.
 While by no means complete, a whole lot of different scenarios can be automatized which otherwise would have to be carried out by hand via the UI.
 Examples for this include managing work packages, projects and users.
 
-We try to keep stable releases of OpenProject with changes to this API backwards compatible whenever possible.
+We strive to maintain backward compatibility with this API in our stable OpenProject releases whenever possible.
 
 ➔ [Go to OpenProject API](./introduction/)
 
@@ -38,13 +38,13 @@ Download the API specification in OpenAPI format as [json](https://www.openproje
 
 OpenProject allows to manage users and groups using System for Cross-domain Identity Management. This is a standardized API (see [RFC 7643](https://datatracker.ietf.org/doc/html/rfc7643) and [RFC 7644](https://datatracker.ietf.org/doc/html/rfc7644)) that might thus be supported by existing identity providers.
 
-➔ [Configuration instructions](../system-admin-guide/authentication/scim/)
+➔ [Read more on configuration instructions](../system-admin-guide/authentication/scim/)
 
 ## MCP
 
 A growing number of tools and resources is offered through the Model Context Protocol API of OpenProject. This API is primarily targeted at AI agents and similar tools, as it supports auto-discovery of supported operations.
 
-➔ [Configuration instructions](../system-admin-guide/integrations/mcp-server/)
+➔ [Read more on configuration instructions](../system-admin-guide/integrations/mcp-server/)
 
 ## BCF v2.1
 
