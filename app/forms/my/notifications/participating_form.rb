@@ -39,24 +39,29 @@ class My::Notifications::ParticipatingForm < ApplicationForm
       fg.check_box(
         name: :mentioned,
         label: helpers.t("my_account.notifications.participating.mentioned"),
-        disabled: true
+        disabled: true,
+        data: { test_selector: "global-notification-type-mentioned" }
       )
       fg.check_box(
         name: :watched,
         label: helpers.t("my_account.notifications.participating.watched"),
-        disabled: true
+        disabled: true,
+        data: { test_selector: "global-notification-type-watched" }
       )
       fg.check_box(
         name: :assignee,
-        label: helpers.t("my_account.notifications.participating.assignee")
+        label: helpers.t("my_account.notifications.participating.assignee"),
+        data: { test_selector: "global-notification-type-assignee" }
       )
       fg.check_box(
         name: :responsible,
-        label: helpers.t("my_account.notifications.participating.responsible")
+        label: helpers.t("my_account.notifications.participating.responsible"),
+        data: { test_selector: "global-notification-type-responsible" }
       )
       fg.check_box(
         name: :shared,
-        label: helpers.t("my_account.notifications.participating.shared")
+        label: helpers.t("my_account.notifications.participating.shared"),
+        data: { test_selector: "global-notification-type-shared" }
       )
 
       if @show_submit

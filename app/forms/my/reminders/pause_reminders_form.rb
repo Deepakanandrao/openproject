@@ -32,7 +32,7 @@ class My::Reminders::PauseRemindersForm < ApplicationForm
   PauseRemindersFormModel = Data.define(:enabled, :first_day, :last_day)
 
   form do |f|
-    f.fieldset_group(title: helpers.t("my_account.email_reminders.pause_reminders.title"), mt: 4) do |fg|
+    f.fieldset_group(title: helpers.t("my_account.email_reminders.pause_reminders.title"), mt: 3) do |fg|
       fg.check_box(
         name: :enabled,
         id: "pause-reminders-enabled",

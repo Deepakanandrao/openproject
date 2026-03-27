@@ -72,14 +72,14 @@ module Pages
 
       def expect_immediate_reminder(name, enabled)
         if enabled
-          expect(page).to have_css("input[data-qa-immediate-reminder='#{name}']:checked")
+          expect(page).to have_css("input[data-test-selector='immediate-reminder-#{name}']:checked")
         else
-          expect(page).to have_css("input[data-qa-immediate-reminder='#{name}']:not(:checked)")
+          expect(page).to have_css("input[data-test-selector='immediate-reminder-#{name}']:not(:checked)")
         end
       end
 
       def set_immediate_reminder(name, enabled)
-        field = page.find("input[data-qa-immediate-reminder='#{name}']")
+        field = page.find("input[data-test-selector='immediate-reminder-#{name}']")
 
         if enabled
           field.check
@@ -118,8 +118,7 @@ module Pages
         end
 
         if first && last
-          expect(page).to have_css('[data-test-selector="op-basic-range-date-picker"]',
-                                   value: "#{first.iso8601} - #{last.iso8601}")
+          expect(page).to have_test_selector("op-basic-range-date-picker", value: "#{first.iso8601} - #{last.iso8601}")
         end
       end
 
@@ -127,7 +126,7 @@ module Pages
         if paused
           check "Temporarily pause daily email reminders"
 
-          page.find("op-basic-range-date-picker input").click
+          page.find("opce-range-date-picker input").click
 
           datepicker = ::Components::RangeDatepicker.new
           datepicker.set_date first
@@ -137,8 +136,28 @@ module Pages
         end
       end
 
-      def save
-        click_button I18n.t("js.button_save")
+      def save_paused_reminders
+        within_test_selector("pause-reminders-form") do
+          click_button I18n.t("button_save")
+        end
+      end
+
+      def save_daily_reminders_form
+        within_test_selector("daily-reminders-form") do
+          click_button I18n.t("button_save")
+        end
+      end
+
+      def save_immediate_reminders
+        within_test_selector("immediate-reminders-form") do
+          click_button I18n.t("button_save")
+        end
+      end
+
+      def save_workdays
+        within_test_selector("workdays-form") do
+          click_button I18n.t("my_account.email_reminders.workdays.submit_button")
+        end
       end
     end
   end

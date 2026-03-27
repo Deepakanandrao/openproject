@@ -242,7 +242,12 @@ class UserPreference < ApplicationRecord
 
   def pause_reminders_hash(hash)
     result = { "enabled" => ActiveRecord::Type::Boolean.new.cast(hash[:enabled]) }
-    result.merge(parsed_date_range(hash[:date_range])).compact
+    date_fields = if hash[:date_range].present?
+                    parsed_date_range(hash[:date_range])
+                  else
+                    { "first_day" => hash[:first_day].presence, "last_day" => hash[:last_day].presence }
+                  end
+    result.merge(date_fields).compact
   end
 
   def parsed_date_range(date_range)

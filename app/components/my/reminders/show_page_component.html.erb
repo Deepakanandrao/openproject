@@ -33,7 +33,7 @@ See COPYRIGHT and LICENSE files for more details.
     scope: "pref[immediate_reminders]",
     url: update_url,
     method: :patch,
-    data: { turbo: false }
+    data: { turbo: false, test_selector: "immediate-reminders-form" }
   ) do |form|
     render(My::Reminders::ImmediateRemindersForm.new(form))
   end
@@ -48,7 +48,8 @@ See COPYRIGHT and LICENSE files for more details.
     data: {
       turbo: false,
       controller: "show-when-checked",
-      show_when_checked_visibility_class: "d-none"
+      show_when_checked_visibility_class: "d-none",
+      test_selector: "daily-reminders-form"
     }
   ) do |form|
     render(My::Reminders::DailyRemindersForm.new(form))
@@ -61,7 +62,7 @@ See COPYRIGHT and LICENSE files for more details.
     scope: :pref,
     url: update_url,
     method: :patch,
-    data: { turbo: false }
+    data: { turbo: false, test_selector: "workdays-form" }
   ) do |form|
     render(My::Reminders::WorkdaysForm.new(form))
   end
@@ -76,7 +77,8 @@ See COPYRIGHT and LICENSE files for more details.
     data: {
       turbo: false,
       controller: "show-when-checked",
-      show_when_checked_visibility_class: "d-none"
+      show_when_checked_visibility_class: "d-none",
+      test_selector: "pause-reminders-form"
     }
   ) do |form|
     render(My::Reminders::PauseRemindersForm.new(form))

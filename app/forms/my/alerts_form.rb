@@ -30,7 +30,7 @@
 
 class My::AlertsForm < ApplicationForm
   form do |f|
-    f.fieldset_group(title: helpers.t("activerecord.attributes.user_preference.header_alerts"), mt: 4) do |fg|
+    f.fieldset_group(title: helpers.t("activerecord.attributes.user_preference.header_alerts"), mt: 3) do |fg|
       fg.check_box name: :warn_on_leaving_unsaved,
                    label: helpers.t("activerecord.attributes.user_preference.warn_on_leaving_unsaved")
 

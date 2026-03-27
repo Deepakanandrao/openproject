@@ -33,7 +33,7 @@ See COPYRIGHT and LICENSE files for more details.
     scope: :notification_setting,
     url: update_participating_url,
     method: :patch,
-    data: { turbo: false }
+    data: { turbo: false, test_selector: "participating-form" }
   ) do |form|
     render(My::Notifications::ParticipatingForm.new(form))
   end
@@ -49,14 +49,15 @@ See COPYRIGHT and LICENSE files for more details.
       data: {
         turbo: false,
         controller: "show-when-checked",
-        show_when_checked_visibility_class: "d-none"
+        show_when_checked_visibility_class: "d-none",
+        test_selector: "date-alerts-form"
       }
     ) do |form|
       render(My::Notifications::DateAlertsForm.new(form))
     end
   %>
 <% else %>
-  <%= render(Primer::Beta::Subhead.new(mt: 4)) do |component|
+  <%= render(Primer::Beta::Subhead.new(mt: 3)) do |component|
         component.with_heading(size: :medium) { t("my_account.notifications.date_alerts.title") }
       end %>
   <%= render(EnterpriseEdition::BannerComponent.new(:date_alerts, variant: :inline)) %>
@@ -68,14 +69,14 @@ See COPYRIGHT and LICENSE files for more details.
     scope: :notification_setting,
     url: update_non_participating_url,
     method: :patch,
-    data: { turbo: false }
+    data: { turbo: false, test_selector: "non-participating-form" }
   ) do |form|
     render(My::Notifications::NonParticipatingForm.new(form))
   end
 %>
 
 <%= render(Primer::BaseComponent.new(tag: :div, classes: "op-admin-settings-form-wrapper")) do %>
-  <%= render(Primer::Beta::Subhead.new(mt: 4)) do |component|
+  <%= render(Primer::Beta::Subhead.new(mt: 3)) do |component|
         component.with_heading(size: :medium) { t("my_account.notifications.project_specific_settings.title") }
       end %>
 
@@ -83,13 +84,13 @@ See COPYRIGHT and LICENSE files for more details.
     <%= render(Primer::Beta::BorderBox.new(mb: 3)) do |box| %>
       <% box.with_header { t("my_account.notifications.project_specific_settings.list_header") } %>
       <% project_notification_settings.each do |setting| %>
-        <% box.with_row do %>
+        <% box.with_row(test_selector: "project-specific-settings-list") do %>
           <%= flex_layout(justify_content: :space_between, align_items: :center, width: :full) do |flex| %>
             <%= flex.with_column do %>
               <span><%= setting.project.name %></span>
             <% end %>
             <%= flex.with_column do %>
-              <%= render(Primer::Alpha::ActionMenu.new) do |menu|
+              <%= render(Primer::Alpha::ActionMenu.new(test_selector: "project-specific-settings-list--action-menu")) do |menu|
                     menu.with_show_button(
                       scheme: :invisible,
                       size: :small,

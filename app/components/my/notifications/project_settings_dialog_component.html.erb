@@ -31,7 +31,8 @@ See COPYRIGHT and LICENSE files for more details.
       Primer::Alpha::Dialog.new(
         id: DIALOG_ID,
         title: t("my_account.notifications.project_specific_settings.dialog_title"),
-        position: :right
+        position: :right,
+        test_selector: "project-specific-settings-form"
       )
     ) do |d|
       d.with_body do

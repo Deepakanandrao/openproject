@@ -38,7 +38,7 @@ class My::Notifications::DateAlertsForm < ApplicationForm
   end
 
   form do |f|
-    f.fieldset_group(title: helpers.t("my_account.notifications.date_alerts.title"), mt: 4) do |fg|
+    f.fieldset_group(title: helpers.t("my_account.notifications.date_alerts.title"), mt: 3) do |fg|
       %i[start_date due_date].each do |field|
         active = model.send(:"#{field}_active")
 
@@ -47,7 +47,8 @@ class My::Notifications::DateAlertsForm < ApplicationForm
           label: helpers.t("my_account.notifications.date_alerts.#{field}"),
           data: {
             show_when_checked_target: "cause",
-            target_name: field.to_s
+            target_name: field.to_s,
+            test_selector: "global-notification-type-op-settings-#{field}-date-active"
           }
         ) do |cb|
           cb.nested_form(
@@ -70,7 +71,8 @@ class My::Notifications::DateAlertsForm < ApplicationForm
         label: helpers.t("my_account.notifications.date_alerts.overdue"),
         data: {
           show_when_checked_target: "cause",
-          target_name: "overdue"
+          target_name: "overdue",
+          test_selector: "global-notification-type-op-settings-overdue-date-active"
         }
       ) do |cb|
         cb.nested_form(
@@ -104,7 +106,8 @@ class My::Notifications::DateAlertsForm < ApplicationForm
         name: @field,
         label: helpers.t("my_account.notifications.date_alerts.#{@field}"),
         visually_hide_label: true,
-        input_width: :xsmall
+        input_width: :xsmall,
+        data: { test_selector: "global-notification-type-op-reminder-settings-#{@field.to_s.underscore}-alerts" }
       ) do |list|
         @times.each do |value|
           list.option(

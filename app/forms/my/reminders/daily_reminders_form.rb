@@ -32,7 +32,7 @@ class My::Reminders::DailyRemindersForm < ApplicationForm
   DailyRemindersFormModel = Data.define(:enabled, :times)
 
   form do |f|
-    f.fieldset_group(title: helpers.t("my_account.email_reminders.daily_reminders.title"), mt: 4) do |fg|
+    f.fieldset_group(title: helpers.t("my_account.email_reminders.daily_reminders.title"), mt: 3) do |fg|
       fg.check_box(
         name: :enabled,
         label: helpers.t("my_account.email_reminders.daily_reminders.enabled"),

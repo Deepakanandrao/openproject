@@ -35,11 +35,12 @@ class My::Notifications::NonParticipatingForm < ApplicationForm
   end
 
   form do |f|
-    f.fieldset_group(title: helpers.t("my_account.notifications.non_participating.title"), mt: 4) do |fg|
+    f.fieldset_group(title: helpers.t("my_account.notifications.non_participating.title"), mt: 3) do |fg|
       NotificationSetting.non_participating_settings.each do |setting|
         fg.check_box(
           name: setting,
-          label: helpers.t("my_account.notifications.non_participating.#{setting}")
+          label: helpers.t("my_account.notifications.non_participating.#{setting}"),
+          data: { test_selector: "global-notification-type-#{setting}" }
         )
       end
 

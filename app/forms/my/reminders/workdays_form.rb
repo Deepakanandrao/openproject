@@ -32,7 +32,7 @@ class My::Reminders::WorkdaysForm < ApplicationForm
   WEEKDAY_NUMBERS = [1, 2, 3, 4, 5, 6, 7].freeze
 
   form do |f|
-    f.fieldset_group(title: helpers.t("my_account.email_reminders.workdays.title"), mt: 4) do |fg|
+    f.fieldset_group(title: helpers.t("my_account.email_reminders.workdays.title"), mt: 3) do |fg|
       fg.check_box_group(name: :workdays) do |group|
         WEEKDAY_NUMBERS.each do |day_num|
           day_label = helpers.t("date.day_names")[day_num % 7]

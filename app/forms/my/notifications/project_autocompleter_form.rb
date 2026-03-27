@@ -40,6 +40,7 @@ class My::Notifications::ProjectAutocompleterForm < ApplicationForm
       label: Project.model_name.human,
       required: true,
       autocomplete_options: {
+        data: { test_selector: "my-notifications-project-autocompleter" },
         appendTo: "##{My::Notifications::ProjectSettingsDialogComponent::DIALOG_ID}",
         readonly: @readonly
       }
