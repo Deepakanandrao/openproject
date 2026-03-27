@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -30,31 +31,13 @@
 module API
   module V3
     module Meetings
-      class MeetingsAPI < ::API::OpenProjectAPI
-        resources :meetings do
-          get &::API::V3::Utilities::Endpoints::Index.new(model: Meeting).mount
-
-          post &::API::V3::Utilities::Endpoints::Create.new(model: Meeting).mount
-
-          mount ::API::V3::Meetings::Schemas::MeetingSchemaAPI
-          mount ::API::V3::Meetings::CreateFormAPI
-
-          route_param :id, type: Integer, desc: "Meeting ID" do
-            after_validation do
-              @meeting = Meeting.visible.find(declared_params[:id])
-            end
-
-            get &::API::V3::Utilities::Endpoints::Show
-              .new(model: ::Meeting)
-              .mount
-
-            patch &::API::V3::Utilities::Endpoints::Update.new(model: Meeting).mount
-
-            delete &::API::V3::Utilities::Endpoints::Delete.new(model: Meeting).mount
-
-            mount ::API::V3::Meetings::UpdateFormAPI
-            mount ::API::V3::Attachments::AttachmentsByMeetingAPI
+      class UpdateFormAPI < ::API::OpenProjectAPI
+        resource :form do
+          after_validation do
+            authorize_in_any_project(:edit_meetings)
           end
+
+          post &::API::V3::Utilities::Endpoints::UpdateForm.new(model: Meeting).mount
         end
       end
     end

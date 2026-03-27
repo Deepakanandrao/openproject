@@ -272,6 +272,12 @@ paths:
     "$ref": "./paths/meeting.yml"
   "/api/v3/meetings/{id}/attachments":
     "$ref": "./paths/meeting_attachments.yml"
+  "/api/v3/meetings/{id}/form":
+    "$ref": "./paths/meeting_form.yml"
+  "/api/v3/meetings/form":
+    "$ref": "./paths/meetings_form.yml"
+  "/api/v3/meetings/schema":
+    "$ref": "./paths/meeting_schema.yml"
   "/api/v3/memberships":
     "$ref": "./paths/memberships.yml"
   "/api/v3/memberships/available_projects":
@@ -609,6 +615,10 @@ components:
       $ref: "./components/examples/meeting_collection_simple_response.yml"
     MeetingSimpleResponse:
       $ref: "./components/examples/meeting_simple_response.yml"
+    MeetingCreateRequest:
+      $ref: "./components/examples/meeting_create_request.yml"
+    MeetingUpdateRequest:
+      $ref: "./components/examples/meeting_update_request.yml"
     MembershipCreateRequestCustomMessage:
       $ref: "./components/examples/membership-create-request-custom-message.yml"
     MembershipCreateRequestGlobalRole:
@@ -855,6 +865,8 @@ components:
       "$ref": "./components/schemas/meeting_collection_model.yml"
     MeetingModel:
       "$ref": "./components/schemas/meeting_model.yml"
+    MeetingWriteModel:
+      "$ref": "./components/schemas/meeting_write_model.yml"
     MarkdownModel:
       "$ref": "./components/schemas/markdown_model.yml"
     MembershipCollectionModel:

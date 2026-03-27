@@ -53,6 +53,9 @@ en:
         start_date: "Date"
         start_time: "Start time"
         start_time_hour: "Start time"
+        end_time: "End time"
+        template: "Template"
+        notify: "Send notifications"
         sharing: "Sharing"
       meeting_agenda_item:
         title: "Title"

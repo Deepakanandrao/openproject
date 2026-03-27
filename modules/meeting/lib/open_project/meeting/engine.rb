@@ -219,5 +219,17 @@ module OpenProject::Meeting
     add_api_path :attachments_by_meeting do |id|
       "#{meeting(id)}/attachments"
     end
+
+    add_api_path :meeting_schema do
+      "#{root}/meetings/schema"
+    end
+
+    add_api_path :create_meeting_form do
+      "#{root}/meetings/form"
+    end
+
+    add_api_path :meeting_form do |id|
+      "#{root}/meetings/#{id}/form"
+    end
   end
 end
