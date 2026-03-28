@@ -23,24 +23,32 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-# ++
+#++
 
-module Projects
-  module Concerns
-    module IdentifierSuggestion
-      def identifier_suggestion_data
-        suggestion_mode = Setting::WorkPackageIdentifier.semantic? ? "semantic" : "classic"
+require Rails.root.join("db/migrate/migration_utils/utils")
 
-        {
-          controller: "projects--identifier-suggestion",
-          "projects--identifier-suggestion-mode-value": suggestion_mode,
-          "projects--identifier-suggestion-url-value": projects_identifier_suggestion_path,
-          "projects--identifier-suggestion-set-name-first-value": I18n.t("js.projects.identifier_suggestion.set_name_first")
-        }
-      end
-    end
+class RenameWorkPackagesIdentifierSettingValues < ActiveRecord::Migration[8.1]
+  include Migration::Utils
+
+  def up
+    rename_setting_value("numeric", "classic")
+    rename_setting_value("alphanumeric", "semantic")
+  end
+
+  def down
+    rename_setting_value("classic", "numeric")
+    rename_setting_value("semantic", "alphanumeric")
+  end
+
+  private
+
+  def rename_setting_value(from, to)
+    execute_sql(
+      "UPDATE settings SET value = :to WHERE name = 'work_packages_identifier' AND value = :from",
+      from:, to:
+    )
   end
 end
