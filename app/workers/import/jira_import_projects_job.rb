@@ -125,6 +125,11 @@ module Import
     end
 
     def update_custom_fields_in_type(type, new_custom_fields)
+      type.custom_fields << new_custom_fields
+      update_custom_fields_in_type_configuration_form(type, new_custom_fields)
+    end
+
+    def update_custom_fields_in_type_configuration_form(type, new_custom_fields)
       new_cf_keys = new_custom_fields.map(&:attribute_name)
       groups = type.attribute_groups.map { |g| [g.key, g.is_a?(Type::QueryGroup) ? [g.query_attribute_name] : g.attributes] }
       jira_group = groups.find { |g| g[0] == JIRA_IMPORT_GROUP_KEY }
@@ -135,7 +140,6 @@ module Import
         groups << jira_group
       end
       type.attribute_groups = groups
-      type.custom_fields << new_custom_fields
       type.save!
     end
 
@@ -143,10 +147,7 @@ module Import
       existing_cf_ids = project.work_package_custom_fields.pluck(:id).to_set
       new_cfs = custom_field_list.filter_map { |field| field[:custom_field] }
                                  .reject { |cf| existing_cf_ids.include?(cf.id) }
-      if new_cfs.any?
-        project.work_package_custom_fields << new_cfs
-        project.save!
-      end
+      project.work_package_custom_fields << new_cfs if new_cfs.any?
     end
 
     def import_type(jira_issue, project)
@@ -165,7 +166,6 @@ module Import
       end
 
       type.projects << project unless type.projects.include?(project)
-      type.save!
       jira_issue_type = Import::JiraIssueType.find_by!(jira_issue_type_id: issue_type["id"], jira_id: @jira_id)
       create_reference!(op_leg: type, jira_leg: jira_issue_type, jira_import: @jira_import, uses_existing:)
       type
