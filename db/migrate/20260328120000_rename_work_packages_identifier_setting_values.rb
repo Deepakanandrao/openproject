@@ -23,24 +23,23 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-# ++
+#++
 
-module Projects
-  module Concerns
-    module IdentifierSuggestion
-      def identifier_suggestion_data
-        suggestion_mode = Setting::WorkPackageIdentifier.semantic? ? "semantic" : "classic"
+require Rails.root.join("db/migrate/migration_utils/setting_renamer")
 
-        {
-          controller: "projects--identifier-suggestion",
-          "projects--identifier-suggestion-mode-value": suggestion_mode,
-          "projects--identifier-suggestion-url-value": projects_identifier_suggestion_path,
-          "projects--identifier-suggestion-set-name-first-value": I18n.t("js.projects.identifier_suggestion.set_name_first")
-        }
-      end
-    end
+class RenameWorkPackagesIdentifierSettingValues < ActiveRecord::Migration[8.0]
+  SETTING_NAME = "work_packages_identifier"
+
+  def up
+    Migration::MigrationUtils::SettingRenamer.rename_value(SETTING_NAME, "numeric", "classic")
+    Migration::MigrationUtils::SettingRenamer.rename_value(SETTING_NAME, "alphanumeric", "semantic")
+  end
+
+  def down
+    Migration::MigrationUtils::SettingRenamer.rename_value(SETTING_NAME, "classic", "numeric")
+    Migration::MigrationUtils::SettingRenamer.rename_value(SETTING_NAME, "semantic", "alphanumeric")
   end
 end
