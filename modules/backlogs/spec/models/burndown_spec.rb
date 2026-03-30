@@ -37,32 +37,26 @@ RSpec.describe Burndown do
     story.journals[-1].update_columns(created_at: day, updated_at: day, validity_period: day..Float::INFINITY)
   end
 
-  let(:user) { create(:user) }
+  let(:project) { create(:project) }
   let(:role) { create(:project_role) }
   let(:type_feature) { create(:type_feature) }
   let(:type_task) { create(:type_task) }
   let(:issue_priority) { create(:priority, is_default: true) }
 
-  let(:project) do
-    project = build(:project)
-    project.members = [build(:member,
-                             principal: user,
-                             project:,
-                             roles: [role])]
-    project
+  let!(:non_working_days) do
+    [
+      create(:non_working_day, date: Date.new(2011, 4, 2)),
+      create(:non_working_day, date: Date.new(2011, 4, 3)),
+      create(:non_working_day, date: Date.new(2011, 4, 9)),
+      create(:non_working_day, date: Date.new(2011, 4, 10))
+    ]
   end
 
   let(:issue_open) { create(:status, name: "status 1", is_default: true) }
   let(:issue_closed) { create(:status, name: "status 2", is_closed: true) }
   let(:issue_resolved) { create(:status, name: "status 3", is_closed: false) }
 
-  before do
-    Rails.cache.clear
-
-    login_as(user)
-
-    project.save!
-  end
+  current_user { create(:user, member_with_roles: { project => role }) }
 
   subject(:burndown) { described_class.new(sprint, project) }
 
@@ -199,14 +193,6 @@ RSpec.describe Burndown do
   end
 
   describe "for an agile sprint" do
-    let!(:non_working_days) do
-      [
-        create(:non_working_day, date: Date.new(2011, 4, 2)),
-        create(:non_working_day, date: Date.new(2011, 4, 3)),
-        create(:non_working_day, date: Date.new(2011, 4, 9)),
-        create(:non_working_day, date: Date.new(2011, 4, 10))
-      ]
-    end
     let(:sprint) { create(:agile_sprint, project:) }
 
     describe "WITH the today date fixed to April 4th, 2011 and having a 10 (working days) sprint" do
