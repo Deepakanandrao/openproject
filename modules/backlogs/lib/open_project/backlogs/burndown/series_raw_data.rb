@@ -75,12 +75,7 @@ module OpenProject::Backlogs::Burndown
     end
 
     def collected_days
-      @collected_days ||= Day
-          .working
-          .from_range(from: sprint.start_date, to: sprint.is_a?(Agile::Sprint) ? sprint.finish_date : sprint.effective_date)
-          .where(date: ..Time.zone.today)
-          .order(:date)
-          .map(&:date)
+      @collected_days ||= day_query.where(date: ..Time.zone.today).order(:date).map(&:date)
     end
 
     def data_for_dates
@@ -99,7 +94,7 @@ module OpenProject::Backlogs::Burndown
           AND #{type_id_query}
           #{and_status_query}
         JOIN
-          (#{day_query}) days
+          (#{day_query.to_sql}) days
         ON (days.date::timestamp + interval '23:59:59') AT TIME ZONE '#{User.current.time_zone.tzinfo.name}' <@ journals.validity_period
         GROUP BY days.date
         ORDER BY days.date
@@ -147,7 +142,7 @@ module OpenProject::Backlogs::Burndown
       upper_date = sprint.is_a?(Agile::Sprint) ? sprint.finish_date : sprint.effective_date
       upper_bound = Time.zone.today.clamp(lower_bound, upper_date)
 
-      Day.working.from_range(from: lower_bound, to: upper_bound).to_sql
+      Day.working.from_range(from: lower_bound, to: upper_bound)
     end
 
     def collected_types
