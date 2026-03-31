@@ -35,7 +35,7 @@ RSpec.describe "Show burndown chart", :js, with_flag: { scrum_projects: true } d
   include Redmine::I18n
 
   shared_let(:project) { create(:project, enabled_module_names: %w(backlogs)) }
-  shared_let(:sprint) { create(:agile_sprint, project:, start_date: 1.week.ago, finish_date: 1.week.from_now) }
+  shared_let(:sprint) { create(:agile_sprint, status: "active", project:, start_date: 1.week.ago, finish_date: 1.week.from_now) }
 
   let(:planning_page) { Pages::SprintPlanning.new(project) }
   let(:role) do
@@ -43,15 +43,12 @@ RSpec.describe "Show burndown chart", :js, with_flag: { scrum_projects: true } d
            permissions: %i[view_work_packages view_sprints])
   end
 
-  current_user do
-    create(:user,
-           member_with_roles: { project => role })
-  end
+  current_user { create(:user, member_with_roles: { project => role }) }
 
   it "lists burndown in the menu by which the user can navigate to the burndown chart" do
     planning_page.visit!
 
-    planning_page.click_in_sprint_menu(sprint, "Burndown")
+    planning_page.click_in_sprint_menu(sprint, "Burndown chart")
 
     expect(page)
       .to have_content(sprint.name)
