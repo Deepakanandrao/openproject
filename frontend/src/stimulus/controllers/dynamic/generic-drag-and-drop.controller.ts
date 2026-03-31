@@ -41,9 +41,10 @@ interface TargetConfig {
 }
 
 export default class GenericDragAndDropController extends Controller {
-  static targets = ['container'];
+  static targets = ['container', 'scrollContainer'];
 
   containerTargets:HTMLElement[];
+  scrollContainerTargets:HTMLElement[];
 
   static values = { handleSelector: { type: String, default: '.DragHandle' } };
   declare readonly handleSelectorValue:string;
@@ -128,10 +129,12 @@ export default class GenericDragAndDropController extends Controller {
 
     // Setup autoscroll
     void window.OpenProject.getPluginContext().then((pluginContext) => {
+      const scrollTargets:Element[] = this.scrollContainerTargets.length > 0
+        ? this.scrollContainerTargets
+        : [document.getElementById('content-body')!];
+
       new pluginContext.classes.DomAutoscrollService(
-        [
-          document.getElementById('content-body')!,
-        ],
+        scrollTargets,
         {
           margin: 25,
           maxSpeed: 10,
