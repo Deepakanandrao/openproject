@@ -79,7 +79,7 @@ The **Dashboard** tab of the home page provides access to all available widgets 
 
 ## Mark a project as favorite
 
-You can mark the project as a *Favorite* by clicking the **Favorite** (star) icon in the upper right corner. The icon color will change to yellow and the project will be marked as favorite both on the project home page and in the projects list. Read more about [project lists](../projects/project-lists/). 
+You can mark the project as a *Favorite* by clicking the **Favorite** (star) icon in the upper right corner. The icon color will change to yellow and the project will be marked as favorite both on the project home page and in the projects list. Read more about [project lists](../project-lists/). 
 
 ![Mark a project as favorite in OpenProject](openproject_user_guide_project_home_page_mark_favorite.png)
 
@@ -92,7 +92,7 @@ You can archive a project directly from the project home page. To do that click 
 ![Archive a project on the project overview page in OpenProject](openproject_user_guide_project_home_page_archive_project.png)
 
 > [!NOTE]
-> This option is always available to instance and project administrators. It can also be activated for specific roles by enabling the *archive_project* permission for that role via the [Roles and permissions page](../../system-admin-guide/users-permissions/roles-permissions/) in the administrator settings.
+> This option is always available to instance and project administrators. It can also be activated for specific roles by enabling the *archive_project* permission for that role via the [Roles and permissions page](../../../system-admin-guide/users-permissions/roles-permissions/) in the administrator settings.
 
-You can also archive a project under [project settings](../projects/project-settings/project-information/#archive-a-project) or in a [projects list](../projects/project-lists/). 
+You can also archive a project under [project settings](../project-settings/project-information/#archive-a-project) or in a [projects list](../project-lists/). 
 
