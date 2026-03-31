@@ -118,6 +118,25 @@ RSpec.describe Authorization::UserPermissibleService do
         end
       end
 
+      context "and the user is an admin but the permission is not granted to admins" do
+        include_context "with blank access control state"
+
+        before do
+          OpenProject::AccessControl.map do |map|
+            map.permission :not_granted_to_admin_global,
+                           {},
+                           permissible_on: :global,
+                           require: :loggedin,
+                           grant_to_admin: false
+          end
+        end
+
+        let(:queried_user) { admin }
+        let(:permission) { :not_granted_to_admin_global }
+
+        it { is_expected.not_to be_allowed_globally(permission) }
+      end
+
       it_behaves_like "the Authorization.roles scope used" do
         let(:context) { nil }
         subject { service.allowed_globally?(permission) }
