@@ -28,44 +28,25 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class Reminder < ApplicationRecord
-  belongs_to :remindable, polymorphic: true
-  belongs_to :creator, class_name: "User"
+require "spec_helper"
+require Rails.root.join("modules/backlogs/db/migrate/20260330134729_add_sprint_start_permission_to_users")
 
-  has_many :reminder_notifications, dependent: :destroy
-  has_many :notifications, through: :reminder_notifications
+RSpec.describe AddSprintStartPermissionToUsers, type: :model do
+  subject(:migrate) { ActiveRecord::Migration.suppress_messages { described_class.migrate(:up) } }
 
-  # Currently, reminders are personal, meaning
-  # they are only visible to the user who created them
-  # and who still has access to the remindable.
-  def self.visible(user)
-    where(creator: user)
-      .where(remindable_type: WorkPackage.name, remindable_id: WorkPackage.visible(user).select(:id))
+  let!(:role_with_all) do
+    create(:project_role, permissions: %i[create_sprints manage_board_views manage_sprint_items])
   end
-
-  def self.upcoming_and_visible_to(user)
-    visible(user)
-      .where(completed_at: nil)
-      .where.missing(:reminder_notifications)
+  let!(:role_with_partial) do
+    create(:project_role, permissions: %i[create_sprints manage_board_views])
   end
+  let!(:role_without_any) { create(:project_role) }
 
-  def visible?(user = User.current)
-    creator == user && remindable.visible?(user)
-  end
+  it "grants start_complete_sprint only to roles fulfilling all required permissions" do
+    migrate
 
-  def unread_notifications?
-    unread_notifications.exists?
-  end
-
-  def unread_notifications
-    notifications.where(read_ian: [false, nil])
-  end
-
-  def completed?
-    completed_at.present?
-  end
-
-  def scheduled?
-    job_id.present? && !completed?
+    expect(role_with_all.reload.permissions).to include(:start_complete_sprint)
+    expect(role_with_partial.reload.permissions).not_to include(:start_complete_sprint)
+    expect(role_without_any.reload.permissions).not_to include(:start_complete_sprint)
   end
 end

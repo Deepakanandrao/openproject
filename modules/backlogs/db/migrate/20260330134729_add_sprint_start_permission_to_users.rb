@@ -28,44 +28,11 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class Reminder < ApplicationRecord
-  belongs_to :remindable, polymorphic: true
-  belongs_to :creator, class_name: "User"
+require Rails.root.join("db/migrate/migration_utils/permission_adder")
 
-  has_many :reminder_notifications, dependent: :destroy
-  has_many :notifications, through: :reminder_notifications
-
-  # Currently, reminders are personal, meaning
-  # they are only visible to the user who created them
-  # and who still has access to the remindable.
-  def self.visible(user)
-    where(creator: user)
-      .where(remindable_type: WorkPackage.name, remindable_id: WorkPackage.visible(user).select(:id))
-  end
-
-  def self.upcoming_and_visible_to(user)
-    visible(user)
-      .where(completed_at: nil)
-      .where.missing(:reminder_notifications)
-  end
-
-  def visible?(user = User.current)
-    creator == user && remindable.visible?(user)
-  end
-
-  def unread_notifications?
-    unread_notifications.exists?
-  end
-
-  def unread_notifications
-    notifications.where(read_ian: [false, nil])
-  end
-
-  def completed?
-    completed_at.present?
-  end
-
-  def scheduled?
-    job_id.present? && !completed?
+class AddSprintStartPermissionToUsers < ActiveRecord::Migration[8.1]
+  def change
+    having_permissions = %i[create_sprints manage_board_views manage_sprint_items]
+    ::Migration::MigrationUtils::PermissionAdder.add(having_permissions, :start_complete_sprint)
   end
 end
