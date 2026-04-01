@@ -228,7 +228,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     Ascii85 (2.0.1)
-    action_text-trix (2.1.17)
+    action_text-trix (2.1.18)
       railties
     actioncable (8.1.2.1)
       actionpack (= 8.1.2.1)
@@ -1794,7 +1794,7 @@ DEPENDENCIES
 
 CHECKSUMS
   Ascii85 (2.0.1) sha256=15cb5d941808543cbb9e7e6aea3c8ec3877f154c3461e8b3673e97f7ecedbe5a
-  action_text-trix (2.1.17) sha256=b44691639d77e67169dc054ceacd1edc04d44dc3e4c6a427aa155a2beb4cc951
+  action_text-trix (2.1.18) sha256=3fdb83f8bff4145d098be283cdd47ac41caf5110bfa6df4695ed7127d7fb3642
   actioncable (8.1.2.1) sha256=a2f88cecce148b3fcb63d2e517d7694e119830a85baa7d6cf59e5453dcf32e8d
   actionmailbox (8.1.2.1) sha256=c2e45c0c1e5687e35e050838c94a8aed0d954c56a32ea411d54cd848c338c54e
   actionmailer (8.1.2.1) sha256=d7d62fbc2197f1a7006bb5af4c665edf999adf79ab6c10337c088d27e6622071
