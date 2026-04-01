@@ -37,6 +37,7 @@ class My::BacklogsForm < ApplicationForm
 
     f.check_box name: :versions_default_fold_state,
                 value: DEFAULT_FOLD_STATE,
+                unchecked_value: DEFAULT_EXPAND_STATE,
                 checked: default_fold_state_checked?,
                 label: I18n.t("backlogs.label_versions_default_fold_state"),
                 caption: I18n.t("backlogs.caption_versions_default_fold_state")
@@ -45,6 +46,7 @@ class My::BacklogsForm < ApplicationForm
   end
 
   DEFAULT_FOLD_STATE = "closed"
+  DEFAULT_EXPAND_STATE = "open"
 
   def initialize(color:, versions_default_fold_state:)
     super()
