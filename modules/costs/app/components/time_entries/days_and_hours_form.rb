@@ -70,7 +70,11 @@ module TimeEntries
         end
       end
 
-      f.text_field name: :hours,
+      f.hidden name: :hours,
+               value: model.hours,
+               data: { "time-entry-target" => "hoursHiddenInput" }
+
+      f.text_field name: :hours_display,
                    required: true,
                    label: TimeEntry.human_attribute_name(:hours),
                    value: hours_value,
