@@ -85,6 +85,10 @@ module Import
       get("/rest/api/2/cluster/nodes")
     end
 
+    def issue(issue_id, fields: "*all", expand: nil)
+      get("/rest/api/2/issue/#{issue_id}", params: { fields:, expand: }.compact)
+    end
+
     def issues(jql: nil, start_at: 0, max_results: 100, fields: "*all", expand: "changelog")
       get("/rest/api/2/search", params:
         {

@@ -33,13 +33,13 @@ module Import
     # Maps the Jira schema `custom` field suffix (part after the last `:`) to an OP field format.
     # Takes precedence over the type-based mapping below.
     JIRA_CUSTOM_SUFFIX_TO_OP_FORMAT = {
-      "textarea" => "text",
       "url" => "link",
       "userpicker" => "user",
-      "multiuserpicker" => "user"
+      "multiuserpicker" => "user",
+      "textarea" => "text" # TODO: format depends on the renderer for which no API endpoint exists to find out
     }.freeze
 
-    # Maps the Jira schema `type` field to an OP field format (fallback when no custom suffix match).
+    # Maps the Jira schema `type` field to an OP field format.
     JIRA_TYPE_TO_OP_FORMAT = {
       "string" => "string",
       "text" => "text",
@@ -91,7 +91,10 @@ module Import
     end
 
     def convert_values(_custom_field)
-      @values # TODO: convert Jira custom field values to OP custom field values, if needed
+      return convert_values_text if format == "text"
+
+      # TODO: convert Jira custom field values to OP custom field values, if needed
+      @values
     end
 
     def custom_field_post_processing(custom_field)
@@ -99,6 +102,10 @@ module Import
     end
 
     private
+
+    def convert_values_text
+      @values.map { |entry| entry.merge(value: JiraWikiMarkupConverter.new(entry[:value]).convert) }
+    end
 
     def jira_field_multi_value?
       schema = jira_field.payload["schema"] || {}
