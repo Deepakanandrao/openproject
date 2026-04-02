@@ -66,12 +66,8 @@ export class GitActionsService {
 
   public commitMessage(workPackage:WorkPackageResource):string {
     const { title, id, description, url } = this.formattingInput(workPackage);
-    return `[#${id}] ${title}
-
-${description}
-
-${url}
-`.replace(/\n\n+/g, '\n\n');
+    const paragraphs = [`[#${id}] ${title}`].concat(description ? [description] : [], url);
+    return paragraphs.join('\n\n');
   }
 
   public commitMessageDisplayText(workPackage:WorkPackageResource):string {
@@ -81,6 +77,7 @@ ${url}
   public gitCommand(workPackage:WorkPackageResource):string {
     const branch = this.branchName(workPackage);
     const commit = this.commitMessage(workPackage);
-    return `git checkout -b '${this.sanitizeShellInput(branch)}' && git commit --allow-empty -m '${this.sanitizeShellInput(commit)}'`;
+    const messages = commit.split('\n\n').map((part) => `-m '${this.sanitizeShellInput(part)}'`).join(' ');
+    return `git checkout -b '${this.sanitizeShellInput(branch)}' && git commit --allow-empty ${messages}`;
   }
 }
