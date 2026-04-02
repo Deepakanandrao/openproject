@@ -59,7 +59,7 @@ export class GitActionsService {
   }
 
   private sanitizeShellInput(str:string):string {
-    return `${str.replace(/'/g, '\\\'')}`;
+    return str.replace(/'/g, "'\\''");
   }
 
   public branchName(workPackage:WorkPackageResource):string {
