@@ -1540,6 +1540,9 @@ uk:
         dependencies: "Залежності"
   activerecord:
     attributes:
+      work_package_semantic_alias:
+        identifier: "Identifier"
+        work_package: "Work package"
       jira_import:
         projects: "Проєкти"
       "import/jira":

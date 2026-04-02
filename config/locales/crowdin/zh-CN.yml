@@ -1488,6 +1488,9 @@ zh-CN:
         dependencies: "依赖项"
   activerecord:
     attributes:
+      work_package_semantic_alias:
+        identifier: "Identifier"
+        work_package: "Work package"
       jira_import:
         projects: "项目"
       "import/jira":
