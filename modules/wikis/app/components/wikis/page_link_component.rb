@@ -29,15 +29,14 @@
 #++
 
 module Wikis
-  class WorkPackageWikisTabComponent < ApplicationComponent
+  class PageLinkComponent < ApplicationComponent
     include ApplicationHelper
     include OpPrimer::ComponentHelpers
-    include OpTurbo::Streamable
 
-    alias_method :work_package, :model
+    alias_method :link, :model
 
-    def providers
-      Wikis::Provider.enabled
+    def page_title_service
+      @page_title_service ||= PageTitleService.new
     end
   end
 end

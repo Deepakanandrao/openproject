@@ -29,15 +29,15 @@
 #++
 
 module Wikis
-  class WorkPackageWikisTabComponent < ApplicationComponent
+  class ProviderLinkGroupComponent < ApplicationComponent
     include ApplicationHelper
     include OpPrimer::ComponentHelpers
-    include OpTurbo::Streamable
 
-    alias_method :work_package, :model
+    alias_method :provider, :model
 
-    def providers
-      Wikis::Provider.enabled
+    def initialize(model = nil, work_package: nil, **options)
+      @work_package = work_package
+      super(model, **options)
     end
   end
 end

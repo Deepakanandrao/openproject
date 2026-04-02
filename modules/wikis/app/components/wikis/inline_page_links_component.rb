@@ -29,15 +29,22 @@
 #++
 
 module Wikis
-  class WorkPackageWikisTabComponent < ApplicationComponent
+  class InlinePageLinksComponent < ApplicationComponent
     include ApplicationHelper
     include OpPrimer::ComponentHelpers
-    include OpTurbo::Streamable
 
-    alias_method :work_package, :model
+    alias_method :provider, :model
 
-    def providers
-      Wikis::Provider.enabled
+    def initialize(model = nil, work_package: nil, **options)
+      @work_package = work_package
+      super(model, **options)
+    end
+
+    def page_links
+      @page_links ||= provider.page_links
+                              .merge(InlinePageLink.all)
+                              .where(linkable: @work_package)
+                              .order(created_at: :desc)
     end
   end
 end
