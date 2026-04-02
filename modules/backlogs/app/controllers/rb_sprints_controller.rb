@@ -113,10 +113,8 @@ class RbSprintsController < RbApplicationController
 
     if result.success?
       @sprint = result.result
-      flash[:notice] = I18n.t(:notice_successful_start)
-      render turbo_stream: turbo_stream.redirect_to(
-        project_work_package_board_path(@project, @sprint.task_board_for(@project))
-      )
+      redirect_to project_work_package_board_path(@project, @sprint.task_board_for(@project)),
+                  notice: I18n.t(:notice_successful_start)
     else
       respond_with_start_finish_failure(message: start_finish_failure_message(:start, result.message))
     end
