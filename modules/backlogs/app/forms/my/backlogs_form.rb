@@ -31,7 +31,7 @@
 class My::BacklogsForm < ApplicationForm
   form do |f|
     unless OpenProject::FeatureDecisions.scrum_projects_active?
-      f.text_field name: :task_color,
+      f.text_field name: :backlogs_task_color,
                    label: I18n.t("backlogs.task_color"),
                    input_width: :xsmall
     end
