@@ -71,7 +71,7 @@ module TimeEntries
       end
 
       f.hidden name: :hours,
-               value: model.hours,
+               value: precise_hours_value,
                data: { "time-entry-target" => "hoursHiddenInput" }
 
       f.text_field name: :hours_display,
@@ -112,6 +112,10 @@ module TimeEntries
       else
         ""
       end
+    end
+
+    def precise_hours_value
+      model.ongoing? ? model.ongoing_hours : model.hours
     end
 
     def end_time_caption # rubocop:disable Metrics/AbcSize
