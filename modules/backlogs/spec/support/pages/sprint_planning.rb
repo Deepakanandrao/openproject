@@ -398,7 +398,7 @@ module Pages
 
     def click_finish_sprint_button(sprint)
       within_sprint(sprint) do
-        click_on("Finish")
+        click_on("Complete")
       end
     end
 
