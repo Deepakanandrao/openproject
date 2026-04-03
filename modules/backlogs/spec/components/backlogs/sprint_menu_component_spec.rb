@@ -122,7 +122,6 @@ RSpec.describe Backlogs::SprintMenuComponent, type: :component do
       it "shows Sprint board" do
         render_component
 
-
         expect(menu_items).to include("Sprint board")
       end
 
