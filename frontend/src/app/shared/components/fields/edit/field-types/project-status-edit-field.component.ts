@@ -38,11 +38,16 @@ import { InjectField } from 'core-app/shared/helpers/angular/inject-field.decora
 import { HalResource } from 'core-app/features/hal/resources/hal-resource';
 import { repositionDropdownBugfix } from 'core-app/shared/components/autocompleter/op-autocompleter/autocompleter.helper';
 import { target } from 'core-app/shared/helpers/event-helpers';
+import { IFieldSchema } from 'core-app/shared/components/fields/field.base';
 
 interface ProjectStatusOption {
   href:string
   name:string
   colorClass:string
+}
+
+interface ProjectStatusResource extends HalResource {
+  status:{ href:string }|null;
 }
 
 @Component({
@@ -72,31 +77,13 @@ export class ProjectStatusEditFieldComponent extends EditFieldComponent implemen
   public appendToContainer = 'body';
 
   ngOnInit() {
-    this.currentStatusCode = this.resource.status === null ? this.availableStatuses[0].href : this.resource.status.href;
-
-    this.change.getForm().then((form) => {
-      form.schema.status.allowedValues.forEach((status:HalResource) => {
-        this.availableStatuses = [...this.availableStatuses,
-          {
-            href: status.href!,
-            name: status.name,
-            colorClass: projectStatusCodeCssClass(status.id),
-          }];
-      });
-      this.cdRef.markForCheck();
-
-      // The timeout takes care that the opening is added to the end of the current call stack.
-      // Thus we can be sure that the select box is rendered and ready to be opened.
-      const that = this;
-      window.setTimeout(() => {
-        that.ngSelectComponent.open();
-      }, 0);
-    });
+    this.currentStatusCode = this.projectStatusResource.status?.href ?? this.availableStatuses[0].href;
+    void this.loadAvailableStatuses();
   }
 
   public onChange() {
-    this.resource.status = this.currentStatusCode === this.availableStatuses[0].href ? null : { href: this.currentStatusCode };
-    this.handler.handleUserSubmit();
+    this.projectStatusResource.status = this.currentStatusCode === this.availableStatuses[0].href ? null : { href: this.currentStatusCode };
+    void this.handler.handleUserSubmit();
   }
 
   public onOpen() {
@@ -109,5 +96,31 @@ export class ProjectStatusEditFieldComponent extends EditFieldComponent implemen
 
   public onClose() {
     target(document.querySelector(this.hiddenOverflowContainer)!).off('scroll.autocompleteContainer');
+  }
+
+  private get projectStatusResource():ProjectStatusResource {
+    return this.resource as ProjectStatusResource;
+  }
+
+  private async loadAvailableStatuses():Promise<void> {
+    await this.change.getForm();
+    const statusSchema = (this.change.schema as { status?:IFieldSchema }).status;
+    const allowedValues = (statusSchema?.allowedValues ?? []) as HalResource[];
+
+    this.availableStatuses = [
+      ...this.availableStatuses,
+      ...allowedValues.map((status:HalResource) => ({
+        href: status.href!,
+        name: status.name,
+        colorClass: projectStatusCodeCssClass(status.id),
+      })),
+    ];
+    this.cdRef.markForCheck();
+
+    // The timeout takes care that the opening is added to the end of the current call stack.
+    // Thus we can be sure that the select box is rendered and ready to be opened.
+    window.setTimeout(() => {
+      this.ngSelectComponent.open();
+    }, 0);
   }
 }
