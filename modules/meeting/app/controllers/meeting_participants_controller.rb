@@ -105,9 +105,27 @@ class MeetingParticipantsController < ApplicationController
   def create_new_participants(user_ids)
     user_ids.each { |user_id| create_new_participant(user_id) }
 
+    if @meeting.series_template? && params.dig(:meeting_participant, :apply_to_upcoming) == "1"
+      update_upcoming_occurrences(user_ids)
+    end
+
     update_list_component_via_turbo_stream
     update_add_user_form_component_via_turbo_stream
     update_sidebar_participants_component_via_turbo_stream(meeting: @meeting)
+  end
+
+  def update_upcoming_occurrences(user_ids)
+    upcoming_meetings = @meeting.recurring_meeting.instantiated_meetings
+
+    upcoming_meetings.each do |meeting|
+      user_ids.each do |user_id|
+        next if meeting.participants.exists?(user_id:)
+
+        MeetingParticipants::CreateService
+          .new(user: User.current)
+          .call(meeting:, user_id:, invited: true, attended: false)
+      end
+    end
   end
 
   def create_new_participant(user_id)
