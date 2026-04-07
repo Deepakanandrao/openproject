@@ -191,8 +191,8 @@ Rails/FindEach:
     - select
     - lock
   Exclude:
-    - 'spec/**/*'
-    - 'modules/**/spec/**/*'
+    - "spec/**/*"
+    - "modules/**/spec/**/*"
 
 # The http verbs in Rack::Test do not accept named parameters (params: params)
 Rails/HttpPositionalArguments:
@@ -204,11 +204,13 @@ Rails/I18nLocaleAssignment:
   Enabled: true
   Exclude:
     - "spec/**/*.rb"
+    - "modules/*/spec/**/*.rb"
 
 Rails/I18nLocaleTexts:
   Enabled: true
   Exclude:
     - "spec/**/*.rb"
+    - "modules/*/spec/**/*.rb"
 
 # We have config.active_record.belongs_to_required_by_default = false ,
 # which means, we do have to declare presence validators on belongs_to relations.
@@ -223,8 +225,8 @@ Rails/RequireDependency:
 Rails/SaveBang:
   Enabled: true
   Exclude:
-    - 'spec/**/*'
-    - 'modules/**/spec/**/*'
+    - "spec/**/*"
+    - "modules/**/spec/**/*"
 
 # There are valid cases in which to use methods like:
 # * update_all
@@ -483,8 +485,8 @@ Style/RaiseArgs:
 
 Style/RescueModifier:
   Exclude:
-    - 'spec/**/*'
-    - 'modules/**/spec/**/*'
+    - "spec/**/*"
+    - "modules/**/spec/**/*"
 
 Style/RegexpLiteral:
   Enabled: false
