@@ -722,6 +722,8 @@ en:
     confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
 
   departments:
+    add_user: "Add user"
+    add_department: "Add department"
     blankslate:
       heading: "Your organization has no departments"
       description: >

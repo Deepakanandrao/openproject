@@ -30,35 +30,40 @@ See COPYRIGHT and LICENSE files for more details.
 <%=
   component_wrapper do
     primer_form_with(
-      url: update_organization_name_admin_departments_path,
-      method: :patch,
+      url: add_user_admin_department_path(group),
+      method: :post,
       data: { turbo_stream: true }
     ) do |f|
-      render_inline_form(f) do |form|
-        form.group(layout: :horizontal) do |input_group|
-          input_group.text_field(
-            name: :organization_name,
-            label: I18n.t("setting_organization_name"),
-            value: Setting.organization_name,
-            visually_hide_label: true,
-            required: true,
-            autofocus: true,
-            input_width: :medium
-          )
-        end
+      cancel_path = if group
+                      helpers.admin_department_path(group)
+                    else
+                      helpers.admin_departments_path
+                    end
 
-        form.group(layout: :horizontal) do |button_group|
-          button_group.button(
+      render_inline_form(f) do |form|
+        form.group(layout: :horizontal) do |row|
+          row.autocompleter(
+            name: :user_id,
+            label: User.model_name.human,
+            visually_hide_label: true,
+            autocomplete_options: {
+              resource: "principals",
+              url: ::API::V3::Utilities::PathHelper::ApiV3Path.principals,
+              filters: [{ name: "type", operator: "=", values: ["User"] }].to_json,
+              inputName: "user_id"
+            }
+          )
+          row.button(
             name: :cancel,
             tag: :a,
             label: I18n.t(:button_cancel),
             scheme: :default,
-            href: helpers.cancel_edit_organization_name_admin_departments_path,
-            data: { turbo_stream: true, turbo_method: :patch }
+            href: cancel_path,
+            data: { turbo_stream: true }
           )
-          button_group.submit(
+          row.submit(
             name: :submit,
-            label: I18n.t(:button_save),
+            label: I18n.t(:button_add),
             scheme: :primary
           )
         end

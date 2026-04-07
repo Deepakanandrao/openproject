@@ -39,7 +39,7 @@ module Admin
 
     # TODO: We will check for users permission here
     before_action :require_admin
-    before_action :find_active_group, only: %i[show edit]
+    before_action :find_active_group, only: %i[show edit new_user]
     before_action :find_group, only: %i[update add_users remove_user create_memberships edit_membership destroy_membership]
 
     def index
@@ -47,23 +47,39 @@ module Admin
     end
 
     def new_user
-      if @group.users.empty?
-        replace_via_turbo_stream(
-          component: Admin::Departments::AddUserComponent.new(group: @group),
-          target_component: # blank state
-        )
-      else
-        append_via_turbo_stream(
-          component: Admin::Departments::OrganizationNameFormComponent.new,
-          target_component: # list component
-        )
-      end
+      append_via_turbo_stream(
+        component: Admin::Departments::AddUserComponent.new(group: @active_group),
+        target_component: Admin::Departments::DetailComponent.new(group: @active_group)
+      )
+      respond_with_turbo_streams
+    end
 
+    def cancel_add_user
+      remove_via_turbo_stream(component: Admin::Departments::AddUserComponent.new(group: @active_group))
       respond_with_turbo_streams
     end
 
     def add_user
       # TODO: Implement
+    end
+
+    def edit_organization_name
+      replace_via_turbo_stream(component: Admin::Departments::OrganizationNameFormComponent.new)
+      respond_with_turbo_streams
+    end
+
+    def cancel_edit_organization_name
+      replace_via_turbo_stream(component: Admin::Departments::OrganizationNameComponent.new)
+      respond_with_turbo_streams
+    end
+
+    def update_organization_name
+      ::Settings::UpdateService
+        .new(user: current_user)
+        .call(organization_name: params[:organization_name])
+
+      replace_via_turbo_stream(component: Admin::Departments::OrganizationNameComponent.new)
+      respond_with_turbo_streams
     end
 
     # old groups interface that we adapted for departments.
@@ -138,25 +154,6 @@ module Admin
 
       flash[:notice] = I18n.t(:notice_successful_delete)
       redirect_to edit_admin_department_path(@group, tab: redirected_to_tab(member)), status: :see_other
-    end
-
-    def edit_organization_name
-      replace_via_turbo_stream(component: Admin::Departments::OrganizationNameFormComponent.new)
-      respond_with_turbo_streams
-    end
-
-    def cancel_edit_organization_name
-      replace_via_turbo_stream(component: Admin::Departments::OrganizationNameComponent.new)
-      respond_with_turbo_streams
-    end
-
-    def update_organization_name
-      ::Settings::UpdateService
-        .new(user: current_user)
-        .call(organization_name: params[:organization_name])
-
-      replace_via_turbo_stream(component: Admin::Departments::OrganizationNameComponent.new)
-      respond_with_turbo_streams
     end
 
     private
