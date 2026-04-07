@@ -134,8 +134,9 @@ export class BoardListContainerComponent extends UntilDestroyedMixin implements 
         filter(() => window.location.pathname.includes('/details/')),
       ).subscribe((selection) => {
         // Update split screen
-        const link = this.pathHelper.boardDetailsPath(this.currentProject.identifier, id, selection.focusedWorkPackage!);
-        Turbo.visit(link, { frame: 'content-bodyRight', action: 'advance' });
+        const base = this.pathHelper.boardDetailsPath(this.currentProject.identifier, id, selection.focusedWorkPackage!);
+        const search = window.location.search;
+        Turbo.visit(search ? `${base}${search}` : base, { frame: 'content-bodyRight', action: 'advance' });
       });
   }
 
