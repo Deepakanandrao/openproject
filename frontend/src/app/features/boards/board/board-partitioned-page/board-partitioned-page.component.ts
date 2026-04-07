@@ -214,8 +214,8 @@ export class BoardPartitionedPageComponent extends UntilDestroyedMixin implement
             }),
             finalize(() => {
               this.toolbarDisabled = false;
-              this.reloadSidemenu();
               this.cdRef.detectChanges();
+              this.reloadSidemenu();
             }),
           ).subscribe(() => {
             this.toastService.addSuccess(this.text.updateSuccessful);
@@ -234,6 +234,6 @@ export class BoardPartitionedPageComponent extends UntilDestroyedMixin implement
   }
 
   private reloadSidemenu():void {
-    this.submenuService.reloadSubmenu(null);
+    this.submenuService.reloadSubmenu(null, 'boards_sidemenu');
   }
 }
