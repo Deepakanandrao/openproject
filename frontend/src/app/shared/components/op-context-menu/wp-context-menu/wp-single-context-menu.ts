@@ -12,12 +12,10 @@ import { OpContextMenuItem } from 'core-app/shared/components/op-context-menu/op
 import {
   PERMITTED_CONTEXT_MENU_ACTIONS,
 } from 'core-app/shared/components/op-context-menu/wp-context-menu/wp-static-context-menu-actions';
-import { OpModalService } from 'core-app/shared/components/modal/modal.service';
 import { CopyToClipboardService } from 'core-app/shared/components/copy-to-clipboard/copy-to-clipboard.service';
 import {
   WorkPackageAction,
 } from 'core-app/features/work-packages/components/wp-table/context-menu-helper/wp-context-menu-helper.service';
-import { WpDestroyModalComponent } from 'core-app/shared/components/modals/wp-destroy-modal/wp-destroy.modal';
 import { WorkPackageAuthorization } from 'core-app/features/work-packages/services/work-package-authorization.service';
 import { TurboRequestsService } from 'core-app/core/turbo/turbo-requests.service';
 import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
@@ -41,7 +39,6 @@ export class WorkPackageSingleContextMenuDirective extends OpContextMenuTrigger 
   readonly injector = inject(Injector);
   readonly PathHelper = inject(PathHelperService);
   readonly elementRef = inject(ElementRef);
-  readonly opModalService = inject(OpModalService);
   readonly turboRequests = inject(TurboRequestsService);
   readonly apiV3Service = inject(ApiV3Service);
   readonly authorisationService = inject(AuthorisationService);
@@ -97,7 +94,10 @@ export class WorkPackageSingleContextMenuDirective extends OpContextMenuTrigger 
         }
         break;
       case 'delete':
-        this.opModalService.show(WpDestroyModalComponent, this.injector, { workPackages: [this.workPackage] });
+        void this.turboRequests.request(
+          this.PathHelper.workPackagesBulkDeleteDialogPath([this.workPackage.id!]),
+          { method: 'GET' },
+        );
         break;
       case 'log_time':
         void this.turboRequests.request(this.PathHelper.timeEntryWorkPackageDialog(this.workPackage.id!), { method: 'GET' });

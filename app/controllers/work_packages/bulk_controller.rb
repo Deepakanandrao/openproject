@@ -38,6 +38,18 @@ class WorkPackages::BulkController < ApplicationController
   include QueriesHelper
 
   include WorkPackages::BulkErrorMessage
+  include OpTurbo::ComponentStream
+
+  def delete_dialog
+    component =
+      if @work_packages.one?
+        WorkPackages::DeleteDialogComponent.new(work_package: @work_packages.first)
+      else
+        WorkPackages::BulkDeleteDialogComponent.new(work_packages: @work_packages)
+      end
+
+    respond_with_dialog component
+  end
 
   def edit
     setup_edit
@@ -76,7 +88,9 @@ class WorkPackages::BulkController < ApplicationController
 
       respond_to do |format|
         format.html do
-          redirect_to (project_work_packages_path(@work_packages.first.project))
+          redirect_back_or_to(project_work_packages_path(@work_packages.first.project),
+                              status: :see_other,
+                              allow_other_host: false)
         end
         format.json do
           head :ok
