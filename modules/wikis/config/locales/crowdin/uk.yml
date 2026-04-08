@@ -3,12 +3,12 @@ uk:
   activerecord:
     attributes:
       wikis/xwiki_provider:
-        name: Name
+        name: Назва
         url: Instance URL
-        authentication_method: Authentication method
+        authentication_method: Метод автентифікації
         authentication_methods:
-          oauth2_sso: Single-Sign-On through OpenID Connect Identity Provider
-          two_way_oauth2: Two-way OAuth 2.0 authorization code flow
+          oauth2_sso: Єдиний вхід через постачальника ідентифікаційних даних OpenID Connect
+          two_way_oauth2: Потік коду двосторонньої авторизації OAuth 2.0
         token_exchange_scope: XWiki Scope
         wiki_audience: XWiki Audience
     errors: { }
@@ -28,7 +28,7 @@ uk:
   project_module_wiki_platforms: Wiki providers
   wikis:
     buttons:
-      save_and_continue: Save and continue
+      save_and_continue: Зберегти та продовжити
     admin:
       wiki_providers:
         index_description: Add an external wiki service to link work packages to existing wiki pages or create new ones directly from OpenProject.
@@ -45,8 +45,8 @@ uk:
         xwiki_instance_description: Please make sure you have administration privileges in your XWiki instance before doing the setup.
         new_provider_html: Read our documentation on [setting up an XWiki integration](docs_url) for more information.
         sections:
-          basic_details: Basic details
-          oauth_applications: OAuth applications
+          basic_details: Основна інформація
+          oauth_applications: Програми OAuth
         oauth:
           openproject_oauth: OpenProject OAuth
           openproject_oauth_description: Allow XWiki to access OpenProject data using an OAuth.

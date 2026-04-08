@@ -30,7 +30,7 @@ el:
         finish_date: "Ημερομηνία ολοκλήρωσης"
         goal: "Στόχος Sprint"
         name: "Όνομα Sprint"
-        sharing: "Sharing"
+        sharing: "Κοινή Χρήση"
         statuses:
           in_planning: "Σε σχεδιασμό"
           active: "Ενεργό"
@@ -46,12 +46,12 @@ el:
         story_points: "Πόντοι Ιστορίας"
     errors:
       messages:
-        must_be_in_planning: "must be in planning to start."
-        only_one_active_sprint_allowed: "only one active sprint is allowed per project."
-        dates_required: "Start and finish dates are required in order to start the sprint."
+        must_be_in_planning: "πρέπει να είναι στο σχεδιασμό για να ξεκινήσει."
+        only_one_active_sprint_allowed: "επιτρέπεται μόνο ένα ενεργό σπριντ ανά έργο."
+        dates_required: "Απαιτούνται ημερομηνίες έναρξης και λήξης προκειμένου να ξεκινήσει το σπριντ."
       models:
         project:
-          receiving_sprints: "is receiving shared sprints. Own sprints cannot be created."
+          receiving_sprints: "λαμβάνει κοινά σπριντ. Δεν μπορούν να δημιουργηθούν δικά τους sprints."
           attributes:
             sprint_sharing:
               share_all_projects_already_taken: "δεν μπορεί να οριστεί επειδή το έργο \"%{name}\" ήδη διαμοιράζεται με όλα τα έργα."
@@ -161,7 +161,7 @@ el:
         settings_link_text: "project settings"
     sprint_header_component:
       label_start_sprint: "Start"
-      label_finish_sprint: "Finish"
+      label_complete_sprint: "Complete"
       start_sprint_disabled_reason_active_sprint: "Another sprint is already active."
       start_sprint_disabled_reason_missing_dates: "Start and finish dates are required in order to start the sprint."
       label_story_count:

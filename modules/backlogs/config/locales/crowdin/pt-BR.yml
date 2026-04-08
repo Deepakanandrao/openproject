@@ -161,7 +161,7 @@ pt-BR:
         settings_link_text: "project settings"
     sprint_header_component:
       label_start_sprint: "Iniciar"
-      label_finish_sprint: "Concluir"
+      label_complete_sprint: "Complete"
       start_sprint_disabled_reason_active_sprint: "Existe outro sprint em andamento."
       start_sprint_disabled_reason_missing_dates: "É necessário informar as datas de início e término para dar início ao sprint."
       label_story_count:

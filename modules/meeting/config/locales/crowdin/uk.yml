@@ -230,7 +230,7 @@ uk:
         description: "Учасників ще немає."
     attachments:
       onetime_template: "These attached files will be included in all future meetings using this template."
-      series_template: "These attached files will be included in all future meetings in the series."
+      series_template: "Ці прикріплені файли додаватимуться до всіх майбутніх нарад серії."
       text: "Прикріплені файли доступні всім учасникам наради. Ви також можете перетягнути їх у примітки до пунктів порядку денного."
     copy:
       title: "Копіювати нараду: %{title}"

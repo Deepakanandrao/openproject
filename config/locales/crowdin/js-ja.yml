@@ -588,49 +588,6 @@ ja:
       settings:
         change_notification_settings: '<a target="_blank" href="%{url}">通知設定を</a>変更することで、重要なアップデートを見逃すことはありません。'
         title: "通知設定"
-        notify_me: "通知する"
-        reminders:
-          no_notification: 通知なし
-          timeframes:
-            normal:
-              PT0S: 同じ日
-              P1D: 1 日前
-              P3D: 3 日前
-              P7D: 週間前
-            overdue:
-              P1D: 毎日
-              P3D: 3日ごと
-              P7D: 毎週
-        reasons:
-          mentioned:
-            title: "メンションされた"
-            description: "メンションされたときに通知を受け取る"
-          assignee: "担当者"
-          responsible: "責任者"
-          shared: "共有"
-          watched: "ウォッチャー"
-          work_package_commented: "すべての新着コメント"
-          work_package_created: "新しいワークパッケージ"
-          work_package_processed: "すべてのステータス変更"
-          work_package_prioritized: "すべての優先順位の変更"
-          work_package_scheduled: "すべての日付変更"
-        global:
-          immediately:
-            title: "参加"
-            description: "自分が関与しているワークパッケージのすべてのアクティビティに関する通知（担当、責任、ウォッチャー）。"
-          delayed:
-            title: "不参加"
-            description: "全プロジェクトにおける活動の追加通知。"
-          date_alerts:
-            title: "日付アラート"
-            description: "あなたが関与している（担当、責任、ウォッチャー）オープンワークパッケージの重要な日付が近づくと自動通知。"
-          overdue: 期限を過ぎた場合
-        project_specific:
-          title: "プロジェクト固有の通知設定"
-          description: "これらのプロジェクト固有の設定は、上記のデフォルト設定を上書きします。"
-          add: "プロジェクトの設定を追加する"
-          already_selected: "このプロジェクトはすでに選ばれている"
-          remove: "プロジェクトの設定を削除する"
     pagination:
       no_other_page: "このページだけです。"
       pages_skipped: "ページスキップ。"
@@ -653,38 +610,6 @@ ja:
       not_available: "プロジェクトなし"
       required_outside_context: >
         ワークパッケージを作成するプロジェクトを選択して、すべての属性を確認してください。 上記で有効になっているタイプのプロジェクトのみ選択できます。
-    reminders:
-      settings:
-        daily:
-          add_time: "時間を追加する"
-          enable: "毎日のEメールリマインダーを有効にする"
-          explanation: "このリマインダーは、未読の通知に対してのみ、指定した時間帯にのみ届きます。 %{no_time_zone}"
-          no_time_zone: "アカウントにタイムゾーンを設定するまでは、時間はUTCで解釈されます。"
-          time_label: "時間 %{counter}："
-          title: "未読通知メールのリマインダーを毎日送信する"
-        workdays:
-          title: "これらの日にリマインダーメールを受け取る"
-        immediate:
-          title: "電子メールのリマインダーを送信"
-          mentioned: "@mentionするとすぐに"
-          personal_reminder: "個人的なリマインダーを受け取ったとき"
-        alerts:
-          title: "その他の項目（ワークパッケージではないもの）に対する電子メールアラート"
-          explanation: >
-            本日の通知はワークパッケージに限定されています。これらのイベントが通知に含まれるようになるまで、Eメールアラートを受信し続けることを選択できます：
-          news_added: "ニュースが追加されました。"
-          news_commented: "ニュースへのコメント"
-          document_added: "ドキュメントの追加"
-          forum_messages: "新しいフォーラムメッセージ"
-          wiki_page_added: "Wikiページが追加されました。"
-          wiki_page_updated: "Wikiページが更新されました。"
-          membership_added: "メンバーシップの追加"
-          membership_updated: "メンバーシップの更新"
-        title: "電子メールによるリマインダー"
-        pause:
-          label: "毎日のEメールリマインダーを一時停止する"
-          first_day: "初日"
-          last_day: "最終日"
     text_are_you_sure: "よろしいですか？"
     text_are_you_sure_to_cancel: "このページには未保存の変更があります。本当に破棄しますか？"
     breadcrumb: "パンくず"

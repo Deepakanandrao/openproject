@@ -33,7 +33,7 @@ el:
         label_activity_show_only_changes: "Show changes only"
         label_sort_asc: "Newest at the bottom"
         label_sort_desc: "Newest on top"
-        label_type_to_comment: "Add a comment. Type @ to notify people."
+        label_type_to_comment: "Προσθέστε ένα σχόλιο. Πληκτρολογήστε @ για να ειδοποιήσετε άτομα."
         label_submit_comment: "Submit comment"
         label_who: Who?
         changed_on: "changed on"
@@ -86,11 +86,11 @@ el:
         type_token_text: "Your Enterprise token text"
         token_placeholder: "Paste your Enterprise edition support token here"
         token_caption: "To learn more about how to activate Enterprise edition check our [documentation](docs_url)."
-      add_token: "Upload an Enterprise edition support token"
+      add_token: "Ανεβάστε ένα support token της έκδοσης Enterprise"
       replace_token: "Αντικαταστήστε το τρέχον token υποστήριξης"
-      order: "Order Enterprise on-premises edition"
-      paste: "Paste your Enterprise edition support token"
-      required_for_feature: "This add-on is only available with an active Enterprise edition support token."
+      order: "Παραγγελία Enterprise on-premises edition"
+      paste: "Επικολλήστε το support token σας της έκδοσης Enterprise"
+      required_for_feature: "Αυτή η λειτουργία διατίθεται μόνο με ενεργό support token Έκδοσης για Επιχειρήσεις."
       enterprise_link: "Για περισσότερες πληροφορίες, πατήστε εδω."
       start_trial: "Έναρξη δωρεάν δοκιμαστικής περιόδου"
       book_now: "Κάντε κράτηση τώρα"
@@ -142,7 +142,7 @@ el:
         failed: "Connection failed: Unable to retrieve server information"
         error: "An unexpected error occurred while testing the connection"
         connection_error: "Connection error: %{message}"
-        parse_error: "Failed to parse the response from the server. The server may not be a valid Jira instance."
+        parse_error: "Αποτυχία ανάλυσης της απάντησης από το διακομιστή. Ο διακομιστής μπορεί να μην είναι ένα έγκυρο instance Jira."
         api_error: "Jira API returned error status %{status}. Please check your Jira instance URL and API token."
         token_error: "Invalid API token. Please check your credentials in the configuration."
         missing_credentials: "Please provide both URL and Personal Access Token to test the connection"
@@ -3362,6 +3362,11 @@ el:
     quick_add:
       label: "Add…"
   my_account:
+    notifications_and_email:
+      title: "Notification and email"
+      tabs:
+        notifications: "Notification settings"
+        email_reminders: "Email reminders"
     access_tokens:
       description: "Provider tokens are issued by OpenProject, allowing other applications to access it. Client tokens are issued by other applications, allowing OpenProject to access them."
       no_results:
@@ -3424,6 +3429,72 @@ el:
         disabled_text: "RSS tokens are not enabled by the administrator. Please contact your administrator to use this feature."
       storages:
         unknown_storage: "Unknown storage"
+    email_reminders:
+      immediate_reminders:
+        title: "Send me an email reminder"
+        mentioned: "Notify me when I am mentioned"
+        personal_reminder: "Notify me for personal reminders"
+      daily_reminders:
+        title: "Send me daily email reminders for unread notifications"
+        caption: "You will receive these reminders only for unread notifications and only at hours you specify. Until you configure a time zone for your account, the times will be interpreted to be in UTC."
+        enabled: "Enable daily email reminders"
+        add_time: "Add time"
+        remove_time: "Remove time"
+        time_slot_label: "Reminder time (UTC)"
+      workdays:
+        title: "Receive email reminders on these days"
+        submit_button: "Update reminder days"
+      pause_reminders:
+        title: "Pause email notifications"
+        enabled: "Temporarily pause daily email reminders"
+        date_range: "Pause period"
+      email_alerts:
+        title: "Email alerts for other items that are not work packages"
+        news_added: "News added"
+        news_commented: "Comment on a news item"
+        document_added: "Document added"
+        forum_messages: "Forum message posted"
+        wiki_page_added: "Wiki page added"
+        wiki_page_updated: "Wiki page updated"
+        membership_added: "Membership added"
+        membership_updated: "Membership updated"
+        submit_button: "Update alerts"
+    notifications:
+      participating:
+        title: "Participating"
+        submit_button: "Update preferences"
+        mentioned: "Mentioned"
+        watched: "Watching"
+        assignee: "Assignee"
+        responsible: "Accountable"
+        shared: "Shared with me"
+      date_alerts:
+        title: "Date alerts"
+        submit_button: "Update date alerts"
+        start_date: "Start date"
+        due_date: "Finish date"
+        overdue: "Overdue"
+        times:
+          same_day: "On the same day"
+          one_day_before: "1 day before"
+          three_days_before: "3 days before"
+          seven_days_before: "7 days before"
+          one_day_after: "1 day after"
+          three_days_after: "3 days after"
+          seven_days_after: "7 days after"
+      non_participating:
+        title: "Non-participating"
+        submit_button: "Update preferences"
+        work_package_created: "New work packages"
+        work_package_commented: "All new comments"
+        work_package_processed: "All status changes"
+        work_package_prioritized: "All priority changes"
+        work_package_scheduled: "All date changes"
+      project_specific_settings:
+        title: "Project-specific notification settings"
+        add_button: "Add project-specific notifications"
+        dialog_title: "Add project-specific notifications"
+        list_header: "Projects with specific notifications"
   notifications:
     reasons:
       assigned: "Ανάθεση σε"
