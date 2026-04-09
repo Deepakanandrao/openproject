@@ -11,7 +11,7 @@ pt-PT:
           two_way_oauth2: Fluxo de código de autorização bidirecional OAuth 2.0
         token_exchange_scope: Âmbito de XWiki
         wiki_audience: Audiência de XWiki
-    errors: { }
+    errors: {}
     models:
       wikis/inline_page_link:
         one: Ligação de página em linha
@@ -50,4 +50,4 @@ pt-PT:
           xwiki_oauth_description: Permita que o OpenProject aceda aos dados do XWiki com um OAuth.
         delete:
           title: Eliminar fornecedor de wiki
-          warning_html: "Está prestes a eliminar %{wiki_provider}. Esta ação é irreversível."
+          warning_html: Está prestes a eliminar %{wiki_provider}. Esta ação é irreversível.
