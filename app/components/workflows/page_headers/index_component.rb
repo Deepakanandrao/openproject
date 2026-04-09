@@ -52,6 +52,5 @@ module Workflows::PageHeaders
         helpers.t(:label_workflow_summary)
       end
     end
-
   end
 end

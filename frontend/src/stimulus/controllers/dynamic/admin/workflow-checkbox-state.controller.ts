@@ -31,12 +31,15 @@
 import { Controller } from '@hotwired/stimulus';
 import { TurboRequestsService } from 'core-app/core/turbo/turbo-requests.service';
 
-const SAVED_STATE_KEY = 'workflow-saved-state';
+const PERSISTED_STATE_KEY = 'workflow-persisted-state';
+const STATUS_STATE_KEY = 'workflow-status-state';
 
 interface SavedState {
   formKey:string;
   checkboxes:Record<string, boolean>;
 }
+
+type CheckboxesState = Record<string, boolean>;
 
 /**
  * Handles two things:
@@ -69,21 +72,22 @@ export default class WorkflowCheckboxStateController extends Controller<HTMLForm
   declare hasCheckboxChangesValue:boolean;
   declare isDirtyValue:boolean;
 
-  private initialCheckboxState:Record<string, boolean> = {};
+  private initialCheckboxState:CheckboxesState = {};
   private confirmationTriggers:NodeListOf<HTMLElement>;
 
   connect() {
     const frame = this.element.closest<HTMLElement>('turbo-frame');
     frame?.addEventListener('turbo:before-frame-render', this.onBeforeFrameRender);
 
-    const saved = this.loadSavedState();
-    if (saved?.formKey === this.formKey) {
-      this.applyState(saved.checkboxes);
+    const statusCheckboxes = this.popState(STATUS_STATE_KEY);
+    if (statusCheckboxes) {
+      this.applyState(statusCheckboxes);
     }
 
     this.element.addEventListener('submit', this.onFormSubmit);
 
-    this.initialCheckboxState = this.captureState();
+    this.initialCheckboxState = this.popState(PERSISTED_STATE_KEY) ?? this.captureState();
+    this.pushState(PERSISTED_STATE_KEY, this.initialCheckboxState);
     this.element.addEventListener('change', this.onCheckboxChange);
 
     this.confirmationTriggers = document.querySelectorAll<HTMLElement>('[data-admin--workflow-checkbox-state-confirmation-trigger]');
@@ -110,12 +114,12 @@ export default class WorkflowCheckboxStateController extends Controller<HTMLForm
   //
 
   private onBeforeFrameRender = () => {
-    const state:SavedState = { formKey: this.formKey, checkboxes: this.captureState() };
-    sessionStorage.setItem(SAVED_STATE_KEY, JSON.stringify(state));
+    this.pushState(STATUS_STATE_KEY, this.captureState());
   };
 
   private onFormSubmit = () => {
-    sessionStorage.removeItem(SAVED_STATE_KEY);
+    this.popState(STATUS_STATE_KEY);
+    this.popState(PERSISTED_STATE_KEY);
     this.hasCheckboxChangesValue = false;
     this.hasStatusChangesValue = false;
   };
@@ -128,12 +132,20 @@ export default class WorkflowCheckboxStateController extends Controller<HTMLForm
     return this.element.querySelector<HTMLInputElement>(`input[name="${name}"]`)!.value;
   }
 
-  private loadSavedState():SavedState | null {
-    const raw = sessionStorage.getItem(SAVED_STATE_KEY);
-    sessionStorage.removeItem(SAVED_STATE_KEY);
+  private pushState(key:string, state:CheckboxesState) {
+    const savedState:SavedState = { formKey: this.formKey, checkboxes: state };
+    sessionStorage.setItem(key, JSON.stringify(savedState));
+  }
+
+  private popState(key:string):CheckboxesState | null {
+    const raw = sessionStorage.getItem(key);
+    sessionStorage.removeItem(key);
     if (!raw) return null;
 
-    return JSON.parse(raw) as SavedState;
+    const saved = JSON.parse(raw) as SavedState;
+    if (saved.formKey !== this.formKey) return null;
+
+    return saved.checkboxes;
   }
 
   //
@@ -176,7 +188,7 @@ export default class WorkflowCheckboxStateController extends Controller<HTMLForm
 
   private onIgnoreChanges = (originalTarget:HTMLElement, originalEvent:Event) => {
     return () => {
-      this.applyState(this.initialCheckboxState);
+      this.applyState(this.initialCheckboxState, false);
       this.hasCheckboxChangesValue = false;
       this.hasStatusChangesValue = false;
 
@@ -240,10 +252,11 @@ export default class WorkflowCheckboxStateController extends Controller<HTMLForm
     return checkboxes;
   }
 
-  private applyState(checkboxes:Record<string, boolean>):void {
+  private applyState(checkboxes:Record<string, boolean>, defaultValue?:boolean):void {
     this.element.querySelectorAll<HTMLInputElement>('input[type="checkbox"]').forEach((cb) => {
       const key = `${cb.dataset.oldStatus}:${cb.dataset.newStatus}:${cb.value}`;
-      if (key in checkboxes) cb.checked = checkboxes[key];
+
+      cb.checked = checkboxes[key] ?? defaultValue ?? true;
     });
   }
 }

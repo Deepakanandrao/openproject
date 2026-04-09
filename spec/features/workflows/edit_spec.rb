@@ -738,7 +738,7 @@ RSpec.describe "Workflow edit", :js do
           click_button "Ignore changes"
         end
 
-        expect(page).to have_no_field workflow_checkbox(0, 2)
+        expect(page).to have_field workflow_checkbox(0, 2), checked: false
       end
     end
   end
