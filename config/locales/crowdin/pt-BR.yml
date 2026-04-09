@@ -108,11 +108,11 @@ pt-BR:
     jemalloc_allocator: Alocador de memória Jemalloc
     journal_aggregation:
       caption: >
-        User actions on a work package (changing description, status, values, or writing comments) are grouped if performed within this period. It also controls notification and [webhook](webhook_link) delays.
+        As ações do usuário em um pacote de trabalho (alterar descrição, status, valores ou escrever comentários) são agrupadas se realizadas dentro deste período. Esse intervalo também controla os atrasos nas notificações e nos [webhooks] (webhook_link).
     import:
       title: "Importar"
     jira:
-      title: "Jira Migrator"
+      title: "Migrador do Jira"
       description: "Use esta ferramenta para importar dados da sua instância do Jira. Você pode configurar vários hosts do Jira e escolher o que importar em cada execução de importação."
       errors:
         cannot_delete_with_imports: "Não é possível excluir o host do Jira enquanto houver importações existentes"
@@ -123,8 +123,8 @@ pt-BR:
         title: "Configuração do Jira"
         new: "Nova configuração"
       banner:
-        title: "Limited import capabilities"
-        description: "This Jira Migrator is currently in beta and can only import basic data: projects, issues (name, title, description, attachments), users (name, email, project membership), statuses, and types. It cannot import workflows, custom fields, issue relations, or permissions. We currently only support Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time."
+        title: "Capacidades de importação limitadas"
+        description: "Este Migrador do Jira está atualmente em versão beta e só consegue importar dados básicos: projetos, chamados (nome, título, descrição, anexos), usuários (nome, e-mail, participação em projetos), status e tipos. Ele não consegue importar fluxos de trabalho, campos personalizados, relações entre chamados ou permissões. No momento, só são suportadas as versões Jira Server/Data Center 10.x e 11.x. Instâncias na nuvem (Cloud) não são compatíveis atualmente."
       form:
         fields:
           name: "Nome"
@@ -160,9 +160,9 @@ pt-BR:
       run:
         title: "Execução de importação"
         history: "Histórico"
-        remove_error: "A Jira import run cannot be removed while it is running"
+        remove_error: "Uma importação do Jira não pode ser removida enquanto estiver em execução"
         import_blocked_error: "Outra execução de importação do Jira está em andamento ou aguardando revisão. Conclua ou reverta-a antes de iniciar uma nova importação."
-        project_identifier_taken: "You are trying to import a project with an already used identifier: %{taken_identifier}. Please update the project identifier in Jira then click on Retry."
+        project_identifier_taken: "Você está tentando importar um projeto com um identificador já em uso: %{taken_identifier}. Atualize o identificador do projeto no Jira e clique em Tentar novamente."
         blank:
           title: "Ainda não há execuções de importação configuradas"
           description: "Crie uma execução de importação para começar a importar informações desta instância do Jira"
@@ -382,15 +382,15 @@ pt-BR:
           <p>Olá,</p> <p>Um novo projeto foi criado: projectValue:name</p> <p>Obrigado</p>
       work_packages_identifier:
         page_header:
-          description: Choose between classic numerical work package IDs or semantic project-specific ones that prepend the project identifier to the work package ID.
+          description: Escolha entre IDs de pacotes de trabalho numéricos clássicos ou IDs semânticos específicos do projeto, que adicionam o identificador do projeto ao ID do pacote de trabalho.
         banner:
           existing_identifiers_notice: >
-            Existing identifiers for %{project_count} projects don't meet requirements for project-based semantic identifiers. OpenProject can automatically update these so that they are valid as in the examples below. Click on 'Autofix and save' to update identifiers for all projects in this manner and enable project-based semantic identifiers.
+            Os identificadores existentes de %{project_count} projetos não atendem aos requisitos para Ids semânticos baseados em projeto. O OpenProject pode atualizá-los automaticamente para que fiquem válidos, como nos exemplos abaixo. Clique em “Autocorrigir e salvar” para atualizar os identificadores de todos os projetos dessa forma e ativar os Ids semânticos baseados em projeto.
         box_header:
-          label_project: Project
-          label_previous_identifier: Previous identifier
-          label_autofixed_suggestion: Future identifier
-          label_example_work_package_id: Example work package ID
+          label_project: Projeto
+          label_previous_identifier: Identificação anterior
+          label_autofixed_suggestion: Identificador futuro
+          label_example_work_package_id: Exemplo de ID de pacote de trabalho
         autofix_preview:
           error_too_long: Has to be 10 characters or fewer
           error_numerical: Cannot be purely numerical

@@ -39,6 +39,9 @@ ru:
         sprint_sharing: "Совместное использование спринта"
       sprint:
         duration: "Продолжительность спринта"
+      user_preference:
+        backlogs_task_color: "Task color"
+        backlogs_versions_default_fold_state: "Show sprints folded"
       work_package:
         backlogs_work_package_type: "Тип невыполненной работы"
         position: "Позиция"
@@ -85,6 +88,7 @@ ru:
     task_type: "Тип задачи"
   backlogs:
     any: "любой"
+    caption_sprints_default_fold_state: "Sprints will not be expanded by default when viewing the 'Backlog and sprints' page. Each one has to be manually expanded."
     column_width: "Ширина столбца"
     definition_of_done: "Определение термина \"Завершено\""
     definition_of_done_caption: "Пакеты работ с такими статусами рассматриваются как завершенные в представлениях бэклога и отчетах."
@@ -95,7 +99,6 @@ ru:
     label_versions_default_fold_state: "Показать свернутые версии"
     label_burndown_chart: "Сводная таблица"
     label_sprint_board: "Доска для спринта"
-    caption_versions_default_fold_state: "Версии не будут разворачиваться по умолчанию при просмотре бэклогов. Каждая версия должна быть развернута вручную."
     work_package_is_closed: "Пакет работ завершен, когда"
     label_is_done_status: "Статус %{status_name} означает завершение,"
     points_label:
@@ -157,16 +160,16 @@ ru:
     move_to_sprint_dialog_component:
       title: "Переместить в спринт"
       label_sprint: "Спринт"
-    sprint_planning:
+    backlog:
       blankslate:
-        title: "Пока нет спринтов"
-        description_html: "Чтобы начать планировать свой спринт, создайте его здесь или перейдите на %{settings_link}, чтобы получить спринты из другого проекта."
-        create_sprint_description_text: "Чтобы начать планировать свой спринт, создайте его здесь."
-        share_sprint_description_html: "Чтобы начать планировать свой спринт, перейдите на %{settings_link}, чтобы получить спринты из другого проекта."
-        no_actions_description_text: "Для этого проекта пока нет спринтов."
-        receive_shared_description_html: "Этот проект получает спринты из другого проекта. Управляйте этим на %{settings_link}."
-        receive_shared_no_actions_description_text: "Этот проект получает спринты от другого проекта, но сейчас ни один из них не доступен."
-        settings_link_text: "настройки проекта"
+        title: "No sprints present yet"
+        description_html: "To start planning your sprint, create one here or go to the %{settings_link} to receive sprints from a different project."
+        create_sprint_description_text: "To start planning your sprint, create one here."
+        share_sprint_description_html: "To start planning your sprint, go to the %{settings_link} to receive sprints from a different project."
+        no_actions_description_text: "No sprints are available for this project yet."
+        receive_shared_description_html: "This project receives sprints from a different project. Manage this in the %{settings_link}."
+        receive_shared_no_actions_description_text: "This project receives shared sprints from a different project, but none are available right now."
+        settings_link_text: "project settings"
     sprint_header_component:
       label_start_sprint: "Начало"
       label_complete_sprint: "Complete"
@@ -241,7 +244,7 @@ ru:
   label_sprint_edit: "Редактировать спринт"
   label_sprint_impediments: "Препятствия спринта"
   label_sprint_new: "Новый спринт"
-  label_sprint_planning: "Планирование спринта"
+  label_backlog_and_sprints: "Backlog and sprints"
   label_task_board: "Панель задач"
   notice_successful_start: "Спринт запущен."
   notice_successful_finish: "Спринт завершен."

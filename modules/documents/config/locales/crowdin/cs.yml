@@ -86,8 +86,8 @@ cs:
       collaboration_settings: "Spolupráce v reálném čase"
     last_updated_at: "Naposledy uloženo %{time}."
     info_line:
-      currently_offline: "You are currently offline."
-      connection_restored: "You are now back online."
+      currently_offline: "Nyní jste v režimu offline."
+      connection_restored: "Nyní jste opět online."
     active_editors: "Aktivní editoři"
     active_editors_count:
       one: "1 aktivní editor"
