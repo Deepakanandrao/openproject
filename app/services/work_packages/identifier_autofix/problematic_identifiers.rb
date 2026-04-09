@@ -81,8 +81,12 @@ module WorkPackages
       # Returns a Set of identifiers historically reserved via FriendlyId slug history
       # that are no longer the active identifier of any project.
       # Useful for callers that manage their own current-identifier exclusions.
-      def self.reserved_identifiers
-        new.reserved_identifiers
+      def reserved_identifiers
+        @reserved_identifiers ||= FriendlyId::Slug
+                                    .where(sluggable_type: Project.name)
+                                    .where("LOWER(slug) NOT IN (SELECT LOWER(identifier) FROM projects)")
+                                    .pluck(:slug)
+                                    .to_set
       end
 
       private
@@ -113,13 +117,6 @@ module WorkPackages
         @in_use_identifiers ||= Project.where.not(id: scope.select(:id)).pluck(:identifier).to_set
       end
 
-      def reserved_identifiers
-        @reserved_identifiers ||= FriendlyId::Slug
-                                    .where(sluggable_type: Project.name)
-                                    .where("LOWER(slug) NOT IN (SELECT LOWER(identifier) FROM projects)")
-                                    .pluck(:slug)
-                                    .to_set
-      end
     end
   end
 end
