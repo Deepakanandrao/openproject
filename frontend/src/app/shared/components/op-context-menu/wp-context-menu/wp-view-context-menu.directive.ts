@@ -149,7 +149,8 @@ export class WorkPackageViewContextMenu extends OpContextMenuHandler {
   private deleteSelectedWorkPackages() {
     const selected = this.getSelectedWorkPackages();
     const ids = selected.map((wp) => wp.id).filter((id) => id !== null) as string[];
-    void this.turboRequests.request(this.pathHelper.workPackagesBulkDeleteDialogPath(ids), { method: 'GET' });
+    const backUrl = this.pathHelper.workPackagesPath(this.currentProject.identifier || null);
+    void this.turboRequests.request(this.pathHelper.workPackagesBulkDeleteDialogPath(ids, backUrl), { method: 'GET' });
   }
 
   private editSelectedWorkPackages(link:any) {

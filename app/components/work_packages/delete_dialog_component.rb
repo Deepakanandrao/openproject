@@ -34,9 +34,10 @@ module WorkPackages
 
     attr_reader :work_package
 
-    def initialize(work_package:)
+    def initialize(work_package:, back_url: nil)
       super
       @work_package = work_package
+      @back_url = back_url
     end
 
     private
@@ -93,7 +94,7 @@ module WorkPackages
     end
 
     def form_action
-      helpers.work_packages_bulk_path(ids: [work_package.id])
+      helpers.work_packages_bulk_path(ids: [work_package.id], back_url: @back_url)
     end
   end
 end

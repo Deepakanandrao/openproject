@@ -22,6 +22,7 @@ import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
 import { TimeEntryTimerService } from 'core-app/shared/components/time_entries/services/time-entry-timer.service';
 import { TimeEntryResource } from 'core-app/features/hal/resources/time-entry-resource';
 import { DeviceService } from 'core-app/core/browser/device.service';
+import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
 
 @Directive({
   // eslint-disable-next-line @angular-eslint/directive-selector
@@ -42,6 +43,7 @@ export class WorkPackageSingleContextMenuDirective extends OpContextMenuTrigger 
   readonly turboRequests = inject(TurboRequestsService);
   readonly apiV3Service = inject(ApiV3Service);
   readonly authorisationService = inject(AuthorisationService);
+  readonly currentProject = inject(CurrentProjectService);
   readonly timeEntryService = inject(TimeEntryTimerService);
   protected copyToClipboardService = inject(CopyToClipboardService);
   protected deviceService = inject(DeviceService);
@@ -93,12 +95,14 @@ export class WorkPackageSingleContextMenuDirective extends OpContextMenuTrigger 
           window.location.href = `${this.PathHelper.workPackageCopyPath(this.workPackage.project.identifier, this.workPackage.id)}`;
         }
         break;
-      case 'delete':
+      case 'delete': {
+        const backUrl = this.PathHelper.workPackagesPath(this.currentProject.identifier || null);
         void this.turboRequests.request(
-          this.PathHelper.workPackagesBulkDeleteDialogPath([this.workPackage.id!]),
+          this.PathHelper.workPackagesBulkDeleteDialogPath([this.workPackage.id!], backUrl),
           { method: 'GET' },
         );
         break;
+      }
       case 'log_time':
         void this.turboRequests.request(this.PathHelper.timeEntryWorkPackageDialog(this.workPackage.id!), { method: 'GET' });
         break;
