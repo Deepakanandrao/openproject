@@ -60,10 +60,14 @@ export default class WorkflowCheckboxStateController extends Controller<HTMLForm
   declare readonly saveButtonTarget:HTMLButtonElement;
 
   static values = {
-    hasStatusChanges: Boolean
+    hasStatusChanges: Boolean,
+    hasCheckboxChanges: Boolean,
+    isDirty: Boolean
   };
 
   declare hasStatusChangesValue:boolean;
+  declare hasCheckboxChangesValue:boolean;
+  declare isDirtyValue:boolean;
 
   private initialCheckboxState:Record<string, boolean> = {};
   private confirmationTriggers:NodeListOf<HTMLElement>;
@@ -87,10 +91,6 @@ export default class WorkflowCheckboxStateController extends Controller<HTMLForm
       const watchedTrigger = watchedElement.dataset['admin-WorkflowCheckboxStateConfirmationTrigger'] ?? '';
       watchedElement.addEventListener(watchedTrigger, this.confirmWithDialog, true);
     });
-
-    if (this.hasStatusChangesValue) {
-      window.OpenProject.pageState = 'edited';
-    }
   }
 
   disconnect() {
@@ -116,9 +116,8 @@ export default class WorkflowCheckboxStateController extends Controller<HTMLForm
 
   private onFormSubmit = () => {
     sessionStorage.removeItem(SAVED_STATE_KEY);
-    this.element.dataset.dirty = 'false';
+    this.hasCheckboxChangesValue = false;
     this.hasStatusChangesValue = false;
-    window.OpenProject.pageState = 'pristine';
   };
 
   private get formKey():string {
@@ -143,7 +142,7 @@ export default class WorkflowCheckboxStateController extends Controller<HTMLForm
   //
 
   private confirmWithDialog = (event:Event) => {
-    if (!this.isDirty) return;
+    if (!this.isDirtyValue) return;
 
     const target = event.target as HTMLElement;
 
@@ -178,8 +177,8 @@ export default class WorkflowCheckboxStateController extends Controller<HTMLForm
   private onIgnoreChanges = (originalTarget:HTMLElement, originalEvent:Event) => {
     return () => {
       this.applyState(this.initialCheckboxState);
-      this.element.dataset.dirty = 'false';
-      window.OpenProject.pageState = 'pristine';
+      this.hasCheckboxChangesValue = false;
+      this.hasStatusChangesValue = false;
 
       this.closeAndProceed(originalTarget, originalEvent);
     };
@@ -197,29 +196,40 @@ export default class WorkflowCheckboxStateController extends Controller<HTMLForm
     this.confirmationDialogTarget.close();
     originalTarget.dataset.confirmed = 'true';
 
-    if (originalEvent.type === 'click') {
-      // Dispatching a click event is not as effective as explicitly clicking
-      originalTarget.click();
-    }
-    else {
-      const forwardedEvent = new Event(originalEvent.type, { bubbles: true });
-      originalTarget.dispatchEvent(forwardedEvent);
-    }
+    // Run on next loop event to allow values’ callback execution right away.
+    setTimeout(() => {
+      if (originalEvent.type === 'click') {
+        // Dispatching a click event is not as effective as explicitly clicking.
+        originalTarget.click();
+      }
+      else {
+        const forwardedEvent = new Event(originalEvent.type, { bubbles: true });
+        originalTarget.dispatchEvent(forwardedEvent);
+      }
+    }, 0);
   };
 
   //
   // Foundation for state management: save, apply and track dirtiness.
   //
 
-  private get isDirty():boolean {
-    return (this.element.dataset.dirty === 'true') || this.hasStatusChangesValue;
+  private hasCheckboxChangesValueChanged(hasChanges:boolean) {
+    this.isDirtyValue = hasChanges || this.hasStatusChangesValue;
+  }
+
+  private hasStatusChangesValueChanged(hasChanges:boolean) {
+    this.isDirtyValue = hasChanges || this.hasCheckboxChangesValue;
+  }
+
+  private isDirtyValueChanged(hasChanges:boolean) {
+    window.OpenProject.pageState = hasChanges ? 'edited' : 'pristine';
   }
 
   private onCheckboxChange = () => {
     const current = this.captureState();
-    const dirty = Object.keys(current).some((key) => current[key] !== this.initialCheckboxState[key]);
-    this.element.dataset.dirty = dirty ? 'true' : 'false';
-    window.OpenProject.pageState = dirty ? 'edited' : 'pristine';
+    const hasChanges = Object.keys(current).some((key) => current[key] !== this.initialCheckboxState[key]);
+
+    this.hasCheckboxChangesValue = hasChanges;
   };
 
   private captureState():Record<string, boolean> {
