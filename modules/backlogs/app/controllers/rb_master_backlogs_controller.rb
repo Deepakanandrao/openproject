@@ -74,6 +74,8 @@ class RbMasterBacklogsController < RbApplicationController
     end
   end
 
+  private
+
   def split_view_base_route
     if OpenProject::FeatureDecisions.scrum_projects_active?
       backlog_backlogs_project_backlogs_path(request.query_parameters)
@@ -81,8 +83,6 @@ class RbMasterBacklogsController < RbApplicationController
       backlogs_project_backlogs_path(request.query_parameters)
     end
   end
-
-  private
 
   def load_backlogs
     @owner_backlogs = Backlog.owner_backlogs(@project)
