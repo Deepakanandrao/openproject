@@ -49,7 +49,7 @@ module WorkPackages
       private
 
       def exclusion_set
-        Project.pluck(:identifier).to_set | ProblematicIdentifiers.new.reserved_identifiers
+        Project.pluck(:identifier).to_set | ProblematicIdentifiers.reserved_identifiers
       end
     end
   end
