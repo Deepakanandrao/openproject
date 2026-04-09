@@ -810,8 +810,6 @@ Rails.application.routes.draw do
         post :add_user
 
         # old routes for old group style management, might remove when new interface
-        post "/members" => "departments#add_users", as: "members_of"
-        delete "/members:user_id" => "departments#remove_user", as: "member_of"
         patch "/memberships:membership_id" => "departments#edit_membership", as: "membership_of"
         put "/memberships:membership_id" => "departments#edit_membership"
         delete "/memberships:membership_id" => "departments#destroy_membership"

@@ -40,7 +40,7 @@ module Admin
     # TODO: We will check for users permission here
     before_action :require_admin
     before_action :find_group,
-                  only: %i[show edit new_user add_user update add_users remove_user create_memberships edit_membership
+                  only: %i[show edit new_user add_user update create_memberships edit_membership
                            destroy_membership]
 
     def index
@@ -132,22 +132,6 @@ module Admin
       end
     end
 
-    def add_users
-      service_call = ::Groups::UpdateService
-                     .new(user: current_user, model: @group)
-                     .call(add_user_ids: Array(params[:user_ids]))
-
-      respond_users_altered(service_call)
-    end
-
-    def remove_user
-      service_call = ::Groups::UpdateService
-                     .new(user: current_user, model: @group)
-                     .call(remove_user_ids: Array(params[:user_id]))
-
-      respond_users_altered(service_call)
-    end
-
     def create_memberships
       membership_params = permitted_params.group_membership[:membership]
 
@@ -210,14 +194,5 @@ module Admin
       end
     end
 
-    def respond_users_altered(service_call)
-      if service_call.success?
-        flash[:notice] = I18n.t(:notice_successful_update)
-      else
-        service_call.apply_flash_message!(flash)
-      end
-
-      redirect_to edit_admin_department_path(@group, tab: "users"), status: :see_other
-    end
   end
 end

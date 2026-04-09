@@ -73,12 +73,6 @@ module GroupsHelper
         label: :label_general
       },
       {
-        name: "users",
-        partial: "admin/departments/users",
-        path: edit_admin_department_path(group, tab: :users),
-        label: :label_user_plural
-      },
-      {
         name: "memberships",
         partial: "admin/departments/memberships",
         path: edit_admin_department_path(group, tab: :memberships),
