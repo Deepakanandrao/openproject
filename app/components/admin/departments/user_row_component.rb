@@ -34,9 +34,10 @@ module Admin
       include ApplicationHelper
       include OpPrimer::ComponentHelpers
 
-      def initialize(user:)
+      def initialize(user:, group:)
         super()
         @user = user
+        @group = group
       end
 
       def call
@@ -56,7 +57,14 @@ module Admin
                 label: I18n.t(:button_remove),
                 scheme: :danger,
                 tag: :a,
-                href: "#"
+                href: remove_user_admin_department_path(@group, @user.id),
+                content_arguments: {
+                  data: {
+                    turbo_confirm: I18n.t(:text_are_you_sure),
+                    turbo_method: :delete,
+                    turbo_frame: "_top"
+                  }
+                }
               )
             end
           end

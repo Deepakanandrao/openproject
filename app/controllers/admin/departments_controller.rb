@@ -40,7 +40,7 @@ module Admin
     # TODO: We will check for users permission here
     before_action :require_admin
     before_action :find_group,
-                  only: %i[show edit new_user add_user update create_memberships edit_membership
+                  only: %i[show edit new_user add_user remove_user update create_memberships edit_membership
                            destroy_membership]
 
     def index
@@ -61,6 +61,7 @@ module Admin
         )
 
       if result.success?
+        flash[:notice] = I18n.t("departments.flash.user_added")
         redirect_to admin_department_path(@group), status: :see_other
       elsif result.result.is_a?(Group)
         respond_with_dialog(
@@ -93,12 +94,25 @@ module Admin
         .call(permitted_params.group.merge(organizational_unit: true))
 
       if service_call.success?
-        department = service_call.result
-        redirect_to admin_department_path(department.parent_id ? department.parent : department), status: :see_other
+        flash[:notice] = I18n.t("departments.flash.department_created")
+        redirect_to admin_department_path(redirect_target_for(service_call.result)), status: :see_other
       else
         flash[:error] = service_call.errors.full_messages.join("\n")
         redirect_back_or_to(admin_departments_path)
       end
+    end
+
+    def remove_user
+      service_call = ::Groups::UpdateService
+        .new(user: current_user, model: @group)
+        .call(remove_user_ids: [params[:user_id]])
+
+      if service_call.success?
+        flash[:notice] = I18n.t("departments.flash.user_removed")
+      else
+        flash[:error] = service_call.errors.full_messages.join("\n")
+      end
+      redirect_to admin_department_path(@group), status: :see_other
     end
 
     def edit_organization_name
@@ -180,6 +194,10 @@ module Admin
       return "turbo_rails/frame" if turbo_frame_request?
 
       "admin"
+    end
+
+    def redirect_target_for(department)
+      department.parent || department
     end
 
     def find_group

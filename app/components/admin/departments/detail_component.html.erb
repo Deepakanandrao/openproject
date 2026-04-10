@@ -79,7 +79,7 @@ See COPYRIGHT and LICENSE files for more details.
 
         users.each do |user|
           box.with_row do
-            render(Admin::Departments::UserRowComponent.new(user:))
+            render(Admin::Departments::UserRowComponent.new(user:, group:))
           end
         end
 
