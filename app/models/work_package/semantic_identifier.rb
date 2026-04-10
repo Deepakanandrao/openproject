@@ -68,7 +68,10 @@ module WorkPackage::SemanticIdentifier
 
     # Same as find_by_id_or_identifier but raises ActiveRecord::RecordNotFound on miss.
     def find_by_id_or_identifier!(identifier)
-      find_by_id_or_identifier(identifier) || raise(ActiveRecord::RecordNotFound, "WorkPackage not found: #{identifier}")
+      find_by_id_or_identifier(identifier) ||
+        raise(ActiveRecord::RecordNotFound.new(
+                "Couldn't find WorkPackage with identifier=#{identifier}", "WorkPackage", "identifier", identifier
+              ))
     end
 
     private
