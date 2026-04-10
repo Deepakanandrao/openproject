@@ -35,17 +35,13 @@ class RbStoriesController < RbApplicationController
 
   # Deferred ActionMenu items (Primer include-fragment).
   def menu
-    work_packages = if OpenProject::FeatureDecisions.scrum_projects_active?
-                      WorkPackage.where(sprint_id: @sprint.id, project_id: @project.id)
-                    else
-                      WorkPackage.where(version_id: @sprint.id, project_id: @project.id)
-                    end
+    max_position = @allowed_stories.maximum(:position) || 0
 
     render(Backlogs::StoryMenuListComponent.new(
              story: @story,
              sprint: @sprint,
              project: @project,
-             max_position: work_packages.maximum(:position) || 0,
+             max_position:,
              current_user:
            ),
            layout: false)
@@ -219,11 +215,13 @@ class RbStoriesController < RbApplicationController
   end
 
   def load_story
-    @story = if OpenProject::FeatureDecisions.scrum_projects_active?
-               WorkPackage.visible.where(sprint: @sprint, project: @project).find(params[:id])
-             else
-               Story.visible.where(version: @sprint, project: @project).find(params[:id])
-             end
+    @allowed_stories =
+      if OpenProject::FeatureDecisions.scrum_projects_active?
+        WorkPackage.visible.where(sprint: @sprint, project: @project)
+      else
+        Story.visible.where(Story.condition(@project, @sprint))
+      end
+    @story = @allowed_stories.find(params[:id])
   end
 
   def move_params
