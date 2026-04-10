@@ -48,13 +48,12 @@ interface TurboBeforeStreamRenderDetail {
 }
 
 function remountDeferredPrimerActionMenu(root:ParentNode):void {
-  root.querySelectorAll('action-menu').forEach((menu) => {
-    if (!menu.querySelector('include-fragment[src]')) {
-      return;
-    }
-    const clone = menu.cloneNode(true) as HTMLElement;
-    menu.replaceWith(clone);
-  });
+  root
+    .querySelectorAll<HTMLElement>('action-menu:has(include-fragment[src])')
+    .forEach((menu) => {
+        const clone = menu.cloneNode(true);
+        menu.replaceWith(clone);
+    });
 }
 
 export function registerActionMenuStreamAction():void {
