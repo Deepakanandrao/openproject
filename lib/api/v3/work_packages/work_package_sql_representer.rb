@@ -76,9 +76,10 @@ module API
 
         property :id
 
-        property :semanticId,
-                 representation: ->(*) { "identifier" },
-                 render_if: ->(*) { Setting::WorkPackageIdentifier.semantic_mode_active? ? "TRUE" : "FALSE" }
+        property :displayId,
+                 representation: ->(*) {
+                   Setting::WorkPackageIdentifier.semantic_mode_active? ? "identifier" : "id::text"
+                 }
 
         property :subject
 

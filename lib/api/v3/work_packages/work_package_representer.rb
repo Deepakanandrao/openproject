@@ -345,11 +345,10 @@ module API
         property :id,
                  render_nil: true
 
-        property :semantic_id,
-                 as: :semanticId,
+        property :display_id,
+                 as: :displayId,
                  render_nil: true,
-                 getter: ->(*) { identifier },
-                 if: ->(*) { Setting::WorkPackageIdentifier.semantic_mode_active? }
+                 getter: ->(*) { display_id&.to_s }
 
         property :lock_version,
                  render_nil: true,

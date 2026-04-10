@@ -72,6 +72,7 @@ RSpec.describe API::V3::WorkPackages::WorkPackageSqlRepresenter, "rendering" do
         {
           _type: "WorkPackage",
           id: rendered_work_package.id,
+          displayId: rendered_work_package.id.to_s,
           subject: rendered_work_package.subject,
           dueDate: rendered_work_package.due_date,
           startDate: rendered_work_package.start_date,
@@ -118,6 +119,7 @@ RSpec.describe API::V3::WorkPackages::WorkPackageSqlRepresenter, "rendering" do
         {
           _type: "WorkPackage",
           id: rendered_work_package.id,
+          displayId: rendered_work_package.id.to_s,
           subject: rendered_work_package.subject,
           date: rendered_work_package.start_date,
           _links: {
@@ -156,20 +158,21 @@ RSpec.describe API::V3::WorkPackages::WorkPackageSqlRepresenter, "rendering" do
       end
     end
 
-    context "when semantic work package ids are active",
-            with_flag: { semantic_work_package_ids: true },
-            with_settings: { work_packages_identifier: "semantic" } do
-      let(:project) { create(:project, identifier: "PROJ", types: [type]) }
+    describe "displayId" do
+      context "when semantic work package ids are active",
+              with_flag: { semantic_work_package_ids: true },
+              with_settings: { work_packages_identifier: "semantic" } do
+        let(:project) { create(:project, identifier: "PROJ", types: [type]) }
 
-      it "includes semanticId" do
-        expect(json).to be_json_eql("PROJ-1".to_json).at_path("semanticId")
+        it "returns the semantic identifier" do
+          expect(json).to be_json_eql("PROJ-1".to_json).at_path("displayId")
+        end
       end
-    end
 
-    context "when semantic_work_package_ids feature flag is inactive",
-            with_flag: { semantic_work_package_ids: false } do
-      it "does not include semanticId" do
-        expect(json).not_to have_json_path("semanticId")
+      context "when semantic work package ids are not active" do
+        it "returns the numeric id as a string" do
+          expect(json).to be_json_eql(rendered_work_package.id.to_s.to_json).at_path("displayId")
+        end
       end
     end
   end
