@@ -28,45 +28,25 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module LdapGroups
-  module SynchronizedGroups
-    class RowComponent < ::RowComponent
-      def synchronized_group
-        model
+module Saml
+  module Providers
+    class ConfirmDestroyDialogComponent < ApplicationComponent
+      include OpTurbo::Streamable
+
+      def initialize(provider:)
+        super
+        @provider = provider
       end
 
-      def dn
-        link_to synchronized_group.dn, ldap_groups_synchronized_group_path(synchronized_group)
+      def form_arguments
+        {
+          action: saml_provider_path(@provider),
+          method: :delete
+        }
       end
 
-      def ldap_auth_source
-        link_to synchronized_group.ldap_auth_source.name, edit_ldap_auth_source_path(synchronized_group.ldap_auth_source)
-      end
-
-      def group
-        link_to synchronized_group.group.name, edit_group_path(synchronized_group.group)
-      end
-
-      def sync_users
-        helpers.checked_image synchronized_group.sync_users
-      end
-
-      def users
-        synchronized_group.users.size
-      end
-
-      def button_links
-        [delete_link].compact
-      end
-
-      def delete_link
-        return if table.options[:deletable] == false
-
-        link_to I18n.t(:button_delete),
-                { controller: table.target_controller, ldap_group_id: model.id, action: :destroy_info },
-                class: "icon icon-delete",
-                title: t(:button_delete),
-                data: { turbo_stream: true }
+      def direct_login?
+        Setting.omniauth_direct_login_provider == @provider.slug
       end
     end
   end
