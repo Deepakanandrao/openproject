@@ -94,10 +94,7 @@ RSpec.describe "API v3 Work package form resource" do
 
         include_context "with post request"
 
-        it_behaves_like "param validation error" do
-          let(:id) { "eeek" }
-          let(:type) { "WorkPackage" }
-        end
+        it_behaves_like "not found"
       end
 
       context "with existing work package" do

@@ -60,6 +60,100 @@ RSpec.describe WorkPackage::SemanticIdentifier do
     end
   end
 
+  describe "WorkPackage.find" do
+    context "with a numeric id" do
+      it "finds by primary key" do
+        expect(WorkPackage.find(work_package.id)).to eq(work_package)
+      end
+
+      it "raises RecordNotFound for unknown numeric id" do
+        expect { WorkPackage.find(9_999_999) }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+
+    context "with a numeric string" do
+      it "falls through to standard AR find" do
+        expect(WorkPackage.find(work_package.id.to_s)).to eq(work_package)
+      end
+    end
+
+    context "with a semantic identifier string" do
+      it "resolves via the semantic identifier" do
+        expect(WorkPackage.find("MYPROJ-1")).to eq(work_package)
+      end
+
+      it "raises RecordNotFound for unknown semantic id" do
+        expect { WorkPackage.find("MYPROJ-999") }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+
+      it "resolves via historic alias" do
+        WorkPackageSemanticAlias.create!(identifier: "OLDPROJ-1", work_package:)
+        expect(WorkPackage.find("OLDPROJ-1")).to eq(work_package)
+      end
+    end
+
+    context "with multiple ids" do
+      let(:work_package2) { create(:work_package, project:) }
+
+      it "delegates to standard AR find" do
+        expect(WorkPackage.find([work_package.id, work_package2.id])).to contain_exactly(work_package, work_package2)
+      end
+    end
+
+    context "with visibility scoping" do
+      let(:member_user) { create(:user, member_with_permissions: { project => [:view_work_packages] }) }
+      let(:non_member_user) { create(:user) }
+
+      it "respects the scope for semantic ids" do
+        expect(WorkPackage.visible(member_user).find("MYPROJ-1")).to eq(work_package)
+      end
+
+      it "raises RecordNotFound when the user cannot see it" do
+        expect { WorkPackage.visible(non_member_user).find("MYPROJ-1") }
+          .to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+  end
+
+  describe "WorkPackage.exists?" do
+    context "with a numeric id" do
+      it "returns true for existing record" do
+        expect(WorkPackage.exists?(work_package.id)).to be true
+      end
+
+      it "returns false for non-existing record" do
+        expect(WorkPackage.exists?(9_999_999)).to be false
+      end
+    end
+
+    context "with a numeric string" do
+      it "falls through to standard AR exists?" do
+        expect(WorkPackage.exists?(work_package.id.to_s)).to be true
+      end
+    end
+
+    context "with a semantic identifier string" do
+      it "checks the identifier column" do
+        expect(WorkPackage.exists?("MYPROJ-1")).to be true
+      end
+
+      it "returns false for unknown semantic id" do
+        expect(WorkPackage.exists?("MYPROJ-999")).to be false
+      end
+
+      it "checks the alias table for historical identifiers" do
+        WorkPackageSemanticAlias.create!(identifier: "OLDPROJ-1", work_package:)
+        expect(WorkPackage.exists?("OLDPROJ-1")).to be true
+      end
+    end
+
+    context "with hash conditions" do
+      it "passes through to standard AR exists?" do
+        expect(WorkPackage.exists?(subject: work_package.subject)).to be true
+      end
+    end
+  end
+
   describe "WorkPackage.find_by_id_or_identifier" do
     context "with a numeric param" do
       it "finds by primary key" do

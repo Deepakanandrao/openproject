@@ -31,19 +31,24 @@
 module WorkPackage::SemanticIdentifier
   extend ActiveSupport::Concern
 
-  included do
-    has_many :semantic_aliases,
-             class_name: "WorkPackageSemanticAlias",
-             foreign_key: :work_package_id,
-             inverse_of: :work_package,
-             dependent: :delete_all
+  # Finder methods that work on both the WorkPackage class and ActiveRecord::Relation scopes.
+  # Modeled after FriendlyId::FinderMethods — uses Object#friendly_id? for dispatch:
+  #   "PROJ-42".friendly_id? → true  (to_i.to_s != to_s)
+  #   "123".friendly_id?     → nil   (falsy, delegates to AR)
+  module FinderMethods
+    def find(*args)
+      if args.length == 1 && args.first.friendly_id?
+        find_by_id_or_identifier!(args.first)
+      else
+        super
+      end
+    end
 
-    after_create :allocate_and_register_semantic_id, if: -> { Setting::WorkPackageIdentifier.semantic? }
-  end
+    def exists?(conditions = :none)
+      return super if conditions.unfriendly_id?
+      return true if exists_by_semantic_identifier?(conditions)
 
-  class_methods do
-    def semantic_id?(identifier)
-      identifier.to_s.to_i.to_s != identifier.to_s
+      super
     end
 
     # Resolves any identifier form to a WorkPackage.
@@ -52,7 +57,7 @@ module WorkPackage::SemanticIdentifier
     #
     # Returns nil on miss.
     def find_by_id_or_identifier(identifier)
-      return find_by(id: identifier) unless semantic_id?(identifier)
+      return find_by(id: identifier) unless identifier.friendly_id?
 
       find_by_semantic_identifier(identifier)
     end
@@ -73,6 +78,33 @@ module WorkPackage::SemanticIdentifier
       # * Respect any parent scoping (e.g. when called as WorkPackage.visible.find_by_semantic_identifier)
       # * Reduce lookup to a single DB round trip
       joins(:semantic_aliases).find_by(work_package_semantic_aliases: { identifier: })
+    end
+
+    # rubocop:disable Rails/WhereExists -- intentionally avoid exists?(identifier:) to prevent recursion
+    def exists_by_semantic_identifier?(identifier)
+      where(identifier:).exists? ||
+        joins(:semantic_aliases).where(work_package_semantic_aliases: { identifier: }).exists?
+    end
+    # rubocop:enable Rails/WhereExists
+  end
+
+  included do
+    has_many :semantic_aliases,
+             class_name: "WorkPackageSemanticAlias",
+             foreign_key: :work_package_id,
+             inverse_of: :work_package,
+             dependent: :delete_all
+
+    after_create :allocate_and_register_semantic_id, if: -> { Setting::WorkPackageIdentifier.semantic? }
+  end
+
+  class_methods do
+    include FinderMethods
+
+    # Extend every relation built from this model with semantic finder methods,
+    # so that WorkPackage.visible(user).find("PROJ-42") works transparently.
+    def relation
+      super.extending(FinderMethods)
     end
   end
 
