@@ -1,0 +1,35 @@
+<%=
+  flex_layout do |container|
+    container.with_row(mb: 2) do
+      flex_layout(justify_content: :space_between, align_items: :center) do |header|
+        header.with_column { render(Primer::Beta::Text.new(font_weight: :bold)) { t(".heading") } }
+
+        header.with_column do
+          render(Primer::Alpha::ActionMenu.new) do |menu|
+            menu.with_show_button(disabled: true) do |button|
+              button.with_leading_visual_icon(icon: :plus)
+              button.with_trailing_action_icon(icon: :"triangle-down")
+
+              t("wikis.label_page")
+            end
+
+            menu.with_item(label: "placeholder item")
+          end
+        end
+      end
+    end
+
+    if page_links.empty?
+      container.with_row do
+        render(Primer::Beta::Blankslate.new(border: false)) do |empty_placeholder|
+          empty_placeholder.with_heading(tag: :h2).with_content(t(".empty_heading"))
+          empty_placeholder.with_description { t(".empty_text") }
+        end
+      end
+    end
+
+    page_links.each do |page_link|
+      container.with_row(mt: 3) { render(Wikis::PageLinkComponent.new(page_link)) }
+    end
+  end
+%>

@@ -29,18 +29,22 @@
 #++
 
 module Wikis
-  class PageLink < ApplicationRecord
-    self.table_name = "wiki_page_links"
+  class RelationPageLinksComponent < ApplicationComponent
+    include ApplicationHelper
+    include OpPrimer::ComponentHelpers
 
-    belongs_to :provider
-    belongs_to :linkable, polymorphic: true
+    alias_method :provider, :model
 
-    def relation?
-      is_a?(RelationPageLink)
+    def initialize(model = nil, work_package: nil, **options)
+      @work_package = work_package
+      super(model, **options)
     end
 
-    def inline?
-      is_a?(InlinePageLink)
+    def page_links
+      @page_links ||= provider.page_links
+                              .merge(RelationPageLink.all)
+                              .where(linkable: @work_package)
+                              .order(created_at: :desc)
     end
   end
 end
