@@ -96,7 +96,11 @@ export class WorkPackageSingleContextMenuDirective extends OpContextMenuTrigger 
         }
         break;
       case 'delete': {
-        const backUrl = this.PathHelper.workPackagesPath(this.currentProject.identifier || null);
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        const currentBaseRoute = this.$state.current.data?.baseRoute as string | undefined;
+        const backUrl = currentBaseRoute
+          ? this.$state.href(currentBaseRoute)
+          : this.PathHelper.workPackagesPath(this.currentProject.identifier ?? null);
         void this.turboRequests.request(
           this.PathHelper.workPackagesBulkDeleteDialogPath([this.workPackage.id!], backUrl),
           { method: 'GET' },

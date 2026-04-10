@@ -82,7 +82,7 @@ class WorkPackages::BulkController < ApplicationController
     end
   end
 
-  def destroy
+  def destroy # rubocop:disable Metrics/AbcSize
     if WorkPackage.cleanup_associated_before_destructing_if_required(@work_packages, current_user, params[:to_do])
       destroy_work_packages(@work_packages)
 
@@ -96,7 +96,7 @@ class WorkPackages::BulkController < ApplicationController
         end
       end
     else
-      redirect_to(action: :reassign, ids: @work_packages.map(&:id))
+      redirect_to(action: :reassign, ids: @work_packages.map(&:id), back_url: params[:back_url])
     end
   end
 
