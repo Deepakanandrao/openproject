@@ -75,6 +75,10 @@ RSpec.describe WorkPackage::SemanticIdentifier do
       it "falls through to standard AR find" do
         expect(WorkPackage.find(work_package.id.to_s)).to eq(work_package)
       end
+
+      it "strips whitespace before dispatching" do
+        expect(WorkPackage.find(" #{work_package.id} ")).to eq(work_package)
+      end
     end
 
     context "with a semantic identifier string" do

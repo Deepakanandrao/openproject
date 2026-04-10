@@ -31,21 +31,20 @@
 module WorkPackage::SemanticIdentifier
   extend ActiveSupport::Concern
 
-  # Finder methods that work on both the WorkPackage class and ActiveRecord::Relation scopes.
-  # Modeled after FriendlyId::FinderMethods — uses Object#friendly_id? for dispatch:
-  #   "PROJ-42".friendly_id? → true  (to_i.to_s != to_s)
-  #   "123".friendly_id?     → nil   (falsy, delegates to AR)
+  # Finder methods that work on both the WorkPackage class and ActiveRecord::Relation scopes:
+  #   semantic_id?("PROJ-42") → true
+  #   semantic_id?(" 456 ")   → false  (stripped, then numeric)
+  #   semantic_id?("123")     → false
+  #   semantic_id?(123)       → false
   module FinderMethods
     def find(*args)
-      if args.length == 1 && args.first.friendly_id?
-        find_by_id_or_identifier!(args.first)
-      else
-        super
-      end
+      return find_by_id_or_identifier!(args.first.strip) if args.length == 1 && semantic_id?(args.first)
+
+      super
     end
 
     def exists?(conditions = :none)
-      return super if conditions.unfriendly_id?
+      return super unless semantic_id?(conditions)
       return true if exists_by_semantic_identifier?(conditions)
 
       super
@@ -57,7 +56,7 @@ module WorkPackage::SemanticIdentifier
     #
     # Returns nil on miss.
     def find_by_id_or_identifier(identifier)
-      return find_by(id: identifier) unless identifier.friendly_id?
+      return find_by(id: identifier) unless semantic_id?(identifier)
 
       find_by_semantic_identifier(identifier)
     end
@@ -68,6 +67,16 @@ module WorkPackage::SemanticIdentifier
     end
 
     private
+
+    # Returns true when value looks like a semantic work package identifier (e.g. "PROJ-42").
+    # Non-string values (Integer, Hash, nil, Array) and numeric strings ("123", " 456 ")
+    # return false — these fall through to standard ActiveRecord lookup.
+    def semantic_id?(value)
+      return false unless value.is_a?(String)
+
+      stripped = value.strip
+      stripped.to_i.to_s != stripped
+    end
 
     def find_by_semantic_identifier(identifier)
       wp = find_by(identifier:)
