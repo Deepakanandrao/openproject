@@ -205,6 +205,38 @@ RSpec.describe InboxController, with_flag: { scrum_projects_active: true } do
     it_behaves_like "checks permissions for private projects"
   end
 
+  describe "GET #menu" do
+    subject do
+      get :menu, params: { project_id: project.id, id: work_package.id }, format: :html
+    end
+
+    it "returns deferred action menu list HTML", :aggregate_failures do
+      subject
+      expect(response).to have_http_status :ok
+      expect(response.body).to include(I18n.t(:"js.button_open_details"))
+    end
+
+    context "when the work package belongs to another project" do
+      let(:other_project) { create(:project) }
+      let(:work_package) { create(:work_package, project: other_project) }
+
+      it "responds with 404" do
+        expect(response).to have_http_status :not_found
+      end
+    end
+
+    context "with a user lacking project permission" do
+      let(:user) { create(:user) }
+
+      it "responds with 404" do
+        subject
+        expect(response).to have_http_status :not_found
+      end
+    end
+
+    it_behaves_like "checks permissions for private projects"
+  end
+
   describe "GET #move_to_sprint_dialog" do
     let!(:sprint) { create(:agile_sprint, name: "Sprint 1", project:) }
 

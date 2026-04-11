@@ -33,6 +33,20 @@ class RbStoriesController < RbApplicationController
 
   before_action :load_story
 
+  # Deferred ActionMenu items (Primer include-fragment).
+  def menu
+    max_position = @allowed_stories.maximum(:position) || 0
+
+    render(Backlogs::StoryMenuListComponent.new(
+             story: @story,
+             sprint: @sprint,
+             project: @project,
+             max_position:,
+             current_user:
+           ),
+           layout: false)
+  end
+
   # Move a story from a Sprint to another Sprint or an Agile::Sprint.
   def move_legacy
     # The update service reloads the story internally (via #move_after),
@@ -128,9 +142,8 @@ class RbStoriesController < RbApplicationController
       message: I18n.t(:notice_successful_move, from: @sprint.name, to: I18n.t(:label_inbox))
     )
     work_packages = Backlog.inbox_for(project: @project)
-    open_sprints_exist = Agile::Sprint.for_project(@project).not_completed.exists?
     replace_via_turbo_stream(
-      component: Backlogs::InboxComponent.new(work_packages:, project: @project, open_sprints_exist:),
+      component: Backlogs::InboxComponent.new(work_packages:, project: @project),
       method: :morph
     )
   end
@@ -202,11 +215,13 @@ class RbStoriesController < RbApplicationController
   end
 
   def load_story
-    @story = if OpenProject::FeatureDecisions.scrum_projects_active?
-               WorkPackage.visible.find(params[:id])
-             else
-               Story.visible.find(params[:id])
-             end
+    @allowed_stories =
+      if OpenProject::FeatureDecisions.scrum_projects_active?
+        WorkPackage.visible.where(sprint: @sprint, project: @project)
+      else
+        Story.visible.where(Story.condition(@project, @sprint))
+      end
+    @story = @allowed_stories.find(params[:id])
   end
 
   def move_params
