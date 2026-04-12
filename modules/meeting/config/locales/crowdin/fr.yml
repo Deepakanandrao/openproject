@@ -211,6 +211,7 @@ fr:
         manage_participants: Gérer les participants
         no_participants: Aucun participant
         show_all: Afficher tout
+        apply_to_upcoming_meetings: Appliquez ces changements à toutes les prochaines réunions de cette série
       text:
         template: Ces participants seront automatiquement invités à toutes les réunions futures au fur et à mesure qu'elles seront créées.
         manage_participants: Recherchez et ajoutez des membres du projet en tant que participants à cette réunion.
