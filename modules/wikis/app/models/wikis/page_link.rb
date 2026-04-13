@@ -35,12 +35,8 @@ module Wikis
     belongs_to :provider
     belongs_to :linkable, polymorphic: true
 
-    def relation?
-      is_a?(RelationPageLink)
-    end
+    def relation? = false
 
-    def inline?
-      is_a?(InlinePageLink)
-    end
+    def inline? = false
   end
 end

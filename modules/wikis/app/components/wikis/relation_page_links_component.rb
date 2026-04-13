@@ -35,16 +35,19 @@ module Wikis
 
     alias_method :provider, :model
 
-    def initialize(model = nil, work_package: nil, **options)
+    def initialize(model = nil, work_package: nil, **)
       @work_package = work_package
-      super(model, **options)
+      super(model, **)
     end
 
     def page_links
-      @page_links ||= provider.page_links
-                              .merge(RelationPageLink.all)
-                              .where(linkable: @work_package)
-                              .order(created_at: :desc)
+      @page_links ||= page_link_service.relation_page_links_for(provider:, linkable: @work_package)
+    end
+
+    private
+
+    def page_link_service
+      @page_link_service ||= PageLinkService.new
     end
   end
 end
