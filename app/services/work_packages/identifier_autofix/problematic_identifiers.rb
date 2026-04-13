@@ -47,14 +47,11 @@ module WorkPackages
     #
     #
     class ProblematicIdentifiers
-      # Returns a Set of identifiers historically reserved via FriendlyId slug history
-      # that are no longer the active identifier of any project.
+      # Returns all project identifiers (current and historical) tracked by
+      # FriendlyId's slug history. Useful as an exclusion set when generating
+      # new identifiers, since any slug that was ever in use must not be reused.
       def self.reserved_identifiers
-        FriendlyId::Slug
-          .where(sluggable_type: Project.name)
-          .where("LOWER(slug) NOT IN (SELECT LOWER(identifier) FROM projects)")
-          .pluck(:slug)
-          .to_set
+        FriendlyId::Slug.where(sluggable_type: Project.name).pluck(:slug).to_set
       end
 
       # Priority-ordered format rules for identifier classification.
@@ -91,7 +88,11 @@ module WorkPackages
       private
 
       def reserved_identifiers
-        @reserved_identifiers ||= self.class.reserved_identifiers
+        @reserved_identifiers ||= FriendlyId::Slug
+                                    .where(sluggable_type: Project.name)
+                                    .where("LOWER(slug) NOT IN (SELECT LOWER(identifier) FROM projects)")
+                                    .pluck(:slug)
+                                    .to_set
       end
 
       def exceeds_max_length        = Project.where("length(identifier) > ?", max_identifier_length)
