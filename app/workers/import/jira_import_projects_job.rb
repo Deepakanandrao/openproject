@@ -99,10 +99,9 @@ module Import
 
       if (error = service_call.errors.find { |e| e.attribute == :identifier && e.type == :taken }) && error.present?
         taken_identifier = error.options[:value]
-        project = Project.find_by!(identifier: taken_identifier)
-        raise "You are trying to import a project with already used " \
-              "identifier: #{taken_identifier}. Existing project: #{project}."
+        raise I18n.t(:"admin.jira.run.project_identifier_taken", taken_identifier:)
       end
+
       raise service_call.message
     end
 
@@ -289,11 +288,13 @@ module Import
                  .new(user: author, contract_class: EmptyContract)
                  .call(container: work_package, filename:, file: tempfile)
 
-        call.on_failure { raise call.message }
+        call.on_failure do
+          raise call.message
+        end
       end
     end
 
-    def import_member(project, member)
+    def import_member((project, member)
       service_call = Members::CreateService
                        .new(user: @user, contract_class: EmptyContract)
                        .call(
@@ -304,7 +305,9 @@ module Import
                        )
       return if service_call.success?
 
-      raise service_call.message if service_call.errors.find { |error| error.type == :taken }.blank?
+      if service_call.errors.find { |error| error.type == :taken }.blank?
+        raise service_call.message
+      end
     end
 
     def import_custom_fields(jira_project)
