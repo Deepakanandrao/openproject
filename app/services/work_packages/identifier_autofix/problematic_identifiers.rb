@@ -47,6 +47,16 @@ module WorkPackages
     #
     #
     class ProblematicIdentifiers
+      # Returns a Set of identifiers historically reserved via FriendlyId slug history
+      # that are no longer the active identifier of any project.
+      def self.reserved_identifiers
+        FriendlyId::Slug
+          .where(sluggable_type: Project.name)
+          .where("LOWER(slug) NOT IN (SELECT LOWER(identifier) FROM projects)")
+          .pluck(:slug)
+          .to_set
+      end
+
       # Priority-ordered format rules for identifier classification.
       FORMAT_RULES = [
         [:too_long, ->(id, max) { id.length > max }],
@@ -78,18 +88,11 @@ module WorkPackages
         reserved_identifiers | in_use_identifiers
       end
 
-      # Returns a Set of identifiers historically reserved via FriendlyId slug history
-      # that are no longer the active identifier of any project.
-      # Useful for callers that manage their own current-identifier exclusions.
-      def reserved_identifiers
-        @reserved_identifiers ||= FriendlyId::Slug
-                                    .where(sluggable_type: Project.name)
-                                    .where("LOWER(slug) NOT IN (SELECT LOWER(identifier) FROM projects)")
-                                    .pluck(:slug)
-                                    .to_set
-      end
-
       private
+
+      def reserved_identifiers
+        @reserved_identifiers ||= self.class.reserved_identifiers
+      end
 
       def exceeds_max_length        = Project.where("length(identifier) > ?", max_identifier_length)
       def contains_non_alphanumeric = Project.where("identifier ~ ?", "[^a-zA-Z0-9_]")
