@@ -142,7 +142,8 @@ export class WorkPackageSingleCardComponent extends UntilDestroyedMixin implemen
         this.untilDestroyed(),
         map(() => {
           if (this.selectedWhenOpen) {
-            return this.uiRouterGlobals.params.workPackageId === this.workPackage.id;
+            const routeWpId = this.uiRouterGlobals.params.workPackageId;
+            return routeWpId === this.workPackage.id || routeWpId === this.workPackage.displayId;
           }
 
           return this.wpTableSelection.isSelected(this.workPackage.id!);
