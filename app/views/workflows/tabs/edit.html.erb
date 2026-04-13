@@ -26,28 +26,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
-
-<%=
-  render(
-    Primer::OpenProject::DangerDialog.new(
-      id: DIALOG_ID,
-      title: t("admin.workflows.statuses_removal_dialog.title"),
-      confirm_button_text: t("admin.workflows.statuses_removal_dialog.confirm"),
-      form_arguments: { action: helpers.edit_workflow_tab_path(@type, @tab), method: :get, data: { turbo_frame: "workflow-table" } }
-    )
-  ) do |dialog|
-    dialog.with_confirmation_message do |message|
-      message.with_heading(tag: :h2) { t("admin.workflows.statuses_removal_dialog.heading", count: @removed_count) }
-      message.with_description_content(t("admin.workflows.statuses_removal_dialog.description"))
-    end
-
-    ##
-    # Do not copy unless absolutely necessary to pass params through a DangerDialog doing a GET!
-    # The reason this is done here is because the submit is not a DELETE, and GET form submissions
-    # strip url params
-    dialog.with_additional_details do
-      concat(hidden_field_tag(:role_id, @role.id))
-      @status_ids.each { |id| concat(hidden_field_tag("status_ids[]", id)) }
-    end
-  end
-%>
+<%= turbo_frame_tag "workflow-table", data: { turbo_cache: false } do %>
+  <%= render Workflows::StatusMatrixFormComponent.new(tab: @tab, role: @role, type: @type, available_roles: @eligible_roles, statuses: @statuses, has_status_changes: @has_status_changes) %>
+<% end %>

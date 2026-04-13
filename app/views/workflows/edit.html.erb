@@ -33,9 +33,5 @@ See COPYRIGHT and LICENSE files for more details.
 <% end %>
 
 <% if @type && @role %>
-  <%= turbo_frame_tag "workflow-table", data: { turbo_cache: false } do %>
-    <%= render Workflows::EditSubHeaderComponent.new(tab: @current_tab, current_role: @role, type: @type, available_roles: @roles, status_ids: @statuses.pluck(:id)) %>
-
-    <%= render Workflows::MatrixFormComponent.new(tab: @current_tab, role: @role, type: @type, statuses: @statuses, has_status_changes: @has_status_changes) %>
-  <% end %>
+  <%= turbo_frame_tag "workflow-table", src: edit_workflow_tab_path(@type, @current_tab, role_id: @role.id, status_ids: params[:status_ids]) %>
 <% end %>

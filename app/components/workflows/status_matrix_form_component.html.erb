@@ -28,9 +28,44 @@ See COPYRIGHT and LICENSE files for more details.
 ++#%>
 
 <%= component_wrapper do %>
+  <%=
+    render Primer::OpenProject::SubHeader.new do |subheader|
+      if @type && @available_roles.any?
+        subheader.with_filter_component do
+          render(Primer::Alpha::ActionMenu.new(select_variant: :single)) do |menu|
+            menu.with_show_button(scheme: :secondary) do |button|
+              button.with_trailing_visual_icon(icon: :"triangle-down")
+              @role ? t("admin.workflows.role_selector.label", role: @role.name) : t("admin.workflows.role_selector.no_role")
+            end
+            @available_roles.each do |available_role|
+              menu.with_item(
+                label: available_role.name,
+                active: available_role == @role,
+                tag: :a,
+                href: helpers.edit_workflow_path(@type, role_id: available_role.id, tab: @tab),
+                content_arguments: { data: { "admin--workflow-checkbox-state-confirmation-trigger": "click" }, target: "_top" }
+              )
+            end
+          end
+        end
+      end
+
+      subheader.with_action_button(
+        tag: :a,
+        scheme: :secondary,
+        leading_icon: :plus,
+        label: t("admin.workflows.status_button"),
+        href: helpers.status_dialog_workflow_tab_path(@type, @tab, role_id: @role&.id, status_ids: @statuses.pluck(:id).presence),
+        data: { controller: "async-dialog" }
+      ) do
+        t("admin.workflows.status_button")
+      end
+    end
+  %>
+
   <% if @statuses.any? %>
     <%= form_tag(
-          { action: :update },
+          workflow_tab_path(@type),
           id: "workflow_form",
           method: :patch,
           autocomplete: "off",
@@ -44,7 +79,7 @@ See COPYRIGHT and LICENSE files for more details.
         <%= hidden_field_tag "role_id", @role.id %>
         <%= hidden_field_tag "tab", @tab %>
 
-        <%= helpers.render_tabs helpers.workflow_tabs(@type) %>
+        <%= helpers.render_tabs helpers.workflow_tabs(@type, current_role: @role, current_tab: @tab) %>
 
         <div class="workflow-save-bar">
           <%=

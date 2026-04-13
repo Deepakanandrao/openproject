@@ -60,7 +60,9 @@ RSpec.describe "Workflow edit", :js do
   end
 
   def add_status_via_dialog(status)
-    click_link "Status"
+    within "#workflow-table" do # Otherwise, click on "Statuses" menu item
+      click_link "Status"
+    end
     within_dialog "Statuses" do
       find(".ng-arrow-wrapper").click
       find(".ng-option", text: status.name).click
@@ -69,7 +71,9 @@ RSpec.describe "Workflow edit", :js do
   end
 
   def remove_status_via_dialog(status)
-    click_link "Status"
+    within "#workflow-table" do # Otherwise, click on "Statuses" menu item
+      click_link "Status"
+    end
     within_dialog "Statuses" do
       find(".ng-value", text: status.name).find(".ng-value-icon").click
       click_button "Apply"
@@ -478,7 +482,9 @@ RSpec.describe "Workflow edit", :js do
     end
 
     it "pre selects the current role statuses in the dialog" do
-      click_link "Status"
+      within "#workflow-table" do
+        click_link "Status"
+      end
 
       expect(page).to have_dialog("Statuses")
       within_dialog "Statuses" do
@@ -527,7 +533,9 @@ RSpec.describe "Workflow edit", :js do
     it "cancels the status dialog without changing the matrix" do
       expect(page).to have_no_field workflow_checkbox(2, 0)
 
-      click_link "Status"
+      within "#workflow-table" do
+        click_link "Status"
+      end
 
       within_dialog "Statuses" do
         find(".ng-arrow-wrapper").click
@@ -738,7 +746,27 @@ RSpec.describe "Workflow edit", :js do
           click_button "Ignore changes"
         end
 
-        expect(page).to have_field workflow_checkbox(0, 2), checked: false
+        expect(page).to have_no_field workflow_checkbox(0, 2)
+      end
+
+      it "reverts the removed status on changes ignored" do
+        remove_status_via_dialog(statuses[1])
+
+        within_dialog "Remove statuses" do
+          expect(page).to have_text("Remove 1 status?")
+
+          click_button "Remove"
+        end
+
+        expect(page).to have_no_field workflow_checkbox(0, 1)
+
+        click_link "Copy"
+
+        within_dialog "Save changes before continuing?" do
+          click_button "Ignore changes"
+        end
+
+        expect(page).to have_field workflow_checkbox(0, 1)
       end
     end
   end

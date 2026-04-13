@@ -29,15 +29,16 @@
 # ++
 
 module Workflows
-  class MatrixFormComponent < ApplicationComponent
+  class StatusMatrixFormComponent < ApplicationComponent
     include OpTurbo::Streamable
     include OpPrimer::ComponentHelpers
 
-    def initialize(tab:, role:, type:, statuses:, has_status_changes:)
+    def initialize(tab:, role:, type:, available_roles:, statuses:, has_status_changes:)
       super
       @tab = tab
       @role = role
       @type = type
+      @available_roles = available_roles
       @statuses = statuses
       @has_status_changes = has_status_changes
     end

@@ -31,15 +31,15 @@
 import { Controller } from '@hotwired/stimulus';
 import { TurboRequestsService } from 'core-app/core/turbo/turbo-requests.service';
 
-const PERSISTED_STATE_KEY = 'workflow-persisted-state';
+const PRISTINE_STATE_KEY = 'workflow-pristine-state';
 const STATUS_STATE_KEY = 'workflow-status-state';
+
+type CheckboxesState = Record<string, boolean>;
 
 interface SavedState {
   formKey:string;
-  checkboxes:Record<string, boolean>;
+  checkboxes:CheckboxesState;
 }
-
-type CheckboxesState = Record<string, boolean>;
 
 /**
  * Handles two things:
@@ -79,16 +79,16 @@ export default class WorkflowCheckboxStateController extends Controller<HTMLForm
     const frame = this.element.closest<HTMLElement>('turbo-frame');
     frame?.addEventListener('turbo:before-frame-render', this.onBeforeFrameRender);
 
+    this.element.addEventListener('change', this.onCheckboxChange);
+    this.element.addEventListener('submit', this.onFormSubmit);
+
+    this.initialCheckboxState = this.popState(PRISTINE_STATE_KEY) ?? this.captureState();
+    this.pushState(PRISTINE_STATE_KEY, this.initialCheckboxState);
+
     const statusCheckboxes = this.popState(STATUS_STATE_KEY);
     if (statusCheckboxes) {
       this.applyState(statusCheckboxes);
     }
-
-    this.element.addEventListener('submit', this.onFormSubmit);
-
-    this.initialCheckboxState = this.popState(PERSISTED_STATE_KEY) ?? this.captureState();
-    this.pushState(PERSISTED_STATE_KEY, this.initialCheckboxState);
-    this.element.addEventListener('change', this.onCheckboxChange);
 
     this.confirmationTriggers = document.querySelectorAll<HTMLElement>('[data-admin--workflow-checkbox-state-confirmation-trigger]');
     this.confirmationTriggers.forEach((watchedElement) => {
@@ -114,12 +114,14 @@ export default class WorkflowCheckboxStateController extends Controller<HTMLForm
   //
 
   private onBeforeFrameRender = () => {
-    this.pushState(STATUS_STATE_KEY, this.captureState());
+    if (this.hasCheckboxChangesValue) {
+      this.pushState(STATUS_STATE_KEY, this.captureState());
+    };
   };
 
   private onFormSubmit = () => {
     this.popState(STATUS_STATE_KEY);
-    this.popState(PERSISTED_STATE_KEY);
+    this.popState(PRISTINE_STATE_KEY);
     this.hasCheckboxChangesValue = false;
     this.hasStatusChangesValue = false;
   };
@@ -142,10 +144,10 @@ export default class WorkflowCheckboxStateController extends Controller<HTMLForm
     sessionStorage.removeItem(key);
     if (!raw) return null;
 
-    const saved = JSON.parse(raw) as SavedState;
-    if (saved.formKey !== this.formKey) return null;
+    const savedState = JSON.parse(raw) as SavedState;
+    if (savedState.formKey !== this.formKey) return null;
 
-    return saved.checkboxes;
+    return savedState.checkboxes;
   }
 
   //
@@ -167,6 +169,9 @@ export default class WorkflowCheckboxStateController extends Controller<HTMLForm
     else {
       // Reset confirmation status for next time
       delete target.dataset.confirmed;
+      // Reset dirtiness status for next time
+      this.hasCheckboxChangesValue = false;
+      this.hasStatusChangesValue = false;
       // Let default behaviour behave…
     }
   };
@@ -188,7 +193,15 @@ export default class WorkflowCheckboxStateController extends Controller<HTMLForm
 
   private onIgnoreChanges = (originalTarget:HTMLElement, originalEvent:Event) => {
     return () => {
-      this.applyState(this.initialCheckboxState, false);
+      const turboFrame = this.element.closest('turbo-frame') as HTMLElement;
+      const src = turboFrame.getAttribute('src') ?? '';
+      const url = new URL(src);
+      // Reload only with original params
+      const params = new URLSearchParams();
+      params.set('role_id', url.searchParams.get('role_id') ?? '');
+      url.search = params.toString();
+      turboFrame.setAttribute('src', url.toString());
+
       this.hasCheckboxChangesValue = false;
       this.hasStatusChangesValue = false;
 
@@ -218,7 +231,7 @@ export default class WorkflowCheckboxStateController extends Controller<HTMLForm
         const forwardedEvent = new Event(originalEvent.type, { bubbles: true });
         originalTarget.dispatchEvent(forwardedEvent);
       }
-    }, 0);
+    }, 1000);
   };
 
   //

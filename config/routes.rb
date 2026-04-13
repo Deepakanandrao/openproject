@@ -803,16 +803,20 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :workflows, only: %i[index edit update], param: :type_id do
-    resource :copy, only: %i[new], module: :workflows do
-      scope module: :copies do
-        resource :from_type, only: %i[create]
-        resource :from_role, only: %i[create]
+  resources :workflows, only: %i[index edit], param: :type_id do
+    scope module: :workflows do
+      resources :tabs, only: %i[edit update], param: :tab do # params[:tab] used in TabsHelper
+        member do
+          get :status_dialog
+          post :confirm_statuses
+        end
       end
-    end
-    collection do
-      get :status_dialog
-      post :confirm_statuses
+      resource :copy, only: %i[new] do
+        scope module: :copies do
+          resource :from_type, only: %i[create]
+          resource :from_role, only: %i[create]
+        end
+      end
     end
   end
   namespace :workflows do
