@@ -16,8 +16,9 @@ allOf:
         type: string
         description: |-
           The user-facing identifier for the work package.
-          In semantic mode: the project-based identifier (e.g. "PROJ-42").
-          In classic mode: the numeric ID as a string (e.g. "123").
+          Its format depends on the `work_packages_identifier` setting.
+          When set to `semantic`: the project-based identifier (e.g. "PROJ-42").
+          When set to `classic`: the numeric ID as a string (e.g. "123").
         readOnly: true
       lockVersion:
         type: integer
