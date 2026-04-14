@@ -158,6 +158,13 @@ module Import
     end
 
     def collect_list_options(list_values)
+      # Prefer context-defined options fetched from /rest/api/2/customFields/{id}/options.
+      # But this is an experimental API endpoint in Jira DC v9, v10 and v11
+      # This gives the complete list including options never used in any issue.
+      context_options = jira_field.payload["allowedValues"]
+      return context_options.pluck("value") if context_options.present?
+
+      # Fall back to extracting options from actual issue values (may be incomplete).
       list_values.flat_map do |v|
         list_value = v[:value]
         if list_value.is_a?(Array)

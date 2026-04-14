@@ -138,6 +138,7 @@ module Import
       return unless used_custom_field_ids.any?
 
       upsert_custom_fields(used_custom_field_ids)
+      sync_custom_field_options
     end
 
     def collect_used_custom_field_ids
@@ -167,6 +168,48 @@ module Import
         }
       end
       Import::JiraField.upsert_all(fields_upsert_data, unique_by: %i[jira_id jira_field_id]) if fields_upsert_data.any?
+    end
+
+    def sync_custom_field_options
+      list_fields = Import::JiraField
+                      .where(jira_id: @jira_id, jira_import_id: @jira_import.id)
+                      .select { |f| list_type_field?(f) }
+      return if list_fields.empty?
+
+      list_fields.each { |jira_field| update_custom_field_options(jira_field) }
+    rescue Import::JiraClient::ApiError => e
+      Rails.logger.warn("Could not fetch custom field contexts from Jira: #{e.message}. " \
+                        "List field options will be derived from actual issue values only.")
+    end
+
+    def update_custom_field_options(jira_field)
+      options = fetch_all_custom_field_options(jira_field.payload["schema"]["customId"])
+      return if options.blank?
+
+      jira_field.update!(payload: jira_field.payload.merge("allowedValues" => options))
+    end
+
+    def list_type_field?(jira_field)
+      schema = jira_field.payload["schema"] || {}
+      type = schema["type"]
+      type == "option" || (type == "array" && schema["items"] == "option")
+    end
+
+    def fetch_all_custom_field_options(field_id)
+      page = 1
+      all_options = []
+      loop do
+        result = @jira_client.custom_field_options(field_id, page:)
+        options = result["options"] || []
+        all_options.concat(options)
+        break if all_options.size >= result["total"].to_i || options.empty?
+
+        page += 1
+      end
+      all_options
+    rescue Import::JiraClient::ApiError => e
+      Rails.logger.warn("Could not fetch custom field contexts from Jira: #{e.message}.")
+      nil # gracefully skip this field if the experimental options endpoint fails
     end
   end
 end

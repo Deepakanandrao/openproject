@@ -188,6 +188,12 @@ module Import
       get("/rest/api/2/field")
     end
 
+    def custom_field_options(field_id, page: 1, max_results: 1000)
+      get("/rest/api/2/customFields/#{field_id}/options",
+          params: { page:, maxResults: max_results },
+          headers: { "X-ExperimentalApi" => "true" })
+    end
+
     def users_search(username: ".", start_at: 0, max_results: 50)
       get("/rest/api/2/user/search", params:
         {
@@ -249,13 +255,13 @@ module Import
 
     private
 
-    def get(path, params: {})
-      response = get_response(path, params:)
+    def get(path, params: {}, headers: {})
+      response = get_response(path, params:, headers:)
       handle_response(response)
     end
 
-    def get_response(path, params: {})
-      response = @httpx.get("#{@url}#{path}", params:)
+    def get_response(path, params: {}, headers: {})
+      response = @httpx.get("#{@url}#{path}", params:, headers:)
 
       if response.is_a?(HTTPX::ErrorResponse)
         raise ConnectionError, I18n.t("admin.jira.client.connection_error", message: response.error.message)
