@@ -198,33 +198,33 @@ ru:
           parts:
             projects:
               one: 1 проект
-              few: "%{count} projects"
-              many: "%{count} projects"
+              few: "%{count} проектов"
+              many: "%{count} проектов"
               other: "%{count} проектов"
             issues:
               one: 1 проблема
-              few: "%{count} issues"
-              many: "%{count} issues"
+              few: "%{count} проблем"
+              many: "%{count} проблем"
               other: "%{count} проблем"
             work_packages:
               one: 1 пакет работ
-              few: "%{count} work packages"
-              many: "%{count} work packages"
+              few: "%{count} пакетов работ"
+              many: "%{count} пакетов работ"
               other: "%{count} пакетов работ"
             types:
               one: 1 тип
-              few: "%{count} types"
-              many: "%{count} types"
+              few: "%{count} типов"
+              many: "%{count} типов"
               other: "%{count} типов"
             statuses:
               one: 1 статус
-              few: "%{count} statuses"
-              many: "%{count} statuses"
+              few: "%{count} статусов"
+              many: "%{count} статусов"
               other: "%{count} статусов"
             users:
               one: 1 пользователь
-              few: "%{count} users"
-              many: "%{count} users"
+              few: "%{count} пользователей"
+              many: "%{count} пользователей"
               other: "%{count} пользователей"
           groups:
             fetch:
@@ -420,8 +420,8 @@ ru:
           error_unknown: Требуется ручная проверка
           remaining_projects:
             one: "... еще 1 проект"
-            few: "... %{count} more projects"
-            many: "... %{count} more projects"
+            few: "... еще %{count} проектов"
+            many: "... еще %{count} проектов"
             other: "... еще %{count} проектов"
         button_autofix: Исправить и сохранить
         dialog:
@@ -453,8 +453,8 @@ ru:
         title: Удаление статусов
         heading:
           one: Удалить 1 статус?
-          few: Remove %{count} statuses?
-          many: Remove %{count} statuses?
+          few: Удалить %{count} статусов?
+          many: Удалить %{count} статусов?
           other: Удалить %{count} статусов?
         description: Удаление этих статусов сделает их недоступными для данного типа и удалит существующие рабочие процессы. Вы уверены, что хотите продолжить?
         confirm: Удалить
@@ -1239,8 +1239,8 @@ ru:
         effective_work_hours: Эффективные рабочие часы
         work_days_count:
           one: 1 рабочий день
-          few: "%{count} working days"
-          many: "%{count} working days"
+          few: "%{count} рабочих дней"
+          many: "%{count} рабочих дней"
           other: "%{count} рабочих дней"
   user_preferences:
     disable_keyboard_shortcuts_caption: 'Вы можете отключить стандартные [сочетания клавиш](docs_url), если Вы пользуетесь программой чтения с экрана или хотите избежать случайного запуска действия с помощью сочетания клавиш.
@@ -1895,8 +1895,8 @@ ru:
         saturday: Суббота
         saturday_hours: Часы субботы
         sunday: Воскресенье
-        sunday_hours: Sunday hours
-        availability_factor: Availability factor
+        sunday_hours: Воскресные часы
+        availability_factor: Фактор доступности
         shared_hours: Рабочие часы
         days: Рабочие дни
       version:
@@ -2051,8 +2051,8 @@ ru:
           previous_custom_field_recalculation_unprocessed: Пересчет предыдущих изменений для этого пользовательского поля еще не был применен, пожалуйста, повторите попытку через несколько минут.
           referenced_in_other_fields_html:
             one: "%{name} используется для расчета атрибута проекта %{links}."
-            few: "%{name} is used in project attribute calculations: %{links}."
-            many: "%{name} is used in project attribute calculations: %{links}."
+            few: "%{name} используются для расчета атрибута проекта %{links}."
+            many: "%{name} используются для расчета атрибута проекта %{links}."
             other: "%{name} используются для расчета атрибута проекта %{links}."
           attributes:
             formula:
@@ -2387,8 +2387,8 @@ ru:
       attachment: Файл
       attribute_help_text:
         one: Текст справки атрибута
-        few: Attribute help texts
-        many: Attribute help texts
+        few: Тексты справки атрибутов
+        many: Тексты справки атрибутов
         other: Тексты справки атрибутов
       auth_provider:
         one: Провайдер аутентификации
@@ -2459,8 +2459,8 @@ ru:
         other: Маркеры доступа
       token/rss:
         one: Токен RSS
-        few: RSS tokens
-        many: RSS tokens
+        few: Токены RSS
+        many: Токены RSS
         other: Токены RSS
       type:
         one: Тип
@@ -3432,7 +3432,7 @@ ru:
           new_features_list:
             line_0: 'Большое обновление Agile: выделенные объекты спринта, все рабочие пакеты видны в бэклогах и автоматическое создание доски спринта.'
             line_1: Редактирование атрибутов проекта на странице Обзор проекта.
-            line_2: Sharing of meeting templates (Basic plan and higher).
+            line_2: Совместное использование шаблонов совещаний.
             line_3: Улучшенный поиск в разделах "Время и затраты", "Доски" и многое другое.
             line_4: Возможность безопасного изменения идентификаторов проекта.
             line_5: Улучшена настройка рабочих процессов для администраторов.
@@ -3774,8 +3774,8 @@ ru:
   label_calendar_show: Показать календарь
   label_category: Категория
   label_completed: Завершено
-  label_committed_at_html: "%{committed_revision_link} at %{date}"
-  label_committed_link: committed revision %{revision_identifier}
+  label_committed_at_html: "%{committed_revision_link} на %{date}"
+  label_committed_link: зафиксированная ревизия %{revision_identifier}
   label_consent_settings: Согласие пользователя
   label_wiki_menu_item: Пункт меню wiki
   label_select_main_menu_item: Выберите новый пункт главного меню
@@ -4390,20 +4390,20 @@ ru:
     other: "%{count} файлов"
     zero: нет файлов
   label_x_days:
-    one: 1 day
-    few: "%{count} days"
-    many: "%{count} days"
+    one: 1 день
+    few: "%{count} дней"
+    many: "%{count} дней"
     other: "%{count} дней"
   label_x_working_days:
-    one: 1 working day
-    few: "%{count} working days"
-    many: "%{count} working days"
+    one: 1 рабочий день
+    few: "%{count} рабочих дней"
+    many: "%{count} рабочих дней"
     other: "%{count} рабочих дней"
   label_x_working_days_time_off:
-    one: 'Time off: 1 working day'
-    few: 'Time off: %{count} working days'
-    many: 'Time off: %{count} working days'
-    other: 'Time off: %{count} working days'
+    one: 'Время отдыха: 1 рабочий день'
+    few: 'Время отдыха: %{count} рабочих дней'
+    many: 'Время отдыха: %{count} рабочих дней'
+    other: 'Время отдыха: %{count} рабочих дней'
   label_yesterday: вчера
   label_zen_mode: Режим «Дзен» (только доска и часы)
   label_role_type: Тип
@@ -5914,7 +5914,7 @@ ru:
       project: Нераскрыто - Проект невидим из-за отсутствия разрешений.
       ancestor: Неизвестный - выбранный родитель невидим из-за отсутствия разрешений.
       definingProject: Нераскрыто - Проект невидим из-за отсутствия разрешений.
-      definingWorkspace: Undisclosed - The workspace is invisible because of lacking permissions.
+      definingWorkspace: Нераскрыто - Рабочее пространство невидимо из-за отсутствия разрешений.
   doorkeeper:
     pre_authorization:
       status: Предавторизация
