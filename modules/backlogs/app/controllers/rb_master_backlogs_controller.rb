@@ -70,7 +70,6 @@ class RbMasterBacklogsController < RbApplicationController
   end
 
   def load_backlogs
-    @owner_backlogs = Backlog.owner_backlogs(@project)
     @sprints = Agile::Sprint.for_project(@project).not_completed.order_by_date
     @stories_by_sprint_id = WorkPackage
       .where(sprint: @sprints, project: @project)

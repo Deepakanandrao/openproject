@@ -59,21 +59,6 @@ module OpenProject::Backlogs::Patches::WorkPackagePatch
       project.done_statuses.to_a.include?(status)
     end
 
-    def story
-      if Story.types.include?(type_id)
-        Story.find(id)
-      elsif Task.type.present? && type_id == Task.type
-        ancestors.where(type_id: Story.types).first
-      end
-    end
-
-    def blocks
-      # return work_packages that I block that aren't closed
-      return [] if closed?
-
-      blocks_relations.includes(:to).merge(WorkPackage.with_status_open).map(&:to)
-    end
-
     def backlogs_enabled?
       project&.backlogs_enabled?
     end

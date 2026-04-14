@@ -38,16 +38,10 @@ RSpec.describe "RbMasterBacklogs", :skip_csrf, type: :rails_request do
   shared_let(:user) { create(:admin) }
   shared_let(:project) { create(:project) }
   shared_let(:status)  { create(:status, name: "status 1", is_default: true) }
-  shared_let(:sprint)  { create(:sprint, project:) }
-  shared_let(:story) { create(:story, status:, version: sprint, project:) }
+  shared_let(:sprint)  { create(:agile_sprint, project:) }
+  shared_let(:story) { create(:work_package, status:, sprint:, project:) }
 
   current_user { user }
-
-  before do
-    allow(Setting)
-      .to receive(:plugin_openproject_backlogs)
-      .and_return({ "story_types" => [type_feature.id], "task_type" => type_task.id })
-  end
 
   describe "GET #index" do
     it "is successful" do
@@ -106,11 +100,6 @@ RSpec.describe "RbMasterBacklogs", :skip_csrf, type: :rails_request do
 
       context "with no sprints available" do
         before do
-          allow(Backlog)
-            .to receive(:owner_backlogs)
-            .with(project)
-            .and_return([])
-
           allow(Agile::Sprint)
             .to receive(:for_project)
             .with(project)

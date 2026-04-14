@@ -32,7 +32,9 @@ require "spec_helper"
 require_relative "../../support/pages/backlog"
 require_relative "../../../../boards/spec/features/support/board_page"
 
-RSpec.describe "Start and finish sprints", :js do
+RSpec.describe "Start and finish sprints",
+               :js,
+               with_ee: %i[board_view] do
   shared_let(:project) do
     create(:project, enabled_module_names: %i[backlogs work_package_tracking board_view])
   end
@@ -47,6 +49,7 @@ RSpec.describe "Start and finish sprints", :js do
     create(:user, member_with_permissions: { project => permissions })
   end
   let(:planning_page) { Pages::Backlog.new(project) }
+  let(:story_type) { create(:type_feature) }
   let(:task_type) do
     type = create(:type_task)
     project.types << type

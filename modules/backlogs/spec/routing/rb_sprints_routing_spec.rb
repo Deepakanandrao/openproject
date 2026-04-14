@@ -33,31 +33,6 @@ require "spec_helper"
 RSpec.describe RbSprintsController do
   describe "routing" do
     it {
-      expect(get("/projects/project_42/sprints/21/edit_name")).to route_to(
-        controller: "rb_sprints",
-        action: "edit_name",
-        project_id: "project_42",
-        id: "21"
-      )
-    }
-
-    it {
-      expect(get("/projects/project_42/sprints/21/show_name")).to route_to(
-        controller: "rb_sprints",
-        action: "show_name",
-        project_id: "project_42",
-        id: "21"
-      )
-    }
-
-    it {
-      expect(put("/projects/project_42/sprints/21")).to route_to(controller: "rb_sprints",
-                                                                 action: "update",
-                                                                 project_id: "project_42",
-                                                                 id: "21")
-    }
-
-    it {
       expect(get("/projects/project_42/sprints/new_dialog")).to route_to(
         controller: "rb_sprints",
         action: "new_dialog",

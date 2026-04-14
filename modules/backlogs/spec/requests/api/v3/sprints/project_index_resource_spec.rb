@@ -70,6 +70,5 @@ RSpec.describe "API v3 Sprint resource on project", content_type: :json do
 
       it_behaves_like "unauthorized access"
     end
-
   end
 end

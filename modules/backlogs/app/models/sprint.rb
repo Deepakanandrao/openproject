@@ -94,7 +94,7 @@ class Sprint < Version
     return false if wiki_page_title.blank?
 
     page = project.wiki.find_page(wiki_page_title)
-    return false if !page
+    return false unless page
 
     template = project.wiki.find_page(Setting.plugin_openproject_backlogs["wiki_template"])
     return false if template && page.text == template.text
@@ -148,12 +148,6 @@ class Sprint < Version
                  end
 
     Version.where(conditions).each(&:burndown)
-  end
-
-  def impediments(project)
-    # for reasons beyond me,
-    # the default_scope needs to be explicitly applied.
-    Impediment.default_scope.where(version_id: self, project_id: project)
   end
 
   def settings(project)

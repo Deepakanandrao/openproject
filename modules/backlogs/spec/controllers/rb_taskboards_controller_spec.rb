@@ -41,12 +41,6 @@ RSpec.describe RbTaskboardsController do
 
   current_user { user }
 
-  before do
-    allow(Setting)
-      .to receive(:plugin_openproject_backlogs)
-      .and_return({ "story_types" => [type_feature.id], "task_type" => type_task.id })
-  end
-
   describe "GET show" do
     let(:sprint) { create(:agile_sprint, project:) }
 

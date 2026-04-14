@@ -91,7 +91,6 @@ module OpenProject::Backlogs::Burndown
           AND journals.data_type = '#{Journal::WorkPackageJournal.name}'
           AND #{container_query}
           AND #{project_id_query}
-          AND #{type_id_query}
           #{and_status_query}
         JOIN
           (#{day_query.to_sql}) days
@@ -129,14 +128,6 @@ module OpenProject::Backlogs::Burndown
       "(#{Journal::WorkPackageJournal.table_name}.project_id = #{project.id})"
     end
 
-    def type_id_query
-      if sprint.is_a?(Agile::Sprint)
-        "1 = 1"
-      else
-        "(#{Journal::WorkPackageJournal.table_name}.type_id in (#{collected_types.join(',')}))"
-      end
-    end
-
     def day_query
       lower_bound = sprint.start_date
       upper_date = sprint.is_a?(Agile::Sprint) ? sprint.finish_date : sprint.effective_date
@@ -145,10 +136,6 @@ module OpenProject::Backlogs::Burndown
       return Day.none unless upper_bound && lower_bound
 
       Day.working.from_range(from: lower_bound, to: upper_bound)
-    end
-
-    def collected_types
-      Story.types << Task.type
     end
   end
 end

@@ -65,11 +65,6 @@ RSpec.describe API::V3::WorkPackages::WorkPackageRepresenter, "rendering" do
   current_user { build_stubbed(:user) }
 
   before do
-    allow(Setting)
-      .to receive(:plugin_openproject_backlogs)
-            .and_return("story_types" => [story_type.id.to_s],
-                        "task_type" => task_type.id.to_s)
-
     mock_permissions_for(current_user) do |mock|
       permissions.each do |permission|
         mock.allow_in_project(*permission, project:) if project

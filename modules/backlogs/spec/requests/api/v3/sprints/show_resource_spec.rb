@@ -72,6 +72,5 @@ RSpec.describe "API v3 Sprint resource", content_type: :json do
 
       it_behaves_like "not found"
     end
-
   end
 end

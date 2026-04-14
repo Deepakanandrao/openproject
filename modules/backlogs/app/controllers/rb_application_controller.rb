@@ -53,7 +53,6 @@ class RbApplicationController < ApplicationController
     @sprint_id = params.delete(:sprint_id)
     return unless @sprint_id
 
-    @sprint = Agile::Sprint.for_project(@project).visible.find_by(id: @sprint_id) ||
-      Sprint.visible.apply_to(@project).find(@sprint_id)
+    @sprint = Agile::Sprint.for_project(@project).visible.find(@sprint_id)
   end
 end

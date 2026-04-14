@@ -29,6 +29,10 @@
 #++
 
 Rails.application.routes.draw do
+  scope "admin" do
+    resource :backlogs, only: :show, controller: :backlogs_settings, as: "admin_backlogs_settings"
+  end
+
   # Routes for the new Agile::Sprint
   # Scoped under projects for permissions:
   resources :projects, only: [] do
@@ -49,6 +53,7 @@ Rails.application.routes.draw do
         member do
           get :menu
           put :move
+          post :reorder
         end
       end
     end
@@ -84,34 +89,10 @@ Rails.application.routes.draw do
         end
       end
 
-      resources :sprints, controller: :rb_sprints, only: %i[update] do
-        resource :query,            controller: :rb_queries,          only: :show
-
+      resources :sprints, controller: :rb_sprints, only: [] do
         resource :taskboard,        controller: :rb_taskboards,       only: :show
-
-        resource :wiki,             controller: :rb_wikis,            only: %i[show edit]
-
         resource :burndown_chart,   controller: :rb_burndown_charts,  only: :show
-
-        resources :impediments,      controller: :rb_impediments,      only: %i[create update]
-
-        resources :tasks,            controller: :rb_tasks,            only: %i[create update]
-
-        resources :stories, controller: :rb_stories, only: [] do
-          member do
-            get :menu
-            put :move_legacy
-            post :reorder
-          end
-        end
-
-        member do
-          get :edit_name
-          get :show_name
-        end
       end
-
-      resource :query, controller: :rb_queries, only: :show
     end
   end
 
@@ -123,12 +104,5 @@ Rails.application.routes.draw do
         end
       end
     end
-  end
-
-  scope "admin" do
-    resource :backlogs,
-             only: %i[show update],
-             controller: :backlogs_settings,
-             as: "admin_backlogs_settings"
   end
 end

@@ -32,11 +32,7 @@ class RbBurndownChartsController < RbApplicationController
   helper :burndown_charts
 
   def show
-    @burndown = if @sprint.is_a?(Agile::Sprint)
-                  Burndown.new(@sprint, @project)
-                else
-                  @sprint.burndown(@project)
-                end
+    @burndown = Burndown.new(@sprint, @project) if @sprint.date_range_set?
 
     respond_to do |format|
       format.html { render layout: true }

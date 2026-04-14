@@ -33,34 +33,13 @@ class Backlog
 
   delegate :id, to: :sprint, prefix: true
 
-  def self.for(sprint:, project:)
-    owner_backlog = sprint.settings(project)&.display == VersionSetting::DISPLAY_RIGHT
-    new(sprint:, stories: sprint.stories(project), owner_backlog:)
-  end
-
   def self.inbox_for(project:)
     WorkPackage
       .visible
       .with_status_open
       .where(project:, sprint_id: nil)
       .includes(:type)
-      .order(Arel.sql(Story::ORDER))
-  end
-
-  def self.owner_backlogs(project)
-    backlogs = Sprint.apply_to(project).with_status_open.displayed_right(project).order(:name)
-
-    stories_by_sprints = Story.backlogs(project.id, backlogs.map(&:id))
-
-    backlogs.map { |sprint| new(stories: stories_by_sprints[sprint.id], owner_backlog: true, sprint:) }
-  end
-
-  def self.sprint_backlogs(project)
-    sprints = Sprint.apply_to(project).with_status_open.displayed_left(project).order_by_date
-
-    stories_by_sprints = Story.backlogs(project.id, sprints.map(&:id))
-
-    sprints.map { |sprint| new(stories: stories_by_sprints[sprint.id], sprint:) }
+      .order(WorkPackage.arel_table[:position].asc.nulls_last, WorkPackage.arel_table[:id].asc)
   end
 
   def initialize(sprint:, stories:, owner_backlog: false)

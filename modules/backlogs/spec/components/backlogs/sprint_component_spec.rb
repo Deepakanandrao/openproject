@@ -44,10 +44,6 @@ RSpec.describe Backlogs::SprintComponent, type: :component do
   let(:sprint) { create(:agile_sprint, project:, name: "Sprint 1", start_date: Date.yesterday, finish_date: Date.tomorrow) }
 
   before do
-    allow(Setting)
-      .to receive(:plugin_openproject_backlogs)
-      .and_return("story_types" => [type_feature.id.to_s], "task_type" => type_task.id.to_s)
-
     allow(user).to receive(:backlogs_preference).with(:versions_default_fold_state).and_return("open")
   end
 
@@ -90,7 +86,7 @@ RSpec.describe Backlogs::SprintComponent, type: :component do
         expect(page).to have_css(".Box#agile_sprint_#{sprint.id}")
       end
 
-      it "renders BacklogHeaderComponent in header" do
+      it "renders SprintHeaderComponent in header" do
         render_component
 
         expect(page).to have_css(".Box-header h3", text: "Sprint 1")

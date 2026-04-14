@@ -54,30 +54,14 @@ module OpenProject::Backlogs
              author_url: "https://www.openproject.org",
              bundled: true,
              settings:) do
-      Rails.application.reloader.to_prepare do
-        OpenProject::AccessControl.permission(:add_work_packages).tap do |add|
-          add.controller_actions << "rb_tasks/create"
-          add.controller_actions << "rb_impediments/create"
-        end
-
-        OpenProject::AccessControl.permission(:edit_work_packages).tap do |edit|
-          edit.controller_actions << "rb_tasks/update"
-          edit.controller_actions << "rb_impediments/update"
-        end
-      end
-
       project_module :backlogs, dependencies: :work_package_tracking do
         permission :view_sprints,
                    { rb_master_backlogs: %i[index backlog details],
-                     rb_sprints: %i[index show show_name],
-                     rb_wikis: :show,
+                     rb_sprints: %i[index show],
                      rb_stories: %i[index show menu],
                      inbox: :menu,
-                     rb_queries: :show,
                      rb_burndown_charts: :show,
-                     rb_taskboards: :show,
-                     rb_tasks: %i[index show],
-                     rb_impediments: %i[index show] },
+                     rb_taskboards: :show },
                    permissible_on: :project,
                    dependencies: %i[view_work_packages show_board_views]
 
@@ -89,8 +73,7 @@ module OpenProject::Backlogs
                    require: :member
 
         permission :create_sprints,
-                   { rb_sprints: %i[new_dialog refresh_form create edit_name update edit_dialog update_agile_sprint],
-                     rb_wikis: %i[edit update] },
+                   { rb_sprints: %i[new_dialog refresh_form create edit_dialog update_agile_sprint] },
                    permissible_on: :project,
                    require: :member,
                    dependencies: :view_sprints
@@ -102,7 +85,7 @@ module OpenProject::Backlogs
                    dependencies: %i[view_sprints manage_board_views manage_sprint_items]
 
         permission :manage_sprint_items,
-                   { rb_stories: %i[move move_legacy reorder],
+                   { rb_stories: %i[move reorder],
                      inbox: %i[move reorder move_to_sprint_dialog] },
                    permissible_on: :project,
                    require: :member,
@@ -143,7 +126,6 @@ module OpenProject::Backlogs
     patches %i[PermittedParams
                WorkPackage
                Status
-               Type
                Project
                User
                Version]
@@ -153,7 +135,6 @@ module OpenProject::Backlogs
     patch_with_namespace :WorkPackages, :SetAttributesService
     patch_with_namespace :WorkPackages, :BaseContract
     patch_with_namespace :WorkPackages, :UpdateContract
-    patch_with_namespace :Versions, :RowComponent
     patch_with_namespace :API, :V3, :WorkPackages, :EagerLoading, :Checksum
 
     config.to_prepare do
@@ -229,12 +210,8 @@ module OpenProject::Backlogs
     end
 
     config.to_prepare do
-      enabled_backlogs_story = ->(type, project: nil) do
-        if project.present?
-          project.backlogs_enabled?
-        else
-          true
-        end
+      enabled_backlogs_story = ->(_type, project: nil) do
+        project.nil? || project.backlogs_enabled?
       end
 
       story_and_sprint_permission = ->(_type, project: nil) do

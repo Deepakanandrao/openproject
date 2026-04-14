@@ -52,7 +52,6 @@ RSpec.describe API::V3::WorkPackages::Schema::WorkPackageSchemaRepresenter do
     login_as(current_user)
 
     allow(schema.project).to receive(:backlogs_enabled?).and_return(true)
-    allow(work_package.type).to receive(:story?).and_return(true)
     allow(work_package).to receive(:leaf?).and_return(true)
   end
 
@@ -77,19 +76,6 @@ RSpec.describe API::V3::WorkPackages::Schema::WorkPackageSchemaRepresenter do
       end
     end
 
-    context "when not a story" do
-      before do
-        allow(schema.type).to receive(:story?).and_return(false)
-      end
-
-      it_behaves_like "has basic schema properties" do
-        let(:path) { "storyPoints" }
-        let(:type) { "Integer" }
-        let(:name) { I18n.t("activerecord.attributes.work_package.story_points") }
-        let(:required) { false }
-        let(:writable) { true }
-      end
-    end
   end
 
   describe "position" do
@@ -111,19 +97,6 @@ RSpec.describe API::V3::WorkPackages::Schema::WorkPackageSchemaRepresenter do
       end
     end
 
-    context "when not a story" do
-      before do
-        allow(schema.type).to receive(:story?).and_return(false)
-      end
-
-      it_behaves_like "has basic schema properties" do
-        let(:path) { "position" }
-        let(:type) { "Integer" }
-        let(:name) { I18n.t("activerecord.attributes.work_package.position") }
-        let(:required) { false }
-        let(:writable) { false }
-      end
-    end
   end
 
   describe "sprint" do
@@ -161,18 +134,5 @@ RSpec.describe API::V3::WorkPackages::Schema::WorkPackageSchemaRepresenter do
       end
     end
 
-    context "when not a story" do
-      before do
-        allow(schema.type).to receive(:story?).and_return(false)
-      end
-
-      it_behaves_like "has basic schema properties" do
-        let(:type) { "Sprint" }
-        let(:name) { I18n.t("activerecord.attributes.work_package.sprint") }
-        let(:required) { false }
-        let(:writable) { true }
-        let(:location) { "_links" }
-      end
-    end
   end
 end
