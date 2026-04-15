@@ -265,6 +265,21 @@ RSpec.describe WorkPackagesController do
     end
   end
 
+  describe "show.html with semantic identifier",
+           with_flag: { semantic_work_package_ids: true },
+           with_settings: { work_packages_identifier: "semantic" } do
+    let(:project) { create(:project, identifier: "TESTPROJ") }
+    let(:call_action) { get("show", params: { id: work_package.display_id.to_s }) }
+
+    requires_permission_in_project do
+      it "resolves the semantic identifier and redirects to the full url" do
+        call_action
+
+        expect(response).to redirect_to("/projects/TESTPROJ/work_packages/#{work_package.display_id}/activity")
+      end
+    end
+  end
+
   describe "show.pdf" do
     let(:call_action) { get("show", params: { format: "pdf", id: work_package.id.to_s }) }
     let(:exporter) { WorkPackage::PDFExport::WorkPackageToPdf }
