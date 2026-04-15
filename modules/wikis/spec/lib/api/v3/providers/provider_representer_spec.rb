@@ -28,21 +28,42 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Wikis
-  class PageLink < ApplicationRecord
-    self.table_name = "wiki_page_links"
+require "spec_helper"
 
-    belongs_to :provider
-    belongs_to :linkable, polymorphic: true
+module API
+  module V3
+    module Providers
+      RSpec.describe ProviderRepresenter, :rendering do
+        let(:xwiki_provider) { build_stubbed(:xwiki_provider) }
+        let(:internal_provider) { build_stubbed(:internal_wiki_provider) }
+        let(:embed_links) { false }
+        let(:current_user) { build_stubbed(:user) }
 
-    def relation? = false
+        let(:represented) { xwiki_provider }
+        let(:representer) { described_class.new(represented, current_user:, embed_links:) }
 
-    def inline? = false
+        subject(:rendered) { representer.to_json }
 
-    def href
-      "#"
+        describe "_links" do
+          describe "self" do
+            it_behaves_like "has a titled link" do
+              let(:link) { "self" }
+              let(:href) { "/api/v3/wiki_providers/#{represented.id}" }
+              let(:title) { represented.name }
+            end
+          end
+        end
+
+        describe "properties" do
+          it_behaves_like "datetime property", :createdAt do
+            let(:value) { represented.created_at }
+          end
+
+          it_behaves_like "datetime property", :updatedAt do
+            let(:value) { represented.updated_at }
+          end
+        end
+      end
     end
-
-    def render_author? = false
   end
 end

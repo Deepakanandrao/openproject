@@ -28,21 +28,21 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Wikis
-  class PageLink < ApplicationRecord
-    self.table_name = "wiki_page_links"
+module API
+  module V3
+    module Providers
+      class ProviderRepresenter < Decorators::Single
+        include Decorators::LinkedResource
+        include Decorators::DateProperty
 
-    belongs_to :provider
-    belongs_to :linkable, polymorphic: true
+        property :id
+        property :name
 
-    def relation? = false
+        date_time_property :created_at
+        date_time_property :updated_at
 
-    def inline? = false
-
-    def href
-      "#"
+        self_link(path: :wiki_provider)
+      end
     end
-
-    def render_author? = false
   end
 end
