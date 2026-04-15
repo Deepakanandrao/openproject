@@ -50,9 +50,8 @@ module WorkPackage::SemanticIdentifier
 
     def exists?(conditions = :none)
       return super unless semantic_id?(conditions)
-      return true if exists_by_semantic_identifier?(conditions)
 
-      super
+      exists_by_semantic_identifier?(conditions)
     end
 
     # Resolves any identifier form to a WorkPackage.
@@ -86,23 +85,22 @@ module WorkPackage::SemanticIdentifier
       stripped.to_i.to_s != stripped
     end
 
+    # Looks up by current identifier column first, then falls back to
+    # the alias table for historical identifiers. Two-step because AR's
+    # .or() requires structurally compatible relations (joins breaks it).
     def find_by_semantic_identifier(identifier)
-      wp = find_by(identifier:)
-      return wp if wp
-
-      # Fallback: alias table lookup. The table holds every identifier a WP has ever been known by:
-      # Done via a single join to:
-      # * Respect any parent scoping (e.g. when called as WorkPackage.visible.find_by_semantic_identifier)
-      # * Reduce lookup to a single DB round trip
-      joins(:semantic_aliases).find_by(work_package_semantic_aliases: { identifier: })
+      find_by(identifier:) ||
+        by_semantic_alias(identifier).first
     end
 
-    # rubocop:disable Rails/WhereExists -- intentionally avoid exists?(identifier:) to prevent recursion
     def exists_by_semantic_identifier?(identifier)
       where(identifier:).exists? ||
-        joins(:semantic_aliases).where(work_package_semantic_aliases: { identifier: }).exists?
+        by_semantic_alias(identifier).exists?
     end
-    # rubocop:enable Rails/WhereExists
+
+    def by_semantic_alias(identifier)
+      joins(:semantic_aliases).where(work_package_semantic_aliases: { identifier: })
+    end
   end
 
   included do
