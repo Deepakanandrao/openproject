@@ -63,7 +63,7 @@ module WorkPackage::SemanticIdentifier::FinderMethods
   # AR's find_by signature is find_by(arg, *args) — it doesn't use keyword splat,
   # so hash kwargs arrive as the positional `arg`. We match on that.
   def find_by(*args)
-    if args.length == 1 && args.first.is_a?(Hash) && args.first.keys == [:id] && semantic_id?(args.first[:id])
+    if semantic_id_hash_lookup?(args)
       find_by_id_or_identifier(args.first[:id])
     else
       super
@@ -73,7 +73,7 @@ module WorkPackage::SemanticIdentifier::FinderMethods
   # Mirror of find_by — Rails implements find_by! independently (not via find_by),
   # so we must override both to keep the pair consistent.
   def find_by!(*args)
-    if args.length == 1 && args.first.is_a?(Hash) && args.first.keys == [:id] && semantic_id?(args.first[:id])
+    if semantic_id_hash_lookup?(args)
       find_by_id_or_identifier!(args.first[:id])
     else
       super
@@ -87,6 +87,15 @@ module WorkPackage::SemanticIdentifier::FinderMethods
   end
 
   private
+
+  # Returns true when args represent a single `id:` keyword lookup
+  # with a semantic identifier value (e.g. `find_by(id: "PROJ-42")`).
+  def semantic_id_hash_lookup?(args)
+    args.length == 1 &&
+      args.first.is_a?(Hash) &&
+      args.first.keys == [:id] &&
+      semantic_id?(args.first[:id])
+  end
 
   # Resolves any identifier form to a WorkPackage.
   #   - Numeric string ("12345")    → find by primary key
