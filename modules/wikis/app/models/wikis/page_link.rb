@@ -38,5 +38,9 @@ module Wikis
     def relation? = false
 
     def inline? = false
+
+    def href
+      "#"
+    end
   end
 end
