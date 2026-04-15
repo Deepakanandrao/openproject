@@ -33,21 +33,6 @@ module Wikis
     include ApplicationHelper
     include OpPrimer::ComponentHelpers
 
-    alias_method :provider, :model
-
-    def initialize(model = nil, work_package: nil, **)
-      @work_package = work_package
-      super(model, **)
-    end
-
-    def page_links
-      @page_links ||= page_link_service.inline_page_links_for(provider:, linkable: @work_package)
-    end
-
-    private
-
-    def page_link_service
-      @page_link_service ||= PageLinkService.new
-    end
+    alias_method :inline_page_links, :model
   end
 end

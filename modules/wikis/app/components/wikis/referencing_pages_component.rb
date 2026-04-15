@@ -29,15 +29,10 @@
 #++
 
 module Wikis
-  class ProviderLinkGroupComponent < ApplicationComponent
+  class ReferencingPagesComponent < ApplicationComponent
     include ApplicationHelper
     include OpPrimer::ComponentHelpers
 
-    alias_method :provider, :model
-
-    def initialize(model = nil, work_package: nil, **)
-      @work_package = work_package
-      super(model, **)
-    end
+    alias_method :referencing_page_links, :model
   end
 end

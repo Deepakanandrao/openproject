@@ -30,10 +30,41 @@ See COPYRIGHT and LICENSE files for more details.
 <%=
   content_tag("turbo-frame", id: "work-package-wikis-tab-content") do
     component_wrapper do
-      flex_layout(test_selector: "op-work-package-wikis-tab-container") do |flex|
-        providers.each do |provider|
-          flex.with_row(mb: 3) do
-            render(Wikis::ProviderLinkGroupComponent.new(provider, work_package:))
+      flex_layout(test_selector: "op-work-package-wikis-tab-container") do |container|
+        if providers.empty?
+          container.with_row do
+            render(Primer::Beta::Blankslate.new(border: false)) do |blankslate|
+              blankslate.with_heading(tag: :h2).with_content(t(".blankslate.heading"))
+              blankslate.with_description { t(".blankslate.description") }
+            end
+          end
+        else
+          container.with_row do
+            render(Primer::Beta::Heading.new(tag: :h4, mb: 3)) { t(".relation_page_links") }
+          end
+
+          providers.each do |provider|
+            container.with_row(mb: 3) do
+              render(::Wikis::RelationPageLinksComponent.new(provider, work_package:))
+            end
+          end
+
+          if show_inline_and_references_section?
+            container.with_row(mb: 3) do
+              render(Primer::Beta::Heading.new(tag: :h4)) { t(".inline_page_links_and_references") }
+            end
+          end
+
+          if inline_page_links.any?
+            container.with_row(mb: 3) do
+              render(::Wikis::InlinePageLinksComponent.new(inline_page_links))
+            end
+          end
+
+          if referencing_wiki_pages.any?
+            container.with_row(mb: 3) do
+              render(::Wikis::ReferencingPagesComponent.new(referencing_wiki_pages))
+            end
           end
         end
       end

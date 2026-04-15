@@ -28,12 +28,16 @@ See COPYRIGHT and LICENSE files for more details.
 ++#%>
 
 <%=
-  render(Primer::Beta::BorderBox.new) do |box|
+  render(Primer::Beta::BorderBox.new(padding: :condensed)) do |box|
     box.with_header do
-      render(Primer::Beta::Text.new(font_weight: :bold)) { provider.name }
+      render(Primer::OpenProject::BorderBox::CollapsibleHeader.new(collapsed: true)) do |header|
+        header.with_title { t(".heading") }
+        header.with_count(count: referencing_page_links.count)
+      end
     end
 
-    box.with_row { render(Wikis::RelationPageLinksComponent.new(provider, work_package: @work_package)) }
-    box.with_row { render(Wikis::InlinePageLinksComponent.new(provider, work_package: @work_package)) }
+    referencing_page_links.each do |page_link|
+      box.with_row { render(Wikis::PageLinkComponent.new(page_link)) }
+    end
   end
 %>

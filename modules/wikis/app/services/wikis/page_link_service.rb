@@ -48,11 +48,15 @@ module Wikis
               .order(created_at: :desc)
     end
 
-    def inline_page_links_for(provider:, linkable:)
-      provider.page_links
-              .merge(InlinePageLink.all)
-              .where(linkable:)
-              .order(created_at: :desc)
+    def inline_page_links_for(linkable:)
+      InlinePageLink.where(linkable:)
+                    .order(created_at: :desc)
+    end
+
+    def referencing_wiki_pages_for(*)
+      # TODO: iterate over all providers and fetch mentions of this linkable
+
+      []
     end
   end
 end
