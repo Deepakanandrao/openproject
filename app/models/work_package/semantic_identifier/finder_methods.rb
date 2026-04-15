@@ -126,24 +126,38 @@ module WorkPackage::SemanticIdentifier::FinderMethods
     stripped.to_i.to_s != stripped
   end
 
-  # Looks up by current identifier column first, then falls back to
-  # the alias table for historical identifiers. Two-step because AR's
-  # .or() requires structurally compatible relations (joins breaks it).
+  # Resolves a semantic identifier (e.g. "PROJ-42") to a WorkPackage in
+  # a single query. Matches against the current identifier column OR a
+  # correlated EXISTS on the alias table for historical identifiers.
+  # Returns nil on miss.
+  #
+  # Generates:
+  #
+  #   SELECT "work_packages".* FROM "work_packages"
+  #   WHERE ("work_packages"."identifier" = 'PROJ-42'
+  #      OR EXISTS (
+  #        SELECT 1 FROM "work_package_semantic_aliases"
+  #        WHERE "work_package_semantic_aliases"."work_package_id" = "work_packages"."id"
+  #          AND "work_package_semantic_aliases"."identifier" = 'PROJ-42'
+  #      ))
+  #   ORDER BY "work_packages"."id" ASC LIMIT 1
   def find_by_semantic_identifier(identifier)
-    find_by(identifier:) ||
-      by_semantic_alias(identifier).first
+    where(identifier:).or(where(semantic_alias_exists(identifier))).first
   end
 
   def exists_by_semantic_identifier?(identifier)
-    # Use where().exists? instead of exists?(identifier:) to keep the intent
-    # clear — our exists? override intercepts string conditions, and while
-    # hash conditions would pass through safely, the explicit form avoids
-    # any ambiguity about recursion.
-    where(identifier:).exists? || # rubocop:disable Rails/WhereExists
-      by_semantic_alias(identifier).exists?
+    where(identifier:).or(where(semantic_alias_exists(identifier))).exists?
   end
 
-  def by_semantic_alias(identifier)
-    joins(:semantic_aliases).where(work_package_semantic_aliases: { identifier: })
+  # Correlated EXISTS subquery that matches work packages having a
+  # semantic alias row with the given identifier.
+  def semantic_alias_exists(identifier)
+    alias_table = WorkPackageSemanticAlias.arel_table
+
+    WorkPackageSemanticAlias
+      .where(alias_table[:work_package_id].eq(arel_table[:id]))
+      .where(identifier:)
+      .arel
+      .exists
   end
 end
