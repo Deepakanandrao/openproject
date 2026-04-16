@@ -722,6 +722,7 @@ en:
     confirmation_live_message_unchecked: "The button to proceed is now inactive. You need to tick the checkbox to continue."
 
   departments:
+    edit: "Edit department"
     add_user: "Add user"
     add_department: "Add department"
     blankslate:
