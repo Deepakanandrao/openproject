@@ -80,6 +80,10 @@ module Import
         "custom" => "com.atlassian.jira.plugin.system.customfieldtypes:userpicker"
       },
       {
+        "type" => "option-with-child",
+        "custom" => "com.atlassian.jira.plugin.system.customfieldtypes:cascadingselect"
+      },
+      {
         "type" => "array",
         "items" => "string"
       }
@@ -154,7 +158,8 @@ module Import
       when "text" then JiraWikiMarkupConverter.new(raw_value.to_s).convert
       when "list" then convert_list_value(raw_value, custom_field)
       when "user" then convert_user_value(raw_value)
-      else raw_value
+      when "hierarchy" then convert_hierarchy_value(raw_value, custom_field)
+      else convert_fallback_value(raw_value)
       end
     end
 
@@ -234,7 +239,7 @@ module Import
 
       if type == "array"
         JIRA_ARRAY_ITEMS_TO_OP_FORMAT.fetch(schema["items"], "string")
-      elsif type == "option" && custom_suffix == "cascadingselect"
+      elsif custom_suffix == "cascadingselect"
         EnterpriseToken.allows_to?(:custom_field_hierarchies) ? "hierarchy" : "string"
       else
         JIRA_CUSTOM_SUFFIX_TO_OP_FORMAT[custom_suffix] || JIRA_TYPE_TO_OP_FORMAT.fetch(type, "string")
@@ -267,8 +272,59 @@ module Import
       end
     end
 
-    def populate_hierarchy_items(_custom_field)
-      # TODO: populate_hierarchy_items
+    def populate_hierarchy_items(custom_field)
+      custom_field.reload
+      root = custom_field.hierarchy_root
+      return unless root
+
+      service = CustomFields::Hierarchy::HierarchicalItemService.new
+      contract = CustomFields::Hierarchy::InsertListItemContract
+
+      context_group_allowed_values.each do |parent_option|
+        insert_hierarchy_option(service, contract, root, parent_option)
+      end
+    end
+
+    def insert_hierarchy_option(service, contract, parent, option)
+      label = option["value"]
+      return if label.blank?
+
+      result = service.insert_item(contract_class: contract, parent:, label:)
+      return unless result.success?
+
+      item = result.value!
+      Array(option["children"]).each do |child_option|
+        insert_hierarchy_option(service, contract, item, child_option)
+      end
+    end
+
+    # Fallback for scalar formats (string, float, date, link). Hash values
+    # (e.g. cascading selects without enterprise) are converted to a readable
+    # "Parent - Child" string instead of their Ruby Hash#to_s representation.
+    def convert_fallback_value(raw_value)
+      return raw_value unless raw_value.is_a?(Hash)
+
+      label = raw_value["value"].to_s
+      child_label = raw_value.dig("child", "value")
+      child_label.present? ? "#{label} - #{child_label}" : label
+    end
+
+    def convert_hierarchy_value(raw_value, custom_field)
+      return unless raw_value.is_a?(Hash)
+
+      root = custom_field.hierarchy_root
+      return unless root
+
+      parent_item = root.children.find_by(label: raw_value["value"])
+      return unless parent_item
+
+      find_hierarchy_child(parent_item, raw_value["child"])&.id || parent_item.id
+    end
+
+    def find_hierarchy_child(parent_item, child_data)
+      return unless child_data.is_a?(Hash) && child_data["value"].present?
+
+      parent_item.children.find_by(label: child_data["value"])
     end
 
     def find_field_user(jira_user_key)

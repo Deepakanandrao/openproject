@@ -30,10 +30,7 @@
 
 require "spec_helper"
 
-# Unit tests for Import::JiraImportCustomFieldBuilder covering every field-type
-# mapping implemented in this branch.
 RSpec.describe Import::JiraImportCustomFieldBuilder do
-  # Helper - build a minimal jira_field double with the given schema hash.
   def jira_field_for(name:, schema:, context_groups: nil)
     payload = { "name" => name, "schema" => schema }
     payload["contextGroups"] = context_groups if context_groups
@@ -42,14 +39,10 @@ RSpec.describe Import::JiraImportCustomFieldBuilder do
 
   let(:custom_field) { instance_double(WorkPackageCustomField) }
 
-  # =========================================================================
-  # #format
-  # =========================================================================
   describe "#format" do
     subject(:format) { described_class.new(jira_field).format }
 
     context "with a plain text field (textfield)" do
-      # customfield_10255 "CF String"
       let(:jira_field) do
         jira_field_for(name: "CF String",
                        schema: { "type" => "string",
@@ -60,10 +53,9 @@ RSpec.describe Import::JiraImportCustomFieldBuilder do
       it { is_expected.to eq("string") }
     end
 
-    context "with a textarea field (textarea)" do
-      # customfield_10275 "CF text (plain)"
+    context "with a textarea field (textarea) plain" do
       let(:jira_field) do
-        jira_field_for(name: "CF text (plain)",
+        jira_field_for(name: "CF text",
                        schema: { "type" => "string",
                                  "custom" => "com.atlassian.jira.plugin.system.customfieldtypes:textarea",
                                  "customId" => 10275 })
@@ -73,7 +65,6 @@ RSpec.describe Import::JiraImportCustomFieldBuilder do
     end
 
     context "with a number field (float)" do
-      # customfield_10254 "CF Number"
       let(:jira_field) do
         jira_field_for(name: "CF Number",
                        schema: { "type" => "number",
@@ -85,7 +76,6 @@ RSpec.describe Import::JiraImportCustomFieldBuilder do
     end
 
     context "with a date field (datepicker)" do
-      # customfield_10261 "CF Date"
       let(:jira_field) do
         jira_field_for(name: "CF Date",
                        schema: { "type" => "date",
@@ -97,7 +87,6 @@ RSpec.describe Import::JiraImportCustomFieldBuilder do
     end
 
     context "with a datetime field (data loss!)" do
-      # customfield_10262 "CF Datetime"
       let(:jira_field) do
         jira_field_for(name: "CF Datetime",
                        schema: { "type" => "datetime",
@@ -109,7 +98,6 @@ RSpec.describe Import::JiraImportCustomFieldBuilder do
     end
 
     context "with a URL field (url)" do
-      # customfield_10257 "CF URL"
       let(:jira_field) do
         jira_field_for(name: "CF URL",
                        schema: { "type" => "string",
@@ -121,7 +109,6 @@ RSpec.describe Import::JiraImportCustomFieldBuilder do
     end
 
     context "with a single-user field (userpicker)" do
-      # customfield_10258 "CF User"
       let(:jira_field) do
         jira_field_for(name: "CF User",
                        schema: { "type" => "string",
@@ -133,7 +120,6 @@ RSpec.describe Import::JiraImportCustomFieldBuilder do
     end
 
     context "with a multi-user field (multiuserpicker)" do
-      # customfield_10259 "CF Users"
       let(:jira_field) do
         jira_field_for(name: "CF Users",
                        schema: { "type" => "array",
@@ -146,7 +132,6 @@ RSpec.describe Import::JiraImportCustomFieldBuilder do
     end
 
     context "with a single-select field (select)" do
-      # customfield_10264 "CF List"
       let(:jira_field) do
         jira_field_for(name: "CF List",
                        schema: { "type" => "option",
@@ -158,7 +143,6 @@ RSpec.describe Import::JiraImportCustomFieldBuilder do
     end
 
     context "with a multi-select field (multiselect)" do
-      # customfield_10265 "CF Multi-List"
       let(:jira_field) do
         jira_field_for(name: "CF Multi-List",
                        schema: { "type" => "array",
@@ -171,7 +155,6 @@ RSpec.describe Import::JiraImportCustomFieldBuilder do
     end
 
     context "with a string-array field (e.g. labels)" do
-      # customfield_10280 "CF Labels"
       let(:jira_field) do
         jira_field_for(name: "CF Labels",
                        schema: { "type" => "array",
@@ -183,8 +166,31 @@ RSpec.describe Import::JiraImportCustomFieldBuilder do
       it { is_expected.to eq("list") }
     end
 
+    context "with a cascading select field (hierarchy, enterprise enabled)", with_ee: [:custom_field_hierarchies] do
+      let(:jira_field) do
+        jira_field_for(name: "CF Cascading",
+                       schema: { "type" => "option-with-child",
+                                 "custom" => "com.atlassian.jira.plugin.system.customfieldtypes:cascadingselect",
+                                 "customId" => 10266 })
+      end
+
+      it { is_expected.to eq("hierarchy") }
+    end
+
+    context "with a cascading select field (no enterprise)" do
+      let(:jira_field) do
+        jira_field_for(name: "CF Cascading",
+                       schema: { "type" => "option-with-child",
+                                 "custom" => "com.atlassian.jira.plugin.system.customfieldtypes:cascadingselect",
+                                 "customId" => 10266 })
+      end
+
+      it "falls back to string" do
+        expect(subject).to eq("string")
+      end
+    end
+
     context "with a multicheckboxes field WITHOUT option_value" do
-      # customfield_10260 "CF Booleans"
       # Without option_value the builder falls through to the schema mapping (list).
       let(:jira_field) do
         jira_field_for(name: "CF Booleans",
@@ -215,7 +221,6 @@ RSpec.describe Import::JiraImportCustomFieldBuilder do
     end
 
     context "with an unknown/any-type field (e.g. Epic Link)" do
-      # customfield_10100 "Epic Link"
       let(:jira_field) do
         jira_field_for(name: "Epic Link",
                        schema: { "type" => "any",
@@ -227,7 +232,6 @@ RSpec.describe Import::JiraImportCustomFieldBuilder do
     end
 
     context "with an array field whose items type is not mapped (e.g. issuelinks)" do
-      # customfield_10270 "CF Multiple Issues"
       let(:jira_field) do
         jira_field_for(name: "CF Multiple Issues",
                        schema: { "type" => "array",
@@ -242,9 +246,6 @@ RSpec.describe Import::JiraImportCustomFieldBuilder do
     end
   end
 
-  # =========================================================================
-  # #custom_field_settings - name and format pair
-  # =========================================================================
   describe "#custom_field_settings" do
     let(:context_group) do
       {
@@ -300,9 +301,6 @@ RSpec.describe Import::JiraImportCustomFieldBuilder do
     end
   end
 
-  # =========================================================================
-  # #custom_field_parameters
-  # =========================================================================
   describe "#custom_field_parameters" do
     context "with a list field that has allowedValues in the context group" do
       let(:context_group) do
@@ -410,20 +408,16 @@ RSpec.describe Import::JiraImportCustomFieldBuilder do
     end
   end
 
-  # =========================================================================
-  # #convert_value
-  # =========================================================================
   describe "#convert_value" do
     context "with a text (textarea) field" do
       let(:jira_field) do
-        jira_field_for(name: "CF text (plain)",
+        jira_field_for(name: "CF text",
                        schema: { "type" => "string",
                                  "custom" => "com.atlassian.jira.plugin.system.customfieldtypes:textarea" })
       end
       let(:builder) { described_class.new(jira_field) }
 
       it "converts Jira wiki markup to OP markdown" do
-        # Jira: *bold* -> OP: **bold**  (verified via jira_wiki_markup_converter_spec.rb)
         result = builder.convert_value("This is *bold* text.", custom_field)
         expect(result).to eq("This is **bold** text.")
       end
@@ -614,6 +608,68 @@ RSpec.describe Import::JiraImportCustomFieldBuilder do
       end
     end
 
+    context "with a cascading select field (hierarchy)", with_ee: [:custom_field_hierarchies] do
+      let(:jira_field) do
+        jira_field_for(name: "CF Cascading",
+                       schema: { "type" => "option-with-child",
+                                 "custom" => "com.atlassian.jira.plugin.system.customfieldtypes:cascadingselect" },
+                       context_groups: [
+                         {
+                           "projects" => [],
+                           "issuetypes" => [],
+                           "allowedValues" => [
+                             { "value" => "Critical", "children" => [{ "value" => "Security" }, { "value" => "Performance" }] },
+                             { "value" => "Major", "children" => [{ "value" => "Data Loss" }] }
+                           ]
+                         }
+                       ])
+      end
+      let(:context_group) { jira_field.payload["contextGroups"].first }
+      let(:builder) { described_class.new(jira_field, context_group:) }
+      let(:hierarchy_cf) { create(:custom_field, :hierarchy, field_format: "hierarchy") }
+
+      before do
+        root = hierarchy_cf.hierarchy_root
+        service = CustomFields::Hierarchy::HierarchicalItemService.new
+        contract = CustomFields::Hierarchy::InsertListItemContract
+        critical = service.insert_item(contract_class: contract, parent: root, label: "Critical").value!
+        service.insert_item(contract_class: contract, parent: critical, label: "Security")
+        service.insert_item(contract_class: contract, parent: critical, label: "Performance")
+        major = service.insert_item(contract_class: contract, parent: root, label: "Major").value!
+        service.insert_item(contract_class: contract, parent: major, label: "Data Loss")
+      end
+
+      it "returns the child item ID when parent + child are selected" do
+        raw = { "id" => "10150", "value" => "Critical", "child" => { "id" => "10151", "value" => "Security" } }
+        result = builder.convert_value(raw, hierarchy_cf)
+        child = hierarchy_cf.hierarchy_root.children.find_by(label: "Critical").children.find_by(label: "Security")
+        expect(result).to eq(child.id)
+      end
+
+      it "returns the parent item ID when only parent is selected (no child)" do
+        raw = { "id" => "10153", "value" => "Major" }
+        result = builder.convert_value(raw, hierarchy_cf)
+        parent = hierarchy_cf.hierarchy_root.children.find_by(label: "Major")
+        expect(result).to eq(parent.id)
+      end
+
+      it "returns nil when the parent label is not found" do
+        raw = { "id" => "99", "value" => "Unknown" }
+        expect(builder.convert_value(raw, hierarchy_cf)).to be_nil
+      end
+
+      it "falls back to parent when child label is not found" do
+        raw = { "value" => "Critical", "child" => { "value" => "Gone" } }
+        result = builder.convert_value(raw, hierarchy_cf)
+        parent = hierarchy_cf.hierarchy_root.children.find_by(label: "Critical")
+        expect(result).to eq(parent.id)
+      end
+
+      it "returns nil for non-hash values" do
+        expect(builder.convert_value("unexpected", hierarchy_cf)).to be_nil
+      end
+    end
+
     context "with scalar passthrough fields (string, float, date, link)" do
       {
         "string" => ["CF String",
@@ -642,6 +698,74 @@ RSpec.describe Import::JiraImportCustomFieldBuilder do
           end
         end
       end
+    end
+
+    context "with a cascading select falling back to string (no enterprise)" do
+      let(:jira_field) do
+        jira_field_for(name: "CF Cascading",
+                       schema: { "type" => "option-with-child",
+                                 "custom" => "com.atlassian.jira.plugin.system.customfieldtypes:cascadingselect" })
+      end
+      let(:builder) { described_class.new(jira_field) }
+
+      it "converts parent + child to a readable string" do
+        raw = { "id" => "10150", "value" => "Critical", "child" => { "id" => "10151", "value" => "Security" } }
+        expect(builder.convert_value(raw, custom_field)).to eq("Critical - Security")
+      end
+
+      it "converts parent-only to the parent label" do
+        raw = { "id" => "10153", "value" => "Major" }
+        expect(builder.convert_value(raw, custom_field)).to eq("Major")
+      end
+    end
+  end
+
+  describe "#custom_field_post_processing", with_ee: [:custom_field_hierarchies] do
+    let(:context_group) do
+      {
+        "projects" => [],
+        "issuetypes" => [],
+        "allowedValues" => [
+          { "value" => "Critical", "children" => [{ "value" => "Security" }, { "value" => "Performance" }] },
+          { "value" => "Major", "children" => [{ "value" => "Data Loss" }] },
+          { "value" => "Minor" }
+        ]
+      }
+    end
+    let(:jira_field) do
+      jira_field_for(name: "CF Cascading",
+                     schema: { "type" => "option-with-child",
+                               "custom" => "com.atlassian.jira.plugin.system.customfieldtypes:cascadingselect" },
+                     context_groups: [context_group])
+    end
+    let(:builder) { described_class.new(jira_field, context_group:) }
+    let!(:hierarchy_cf) do
+      create(:custom_field, field_format: "hierarchy", hierarchy_root: nil).tap do |cf|
+        CustomFields::Hierarchy::HierarchicalItemService.new.generate_root(cf)
+        cf.reload
+      end
+    end
+
+    before { builder.custom_field_post_processing(hierarchy_cf) }
+
+    it "creates parent items under the hierarchy root" do
+      root = hierarchy_cf.hierarchy_root
+      expect(root.children.pluck(:label)).to contain_exactly("Critical", "Major", "Minor")
+    end
+
+    it "creates child items under their parent" do
+      critical = hierarchy_cf.hierarchy_root.children.find_by(label: "Critical")
+      expect(critical.children.pluck(:label)).to contain_exactly("Security", "Performance")
+    end
+
+    it "creates child items for all parents with children" do
+      major = hierarchy_cf.hierarchy_root.children.find_by(label: "Major")
+      expect(major.children.pluck(:label)).to contain_exactly("Data Loss")
+    end
+
+    it "handles parents without children" do
+      minor = hierarchy_cf.hierarchy_root.children.find_by(label: "Minor")
+      expect(minor.children).to be_empty
     end
   end
 end

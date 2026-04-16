@@ -30,13 +30,6 @@
 
 require "spec_helper"
 
-# Each example group exercises a specific Jira field type (schema shapes taken from
-# The JiraField records are pre-populated with `contextGroups` as if
-# Import::JiraFetchCustomFields had already run - this keeps each context focused on
-# the import logic rather than the editmeta fetch step.
-#
-# Fixture: spec/fixtures/import/jira/issue_with_custom_fields.json
-#   Contains values for all 8 custom field types in a single issue payload.
 RSpec.describe Import::JiraImportProjectsJob, :webmock do
   let(:jira)       { create(:jira) }
   let(:author)     { create(:user) }
@@ -152,14 +145,12 @@ RSpec.describe Import::JiraImportProjectsJob, :webmock do
   end
 
   describe "textarea field (com.atlassian.jira.plugin.system.customfieldtypes:textarea)" do
-    # customfield_10275 "CF text (plain)"
-    # Jira value: Jira wiki markup -> converted to OP markdown.
     let!(:jira_field) do
       create(:jira_field, jira:, jira_import:,
                           jira_field_id: "customfield_10275",
                           payload: {
                             "id" => "customfield_10275",
-                            "name" => "CF text (plain)",
+                            "name" => "CF text",
                             "schema" => {
                               "type" => "string",
                               "custom" => "com.atlassian.jira.plugin.system.customfieldtypes:textarea",
@@ -177,19 +168,15 @@ RSpec.describe Import::JiraImportProjectsJob, :webmock do
     before { described_class.new.perform(jira_import.id) }
 
     it "creates a 'text' custom field" do
-      expect(WorkPackageCustomField.find_by!(name: "CF text (plain)").field_format).to eq("text")
+      expect(WorkPackageCustomField.find_by!(name: "CF text").field_format).to eq("text")
     end
 
     it "converts Jira wiki markup to OP markdown (bold *x* -> **x**)" do
-      # The fixture value is "This is *bold* and _italic_ text."
-      # After conversion: "This is **bold** and _italic_ text."
-      expect(cf_value("CF text (plain)")).to include("**bold**")
+      expect(cf_value("CF text")).to include("**bold**")
     end
   end
 
   describe "number field (com.atlassian.jira.plugin.system.customfieldtypes:float)" do
-    # customfield_10254 "CF Number"
-    # Jira value: numeric -> stored as float.
     let!(:jira_field) do
       create(:jira_field, jira:, jira_import:,
                           jira_field_id: "customfield_10254",
@@ -222,7 +209,6 @@ RSpec.describe Import::JiraImportProjectsJob, :webmock do
   end
 
   describe "date field (com.atlassian.jira.plugin.system.customfieldtypes:datepicker)" do
-    # customfield_10261 "CF Date"
     # Jira value: ISO date string "2024-06-15".
     let!(:jira_field) do
       create(:jira_field, jira:, jira_import:,
@@ -256,8 +242,6 @@ RSpec.describe Import::JiraImportProjectsJob, :webmock do
   end
 
   describe "URL field (com.atlassian.jira.plugin.system.customfieldtypes:url)" do
-    # customfield_10257 "CF URL"
-    # Jira value: URL string -> stored as-is.
     let!(:jira_field) do
       create(:jira_field, jira:, jira_import:,
                           jira_field_id: "customfield_10257",
@@ -290,9 +274,7 @@ RSpec.describe Import::JiraImportProjectsJob, :webmock do
   end
 
   describe "single-select list field (com.atlassian.jira.plugin.system.customfieldtypes:select)" do
-    # customfield_10264 "CF List"
     # contextGroups populated as JiraFetchCustomFields would after editmeta.
-    # Jira value: single option object -> custom field option.
     let!(:jira_field) do
       create(:jira_field, jira:, jira_import:,
                           jira_field_id: "customfield_10264",
@@ -337,14 +319,11 @@ RSpec.describe Import::JiraImportProjectsJob, :webmock do
     end
 
     it "sets the selected option on the work package" do
-      # Fixture selects "Cat"; attribute_getter returns the option string directly
       expect(cf_value("CF List")).to eq("Cat")
     end
   end
 
   describe "multi-select list field (com.atlassian.jira.plugin.system.customfieldtypes:multiselect)" do
-    # customfield_10265 "CF Multi-List"
-    # Jira value: array of option objects -> array of custom field options.
     let!(:jira_field) do
       create(:jira_field, jira:, jira_import:,
                           jira_field_id: "customfield_10265",
@@ -389,7 +368,6 @@ RSpec.describe Import::JiraImportProjectsJob, :webmock do
   end
 
   describe "multicheckboxes field (com.atlassian.jira.plugin.system.customfieldtypes:multicheckboxes)" do
-    # customfield_10260 "CF Booleans"
     # Each checkbox option becomes a separate boolean custom field.
     # Jira value: array of selected options -> true/false per option CF.
     let!(:jira_field) do
@@ -530,16 +508,82 @@ RSpec.describe Import::JiraImportProjectsJob, :webmock do
     end
   end
 
-  describe "all custom field types in a single import run" do
+  describe "cascading select / hierarchy field (com.atlassian.jira.plugin.system.customfieldtypes:cascadingselect)",
+           with_ee: [:custom_field_hierarchies] do
+    # customfield_10266 "CF Cascading"
+    # Jira value: option-with-child -> hierarchy item.
+    let!(:jira_field) do
+      create(:jira_field, jira:, jira_import:,
+                          jira_field_id: "customfield_10266",
+                          payload: {
+                            "id" => "customfield_10266",
+                            "name" => "CF Cascading",
+                            "schema" => {
+                              "type" => "option-with-child",
+                              "custom" => "com.atlassian.jira.plugin.system.customfieldtypes:cascadingselect",
+                              "customId" => 10266
+                            },
+                            "contextGroups" => [
+                              global_context.merge(
+                                "allowedValues" => [
+                                  { "id" => "10150", "value" => "Critical",
+                                    "children" => [
+                                      { "id" => "10151", "value" => "Security" },
+                                      { "id" => "10152", "value" => "Performance" }
+                                    ] },
+                                  { "id" => "10153", "value" => "Major",
+                                    "children" => [
+                                      { "id" => "10154", "value" => "Data Loss" }
+                                    ] }
+                                ]
+                              )
+                            ]
+                          })
+    end
+    let!(:jira_issue) do
+      create(:jira_issue, jira:, jira_import:,
+                          jira_issue_id: "10200",
+                          jira_project_id: jira_project.id,
+                          payload: issue_payload)
+    end
+
+    before { described_class.new.perform(jira_import.id) }
+
+    it "creates a 'hierarchy' custom field" do
+      expect(WorkPackageCustomField.find_by!(name: "CF Cascading").field_format).to eq("hierarchy")
+    end
+
+    it "populates the hierarchy with parent items" do
+      cf = WorkPackageCustomField.find_by!(name: "CF Cascading")
+      root = cf.hierarchy_root
+      expect(root.children.pluck(:label)).to contain_exactly("Critical", "Major")
+    end
+
+    it "populates child items under parents" do
+      cf = WorkPackageCustomField.find_by!(name: "CF Cascading")
+      critical = cf.hierarchy_root.children.find_by(label: "Critical")
+      expect(critical.children.pluck(:label)).to contain_exactly("Security", "Performance")
+    end
+
+    it "sets the hierarchy value (child item) on the work package" do
+      # Fixture selects Critical > Security
+      cf = WorkPackageCustomField.find_by!(name: "CF Cascading")
+      value = imported_wp.send(cf.attribute_getter)
+      expect(value).to be_a(CustomField::Hierarchy::Item)
+      expect(value.label).to eq("Security")
+    end
+  end
+
+  describe "all custom field types in a single import run", with_ee: [:custom_field_hierarchies] do
     # Registers all field types at once and verifies the correct number of
     # OP custom fields are created:
-    # 5 scalar (string, text, float, date, url) + 1 user + 1 list-single + 1 list-multi + 2 bool = 10
+    # 5 scalar + 1 user + 1 labels + 1 list-single + 1 list-multi + 1 hierarchy + 2 bool = 12
     let!(:jira_fields) do
       [
         { id: "customfield_10255", name: "CF String",
           schema: { "type" => "string",
                     "custom" => "com.atlassian.jira.plugin.system.customfieldtypes:textfield" } },
-        { id: "customfield_10275", name: "CF text (plain)",
+        { id: "customfield_10275", name: "CF text",
           schema: { "type" => "string",
                     "custom" => "com.atlassian.jira.plugin.system.customfieldtypes:textarea" } },
         { id: "customfield_10254", name: "CF Number",
@@ -571,6 +615,18 @@ RSpec.describe Import::JiraImportProjectsJob, :webmock do
             "allowedValues" => [{ "id" => "10145", "value" => "Mouse" },
                                 { "id" => "10146", "value" => "Turtle" }]
           )] },
+        { id: "customfield_10266", name: "CF Cascading",
+          schema: { "type" => "option-with-child",
+                    "custom" => "com.atlassian.jira.plugin.system.customfieldtypes:cascadingselect" },
+          context_groups: [global_context.merge(
+            "allowedValues" => [
+              { "id" => "10150", "value" => "Critical",
+                "children" => [{ "id" => "10151", "value" => "Security" },
+                               { "id" => "10152", "value" => "Performance" }] },
+              { "id" => "10153", "value" => "Major",
+                "children" => [{ "id" => "10154", "value" => "Data Loss" }] }
+            ]
+          )] },
         { id: "customfield_10260", name: "CF Booleans",
           schema: { "type" => "array", "items" => "option",
                     "custom" => "com.atlassian.jira.plugin.system.customfieldtypes:multicheckboxes" },
@@ -594,9 +650,9 @@ RSpec.describe Import::JiraImportProjectsJob, :webmock do
     end
 
     it "creates the correct number of OpenProject custom fields" do
-      # 5 scalar + 1 user + 1 labels (string-array list) + 1 list-single + 1 list-multi + 2 bool = 11
+      # 5 scalar + 1 user + 1 labels + 1 list-single + 1 list-multi + 1 hierarchy + 2 bool = 12
       expect { described_class.new.perform(jira_import.id) }
-        .to change(WorkPackageCustomField, :count).by(11)
+        .to change(WorkPackageCustomField, :count).by(12)
     end
 
     context "on after the import" do
@@ -605,7 +661,7 @@ RSpec.describe Import::JiraImportProjectsJob, :webmock do
       it "creates custom fields with the right formats" do
         expected = {
           "CF String" => "string",
-          "CF text (plain)" => "text",
+          "CF text" => "text",
           "CF Number" => "float",
           "CF Date" => "date",
           "CF URL" => "link",
@@ -613,6 +669,7 @@ RSpec.describe Import::JiraImportProjectsJob, :webmock do
           "CF Labels" => "list",
           "CF List" => "list",
           "CF Multi-List" => "list",
+          "CF Cascading" => "hierarchy",
           "CF Booleans - Check 1" => "bool",
           "CF Booleans - Check 2" => "bool"
         }
@@ -626,7 +683,7 @@ RSpec.describe Import::JiraImportProjectsJob, :webmock do
           expect(cf_value("CF Number").to_f).to eq(42.5)
           expect(cf_value("CF Date")).to eq(Date.parse("2024-06-15"))
           expect(cf_value("CF URL")).to eq("https://example.com")
-          expect(cf_value("CF text (plain)")).to include("**bold**")
+          expect(cf_value("CF text")).to include("**bold**")
         end
       end
 
@@ -644,6 +701,13 @@ RSpec.describe Import::JiraImportProjectsJob, :webmock do
 
       it "sets the multi-select list values correctly" do
         expect(cf_value("CF Multi-List")).to contain_exactly("Mouse", "Turtle")
+      end
+
+      it "sets the hierarchy value (child item) on the work package" do
+        cf = WorkPackageCustomField.find_by!(name: "CF Cascading")
+        value = imported_wp.send(cf.attribute_getter)
+        expect(value).to be_a(CustomField::Hierarchy::Item)
+        expect(value.label).to eq("Security")
       end
 
       it "sets multicheckbox boolean values correctly" do

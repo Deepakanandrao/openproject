@@ -87,21 +87,21 @@ module Import
     # merged into a single group so the import job can later materialize one OP custom field
     # per distinct group.
     def sync_custom_field_options
-      list_fields_by_jira_id = Import::JiraField
+      option_based_fields_by_jira_id = Import::JiraField
                                  .where(jira_id: @jira_id, jira_import_id: @jira_import.id)
-                                 .select { |f| list_type_field?(f) }
+                                 .select { |f| option_based_field?(f) }
                                  .index_by(&:jira_field_id)
-      return if list_fields_by_jira_id.empty?
+      return if option_based_fields_by_jira_id.empty?
 
-      collect_field_contexts_via_editmeta(list_fields_by_jira_id)
+      collect_field_contexts_via_editmeta(option_based_fields_by_jira_id)
     end
 
-    def collect_field_contexts_via_editmeta(list_fields_by_jira_id)
+    def collect_field_contexts_via_editmeta(option_based_fields_by_jira_id)
       groups_by_field = Hash.new { |h, k| h[k] = {} }
       each_sample_issue_per_project_issuetype do |jira_issue|
-        record_editmeta_contexts_for_issue(jira_issue, list_fields_by_jira_id, groups_by_field)
+        record_editmeta_contexts_for_issue(jira_issue, option_based_fields_by_jira_id, groups_by_field)
       end
-      persist_context_groups(groups_by_field, list_fields_by_jira_id)
+      persist_context_groups(groups_by_field, option_based_fields_by_jira_id)
     end
 
     def each_sample_issue_per_project_issuetype
@@ -125,18 +125,18 @@ module Import
       ]
     end
 
-    def record_editmeta_contexts_for_issue(jira_issue, list_fields_by_jira_id, groups_by_field)
+    def record_editmeta_contexts_for_issue(jira_issue, option_based_fields_by_jira_id, groups_by_field)
       issue_key = jira_issue.payload["key"] || jira_issue.jira_issue_id
       project_key, issuetype_id = issue_context_key(jira_issue)
       result = @jira_client.issue_editmeta(issue_key)
-      record_editmeta_fields(result["fields"], project_key, issuetype_id, list_fields_by_jira_id, groups_by_field)
+      record_editmeta_fields(result["fields"], project_key, issuetype_id, option_based_fields_by_jira_id, groups_by_field)
     rescue Import::JiraClient::ApiError => e
       Rails.logger.warn("Could not fetch editmeta for issue #{issue_key}: #{e.message}.")
     end
 
-    def record_editmeta_fields(fields_meta, project_key, issuetype_id, list_fields_by_jira_id, groups_by_field)
+    def record_editmeta_fields(fields_meta, project_key, issuetype_id, option_based_fields_by_jira_id, groups_by_field)
       (fields_meta || {}).each do |field_key, field_meta|
-        next unless list_fields_by_jira_id.key?(field_key)
+        next unless option_based_fields_by_jira_id.key?(field_key)
         next if field_meta["allowedValues"].blank?
 
         record_context(groups_by_field[field_key], field_meta["allowedValues"], project_key, issuetype_id)
@@ -144,7 +144,7 @@ module Import
     end
 
     def record_context(field_groups, allowed_values, project_key, issuetype_id)
-      signature = allowed_values.pluck("value").sort
+      signature = context_signature(allowed_values)
       bucket = field_groups[signature] ||= {
         "projects" => Set.new,
         "issuetypes" => Set.new,
@@ -154,9 +154,20 @@ module Import
       bucket["issuetypes"] << issuetype_id if issuetype_id
     end
 
-    def persist_context_groups(groups_by_field, list_fields_by_jira_id)
+    # Produces a signature that uniquely identifies an allowed-values set.
+    # For flat options (select / multiselect) this is just the sorted parent values.
+    # For cascading selects the children are included so that two contexts sharing
+    # the same parents but different children are kept separate.
+    def context_signature(allowed_values)
+      allowed_values.map do |av|
+        children = Array(av["children"]).pluck("value").compact.sort
+        children.any? ? "#{av['value']}:#{children.join(',')}" : av["value"]
+      end.sort
+    end
+
+    def persist_context_groups(groups_by_field, option_based_fields_by_jira_id)
       groups_by_field.each do |jira_field_id, groups|
-        jira_field = list_fields_by_jira_id[jira_field_id]
+        jira_field = option_based_fields_by_jira_id[jira_field_id]
         context_groups = groups.values.map do |g|
           {
             "projects" => g["projects"].to_a.sort,
@@ -168,10 +179,10 @@ module Import
       end
     end
 
-    def list_type_field?(jira_field)
+    def option_based_field?(jira_field)
       schema = jira_field.payload["schema"] || {}
       type = schema["type"]
-      type == "option" || (type == "array" && schema["items"] == "option")
+      %w[option option-with-child].include?(type) || (type == "array" && schema["items"] == "option")
     end
   end
 end

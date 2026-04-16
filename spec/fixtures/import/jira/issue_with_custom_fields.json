@@ -70,6 +70,16 @@
       "emailAddress": "e.xample@example.com",
       "active": true
     },
+    "customfield_10266": {
+      "id": "10150",
+      "self": "https://jira-software.local/rest/api/2/customFieldOption/10150",
+      "value": "Critical",
+      "child": {
+        "id": "10151",
+        "self": "https://jira-software.local/rest/api/2/customFieldOption/10151",
+        "value": "Security"
+      }
+    },
     "customfield_10260": [
       {
         "id": "10137",
