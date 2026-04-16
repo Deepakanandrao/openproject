@@ -40,7 +40,7 @@ RSpec.describe "Workflow copy from role", :js do
   current_user { admin }
 
   shared_examples "a copy-to-other-roles dialog" do |with_source_role:|
-    it "permits to select a source role and target source roles" do
+    it "permits to select a source role and target roles" do
       unless with_source_role
         choose "Copy to other roles"
 
