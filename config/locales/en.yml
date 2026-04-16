@@ -1411,7 +1411,7 @@ en:
             caption: "Copy the current workflow to one or more roles inside the same work package type. If the selected role already has a workflow the current one will be overwritten."
           from_type:
             label: "Copy to another type"
-            caption: "Copy the current workflow to another work packages type. If the selected type already has a workflow the current one will be overwritten."
+            caption: "Copy the current workflow to another work packages type. If the selected type already has a workflow the current one will be overwritten. This affects all roles."
       from_roles:
         create:
           notice:
