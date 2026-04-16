@@ -55,7 +55,8 @@ class Workflows::Copies::FromTypesController < ApplicationController
       Workflow.eligible_roles.each do |role|
         Workflow.copy_one(@source_type, role, @target_type, role)
       end
-      redirect_to edit_workflow_path(@target_type), notice: I18n.t(:notice_successful_update)
+      redirect_to edit_workflow_path(@target_type),
+                  notice: t(".notice", type_name: @target_type.name)
       return
     end
 

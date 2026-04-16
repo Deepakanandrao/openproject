@@ -54,7 +54,8 @@ class Workflows::Copies::FromRolesController < ApplicationController
       @turbo_status = :unprocessable_entity
     else
       Workflow.copy(@source_type, @source_role, [@source_type], @target_roles)
-      redirect_to edit_workflow_path(@source_type), notice: I18n.t(:notice_successful_update)
+      redirect_to edit_workflow_path(@source_type, role_id: @target_roles.first.id),
+                  notice: t(".notice", count: @target_roles.size, role_name: @target_roles.first.name)
       return
     end
 

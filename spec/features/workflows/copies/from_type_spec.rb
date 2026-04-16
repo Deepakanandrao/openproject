@@ -48,7 +48,7 @@ RSpec.describe "Workflow copy from type", :js do
 
       click_button "Copy"
 
-      expect(page).to have_css(".flash-success", text: "Successful update.")
+      expect(page).to have_css(".flash-success", text: "Successfully copied workflow to '#{types.last.name}' type.")
     end
   end
 

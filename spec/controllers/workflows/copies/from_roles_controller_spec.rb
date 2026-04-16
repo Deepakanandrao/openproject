@@ -89,8 +89,8 @@ RSpec.describe Workflows::Copies::FromRolesController do
     end
 
     it "redirects with a flash notice" do
-      expect(response).to redirect_to(edit_workflow_path(source_type))
-      expect(flash[:notice]).to eq("Successful update.")
+      expect(response).to redirect_to(edit_workflow_path(source_type, role_id: target_roles.first.id))
+      expect(flash[:notice]).to eq("Successfully copied workflow to 2 roles.")
     end
   end
 end

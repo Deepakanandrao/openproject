@@ -1412,6 +1412,14 @@ en:
           from_type:
             label: "Copy to another type"
             caption: "Copy the current workflow to another work packages type. If the selected type already has a workflow the current one will be overwritten."
+      from_roles:
+        create:
+          notice:
+            one: "Successfully copied workflow to '%{role_name}' role."
+            other: "Successfully copied workflow to %{count} roles."
+      from_types:
+        create:
+          notice: "Successfully copied workflow to '%{type_name}' type."
       new:
         title: "Copy workflow of \"%{source_type}\""
     form:

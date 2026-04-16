@@ -31,9 +31,9 @@ See COPYRIGHT and LICENSE files for more details.
   dialog_id = "copy_from_type_dialog"
   another_type_at_first = @source_role.nil?
 
-  render(Primer::Alpha::Dialog.new(title:, size: :large, id: dialog_id, data: { controller: "show-when-value-selected" })) do |d|
+  render(Primer::Alpha::Dialog.new(title:, size: :large, classes: "Overlay--size-large-portrait",  id: dialog_id, data: { controller: "show-when-value-selected" })) do |d|
     d.with_header(variant: :large)
-    d.with_body(classes: "workflow-status-dialog-body") do
+    d.with_body(classes: "Overlay-body_autocomplete_height--lg") do
       settings_primer_form_with(id: "copy_form") do |f|
         render(Workflows::Copies::Form.new(f, source_type: @source_type, source_role: @source_role, other_types: @other_types, all_roles: @all_roles, append_to: "##{dialog_id}"))
       end

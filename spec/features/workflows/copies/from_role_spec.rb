@@ -53,7 +53,8 @@ RSpec.describe "Workflow copy from role", :js do
 
       click_button "Copy"
 
-      expect(page).to have_css(".flash-success", text: "Successful update.")
+      expect(page).to have_css(".flash-success", text: "Successfully copied workflow to 2 roles.")
+      expect(page).to have_current_path(edit_workflow_path(type, role_id: roles.first.id))
     end
   end
 

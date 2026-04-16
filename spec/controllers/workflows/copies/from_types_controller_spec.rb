@@ -92,7 +92,7 @@ RSpec.describe Workflows::Copies::FromTypesController do
 
     it "redirects with a flash notice" do
       expect(response).to redirect_to(edit_workflow_path(target_type))
-      expect(flash[:notice]).to eq("Successful update.")
+      expect(flash[:notice]).to eq("Successfully copied workflow to '#{target_type.name}' type.")
     end
   end
 end
