@@ -435,18 +435,26 @@ export class OpWorkPackagesCalendarService extends UntilDestroyedMixin {
 
   private updateDateParam(dates:DatesSetArg) {
     const url = new URL(window.location.href);
+
+    // Don't push a history entry when a split view is open: the date params are already
+    // encoded in the details URL, and pushing here would add a spurious details-URL entry
+    // that browser-back would restore (with the split view still visible).
+    if (url.pathname.includes('/details/')) {
+      return;
+    }
+
     const newDate = this.timezoneService.formattedISODate(dates.view.calendar.getDate());
     const newView = (dates.view as unknown as { type:string }).type;
 
-    // Skip if the URL already reflects both the date and view (e.g. after gotoDate was called
-    // from a popstate handler to restore the calendar to the history-entry's date and view).
     if (url.searchParams.get('cdate') === newDate && url.searchParams.get('cview') === newView) {
       return;
     }
 
     url.searchParams.set('cdate', newDate);
     url.searchParams.set('cview', newView);
-    window.history.pushState({}, '', url);
+    // Use a Turbo-compatible state so that browser history.back() triggers Turbo's
+    // restoration visit (full page reload), which correctly resets any open split view frame.
+    window.history.pushState({ turbo: { restorationIdentifier: crypto.randomUUID() } }, '', url);
   }
 
   updateDates(resizeInfo:EventResizeDoneArg|EventDropArg|EventReceiveArg, dragged?:boolean):ResourceChangeset<WorkPackageResource> {

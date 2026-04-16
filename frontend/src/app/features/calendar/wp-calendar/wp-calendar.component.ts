@@ -46,7 +46,7 @@ import {
 import { FullCalendarComponent } from '@fullcalendar/angular';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import moment from 'moment';
-import { fromEvent, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
 import { States } from 'core-app/core/states/states.service';
@@ -167,18 +167,6 @@ export class WorkPackagesCalendarComponent extends UntilDestroyedMixin implement
 
     // Clear any old subscribers
     this.querySpace.stopAllSubscriptions.next();
-
-    // Restore the calendar date when the user navigates back/forward via browser history.
-    // pushState in updateDateParam uses an empty state object, so Turbo ignores these
-    // popstate events. We handle them here to navigate FullCalendar in-page instead.
-    fromEvent(window, 'popstate')
-      .pipe(this.untilDestroyed())
-      .subscribe(() => {
-        const cdate = new URLSearchParams(window.location.search).get('cdate');
-        if (cdate && this.ucCalendar) {
-          this.ucCalendar.getApi().gotoDate(cdate);
-        }
-      });
 
     this.initializeCalendar();
   }

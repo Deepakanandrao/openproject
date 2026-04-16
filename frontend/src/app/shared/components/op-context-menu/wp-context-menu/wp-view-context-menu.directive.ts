@@ -61,7 +61,7 @@ export class WorkPackageViewContextMenu extends OpContextMenuHandler {
   );
 
   // Get the base route for the current route to ensure we always link correctly
-  protected baseRoute = this.$state.current.data?.baseRoute || this.$state.current.name;
+  protected baseRoute = this.$state.current.data?.baseRoute ?? this.$state.current.name;
 
   // Whether we are running inside a uiRouter context (e.g. work packages list/board).
   // Calendar and Team Planner render without uiRouter and rely on Turbo navigation instead.
