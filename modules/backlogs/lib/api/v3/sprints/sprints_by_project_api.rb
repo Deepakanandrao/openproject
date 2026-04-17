@@ -40,7 +40,8 @@ module API
           get &::API::V3::Utilities::Endpoints::Index
                  .new(
                    model: Agile::Sprint,
-                   scope: -> { Agile::Sprint.for_project(@project) }
+                   # TODO: do we need an option here to also show completed sprints? See versions.
+                   scope: -> { @project.assignable_sprints }
                  )
                  .mount
         end

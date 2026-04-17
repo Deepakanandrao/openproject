@@ -46,7 +46,7 @@ module OpenProject::Backlogs::Patches::BaseContractPatch
     validate :validate_sprint_is_assignable
 
     def assignable_sprints
-      model.try(:assignable_sprints) if model.project
+      model.try(:assignable_sprints)
     end
 
     private
