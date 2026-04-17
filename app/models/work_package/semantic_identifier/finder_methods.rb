@@ -40,19 +40,13 @@
 # ActiveRecord::Relation via WorkPackage::SemanticIdentifier.
 module WorkPackage::SemanticIdentifier::FinderMethods
   def find(*args)
-    ids = args.length == 1 && args.first.is_a?(Array) ? args.first : args
-
-    if ids.length == 1 && semantic_id?(ids.first)
-      return find_by_display_id!(ids.first)
+    if args.length == 1 && !args.first.is_a?(Array)
+      return semantic_id?(args.first) ? find_by_display_id!(args.first) : super
     end
 
-    if ids.any? { |id| semantic_id?(id) }
-      raise ArgumentError,
-            "Semantic identifiers in multi-argument find is not yet supported. " \
-            "Resolve each identifier individually via find_by_display_id instead."
-    end
-
-    super
+    raise ArgumentError,
+          "WorkPackage.find does not support multiple arguments or array arguments. " \
+          "Use find_by_display_id for semantic identifiers or find with a single ID."
   end
 
   # Guard find_by against semantic identifiers passed via `id:` or `identifier:`.
@@ -100,9 +94,12 @@ module WorkPackage::SemanticIdentifier::FinderMethods
     return unless args.length == 1 && args.first.is_a?(Hash)
 
     hash = args.first
-    key, value = (hash.assoc(:id) || hash.assoc("id")) ||
-                 (hash.assoc(:identifier) || hash.assoc("identifier"))
-    return unless key && semantic_id?(value)
+    pair = (hash.assoc(:id) || hash.assoc("id")) ||
+           (hash.assoc(:identifier) || hash.assoc("identifier"))
+    return unless pair
+
+    key, value = pair
+    return unless semantic_id?(value)
 
     raise ArgumentError,
           "find_by(#{key}: #{value.inspect}) does not support semantic identifiers " \

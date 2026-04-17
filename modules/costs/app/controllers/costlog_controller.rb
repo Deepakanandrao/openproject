@@ -123,7 +123,7 @@ class CostlogController < ApplicationController
     @work_package = if @cost_entry.present? && @cost_entry.entity_type == "WorkPackage" && @cost_entry.entity_id == entity_id
                       @cost_entry.entity
                     elsif entity_type == "WorkPackage"
-                      WorkPackage.visible.find_by(id: entity_id)
+                      WorkPackage.visible.find_by_display_id(entity_id)
                     end
 
     cost_type_id = cost_entry_params.delete(:cost_type_id)
