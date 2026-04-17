@@ -433,6 +433,11 @@ fr:
     ical_response:
       update_failed: Impossible de mettre à jour le statut de participation.
       meeting_not_found: Réunion non trouvée pour l'UID donné.
+    widgets:
+      blankslate:
+        heading: No upcoming meetings
+        description: Upcoming meetings where you are the organizer or a participant will appear here.
+      view_details: View all meetings
   meeting_section:
     untitled_title: Section sans titre
     delete_confirmation: Supprimer la section supprimera également tous les éléments de l'ordre du jour qui s'y rapportent. Voulez-vous vraiment continuer ?
@@ -612,7 +617,7 @@ fr:
   label_agenda_outcome_edit: Modifier le résultat
   label_agenda_outcome_delete: Supprimer le résultat
   label_added_as_outcome: Ajouté comme résultat
-  label_write_outcome: Résultat de l'écriture
+  label_write_outcome: Rédiger un résultat
   label_existing_work_package: Lot de travaux existant
   text_outcome_not_editable_anymore: Ce résultat n'est plus modifiable.
   text_outcome_cannot_be_added: Un résultat ne peut plus être ajouté.
