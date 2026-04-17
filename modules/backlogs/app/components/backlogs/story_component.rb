@@ -32,17 +32,15 @@ module Backlogs
   class StoryComponent < ApplicationComponent
     include OpPrimer::ComponentHelpers
 
-    attr_reader :story, :sprint, :project, :current_user, :show_actions, :show_drag_handle
+    attr_reader :story, :sprint, :project, :current_user
 
-    def initialize(story:, sprint:, project:, current_user: User.current, show_actions: true, show_drag_handle: true)
+    def initialize(story:, sprint:, project:, current_user: User.current)
       super()
 
       @story = story
       @sprint = sprint
       @project = project
       @current_user = current_user
-      @show_actions = show_actions
-      @show_drag_handle = show_drag_handle
     end
 
     private
@@ -52,12 +50,10 @@ module Backlogs
     end
 
     def draggable?
-      show_drag_handle && current_user.allowed_in_project?(:manage_sprint_items, project)
+      current_user.allowed_in_project?(:manage_sprint_items, project)
     end
 
     def menu_src
-      return unless show_actions
-
       menu_project_sprint_story_path(project, sprint, story)
     end
   end
