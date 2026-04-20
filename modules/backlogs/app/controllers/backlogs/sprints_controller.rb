@@ -29,7 +29,7 @@
 #++
 
 module Backlogs
-  class SprintsController < ::RbApplicationController
+  class SprintsController < BaseController
     include OpTurbo::ComponentStream
 
     NEW_SPRINT_ACTIONS = %i[new_dialog

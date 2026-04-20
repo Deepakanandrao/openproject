@@ -29,7 +29,7 @@
 #++
 
 module Backlogs
-  class BurndownChartController < ::RbApplicationController
+  class BurndownChartController < BaseController
     helper :burndown_charts
 
     def show
