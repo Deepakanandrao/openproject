@@ -101,26 +101,23 @@ RSpec.describe "Markdown security (tagfilter-equivalent protections)" do # ruboc
       expect(html).not_to match(/<script\b/i)
     end
 
-    it "neutralises <style> CSS injection with url() data-exfil" do
-      # The <style> element must be removed; the CSS `url()` cannot fire without
-      # a surviving <style> wrapper. Any leftover URL text is no longer a CSS rule.
+    it "removes unescaped <style> tags" do
       html = to_html(%(<style>body { background: url('https://evil.example.com/?'); }</style>))
-      expect(html).not_to match(/<style\b/i)
-      expect(html).not_to match(%r{</style>}i)
+      expect(html).to eq ""
     end
 
-    it "neutralises <plaintext> document takeover" do
+    it "removes dangling <plaintext> tag, but keeps content" do
       markdown = <<~MD
         safe paragraph before
 
-        <plaintext>everything from here should be hidden
+        <plaintext>some text inside the plaintext
 
         but we render a trailing paragraph too
       MD
       html = to_html(markdown)
       expect(html).not_to match(/<plaintext\b/i)
       expect(html).to include("safe paragraph before")
-      expect(html).not_to include("everything from here should be hidden")
+      expect(html).to include("some text inside the plaintext")
       expect(html).to include("trailing paragraph")
     end
 
