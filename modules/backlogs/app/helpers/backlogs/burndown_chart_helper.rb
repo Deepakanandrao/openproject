@@ -28,24 +28,26 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module BurndownChartsHelper
-  def xaxis_labels(burndown)
-    # 14 entries (plus the axis label) have come along as the best value for a good optical result.
-    # Thus it is enough space between the entries.
-    entries_displayed = (burndown.days.length / 14.0).ceil
-    burndown.days.enum_for(:each_with_index).map do |d, i|
-      if (i % entries_displayed) == 0
-        ["#{escape_javascript(::I18n.t('date.abbr_day_names')[d.wday % 7])} #{d.strftime('%d/%m')}"]
+module Backlogs
+  module BurndownChartHelper
+    def xaxis_labels(burndown)
+      # 14 entries (plus the axis label) have come along as the best value for a good optical result.
+      # Thus it is enough space between the entries.
+      entries_displayed = (burndown.days.length / 14.0).ceil
+      burndown.days.enum_for(:each_with_index).map do |d, i|
+        if (i % entries_displayed) == 0
+          ["#{escape_javascript(::I18n.t('date.abbr_day_names')[d.wday % 7])} #{d.strftime('%d/%m')}"]
+        end
       end
     end
-  end
 
-  def dataseries(burndown)
-    burndown.series.map do |s|
-      {
-        label: I18n.t("burndown.#{s.first}"),
-        data: s.last.enum_for(:each)
-      }
+    def dataseries(burndown)
+      burndown.series.map do |s|
+        {
+          label: I18n.t("burndown.#{s.first}"),
+          data: s.last.enum_for(:each)
+        }
+      end
     end
   end
 end
