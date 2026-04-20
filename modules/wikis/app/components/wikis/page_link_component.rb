@@ -34,13 +34,5 @@ module Wikis
     include OpPrimer::ComponentHelpers
 
     alias_method :link, :model
-
-    def page_title_service
-      @page_title_service ||= PageTitleService.new
-    end
-
-    def show_action_menu?
-      link.relation?
-    end
   end
 end

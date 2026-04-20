@@ -29,10 +29,18 @@
 #++
 
 module Wikis
-  class ReferencingPagesComponent < ApplicationComponent
+  class CollapsiblePageLinksComponent < ApplicationComponent
     include ApplicationHelper
     include OpPrimer::ComponentHelpers
 
-    alias_method :referencing_page_links, :model
+    attr_reader :heading
+
+    alias_method :page_links, :model
+
+    def initialize(model = nil, heading:, **)
+      @heading = heading
+
+      super(model, **)
+    end
   end
 end

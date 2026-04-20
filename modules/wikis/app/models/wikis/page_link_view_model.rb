@@ -29,10 +29,17 @@
 #++
 
 module Wikis
-  class InlinePageLinksComponent < ApplicationComponent
-    include ApplicationHelper
-    include OpPrimer::ComponentHelpers
+  PageLinkViewModel = Data.define(:page_identifier, :provider, :title, :href, :actions) do
+    def initialize(page_identifier:, provider:, title:, href:, actions: []) = super
 
-    alias_method :inline_page_links, :model
+    def self.from_page_link(page_link:, title_service: PageTitleService.new)
+      new(
+        page_identifier: page_link.identifier,
+        provider: page_link.provider,
+        title: title_service.read(page_link),
+        href: page_link.href,
+        actions: page_link.relation? ? [:remove] : []
+      )
+    end
   end
 end

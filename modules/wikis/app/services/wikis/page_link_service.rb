@@ -46,17 +46,36 @@ module Wikis
               .merge(RelationPageLink.all)
               .where(linkable:)
               .order(created_at: :desc)
+              .map { PageLinkViewModel.from_page_link(page_link: it, title_service: page_title_service) }
     end
 
     def inline_page_links_for(linkable:)
       InlinePageLink.where(linkable:)
                     .order(created_at: :desc)
+                    .map { PageLinkViewModel.from_page_link(page_link: it, title_service: page_title_service) }
     end
 
-    def referencing_wiki_pages_for(*)
+    def referencing_wiki_pages_for(linkable:)
       # TODO: iterate over all providers and fetch mentions of this linkable
 
+      if linkable.id % 2 == 0
+        return [
+          PageLinkViewModel.new(
+            page_identifier: "42",
+            provider: XWikiProvider.enabled.first,
+            title: "I come from the wiki down under",
+            href: "#"
+          )
+        ]
+      end
+
       []
+    end
+
+    private
+
+    def page_title_service
+      @page_title_service ||= PageTitleService.new
     end
   end
 end
