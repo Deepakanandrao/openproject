@@ -57,8 +57,6 @@ module API
                    :assignable_versions,
                    :assignable_budgets,
                    :assignable_project_phases,
-                   # TODO: move this to patch
-                   :assignable_sprints,
                    to: :contract
 
           def no_caching?
