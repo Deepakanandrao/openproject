@@ -256,6 +256,11 @@ RSpec.describe WorkPackage::SemanticIdentifier do
       it "passes through to standard AR find_by" do
         expect(WorkPackage.find_by(id: work_package.id, project:)).to eq(work_package)
       end
+
+      it "raises UnsupportedLookup when id: is semantic even among other keywords" do
+        expect { WorkPackage.find_by(subject: "anything", id: "MYPROJ-1") }
+          .to raise_error(WorkPackage::SemanticIdentifier::UnsupportedLookup)
+      end
     end
 
     context "with an unparseable semantic string" do
