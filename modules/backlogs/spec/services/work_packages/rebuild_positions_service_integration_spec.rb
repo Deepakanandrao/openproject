@@ -47,12 +47,25 @@ RSpec.describe WorkPackages::RebuildPositionsService, "integration", type: :mode
   shared_let(:sprint1_wp1) { create_work_package(subject: "Sprint 1 WorkPackage 1", sprint: sprint1, position: nil) }
   shared_let(:sprint1_wp2) { create_work_package(subject: "Sprint 1 WorkPackage 2", sprint: sprint1, position: 1) }
   shared_let(:sprint1_wp3) { create_work_package(subject: "Sprint 1 WorkPackage 3", sprint: sprint1, position: 2) }
-  shared_let(:sprint1_wp4) { create_work_package(subject: "Sprint 1 WorkPackage 4", sprint: sprint1, position: 2) }
+  shared_let(:sprint1_wp4) do
+    create_work_package(subject: "Sprint 1 WorkPackage 4", sprint: sprint1, position: 2).tap do
+      # Force wp3 back to position 2 so that wp3 and wp4 are genuinely
+      # duplicated — the service must break the tie via created_at.
+      sprint1_wp3.update_column(:position, 2)
+    end
+  end
   shared_let(:sprint1_wp5) { create_work_package(subject: "Sprint 1 WorkPackage 5", sprint: sprint1, position: nil) }
 
   shared_let(:sprint2_wp1) { create_work_package(subject: "Sprint 2 WorkPackage 1", sprint: sprint2, position: 3) }
   shared_let(:sprint2_wp2) { create_work_package(subject: "Sprint 2 WorkPackage 2", sprint: sprint2, position: 2) }
-  shared_let(:sprint2_wp3) { create_work_package(subject: "Sprint 2 WorkPackage 3", sprint: sprint2, position: 1) }
+  shared_let(:sprint2_wp3) do
+    create_work_package(subject: "Sprint 2 WorkPackage 3", sprint: sprint2, position: 1).tap do
+      # acts_as_list inserts shift earlier siblings; restore them so
+      # the DB starts from the positions the test actually sets.
+      sprint2_wp1.update_column(:position, 3)
+      sprint2_wp2.update_column(:position, 2)
+    end
+  end
 
   shared_let(:sprint3_wp1) { create_work_package(subject: "Sprint 3 WorkPackage 1", sprint: sprint3, position: nil) }
   shared_let(:sprint3_wp2) { create_work_package(subject: "Sprint 3 WorkPackage 2", sprint: sprint3, position: nil) }
@@ -77,8 +90,8 @@ RSpec.describe WorkPackages::RebuildPositionsService, "integration", type: :mode
       expect(WorkPackage.where(sprint: sprint1).to_h { [it.subject, it.position] })
         .to eql(
           sprint1_wp2.subject => 1,
-          sprint1_wp4.subject => 2,
-          sprint1_wp3.subject => 3,
+          sprint1_wp3.subject => 2,
+          sprint1_wp4.subject => 3,
           sprint1_wp1.subject => 4,
           sprint1_wp5.subject => 5
         )
@@ -112,24 +125,20 @@ RSpec.describe WorkPackages::RebuildPositionsService, "integration", type: :mode
     end
 
     it "fixes only the work packages in the other project" do # rubocop:disable Rspec/ExampleLength
-      # sprint1 and sprint2 belong to project1, so their positions are
-      # unchanged by rebuilding project2. The initial positions reflect
-      # acts_as_list side effects during shared_let creation (e.g. wp4
-      # inserting at position 2 shifts wp3 from 2 to 3).
       expect(WorkPackage.where(sprint: sprint1).to_h { [it.subject, it.position] })
         .to eql(
           sprint1_wp1.subject => nil,
           sprint1_wp2.subject => 1,
+          sprint1_wp3.subject => 2,
           sprint1_wp4.subject => 2,
-          sprint1_wp3.subject => 3,
           sprint1_wp5.subject => nil
         )
 
       expect(WorkPackage.where(sprint: sprint2).to_h { [it.subject, it.position] })
         .to eql(
           sprint2_wp3.subject => 1,
-          sprint2_wp2.subject => 3,
-          sprint2_wp1.subject => 5
+          sprint2_wp2.subject => 2,
+          sprint2_wp1.subject => 3
         )
 
       expect(WorkPackage.where(sprint: nil).to_h { [it.subject, it.position] })
@@ -157,8 +166,8 @@ RSpec.describe WorkPackages::RebuildPositionsService, "integration", type: :mode
       expect(WorkPackage.where(sprint: sprint1).to_h { [it.subject, it.position] })
         .to eql(
           sprint1_wp2.subject => 1,
-          sprint1_wp4.subject => 2,
-          sprint1_wp3.subject => 3,
+          sprint1_wp3.subject => 2,
+          sprint1_wp4.subject => 3,
           sprint1_wp1.subject => 4,
           sprint1_wp5.subject => 5
         )
