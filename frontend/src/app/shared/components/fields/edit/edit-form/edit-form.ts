@@ -324,6 +324,7 @@ export abstract class EditForm<T extends HalResource = HalResource> {
         // silently close the field as it will no longer be writable
         if (!fieldSchema) {
           this.closeEditFields([fieldName]);
+          return;
         }
 
         if (!fieldSchema.writable && !noWarnings) {
