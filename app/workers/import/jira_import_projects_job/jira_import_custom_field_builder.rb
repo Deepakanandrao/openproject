@@ -310,16 +310,32 @@ module Import
 
       def convert_list_value(raw_value, custom_field)
         if cascading_select_as_list? && raw_value.is_a?(Hash)
-          extract_cascading_chain(raw_value).filter_map { |label| custom_field.value_of(label) }
+          convert_cascading_list_value(raw_value, custom_field)
         elsif raw_value.is_a?(Array)
-          raw_value.filter_map do |c_value|
-            label = c_value.is_a?(Hash) ? c_value["value"] : c_value.to_s
-            custom_field.value_of(label)
-          end
+          convert_array_list_value(raw_value, custom_field)
         else
-          label = raw_value.is_a?(Hash) ? raw_value["value"] : raw_value.to_s
+          convert_single_list_value(raw_value, custom_field)
+        end
+      end
+
+      def convert_cascading_list_value(raw_value, custom_field)
+        extract_cascading_chain(raw_value).filter_map { |label| custom_field.value_of(label) }
+      end
+
+      def convert_array_list_value(raw_value, custom_field)
+        raw_value.filter_map do |c_value|
+          label = extract_list_label(c_value)
           custom_field.value_of(label)
         end
+      end
+
+      def convert_single_list_value(raw_value, custom_field)
+        label = extract_list_label(raw_value)
+        custom_field.value_of(label)
+      end
+
+      def extract_list_label(value)
+        value.is_a?(Hash) ? value["value"] : value.to_s
       end
 
       # Walks the parent -> child chain of a cascading select value, returning
