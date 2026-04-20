@@ -43,7 +43,7 @@ RSpec.describe "API v3 Work package resource",
   shared_let(:outside_sprint) { create(:agile_sprint, project: create(:project)) }
 
   let(:role) { create(:project_role, permissions:) }
-  let(:permissions) { %i[add_work_packages view_work_packages manage_sprint_items] }
+  let(:permissions) { %i[add_work_packages view_work_packages manage_sprint_items view_sprints] }
 
   current_user do
     create(:user, member_with_roles: { project => role })
@@ -91,7 +91,7 @@ RSpec.describe "API v3 Work package resource",
     end
 
     context "when the user does not have permission to manage sprint items" do
-      let(:permissions) { %i[add_work_packages view_work_packages] }
+      let(:permissions) { %i[add_work_packages view_work_packages view_sprints] }
 
       it_behaves_like "read-only violation", "sprint", WorkPackage
     end
@@ -115,8 +115,11 @@ RSpec.describe "API v3 Work package resource",
         }
       end
 
-      it_behaves_like "constraint violation" do
-        let(:message) { "Sprint is not shared with the project the work package is in." }
+      it_behaves_like "multiple errors of the same type with messages" do
+        let(:message) do
+          ["Sprint is not shared with the project the work package is in.",
+           "Sprint is not set to one of the allowed values."]
+        end
       end
     end
   end
