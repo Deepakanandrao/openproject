@@ -105,12 +105,13 @@ module WorkPackage::SemanticIdentifier::FinderMethods
     return unless pair
 
     key, value = pair
-    return unless semantic_id?(value)
+    offending = value.is_a?(Array) ? value.find { |v| semantic_id?(v) } : (value if semantic_id?(value))
+    return unless offending
 
     raise WorkPackage::SemanticIdentifier::UnsupportedLookup,
           "find_by(#{key}: #{value.inspect}) does not support semantic identifiers " \
           "because it cannot resolve aliases or match across identifier history. " \
-          "Use find(#{value.inspect}) or find_by_display_id(#{value.inspect}) instead."
+          "Use find(#{offending.inspect}) or find_by_display_id(#{offending.inspect}) instead."
   end
 
   # Returns true when value looks like a semantic work package identifier (e.g. "PROJ-42").

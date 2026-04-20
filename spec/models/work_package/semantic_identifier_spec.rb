@@ -214,6 +214,19 @@ RSpec.describe WorkPackage::SemanticIdentifier do
       end
     end
 
+    context "with id: keyword and an array" do
+      let(:work_package2) { create(:work_package, project:) }
+
+      it "falls through to standard AR find_by for an all-numeric array" do
+        expect(WorkPackage.find_by(id: [work_package.id, work_package2.id])).to eq(work_package)
+      end
+
+      it "raises UnsupportedLookup when the array contains a semantic identifier" do
+        expect { WorkPackage.find_by(id: [work_package.id, "MYPROJ-2"]) }
+          .to raise_error(WorkPackage::SemanticIdentifier::UnsupportedLookup, /does not support semantic identifiers/)
+      end
+    end
+
     context "with non-id keywords" do
       it "passes through to standard AR find_by" do
         expect(WorkPackage.find_by(subject: work_package.subject)).to eq(work_package)
