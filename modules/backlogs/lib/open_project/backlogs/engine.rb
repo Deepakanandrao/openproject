@@ -130,11 +130,9 @@ module OpenProject::Backlogs
 
     patches %i[PermittedParams
                WorkPackage
-               Project
-               Version]
+               Project]
 
     patch_with_namespace :BasicData, :SettingSeeder
-    patch_with_namespace :DemoData, :ProjectSeeder
     patch_with_namespace :WorkPackages, :SetAttributesService
     patch_with_namespace :WorkPackages, :BaseContract
     patch_with_namespace :WorkPackages, :UpdateContract
@@ -142,10 +140,6 @@ module OpenProject::Backlogs
     patch_with_namespace :API, :V3, :WorkPackages, :Schema, :SpecificWorkPackageSchema
 
     config.to_prepare do
-      next if Versions::BaseContract.include?(OpenProject::Backlogs::Patches::Versions::BaseContractPatch)
-
-      Versions::BaseContract.prepend(OpenProject::Backlogs::Patches::Versions::BaseContractPatch)
-
       # Add available settings to the user preferences
       UserPreferences::Schema.merge!(
         "definitions/UserPreferences/properties",

@@ -30,6 +30,7 @@
 
 require "spec_helper"
 require Rails.root.join("modules/backlogs/db/migrate/20260313164539_migrate_versions_to_sprints")
+require Rails.root.join("modules/backlogs/db/migrate/20260420160236_remove_version_settings")
 
 RSpec.describe MigrateVersionsToSprints, type: :model do
   subject(:migrate) { ActiveRecord::Migration.suppress_messages { described_class.migrate(:up) } }
@@ -46,11 +47,26 @@ RSpec.describe MigrateVersionsToSprints, type: :model do
 
   def use_version(as:, version: self.version, project: self.project)
     display = case as
-              when :sprint then VersionSetting::DISPLAY_LEFT
-              when :backlog then VersionSetting::DISPLAY_RIGHT
-              else VersionSetting::DISPLAY_NONE
+              when :sprint then described_class::MigrationVersionSetting::DISPLAY_LEFT
+              when :backlog then described_class::MigrationVersionSetting::DISPLAY_RIGHT
+              else 1
               end
-    create(:version_setting, version:, project:, display:)
+
+    ActiveRecord::Migration.suppress_messages do
+      ActiveRecord::Migration.execute(<<~SQL.squish)
+        INSERT INTO version_settings
+          (project_id, version_id, display, created_at, updated_at)
+        VALUES (#{project.id}, #{version.id}, #{display}, NOW(), NOW())
+      SQL
+    end
+  end
+
+  around(:all) do |example|
+    # In this test: RemoveVersionSettings has already run.
+    # In production: RemoveVersionSettings runs after MigrateVersionsToSprints.
+    ActiveRecord::Migration.suppress_messages { RemoveVersionSettings.migrate(:down) }
+    example.run
+    ActiveRecord::Migration.suppress_messages { RemoveVersionSettings.migrate(:up) }
   end
 
   before { use_version(as: version_type) }
