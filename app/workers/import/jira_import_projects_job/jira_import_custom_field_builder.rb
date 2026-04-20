@@ -194,8 +194,7 @@ module Import
 
       def default_cf_name
         base_name = jira_field.payload["name"]
-        return base_name if @option_value
-
+        base_name = "#{base_name} - #{@option_value}" if @option_value
         project_keys = context_group_projects
         return base_name if project_keys.empty?
 

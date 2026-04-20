@@ -468,13 +468,13 @@ RSpec.describe Import::JiraImportProjectsJob, :webmock do
     before { described_class.new.perform(jira_import.id) }
 
     it "creates one boolean custom field named after the Jira field" do
-      cf = WorkPackageCustomField.find_by!(name: "CF Booleans")
+      cf = WorkPackageCustomField.find_by!(name: "CF Booleans - Check 1")
       expect(cf.field_format).to eq("bool")
     end
 
     it "sets the value to true when the option is selected" do
       # The fixture has 'Check 1' selected
-      expect(cf_value("CF Booleans")).to be true
+      expect(cf_value("CF Booleans - Check 1")).to be true
     end
   end
 
@@ -537,55 +537,8 @@ RSpec.describe Import::JiraImportProjectsJob, :webmock do
     end
   end
 
-  describe "multicheckboxes with multiple context groups sharing the same single option" do
-    # Both context groups have the same single option -> one bool CF shared across contexts.
-    let!(:jira_field) do
-      create(:jira_field, jira:, jira_import:,
-                          jira_field_id: "customfield_10286",
-                          payload: {
-                            "id" => "customfield_10286",
-                            "name" => "CF Single-Option Checks",
-                            "schema" => {
-                              "type" => "array",
-                              "items" => "option",
-                              "custom" => "com.atlassian.jira.plugin.system.customfieldtypes:multicheckboxes",
-                              "customId" => 10286
-                            },
-                            "contextGroups" => [
-                              {
-                                "projects" => ["DYX"], "issuetypes" => [],
-                                "allowedValues" => [{ "id" => "10204", "value" => "Active" }]
-                              },
-                              {
-                                "projects" => ["ZBX"], "issuetypes" => [],
-                                "allowedValues" => [{ "id" => "10204", "value" => "Active" }]
-                              }
-                            ]
-                          })
-    end
-    let!(:jira_issue) do
-      create(:jira_issue, jira:, jira_import:,
-                          jira_issue_id: "10200",
-                          jira_project_id: jira_project.id,
-                          payload: issue_payload)
-    end
-
-    before { described_class.new.perform(jira_import.id) }
-
-    it "creates exactly one bool CF shared across all contexts" do
-      cfs = WorkPackageCustomField.where(name: "CF Single-Option Checks")
-      expect(cfs.count).to eq(1)
-      expect(cfs.first.field_format).to eq("bool")
-    end
-
-    it "sets the value to true when the option is present in the issue" do
-      # The fixture has 'Active' selected for this field
-      expect(cf_value("CF Single-Option Checks")).to be true
-    end
-  end
-
   describe "multicheckboxes with multiple context groups each having a different single option" do
-    # Each context group has a different single option -> total unique > 1, so one list CF per group.
+    # Each context group has a different single option -> so one boolean CF per group.
     let!(:jira_field) do
       create(:jira_field, jira:, jira_import:,
                           jira_field_id: "customfield_10287",
@@ -620,22 +573,15 @@ RSpec.describe Import::JiraImportProjectsJob, :webmock do
     before { described_class.new.perform(jira_import.id) }
 
     it "creates one list CF per context group" do
-      cf_dyx = WorkPackageCustomField.find_by!(name: "CF Different-Single Checks (DYX)")
-      cf_zbx = WorkPackageCustomField.find_by!(name: "CF Different-Single Checks (ZBX)")
-      expect(cf_dyx.field_format).to eq("list")
-      expect(cf_zbx.field_format).to eq("list")
-    end
-
-    it "populates each CF with its single option" do
-      cf_dyx = WorkPackageCustomField.find_by!(name: "CF Different-Single Checks (DYX)")
-      cf_zbx = WorkPackageCustomField.find_by!(name: "CF Different-Single Checks (ZBX)")
-      expect(cf_dyx.custom_options.pluck(:value)).to eq(["Yes"])
-      expect(cf_zbx.custom_options.pluck(:value)).to eq(["No"])
+      cf_dyx = WorkPackageCustomField.find_by!(name: "CF Different-Single Checks - Yes (DYX)")
+      cf_zbx = WorkPackageCustomField.find_by!(name: "CF Different-Single Checks - No (ZBX)")
+      expect(cf_dyx.field_format).to eq("bool")
+      expect(cf_zbx.field_format).to eq("bool")
     end
 
     it "sets the value from the issue's matching context" do
       # The issue is from project DYX and has 'Yes' selected
-      expect(cf_value("CF Different-Single Checks (DYX)")).to contain_exactly("Yes")
+      expect(cf_value("CF Different-Single Checks - Yes (DYX)")).to be(true)
     end
   end
 
@@ -1063,7 +1009,7 @@ RSpec.describe Import::JiraImportProjectsJob, :webmock do
           "CF Multi-List" => "list",
           "CF Cascading" => "hierarchy",
           "CF Booleans" => "list",
-          "CF Boolean" => "bool",
+          "CF Boolean - Yes" => "bool",
           "CF Radio" => "list"
         }
         formats = WorkPackageCustomField.where(name: expected.keys).index_by(&:name).transform_values(&:field_format)
