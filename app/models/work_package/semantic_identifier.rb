@@ -76,6 +76,15 @@ module WorkPackage::SemanticIdentifier
     identifier.presence || id
   end
 
+  # Returns the user-facing identifier formatted for inline display.
+  # Semantic identifiers (e.g. "PROJ-42") are self-describing and returned as-is.
+  # Numeric identifiers (e.g. "42") are prefixed with "#" so they read as WP references.
+  # Mirror of the JS helper in frontend/src/app/shared/helpers/work-package-id-pattern.ts.
+  def formatted_id
+    id = display_id.to_s
+    id.match?(/[A-Za-z]/) ? id : "##{id}"
+  end
+
   # Allocates the next semantic identifier in the current project and assigns it to the WP.
   # Also writes alias rows for every identifier the project has ever used (including "ghost" aliases).
   #

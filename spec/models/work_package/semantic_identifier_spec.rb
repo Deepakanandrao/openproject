@@ -386,6 +386,23 @@ RSpec.describe WorkPackage::SemanticIdentifier do
     end
   end
 
+  describe "#formatted_id" do
+    context "when semantic mode is active",
+            with_flag: { semantic_work_package_ids: true },
+            with_settings: { work_packages_identifier: "semantic" } do
+      it "returns the semantic identifier as-is" do
+        expect(work_package.formatted_id).to eq("MYPROJ-1")
+      end
+    end
+
+    context "when semantic mode is not active",
+            with_flag: { semantic_work_package_ids: false } do
+      it "returns the numeric id prefixed with #" do
+        expect(work_package.formatted_id).to eq("##{work_package.id}")
+      end
+    end
+  end
+
   describe "#allocate_and_register_semantic_id" do
     let(:project) { create(:project, identifier: "PROJ", wp_sequence_counter: 0) }
     let(:target_project) { create(:project, identifier: "OTHER", wp_sequence_counter: 0) }
