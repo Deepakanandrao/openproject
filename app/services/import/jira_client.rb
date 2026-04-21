@@ -222,13 +222,15 @@ module Import
     ##
     # Downloads a file from the given URL and saves it to a temporary file.
     #
+    # The temporary file is automatically deleted after the block completes.
+    # Use the block to process or copy the file contents before it is removed.
+    #
     # @param content_url [String] The URL to download the attachment from
     # @param filename [String] The name to use for the temporary file
-    # @return [Tempfile] The temporary file containing the downloaded content
+    # @yield [File] The temporary file containing the downloaded content
+    # @return [nil]
     # @raise [ConnectionError] If SSRF protection blocks the request or connection fails
     # @raise [ApiError] If the server returns a non-success response
-    # @note The caller is responsible for removing the temporary file after use,
-    #   for example with +File.unlink+
     def download_attachment(content_url, filename) # rubocop:disable Metrics/AbcSize
       tempfile = nil
       OpenProject::SsrfProtection.get(content_url, headers: @headers, http_options: HTTP_OPTIONS, max_redirects: 1) do |response|
@@ -238,15 +240,18 @@ module Import
           response.read_body do |chunk|
             tempfile.write chunk
           end
+          yield tempfile
         else
           raise ApiError.new(I18n.t("admin.jira.client.api_error"), status: response.code.to_i, response_body: response.body)
         end
       end
-      tempfile
+      nil
     rescue SsrfFilter::Error => e
       raise ConnectionError, I18n.t("admin.jira.client.connection_error", message: e.message)
     rescue Timeout::Error => e
       raise ConnectionError, I18n.t("admin.jira.client.connection_timeout", message: e.message)
+    ensure
+      File.unlink(tempfile) if tempfile
     end
 
     private
