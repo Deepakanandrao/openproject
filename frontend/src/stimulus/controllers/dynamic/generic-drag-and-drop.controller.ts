@@ -132,14 +132,19 @@ export default class GenericDragAndDropController extends Controller {
         mirrorContainer: this.resolveMirrorContainer(),
       },
     )
+      .on('cloned', (clone, _original, type) => {
+        clone.setAttribute('data-dragging', type);
+      })
       .on('drag', (el, source) => {
         this.dragOriginSource = source;
         this.dragOriginNextSibling = el.nextElementSibling;
 
+        el.setAttribute('data-dragging', 'source');
         document.body.setAttribute('data-dragging', 'active');
         this.ariaPressedTarget(el)?.setAttribute('aria-pressed', 'true');
       })
       .on('dragend', (el) => {
+        el.removeAttribute('data-dragging');
         document.body.removeAttribute('data-dragging');
         this.ariaPressedTarget(el)?.setAttribute('aria-pressed', 'false');
       })
