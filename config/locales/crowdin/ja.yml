@@ -114,7 +114,7 @@ ja:
     import:
       title: Import
     jira:
-      title: Jira Import
+      title: Jira Migrator
       description: Use this tool to import data from your Jira instance. You can configure multiple Jira hosts and choose what to import in each import run.
       errors:
         cannot_delete_with_imports: Cannot delete Jira host with existing imports
@@ -125,8 +125,8 @@ ja:
         title: Jira configuration
         new: New configuration
       banner:
-        title: Limited import
-        description: 'This import tool is currently in beta and can only import basic data: projects, issues (name, title, description, attachments), users (name, email, project membership), statuses, and types. It cannot import workflows, custom fields, issue relations, or permissions. We currently only support Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time.'
+        title: Limited import capabilities
+        description: 'This Jira Migrator is currently in beta and can only import basic data: projects, issues (name, title, description, attachments), users (name, email, project membership), statuses, and types. It cannot import workflows, custom fields, issue relations, or permissions. We currently only support Jira Server/Data Center versions 10.x and 11.x. Cloud instances are not supported at this time.'
       form:
         fields:
           name: 名前
@@ -154,6 +154,7 @@ ja:
         connection_timeout: 'Connection to Jira server timed out: %{message}'
         parse_error: 'Failed to parse Jira API response: %{message}'
         api_error: Jira API returned error status %{status}
+        401_error: Jira API returned a 401 error. Your authentication token may have expired or lack the required permissions. Please ensure the token belongs to a Jira administrator.
       columns:
         projects: プロジェクト
         last_change: Last change
@@ -162,7 +163,7 @@ ja:
       run:
         title: Import run
         history: History
-        remove_error: A Jira import cannot be removed while it is running
+        remove_error: A Jira import run cannot be removed while it is running
         import_blocked_error: Another Jira import run is currently in progress or awaiting review. Please complete or revert it before starting a new import.
         project_identifier_taken: 'You are trying to import a project with an already used identifier: %{taken_identifier}. Please update the project identifier in Jira then click on Retry.'
         blank:
@@ -324,13 +325,13 @@ ja:
         success: MCP configuration was updated successfully.
     scim_clients:
       authentication_methods:
-        sso: IDプロバイダーからのJWT
-        oauth2_client: OAuth 2.0クライアント認証情報
+        sso: アイデンティティプロバイダからのJWT
+        oauth2_client: OAuth 2.0 クライアント資格情報
         oauth2_token: 静的アクセストークン
       created_client_credentials_dialog_component:
-        title: クライアント認証情報の作成
-        heading: クライアント認証情報が生成されました
-        one_time_hint: クライアント・シークレットが表示されるのはこの時だけです。必ずコピーしてください。
+        title: クライアントの資格情報が作成されました
+        heading: クライアントの資格情報が生成されました
+        one_time_hint: クライアントのシークレットが表示される唯一の時間です。今すぐコピーしてください。
       created_token_dialog_component:
         title: トークンを作成しました
         heading: トークンが生成されました
@@ -343,21 +344,21 @@ ja:
       edit:
         label_delete_scim_client: SCIM クライアントを削除
       form:
-        auth_provider_description: これは、SCIM プロバイダによって追加されたユーザが OpenProject で認証するために使用するサービスです。
-        authentication_method_description_html: これは SCIM クライアントが OpenProject で認証する方法です。OAuth トークンに<code>scim_v2</code>スコープが含まれていることを確認してください。
-        description: これらの設定オプションの詳細については、[SCIMクライアントの設定に関する文書](docs_url)を参照してください。
+        auth_provider_description: これは、SCIMプロバイダが追加したユーザーがOpenProjectでの認証に使用するサービスです。
+        authentication_method_description_html: これは SCIM クライアントが OpenProject で認証する方法です。OAuth トークンに <code>scim_v2</code> スコープが含まれていることを確認してください。
+        description: 設定オプションの詳細については、[SCIM クライアントの設定に関するドキュメント](docs_url)を参照してください。
         jwt_sub_description: 例えば、Keycloakの場合、これはSCIMクライアントに関連付けられたサービスアカウントのUUIDです。あなたのユースケースにあった Subject claim を見つける方法については [ドキュメント](docs_url) を参照してください。
-        name_description: このクライアントが設定された理由を他の管理者が理解しやすい名前を選んでください。
+        name_description: 他の管理者がこのクライアントが設定された理由を理解するのに役立つ名前を選択してください。
       index:
-        description: ここで設定された SCIM クライアントは、OpenProject SCIM サーバ API と対話し、ユーザアカウントやグループのプロビジョニング、更新、デプロビジョニングを行うことができます。
-        label_create_button: SCIMクライアントの追加
+        description: ここで設定されたSCIMクライアントは、OpenProjectのSCIMサーバー APIと相互作用して、ユーザーアカウントとグループのプロビジョニング、更新、およびデプロビジョニングを行うことができます。
+        label_create_button: SCIMクライアントを追加
       new:
         title: 新しいSCIMクライアント
       revoke_static_token_dialog_component:
         confirm_button: 取り消す
-        title: 静的トークンの失効
-        heading: このトークンを本当に取り消しますか？
-        description: このトークンを使っている SCIM クライアントは、OpenProject の SCIM サーバ API にアクセスできなくなります。
+        title: 静的トークンを取り消す
+        heading: このトークンを取り消してもよろしいですか？
+        description: このトークンを使用する SCIM クライアントは、OpenProject の SCIM サーバ API にアクセスできなくなります。
       table_component:
         blank_slate:
           title: SCIMクライアントがまだ設定されていません
@@ -381,9 +382,9 @@ ja:
         notification_text_default: "<p>Hello,</p> <p>A new project has been created: projectValue:name</p> <p>Thank you</p>\n"
       work_packages_identifier:
         page_header:
-          description: Choose between basic numerical work packages IDs or project-specific ones that prepend the project identifier to the work package ID.
+          description: Choose between classic numerical work package IDs or semantic project-specific ones that prepend the project identifier to the work package ID.
         banner:
-          existing_identifiers_notice: 'Existing identifiers for %{project_count} projects don''t meet requirements for project-based alphanumerical identifiers. OpenProject can automatically update these so that they are valid as in the examples below. Click on ''Autofix and save'' to update identifiers for all projects in this manner and enable project-based alphanumerical identifiers.
+          existing_identifiers_notice: 'Existing identifiers for %{project_count} projects don''t meet requirements for project-based semantic identifiers. OpenProject can automatically update these so that they are valid as in the examples below. Click on ''Autofix and save'' to update identifiers for all projects in this manner and enable project-based semantic identifiers.
 
             '
         box_header:
@@ -392,10 +393,14 @@ ja:
           label_autofixed_suggestion: Future identifier
           label_example_work_package_id: Example work package ID
         autofix_preview:
-          error_too_long: Has to be fewer than 5 characters
+          error_too_long: Has to be 10 characters or fewer
+          error_numerical: Cannot be purely numerical
+          error_starts_with_number: Cannot start with a number
           error_special_characters: Special characters not allowed
+          error_not_fully_uppercased: Must be uppercase
           error_in_use: Already in use as another project's active handle
           error_reserved: Reserved by another project's handle history
+          error_unknown: Needs manual review
           remaining_projects:
             other: "... %{count} more projects"
         button_autofix: Autofix and save
@@ -409,7 +414,7 @@ ja:
           checkbox_label: I understand that this will permanently change all work package IDs
         success_banner: Successfully updated work package identifier format.
         in_progress:
-          banner_message: Project identifiers are currently being updated to project-based alphanumerical identifiers. This may take some time.
+          banner_message: Project identifiers are currently being updated to project-based semantic identifiers. This may take some time.
     workflows:
       tabs:
         default_transitions: Default transitions
@@ -674,6 +679,37 @@ ja:
   danger_dialog:
     confirmation_live_message_checked: The button to proceed is now active.
     confirmation_live_message_unchecked: The button to proceed is now inactive. You need to tick the checkbox to continue.
+  departments:
+    edit: Edit department
+    add_user: Add user
+    add_department: Add department
+    blankslate:
+      heading: Your organization has no departments
+      description: 'Start by adding departments or users to the organization. Each department can be used to create a hierarchy below it, to navigate and create sub-department inside a hierarchy click on the created item.
+
+        '
+      add_button: Add
+    detail_blankslate:
+      heading: This department doesn’t have any hierarchy level below
+      description: Add departments or users to create sub-items inside another one.
+      add_button: Add
+    add_department_form:
+      name_label: Department name
+      name_placeholder: Enter department name
+    move_user_dialog:
+      title: User already in a department
+      heading: Move user to this department?
+      description: "%{user} is currently a member of %{from_department}. Moving them will remove them from that department."
+      confirm: Move user
+    context_menu:
+      add_sub_department: Add sub-department
+      add_user: Add user
+    flash:
+      user_added: User was successfully added to the department.
+      user_removed: User was successfully removed from the department.
+      department_created: Department was successfully created.
+    errors:
+      move_user_failed: Failed to move user between departments.
   pagination:
     label: Pagination
     prev: Previous
@@ -996,26 +1032,26 @@ ja:
         other: また、 %{shared_work_packages_link} はこのユーザーと共有されています。
       remove_project_membership_or_work_package_shares_too: 直接のメンバーとしてのユーザーだけを削除したい（および共有を維持したい）、またはワークパッケージの共有も削除しますか？
       will_remove_all_user_access_priveleges: このメンバーを削除すると、プロジェクトへのユーザーのすべてのアクセス権が削除されます。ユーザーはまだサイトの一部として存在します。
-      will_remove_all_group_access_priveleges: このメンバを削除すると、プロジェクトに対するグループのすべてのアクセス権が削除されます。グループはサイトの一部としてまだ存在します。
-      cannot_delete_inherited_membership: このプロジェクトのメンバーであるグループに所属しているため、このメンバーを削除することはできません。
-      cannot_delete_inherited_membership_note_admin_html: "%{administration_settings_link}で、プロジェクトのメンバーとしてグループを削除することも、特定のメンバーをグループから削除することもできます。"
-      cannot_delete_inherited_membership_note_non_admin: プロジェクトのメンバーとしてグループを削除するか、管理者に連絡してこの特定のメンバーをグループから削除することができます。
+      will_remove_all_group_access_priveleges: このメンバーを削除すると、グループのすべてのアクセス権がプロジェクトに削除されます。グループはサイトの一部として存在します。
+      cannot_delete_inherited_membership: このメンバーはこのプロジェクトのメンバーであるグループに属しているため、削除できません。
+      cannot_delete_inherited_membership_note_admin_html: プロジェクトのメンバーとしてグループを削除するか、 %{administration_settings_link} のグループからこの特定のメンバーを削除することができます。
+      cannot_delete_inherited_membership_note_non_admin: プロジェクトのメンバーとしてグループを削除するか、管理者に問い合わせてグループから特定のメンバーを削除することができます。
     delete_work_package_shares_dialog:
-      title: ワーク・パッケージ・シェアの破棄
+      title: ワークパッケージの共有の取り消し
       shared_with_this_user_html:
         other: "%{all_shared_work_packages_link} はこのユーザーと共有されています。"
       shared_with_this_group_html:
         other: "%{all_shared_work_packages_link} はこのグループと共有されています。"
       shared_with_permission_html:
         other: "%{shared_work_packages_link} のみが %{shared_role_name} 権限と共有されています。"
-      revoke_all_or_with_role: すべての共有ワークパッケージ、または %{shared_role_name} 権限を持つワークパッケージのみへのアクセス権を剥奪しますか？
-      will_not_affect_inherited_shares: "(これは、そのグループと共有しているワークパッケージには影響しません）。"
-      cannot_remove_inherited: グループで共有されたワークパッケージの共有は削除できません。
-      cannot_remove_inherited_with_role: ロール %{shared_role_name} で共有されるワークパッケージは、グループを介して共有され、削除することはできません。
-      cannot_remove_inherited_note_admin_html: "%{administration_settings_link}、グループへの共有を取り消すか、グループからこの特定のメンバーを削除することができます。"
-      cannot_remove_inherited_note_non_admin: グループへの共有を取り消すか、管理者に連絡して特定のメンバーをグループから削除することができます。
-      will_revoke_directly_granted_access: このアクションは、グループと共有されているワークパッケージ以外の、すべてのワークパッケージへのアクセス権を剥奪する。
-      will_revoke_access_to_all: このアクションは、すべてのアクセス権を剥奪する。
+      revoke_all_or_with_role: 共有されたワークパッケージ、または %{shared_role_name} 権限を持つワークパッケージのみへのアクセスを取り消しますか？
+      will_not_affect_inherited_shares: "(これはグループと共有されているワークパッケージには影響しません)。"
+      cannot_remove_inherited: グループ間で共有されるワークパッケージは削除できません。
+      cannot_remove_inherited_with_role: ワークパッケージとロール %{shared_role_name} が共有されているため、削除できません。
+      cannot_remove_inherited_note_admin_html: あなたは、グループへの共有を取り消すか、 %{administration_settings_link} のグループからこの特定のメンバーを削除することができます。
+      cannot_remove_inherited_note_non_admin: 共有をグループに取り消すか、管理者に問い合わせてグループから特定のメンバーを削除することができます。
+      will_revoke_directly_granted_access: このアクションは、すべてのユーザーへのアクセスを取り消しますが、グループと共有されているワークパッケージです。
+      will_revoke_access_to_all: このアクションは、すべてのユーザーへのアクセスを取り消します。
   my:
     access_token:
       dialog:
@@ -1039,7 +1075,7 @@ ja:
       no_results_title_text: 現在、有効なアクセス トークンはありません。
       notice_api_token_revoked: APIトークンが削除されました。新しいトークンを作成するには、APIセクションの作成ボタンを使用してください。
       notice_rss_token_revoked: RSSトークンが削除されました。新しいトークンを作成するには、RSSセクションのリンクを使用してください。
-      notice_ical_token_revoked: プロジェクト "%{project_name}" のカレンダー "%{calendar_name}" の iCalendar トークン "%{token_name}" が失効しました。このトークンを持つiCalendar URLは無効になりました。
+      notice_ical_token_revoked: プロジェクト "%{token_name}" のカレンダー "%{calendar_name}" の iCalendar トークン "%{project_name}" が取り消されました。 このトークンのiCalendar URLは無効です。
     password_confirmation_dialog:
       confirmation_required: You need to enter your account password to confirm this change.
       title: Confirm your password to continue
@@ -1060,7 +1096,7 @@ ja:
       matrix_check_uncheck_all_in_col_label_html: Toggle all %{module} permissions for <em>%{role}</em> role
   users:
     autologins:
-      prompt: ログインしたまま %{num_days}
+      prompt: "%{num_days} のログインを維持"
     sessions:
       session_name: "%{browser_name} %{browser_version} の %{os_name}"
       browser: ブラウザ
@@ -1074,17 +1110,17 @@ ja:
       current: Current (this device)
       title: セッション管理
       instructions: You are logged in to your account through the following devices. Revoke sessions that you do not recognise or from devices you do not control.
-      may_not_delete_current: 現在のセッションを削除することはできません。
+      may_not_delete_current: 現在のセッションは削除できません。
       deletion_warning: Are you sure you want to revoke this session? You will be logged out on this device.
     groups:
       member_in_these_groups: このユーザーは現在以下のグループのメンバーです：
       no_results_title_text: このユーザーは現在どのグループのメンバーでもありません。
       summary_with_more_html: Member of %{names} and %{count_link}.
-      more: "%{count} もっと見る"
+      more: "%{count} 以上"
       summary_html: Member of %{names}.
     memberships:
       no_results_title_text: このユーザは現在プロジェクトのメンバーではありません。
-    open_profile: プロフィール
+    open_profile: プロファイルを開く
     invite_user_modal:
       invite: 招待
       title:
@@ -1201,7 +1237,7 @@ ja:
     right_to_manage_members_missing: 'プレースホルダーユーザを削除する権限がありません。 プレースホルダー ユーザーがメンバーであるすべてのプロジェクトのメンバーを管理する権利はありません。
 
       '
-    delete_tooltip: プレースホルダー・ユーザーの削除
+    delete_tooltip: プレースホルダー ユーザーを削除
     deletion_info:
       heading_html: Delete placeholder user %{name}
       data_consequences: 'プレースホルダー ユーザのすべての発生(担当者、担当者、その他のユーザ値など)は、「削除されたユーザー」というアカウントに再割り当てられます。 削除されたすべてのアカウントのデータがこのアカウントに再割り当てられるため、ユーザーが作成したデータと別の削除されたアカウントのデータを区別することはできません。
@@ -1220,11 +1256,11 @@ ja:
   reactions:
     action_title: リアクト
     add_reaction: リアクションを追加
-    react_with: "%{reaction} と リアクト"
-    and_user: および %{user}
+    react_with: "%{reaction} で反応する"
+    and_user: と %{user}
     and_others:
       other: と %{count} その他
-    reaction_by: "%{reaction} によって"
+    reaction_by: "%{reaction} による"
   reportings:
     index:
       no_results_title_text: 現在、ステータス報告はありません。
@@ -1234,19 +1270,20 @@ ja:
       status_color_text: |
         このステータスの色を割り当てたり変更する場合にクリックします。
         ステータスボタンに表示され、テーブル内のワークパッケージを強調表示するために使用できます。
-      status_default_text: 新しいワークパッケージは、デフォルトでこのタイプに設定される。読み取り専用にはできない。
+      status_default_text: 新しいワークパッケージはデフォルトでこのタイプに設定されています。読み取り専用にすることはできません。
       status_excluded_from_totals_text: |-
-        このステータスを持つワークパッケージを、階層内の「作業」、「
-        残作業」、「完了率」の合計から除外するには、このオプションをオンにします。
+        このオプションをオンにすると、このステータスのワークパッケージを合計作業量、
+        残作業量、および階層構造で完了させることができます。
       status_percent_complete_text_html: |-
         In [status-based progress calculation mode](setting_url), the % Complete of a work
         package is automatically set to this value when this status is selected.
         Ignored in work-based mode.
       status_readonly_html: |
-        このステータスを持つワークパッケージを読み取り専用としてマークするには、このオプションをチェックする。
-        ステータス以外の属性は変更できません。
+        ワークパッケージを読み取り専用としてマークするには、このオプションをオンにしてください。
+        ステータスを除いて変更することはできません。
+
         <br>
-        <strong>注意</strong>: 継承された値 (子やリレーションなど) は適用されます。
+        <strong>メモ</strong>: 継承された値 (例えば、子や関連) が適用されます。
     index:
       no_results_title_text: 現在、ワークパッケージのステータスはありません。
       no_results_content_text: 新しいステータスを追加
@@ -1256,7 +1293,7 @@ ja:
         is_readonly: 読み取り専用
         excluded_from_totals: 合計から除外
   themes:
-    dark: 暗い
+    dark: ダーク
     light: ライト
     sync_with_os: 自動(OSのテーマ設定に追従)
   types:
@@ -1324,6 +1361,20 @@ ja:
     index:
       no_results_title_text: 現在、ワークフローはありません。
   work_packages:
+    delete_dialog:
+      title: Delete work package
+      heading: Permanently delete this work package?
+      description: Are you sure you want to delete the work package "%{name}"?
+      confirm_descendants_deletion: I acknowledge that ALL descendants of this work package will be recursively removed.
+      cross_project_warning: 'Work packages from the following projects will be deleted: %{projects}'
+    bulk_delete_dialog:
+      title: Delete %{count} work packages
+      heading: Permanently delete these %{count} work packages?
+      description: 'The following work packages, including children and all associated data, will permanently be deleted:'
+      description_with_children: 'The following work packages, including child work packages, and all associated data will be permanently deleted:'
+      confirm_children_deletion: I acknowledge that all selected work packages and their children will be permanently deleted.
+      cross_project_warning: 'These work packages span multiple projects: %{projects}'
+      children_label: 'The following children will also be deleted:'
     datepicker_modal:
       banner:
         description:
@@ -1374,15 +1425,15 @@ ja:
       could_not_be_saved: '次のワークパッケージを保存できませんでした:'
       none_could_be_saved: "%{total} ワークパッケージのどれも更新できませんでした。"
       x_out_of_y_could_be_saved: "%{failing} の %{total} ワークパッケージのうち、 %{success} を更新できませんでした。"
-      selected_because_descendants: "%{selected} のワークパッケージが選択されたが、合計 %{total} のワークパッケージが影響を受け、その中には子孫も含まれる。"
-      descendant: 選択された子孫
+      selected_because_descendants: "%{selected} ワークパッケージが選択されている間、合計で %{total} ワークパッケージが子孫を含む影響を受けます。"
+      descendant: 選択された子孫です
     move:
       no_common_statuses_exists: 選択されたすべてのワークパッケージに利用できるステータスはありません。 それらの状態は変更できません。
       unsupported_for_multiple_projects: 複数のプロジェクトからのワークパッケージの一括移動 / コピーはサポートされていません
-      current_type_not_available_in_target_project: 'ワークパッケージの現在のタイプがターゲットプロジェクトで有効になっていません。変更しない場合は、ターゲットプロジェクトでタイプを有効にしてください。そうでない場合は、リストからターゲットプロジェクトで使用可能なタイプを選択してください。
+      current_type_not_available_in_target_project: 'ターゲット プロジェクトで現在のワークパッケージのタイプが有効になっていません。 変更を行わないようにしたい場合は、対象プロジェクトのタイプを有効にしてください。 それ以外の場合は、リストからターゲット プロジェクトで使用可能なタイプを選択します。
 
         '
-      bulk_current_type_not_available_in_target_project: 'ワークパッケージの現在のタイプがターゲットプロジェクトで有効になっていません。変更しない場合は、ターゲットプロジェクトでタイプを有効にしてください。そうでない場合は、リストからターゲットプロジェクトで使用可能なタイプを選択してください。
+      bulk_current_type_not_available_in_target_project: '現在のタイプのワークパッケージはターゲット プロジェクトで有効になっていません。 変更を行わないようにしたい場合は、対象プロジェクトのタイプを有効にしてください。 それ以外の場合は、リストからターゲット プロジェクトで使用可能なタイプを選択します。
 
         '
     sharing:
@@ -1408,9 +1459,9 @@ ja:
           no_results_title_text: 現在、有効なバージョンはありません。
   work_package_relations_tab:
     index:
-      action_bar_title: 他のワークパッケージとのリレーションを追加して、それらの間にリンクを作成する。
-      no_results_title_text: 現在、利用可能な関係はない。
-      blankslate_heading: 関係なし
+      action_bar_title: 他のワークパッケージにリレーションを追加して、その間にリンクを作成します。
+      no_results_title_text: 現在利用可能なリレーションはありません。
+      blankslate_heading: リレーションなし
       blankslate_description: このワークパッケージにはまだリレーションがありません。
     label_add_child_button: 子要素
     label_add_x: "%{x} を追加"
@@ -1518,6 +1569,9 @@ ja:
         dependencies: 依存関係
   activerecord:
     attributes:
+      work_package_semantic_alias:
+        identifier: Identifier
+        work_package: Work package
       jira_import:
         projects: Projects
       import/jira:
@@ -1526,7 +1580,7 @@ ja:
         personal_access_token: Personal access token
       import/jira_open_project_reference:
         jira: Jira
-        jira_import: Jira import
+        jira_import: Jira Migrator
       announcements:
         show_until: までを表示
       attachment:
@@ -1782,6 +1836,7 @@ ja:
         identity_url: アイデンティティ URL
         parent: Parent group
         organizational_unit: Organizational unit
+        group_users: Group users
       group_detail:
         parent: Parent group
         organizational_unit: Organizational unit
@@ -1901,6 +1956,7 @@ ja:
         confirmation: は%{attribute} と一致しません。
         could_not_be_copied: "%{dependency} を（完全に）コピーできませんでした。"
         does_not_exist: は存在しません。
+        user_already_in_department: User %{user_id} is already a member of department %{department_id}.
         error_enterprise_only: "%{action} is only available in the OpenProject Enterprise edition."
         error_unauthorized: アクセスできません。
         error_readonly: 書けませんでした。
@@ -1967,6 +2023,7 @@ ja:
           attributes:
             parent_id:
               circular_dependency: would create a circular group hierarchy.
+              organizational_unit_mismatch: must have the same organizational unit setting as the group.
         ldap_auth_source:
           attributes:
             tls_certificate_string:
@@ -2429,7 +2486,6 @@ ja:
     avatar: アバター
     base: '一般的なエラー:'
     body: 本文
-    blocks_ids: ブロックされているワークパッケージのID
     category: カテゴリ
     comment: コメント
     comments: コメント
@@ -2866,6 +2922,7 @@ ja:
       title: エンタープライズアドオン
       plan_title: エンタープライズ%{plan}アドオン
       plan_name: "%{plan}のエンタープライズプラン"
+      trial_text: This feature is included in your active Enterprise trial.
       plan_text_html: "%{plan_name} から利用できます。"
       unlimited: 無制限です
       already_have_token: 'すでにトークンをお持ちですか？予約済みのエンタープライズプランにアップグレードするには、下のボタンを使用して追加してください。
@@ -3334,6 +3391,11 @@ ja:
     quick_add:
       label: 追加
   my_account:
+    notifications_and_email:
+      title: Notification and email
+      tabs:
+        notifications: Notification settings
+        email_reminders: Email reminders
     access_tokens:
       description: Provider tokens are issued by OpenProject, allowing other applications to access it. Client tokens are issued by other applications, allowing OpenProject to access them.
       no_results:
@@ -3396,6 +3458,72 @@ ja:
         disabled_text: RSS tokens are not enabled by the administrator. Please contact your administrator to use this feature.
       storages:
         unknown_storage: 不明なストレージ
+    email_reminders:
+      immediate_reminders:
+        title: Send me an email reminder
+        mentioned: Notify me when I am mentioned
+        personal_reminder: Notify me for personal reminders
+      daily_reminders:
+        title: Send me daily email reminders for unread notifications
+        caption: You will receive these reminders only for unread notifications and only at hours you specify. Until you configure a time zone for your account, the times will be interpreted to be in UTC.
+        enabled: Enable daily email reminders
+        add_time: Add time
+        remove_time: Remove time
+        time_slot_label: Reminder time (UTC)
+      workdays:
+        title: Receive email reminders on these days
+        submit_button: Update reminder days
+      pause_reminders:
+        title: Pause email notifications
+        enabled: Temporarily pause daily email reminders
+        date_range: Pause period
+      email_alerts:
+        title: Email alerts for other items that are not work packages
+        news_added: News added
+        news_commented: Comment on a news item
+        document_added: Document added
+        forum_messages: Forum message posted
+        wiki_page_added: Wiki page added
+        wiki_page_updated: Wiki page updated
+        membership_added: Membership added
+        membership_updated: Membership updated
+        submit_button: Update alerts
+    notifications:
+      participating:
+        title: Participating
+        submit_button: Update preferences
+        mentioned: Mentioned
+        watched: Watching
+        assignee: Assignee
+        responsible: Accountable
+        shared: Shared with me
+      date_alerts:
+        title: Date alerts
+        submit_button: Update date alerts
+        start_date: Start date
+        due_date: Finish date
+        overdue: Overdue
+        times:
+          same_day: On the same day
+          one_day_before: 1 day before
+          three_days_before: 3 days before
+          seven_days_before: 7 days before
+          one_day_after: 1 day after
+          three_days_after: 3 days after
+          seven_days_after: 7 days after
+      non_participating:
+        title: Non-participating
+        submit_button: Update preferences
+        work_package_created: New work packages
+        work_package_commented: All new comments
+        work_package_processed: All status changes
+        work_package_prioritized: All priority changes
+        work_package_scheduled: All date changes
+      project_specific_settings:
+        title: Project-specific notification settings
+        add_button: Add project-specific notifications
+        dialog_title: Add project-specific notifications
+        list_header: Projects with specific notifications
   notifications:
     reasons:
       assigned: 担当者
@@ -3427,6 +3555,7 @@ ja:
       invalid_filter: 無効な通知フィルター
   label_accessibility: アクセシビリティ
   label_account: アカウント
+  label_actions: 操作
   label_active: アクティブ
   label_activate_user: ユーザーのアクティベート
   label_active_in_new_projects: 新しいプロジェクトでアクティブ
@@ -3467,6 +3596,7 @@ ja:
   label_ical_access_key_generation_hint: カレンダーを購読するときに自動的に生成されます。
   label_ical_access_key_latest: 最新
   label_ical_access_key_revoke: 取り消し
+  label_integrations: Integrations
   label_add_column: カラムを追加
   label_applied_status: 適用されるステータス
   label_archive_project: プロジェクトをアーカイブ
@@ -3717,7 +3847,7 @@ ja:
   label_external_links: External links
   label_locale: 言語と地域
   label_jump_to_a_project: プロジェクトへ移動...
-  label_jira_import: Jira Import
+  label_jira_import: Jira Migrator
   label_keyword_plural: キーワード
   label_language_based: ユーザの言語設定に基づく
   label_last_activity: 最新の活動
@@ -3755,6 +3885,10 @@ ja:
   label_custom_pdf_export_settings: PDF エクスポートの設定
   label_custom_favicon: カスタムの favicon
   label_custom_touch_icon: カスタムのタッチアイコン
+  label_departments: Organization
+  label_departments_description_html: 'Define your company’s structure by creating departments and sub-departments in a hierarchical way. This allows you to reflect reporting lines and maintain a clear, structured overview of your organization within OpenProject. You can also import an existing organization structure through [LDAP group synchronisation](ldap_docs_article).
+
+    '
   label_logout: ログアウト
   label_mapping_for: 'マッピング: %{attribute}'
   label_main_menu: サイドメニュー
@@ -4818,6 +4952,7 @@ ja:
     '
   setting_app_subtitle: アプリケーションのサブタイトル
   setting_app_title: アプリケーションのタイトル
+  setting_organization_name: Organization name
   setting_attachment_max_size: 添付ファイルの最大サイズ
   setting_show_work_package_attachments: デフォルトで添付ファイルをファイルタブに表示
   setting_antivirus_scan_mode: スキャンモード
@@ -4962,12 +5097,12 @@ ja:
   setting_welcome_text: ようこそブロックのテキスト
   setting_welcome_title: ようこそブロックのタイトル
   setting_welcome_on_homescreen: ホーム画面にようこそブロックを表示
-  setting_work_packages_identifier_numeric: Instance-wide numerical sequence (default)
-  setting_work_packages_identifier_numeric_caption: 'Every work package gets a sequential number starting with 1 and incremented with every new one. The numbers are unique within this instance so they remain the same even if work packages are moved between projects.
+  setting_work_packages_identifier_classic: Instance-wide numerical sequence (default)
+  setting_work_packages_identifier_classic_caption: 'Every work package gets a sequential number starting with 1 and incremented with every new one. The numbers are unique within this instance so they remain the same even if work packages are moved between projects.
 
     '
-  setting_work_packages_identifier_alphanumeric: Project-based alphanumerical identifiers
-  setting_work_packages_identifier_alphanumeric_caption: 'Every project has a unique identifier that is prefixed to the work package ID. If a work package moved to another project, a new identifier is generated but the old one continues to function.
+  setting_work_packages_identifier_semantic: Project-based semantic identifiers
+  setting_work_packages_identifier_semantic_caption: 'Every project has a unique identifier that is prefixed to the work package ID. If a work package moved to another project, a new identifier is generated but the old one continues to function.
 
     '
   setting_work_package_list_default_highlighting_mode: デフォルトの強調表示モード

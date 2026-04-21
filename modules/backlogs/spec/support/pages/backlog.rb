@@ -44,7 +44,7 @@ module Pages
         attributes.each do |key, value|
           details_view
             .edit_field(key.to_s.camelize(:lower))
-            .update(value) # rubocop:disable Rails/SaveBang
+            .update(value)
 
           details_view.expect_and_dismiss_toaster message: "Successful update."
         end
@@ -334,8 +334,17 @@ module Pages
       click_on "Cancel"
     end
 
+    def visit!
+      super
+
+      expect(page).to have_css("turbo-frame#backlogs_container", wait: 10)
+      expect(page).to have_css("#owner_backlogs_container", wait: 10)
+      expect(page).to have_css("#sprint_backlogs_container", wait: 10)
+      wait_for_network_idle
+    end
+
     def path
-      backlog_backlogs_project_backlogs_path(project)
+      project_backlogs_backlog_path(project)
     end
 
     def within_story_menu(story, &)
@@ -356,7 +365,7 @@ module Pages
       details_view.expect_tab :overview
       details_view.expect_subject
 
-      expect(page).to have_current_path details_backlogs_project_backlogs_path(story.project, story)
+      expect(page).to have_current_path project_backlogs_backlog_details_path(story.project, story)
       wait_for_network_idle
 
       details_view
@@ -374,12 +383,12 @@ module Pages
       expect(page).to have_css("#create-work-package-dialog")
     end
 
-    def expect_sprint_finishing_modal
-      expect(page).to have_css sprint_finish_modal_selector
+    def expect_sprint_completing_modal
+      expect(page).to have_css sprint_complete_modal_selector
     end
 
     def expect_sprints_to_choose_for_moving_unfinished_work_packages_to(*sprints)
-      within sprint_finish_modal_selector do
+      within sprint_complete_modal_selector do
         expect(page).to have_select("Select sprint", options: sprints.map(&:name))
       end
     end
@@ -395,14 +404,24 @@ module Pages
       within(work_package_selector(work_package), &)
     end
 
-    def click_to_finish_sprint(sprint)
-      within_sprint_menu(sprint) do |menu|
-        menu.find(:button, "Complete sprint").click
+    def click_start_sprint_button(sprint)
+      within_sprint(sprint) do
+        click_on("Start")
       end
     end
 
+    def click_complete_sprint_button(sprint)
+      within_sprint(sprint) do
+        click_on("Complete")
+      end
+    end
+
+    def click_to_complete_sprint(sprint)
+      click_complete_sprint_button(sprint)
+    end
+
     def choose_to_move_unfinished_work_packages_to_sprint(sprint_name)
-      within sprint_finish_modal_selector do
+      within sprint_complete_modal_selector do
         choose I18n.t("backlogs.finish_sprint_dialog_component.actions.move_to_sprint")
         select sprint_name, from: "Select sprint"
 
@@ -411,7 +430,7 @@ module Pages
     end
 
     def choose_to_move_unfinished_work_packages_to_top_of_backlog
-      within sprint_finish_modal_selector do
+      within sprint_complete_modal_selector do
         choose I18n.t("backlogs.finish_sprint_dialog_component.actions.move_to_top_of_backlog")
 
         click_button "Complete sprint"
@@ -419,7 +438,7 @@ module Pages
     end
 
     def choose_to_move_unfinished_work_packages_to_bottom_of_backlog
-      within sprint_finish_modal_selector do
+      within sprint_complete_modal_selector do
         choose I18n.t("backlogs.finish_sprint_dialog_component.actions.move_to_bottom_of_backlog")
 
         click_button "Complete sprint"
@@ -452,10 +471,6 @@ module Pages
       test_selector("sprint-#{sprint.id}")
     end
 
-    def backlog_selector(backlog)
-      "#backlog_#{backlog.id}"
-    end
-
     def story_selector(story)
       "#story_#{story.id}"
     end
@@ -464,7 +479,7 @@ module Pages
       test_selector("work-package-#{work_package.id}")
     end
 
-    def sprint_finish_modal_selector
+    def sprint_complete_modal_selector
       "##{::Backlogs::FinishSprintDialogComponent::DIALOG_ID}"
     end
 

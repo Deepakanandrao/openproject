@@ -46,7 +46,7 @@ module WorkPackages
           super()
           @state = state
           if state == :edit
-            result         = WorkPackages::IdentifierAutofix::PreviewQuery.new.call
+            result         = ProjectIdentifiers::IdentifierAutofix::PreviewQuery.new.call
             @projects_data = result.projects_data
             @total_count   = result.total_count
           else
@@ -64,7 +64,7 @@ module WorkPackages
         def form_id = "wp-identifier-settings-form"
 
         def show_autofix_section?
-          state == :edit && Setting::WorkPackageIdentifier.alphanumeric? && has_problematic_projects?
+          state == :edit && Setting::WorkPackageIdentifier.semantic? && has_problematic_projects?
         end
 
         def change_in_progress? = state == :change_in_progress

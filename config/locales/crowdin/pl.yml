@@ -114,7 +114,7 @@ pl:
     import:
       title: Import
     jira:
-      title: Import Jira
+      title: Migrator Jira
       description: To narzędzie służy do importowania danych z wystąpienia usługi Jira. Można skonfigurować wiele hostów usługi Jira i wybrać, co ma być importowane w każdym przebiegu importu.
       errors:
         cannot_delete_with_imports: Nie można usunąć hosta Jira z istniejącym importem
@@ -125,8 +125,8 @@ pl:
         title: Konfiguracja usługi Jira
         new: Nowa konfiguracja
       banner:
-        title: Ograniczony import
-        description: 'To narzędzie importu jest obecnie w wersji beta i może importować tylko podstawowe dane: projekty, zgłoszenia problemów (nazwa, tytuł, opis, załączniki), użytkowników (nazwa, adres e-mail, członkostwo w projekcie), statusy i typy. Nie może importować przepływów pracy, pól niestandardowych, relacji między problemami ani uprawnień. Obecnie obsługujemy tylko serwery / centra danych Jira w wersjach 10.x i 11.x. Wystąpienia w chmurze nie są obecnie obsługiwane.'
+        title: Ograniczone możliwości importu
+        description: 'Ten migrator Jira jest obecnie w wersji beta i może importować tylko podstawowe dane: projekty, zgłoszenia problemów (nazwa, tytuł, opis, załączniki), użytkowników (nazwa, adres e-mail, członkostwo w projekcie), statusy i typy. Nie może importować przepływów pracy, pól niestandardowych, relacji między problemami ani uprawnień. Obecnie obsługujemy tylko serwery / centra danych Jira w wersjach 10.x i 11.x. Wystąpienia w chmurze nie są obecnie obsługiwane.'
       form:
         fields:
           name: Nazwa
@@ -154,6 +154,7 @@ pl:
         connection_timeout: 'Upłynął limit czasu połączenia z serwerem Jira: %{message}'
         parse_error: 'Nie udało się przeanalizować odpowiedzi interfejsu API usługi Jira: %{message}'
         api_error: Interfejs API usługi Jira zwrócił status błędu %{status}
+        401_error: Jira API returned a 401 error. Your authentication token may have expired or lack the required permissions. Please ensure the token belongs to a Jira administrator.
       columns:
         projects: Projekty
         last_change: Ostatnia zmiana
@@ -399,9 +400,9 @@ pl:
         notification_text_default: "<p>Witaj,</p> <p>Utworzono nowy projekt: projectValue:name</p> <p>Dziękujemy</p>\n"
       work_packages_identifier:
         page_header:
-          description: Wybierz między podstawowymi identyfikatorami liczbowymi pakietów roboczych a identyfikatorami specyficznymi dla projektu, które dodają identyfikator projektu jako prefiks do identyfikatora pakietu roboczego.
+          description: Wybierz pomiędzy klasycznymi numerycznymi identyfikatorami pakietów roboczych albo semantycznymi identyfikatorami specyficznymi dla projektu, które dodają identyfikator projektu do identyfikatora pakietu roboczego.
         banner:
-          existing_identifiers_notice: 'Istniejące identyfikatory %{project_count} projektów nie spełniają wymagań dotyczących identyfikatorów alfanumerycznych opartych na projektach. OpenProject może automatycznie zaktualizować je tak, aby były prawidłowe, jak w poniższych przykładach. Kliknij przycisk „Automatyczne napraw i zapisz”, aby zaktualizować identyfikatory wszystkich projektów w ten sposób i włączyć identyfikatory alfanumeryczne oparte na projektach.
+          existing_identifiers_notice: 'Istniejące identyfikatory %{project_count} projektów nie spełniają wymagań dotyczących identyfikatorów semantycznych opartych na projektach. OpenProject może automatycznie zaktualizować je tak, aby były prawidłowe, jak w poniższych przykładach. Kliknij przycisk „Automatyczne napraw i zapisz”, aby zaktualizować identyfikatory wszystkich projektów w ten sposób i włączyć identyfikatory semantyczne oparte na projektach.
 
             '
         box_header:
@@ -410,10 +411,14 @@ pl:
           label_autofixed_suggestion: Przyszły identyfikator
           label_example_work_package_id: Przykładowy identyfikator pakietu roboczego
         autofix_preview:
-          error_too_long: Musi składać się z mniej niż 5 znaków
+          error_too_long: Musi składać się z nie więcej niż 10 znaków
+          error_numerical: Nie może być czysto liczbowy
+          error_starts_with_number: Nie może zaczynać się od cyfry
           error_special_characters: Znaki specjalne są niedozwolone
+          error_not_fully_uppercased: Musi być pisany wielkimi literami
           error_in_use: Już używany jako aktywne dojście innego projektu
           error_reserved: Zarezerwowany przez historię dojść innego projektu
+          error_unknown: Wymaga ręcznego sprawdzenia
           remaining_projects:
             one: "...jeszcze 1 projekt"
             few: "...jeszcze %{count} projekty"
@@ -430,7 +435,7 @@ pl:
           checkbox_label: Rozumiem, że spowoduje to trwałą zmianę wszystkich identyfikatorów pakietów roboczych
         success_banner: Pomyślnie zaktualizowano format identyfikatora pakietu roboczego.
         in_progress:
-          banner_message: Identyfikatory projektów są obecnie zmieniane na identyfikatory alfanumeryczne oparte na projektach. Może to zająć trochę czasu.
+          banner_message: Identyfikatory projektów są obecnie zmieniane na identyfikatory semantyczne oparte na projektach. Może to zająć trochę czasu.
     workflows:
       tabs:
         default_transitions: Przejścia domyślne
@@ -697,6 +702,37 @@ pl:
   danger_dialog:
     confirmation_live_message_checked: Przycisk kontynuowania jest już aktywny.
     confirmation_live_message_unchecked: Przycisk kontynuowania jest teraz nieaktywny. Aby kontynuować, zaznacz pole wyboru.
+  departments:
+    edit: Edit department
+    add_user: Add user
+    add_department: Add department
+    blankslate:
+      heading: Your organization has no departments
+      description: 'Start by adding departments or users to the organization. Each department can be used to create a hierarchy below it, to navigate and create sub-department inside a hierarchy click on the created item.
+
+        '
+      add_button: Add
+    detail_blankslate:
+      heading: This department doesn’t have any hierarchy level below
+      description: Add departments or users to create sub-items inside another one.
+      add_button: Add
+    add_department_form:
+      name_label: Department name
+      name_placeholder: Enter department name
+    move_user_dialog:
+      title: User already in a department
+      heading: Move user to this department?
+      description: "%{user} is currently a member of %{from_department}. Moving them will remove them from that department."
+      confirm: Move user
+    context_menu:
+      add_sub_department: Add sub-department
+      add_user: Add user
+    flash:
+      user_added: User was successfully added to the department.
+      user_removed: User was successfully removed from the department.
+      department_created: Department was successfully created.
+    errors:
+      move_user_failed: Failed to move user between departments.
   pagination:
     label: Paginacja
     prev: Wstecz
@@ -1373,6 +1409,20 @@ pl:
     index:
       no_results_title_text: Nie ma jeszcze żadnego obiegu pracy.
   work_packages:
+    delete_dialog:
+      title: Delete work package
+      heading: Permanently delete this work package?
+      description: Are you sure you want to delete the work package "%{name}"?
+      confirm_descendants_deletion: I acknowledge that ALL descendants of this work package will be recursively removed.
+      cross_project_warning: 'Work packages from the following projects will be deleted: %{projects}'
+    bulk_delete_dialog:
+      title: Delete %{count} work packages
+      heading: Permanently delete these %{count} work packages?
+      description: 'The following work packages, including children and all associated data, will permanently be deleted:'
+      description_with_children: 'The following work packages, including child work packages, and all associated data will be permanently deleted:'
+      confirm_children_deletion: I acknowledge that all selected work packages and their children will be permanently deleted.
+      cross_project_warning: 'These work packages span multiple projects: %{projects}'
+      children_label: 'The following children will also be deleted:'
     datepicker_modal:
       banner:
         description:
@@ -1568,6 +1618,9 @@ pl:
         dependencies: Zależności
   activerecord:
     attributes:
+      work_package_semantic_alias:
+        identifier: Identyfikator
+        work_package: Pakiet roboczy
       jira_import:
         projects: Projekty
       import/jira:
@@ -1576,7 +1629,7 @@ pl:
         personal_access_token: Osobisty token dostępu
       import/jira_open_project_reference:
         jira: Jira
-        jira_import: Import Jira
+        jira_import: Migrator Jira
       announcements:
         show_until: Wyświetlaj do
       attachment:
@@ -1832,6 +1885,7 @@ pl:
         identity_url: Adres URL tożsamości
         parent: Grupa nadrzędna
         organizational_unit: Jednostka organizacyjna
+        group_users: Group users
       group_detail:
         parent: Grupa nadrzędna
         organizational_unit: Jednostka organizacyjna
@@ -1949,6 +2003,7 @@ pl:
         confirmation: nie pasuje do %{attribute}.
         could_not_be_copied: Nie można było (w pełni) skopiować %{dependency}.
         does_not_exist: nie istnieje.
+        user_already_in_department: User %{user_id} is already a member of department %{department_id}.
         error_enterprise_only: "%{action} – dostępne tylko w OpenProject Enterprise edition."
         error_unauthorized: "— nie można uzyskac dostępu."
         error_readonly: "— podjęto próbę zapisu, ale nie jest zapisywalny."
@@ -2015,6 +2070,7 @@ pl:
           attributes:
             parent_id:
               circular_dependency: spowodowałoby utworzenie cyklicznej hierarchii grup.
+              organizational_unit_mismatch: must have the same organizational unit setting as the group.
         ldap_auth_source:
           attributes:
             tls_certificate_string:
@@ -2535,7 +2591,6 @@ pl:
     avatar: Awatar
     base: 'Błąd ogólny:'
     body: Treść
-    blocks_ids: Identyfikatory zablokowanych pakietów roboczych
     category: Kategoria
     comment: Typ kosztu
     comments: Komentarz
@@ -3032,6 +3087,7 @@ pl:
       title: Dodatek wersji Enterprise
       plan_title: Dodatek do planu Enterprise %{plan}
       plan_name: Plan Enterprise %{plan}
+      trial_text: This feature is included in your active Enterprise trial.
       plan_text_html: Dostępne od wersji %{plan_name}.
       unlimited: Bez ograniczeń
       already_have_token: 'Masz już token? Dodaj go za pomocą poniższego przycisku, aby przejść na zarezerwowany plan Enterprise.
@@ -3501,6 +3557,11 @@ pl:
     quick_add:
       label: Dodaj…
   my_account:
+    notifications_and_email:
+      title: Powiadomienia i wiadomości e-mail
+      tabs:
+        notifications: Ustawienia powiadomień
+        email_reminders: Przypomnienia e-mail
     access_tokens:
       description: Tokeny dostawcy są wydawane przez OpenProject, co umożliwia dostęp do nich innym aplikacjom. Tokeny klienta są wydawane przez inne aplikacje, co umożliwia dostęp do nich oprogramowaniu OpenProject.
       no_results:
@@ -3563,6 +3624,72 @@ pl:
         disabled_text: Tokeny RSS nie zostały włączone przez administratora. Aby użyć tej funkcji, skontaktuj się z administratorem.
       storages:
         unknown_storage: Nieznany magazyn
+    email_reminders:
+      immediate_reminders:
+        title: Wyślij mi przypomnienie e-mail
+        mentioned: Powiadamiaj mnie, gdy ktoś mnie wspomni
+        personal_reminder: Powiadamiaj mnie o osobistych przypomnieniach
+      daily_reminders:
+        title: Wyślij mi codzienne przypomnienia e-mail dla nieprzeczytanych powiadomień
+        caption: Będziesz otrzymywać te przypomnienia tylko w przypadku nieprzeczytanych powiadomień i tylko w określonych przez Ciebie godzinach. Dopóki nie skonfigurujesz strefy czasowej dla swojego konta, godziny będą interpretowane jako UTC.
+        enabled: Włącz codzienne przypomnienia e-mail
+        add_time: Dodaj godzinę
+        remove_time: Usuń godzinę
+        time_slot_label: Czas przypomnienia (UTC)
+      workdays:
+        title: Otrzymuj przypomnienia e-mail w tych dniach
+        submit_button: Zaktualizuj dni przypomnienia
+      pause_reminders:
+        title: Wstrzymaj powiadomienia e-mail
+        enabled: Tymczasowo wstrzymuj codzienne przypomnienia e-mail
+        date_range: Okres wstrzymania
+      email_alerts:
+        title: Powiadomienia e-mail dotyczące innych elementów, które nie są pakietami roboczymi
+        news_added: Wiadomość dodana
+        news_commented: Komentarz do nowości
+        document_added: Dodano dokument
+        forum_messages: Wiadomość na forum
+        wiki_page_added: Dodano stronę wiki
+        wiki_page_updated: Zaktualizowano stronę wiki
+        membership_added: Dodanie członkostwa
+        membership_updated: Aktualizacja członkostwa
+        submit_button: Zaktualizuj alerty
+    notifications:
+      participating:
+        title: Uczestnictwo
+        submit_button: Zaktualizuj preferencje
+        mentioned: Wzmianka
+        watched: Obserwowane
+        assignee: Przypisana osoba
+        responsible: Osoba odpowiedzialna
+        shared: Udostępnione dla mnie
+      date_alerts:
+        title: Alerty dotyczące dat
+        submit_button: Zaktualizuj alerty dotyczące dat
+        start_date: Data rozpoczęcia
+        due_date: Data zakończenia
+        overdue: Przekroczony termin
+        times:
+          same_day: Tego samego dnia
+          one_day_before: 1 dzień przed
+          three_days_before: 3 dni przed
+          seven_days_before: 7 dni przed
+          one_day_after: 1 dzień po
+          three_days_after: 3 dni po
+          seven_days_after: 7 dni po
+      non_participating:
+        title: Brak uczestnictwa
+        submit_button: Zaktualizuj preferencje
+        work_package_created: Nowe pakiety robocze
+        work_package_commented: Wszystkie nowe komentarze
+        work_package_processed: Wszystkie zmiany statusu
+        work_package_prioritized: Wszystkie zmiany priorytetów
+        work_package_scheduled: Wszystkie zmiany daty
+      project_specific_settings:
+        title: Ustawienia powiadomień dla danego projektu
+        add_button: Dodaj powiadomienia specyficzne dla projektu
+        dialog_title: Dodaj powiadomienia specyficzne dla projektu
+        list_header: Projekty z określonymi powiadomieniami
   notifications:
     reasons:
       assigned: Przypisana osoba
@@ -3594,6 +3721,7 @@ pl:
       invalid_filter: Nieprawidłowy filtr powiadomień
   label_accessibility: Dostępność
   label_account: Konto
+  label_actions: Działania
   label_active: Aktywne
   label_activate_user: Aktywuj użytkownika
   label_active_in_new_projects: Aktywne w nowych projektach
@@ -3634,6 +3762,7 @@ pl:
   label_ical_access_key_generation_hint: Automatycznie wygenerowano podczas subskrypcji kalendarza.
   label_ical_access_key_latest: najnowszy
   label_ical_access_key_revoke: Odwołaj
+  label_integrations: Integracje
   label_add_column: Dodaj kolumnę
   label_applied_status: Nadaj status
   label_archive_project: Archiwum projektów
@@ -3884,7 +4013,7 @@ pl:
   label_external_links: Linki zewnętrzne
   label_locale: Język i region
   label_jump_to_a_project: Skok do projektu...
-  label_jira_import: Import Jira
+  label_jira_import: Migrator Jira
   label_keyword_plural: Słowa kluczowe
   label_language_based: Na podstawie języka użytkownika
   label_last_activity: Ostatnia aktywność
@@ -3922,6 +4051,10 @@ pl:
   label_custom_pdf_export_settings: Niestandardowe ustawienia eksportu w formacie PDF
   label_custom_favicon: Własny favicon
   label_custom_touch_icon: Własny touch icon
+  label_departments: Organization
+  label_departments_description_html: 'Define your company’s structure by creating departments and sub-departments in a hierarchical way. This allows you to reflect reporting lines and maintain a clear, structured overview of your organization within OpenProject. You can also import an existing organization structure through [LDAP group synchronisation](ldap_docs_article).
+
+    '
   label_logout: Wyloguj
   label_mapping_for: 'Mapowanie dla: %{attribute}'
   label_main_menu: Menu boczne
@@ -4996,6 +5129,7 @@ pl:
     '
   setting_app_subtitle: Podtytuł
   setting_app_title: Tytuł
+  setting_organization_name: Organization name
   setting_attachment_max_size: Maks. rozmiar załącznika
   setting_show_work_package_attachments: Domyślnie pokazuj załączniki na karcie plików
   setting_antivirus_scan_mode: Tryb skanowania
@@ -5142,12 +5276,12 @@ pl:
   setting_welcome_text: Tekst bloku powitalnego
   setting_welcome_title: Tytuł bloku powitalnego
   setting_welcome_on_homescreen: Wyświetl wiadomość powitalną na ekranie głównym
-  setting_work_packages_identifier_numeric: Sekwencja liczbowa dla całego wystąpienia (domyślnie)
-  setting_work_packages_identifier_numeric_caption: 'Każdy pakiet roboczy otrzymuje numer kolejny zaczynający się od 1 i zwiększany z każdym nowym pakietem. Numery są unikalne w ramach tego wystąpienia, więc pozostają takie same, nawet jeśli pakiety robocze są przenoszone między projektami.
+  setting_work_packages_identifier_classic: Sekwencja liczbowa dla całego wystąpienia (domyślnie)
+  setting_work_packages_identifier_classic_caption: 'Każdy pakiet roboczy otrzymuje numer kolejny zaczynający się od 1 i zwiększany z każdym nowym pakietem. Numery są unikalne w ramach tego wystąpienia, więc pozostają takie same, nawet jeśli pakiety robocze są przenoszone między projektami.
 
     '
-  setting_work_packages_identifier_alphanumeric: Identyfikatory alfanumeryczne oparte na projektach
-  setting_work_packages_identifier_alphanumeric_caption: 'Każdy projekt ma unikalny identyfikator, który jest poprzedzony identyfikatorem pakietu roboczego. Jeśli pakiet roboczy zostanie przeniesiony do innego projektu, generowany jest nowy identyfikator, ale stary nadal działa.
+  setting_work_packages_identifier_semantic: Identyfikatory semantyczne oparte na projektach
+  setting_work_packages_identifier_semantic_caption: 'Każdy projekt ma unikalny identyfikator, który jest poprzedzony identyfikatorem pakietu roboczego. Jeśli pakiet roboczy zostanie przeniesiony do innego projektu, generowany jest nowy identyfikator, ale stary nadal działa.
 
     '
   setting_work_package_list_default_highlighting_mode: Domyślny tryb wyróżniania
