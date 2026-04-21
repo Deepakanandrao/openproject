@@ -440,7 +440,7 @@ de:
         confirm: Entfernen
       leave_confirmation:
         title: Änderungen speichern, bevor Sie fortfahren?
-        description: Sie sind im Begriff, diese Seite zu verlassen, aber Sie haben noch nicht gespeicherte Änderungen. Möchten Sie diese speichern, bevor Sie fortfahren?
+        description: Sie sind dabei, diese Seite zu verlassen, haben aber noch nicht gespeicherte Änderungen. Möchten Sie diese vor dem Fortfahren speichern?
         ignore: Änderungen ignorieren
         save: Änderungen speichern und fortfahren
       role_selector:
@@ -582,13 +582,13 @@ de:
         blankslate:
           root:
             title: Ihre Liste der Elemente ist leer
-            description: Beginnen Sie mit dem Hinzufügen von Elementen in das benutzerdefinierte Feld der Typ-Hierarchie. Jedes Element kann verwendet werden, um eine Hierarchie darunter zu erstellen. Um Unterelemente innerhalb einer Hierarchie zu navigieren und zu erstellen, klicken Sie auf das erstellte Element.
+            description: Beginnen Sie mit dem Hinzufügen von Elementen in das selbstdefinierte Feld der Typ-Hierarchie. Jedes Element kann verwendet werden, um eine Hierarchie darunter zu erstellen. Um Unterelemente innerhalb einer Hierarchie zu navigieren und zu erstellen, klicken Sie auf das erstellte Element.
           item:
             title: Dieses Element hat keine untergeordnete Hierarchieebene
             description: Füge Elemente zu dieser Liste hinzu, um Unterelemente innerhalb eines anderen zu erstellen
         delete_dialog:
-          title: Benutzerdefiniertes Feldelement löschen
-          heading: Benutzerdefiniertes Feldelement löschen?
+          title: Selbstdefiniertes Feldelement löschen
+          heading: Slebstdefiniertes Feldelement löschen?
           description: Mit dieser Aktion werden das Element und alle seine Unterelemente unwiderruflich entfernt. Alle zugewiesenen Werte werden endgültig gelöscht. Wenn dieses Feld erforderlich ist, kann das Entfernen von Elementen dazu führen, dass bestehende Arbeitspakete ungültig werden.
         placeholder:
           label: Elementbezeichnung
@@ -635,11 +635,11 @@ de:
     no_role_assigment: Keine Rollenzuweisung
     instructions:
       is_required:
-        all: Markieren Sie das benutzerdefinierte Feld als erforderlich. Dadurch wird das Ausfüllen des Feldes bei der Erstellung neuer Ressourcen obligatorisch. Bei der Aktualisierung bestehender Felder wird kein Wert benötigt.
+        all: Markieren Sie das selbstdefinierte Feld als erforderlich. Dadurch wird das Ausfüllen des Feldes bei der Erstellung neuer Ressourcen obligatorisch. Bei der Aktualisierung bestehender Felder wird kein Wert benötigt.
         project: Erforderliche Attribute müssen vom Benutzer bei der Projekterstellung ausgefüllt werden, wenn das Feld aktiv ist ("Für alle Projekte" aktiviert oder beim Kopieren eines Projekts/Templates, in dem das Feld aktiv ist). Vorhandene Projekte benötigen keinen Wert, wenn sie aktualisiert werden.
       is_for_all:
-        all: Markiert das benutzerdefinierte Feld als verfügbar in allen bestehenden und neuen Projekten.
-        project: Markiert das benutzerdefinierte Feld als verfügbar in allen bestehenden und neuen Projekten.
+        all: Markiert das selbstdefinierte Feld als verfügbar in allen bestehenden und neuen Projekten.
+        project: Markiert das selbstdefinierte Feld als verfügbar in allen bestehenden und neuen Projekten.
       multi_select:
         all: Ermöglicht dem Benutzer, diesem benutzerdefinierten Feld mehrere Werte zuzuweisen.
         project: Ermöglicht dem Benutzer, diesem benutzerdefinierten Feld mehrere Werte zuzuweisen.
@@ -652,7 +652,7 @@ de:
         all: Das Attribut ist nur für Administratoren sichtbar. Nutzer ohne Adminrechte können dieses Attribut nicht sehen oder bearbeiten.
         project: Das Attribut ist nur für Administratoren sichtbar. Nutzer ohne Adminrechte können dieses Attribut nicht sehen oder bearbeiten.
       is_filter:
-        all: 'Erlaubt das benutzerdefinierte Feld in einem Filter in der Arbeitspaket-Ansicht zu verwenden. Beachten Sie, dass, nur wenn "Für alle Projekte" ausgewählt ist, das benutzerdefinierte Feld in globalen Ansichten angezeigt wird.
+        all: 'Erlaubt das selbstdefinierte Feld in einem Filter in der Arbeitspaket-Ansicht zu verwenden. Beachten Sie, dass, nur wenn "Für alle Projekte" ausgewählt ist, das selbstdefinierte Feld in globalen Ansichten angezeigt wird.
 
           '
       formula:

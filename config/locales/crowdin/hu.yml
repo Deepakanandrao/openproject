@@ -1475,10 +1475,10 @@ hu:
       follows_description: A kapcsolódó munkacsomagnak feltétlenül be kell fejeződnie, mielőtt ez a munkacsomag elkezdődhet
       label_child_singular: child
       label_child_plural: children
-      new_child: Új gyermek kapcsolat hozzáadása
+      new_child: Új gyermek munkacsomag létrehozása
       new_child_description: Új kapcsolódó munkacsomagot hoz létre az aktuális munkacsomag (szülő) alelemeként
-      child: Child
-      child_description: Makes the related work package a sub-item of the current (parent) work package
+      child: Gyermek
+      child_description: Meglévő munkacsomag csatolása az aktuális munkacsomag (szülő) alelemeként
       parent: Szülő
       parent_description: A kapcsolódó munkacsomagot az aktuális munkacsomag (gyermek) szülőjévé teszi
       label_closest: Closest

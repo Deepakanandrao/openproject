@@ -225,7 +225,7 @@ de:
       task_type:
         cannot_be_story_type: kann nicht auch ein Story-Typ sein
   label_backlog: Backlog
-  label_inbox: Eingang
+  label_inbox: Posteingang
   label_backlogs: Backlogs
   label_backlogs_unconfigured: Sie haben noch keine Backlogs konfiguriert. Bitte gehen Sie auf %{administration} > %{plugins}, klicken Sie dann auf den %{configure} Link für dieses Plugin. Kommen Sie hierher zurück, sobald sie die Felder konfiguriert haben.
   label_blocks_ids: IDs der blockierten Arbeitspakete
