@@ -64,7 +64,9 @@ export class WorkPackageDisplayField extends DisplayField {
    *
    * Delegates to `WorkPackageResource#formattedId` when the linked resource
    * is loaded. When unloaded, falls back to the numeric ID extracted from
-   * the self-link href (which has no `displayId` available).
+   * the self-link href — an unloaded HAL link carries only the href, not
+   * the resource's properties (the API always populates `displayId`, but
+   * we can't reach it until the link is fetched).
    */
   public get wpFormattedId():string {
     const linkedWp = this.value as WorkPackageResource | undefined;
