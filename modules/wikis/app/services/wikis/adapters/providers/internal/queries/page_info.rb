@@ -28,32 +28,37 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Wikis
-  module Adapters
-    module Providers
-      module XWiki
-        Registry = Dry::Container::Namespace.new("xwiki") do
-          namespace("authentication") do
-            # ...
-          end
-
-          namespace("commands") do
-            # ...
-          end
-
-          namespace("components") do
-            # ...
-          end
-
-          namespace("contracts") do
-            # ...
-          end
-
-          namespace("queries") do
-            register(:page_info, Queries::PageInfo)
-          end
-        end
+module Wikis::Adapters::Providers::Internal::Queries
+  class PageInfo < Wikis::Adapters::BaseQuery
+    class << self
+      def call_contract
+        Wikis::Adapters::Input::PageInfoCallContract
       end
+    end
+
+    def handle_query(identifier:)
+      # TODO: should we accept implicit User.current or do we want to pass in a user explicitly?
+      wiki_page = WikiPage.visible.find_by(id: identifier)
+      return failure(code: :not_found) if wiki_page.nil?
+
+      success(
+        Wikis::Adapters::Results::PageInfo.new(
+          title: wiki_page.title,
+          href: url_for(only_path: true,
+                        controller: "/wiki",
+                        action: "show",
+                        project_id: wiki_page.project.identifier,
+                        id: wiki_page.slug)
+        )
+      )
+    end
+
+    private
+
+    delegate :url_for, to: :url_helpers
+
+    def url_helpers
+      OpenProject::StaticRouting::StaticRouter.new.url_helpers
     end
   end
 end

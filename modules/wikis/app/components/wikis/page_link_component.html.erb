@@ -32,12 +32,12 @@ See COPYRIGHT and LICENSE files for more details.
 
   <%=
     render(Primer::Alpha::StackItem.new(grow: true, classes: "ellipsis")) do
-      render(Primer::Beta::Link.new(href: link.href, scheme: :primary)) { link.title }
+      render(Primer::Beta::Link.new(href: page.href, scheme: :primary)) { page.title }
     end
   %>
 
   <%=
-    if link.actions.any?
+    if show_action_menu?
       render(Primer::Alpha::ActionMenu.new) do |menu|
         menu.with_show_button(icon: :"kebab-horizontal", "aria-label": t(:label_more), scheme: :invisible)
 

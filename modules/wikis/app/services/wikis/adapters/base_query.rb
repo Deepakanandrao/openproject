@@ -28,15 +28,38 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-# This query is only intended for demo purposes and can be deleted once we have real queries
-module Wikis::Adapters::Providers::XWiki::Queries
-  class Test
+module Wikis::Adapters
+  class BaseQuery
+    include Dry::Monads[:result]
+
+    class << self
+      def call_contract
+        raise SubclassResponsibilityError
+      end
+    end
+
+    attr_reader :provider
+
     def initialize(provider)
       @provider = provider
     end
 
-    def call(*args, **opts)
-      puts "#{args} and #{opts} passed to internal test query for #{@provider}" # rubocop:disable Rails/Output
+    def call(**)
+      self.class.call_contract.new.call(**).to_monad.bind { handle_query(**it.to_h) }
+    end
+
+    def handle_query(**)
+      raise SubclassResponsibilityError
+    end
+
+    private
+
+    def success(result)
+      Success(result)
+    end
+
+    def failure(code:)
+      Failure(Results::Error.new(source: self.class, code:))
     end
   end
 end
