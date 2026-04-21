@@ -28,46 +28,44 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module OpenProject::TextFormatting
-  module Filters
-    class MarkdownFilter < HTML::Pipeline::MarkdownFilter
-      # Convert Markdown to HTML using CommonMarker
-      def call
-        Commonmarker.to_html(text, options: commonmarker_options, plugins: commonmarker_plugins)
-                    .tap(&:rstrip!)
+module OpenProject
+  module SCM
+    module LocalPathValidator
+      module_function
+
+      def points_to_openproject_directory?(value)
+        path = local_path(value)
+        return false if path.blank?
+
+        forbidden_roots.any? { |root| path_within_root?(path, root) }
       end
 
-      private
+      def local_path(value)
+        return if value.blank?
 
-      ##
-      # CommonMarker Options
-      # https://github.com/gjtorikian/commonmarker#options
-      def commonmarker_options
-        {
-          parse: { smart: false },
-          extension: commonmark_extensions,
-          render: {
-            unsafe: true,
-            escape: false,
-            github_pre_lang: true,
-            hardbreaks: context[:gfm] != false,
-            escaped_char_spans: false
-          }
-        }
+        parsed = URI.parse(value)
+
+        if parsed.scheme == "file"
+          return File.expand_path(parsed.path)
+        end
+
+        return File.expand_path(value) if parsed.scheme.nil? && value.start_with?("/")
+      rescue URI::Error
+        return
       end
 
-      def commonmarker_plugins
-        { syntax_highlighter: nil }
+      def forbidden_roots
+        roots = [
+          OpenProject::Configuration.scm_local_checkout_path,
+          Repository::Git.managed_root,
+          Repository::Subversion.managed_root
+        ]
+
+        roots.compact_blank.map { |root| File.expand_path(root) }.uniq
       end
 
-      ##
-      # Extensions to the default CommonMarker operation
-      def commonmark_extensions
-        enabled = %i[table strikethrough]
-
-        %i[strikethrough tagfilter table autolink tasklist shortcodes]
-          .index_with(false)
-          .merge(enabled.index_with(true))
+      def path_within_root?(path, root)
+        path == root || path.start_with?("#{root}/")
       end
     end
   end
