@@ -27,6 +27,7 @@
 //++
 
 import { DisplayField } from 'core-app/shared/components/fields/display/display-field.module';
+import { WorkPackageResource } from 'core-app/features/hal/resources/work-package-resource';
 import { formatWorkPackageId } from 'core-app/shared/helpers/work-package-id-pattern';
 
 export class WorkPackageDisplayField extends DisplayField {
@@ -66,29 +67,33 @@ export class WorkPackageDisplayField extends DisplayField {
    * where the related resource is only a HAL link (not yet fetched).
    */
   public get wpRoutingId():string {
-    if (this.value?.$loaded && this.value.displayId) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-return,@typescript-eslint/no-unsafe-call
-      return this.value.displayId.toString();
+    const linkedWp = this.value as WorkPackageResource | undefined;
+    if (linkedWp?.$loaded) {
+      return linkedWp.displayId;
     }
-    return this.wpId;
+    return this.wpId as string;
   }
 
   /**
    * Returns the work package ID formatted for display.
+   * Classic mode: `#123` (hash-prefixed), Semantic mode: `PROJ-42` (no prefix).
    *
-   * Cannot delegate to `WorkPackageBaseResource.formattedId` because
-   * the linked resource (`this.value`) may not be loaded — in that case
-   * we fall back to extracting the numeric ID from the self-link href.
+   * Delegates to `WorkPackageResource#formattedId` when the linked resource
+   * is loaded. When unloaded, falls back to the numeric ID extracted from
+   * the self-link href — an unloaded HAL link carries only the href, not
+   * the resource's properties (the API always populates `displayId`, but
+   * we can't reach it until the link is fetched).
    */
   public get wpFormattedId():string {
-    if (this.value?.$loaded && this.value.displayId) {
-      return formatWorkPackageId(this.value.displayId.toString());
+    const linkedWp = this.value as WorkPackageResource | undefined;
+    if (linkedWp?.$loaded) {
+      return linkedWp.formattedId;
     }
 
-    const id = this.wpId;
+    const id = this.wpId as string | number | null;
     if (!id) return '';
 
-    return formatWorkPackageId(id);
+    return formatWorkPackageId(String(id));
   }
 
   public get valueString() {
