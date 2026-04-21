@@ -73,7 +73,7 @@ RSpec.describe ProjectIdentifiers::ConvertProjectToSemanticService,
       end
 
       before do
-        allow(ProjectIdentifiers::SemanticIdentifierSuggestionGenerator)
+        allow(ProjectIdentifiers::IdentifierAutofix::ProjectIdentifierSuggestionGenerator)
           .to receive(:suggest_identifier)
           .and_return(nil)
       end
