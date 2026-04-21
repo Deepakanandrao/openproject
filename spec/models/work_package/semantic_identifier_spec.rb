@@ -390,14 +390,24 @@ RSpec.describe WorkPackage::SemanticIdentifier do
     context "when semantic mode is active",
             with_flag: { semantic_work_package_ids: true },
             with_settings: { work_packages_identifier: "semantic" } do
-      it "returns the semantic identifier as-is" do
+      it "returns the semantic identifier without hash prefix" do
         expect(work_package.formatted_id).to eq("MYPROJ-1")
+      end
+    end
+
+    context "when semantic mode is active but identifier is nil",
+            with_flag: { semantic_work_package_ids: true },
+            with_settings: { work_packages_identifier: "semantic" } do
+      before { work_package.update_columns(identifier: nil) }
+
+      it "falls back to hash-prefixed numeric id" do
+        expect(work_package.formatted_id).to eq("##{work_package.id}")
       end
     end
 
     context "when semantic mode is not active",
             with_flag: { semantic_work_package_ids: false } do
-      it "returns the numeric id prefixed with #" do
+      it "returns hash-prefixed numeric id" do
         expect(work_package.formatted_id).to eq("##{work_package.id}")
       end
     end
