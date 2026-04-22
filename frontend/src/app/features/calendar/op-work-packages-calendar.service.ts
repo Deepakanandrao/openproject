@@ -54,7 +54,7 @@ import {
 } from 'core-app/features/work-packages/components/wp-fast-table/builders/ui-state-link-builder';
 import { debugLog } from 'core-app/shared/helpers/debug_output';
 import { States } from 'core-app/core/states/states.service';
-import { resolveRoutingId } from 'core-app/features/work-packages/helpers/resolve-routing-id';
+import { resolveRoutingId } from 'core-app/features/work-packages/helpers/work-package-id-resolvers';
 import {
   WorkPackageViewContextMenu,
 } from 'core-app/shared/components/op-context-menu/wp-context-menu/wp-view-context-menu.directive';
@@ -291,7 +291,7 @@ export class OpWorkPackagesCalendarService extends UntilDestroyedMixin {
       return;
     }
 
-    const routingId = this.resolveRoutingId(id);
+    const routingId = resolveRoutingId(this.states, id);
     void this.$state.go(
       `${splitViewRoute(this.$state)}.tabs`,
       { workPackageId: routingId, tabIdentifier: 'overview' },
@@ -301,15 +301,11 @@ export class OpWorkPackagesCalendarService extends UntilDestroyedMixin {
   public openFullView(id:string):void {
     this.wpTableSelection.setSelection(id, -1);
 
-    const routingId = this.resolveRoutingId(id);
+    const routingId = resolveRoutingId(this.states, id);
     void this.$state.go(
       'work-packages.show',
       { workPackageId: routingId },
     );
-  }
-
-  private resolveRoutingId(workPackageId:string):string {
-    return resolveRoutingId(this.states, workPackageId);
   }
 
   public onCardClicked({ workPackageId, event }:{ workPackageId:string, event:MouseEvent }):void {

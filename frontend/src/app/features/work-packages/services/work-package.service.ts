@@ -35,6 +35,7 @@ import { ToastService } from 'core-app/shared/components/toaster/toast.service';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { HalDeletedEvent, HalEventsService } from 'core-app/features/hal/services/hal-events.service';
 import { States } from 'core-app/core/states/states.service';
+import { resolveWorkPackagePk } from 'core-app/features/work-packages/helpers/work-package-id-resolvers';
 
 @Injectable()
 export class WorkPackageService {
@@ -72,9 +73,9 @@ export class WorkPackageService {
           ids.forEach((id) => this.halEvents.push({ _type: 'WorkPackage', id }, { eventType: 'deleted' } as HalDeletedEvent));
 
           const routeWpId = this.$state.params.workPackageId as string;
-          const wp = this.states.workPackages.get(routeWpId)?.value;
-          const numericId = wp?.id ?? routeWpId;
-          if (this.$state.includes('**.list.details.**')
+          const numericId = resolveWorkPackagePk(this.states, routeWpId);
+          if (numericId
+            && this.$state.includes('**.list.details.**')
             && ids.includes(numericId)) {
             this.$state.go('work-packages.partitioned.list', this.$state.params);
           }

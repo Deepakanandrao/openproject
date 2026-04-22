@@ -41,7 +41,7 @@ import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
 import { PathHelperService } from 'core-app/core/path-helper/path-helper.service';
 import { CurrentProjectService } from 'core-app/core/current-project/current-project.service';
 import { States } from 'core-app/core/states/states.service';
-import { resolveRoutingId } from 'core-app/features/work-packages/helpers/resolve-routing-id';
+import { resolveRoutingId } from 'core-app/features/work-packages/helpers/work-package-id-resolvers';
 
 @Component({
   selector: 'board-list-container',
