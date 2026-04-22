@@ -30,12 +30,14 @@
 
 module Backlogs
   module CommonHelper
-    def allow_sprint_creation?(project)
-      current_user.allowed_in_project?(:create_sprints, project) &&
-        !project.receive_shared_sprints?
+    def allow_backlog_bucket_creation?(project)
+      current_user.allowed_in_project?(:create_sprints, project)
     end
 
-    alias_method :allow_backlog_bucket_creation?, :allow_sprint_creation?
+    def allow_sprint_creation?(project)
+      allow_backlog_bucket_creation?(project) &&
+        !project.receive_shared_sprints?
+    end
 
     def show_all_backlog
       ActiveRecord::Type::Boolean.new.cast(params[:all]) || false
