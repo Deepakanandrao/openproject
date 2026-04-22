@@ -31,7 +31,7 @@
 module Wikis
   module Adapters
     module Input
-      class PageInfoCallContract < DryApplicationContract
+      class PageInfoContract < DryApplicationContract
         params do
           required(:identifier).filled(:string)
         end

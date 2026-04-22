@@ -30,13 +30,7 @@
 
 module Wikis::Adapters::Providers::XWiki::Queries
   class PageInfo < Wikis::Adapters::BaseQuery
-    class << self
-      def call_contract
-        Wikis::Adapters::Input::PageInfoCallContract
-      end
-    end
-
-    def handle_query(identifier:) # rubocop:disable Lint/UnusedMethodArgument
+    def call(_input_data)
       title = [
         "What makes XWiki special?",
         "API documentation",

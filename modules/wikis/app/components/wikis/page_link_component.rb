@@ -52,7 +52,9 @@ module Wikis
     private
 
     def page_info_result
-      @page_info_result ||= link.provider.resolve("queries.page_info").call(identifier: link.identifier)
+      @page_info_result ||= Wikis::Adapters::Input::PageInfo.build(identifier: link.identifier).bind do |input|
+        link.provider.resolve("queries.page_info").call(input)
+      end
     end
   end
 end
