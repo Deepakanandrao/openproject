@@ -2174,6 +2174,7 @@ tr:
           not_whitelisted: yapılandırmasına izin verilmiyor.
           invalid_url: geçerli bir depo URL veya yol değil.
           must_not_be_ssh: bir SSH url olmamalı.
+          must_not_point_to_openproject_directory: must not point to an OpenProject-managed repository directory.
           no_directory: bir dizin değil.
         role:
           attributes:

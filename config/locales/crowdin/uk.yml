@@ -2206,6 +2206,7 @@ uk:
           not_whitelisted: не дозволяється конфігурацією.
           invalid_url: не є дійсним URL-адресою або контуром сховища.
           must_not_be_ssh: не повинна бути URL-адресою SSH.
+          must_not_point_to_openproject_directory: must not point to an OpenProject-managed repository directory.
           no_directory: не є каталогом.
         role:
           attributes:

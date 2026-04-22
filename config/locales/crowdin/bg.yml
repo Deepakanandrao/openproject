@@ -2169,6 +2169,7 @@ bg:
           not_whitelisted: не е позволено от конфигурацията.
           invalid_url: не е валиден URL адрес или път на хранилището.
           must_not_be_ssh: не трябва да бъде SSH url.
+          must_not_point_to_openproject_directory: must not point to an OpenProject-managed repository directory.
           no_directory: не е директория.
         role:
           attributes:

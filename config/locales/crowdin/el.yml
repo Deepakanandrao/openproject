@@ -2168,6 +2168,7 @@ el:
           not_whitelisted: δεν επιτρέπεται από την διαμόρφωση.
           invalid_url: δεν είναι ένα έγκυρο URL αποθετηρίου ή μονοπάτι.
           must_not_be_ssh: δεν πρέπει να είναι σύνδεσμος SSH.
+          must_not_point_to_openproject_directory: must not point to an OpenProject-managed repository directory.
           no_directory: δεν είναι κατάλογος.
         role:
           attributes:

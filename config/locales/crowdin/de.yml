@@ -2165,6 +2165,7 @@ de:
           not_whitelisted: wird durch die Konfiguration nicht erlaubt.
           invalid_url: ist keine gültige URL oder Pfad zum Projektarchiv.
           must_not_be_ssh: darf keine SSH-URL sein.
+          must_not_point_to_openproject_directory: must not point to an OpenProject-managed repository directory.
           no_directory: ist kein Verzeichnis.
         role:
           attributes:

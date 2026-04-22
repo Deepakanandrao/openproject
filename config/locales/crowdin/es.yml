@@ -2164,6 +2164,7 @@ es:
           not_whitelisted: no está permitido por la configuración.
           invalid_url: no es una dirección URL o ruta válida para un repositorio.
           must_not_be_ssh: no debe usarse una URL de SSH.
+          must_not_point_to_openproject_directory: must not point to an OpenProject-managed repository directory.
           no_directory: no es un directorio.
         role:
           attributes:

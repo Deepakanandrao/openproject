@@ -2203,6 +2203,7 @@ pl:
           not_whitelisted: nie jest dozwolone w tej konfiguracji.
           invalid_url: nie jest prawidłowym adresem URL ani ścieżką.
           must_not_be_ssh: nie może być adresem SSH.
+          must_not_point_to_openproject_directory: must not point to an OpenProject-managed repository directory.
           no_directory: nie jest katalogiem.
         role:
           attributes:

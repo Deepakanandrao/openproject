@@ -2146,6 +2146,7 @@ zh-CN:
           not_whitelisted: 配置所不允许的。
           invalid_url: 不是有效的存储库 URL 或路径。
           must_not_be_ssh: 不能是 SSH url。
+          must_not_point_to_openproject_directory: must not point to an OpenProject-managed repository directory.
           no_directory: 不是一个目录。
         role:
           attributes:

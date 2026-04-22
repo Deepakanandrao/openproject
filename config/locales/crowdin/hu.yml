@@ -2213,6 +2213,7 @@ hu:
           not_whitelisted: a konfiguráció nem engedélyezi.
           invalid_url: nem érvényes tároló URL vagy útvonal.
           must_not_be_ssh: nem lehet SSH url.
+          must_not_point_to_openproject_directory: must not point to an OpenProject-managed repository directory.
           no_directory: nem egy könyvtár.
         role:
           attributes:

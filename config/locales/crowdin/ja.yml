@@ -2152,6 +2152,7 @@ ja:
           not_whitelisted: は設定で許可されていません。
           invalid_url: 有効なリポジトリ URL またはパスはありません。
           must_not_be_ssh: SSH url ではありません。
+          must_not_point_to_openproject_directory: must not point to an OpenProject-managed repository directory.
           no_directory: はファルダーではありません。
         role:
           attributes:

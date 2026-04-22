@@ -2245,6 +2245,7 @@ ar:
           not_whitelisted: غير مسموح بالتكوين.
           invalid_url: is not a valid repository URL or path.
           must_not_be_ssh: must not be an SSH url.
+          must_not_point_to_openproject_directory: must not point to an OpenProject-managed repository directory.
           no_directory: ليس من دليل.
         role:
           attributes:

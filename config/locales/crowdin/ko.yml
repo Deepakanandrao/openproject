@@ -2148,6 +2148,7 @@ ko:
           not_whitelisted: 은(는) 설절에 허용되지 않습니다.
           invalid_url: 유효한 리포지토리 URL 또는 경로가 아닙니다.
           must_not_be_ssh: SSH url이 아니어야 합니다.
+          must_not_point_to_openproject_directory: must not point to an OpenProject-managed repository directory.
           no_directory: 디텍터리가 아님
         role:
           attributes:

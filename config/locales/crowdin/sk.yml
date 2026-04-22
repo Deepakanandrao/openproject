@@ -2207,6 +2207,7 @@ sk:
           not_whitelisted: nie je povolené aktuálnou konfiguráciou.
           invalid_url: nie je platná adresa URL alebo cesta k úložisku.
           must_not_be_ssh: nesmie byť SSH URL.
+          must_not_point_to_openproject_directory: must not point to an OpenProject-managed repository directory.
           no_directory: nie je adresár.
         role:
           attributes:

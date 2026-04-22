@@ -2152,6 +2152,7 @@ vi:
           not_whitelisted: không được cấu hình cho phép.
           invalid_url: không phải là đường dẫn hoặc URL kho lưu trữ hợp lệ.
           must_not_be_ssh: không được là đường dẫn SSH.
+          must_not_point_to_openproject_directory: must not point to an OpenProject-managed repository directory.
           no_directory: không phải là một thư mục.
         role:
           attributes:

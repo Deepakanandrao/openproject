@@ -2169,6 +2169,7 @@ si:
           not_whitelisted: වින්යාසය මගින් අවසර නැත.
           invalid_url: වලංගු ගබඩාවක් URL එකක් හෝ මාර්ගයක් නොවේ.
           must_not_be_ssh: SSH url එකක් නොවිය යුතුය.
+          must_not_point_to_openproject_directory: must not point to an OpenProject-managed repository directory.
           no_directory: නාමාවලියක් නොවේ.
         role:
           attributes:

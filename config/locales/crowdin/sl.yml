@@ -2210,6 +2210,7 @@ sl:
           not_whitelisted: konfiguracija ne dovoljuje
           invalid_url: ni veljaven URL ali pot.
           must_not_be_ssh: ne sme biti SSH url
+          must_not_point_to_openproject_directory: must not point to an OpenProject-managed repository directory.
           no_directory: ni imenik.
         role:
           attributes:

@@ -2146,6 +2146,7 @@ zh-TW:
           not_whitelisted: 不被設定所允許
           invalid_url: 是一個無效的儲存庫 Url 或路徑
           must_not_be_ssh: 不可以是一個 SSH url
+          must_not_point_to_openproject_directory: must not point to an OpenProject-managed repository directory.
           no_directory: 不是一個資料夾
         role:
           attributes:

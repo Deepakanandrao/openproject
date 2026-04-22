@@ -2168,6 +2168,7 @@ ca:
           not_whitelisted: no està permès per la configuració.
           invalid_url: no és un repositori URL o enllaç vàlid.
           must_not_be_ssh: no pot ser una URL SSH.
+          must_not_point_to_openproject_directory: must not point to an OpenProject-managed repository directory.
           no_directory: no és un directori.
         role:
           attributes:

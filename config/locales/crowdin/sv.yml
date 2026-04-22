@@ -2169,6 +2169,7 @@ sv:
           not_whitelisted: tillåts inte av konfigurationen.
           invalid_url: är inte en giltig utvecklingskatalogs-URL eller sökväg.
           must_not_be_ssh: får inte vara en SSH-url.
+          must_not_point_to_openproject_directory: must not point to an OpenProject-managed repository directory.
           no_directory: är inte en katalog.
         role:
           attributes:

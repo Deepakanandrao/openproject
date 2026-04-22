@@ -2188,6 +2188,7 @@ hr:
           not_whitelisted: nije dopušteno postavljenom konfiguracijom.
           invalid_url: is not a valid repository URL or path.
           must_not_be_ssh: must not be an SSH url.
+          must_not_point_to_openproject_directory: must not point to an OpenProject-managed repository directory.
           no_directory: nije direktorij.
         role:
           attributes:

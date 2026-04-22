@@ -2209,6 +2209,7 @@ cs:
           not_whitelisted: není povoleno konfigurací.
           invalid_url: není platná URL nebo cesta k úložišti.
           must_not_be_ssh: nesmí být SSH url.
+          must_not_point_to_openproject_directory: must not point to an OpenProject-managed repository directory.
           no_directory: není adresář.
         role:
           attributes:

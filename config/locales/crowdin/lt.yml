@@ -2206,6 +2206,7 @@ lt:
           not_whitelisted: neleidžiama pagal konfigūraciją.
           invalid_url: nėra tinkamas repozitorijos URL ar kelias.
           must_not_be_ssh: neturi būti SSH URL.
+          must_not_point_to_openproject_directory: must not point to an OpenProject-managed repository directory.
           no_directory: nėra aplankas.
         role:
           attributes:
