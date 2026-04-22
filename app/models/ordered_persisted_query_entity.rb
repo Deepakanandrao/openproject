@@ -28,30 +28,12 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class PersistedQuery < ApplicationRecord
-  include Queries::BaseQuery
-  include Queries::Serialization::Hash
-  include ::Scopes::Scoped
+class OrderedPersistedQueryEntity < ApplicationRecord
+  belongs_to :persisted_query, optional: false
+  belongs_to :entity, polymorphic: true, optional: false
 
-  belongs_to :project, optional: true
-  belongs_to :principal, optional: true
+  validates :position, presence: true
+  validates :entity_id, uniqueness: { scope: %i[persisted_query_id entity_type] }
 
-  has_many :views, class_name: "PersistedView",
-                   as: :query,
-                   dependent: :restrict_with_error,
-                   inverse_of: :query
-
-  has_many :ordered_entities, -> { order(position: :asc) },
-           class_name: "OrderedPersistedQueryEntity",
-           dependent: :destroy,
-           inverse_of: :persisted_query
-
-  validates :name, presence: true, length: { maximum: 255 }
-
-  def self.inherited(subclass)
-    super
-    subclass.serialize :filters, coder: Queries::Serialization::Filters.new(subclass)
-    subclass.serialize :orders, coder: Queries::Serialization::Orders.new(subclass)
-    subclass.serialize :selects, coder: Queries::Serialization::Selects.new(subclass)
-  end
+  default_scope { order(position: :asc) }
 end

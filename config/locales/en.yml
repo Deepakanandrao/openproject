@@ -2008,6 +2008,10 @@ en:
         jira_import: "Jira Migrator"
       announcements:
         show_until: "Display until"
+      ordered_persisted_query_entity:
+        persisted_query: "Persisted query"
+        entity: "Entity"
+        position: "Position"
       attachment:
         attachment_content: "Attachment content"
         attachment_file_name: "Attachment file name"
@@ -2114,6 +2118,9 @@ en:
       persisted_query:
         name: "Name"
         views: "Views"
+        filters: "Filters"
+        orders: "Orders"
+        selects: "Selects"
       persisted_view:
         name: "Name"
         query: "Query"
