@@ -104,11 +104,11 @@ module Backlogs
         draggable_id: story.id,
         draggable_type: "story",
         drop_url: move_project_backlogs_work_package_path(
-                    project,
-                    sprint_id: sprint.id,
-                    id: story.id,
-                    **helpers.all_backlogs_params
-                  )
+          project,
+          sprint_id: sprint.id,
+          id: story.id,
+          **helpers.all_backlogs_params
+        )
       }
     end
 
