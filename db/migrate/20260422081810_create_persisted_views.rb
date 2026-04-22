@@ -37,7 +37,7 @@ class CreatePersistedViews < ActiveRecord::Migration[8.1]
       t.references :principal, foreign_key: { to_table: :users }, null: true
       t.references :query, polymorphic: true, null: true
       t.references :parent, foreign_key: { to_table: :persisted_views }, null: true
-      t.jsonb :options
+      t.jsonb :options, default: {}, null: false
       t.boolean :public, default: false, null: false
 
       t.timestamps
