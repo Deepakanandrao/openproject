@@ -236,6 +236,42 @@ RSpec.describe Queries::WorkPackages::Filter::TypeaheadFilter do
       end
     end
 
+    describe "when the setting for work package identifiers is set to classic but was semantic before",
+             with_settings: { work_packages_identifier: Setting::WorkPackageIdentifier::CLASSIC } do
+      let!(:identifier_work_package1) do
+        create(:work_package,
+               project:,
+               subject: "First semantic work package")
+      end
+
+      let!(:identifier_work_package1_semantic_alias) do
+        create(:work_package_semantic_alias,
+               work_package: identifier_work_package1,
+               identifier: "PHO-1")
+      end
+
+      let!(:identifier_work_package2) do
+        create(:work_package,
+               project:,
+               subject: "Second semantic work package")
+      end
+
+      let!(:identifier_work_package2_semantic_alias) do
+        create(:work_package_semantic_alias,
+               work_package: identifier_work_package2,
+               identifier: "PHO-2")
+      end
+
+      context "and there are still entries in the semantic alias registry" do
+        let(:values) { [identifier_work_package1_semantic_alias.identifier] }
+
+        it "still finds by existing identifiers" do
+          expect(subject).to include(identifier_work_package1)
+          expect(subject).not_to include(identifier_work_package2)
+        end
+      end
+    end
+
     context "when searching by status" do
       shared_let(:open_work_package)   { create(:work_package, project:, status: open_status,   subject: "wide work package") }
       shared_let(:closed_work_package) { create(:work_package, project:, status: closed_status, subject: "narrow work package") }
