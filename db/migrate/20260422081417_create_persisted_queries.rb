@@ -35,9 +35,9 @@ class CreatePersistedQueries < ActiveRecord::Migration[8.1]
       t.string :name
       t.references :project, foreign_key: true, null: true
       t.references :principal, foreign_key: { to_table: :users }, null: true
-      t.jsonb :filters, default: "[]", null: false
-      t.jsonb :selects, default: "[]", null: false
-      t.jsonb :orders,  default: "[]", null: false
+      t.jsonb :filters, default: []
+      t.jsonb :selects, default: []
+      t.jsonb :orders,  default: []
 
       t.timestamps
 
