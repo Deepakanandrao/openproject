@@ -75,7 +75,7 @@ module OpenProject::Wikis
         permission :manage_wiki_page_links,
                    {},
                    permissible_on: :project,
-                   dependencies: %i[view_work_packages],
+                   dependencies: %i[edit_work_packages],
                    contract_actions: { wiki_page_links: %i[manage] }
       end
 
