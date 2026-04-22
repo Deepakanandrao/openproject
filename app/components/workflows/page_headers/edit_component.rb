@@ -28,34 +28,38 @@
 # See COPYRIGHT and LICENSE files for more details.
 # ++
 
-require "rails_helper"
+module Workflows::PageHeaders
+  class EditComponent < BaseComponent
+    options :tabs, :role
 
-RSpec.describe "Workflow summary", :js do
-  let(:role) { create(:project_role, name: "Hauptrolle") }
-  let(:type) { create(:type, name: "Ungeziefer") }
-  let(:admin)  { create(:admin) }
-  let(:statuses) { (1..3).map { create(:status) } }
-  let!(:workflow) do
-    create(:workflow, role_id: role.id,
-                      type_id: type.id,
-                      old_status_id: statuses[0].id,
-                      new_status_id: statuses[1].id,
-                      author: false,
-                      assignee: false)
-  end
+    def type = model
 
-  current_user { admin }
+    def page_breadcrumb
+      { href: workflows_path, text: t(:label_workflow_plural) }
+    end
 
-  before do
-    visit url_for(controller: "workflows/summaries", action: :show)
-  end
+    def title
+      type.name
+    end
 
-  it "displays a simple summary" do
-    expect(page).to have_heading "Summary"
+    def add_action_buttons(header)
+      header.with_action_button(
+        data: { controller: "async-dialog", "admin--workflow-checkbox-state-confirmation-trigger": "click" },
+        tag: :a,
+        mobile_icon: :copy,
+        mobile_label: t(:button_copy),
+        size: :medium,
+        href: new_workflow_copy_path(type, source_role_id: role&.id),
+        aria: { label: helpers.t(:button_copy) },
+        title: helpers.t(:button_copy)
+      ) do |button|
+        button.with_leading_visual_icon(icon: :copy)
+        t(:button_copy)
+      end
+    end
 
-    within :table do
-      expect(page).to have_selector :row, "Ungeziefer"
-      expect(page).to have_selector :columnheader, "Hauptrolle"
+    def add_tabs(header)
+      helpers.render_tab_header_nav(header, tabs)
     end
   end
 end

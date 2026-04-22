@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# -- copyright
+#-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,36 +26,41 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-# ++
+#++
 
-require "rails_helper"
+class Workflows::CopiesController < ApplicationController
+  include OpTurbo::ComponentStream
 
-RSpec.describe "Workflow summary", :js do
-  let(:role) { create(:project_role, name: "Hauptrolle") }
-  let(:type) { create(:type, name: "Ungeziefer") }
-  let(:admin)  { create(:admin) }
-  let(:statuses) { (1..3).map { create(:status) } }
-  let!(:workflow) do
-    create(:workflow, role_id: role.id,
-                      type_id: type.id,
-                      old_status_id: statuses[0].id,
-                      new_status_id: statuses[1].id,
-                      author: false,
-                      assignee: false)
+  layout "admin"
+
+  before_action :require_admin
+
+  before_action :set_source_type
+  before_action :set_source_role
+  before_action :set_other_types
+  before_action :set_all_roles
+
+  def new; end
+
+  private
+
+  def set_source_type
+    @source_type = ::Type.find(params[:workflow_type_id])
   end
 
-  current_user { admin }
-
-  before do
-    visit url_for(controller: "workflows/summaries", action: :show)
+  def set_source_role
+    @source_role = eligible_roles.find_by(id: params[:source_role_id])
   end
 
-  it "displays a simple summary" do
-    expect(page).to have_heading "Summary"
+  def set_other_types
+    @other_types = ::Type.where.not(id: @source_type.id).order(:position)
+  end
 
-    within :table do
-      expect(page).to have_selector :row, "Ungeziefer"
-      expect(page).to have_selector :columnheader, "Hauptrolle"
-    end
+  def set_all_roles
+    @all_roles = eligible_roles
+  end
+
+  def eligible_roles
+    @eligible_roles ||= Workflow.eligible_roles
   end
 end

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# -- copyright
+#-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,38 +26,32 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-# ++
+#++
 
-module Workflows
-  class PageHeaderComponent < ApplicationComponent
-    include OpPrimer::ComponentHelpers
-    include ApplicationHelper
+require "rails_helper"
 
-    def initialize(state:)
-      super
-      @state = state
+RSpec.describe OpPrimer::BackButtonLinkComponent, type: :component do
+  describe "#render" do
+    def render_component(...)
+      render_inline(described_class.new(...))
     end
 
-    def breadcrumb_items
-      [{ href: admin_index_path, text: t("label_administration") },
-       { href: admin_settings_work_packages_general_path, text: t(:label_work_package_plural) },
-       @state == :index ? nil : { href: workflows_path, text: t(:label_workflow_plural) },
-       title].compact
-    end
+    subject(:rendered_component) { render_component(model) }
 
-    def title
-      case @state
-      when :summarized
-        t(:label_workflow_summary)
-      when :copy
-        t(:label_workflow_copy)
-      else
-        t(:label_workflow_plural)
+    context "without model" do
+      let(:model) { nil }
+
+      it "renders a default text" do
+        expect(rendered_component).to have_css(".Button .Button-content .Button-label", text: "Cancel")
       end
     end
 
-    def description
-      t("admin.workflows.index.description") if @state == :index
+    context "with a custom text as model" do
+      let(:model) { "Some text…" }
+
+      it "renders the custom text" do
+        expect(rendered_component).to have_css(".Button .Button-content .Button-label", text: model)
+      end
     end
   end
 end

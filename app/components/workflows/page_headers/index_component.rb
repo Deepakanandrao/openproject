@@ -28,34 +28,29 @@
 # See COPYRIGHT and LICENSE files for more details.
 # ++
 
-require "rails_helper"
+module Workflows::PageHeaders
+  class IndexComponent < BaseComponent
+    def title
+      t(:label_workflow_plural)
+    end
 
-RSpec.describe "Workflow summary", :js do
-  let(:role) { create(:project_role, name: "Hauptrolle") }
-  let(:type) { create(:type, name: "Ungeziefer") }
-  let(:admin)  { create(:admin) }
-  let(:statuses) { (1..3).map { create(:status) } }
-  let!(:workflow) do
-    create(:workflow, role_id: role.id,
-                      type_id: type.id,
-                      old_status_id: statuses[0].id,
-                      new_status_id: statuses[1].id,
-                      author: false,
-                      assignee: false)
-  end
+    def description
+      t(".description")
+    end
 
-  current_user { admin }
-
-  before do
-    visit url_for(controller: "workflows/summaries", action: :show)
-  end
-
-  it "displays a simple summary" do
-    expect(page).to have_heading "Summary"
-
-    within :table do
-      expect(page).to have_selector :row, "Ungeziefer"
-      expect(page).to have_selector :columnheader, "Hauptrolle"
+    def add_action_buttons(header)
+      header.with_action_button(
+        tag: :a,
+        mobile_icon: :info,
+        mobile_label: helpers.t(:label_workflow_summary),
+        size: :medium,
+        href: workflows_summary_path,
+        aria: { label: helpers.t(:label_workflow_summary) },
+        title: helpers.t(:label_workflow_summary)
+      ) do |button|
+        button.with_leading_visual_icon(icon: :info)
+        helpers.t(:label_workflow_summary)
+      end
     end
   end
 end

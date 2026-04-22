@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# -- copyright
+#-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,36 +26,52 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-# ++
+#++
 
-require "rails_helper"
+require "spec_helper"
 
-RSpec.describe "Workflow summary", :js do
-  let(:role) { create(:project_role, name: "Hauptrolle") }
-  let(:type) { create(:type, name: "Ungeziefer") }
-  let(:admin)  { create(:admin) }
-  let(:statuses) { (1..3).map { create(:status) } }
-  let!(:workflow) do
-    create(:workflow, role_id: role.id,
-                      type_id: type.id,
-                      old_status_id: statuses[0].id,
-                      new_status_id: statuses[1].id,
-                      author: false,
-                      assignee: false)
-  end
+RSpec.describe Workflows::SummariesController do
+  current_user { build_stubbed(:admin) }
 
-  current_user { admin }
+  describe "#show" do
+    let(:counts) { [] }
 
-  before do
-    visit url_for(controller: "workflows/summaries", action: :show)
-  end
+    before do
+      allow(Workflow)
+        .to receive(:count_by_type_and_role)
+        .and_return(counts)
 
-  it "displays a simple summary" do
-    expect(page).to have_heading "Summary"
+      get :show
+    end
 
-    within :table do
-      expect(page).to have_selector :row, "Ungeziefer"
-      expect(page).to have_selector :columnheader, "Hauptrolle"
+    it "is successful" do
+      expect(response)
+        .to be_successful
+    end
+
+    context "when counts is empty" do
+      it "assigns the workflows by type and role" do
+        expect(assigns[:workflow_counts]).to eql counts
+      end
+
+      it "assigns roles" do
+        expect(assigns[:roles]).to be_nil
+      end
+    end
+
+    context "when counts is present" do
+      let(:type) { build_stubbed(:type) }
+      let(:project_role) { build_stubbed(:project_role) }
+      let(:global_role) { build_stubbed(:global_role) }
+      let(:counts) { [[type, [[project_role, 25], [global_role, 0]]]] }
+
+      it "assigns the workflows by type and role" do
+        expect(assigns[:workflow_counts]).to eql counts
+      end
+
+      it "assigns roles" do
+        expect(assigns[:roles]).to contain_exactly(project_role, global_role)
+      end
     end
   end
 end

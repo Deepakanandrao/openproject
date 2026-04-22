@@ -28,26 +28,27 @@
 # See COPYRIGHT and LICENSE files for more details.
 # ++
 
-module Workflows
-  class EditPageHeaderComponent < ApplicationComponent
+module Workflows::PageHeaders
+  class BaseComponent < ApplicationComponent
     include OpPrimer::ComponentHelpers
     include ApplicationHelper
-
-    def initialize(type, tabs:)
-      super
-      @type = type
-      @tabs = tabs
-    end
+    include OpTurbo::Streamable
 
     def breadcrumb_items
-      [{ href: admin_index_path, text: t("label_administration") },
-       { href: admin_settings_work_packages_general_path, text: t(:label_work_package_plural) },
-       { href: workflows_path, text: t(:label_workflow_plural) },
-       title]
+      [*parent_breadcrumbs, page_breadcrumb, title].compact
     end
 
-    def title
-      @type.name
+    def parent_breadcrumbs
+      [
+        { href: admin_index_path, text: t("label_administration") },
+        { href: admin_settings_work_packages_general_path, text: t(:label_work_package_plural) }
+      ]
     end
+
+    def page_breadcrumb = nil
+    def title = nil
+    def description = nil
+    def add_action_buttons(header); end
+    def add_tabs(header); end
   end
 end

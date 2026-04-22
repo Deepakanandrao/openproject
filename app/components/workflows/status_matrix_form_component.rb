@@ -29,18 +29,18 @@
 # ++
 
 module Workflows
-  class EditSubHeaderComponent < ApplicationComponent
+  class StatusMatrixFormComponent < ApplicationComponent
     include OpTurbo::Streamable
     include OpPrimer::ComponentHelpers
 
-    def initialize(tab:, current_role: nil, type: nil, available_roles: [], status_ids: [], dirty: false)
+    def initialize(tab:, role:, type:, available_roles:, statuses:, has_status_changes:)
       super
       @tab = tab
-      @current_role = current_role
+      @role = role
       @type = type
       @available_roles = available_roles
-      @status_ids = status_ids
-      @dirty = dirty
+      @statuses = statuses
+      @has_status_changes = has_status_changes
     end
   end
 end

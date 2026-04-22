@@ -28,44 +28,52 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class WorkflowsController < ApplicationController
+class Workflows::Copies::FromRolesController < ApplicationController
   include OpTurbo::ComponentStream
 
   layout "admin"
 
   before_action :require_admin
 
-  before_action :find_types, only: %i[index]
+  before_action :set_source_type
+  before_action :set_source_role
+  before_action :set_target_roles
 
-  before_action :find_type, only: %i[edit]
-  before_action :find_optional_role, only: %i[edit]
+  def create # rubocop:disable Metrics/AbcSize
+    if @source_type.nil? || @source_role.nil?
+      render_flash_message_via_turbo_stream(
+        message: I18n.t(:error_workflow_copy_source),
+        scheme: :danger
+      )
+      @turbo_status = :unprocessable_entity
+    elsif @target_roles.blank?
+      render_flash_message_via_turbo_stream(
+        message: I18n.t(:error_workflow_copy_target),
+        scheme: :danger
+      )
+      @turbo_status = :unprocessable_entity
+    else
+      Workflow.copy(@source_type, @source_role, [@source_type], @target_roles)
+      redirect_to edit_workflow_path(@source_type, role_id: @target_roles.first.id),
+                  notice: t(".notice", count: @target_roles.size, role_name: @target_roles.first.name)
+      return
+    end
 
-  def index; end
-
-  def edit
-    @current_tab = current_tab
+    respond_with_turbo_streams
   end
 
   private
 
-  def current_tab
-    params[:tab] || "always"
+  def set_source_type
+    @source_type = ::Type.find_by(id: params[:workflow_type_id])
   end
 
-  def find_types
-    @types = ::Type.order(:position)
+  def set_source_role
+    @source_role = eligible_roles.find_by(id: params[:source_role_id])
   end
 
-  def find_role
-    @role = eligible_roles.find(params[:role_id])
-  end
-
-  def find_type
-    @type = ::Type.find(params[:type_id])
-  end
-
-  def find_optional_role
-    @role = eligible_roles.find_by(id: params[:role_id]) || eligible_roles.order(:builtin, :position).first
+  def set_target_roles
+    @target_roles = eligible_roles.where(id: params[:target_role_ids])
   end
 
   def eligible_roles

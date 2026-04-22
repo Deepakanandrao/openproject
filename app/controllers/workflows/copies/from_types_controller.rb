@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# -- copyright
+#-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,36 +26,48 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-# ++
+#++
 
-require "rails_helper"
+class Workflows::Copies::FromTypesController < ApplicationController
+  include OpTurbo::ComponentStream
 
-RSpec.describe "Workflow summary", :js do
-  let(:role) { create(:project_role, name: "Hauptrolle") }
-  let(:type) { create(:type, name: "Ungeziefer") }
-  let(:admin)  { create(:admin) }
-  let(:statuses) { (1..3).map { create(:status) } }
-  let!(:workflow) do
-    create(:workflow, role_id: role.id,
-                      type_id: type.id,
-                      old_status_id: statuses[0].id,
-                      new_status_id: statuses[1].id,
-                      author: false,
-                      assignee: false)
-  end
+  layout "admin"
 
-  current_user { admin }
+  before_action :require_admin
 
-  before do
-    visit url_for(controller: "workflows/summaries", action: :show)
-  end
+  before_action :set_source_type
+  before_action :set_target_types
 
-  it "displays a simple summary" do
-    expect(page).to have_heading "Summary"
-
-    within :table do
-      expect(page).to have_selector :row, "Ungeziefer"
-      expect(page).to have_selector :columnheader, "Hauptrolle"
+  def create
+    if @source_type.nil?
+      render_flash_message_via_turbo_stream(
+        message: I18n.t(:error_workflow_copy_source),
+        scheme: :danger
+      )
+      @turbo_status = :unprocessable_entity
+    elsif @target_types.blank?
+      render_flash_message_via_turbo_stream(
+        message: I18n.t(:error_workflow_copy_target),
+        scheme: :danger
+      )
+      @turbo_status = :unprocessable_entity
+    else
+      Workflow.copy(@source_type, nil, @target_types, Workflow.eligible_roles)
+      redirect_to edit_workflow_path(@target_types.first),
+                  notice: t(".notice", count: @target_types.size, type_name: @target_types.first.name)
+      return
     end
+
+    respond_with_turbo_streams
+  end
+
+  private
+
+  def set_source_type
+    @source_type = ::Type.find_by(id: params[:workflow_type_id])
+  end
+
+  def set_target_types
+    @target_types = ::Type.where(id: params[:target_type_ids])
   end
 end

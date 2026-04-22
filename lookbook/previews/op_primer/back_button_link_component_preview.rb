@@ -28,34 +28,21 @@
 # See COPYRIGHT and LICENSE files for more details.
 # ++
 
-require "rails_helper"
+module OpPrimer
+  # @logical_path OpenProject/Primer
+  # @display min_height 250px
+  class BackButtonLinkComponentPreview < Lookbook::Preview
+    # Use [`link_to :back`](https://api.rubyonrails.org/classes/ActionView/Helpers/UrlHelper.html#method-i-link_to)
+    # special behaviour with Primer styling.
+    #
+    # `Primer::Beta::Button.new(tag: :a, href: :back)` links to `/back` unfortunately,
+    # hence this tiny component…
+    def default
+      render(OpPrimer::BackButtonLinkComponent.new)
+    end
 
-RSpec.describe "Workflow summary", :js do
-  let(:role) { create(:project_role, name: "Hauptrolle") }
-  let(:type) { create(:type, name: "Ungeziefer") }
-  let(:admin)  { create(:admin) }
-  let(:statuses) { (1..3).map { create(:status) } }
-  let!(:workflow) do
-    create(:workflow, role_id: role.id,
-                      type_id: type.id,
-                      old_status_id: statuses[0].id,
-                      new_status_id: statuses[1].id,
-                      author: false,
-                      assignee: false)
-  end
-
-  current_user { admin }
-
-  before do
-    visit url_for(controller: "workflows/summaries", action: :show)
-  end
-
-  it "displays a simple summary" do
-    expect(page).to have_heading "Summary"
-
-    within :table do
-      expect(page).to have_selector :row, "Ungeziefer"
-      expect(page).to have_selector :columnheader, "Hauptrolle"
+    def with_custom_label
+      render(OpPrimer::BackButtonLinkComponent.new("Go back"))
     end
   end
 end
