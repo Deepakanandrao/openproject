@@ -76,9 +76,7 @@ See COPYRIGHT and LICENSE files for more details.
   %>
 
   <% if OpenProject::FeatureDecisions.backlog_buckets_active? %>
-    <% backlog_buckets.each do |backlog_bucket| %>
-      <%= render Backlogs::BacklogBucketComponent.new(backlog_bucket:, project: project) %>
-    <% end %>
+    <%= render Backlogs::BacklogBucketComponent.with_collection(backlog_buckets, project:) %>
   <% end %>
 
   <%=
