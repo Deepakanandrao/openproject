@@ -34,19 +34,17 @@ module Backlogs
     include OpTurbo::Streamable
     include Backlogs::CommonHelper
 
-    attr_reader :inbox_work_packages, :backlog_buckets, :project, :current_user, :show_all
+    attr_reader :inbox_work_packages, :backlog_buckets, :project, :current_user
 
     def initialize(inbox_work_packages:,
                    backlog_buckets:,
                    project:,
-                   show_all: false,
                    current_user: User.current)
       super()
 
       @inbox_work_packages = inbox_work_packages
       @backlog_buckets = backlog_buckets
       @project = project
-      @show_all = show_all
       @current_user = current_user
     end
 
