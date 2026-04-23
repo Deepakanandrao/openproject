@@ -121,7 +121,11 @@ RSpec.describe "External links in BlockNote editor",
         expect(page.current_url).to include("/external_redirect")
       end
     ensure
-      (page.windows - [original_window]).each { |w| w.close rescue nil } # rubocop:disable Style/RescueModifier
+      (page.windows - [original_window]).each do |w|
+        w.close
+      rescue StandardError
+        # window may already have closed or the session may be gone
+      end
     end
 
     it_behaves_like "does not freeze when pasting multiple external links"
