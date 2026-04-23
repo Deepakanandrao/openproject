@@ -367,19 +367,19 @@ module Pages
 
     def open_create_backlog_bucket_dialog
       within_owner_backlogs do
-        click_on accessible_name: Agile::BacklogBucket.human_model_name
+        click_on accessible_name: BacklogBucket.human_model_name
       end
     end
 
     def expect_new_backlog_bucket_button
       within_owner_backlogs do
-        expect(page).to have_link(Agile::BacklogBucket.human_model_name, exact: true)
+        expect(page).to have_link(BacklogBucket.human_model_name, exact: true)
       end
     end
 
     def expect_no_new_backlog_bucket_button
       within_owner_backlogs do
-        expect(page).to have_no_link(Agile::BacklogBucket.human_model_name, exact: true)
+        expect(page).to have_no_link(BacklogBucket.human_model_name, exact: true)
       end
     end
 

@@ -30,7 +30,7 @@
 
 require "rails_helper"
 
-RSpec.describe Agile::BacklogBucket do
+RSpec.describe BacklogBucket do
   shared_let(:project) { create(:project) }
 
   subject(:backlog_bucket) do

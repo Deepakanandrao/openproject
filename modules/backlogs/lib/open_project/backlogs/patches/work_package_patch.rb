@@ -43,8 +43,8 @@ module OpenProject::Backlogs::Patches::WorkPackagePatch
                                              less_than: 10_000,
                                              if: -> { backlogs_enabled? }
 
-    belongs_to :backlog_bucket, class_name: "Agile::BacklogBucket", optional: true
     belongs_to :sprint, optional: true
+    belongs_to :backlog_bucket, optional: true
 
     include OpenProject::Backlogs::List
 

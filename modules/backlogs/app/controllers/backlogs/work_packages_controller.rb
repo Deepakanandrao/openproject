@@ -127,7 +127,7 @@ module Backlogs
       )
       inbox_work_packages = WorkPackage.backlogs_inbox_for(project: @project)
       backlog_buckets = if OpenProject::FeatureDecisions.backlog_buckets_active?
-                          Agile::BacklogBucket.for_project(@project)
+                          BacklogBucket.for_project(@project)
                         end
 
       replace_via_turbo_stream(

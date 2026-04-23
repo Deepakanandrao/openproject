@@ -65,7 +65,7 @@ module Backlogs
 
     def load_backlogs
       if OpenProject::FeatureDecisions.backlog_buckets_active?
-        @backlog_buckets = Agile::BacklogBucket.for_project(@project)
+        @backlog_buckets = BacklogBucket.for_project(@project)
       end
 
       @sprints = Sprint.for_project(@project)

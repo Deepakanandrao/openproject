@@ -28,7 +28,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class Agile::BacklogBucket < ApplicationRecord
+class BacklogBucket < ApplicationRecord
   self.table_name = "backlog_buckets"
 
   belongs_to :project
