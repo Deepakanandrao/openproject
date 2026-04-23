@@ -19,7 +19,7 @@
         [class.spot-link_inactive]="isMobile()"
         [attr.title]="workPackage.subject"
         [textContent]="workPackage.formattedId"
-        [attr.href]="fullScreenLink()"
+        [attr.href]="pathHelper.workPackagePath(workPackage.displayId)"
         (click)="onLinkClick($event)"
         >
       </a>

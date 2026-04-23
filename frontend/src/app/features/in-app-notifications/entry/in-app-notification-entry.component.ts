@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, HostBinding, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { WorkPackageResource } from 'core-app/features/hal/resources/work-package-resource';
 import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
 import idFromLink from 'core-app/features/hal/helpers/id-from-link';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
@@ -11,8 +12,6 @@ import { INotification } from 'core-app/core/state/in-app-notifications/in-app-n
 import { IanCenterService } from 'core-app/features/in-app-notifications/center/state/ian-center.service';
 import { DeviceService } from 'core-app/core/browser/device.service';
 import { UrlParamsService } from 'core-app/core/navigation/url-params.service';
-import { States } from 'core-app/core/states/states.service';
-import { resolveRoutingId } from 'core-app/features/work-packages/helpers/work-package-id-resolvers';
 
 @Component({
   selector: 'op-in-app-notification-entry',
@@ -51,6 +50,11 @@ export class InAppNotificationEntryComponent implements OnInit {
 
   private workPackageId:string|null;
 
+  // The loaded work package, captured via tap() on workPackage$. Click handlers
+  // prefer this.workPackage.displayId so the URL carries the semantic identifier;
+  // fall back to the numeric PK if the resource hasn't emitted yet.
+  private workPackage:WorkPackageResource|null = null;
+
   constructor(
     readonly apiV3Service:ApiV3Service,
     readonly I18n:I18nService,
@@ -59,15 +63,11 @@ export class InAppNotificationEntryComponent implements OnInit {
     readonly pathHelper:PathHelperService,
     readonly deviceService:DeviceService,
     readonly urlParams:UrlParamsService,
-    readonly states:States,
   ) {
   }
 
-  // The notification's HAL link gives us the numeric primary key. For URL
-  // construction we prefer the semantic displayId so the user-visible URL
-  // carries the readable identifier once the WP is cached.
   private routingId():string {
-    return this.workPackageId ? resolveRoutingId(this.states, this.workPackageId) : '';
+    return this.workPackage?.displayId ?? this.workPackageId ?? '';
   }
 
   ngOnInit():void {
@@ -92,7 +92,8 @@ export class InAppNotificationEntryComponent implements OnInit {
         .apiV3Service
         .work_packages
         .id(this.workPackageId)
-        .requireAndStream();
+        .requireAndStream()
+        .pipe(tap((wp) => { this.workPackage = wp; }));
     }
   }
 
@@ -126,10 +127,6 @@ export class InAppNotificationEntryComponent implements OnInit {
 
     const link = this.pathHelper.workPackagePath(this.routingId()) + window.location.search;
     Turbo.visit(link, { action: 'advance' });
-  }
-
-  fullScreenLink():string {
-    return this.workPackageId ? this.pathHelper.workPackagePath(this.routingId()) : this.pathHelper.workPackagesPath(null);
   }
 
   onLinkClick(e:Event):void {
