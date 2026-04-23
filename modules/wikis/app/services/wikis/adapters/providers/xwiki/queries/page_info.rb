@@ -38,7 +38,11 @@ module Wikis
               titles = [
                 "What makes XWiki special?",
                 "API documentation",
-                "A brief introduction on configuring your own XWiki instance and connect it to OpenProject."
+                "A brief introduction on configuring your own XWiki instance and connect it to OpenProject.",
+                "Security considerations for API design",
+                "Syntax overview",
+                "Getting help",
+                "Enterprise support"
               ].sample
               title = titles[Random.new(input_data.identifier.hash).rand(titles.size)]
 
