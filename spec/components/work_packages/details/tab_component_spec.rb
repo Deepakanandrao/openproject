@@ -1,0 +1,34 @@
+# frozen_string_literal: true
+
+require "rails_helper"
+
+RSpec.describe WorkPackages::Details::TabComponent, type: :component do
+  include OpenProject::StaticRouting::UrlHelpers
+
+  let(:project)      { create(:project, identifier: "MYPROJ") }
+  let(:work_package) { create(:work_package, project:) }
+
+  before do
+    allow(Setting::WorkPackageIdentifier).to receive_messages(semantic?: true, classic?: false)
+    work_package # realize before render so after_create registration runs
+  end
+
+  subject do
+    with_controller_class(NotificationsController) do
+      with_request_url("/notifications/details/:work_package_id") do
+        render_inline(described_class.new(work_package:, base_route: notifications_path))
+      end
+    end
+  end
+
+  describe "full-screen link" do
+    it "uses the semantic displayId in the href" do
+      subject
+
+      expect(work_package.display_id).to eq("MYPROJ-1")
+      full_screen = page.find("[data-test-selector='wp-details-tab-component--full-screen']")
+      expect(full_screen[:href]).to include("/work_packages/MYPROJ-1")
+      expect(full_screen[:href]).not_to include("/work_packages/#{work_package.id}/")
+    end
+  end
+end
