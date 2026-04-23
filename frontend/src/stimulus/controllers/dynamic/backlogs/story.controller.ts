@@ -29,16 +29,20 @@
 import { Controller } from '@hotwired/stimulus';
 import * as Turbo from '@hotwired/turbo';
 import type { TurboVisitEvent } from '@hotwired/turbo';
+import { WP_ID_URL_PATTERN } from 'core-app/shared/helpers/work-package-id-pattern';
 
+const DETAILS_URL_PATTERN = new RegExp(`/details/(${WP_ID_URL_PATTERN})(?:/|$)`);
 
 export default class StoryController extends Controller<HTMLElement> implements EventListenerObject {
   static values = {
     id: Number,
+    displayId: String,
     splitUrl: String,
     fullUrl: String,
   };
 
   declare idValue:number;
+  declare displayIdValue:string;
   declare splitUrlValue:string;
   declare fullUrlValue:string;
 
@@ -74,8 +78,9 @@ export default class StoryController extends Controller<HTMLElement> implements 
 
   private syncSelectionFromUrl(locationUrl:string):void {
     const { pathname } = new URL(locationUrl, window.location.origin);
-    const [, id] = /\/details\/(\d+)/.exec(pathname) ?? [];
-    if (id !== undefined && Number(id) === this.idValue) {
+    const [, id] = DETAILS_URL_PATTERN.exec(pathname) ?? [];
+    // URL segment may be numeric or semantic; compare against both forms.
+    if (id !== undefined && (id === this.idValue.toString() || id === this.displayIdValue)) {
       this.markAsSelected();
     } else {
       this.unmarkAsSelected();
