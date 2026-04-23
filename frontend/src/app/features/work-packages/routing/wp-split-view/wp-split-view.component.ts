@@ -110,7 +110,7 @@ export class WorkPackageSplitViewComponent extends WorkPackageSingleViewBase imp
         const currentId = this.workPackage?.id ?? this.workPackageId;
         const idSame = currentId.toString() === newId.toString();
         if (!idSame && this.$state.includes(`${this.baseRoute}.details`)) {
-          this.$state.go(
+          void this.$state.go(
             (this.$state.current.name!),
             { workPackageId: resolveRoutingId(this.states, newId.toString()), focus: false },
           );
