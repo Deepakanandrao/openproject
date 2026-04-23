@@ -2162,7 +2162,7 @@ fr:
           not_whitelisted: n'est pas autorisé par la configuration.
           invalid_url: n'est pas une URL ou un chemin de dépôt valide.
           must_not_be_ssh: ne doit pas être une url SSH.
-          must_not_point_to_openproject_directory: must not point to an OpenProject-managed repository directory.
+          must_not_point_to_openproject_directory: ne doit pas pointer vers un répertoire de dépôt géré par OpenProject.
           no_directory: n'est pas un répertoire.
         role:
           attributes:

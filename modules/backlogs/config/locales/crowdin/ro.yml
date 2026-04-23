@@ -27,7 +27,7 @@ ro:
   activerecord:
     attributes:
       agile/sprint:
-        duration: Duration
+        duration: Durată
         finish_date: Finish date
         goal: Sprint goal
         name: Sprint name
