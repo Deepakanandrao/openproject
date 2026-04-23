@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -27,22 +28,21 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class Queries::Meetings::Filters::AuthorFilter < Queries::Meetings::Filters::MeetingFilter
-  include ::Queries::Filters::Shared::VisiblePrincipalFilter
+require_relative "../spec_helper"
 
-  def type
-    :list_optional
+RSpec.describe "LDAP synchronized filters", :skip_csrf, type: :rails_request do
+  let(:admin) { create(:admin) }
+  let(:filter) { create(:ldap_synchronized_filter) }
+
+  before do
+    login_as(admin)
   end
 
-  def type_strategy
-    @type_strategy ||= ::Queries::Filters::Strategies::IntegerListOptional.new(self)
-  end
-
-  def self.key
-    :author_id
-  end
-
-  def available_operators
-    [::Queries::Operators::Equals]
+  describe "DELETE /ldap_groups/synchronized_filters/:ldap_filter_id" do
+    it "redirects with 303 See Other" do
+      delete ldap_groups_synchronized_filter_path(ldap_filter_id: filter.id)
+      expect(response).to have_http_status(:see_other)
+      expect(response).to redirect_to(ldap_groups_synchronized_groups_path)
+    end
   end
 end

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -27,22 +28,21 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class Queries::Meetings::Filters::AuthorFilter < Queries::Meetings::Filters::MeetingFilter
-  include ::Queries::Filters::Shared::VisiblePrincipalFilter
+require "spec_helper"
 
-  def type
-    :list_optional
+RSpec.describe "Deploy targets", :skip_csrf, type: :rails_request do
+  let(:admin) { create(:admin) }
+  let(:deploy_target) { create(:deploy_target) }
+
+  before do
+    login_as(admin)
   end
 
-  def type_strategy
-    @type_strategy ||= ::Queries::Filters::Strategies::IntegerListOptional.new(self)
-  end
-
-  def self.key
-    :author_id
-  end
-
-  def available_operators
-    [::Queries::Operators::Equals]
+  describe "DELETE /deploy_targets/:id" do
+    it "redirects with 303 See Other" do
+      delete deploy_target_path(deploy_target)
+      expect(response).to have_http_status(:see_other)
+      expect(response).to redirect_to(deploy_targets_path)
+    end
   end
 end

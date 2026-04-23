@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -27,22 +28,25 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class Queries::Meetings::Filters::AuthorFilter < Queries::Meetings::Filters::MeetingFilter
-  include ::Queries::Filters::Shared::VisiblePrincipalFilter
+require "spec_helper"
 
-  def type
-    :list_optional
+RSpec.describe "Team planners", :skip_csrf, type: :rails_request, with_ee: %i[team_planner_view] do
+  let(:project) { create(:project) }
+  let(:user) do
+    create(:user, member_with_permissions: { project => %i[view_work_packages view_team_planner manage_team_planner] })
+  end
+  let(:query) { create(:query, project:, user:) }
+
+  before do
+    create(:view_team_planner, query:)
+    login_as(user)
   end
 
-  def type_strategy
-    @type_strategy ||= ::Queries::Filters::Strategies::IntegerListOptional.new(self)
-  end
-
-  def self.key
-    :author_id
-  end
-
-  def available_operators
-    [::Queries::Operators::Equals]
+  describe "DELETE /projects/:project_id/team_planners/:id" do
+    it "redirects with 303 See Other" do
+      delete project_team_planner_path(project, query)
+      expect(response).to have_http_status(:see_other)
+      expect(response).to redirect_to(project_team_planners_path(project))
+    end
   end
 end
