@@ -33,8 +33,8 @@ module Wikis
     module Providers
       module XWiki
         module Queries
-          class ReferencingPages < BaseQuery
-            def call(input_data)
+          class RelationPageLinks < BaseQuery
+            def call(input_data) # rubocop:disable Metrics/AbcSize
               # TODO: use real API endpoints once available
 
               title = [
@@ -45,8 +45,9 @@ module Wikis
 
               results = []
 
-              if input_data.linkable.id % 2 == 0
+              if input_data.linkable.id % 2 == 1
                 results << Success(Results::PageInfo.new(identifier: "1337", provider:, title: title.sample, href: "#"))
+                results << Success(Results::PageInfo.new(identifier: "1338", provider:, title: title.sample, href: "#"))
                 results << Success(Results::PageInfo.new(identifier: "1338", provider:, title: title.sample, href: "#"))
               end
 

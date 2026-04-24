@@ -28,33 +28,12 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Wikis
-  module Adapters
-    module Providers
-      module XWiki
-        module Queries
-          class ReferencingPages < BaseQuery
-            def call(input_data)
-              # TODO: use real API endpoints once available
+module Wikis::Adapters::Input
+  RelationPageLinks = Data.define(:linkable) do
+    private_class_method :new
 
-              title = [
-                "What makes XWiki special?",
-                "API documentation",
-                "A brief introduction on configuring your own XWiki instance and connect it to OpenProject."
-              ]
-
-              results = []
-
-              if input_data.linkable.id % 2 == 0
-                results << Success(Results::PageInfo.new(identifier: "1337", provider:, title: title.sample, href: "#"))
-                results << Success(Results::PageInfo.new(identifier: "1338", provider:, title: title.sample, href: "#"))
-              end
-
-              success(results)
-            end
-          end
-        end
-      end
+    def self.build(linkable:, contract: ReferencingPagesContract.new)
+      contract.call(linkable:).to_monad.fmap { new(**it.to_h) }
     end
   end
 end

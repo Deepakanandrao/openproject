@@ -31,26 +31,22 @@
 module Wikis
   module Adapters
     module Providers
-      module XWiki
+      module Internal
         module Queries
-          class ReferencingPages < BaseQuery
+          class RelationPageLinks < BaseQuery
             def call(input_data)
-              # TODO: use real API endpoints once available
+              page_link_infos = provider.page_links
+                                        .merge(RelationPageLink.all)
+                                        .where(linkable: input_data.linkable)
+                                        .map { |page_link| page_info(page_link.identifier) }
 
-              title = [
-                "What makes XWiki special?",
-                "API documentation",
-                "A brief introduction on configuring your own XWiki instance and connect it to OpenProject."
-              ]
+              success(page_link_infos)
+            end
 
-              results = []
+            private
 
-              if input_data.linkable.id % 2 == 0
-                results << Success(Results::PageInfo.new(identifier: "1337", provider:, title: title.sample, href: "#"))
-                results << Success(Results::PageInfo.new(identifier: "1338", provider:, title: title.sample, href: "#"))
-              end
-
-              success(results)
+            def page_info(identifier)
+              Input::PageInfo.build(identifier:).bind { provider.resolve("queries.page_info").call(it) }
             end
           end
         end
