@@ -111,6 +111,14 @@ RSpec.describe Backlogs::SprintsController do
         expect(flash[:notice]).to eq(I18n.t(:notice_successful_create))
       end
 
+      context "when all=1 is passed" do
+        it "redirects to backlogs preserving the all param" do
+          post :create, format: :turbo_stream, params: params.merge(all: 1)
+
+          expect(response.body).to include(project_backlogs_backlog_path(project, all: 1))
+        end
+      end
+
       context "without the 'create_sprints' permission" do
         let(:permissions) { all_permissions - [:create_sprints] }
 

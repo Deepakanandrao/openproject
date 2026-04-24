@@ -94,7 +94,7 @@ module Backlogs
         id: dom_target(sprint, :finish_button),
         scheme: :invisible,
         tag: :a,
-        href: finish_project_backlogs_sprint_path(project, sprint),
+        href: finish_project_backlogs_sprint_path(project, sprint, helpers.all_backlogs_params),
         data: { turbo_method: :post }
       }
     end

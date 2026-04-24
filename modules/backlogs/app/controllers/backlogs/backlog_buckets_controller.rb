@@ -52,7 +52,7 @@ module Backlogs
 
       if call.success?
         flash[:notice] = I18n.t(:notice_successful_create)
-        render turbo_stream: turbo_stream.redirect_to(project_backlogs_backlog_path(@project))
+        render turbo_stream: turbo_stream.redirect_to(project_backlogs_backlog_path(@project, helpers.all_backlogs_params))
       else
         update_new_backlog_bucket_form_component_via_turbo_stream(backlog_bucket: call.result, base_errors: call.errors[:base])
         respond_with_turbo_streams
@@ -66,7 +66,7 @@ module Backlogs
 
       if call.success?
         flash[:notice] = I18n.t(:notice_successful_update)
-        render turbo_stream: turbo_stream.redirect_to(project_backlogs_backlog_path(@project))
+        render turbo_stream: turbo_stream.redirect_to(project_backlogs_backlog_path(@project, helpers.all_backlogs_params))
       else
         update_new_backlog_bucket_form_component_via_turbo_stream(backlog_bucket: call.result, base_errors: call.errors[:base])
         respond_with_turbo_streams
@@ -84,7 +84,7 @@ module Backlogs
         flash[:error] = call.errors.full_messages.join(", ")
       end
 
-      render turbo_stream: turbo_stream.redirect_to(project_backlogs_backlog_path(@project))
+      render turbo_stream: turbo_stream.redirect_to(project_backlogs_backlog_path(@project, helpers.all_backlogs_params))
     end
 
     private
