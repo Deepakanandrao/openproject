@@ -31,8 +31,8 @@ fr:
       done_continue: Terminé, continuer
       wiki_page: Page wiki
     work_package_wikis_tab_component:
-      inline_page_links: Inline page links
-      referencing_pages: Referenced in
+      inline_page_links: Liens intégrés dans la page
+      referencing_pages: Référencé dans
     page_link_component:
       remove: Supprimer le lien de la page
     relation_page_links_component:
