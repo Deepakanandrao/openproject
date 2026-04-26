@@ -40,7 +40,7 @@ if Rails.env.production?
   end
 end
 
-# Raise if we encounter an under-provisioned dev setup
+# Log a warning if we encounter an under-provisioned dev setup
 if Rails.env.local?
   utility_connections = 1 + GoodJob::SharedExecutor::MAX_THREADS # based on GoodJob documentation
   required_pool_size = OpenProject::Configuration.web_max_threads +
