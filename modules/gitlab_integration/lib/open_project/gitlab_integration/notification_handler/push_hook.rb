@@ -39,9 +39,9 @@ module OpenProject::GitlabIntegration
         return nil unless payload.object_kind == "push"
 
         payload.commits.each do |commit|
-          user = User.find_by_id(payload.open_project_user_id)
+          user = User.find_by(id: payload.open_project_user_id)
           text = [commit["title"], commit["message"]]
-            .select(&:present?)
+            .compact_blank
             .join(" - ")
           work_packages = find_mentioned_work_packages(text, user)
           notes = generate_notes(commit, payload)
