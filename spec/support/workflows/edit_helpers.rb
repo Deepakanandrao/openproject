@@ -73,6 +73,16 @@ module Workflows
       page.evaluate_script("document.getElementById('#{checkbox_id}')?.indeterminate ?? false")
     end
 
+    def indeterminate_visible?(checkbox_id)
+      page.evaluate_script(<<~JS)
+        (() => {
+          const el = document.getElementById('#{checkbox_id}');
+          const bg = window.getComputedStyle(el).backgroundColor;
+          return bg !== 'rgba(0, 0, 0, 0)' && bg !== 'rgb(255, 255, 255)';
+        })()
+      JS
+    end
+
     def expect_transition(role, from_index, to_index, exist:, author: false, assignee: false)
       expect(Workflow.exists?(role_id: role.id, type_id: type.id,
                               old_status_id: statuses[from_index].id,

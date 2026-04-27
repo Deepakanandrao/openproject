@@ -81,6 +81,13 @@ RSpec.describe "Workflow edit with multiple roles", :js do
         expect(page).to have_field workflow_checkbox(0, 1), checked: false
         expect(indeterminate?(workflow_checkbox(0, 1))).to be true
       end
+
+      it "the checkbox is visible as indeterminate" do
+        expect(page).to have_field workflow_checkbox(0, 1), checked: false
+
+        expect(indeterminate?(workflow_checkbox(0, 1))).to be true
+        expect(indeterminate_visible?(workflow_checkbox(0, 1))).to be true
+      end
     end
 
     context "when roles have different statuses in their workflows" do
