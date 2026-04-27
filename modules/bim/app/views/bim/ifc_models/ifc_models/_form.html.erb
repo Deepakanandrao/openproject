@@ -61,6 +61,9 @@ See COPYRIGHT and LICENSE files for more details.
       if (fileNameField.length > 0 && fileNameField[0].files && fileNameField[0].files[0]) {
         fileName = fileNameField[0].files[0].name;
       }
+      if (fileName.length === 0) {
+        return jQuery.Deferred().resolve().promise();
+      }
 
       <%# Reset the form validity %>
       <%# See: https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement/setCustomValidity %>

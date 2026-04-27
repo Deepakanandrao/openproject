@@ -39,9 +39,7 @@ module Bim
       before_action :find_ifc_model_object, only: %i[edit update destroy]
       before_action :find_all_ifc_models, only: %i[show defaults index]
 
-      before_action :authorize, except: %i[set_direct_upload_file_name]
-      before_action :require_login, only: %i[set_direct_upload_file_name direct_upload_finished]
-      no_authorization_required! :set_direct_upload_file_name
+      before_action :authorize
 
       menu_item :ifc_models
 
@@ -255,16 +253,19 @@ module Bim
         payload = direct_upload_callback_verifier.verified(request.params[:du_token], purpose: DIRECT_UPLOAD_CALLBACK_PURPOSE)
         return false unless payload
 
-        payload.with_indifferent_access.slice(:attachment_id, :project_id, :user_id, :nonce) == {
+        expected_payload = {
           attachment_id: attachment_id.to_i,
           project_id: @project.id,
           user_id: current_user.id,
           nonce: session[:pending_ifc_model_callback_nonce]
-        }
+        }.with_indifferent_access
+        actual_payload = payload.with_indifferent_access.slice(:attachment_id, :project_id, :user_id, :nonce).with_indifferent_access
+
+        actual_payload == expected_payload
       end
 
       def attachment_id_from_key(key)
-        key.to_s.match(%r{\Auploads/attachment/file/(\d+)/[^/]+\z})&.captures&.first
+        key.to_s.match(%r{\Auploads/[^/]+/file/(\d+)/[^/]+\z})&.captures&.first
       end
 
       def fail_direct_upload

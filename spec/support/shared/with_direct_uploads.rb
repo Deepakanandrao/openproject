@@ -111,12 +111,17 @@ class WithDirectUploads
         {
           code: ok ? 302 : 403,
           headers: {
-            "Location" => ok ? redirect_url + "?key=" + CGI.escape(key) : nil,
+            "Location" => ok ? append_key_query_param(redirect_url, key) : nil,
             "Access-Control-Allow-Methods" => "POST",
             "Access-Control-Allow-Origin" => "*"
           }
         }
       end)
+  end
+
+  def append_key_query_param(redirect_url, key)
+    delimiter = redirect_url.include?("?") ? "&" : "?"
+    "#{redirect_url}#{delimiter}key=#{CGI.escape(key)}"
   end
 
   def stub_with_status
