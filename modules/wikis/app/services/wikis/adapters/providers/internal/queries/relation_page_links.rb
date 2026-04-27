@@ -35,9 +35,15 @@ module Wikis
         module Queries
           class RelationPageLinks < BaseQuery
             def call(input_data)
+              input_data => { linkable: }
+              not_allowed_to_view_wiki_page_links =
+                !User.current.allowed_in_project?(:view_wiki_page_links, linkable.project)
+
+              return failure(code: :forbidden) if not_allowed_to_view_wiki_page_links
+
               page_link_infos = provider.page_links
                                         .merge(RelationPageLink.all)
-                                        .where(linkable: input_data.linkable)
+                                        .where(linkable:)
                                         .map { |page_link| page_info(page_link.identifier) }
 
               success(page_link_infos)
