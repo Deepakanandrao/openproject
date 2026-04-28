@@ -34,9 +34,9 @@ See COPYRIGHT and LICENSE files for more details.
     <div id="owner_backlogs_container" class="op-sprint-planning-lists"
          data-generic-drag-and-drop-target="scrollContainer">
       <%=
-        render Backlogs::BacklogsComponent.new(
+        render Backlogs::BacklogComponent.new(
           inbox_work_packages: @inbox_work_packages,
-          backlog_buckets: @backlog_buckets,
+          buckets: @backlog_buckets,
           project: @project
         )
       %>

@@ -29,21 +29,21 @@
 #++
 
 module Backlogs
-  class BacklogsComponent < ApplicationComponent
+  class BacklogComponent < ApplicationComponent
     include Primer::AttributesHelper
     include OpTurbo::Streamable
     include CommonHelper
 
-    attr_reader :inbox_work_packages, :backlog_buckets, :project, :current_user
+    attr_reader :inbox_work_packages, :buckets, :project, :current_user
 
     def initialize(inbox_work_packages:,
-                   backlog_buckets:,
+                   buckets:,
                    project:,
                    current_user: User.current)
       super()
 
       @inbox_work_packages = inbox_work_packages
-      @backlog_buckets = backlog_buckets
+      @buckets = buckets
       @project = project
       @current_user = current_user
     end
@@ -54,12 +54,8 @@ module Backlogs
 
     private
 
-    def dom_id
-      "backlogs_#{project.id}"
-    end
-
     def total
-      @total ||= inbox_work_packages.count + (backlog_buckets&.sum { it.work_packages.size } || 0)
+      @total ||= inbox_work_packages.count + (buckets&.sum { it.work_packages.size } || 0)
     end
   end
 end
