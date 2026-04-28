@@ -60,7 +60,9 @@ RSpec.describe "Work package table navigation follow-ups use displayId",
     it "copies a URL containing the semantic identifier" do
       semantic_id = work_package.reload.identifier
 
-      # Spy on clipboard writes — navigator.clipboard.writeText is what the app uses.
+      # Spy directly on navigator.clipboard.writeText — the existing
+      # have_message_copied_to_clipboard matcher only inspects the flash DOM,
+      # which can't distinguish numeric vs semantic ids in the copied value.
       page.execute_script(<<~JS)
         window.__lastCopiedText = null;
         navigator.clipboard.writeText = function(text) {
@@ -72,16 +74,10 @@ RSpec.describe "Work package table navigation follow-ups use displayId",
       context_menu.open_for(work_package)
       context_menu.choose("Copy link to clipboard")
 
-      # Wait for the async copy
-      expect(page).to have_css("body") # just a sync point
       copied = nil
-      Timeout.timeout(3) do
-        loop do
-          copied = page.evaluate_script("window.__lastCopiedText")
-          break if copied
-
-          sleep 0.1
-        end
+      retry_block do
+        copied = page.evaluate_script("window.__lastCopiedText")
+        raise "clipboard write not yet observed" if copied.nil?
       end
 
       expect(copied).to include("/wp/#{semantic_id}")
