@@ -33,7 +33,6 @@ import type { SelectPanelElement } from '@primer/view-components/app/components/
 import WorkflowCheckboxStateController from './workflow-checkbox-state.controller';
 
 /**
- * Mounted on the <select-panel> element for role selection in the workflow quick filters.
  * When the panel closes, it navigates to the workflow edit page with the selected role IDs.
  * Delegates dirty-state confirmation to the workflow-checkbox-state controller via an outlet.
  */
@@ -61,9 +60,19 @@ export default class WorkflowRoleSelectController extends Controller {
       .map((item) => item.getAttribute('data-item-id'))
       .filter(Boolean);
 
-    if (!selectedIds.length) return;
+    // For when all roles are deselected
+    if (!selectedIds.length) {
+      const url = new URL(this.baseUrlValue, window.location.origin);
+      if (this.hasAdminWorkflowCheckboxStateOutlet) {
+        this.adminWorkflowCheckboxStateOutlet.navigateTo(url.toString());
+      } else {
+        Turbo.visit(url.toString());
+      }
+      return;
+    }
 
     const currentIds = this.currentRoleIdsValue.split(',').filter(Boolean);
+
     if (selectedIds.slice().sort().join(',') === currentIds.slice().sort().join(',')) return;
 
     const url = new URL(this.baseUrlValue, window.location.origin);

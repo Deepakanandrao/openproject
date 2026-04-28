@@ -265,6 +265,20 @@ RSpec.describe "Workflow edit with multiple roles", :js do
     end
   end
 
+  context "when deselecting all roles in the select panel" do
+    before { visit_workflow_edit(roles: [role, role2]) }
+
+    it "falls back to the first eligible role instead of leaving the page stuck" do
+      click_button "2 roles selected"
+      find("[data-item-id='#{role.id}']").click
+      find("[data-item-id='#{role2.id}']").click
+      page.send_keys :escape
+
+      expect(page).to have_no_text("2 roles selected")
+      expect(page).to have_button(role.name)
+    end
+  end
+
   context "when modifying statuses" do
     before { visit_workflow_edit(roles: [role, role2]) }
 
