@@ -45,6 +45,9 @@ export class UiStateLinkBuilder {
       const projectIdentifier = this.currentProject.identifier;
       href = this.pathHelper.genericWorkPackagePath(projectIdentifier, idForHref, this.keepTab.currentShowTab) + window.location.search;
     } else {
+      // Param key must match the route declaration in split-view-routes.template.ts
+      // (`:tabIdentifier`). A mismatch makes $state.href return null, which
+      // surfaces as the literal string "null" in the rendered href.
       const tabIdentifier = this.keepTab.currentDetailsTab;
       href = this.$state.href(
         'work-packages.partitioned.list.details.tabs',
