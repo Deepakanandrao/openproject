@@ -52,6 +52,10 @@ module OpenProject
         blankslate
       }
 
+      renders_one :show_more, ->(truncate_middle:, text: nil) {
+        ShowMore.new(truncate_middle:, text:)
+      }
+
       renders_one :footer
 
       attr_reader :work_packages, :project, :container, :current_user
@@ -86,12 +90,20 @@ module OpenProject
 
       def before_render
         raise ArgumentError, "empty_state slot is required" unless empty_state?
+
+        return if !show_more? || show_more.truncate_middle.is_a?(Integer)
+
+        raise ArgumentError, "show_more requires truncate_middle: as an Integer"
       end
 
       def cards
-        @cards ||= work_packages.map do |work_package|
+        @cards ||= visible_work_packages.map do |work_package|
           WorkPackageCardComponent.new(work_package:, project:, container:, current_user:)
         end
+      end
+
+      def truncated?
+        show_more? && work_packages.size > truncate_threshold
       end
 
       private
@@ -118,6 +130,46 @@ module OpenProject
         when Sprint then "sprint:#{container.id}"
         when BacklogBucket then "backlog_bucket:#{container.id}"
         else "inbox"
+        end
+      end
+
+      def visible_work_packages
+        return work_packages unless truncated?
+
+        work_packages.first(show_more.truncate_middle) + work_packages.last(tail_size)
+      end
+
+      def tail_size
+        return 0 unless show_more?
+
+        [show_more.truncate_middle / 5, 1].max
+      end
+
+      def truncate_threshold
+        show_more.truncate_middle + (tail_size * 2)
+      end
+
+      def omitted_count
+        work_packages.size - show_more.truncate_middle - tail_size
+      end
+
+      def last_omitted_id
+        if work_packages.respond_to?(:reverse_order)
+          work_packages.reverse_order.offset(tail_size).limit(1).pick(:id)
+        else
+          work_packages[-(tail_size + 1)]&.id
+        end
+      end
+
+      def show_more_id
+        "#{container_id}-show-more"
+      end
+
+      def show_more_label
+        if show_more.text
+          format(show_more.text, count: omitted_count)
+        else
+          t(".show_more", count: omitted_count)
         end
       end
     end

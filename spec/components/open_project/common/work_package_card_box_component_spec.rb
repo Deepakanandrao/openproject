@@ -258,4 +258,114 @@ RSpec.describe OpenProject::Common::WorkPackageCardBoxComponent, type: :componen
       )
     end
   end
+
+  describe ":show_more slot" do
+    let(:wp_count) { 5 }
+    let(:work_packages) do
+      Array.new(wp_count) do |i|
+        create(:work_package, subject: "WP #{i + 1}", project:, type: type_feature, status: default_status,
+                              priority: default_priority, sprint:, position: i + 1)
+      end
+    end
+    let(:wp_relation) { WorkPackage.where(id: work_packages.map(&:id)).order(:position) }
+
+    def render_with_show_more(**show_more_args)
+      render_inline(
+        described_class.new(work_packages: wp_relation, project:, container: sprint, current_user: user)
+      ) do |box|
+        box.with_empty_state(title: "empty", description: "drag here")
+        box.with_show_more(**show_more_args) if show_more_args.any?
+      end
+    end
+
+    context "when the slot is not set" do
+      let(:wp_count) { 12 }
+
+      it "does not render a show-more row" do
+        rendered = render_with_show_more
+        expect(rendered).to have_no_css("[id$='-show-more']")
+      end
+
+      it "renders all work packages" do
+        rendered = render_with_show_more
+        expect(rendered).to have_css(".Box-row", count: wp_count)
+      end
+    end
+
+    context "when the slot is set with truncate_middle: 5 and the count is at the threshold" do
+      let(:wp_count) { 7 }
+
+      it "does not truncate" do
+        rendered = render_with_show_more(truncate_middle: 5)
+        expect(rendered).to have_css(".Box-row", count: 7)
+        expect(rendered).to have_no_css("[id$='-show-more']")
+      end
+    end
+
+    context "when the slot is set and the count exceeds the threshold" do
+      let(:wp_count) { 8 }
+
+      it "renders 5 first-page rows + show-more row + 1 last-page row" do
+        rendered = render_with_show_more(truncate_middle: 5)
+        expect(rendered).to have_css(".Box-row", count: 7)
+      end
+
+      it "places the show-more row immediately after the first 5 rows" do
+        rendered = render_with_show_more(truncate_middle: 5)
+        expect(rendered).to have_css("li.Box-row:nth-child(6) a#sprint_#{sprint.id}-show-more")
+      end
+
+      it "renders the show-more row with the last omitted work package id" do
+        rendered = render_with_show_more(truncate_middle: 5)
+        last_omitted = work_packages.sort_by(&:position)[-2]
+        expect(rendered).to have_css("[data-draggable-id='#{last_omitted.id}']")
+      end
+
+      it "renders the show-more anchor with the right href and turbo attrs" do
+        rendered = render_with_show_more(truncate_middle: 5)
+        expect(rendered).to have_css(
+          "a#sprint_#{sprint.id}-show-more" \
+          "[href*='all=1']" \
+          "[data-turbo-frame='backlogs_container']" \
+          "[data-turbo-action='advance']"
+        )
+      end
+
+      it "uses the default I18n copy with the omitted count" do
+        rendered = render_with_show_more(truncate_middle: 5)
+        expect(rendered).to have_text("Show 2 more items")
+      end
+
+      # rubocop:disable Style/FormatStringToken
+      it "uses a custom text with %{count} substitution" do
+        rendered = render_with_show_more(truncate_middle: 5, text: "Reveal %{count} hidden")
+        expect(rendered).to have_text("Reveal 2 hidden")
+      end
+      # rubocop:enable Style/FormatStringToken
+    end
+
+    context "when truncate_middle is not an Integer" do
+      let(:wp_count) { 0 }
+
+      it "raises ArgumentError in before_render" do
+        expect do
+          render_inline(
+            described_class.new(work_packages: [], project:, container: sprint, current_user: user)
+          ) do |box|
+            box.with_empty_state(title: "x", description: "x")
+            box.with_show_more(truncate_middle: "five")
+          end
+        end.to raise_error(ArgumentError, /Integer/)
+      end
+    end
+
+    describe "show_more locale key" do
+      it "has singular and plural variants" do
+        expect(I18n.t("open_project.common.work_package_card_box_component.show_more", count: 1))
+          .to eq("Show 1 more item")
+        expect(I18n.t("open_project.common.work_package_card_box_component.show_more", count: 5))
+          .to eq("Show 5 more items")
+      end
+    end
+  end
 end
