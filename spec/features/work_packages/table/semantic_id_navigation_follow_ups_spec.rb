@@ -92,7 +92,14 @@ RSpec.describe "Work package table navigation follow-ups use displayId",
       # Focus the row without opening split
       wp_table.row(work_package).click
 
-      # Click the toolbar info icon
+      # Wait until the row is actually selected before clicking the toolbar
+      # button. The toolbar reads wpTableFocus.focusedWorkPackage, which is
+      # written by the same handler that toggles the `-checked` class — so
+      # the class is a reliable sync point for both pieces of state.
+      expect(page).to have_css(
+        %(.wp-table--row.-checked[data-work-package-id="#{work_package.id}"])
+      )
+
       page.find_by_id("work-packages-details-view-button").click
 
       expect(page).to have_current_path(
