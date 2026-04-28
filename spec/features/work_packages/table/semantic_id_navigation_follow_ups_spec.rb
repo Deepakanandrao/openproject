@@ -24,8 +24,8 @@ RSpec.describe "Work package table navigation follow-ups use displayId",
   current_user { admin }
 
   before do
-    work_package.allocate_and_register_semantic_id
-    other_wp.allocate_and_register_semantic_id
+    work_package
+    other_wp
     wp_table.visit!
     wp_table.expect_work_package_listed(work_package, other_wp)
   end

@@ -22,7 +22,7 @@ RSpec.describe "Work package card ID link uses displayId",
   include_context "with mobile screen size"
 
   before do
-    work_package.allocate_and_register_semantic_id
+    work_package
     Pages::WorkPackagesTable.new(project).visit!
     wp_cards.expect_work_package_listed(work_package)
   end
