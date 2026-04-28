@@ -103,6 +103,19 @@ RSpec.describe "Workflow edit with multiple roles", :js do
         expect(page).to have_field workflow_checkbox(0, 2)
         expect(page).to have_field workflow_checkbox(1, 2)
       end
+
+      it "pre-selects the union of statuses from all selected roles in the status dialog" do
+        within "#workflow-table" do
+          click_link "Status"
+        end
+
+        expect(page).to have_dialog("Statuses")
+        within_dialog "Statuses" do
+          expect(page).to have_css(".ng-value-label", text: statuses[0].name)
+          expect(page).to have_css(".ng-value-label", text: statuses[1].name)
+          expect(page).to have_css(".ng-value-label", text: statuses[2].name)
+        end
+      end
     end
 
     context "with a single role selected" do
@@ -267,6 +280,40 @@ RSpec.describe "Workflow edit with multiple roles", :js do
       within_dialog("Remove statuses") { click_button "Remove" }
 
       expect(page).to have_text("2 roles selected")
+    end
+
+    it "checks all new status checkboxes as fully checked, not indeterminate, when adding a status" do
+      add_status_via_dialog(statuses[2])
+
+      [workflow_checkbox(2, 0), workflow_checkbox(0, 2), workflow_checkbox(2, 1),
+       workflow_checkbox(1, 2), workflow_checkbox(2, 2)].each do |cb|
+        expect(page).to have_field cb, checked: true
+        expect(indeterminate?(cb)).to be false
+      end
+    end
+
+    context "when no statuses are configured" do
+      let(:empty_role1) { create(:project_role) }
+      let(:empty_role2) { create(:project_role) }
+
+      before { visit_workflow_edit(roles: [empty_role1, empty_role2]) }
+
+      it "shows a blankslate" do
+        expect(page).to have_text("No status transitions configured")
+      end
+
+      it "preserves all selected roles when adding statuses from the blankslate" do
+        within "#workflow-table" do
+          all(:link, "Status").last.click
+        end
+        within_dialog "Statuses" do
+          find(".ng-arrow-wrapper").click
+          find(".ng-option", text: statuses[0].name).click
+          click_button "Apply"
+        end
+
+        expect(page).to have_text("2 roles selected")
+      end
     end
   end
 end
