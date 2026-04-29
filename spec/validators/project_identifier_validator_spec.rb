@@ -30,27 +30,28 @@
 
 require "spec_helper"
 
-RSpec.describe ProjectIdentifierValidator, with_settings: { work_packages_identifier: "classic" } do
+RSpec.describe ProjectIdentifierValidator do
   subject(:project) { build(:project, identifier:) }
-
-  let(:identifier) { "valid-id" }
 
   def validate!
     project.valid?
     project.errors[:identifier]
   end
 
-  describe "blank short-circuit" do
+  # Mode-agnostic behaviours — validator runs the same checks before mode dispatch
+  # (blank short-circuit, reserved keyword) and after it (historical reservation).
+  # Each mode context below includes these shared examples to confirm both branches
+  # exercise them.
+  shared_examples "skips validation when blank" do
     let(:identifier) { "" }
 
-    it "skips validation entirely when the identifier is blank" do
+    it "adds no validator-specific errors" do
       project.valid?
-      # presence: true catches blank elsewhere; the validator itself adds nothing
       expect(project.errors[:identifier]).not_to include(I18n.t("activerecord.errors.messages.invalid"))
     end
   end
 
-  describe "reserved keyword (mode-agnostic)" do
+  shared_examples "rejects reserved keywords" do
     %w[new menu queries filters identifier_update_dialog identifier_suggestion].each do |reserved|
       it "rejects '#{reserved}' (exact match)" do
         project.identifier = reserved
@@ -64,68 +65,123 @@ RSpec.describe ProjectIdentifierValidator, with_settings: { work_packages_identi
     end
   end
 
-  describe "classic mode", with_settings: { work_packages_identifier: "classic" } do
+  shared_examples "enforces historical reservation" do
+    it "rejects an identifier previously used by another project" do
+      other = create(:project, identifier: previous_identifier)
+      other.update!(identifier: replacement_identifier)
+
+      project.identifier = previous_identifier
+      validate!
+      expect(project.errors[:identifier]).to include(I18n.t("activerecord.errors.messages.taken"))
+    end
+
+    it "matches historical slugs case-insensitively" do
+      other = create(:project, identifier: previous_identifier)
+      other.update!(identifier: replacement_identifier)
+
+      project.identifier = previous_identifier.swapcase
+      project.valid?
+      expect(project.errors[:identifier]).to include(I18n.t("activerecord.errors.messages.taken"))
+    end
+
+    it "allows a project to revert to its own former identifier" do
+      reverting = create(:project, identifier: previous_identifier)
+      reverting.update!(identifier: replacement_identifier)
+
+      reverting.identifier = previous_identifier
+      expect(reverting).to be_valid
+    end
+
+    it "does not double-add :taken when uniqueness already flagged the same value" do
+      create(:project, identifier: previous_identifier)
+
+      project.identifier = previous_identifier
+      project.valid?
+      expect(project.errors.where(:identifier, :taken).count).to eq(1)
+    end
+  end
+
+  context "in classic mode", with_settings: { work_packages_identifier: "classic" } do
     let(:identifier) { "valid-id" }
+    let(:previous_identifier)    { "former-id" }
+    let(:replacement_identifier) { "renamed-id" }
 
-    it "accepts a slug-style identifier" do
-      expect(validate!).to be_empty
-    end
+    include_examples "skips validation when blank"
+    include_examples "rejects reserved keywords"
+    include_examples "enforces historical reservation"
 
-    it "rejects uppercase characters" do
-      project.identifier = "INVALID"
-      expect(validate!).to include(I18n.t("activerecord.errors.messages.invalid"))
-    end
+    describe "format" do
+      it "accepts a slug-style identifier" do
+        expect(validate!).to be_empty
+      end
 
-    it "rejects an all-numeric identifier" do
-      project.identifier = "12345"
-      expect(validate!).to include(I18n.t("activerecord.errors.messages.invalid"))
-    end
+      it "rejects uppercase characters" do
+        project.identifier = "INVALID"
+        expect(validate!).to include(I18n.t("activerecord.errors.messages.invalid"))
+      end
 
-    it "rejects identifiers with whitespace or special chars" do
-      project.identifier = "bad name!"
-      expect(validate!).to include(I18n.t("activerecord.errors.messages.invalid"))
-    end
+      it "rejects an all-numeric identifier" do
+        project.identifier = "12345"
+        expect(validate!).to include(I18n.t("activerecord.errors.messages.invalid"))
+      end
 
-    it "rejects identifiers exceeding 100 characters" do
-      project.identifier = "a" * 101
-      validate!
-      expect(project.errors[:identifier]).to include(I18n.t("activerecord.errors.messages.too_long",
-                                                            count: 100))
+      it "rejects identifiers with whitespace or special chars" do
+        project.identifier = "bad name!"
+        expect(validate!).to include(I18n.t("activerecord.errors.messages.invalid"))
+      end
+
+      it "rejects identifiers exceeding 100 characters" do
+        project.identifier = "a" * 101
+        validate!
+        expect(project.errors[:identifier]).to include(I18n.t("activerecord.errors.messages.too_long",
+                                                              count: 100))
+      end
     end
   end
 
-  describe "semantic mode", with_settings: { work_packages_identifier: "semantic" } do
+  context "in semantic mode", with_settings: { work_packages_identifier: "semantic" } do
     let(:identifier) { "PROJ" }
+    let(:previous_identifier)    { "FORMER" }
+    let(:replacement_identifier) { "RENAMED" }
 
-    it "accepts an uppercase letter-led identifier" do
-      expect(validate!).to be_empty
-    end
+    include_examples "skips validation when blank"
+    include_examples "rejects reserved keywords"
+    include_examples "enforces historical reservation"
 
-    it "rejects identifiers not starting with a letter" do
-      project.identifier = "1PROJ"
-      validate!
-      expect(project.errors.where(:identifier, :must_start_with_letter)).to be_present
-    end
+    describe "format" do
+      it "accepts an uppercase letter-led identifier" do
+        expect(validate!).to be_empty
+      end
 
-    it "rejects lowercase letters" do
-      project.identifier = "Proj"
-      validate!
-      expect(project.errors.where(:identifier, :no_special_characters)).to be_present
-    end
+      it "rejects identifiers not starting with a letter" do
+        project.identifier = "1PROJ"
+        validate!
+        expect(project.errors.where(:identifier, :must_start_with_letter)).to be_present
+      end
 
-    it "rejects identifiers exceeding 10 characters" do
-      project.identifier = "ABCDEFGHIJK"
-      validate!
-      expect(project.errors[:identifier]).to include(I18n.t("activerecord.errors.messages.too_long",
-                                                            count: 10))
-    end
+      it "rejects lowercase letters" do
+        project.identifier = "Proj"
+        validate!
+        expect(project.errors.where(:identifier, :no_special_characters)).to be_present
+      end
 
-    it "accepts uppercase + digits + underscore" do
-      project.identifier = "P_ROJ_1"
-      expect(validate!).to be_empty
+      it "rejects identifiers exceeding 10 characters" do
+        project.identifier = "ABCDEFGHIJK"
+        validate!
+        expect(project.errors[:identifier]).to include(I18n.t("activerecord.errors.messages.too_long",
+                                                              count: 10))
+      end
+
+      it "accepts uppercase + digits + underscore" do
+        project.identifier = "P_ROJ_1"
+        expect(validate!).to be_empty
+      end
     end
   end
 
+  # Tests the override-from-classic behaviour wired through the concern's
+  # `validation_context` getter. Stays its own block (not a mode context)
+  # because the point is precisely that the global mode is classic.
   describe ":semantic_conversion validation context",
            with_settings: { work_packages_identifier: "classic" } do
     let!(:project) { create(:project, identifier: "classic-id") }
@@ -151,46 +207,6 @@ RSpec.describe ProjectIdentifierValidator, with_settings: { work_packages_identi
       project.identifier = "PROJ"
       project.save!(context: :semantic_conversion)
       expect(project.reload.identifier).to eq("PROJ")
-    end
-  end
-
-  describe "historical reservation",
-           with_settings: { work_packages_identifier: "classic" } do
-    let(:identifier) { "fresh-id" }
-
-    it "rejects an identifier previously used by another project" do
-      other = create(:project, identifier: "former-id")
-      other.update!(identifier: "renamed-id")
-
-      project.identifier = "former-id"
-      validate!
-      expect(project.errors[:identifier]).to include(I18n.t("activerecord.errors.messages.taken"))
-    end
-
-    it "matches case-insensitively against historical slugs" do
-      other = create(:project, identifier: "former-id")
-      other.update!(identifier: "renamed-id")
-
-      project.identifier = "FORMER-ID"
-      project.valid? # uniqueness runs first; it's case-insensitive too, so :taken comes from there
-      expect(project.errors[:identifier]).to include(I18n.t("activerecord.errors.messages.taken"))
-    end
-
-    it "allows a project to revert to its own former identifier" do
-      project = create(:project, identifier: "old-id")
-      project.update!(identifier: "new-id")
-
-      project.identifier = "old-id"
-      expect(project).to be_valid
-    end
-
-    it "does not double-add :taken when uniqueness already flagged the same value" do
-      create(:project, identifier: "duplicate")
-
-      project.identifier = "duplicate"
-      project.valid?
-      taken_errors = project.errors.where(:identifier, :taken)
-      expect(taken_errors.count).to eq(1)
     end
   end
 end
