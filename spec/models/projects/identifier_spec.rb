@@ -103,10 +103,6 @@ RSpec.describe Projects::Identifier do
       end.to raise_error(ActiveRecord::RecordNotUnique)
     end
 
-    # Detailed format / reserved-keyword / historical-reservation behavior lives in
-    # spec/validators/project_identifier_validator_spec.rb. The integration tests below
-    # focus on FriendlyId :history wiring and the :saving_custom_fields context quirk.
-
     # The acts_as_url plugin defines validation callbacks on :create and it is not automatically
     # called when calling a custom context. However we need the acts_as_url callback to set the
     # identifier when the validations are called with the :saving_custom_fields context.

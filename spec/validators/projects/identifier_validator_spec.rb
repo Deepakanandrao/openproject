@@ -30,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe ProjectIdentifierValidator do
+RSpec.describe Projects::IdentifierValidator do
   subject(:project) { build(:project, identifier:) }
 
   def validate!

@@ -35,8 +35,6 @@ module Projects::Identifier
   SEMANTIC_IDENTIFIER_MAX_LENGTH = 10
   # Classic identifier format: lowercase letters, digits, hyphens, underscores — but not all-numeric.
   CLASSIC_IDENTIFIER_FORMAT = /\A(?!\d+\z)[a-z0-9\-_]+\z/
-  # Semantic identifier format rules live on ProjectIdentifierValidator (start regex,
-  # body regex, length cap) — they're validation-only and aren't shared with generators.
 
   RESERVED_IDENTIFIERS = %w[new menu queries filters identifier_update_dialog identifier_suggestion].freeze
 
@@ -65,15 +63,15 @@ module Projects::Identifier
                       on: :create,
                       if: -> { Setting::WorkPackageIdentifier.semantic? && identifier.blank? }
 
-    # Validators — declaration order matters. Rails runs validators in registration
-    # order, and ProjectIdentifierValidator short-circuits its historical-reservation
-    # check when uniqueness has already added a :taken error.
+    # Order matters: uniqueness must declare before the project-identifier validator
+    # so the validator's historical-reservation check can skip when uniqueness has
+    # already added :taken (avoids two :taken errors for the same value).
     validates :identifier,
               presence: true,
               uniqueness: { case_sensitive: false },
               if: ->(p) { p.persisted? || p.identifier.present? }
 
-    validates :identifier, project_identifier: true, if: :identifier_changed?
+    validates :identifier, "projects/identifier" => true, if: :identifier_changed?
 
     friendly_id :identifier, use: %i[finders history], slug_column: :identifier
 
