@@ -108,7 +108,7 @@ module Storages
 
               idx += prefix.length - 1
 
-              file_path[idx..]
+              file_path[idx..].chomp("/")
             end
           end
         end
