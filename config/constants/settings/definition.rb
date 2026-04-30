@@ -829,7 +829,7 @@ module Settings
       password_min_length: {
         default: 10,
         format: :integer,
-        allowed: (1..128)
+        allowed: -> { 1..Setting::PASSWORD_MAX_LENGTH }
       },
       # TODO: turn into array of ints
       # Requires a migration to be written

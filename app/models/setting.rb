@@ -35,6 +35,8 @@ class Setting < ApplicationRecord
   extend Aliases
   extend MailSettings
 
+  PASSWORD_MAX_LENGTH = 128
+
   ENCODINGS = %w(US-ASCII
                  windows-1250
                  windows-1251
@@ -95,7 +97,7 @@ class Setting < ApplicationRecord
             numericality: {
               only_integer: true,
               greater_than_or_equal_to: 1,
-              less_than_or_equal_to: 128,
+              less_than_or_equal_to: PASSWORD_MAX_LENGTH,
               if: ->(setting) { setting.name == "password_min_length" }
             }
 
