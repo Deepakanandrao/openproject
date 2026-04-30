@@ -1,0 +1,11 @@
+A `SelectPanel` is used when the user needs to select one or more items from a list. It combines a trigger button with a dropdown panel containing searchable, selectable items. The ability to search for items is what mainly separates this from the `ActionMenu` in our usage.
+
+## With footer button
+
+When selections need to be explicitly confirmed before taking effect, add a footer with an action button (ideally "Apply"). This pattern is used in workflow settings for role selection.
+
+<%= embed Patterns::SelectPanelPreview, :footer_buttons, panels: %i[source] %>
+
+## Examples
+
+For detailed examples have a look at the other [preview examples](/lookbook/inspect/primer/alpha/select_panel/default) of the component.
