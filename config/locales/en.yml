@@ -2636,6 +2636,7 @@ en:
       unsupported_storage_type: "is not a supported storage type."
       storage_error: "There was an error with the storage connection."
       invalid_input: "The input is invalid."
+      invalid_child_for_parent: "is not allowed as a parent for this view type."
 
   activity:
     item:

@@ -45,6 +45,7 @@ class PersistedView < ApplicationRecord
   }, validate: { allow_nil: true }
 
   validates :name, presence: true, length: { maximum: 255 }
+  validate :parent_allows_this_child_class
 
   scope :public_views, -> { where(public: true) }
   scope :private_views, ->(principal: User.current) { where(public: false, principal:) }
@@ -55,12 +56,32 @@ class PersistedView < ApplicationRecord
 
   after_destroy :destroy_query_if_orphaned
 
+  # Class names of view types that can be created as direct children of this
+  # view. Each subclass gets its own list (no inheritance, no shared array)
+  # so subclasses can safely `<<` without leaking into PersistedView or
+  # sibling classes.
+  def self.allowed_children
+    @allowed_children ||= []
+  end
+
+  class << self
+    attr_writer :allowed_children
+  end
+
   # Returns the query of this view or, if not set, the query of the parent view.
   def effective_query
     query || parent&.effective_query
   end
 
   private
+
+  def parent_allows_this_child_class
+    return if parent.nil?
+
+    unless parent.class.allowed_children.include?(self.class.name)
+      errors.add(:parent, :invalid_child_for_parent)
+    end
+  end
 
   # When this view is destroyed, also destroy its query unless another public
   # view still references it. Views belonging to the same owner that are also
