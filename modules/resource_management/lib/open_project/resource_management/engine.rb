@@ -45,12 +45,20 @@ module OpenProject::ResourceManagement
              bundled: true,
              settings: {} do
       project_module :resource_management do
+        # `view_resource_planners` gates access to all CRUD actions. The
+        # per-record rules (only owners can change their own private planner;
+        # only manage_public users can change public ones) live in the
+        # contracts — the controller filter just establishes that the user
+        # has *some* business in the resource planner area.
         permission :view_resource_planners,
-                   { "resource_management/resource_planners": %i[index show overview] },
+                   { "resource_management/resource_planners":
+                       %i[index show overview new create edit update destroy] },
                    permissible_on: :project
 
+        # `manage_public_resource_planners` adds the publish-flip action. The
+        # contract additionally requires the planner itself to be public.
         permission :manage_public_resource_planners,
-                   { "resource_management/resource_planners": %i[index show new create edit update destroy] },
+                   { "resource_management/resource_planners": %i[toggle_public] },
                    permissible_on: :project,
                    dependencies: %i[view_resource_planners]
       end
