@@ -47,6 +47,7 @@ RSpec.describe OpenProject::Common::WorkPackageCardBoxComponent, type: :componen
   let(:container) { sprint }
   let(:drag_and_drop) { nil }
   let(:item_menu_src) { nil }
+  let(:item_metric) { nil }
   let(:params) { {} }
   let(:work_packages) { [] }
   let(:system_arguments) { {} }
@@ -64,6 +65,7 @@ RSpec.describe OpenProject::Common::WorkPackageCardBoxComponent, type: :componen
       container:,
       drag_and_drop:,
       item_menu_src:,
+      item_metric:,
       params:,
       current_user: user,
       **system_arguments
@@ -306,6 +308,23 @@ RSpec.describe OpenProject::Common::WorkPackageCardBoxComponent, type: :componen
         expect { rendered_component }.to raise_error(ArgumentError, /item_menu_src/)
       end
     end
+
+    context "with an item_metric proc" do
+      let(:item_metric) { ->(work_package) { "metric #{work_package.id}" } }
+
+      it "uses the derived metric for automatically built items" do
+        expect(rendered_component).to have_text("metric #{work_packages.first.id}")
+        expect(rendered_component).to have_text("metric #{work_packages.second.id}")
+      end
+    end
+
+    context "with an invalid item_metric" do
+      let(:item_metric) { "static metric" }
+
+      it "raises ArgumentError" do
+        expect { rendered_component }.to raise_error(ArgumentError, /item_metric/)
+      end
+    end
   end
 
   describe ":work_package_item slot" do
@@ -329,6 +348,7 @@ RSpec.describe OpenProject::Common::WorkPackageCardBoxComponent, type: :componen
             container:,
             params:,
             item_menu_src: nil,
+            item_metric: nil,
             current_user: User.current,
             **system_arguments
           )
@@ -336,6 +356,7 @@ RSpec.describe OpenProject::Common::WorkPackageCardBoxComponent, type: :componen
 
             @work_package = work_package
             @item_menu_src = item_menu_src
+            @item_metric = item_metric
             @params = params
             @context = [project, container, current_user]
             @system_arguments = system_arguments
@@ -347,6 +368,7 @@ RSpec.describe OpenProject::Common::WorkPackageCardBoxComponent, type: :componen
               context_size: @context.size
             )
             data[:item_menu_src] = @item_menu_src if @item_menu_src
+            data[:item_metric] = @item_metric if @item_metric
 
             @system_arguments.merge(
               id: "custom_work_package_#{@work_package.id}",
@@ -423,6 +445,19 @@ RSpec.describe OpenProject::Common::WorkPackageCardBoxComponent, type: :componen
       end
 
       expect(rendered).to have_element("include-fragment", src: "/manual-menu")
+    end
+
+    it "uses caller-provided metric content for manual work package items" do
+      rendered = render_inline(
+        described_class.new(project:, container:, params:, current_user: user)
+      ) do |box|
+        box.with_empty_state(title: "empty", description: "drag here")
+        box.with_work_package_item(work_package: slot_work_package) do |item|
+          item.with_metric { "manual metric" }
+        end
+      end
+
+      expect(rendered).to have_text("manual metric")
     end
 
     it "exposes build_item for building an item without adding it to the box" do

@@ -31,7 +31,10 @@
 module OpenProject
   module Common
     class WorkPackageCardComponent < ApplicationComponent
+      include Primer::ClassNameHelper
       include OpPrimer::ComponentHelpers
+
+      renders_one :metric, Primer::Content
 
       attr_reader :work_package, :menu_src
 
@@ -44,10 +47,11 @@ module OpenProject
         @menu_src = menu_src
       end
 
-      private
-
-      def story_points
-        work_package.story_points || 0
+      def card_classes
+        class_names(
+          "op-work-package-card",
+          "op-work-package-card_with-metric": metric?
+        )
       end
     end
   end

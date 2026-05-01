@@ -83,8 +83,8 @@ RSpec.describe Backlogs::InboxComponent, type: :component do
   describe "with work packages" do
     let(:work_packages) do
       [
-        create(:work_package, subject: "First item", project:, position: 1),
-        create(:work_package, subject: "Second item", project:, position: 2)
+        create(:work_package, subject: "First item", project:, story_points: 2, position: 1),
+        create(:work_package, subject: "Second item", project:, story_points: 4, position: 2)
       ]
     end
 
@@ -97,6 +97,11 @@ RSpec.describe Backlogs::InboxComponent, type: :component do
 
       # does not show the blankslate
       expect(page).to have_no_css("h4", text: "Backlog inbox is empty")
+    end
+
+    it "renders story points on each work package card" do
+      expect(page).to have_text("2 points", normalize_ws: true)
+      expect(page).to have_text("4 points", normalize_ws: true)
     end
   end
 

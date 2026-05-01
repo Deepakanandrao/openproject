@@ -43,8 +43,11 @@ module OpenProject
                     :project,
                     :container,
                     :item_menu_src,
+                    :item_metric,
                     :params,
                     :current_user
+
+        delegate :with_metric, to: :card
 
         def initialize(
           work_package:,
@@ -52,6 +55,7 @@ module OpenProject
           container:,
           params: {},
           item_menu_src: nil,
+          item_metric: nil,
           current_user: User.current,
           **system_arguments
         )
@@ -64,6 +68,7 @@ module OpenProject
           @container = container
           @params = params
           @item_menu_src = item_menu_src
+          @item_metric = item_metric
           @current_user = current_user
           @system_arguments = system_arguments
         end
@@ -81,7 +86,9 @@ module OpenProject
         end
 
         def card
-          @card ||= WorkPackageCardComponent.new(work_package:, menu_src: item_menu_src)
+          @card ||= WorkPackageCardComponent.new(work_package:, menu_src: item_menu_src).tap do |card|
+            card.with_metric_content(item_metric) if item_metric
+          end
         end
 
         def render? = false

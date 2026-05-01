@@ -181,6 +181,12 @@ RSpec.describe OpenProject::Common::WorkPackageCardBoxComponent::Item, type: :co
       expect(item.card).to equal(item.card)
     end
 
+    it "forwards metric content to the visual card" do
+      item.with_metric { "Forwarded metric" }
+
+      expect(rendered_card).to have_text("Forwarded metric")
+    end
+
     context "with a provided menu source" do
       let(:item) do
         described_class.new(

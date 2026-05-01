@@ -112,6 +112,10 @@ RSpec.describe Backlogs::BucketComponent, type: :component do
         expect(rendered_component).to have_text("##{work_package.id}")
       end
 
+      it "renders story points on the work package card" do
+        expect(rendered_component).to have_text("3 points", normalize_ws: true)
+      end
+
       it "wires the bucket drop-target data on the box" do
         expect(rendered_component).to have_css(".Box") do |box|
           expect(box["data-generic-drag-and-drop-target"]).to eq("container mirrorContainer")

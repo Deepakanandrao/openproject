@@ -25,40 +25,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 See COPYRIGHT and LICENSE files for more details.
 
-++# %>
+++%>
 
-<%= component_wrapper(tag: :section) do %>
-  <%= render(
-        OpenProject::Common::WorkPackageCardBoxComponent.new(
-          work_packages:,
-          project:,
-          container: dom_target(:inbox, project),
-          drag_and_drop: {
-            target_id: "inbox",
-            allowed_drag_type: "story"
-          },
-          item_menu_src: ->(work_package) do
-            menu_project_backlogs_inbox_path(
-              project,
-              work_package,
-              all_backlogs_params
-            )
-          end,
-          item_metric: ->(work_package) { Backlogs::StoryPointsComponent.new(work_package:) },
-          params: all_backlogs_params,
-          current_user:,
-          data: { test_selector: "backlog-inbox" }
-        )
-      ) do |box| %>
-    <% box.with_empty_state(
-         title: t(".blankslate_title"),
-         description: t(".blankslate_description"),
-         icon: :"op-backlogs",
-         spacious: true
-       ) %>
-
-    <% unless show_all_backlog %>
-      <% box.with_show_more(truncate_middle: TRUNCATE_MIDDLE) %>
-    <% end %>
-  <% end %>
+<%= render(Primer::Beta::Text.new(color: :subtle)) do %>
+  <%= story_points %>
+  <span class="op-work-package-card-metric-label"> <%= t(:"backlogs.points_label", count: story_points) %></span>
 <% end %>

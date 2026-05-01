@@ -69,8 +69,16 @@ RSpec.describe OpenProject::Common::WorkPackageCardComponent, type: :component d
       expect(rendered_component).to have_text("Card subject")
     end
 
-    it "renders the story points label" do
-      expect(rendered_component).to have_text("5 points", normalize_ws: true)
+    it "does not render story points by default" do
+      expect(rendered_component).to have_no_text("5 points", normalize_ws: true)
+    end
+
+    it "renders the metric slot when provided" do
+      rendered = render_inline(component) do |card|
+        card.with_metric { "Custom metric" }
+      end
+
+      expect(rendered).to have_text("Custom metric")
     end
 
     it "renders a WorkPackageCardComponent::Menu kebab" do

@@ -92,11 +92,14 @@ module OpenProject
       #   #   `#card` returning a renderable object.
       #   # @param item_menu_src [String, NilClass] optional menu source for the
       #   #   item's `WorkPackageCardComponent`.
+      #   # @param item_metric [Object, NilClass] optional metric content for the
+      #   #   item's `WorkPackageCardComponent`.
       #   # @param system_arguments [Hash] forwarded to the item class.
       #   def with_work_package_item(
       #     work_package:,
       #     component_klass: Item,
       #     item_menu_src: nil,
+      #     item_metric: nil,
       #     **system_arguments,
       #     &block
       #   )
@@ -114,8 +117,10 @@ module OpenProject
       #   end
       renders_many :items, types: {
         work_package_item: {
-          renders: lambda { |work_package:, **system_arguments|
-            build_item(work_package:, **system_arguments)
+          renders: lambda { |work_package:, **system_arguments, &block|
+            build_item(work_package:, **system_arguments).tap do |item|
+              capture(item, &block) if block
+            end
           },
           as: :work_package_item
         },
@@ -137,6 +142,7 @@ module OpenProject
                   :container,
                   :drag_and_drop,
                   :item_menu_src,
+                  :item_metric,
                   :params,
                   :current_user
 
@@ -154,6 +160,9 @@ module OpenProject
       #   automatically built items. Procs receive the work package. When set,
       #   callers are responsible for including any URL params they want in the
       #   returned source.
+      # @param item_metric [Proc, NilClass] optional metric content for
+      #   automatically built items. Procs receive the work package and return
+      #   renderable content.
       # @param params [Hash] optional URL params passed to work package items
       #   when deriving row and menu URLs.
       # @param current_user [User] passed through to each item for permission
@@ -166,6 +175,7 @@ module OpenProject
         work_packages: [],
         drag_and_drop: nil,
         item_menu_src: nil,
+        item_metric: nil,
         params: {},
         current_user: User.current,
         **system_arguments
@@ -177,6 +187,7 @@ module OpenProject
         @container = container
         @drag_and_drop = drag_and_drop
         @item_menu_src = item_menu_src
+        @item_metric = item_metric
         @params = params
         @current_user = current_user
         @automatic_items = false
@@ -193,6 +204,7 @@ module OpenProject
         # so slot calls have already populated `items`.
         content
         validate_item_menu_src!
+        validate_item_metric!
         validate_item_mode!
         build_automatic_items if build_automatic_items?
         validate_empty_state!
@@ -215,11 +227,13 @@ module OpenProject
       # @param item_menu_src [String, NilClass] optional item menu source
       #   override. When set, callers are responsible for including any URL
       #   params they want in the source.
+      # @param item_metric [Object, NilClass] optional item metric content.
       # @param system_arguments [Hash] forwarded to the item class.
       def build_item(
         work_package:,
         component_klass: Item,
         item_menu_src: item_menu_src_for(work_package),
+        item_metric: item_metric_for(work_package),
         **system_arguments
       )
         component_klass.new(
@@ -228,6 +242,7 @@ module OpenProject
           container:,
           params:,
           item_menu_src:,
+          item_metric:,
           current_user:,
           **system_arguments
         )
@@ -265,10 +280,23 @@ module OpenProject
         end
       end
 
+      def item_metric_for(work_package)
+        return unless item_metric
+
+        metric = item_metric.call(work_package)
+        metric.respond_to?(:render_in) ? render(metric) : metric
+      end
+
       def validate_item_menu_src!
         return if item_menu_src.nil? || item_menu_src.is_a?(Proc) || item_menu_src.is_a?(String)
 
         raise ArgumentError, "item_menu_src must be a Proc, String, or nil"
+      end
+
+      def validate_item_metric!
+        return if item_metric.nil? || item_metric.is_a?(Proc)
+
+        raise ArgumentError, "item_metric must be a Proc or nil"
       end
 
       def validate_item_mode!

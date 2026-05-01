@@ -28,39 +28,20 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module OpenProject
-  module Common
-    # @logical_path OpenProject/Common
-    class WorkPackageCardComponentPreview < ViewComponent::Preview
-      def default
-        work_package = WorkPackage.first
-        return preview_message("No work packages in the database.") unless work_package
+module Backlogs
+  class StoryPointsComponent < ApplicationComponent
+    attr_reader :work_package
 
-        render OpenProject::Common::WorkPackageCardComponent.new(
-          work_package:
-        )
-      end
+    def initialize(work_package:)
+      super()
 
-      def with_metric
-        work_package = WorkPackage.first
-        return preview_message("No work packages in the database.") unless work_package
+      @work_package = work_package
+    end
 
-        render OpenProject::Common::WorkPackageCardComponent.new(
-          work_package:
-        ) do |card|
-          card.with_metric do
-            render Backlogs::StoryPointsComponent.new(work_package:)
-          end
-        end
-      end
+    private
 
-      private
-
-      def preview_message(text)
-        render(Primer::Beta::Blankslate.new) do |b|
-          b.with_heading(tag: :h4).with_content(text)
-        end
-      end
+    def story_points
+      work_package.story_points || 0
     end
   end
 end

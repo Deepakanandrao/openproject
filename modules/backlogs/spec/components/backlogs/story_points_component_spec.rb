@@ -28,39 +28,24 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module OpenProject
-  module Common
-    # @logical_path OpenProject/Common
-    class WorkPackageCardComponentPreview < ViewComponent::Preview
-      def default
-        work_package = WorkPackage.first
-        return preview_message("No work packages in the database.") unless work_package
+require "rails_helper"
 
-        render OpenProject::Common::WorkPackageCardComponent.new(
-          work_package:
-        )
-      end
+RSpec.describe Backlogs::StoryPointsComponent, type: :component do
+  shared_let(:project) { create(:project) }
 
-      def with_metric
-        work_package = WorkPackage.first
-        return preview_message("No work packages in the database.") unless work_package
+  it "renders the work package story points" do
+    work_package = create(:work_package, project:, story_points: 5)
 
-        render OpenProject::Common::WorkPackageCardComponent.new(
-          work_package:
-        ) do |card|
-          card.with_metric do
-            render Backlogs::StoryPointsComponent.new(work_package:)
-          end
-        end
-      end
+    render_inline(described_class.new(work_package:))
 
-      private
+    expect(page).to have_text("5 points", normalize_ws: true)
+  end
 
-      def preview_message(text)
-        render(Primer::Beta::Blankslate.new) do |b|
-          b.with_heading(tag: :h4).with_content(text)
-        end
-      end
-    end
+  it "renders zero when story points are unset" do
+    work_package = create(:work_package, project:, story_points: nil)
+
+    render_inline(described_class.new(work_package:))
+
+    expect(page).to have_text("0 points", normalize_ws: true)
   end
 end

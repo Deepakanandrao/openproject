@@ -41,7 +41,9 @@ module OpenProject
 
         work_packages = sprint.work_packages_for(project).limit(3)
         render OpenProject::Common::WorkPackageCardBoxComponent.new(
-          work_packages:, project:, container: sprint
+          work_packages:,
+          project:,
+          container: sprint
         ) do |box|
           box.with_header(title: sprint.name, count: work_packages.size) do |header|
             points = work_packages.sum { |w| w.story_points || 0 }
