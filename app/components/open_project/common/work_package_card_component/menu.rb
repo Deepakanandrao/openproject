@@ -34,22 +34,30 @@ module OpenProject
       class Menu < ApplicationComponent
         include OpPrimer::ComponentHelpers
 
+        delegate :with_item, :with_avatar_item, :with_divider, :with_group, :with_sub_menu_item, to: :@menu
+
         attr_reader :work_package, :button_aria_label
 
-        def initialize(work_package:, src:, button_aria_label: nil, **system_arguments)
+        def initialize(work_package:, src: nil, button_aria_label: nil, **system_arguments)
           super()
 
           @work_package = work_package
           @button_aria_label = button_aria_label
 
-          @system_arguments = system_arguments
-          @system_arguments[:menu_id] = dom_target(work_package, :menu)
-          @system_arguments[:src] = src
-          @system_arguments[:anchor_align] = :end
-          @system_arguments[:classes] = class_names(
-            @system_arguments[:classes],
+          system_arguments[:menu_id] ||= dom_target(work_package, :menu)
+          system_arguments[:src] = src
+          system_arguments[:anchor_align] ||= :end
+          system_arguments[:classes] = class_names(
+            system_arguments[:classes],
             "hide-when-print"
           )
+          @menu = Primer::Alpha::ActionMenu.new(**system_arguments)
+        end
+
+        private
+
+        def before_render
+          content
         end
       end
     end

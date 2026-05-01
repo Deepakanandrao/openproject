@@ -49,7 +49,7 @@ module OpenProject
           )
 
           menu = Primer::Alpha::ActionMenu.new(
-            menu_id: menu_id || dom_target(@container, :menu),
+            menu_id: menu_id || dom_target(container, :menu),
             anchor_align: :end,
             **system_arguments
           )

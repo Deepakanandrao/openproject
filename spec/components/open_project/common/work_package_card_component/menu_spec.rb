@@ -40,9 +40,11 @@ RSpec.describe OpenProject::Common::WorkPackageCardComponent::Menu, type: :compo
   shared_let(:work_package) { create(:work_package, project:) }
 
   let(:menu_button_id) { "work_package_#{work_package.id}_menu-button" }
+  let(:src) { menu_project_backlogs_inbox_path(project, work_package) }
+  let(:system_arguments) { {} }
 
   subject(:rendered_component) do
-    render_inline(described_class.new(work_package:, src: menu_project_backlogs_inbox_path(project, work_package)))
+    render_inline(described_class.new(work_package:, src:, **system_arguments))
   end
 
   it "renders an action-menu element" do
@@ -62,10 +64,36 @@ RSpec.describe OpenProject::Common::WorkPackageCardComponent::Menu, type: :compo
 
   it "loads the menu list deferred via include-fragment with the given src" do
     expect(rendered_component).to have_element "include-fragment",
-                                               src: menu_project_backlogs_inbox_path(project, work_package)
+                                               src:
   end
 
   it "applies the hide-when-print class to the menu wrapper" do
     expect(rendered_component).to have_element :"action-menu", class: "hide-when-print"
+  end
+
+  context "when no src is provided" do
+    let(:src) { nil }
+
+    subject(:rendered_component) do
+      render_inline(described_class.new(work_package:, src:)) do |menu|
+        menu.with_item(label: "Edit", href: "/edit")
+      end
+    end
+
+    it "renders inline menu items" do
+      expect(rendered_component).to have_link "Edit", href: "/edit"
+    end
+
+    it "does not render a deferred include-fragment" do
+      expect(rendered_component).to have_no_element "include-fragment"
+    end
+  end
+
+  context "when a custom menu id is provided" do
+    let(:system_arguments) { { menu_id: "custom-card-menu" } }
+
+    it "uses the provided menu id" do
+      expect(rendered_component).to have_button "custom-card-menu-button"
+    end
   end
 end

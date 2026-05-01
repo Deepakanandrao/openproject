@@ -27,7 +27,7 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++# %>
 
-<%= render(Primer::Alpha::ActionMenu.new(**@system_arguments)) do |menu| %>
+<%= render(@menu) do |menu| %>
   <% menu.with_show_button(
        scheme: :invisible,
        icon: :"kebab-horizontal",
