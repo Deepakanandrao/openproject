@@ -527,7 +527,7 @@ module Pages
     end
 
     def expect_sprint_dialog
-      expect(page).to have_css("#new-sprint-dialog")
+      expect(page).to have_css("#sprint-dialog")
     end
 
     def expect_create_work_package_dialog

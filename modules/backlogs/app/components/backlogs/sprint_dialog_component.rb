@@ -34,9 +34,9 @@ module Backlogs
     include OpPrimer::ComponentHelpers
     include Primer::FetchOrFallbackHelper
 
-    DIALOG_ID = "new-sprint-dialog"
-    FORM_ID = "new-sprint-dialog-form"
-    FOOTER_ID = "new-sprint-dialog-footer"
+    DIALOG_ID = "sprint-dialog"
+    FORM_ID = "sprint-dialog-form"
+    FOOTER_ID = "sprint-dialog-footer"
 
     STATE_DEFAULT = :create
     STATE_OPTIONS = [STATE_DEFAULT, :edit].freeze

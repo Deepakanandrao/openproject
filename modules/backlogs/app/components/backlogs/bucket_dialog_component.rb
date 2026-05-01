@@ -34,9 +34,9 @@ module Backlogs
     include OpPrimer::ComponentHelpers
     include Primer::FetchOrFallbackHelper
 
-    DIALOG_ID = "new-backlog-bucket-dialog"
-    FORM_ID = "new-backlog-bucket-dialog-form"
-    FOOTER_ID = "new-backlog-bucket-dialog-footer"
+    DIALOG_ID = "bucket-dialog"
+    FORM_ID = "bucket-dialog-form"
+    FOOTER_ID = "bucket-dialog-footer"
 
     STATE_DEFAULT = :create
     STATE_OPTIONS = [STATE_DEFAULT, :edit].freeze
