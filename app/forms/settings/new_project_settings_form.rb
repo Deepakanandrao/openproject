@@ -51,10 +51,11 @@ module Settings
       f.select_list(
         name: :new_project_user_role_id,
         label: I18n.t(:setting_new_project_user_role_id),
+        caption: I18n.t(:setting_new_project_user_role_id_caption),
         input_width: :medium,
-        include_blank: I18n.t(:actionview_instancetag_blank_option)
+        include_blank: false
       ) do |select|
-        ProjectRole.givable.each do |role|
+        ProjectRole.assignable_to_project_creator.each do |role|
           select.option(
             value: role.id.to_s,
             label: role.name,

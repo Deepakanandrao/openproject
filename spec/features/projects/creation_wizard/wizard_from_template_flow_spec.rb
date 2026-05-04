@@ -44,7 +44,7 @@ RSpec.describe "Project creation wizard from a template",
   # Role assigned to users in newly created projects - only wizard permissions, NO add_work_packages
   shared_let(:new_project_role) do
     create(:project_role,
-           permissions: %i[view_work_packages view_project_attributes edit_project_attributes])
+           permissions: %i[view_work_packages view_project_attributes edit_project_attributes manage_members])
   end
 
   # Role for the assignee user - assigned via the user custom field role assignment
