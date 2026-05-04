@@ -1165,6 +1165,11 @@ en:
       no_results_content_text: Add a news item
 
   roles:
+    edit:
+      default_for_new_projects_warning: >-
+        This role is configured as the default role given to non-admin users who create a project.
+        Do not remove the following permissions, otherwise project creators will be unable to complete
+        the setup of their newly created projects:
     permissions:
       section_check_all_label: "Assign all %{module} permissions"
       section_uncheck_all_label: "Unassign all %{module} permissions"
