@@ -39,7 +39,7 @@ module ::ResourceManagement
 
     def index
       @resource_planners = ResourcePlanner
-                             .visible(principal: current_user)
+                             .visible(current_user)
                              .where(project: @project)
                              .order(:name)
     end
@@ -102,14 +102,16 @@ module ::ResourceManagement
         flash[:error] = call.message
       end
 
-      redirect_to project_resource_planner_path(@project, @resource_planner), status: :see_other
+      redirect_back_or_to(
+        project_resource_planner_path(@project, @resource_planner), status: :see_other
+      )
     end
 
     private
 
     def find_resource_planner
       @resource_planner = ResourcePlanner
-                            .visible(principal: current_user)
+                            .visible(current_user)
                             .where(project: @project)
                             .find(params[:id])
     end

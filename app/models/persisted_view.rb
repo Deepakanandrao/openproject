@@ -48,10 +48,10 @@ class PersistedView < ApplicationRecord
   validate :parent_allows_this_child_class
 
   scope :public_views, -> { where(public: true) }
-  scope :private_views, ->(principal: User.current) { where(public: false, principal:) }
+  scope :private_views, ->(principal = User.current) { where(public: false, principal_id: principal.id) }
 
   scope :visible, (lambda do |principal = User.current|
-    public_views.or(private_views(principal: principal))
+    public_views.or(private_views(principal))
   end)
 
   after_destroy :destroy_query_if_orphaned

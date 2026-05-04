@@ -23,6 +23,12 @@ en:
     label_resource_planner: "Resource planner"
     label_resource_planner_plural: "Resource planners"
     label_finish_date: "Finish date"
+    action:
+      favorite: "Add to favorites"
+      unfavorite: "Remove from favorites"
+      make_public: "Make public"
+      make_private: "Make private"
+      delete: "Delete"
     sidebar:
       favorite: "Favorite"
       public: "Public"

@@ -65,11 +65,79 @@ module ResourcePlanners
     end
 
     def button_links
-      [action_menu_placeholder]
+      [action_menu]
     end
 
-    def action_menu_placeholder
-      render(Primer::Beta::IconButton.new(icon: "kebab-horizontal", "aria-label": t(:label_more), scheme: :invisible))
+    def action_menu
+      render(Primer::Alpha::ActionMenu.new) do |menu|
+        menu.with_show_button(icon: "kebab-horizontal",
+                              "aria-label": t(:label_more),
+                              scheme: :invisible)
+
+        favorite_item(menu)
+        toggle_public_item(menu) if toggle_public_allowed?
+        delete_item(menu) if delete_allowed?
+      end
+    end
+
+    def favorite_item(menu)
+      favorited = model.favorited_by?(User.current)
+      label = favorited ? t("resource_management.action.unfavorite") : t("resource_management.action.favorite")
+      icon = favorited ? :star : :"star-fill"
+      method = favorited ? :delete : :post
+
+      menu.with_item(
+        label:,
+        href: favorite_path(object_type: "persisted_views", object_id: model.id),
+        content_arguments: { data: { turbo_method: method } }
+      ) do |item|
+        item.with_leading_visual_icon(icon:)
+      end
+    end
+
+    def toggle_public_item(menu)
+      label = model.public? ? t("resource_management.action.make_private") : t("resource_management.action.make_public")
+      icon = model.public? ? :lock : :globe
+
+      menu.with_item(
+        label:,
+        href: toggle_public_project_resource_planner_path(project, model),
+        content_arguments: { data: { turbo_method: :post } }
+      ) do |item|
+        item.with_leading_visual_icon(icon:)
+      end
+    end
+
+    def delete_item(menu)
+      menu.with_item(
+        label: t("resource_management.action.delete"),
+        scheme: :danger,
+        href: project_resource_planner_path(project, model),
+        content_arguments: {
+          data: {
+            turbo_method: :delete,
+            turbo_confirm: t(:text_are_you_sure)
+          }
+        }
+      ) do |item|
+        item.with_leading_visual_icon(icon: :trash)
+      end
+    end
+
+    def toggle_public_allowed?
+      User.current.allowed_in_project?(:manage_public_resource_planners, project)
+    end
+
+    def delete_allowed?
+      return true if User.current.active_admin?
+      return false if project.nil?
+
+      owns_planner = model.principal == User.current &&
+        User.current.allowed_in_project?(:view_resource_planners, project)
+      can_manage_public = model.public? &&
+        User.current.allowed_in_project?(:manage_public_resource_planners, project)
+
+      owns_planner || can_manage_public
     end
   end
 end

@@ -60,7 +60,7 @@ module ResourceManagement
 
     def private_planners
       base_scope
-        .private_views(principal: User.current)
+        .private_views(User.current)
         .order(:name)
         .map { |planner| planner_item(planner) }
     end

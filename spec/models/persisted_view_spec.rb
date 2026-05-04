@@ -65,7 +65,7 @@ RSpec.describe PersistedView do
 
     describe ".private_views" do
       it "returns private views for the given principal" do
-        expect(described_class.private_views(principal: user)).to contain_exactly(own_private_view)
+        expect(described_class.private_views(user)).to contain_exactly(own_private_view)
       end
 
       it "defaults to User.current when no principal is given" do
@@ -76,11 +76,11 @@ RSpec.describe PersistedView do
 
     describe ".visible" do
       it "returns public views and the principal's own private views" do
-        expect(described_class.visible(principal: user)).to contain_exactly(public_view, own_private_view)
+        expect(described_class.visible(user)).to contain_exactly(public_view, own_private_view)
       end
 
       it "excludes other principals' private views" do
-        expect(described_class.visible(principal: user)).not_to include(other_private_view)
+        expect(described_class.visible(user)).not_to include(other_private_view)
       end
 
       it "defaults to User.current when no principal is given" do
