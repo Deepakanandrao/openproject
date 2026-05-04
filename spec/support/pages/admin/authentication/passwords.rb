@@ -28,32 +28,28 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module OpenProject
-  module Common
-    # @logical_path OpenProject/Common
-    class AdvancedFormInputsPreview < Lookbook::Preview
-      def advanced_radio_button_group
-        render_with_template
-      end
+require "support/pages/page"
 
-      def advanced_check_box_group
-        render_with_template
-      end
+module Pages
+  module Admin
+    module Authentication
+      class Passwords < ::Pages::Page
+        def path
+          admin_settings_authentication_path(tab: "passwords")
+        end
 
-      # `check_box_group` with `include_hidden: true`
-      #
-      # HTML forms do not submit unchecked checkboxes, so when every option in an
-      # array-valued `check_box_group` is unchecked, the field key is absent from
-      # the request params entirely. The server then has no way to distinguish
-      # "user cleared all selections" from "this field was not part of the form",
-      # and the previous value is silently preserved.
-      #
-      # Pass `include_hidden: true` to emit a hidden sentinel field before the
-      # checkboxes. This mirrors the behaviour of Rails' own `check_box` helper
-      # and ensures the key is always present in params — as an empty array when
-      # nothing is checked — so the server can save the empty selection correctly.
-      def check_box_group_with_include_hidden
-        render_with_template
+        def save
+          click_button "Save"
+          expect_and_dismiss_flash(message: "Successful update.")
+        end
+
+        def expect_rule_checked(rule)
+          expect(page).to have_checked_field I18n.t("label_password_rule_#{rule}")
+        end
+
+        def expect_rule_unchecked(rule)
+          expect(page).to have_unchecked_field I18n.t("label_password_rule_#{rule}")
+        end
       end
     end
   end
