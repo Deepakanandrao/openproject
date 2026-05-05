@@ -65,6 +65,11 @@ updates:
     schedule:
       interval: "weekly"
     target-branch: "dev"
+    cooldown:
+      default-days: 5
+      semver-major-days: 30
+      semver-minor-days: 14
+      semver-patch-days: 5
     commit-message:
       prefix: "deps(hocuspocus)"
     labels:
@@ -81,3 +86,8 @@ updates:
     schedule:
       interval: "weekly"
     target-branch: "dev"
+    cooldown:
+      default-days: 5
+      semver-major-days: 30
+      semver-minor-days: 14
+      semver-patch-days: 5
