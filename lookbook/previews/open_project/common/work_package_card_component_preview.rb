@@ -48,9 +48,7 @@ module OpenProject
         render OpenProject::Common::WorkPackageCardComponent.new(
           work_package:
         ) do |card|
-          card.with_metric do
-            render Backlogs::StoryPointsComponent.new(work_package:)
-          end
+          card.with_metric_content(10)
         end
       end
 
