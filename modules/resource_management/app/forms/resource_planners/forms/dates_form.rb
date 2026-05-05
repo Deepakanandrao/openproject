@@ -5,17 +5,23 @@ module ResourcePlanners
     class DatesForm < ApplicationForm
       form do |f|
         f.group(layout: :horizontal) do |dates|
-          dates.text_field(
+          dates.single_date_picker(
             name: :start_date,
-            type: :date,
             label: ResourcePlanner.human_attribute_name(:start_date),
-            input_width: :medium
+            required: false,
+            value: model.start_date&.iso8601,
+            datepicker_options: {
+              inDialog: ResourcePlanners::NewDialogComponent::DIALOG_ID
+            }
           )
-          dates.text_field(
+          dates.single_date_picker(
             name: :end_date,
-            type: :date,
             label: ResourcePlanner.human_attribute_name(:end_date),
-            input_width: :medium
+            required: false,
+            value: model.end_date&.iso8601,
+            datepicker_options: {
+              inDialog: ResourcePlanners::NewDialogComponent::DIALOG_ID
+            }
           )
         end
       end
