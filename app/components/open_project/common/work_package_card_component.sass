@@ -50,13 +50,3 @@
   align-self: start // Align to top of second row
   word-wrap: break-word
   overflow-wrap: break-word
-
-// Responsive overrides for the Backlogs page container. The
-// `backlogsListsContainer` named container is established on
-// `.op-backlogs-page`; outside of it these rules are inert.
-@container backlogsListsContainer (max-width: 654px)
-  .op-work-package-card-metric-label
-    display: none
-
-  .op-work-package-card_with-metric
-    grid-template-columns: 1fr minmax(2rem, max-content) auto
