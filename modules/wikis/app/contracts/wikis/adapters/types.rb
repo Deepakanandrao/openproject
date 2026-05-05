@@ -30,12 +30,10 @@
 
 module Wikis
   module Adapters
-    module Input
-      class ReferencingPagesContract < DryApplicationContract
-        params do
-          required(:linkable).filled(Types::Linkable)
-        end
-      end
+    module Types
+      include Dry.Types()
+
+      Linkable = Types.Instance(WorkPackage)
     end
   end
 end

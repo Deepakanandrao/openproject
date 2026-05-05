@@ -31,7 +31,7 @@
 module Wikis
   module Adapters
     module Input
-      class ReferencingPagesContract < DryApplicationContract
+      class RelationPageLinksContract < DryApplicationContract
         params do
           required(:linkable).filled(Types::Linkable)
         end

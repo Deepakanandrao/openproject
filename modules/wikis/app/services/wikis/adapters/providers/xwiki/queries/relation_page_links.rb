@@ -30,10 +30,30 @@
 
 module Wikis
   module Adapters
-    module Input
-      class ReferencingPagesContract < DryApplicationContract
-        params do
-          required(:linkable).filled(Types::Linkable)
+    module Providers
+      module XWiki
+        module Queries
+          class RelationPageLinks < BaseQuery
+            def call(input_data) # rubocop:disable Metrics/AbcSize
+              # TODO: use real API endpoints once available
+
+              title = [
+                "What makes XWiki special?",
+                "API documentation",
+                "A brief introduction on configuring your own XWiki instance and connect it to OpenProject."
+              ]
+
+              results = []
+
+              if input_data.linkable.id % 2 == 1
+                results << Success(Results::PageInfo.new(identifier: "1337", provider:, title: title.sample, href: "#"))
+                results << Success(Results::PageInfo.new(identifier: "1338", provider:, title: title.sample, href: "#"))
+                results << Success(Results::PageInfo.new(identifier: "1338", provider:, title: title.sample, href: "#"))
+              end
+
+              success(results)
+            end
+          end
         end
       end
     end

@@ -30,10 +30,25 @@
 
 module Wikis
   module Adapters
-    module Input
-      class ReferencingPagesContract < DryApplicationContract
-        params do
-          required(:linkable).filled(Types::Linkable)
+    module Providers
+      module Internal
+        module Queries
+          class RelationPageLinks < BaseQuery
+            def call(input_data)
+              page_link_infos = provider.page_links
+                                        .merge(RelationPageLink.all)
+                                        .where(linkable: input_data.linkable)
+                                        .map { |page_link| page_info(page_link.identifier) }
+
+              success(page_link_infos)
+            end
+
+            private
+
+            def page_info(identifier)
+              Input::PageInfo.build(identifier:).bind { provider.resolve("queries.page_info").call(it) }
+            end
+          end
         end
       end
     end

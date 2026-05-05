@@ -28,14 +28,12 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Wikis
-  module Adapters
-    module Input
-      class ReferencingPagesContract < DryApplicationContract
-        params do
-          required(:linkable).filled(Types::Linkable)
-        end
-      end
+module Wikis::Adapters::Input
+  RelationPageLinks = Data.define(:linkable) do
+    private_class_method :new
+
+    def self.build(linkable:, contract: RelationPageLinksContract.new)
+      contract.call(linkable:).to_monad.fmap { new(**it.to_h) }
     end
   end
 end
