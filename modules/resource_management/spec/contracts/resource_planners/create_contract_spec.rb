@@ -42,7 +42,7 @@ RSpec.describe ResourcePlanners::CreateContract do
     let(:current_user) do
       create(:user, member_with_permissions: { project => %i[view_resource_planners] })
     end
-    let(:project) { create(:project) }
+    let(:project) { create(:project, enabled_module_names: %w[resource_management]) }
     let(:resource_planner) { build_stubbed(:resource_planner, project:, principal: current_user) }
     let(:contract) { described_class.new(resource_planner, current_user) }
 

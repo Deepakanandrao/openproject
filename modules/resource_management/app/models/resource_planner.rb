@@ -29,6 +29,8 @@
 #++
 
 class ResourcePlanner < PersistedView
+  self.allowed_children = %w[UserCardView]
+
   store_attribute :options, :start_date, :date
   store_attribute :options, :end_date, :date
 

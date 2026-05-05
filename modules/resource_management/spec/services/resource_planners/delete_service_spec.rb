@@ -31,7 +31,7 @@
 require "spec_helper"
 
 RSpec.describe ResourcePlanners::DeleteService, type: :model do
-  shared_let(:project) { create(:project) }
+  shared_let(:project) { create(:project, enabled_module_names: %w[resource_management]) }
   shared_let(:owner) do
     create(:user, member_with_permissions: { project => %i[view_resource_planners] })
   end

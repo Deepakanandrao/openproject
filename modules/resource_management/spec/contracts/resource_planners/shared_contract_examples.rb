@@ -32,7 +32,7 @@ require "spec_helper"
 require "contracts/shared/model_contract_shared_context"
 
 RSpec.shared_examples_for "resource planner contract" do
-  shared_let(:project) { create(:project) }
+  shared_let(:project) { create(:project, enabled_module_names: %w[resource_management]) }
   shared_let(:owner) { create(:user) }
 
   let(:public_planner) { false }

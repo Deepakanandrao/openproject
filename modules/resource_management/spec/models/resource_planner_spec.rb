@@ -32,7 +32,7 @@ require "spec_helper"
 
 RSpec.describe ResourcePlanner do
   describe "#visible?" do
-    shared_let(:project) { create(:project) }
+    shared_let(:project) { create(:project, enabled_module_names: %w[resource_management]) }
     shared_let(:owner) { create(:user, member_with_permissions: { project => %i[view_resource_planners] }) }
     shared_let(:permitted_other) do
       create(:user, member_with_permissions: { project => %i[view_resource_planners] })

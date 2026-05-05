@@ -31,7 +31,7 @@
 require "spec_helper"
 
 RSpec.describe ResourcePlanners::TogglePublicService, type: :model do
-  shared_let(:project) { create(:project) }
+  shared_let(:project) { create(:project, enabled_module_names: %w[resource_management]) }
 
   let!(:resource_planner) { create(:resource_planner, project:, principal: user, public: initial_public) }
   let(:initial_public) { false }

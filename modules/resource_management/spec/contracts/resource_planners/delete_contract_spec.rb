@@ -34,7 +34,7 @@ require "contracts/shared/model_contract_shared_context"
 RSpec.describe ResourcePlanners::DeleteContract do
   include_context "ModelContract shared context"
 
-  shared_let(:project) { create(:project) }
+  shared_let(:project) { create(:project, enabled_module_names: %w[resource_management]) }
   shared_let(:owner) { create(:user) }
 
   let(:public_planner) { false }
