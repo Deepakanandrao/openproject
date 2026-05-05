@@ -35,6 +35,11 @@ module ResourcePlanners
     end
 
     attribute :name
+
+    attribute :options, writable: -> do
+      model.options_change&.none? { it.except("start_date", "end_date").any? }
+    end
+
     attribute :start_date
     attribute :end_date
 
