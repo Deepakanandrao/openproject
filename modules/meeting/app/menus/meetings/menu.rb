@@ -147,7 +147,10 @@ module Meetings
     end
 
     def attendee_filter
-      [{ attended_user_id: { operator: "=", values: [User.current.id.to_s] } }].to_json
+      [
+        { attended_user_id: { operator: "=", values: [User.current.id.to_s] } },
+        { time: { operator: "=", values: ["past"] } }
+      ].to_json
     end
 
     def author_filter
@@ -186,7 +189,7 @@ module Meetings
     def attended_menu_item
       menu_item(
         title: I18n.t(:label_attended),
-        query_params: { filters: attendee_filter, upcoming: false },
+        query_params: { filters: attendee_filter },
         selected: params[:filters].to_s.include?("attended_user_id")
       )
     end
