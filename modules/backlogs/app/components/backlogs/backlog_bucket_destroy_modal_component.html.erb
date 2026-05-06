@@ -31,7 +31,7 @@ See COPYRIGHT and LICENSE files for more details.
   render(Primer::OpenProject::DangerDialog.new(title:, test_selector: TEST_SELECTOR, form_arguments:)) do |dialog|
     dialog.with_confirmation_message do |message|
       message.with_heading(tag: :h2) { title }
+      message.with_description_content(details)
     end
-    dialog.with_additional_details { details }
   end
 %>

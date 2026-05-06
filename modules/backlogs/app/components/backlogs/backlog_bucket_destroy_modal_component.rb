@@ -38,7 +38,7 @@ module Backlogs
     attr_reader :backlog_bucket
 
     def initialize(backlog_bucket:)
-      super
+      super()
       @backlog_bucket = backlog_bucket
     end
 
