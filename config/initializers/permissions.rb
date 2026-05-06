@@ -549,7 +549,7 @@ Rails.application.reloader.to_prepare do
 
       wiki.permission :edit_wiki_pages,
                       { wiki: %i[edit update preview add_attachment new new_child create rename] },
-                      dependencies: :view_wiki_edits,
+                      dependencies: :view_wiki_pages,
                       permissible_on: :project
 
       wiki.permission :manage_wiki,

@@ -45,7 +45,7 @@ class UpdateWikiPermissions < ActiveRecord::Migration[8.1]
     SQL
 
     ::Migration::MigrationUtils::PermissionAdder.add(:manage_wiki, :edit_wiki_pages)
-    ::Migration::MigrationUtils::PermissionAdder.add(:edit_wiki_pages, :view_wiki_edits)
+    ::Migration::MigrationUtils::PermissionAdder.add(:edit_wiki_pages, :view_wiki_pages)
     ::Migration::MigrationUtils::PermissionAdder.add(:view_wiki_edits, :view_wiki_pages)
   end
 end
