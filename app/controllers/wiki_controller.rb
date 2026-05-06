@@ -222,7 +222,7 @@ class WikiController < ApplicationController
   def wiki_root_menu_items
     MenuItems::WikiMenuItem
       .main_items(@wiki.id)
-      .map { { name: it.name, caption: it.title, item: it } }
+      .map { OpenStruct.new name: it.name, caption: it.title, item: it }
   end
 
   def edit_parent_page
@@ -254,7 +254,7 @@ class WikiController < ApplicationController
     # don't load text
     @versions = @page.journals
                      .select(:id, :user_id, :notes, :created_at, :version)
-                     .order(Arel.sql("version DESC"))
+                     .order(version: :desc)
                      .page(page_param)
                      .per_page(per_page_param)
 

@@ -35,7 +35,7 @@ module Wikis
     has_many :page_links, dependent: :destroy
 
     scope :enabled, -> { where(enabled: true) }
-    scope :visible, lambda { |user = User.current| user.admin? ? all : none }
+    scope :visible, ->(_user = User.current) { all }
 
     validates :name, presence: true, uniqueness: true, length: { maximum: 255 }
 
