@@ -35,7 +35,12 @@ module ResourcePlanners
 
     def name
       icon = if model.favorited_by?(User.current)
-               render(Primer::Beta::Octicon.new(icon: :"star-fill", color: :attention, mr: 2))
+               render(Primer::Beta::Octicon.new(
+                        icon: :"star-fill",
+                        "aria-label": I18n.t(:label_favorite),
+                        classes: "op-primer--star-icon",
+                        mr: 2
+                      ))
              end
 
       link = render(Primer::Beta::Link.new(

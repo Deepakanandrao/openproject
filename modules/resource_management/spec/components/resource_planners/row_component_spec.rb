@@ -34,13 +34,13 @@ RSpec.describe ResourcePlanners::RowComponent, type: :component do
       before { planner.add_favoriting_user(current_user) }
 
       it "shows the filled-star indicator next to the name" do
-        expect(rendered).to have_css("svg.octicon-star-fill.color-fg-attention")
+        expect(rendered).to have_css("svg.octicon-star-fill.op-primer--star-icon")
       end
     end
 
     context "when the planner is not favorited" do
       it "does not show the filled-star indicator next to the name" do
-        expect(rendered).to have_no_css("svg.octicon-star-fill.color-fg-attention")
+        expect(rendered).to have_no_css("svg.octicon-star-fill.op-primer--star-icon")
       end
     end
   end
