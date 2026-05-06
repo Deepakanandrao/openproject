@@ -6,3 +6,7 @@ rules:
       - create-merge-release-into-dev-pr.yml
       - crowdin.yml
       - sync-internal-fork.yml
+  dangerous-triggers:
+    ignore:
+      # CLA workflow intentionally uses pull_request_target to handle outside contributors
+      - cla.yml
