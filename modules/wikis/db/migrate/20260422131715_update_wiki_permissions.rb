@@ -28,34 +28,24 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Wikis
-  class Provider < ApplicationRecord
-    self.table_name = "wiki_providers"
+require Rails.root.join("db/migrate/migration_utils/permission_adder")
 
-    has_many :page_links, dependent: :destroy
+class UpdateWikiPermissions < ActiveRecord::Migration[8.1]
+  def up
+    execute <<~SQL.squish
+      DELETE FROM role_permissions
+      WHERE permission IN ('list_attachments',
+                           'manage_wiki_menu',
+                           'rename_wiki_pages',
+                           'change_wiki_parent_page',
+                           'delete_wiki_pages',
+                           'export_wiki_pages',
+                           'delete_wiki_pages_attachments',
+                           'protect_wiki_pages');
+    SQL
 
-    scope :enabled, -> { where(enabled: true) }
-    scope :visible, ->(_user = User.current) { all }
-
-    validates :name, presence: true, uniqueness: true, length: { maximum: 255 }
-
-    before_create :generate_universal_identifier
-
-    def to_s = self.class.registry_prefix
-    def user_connected?(_user) = raise SubclassResponsibilityError
-
-    class << self
-      def registry_prefix = raise SubclassResponsibilityError
-    end
-
-    def resolve(registry_path, **init_options)
-      Adapters::Registry["#{self.class.registry_prefix}.#{registry_path}"].new(model: self, **init_options)
-    end
-
-    private
-
-    def generate_universal_identifier
-      self.universal_identifier ||= SecureRandom.uuid
-    end
+    ::Migration::MigrationUtils::PermissionAdder.add(:manage_wiki, :edit_wiki_pages)
+    ::Migration::MigrationUtils::PermissionAdder.add(:edit_wiki_pages, :view_wiki_pages)
+    ::Migration::MigrationUtils::PermissionAdder.add(:view_wiki_edits, :view_wiki_pages)
   end
 end
