@@ -21,6 +21,7 @@ en:
         group_name_attribute: "Group name attribute"
         sync_users: 'Sync users'
         base_dn: "Search base DN"
+        member_lookup_attribute: "Group member attribute"
     models:
       ldap_groups/synchronized_group: 'Synchronized LDAP group'
       ldap_groups/synchronized_filter: 'LDAP Group synchronization filter'
@@ -57,6 +58,13 @@ en:
           Enter the search base DN to use for this filter. It needs to be below the base DN of the selected LDAP connection.
 
           Leave this option empty to reuse the base DN of the connection
+        member_lookup_attribute_text: >
+          Leave empty to use the default reverse lookup: OpenProject searches for users whose memberOf attribute matches the group DN.
+          This requires the memberOf attribute to be present on user entries (Active Directory, OpenLDAP with memberof overlay).
+
+          Set this to the attribute name on group entries that lists member DNs to use forward lookup instead.
+          Examples: "uniqueMember" (groupOfUniqueNames), "member" (groupOfNames).
+          Use this for LDAP servers that do not maintain the memberOf attribute on user entries.
 
     synchronized_groups:
       add_new: 'Add synchronized LDAP group'

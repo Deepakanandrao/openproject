@@ -86,7 +86,8 @@ module LdapGroups
     def permitted_params
       params
         .require(:synchronized_filter)
-        .permit(:filter_string, :name, :ldap_auth_source_id, :group_name_attribute, :sync_users, :base_dn)
+        .permit(:filter_string, :name, :ldap_auth_source_id, :group_name_attribute, :sync_users, :base_dn,
+                :member_lookup_attribute)
     end
   end
 end
