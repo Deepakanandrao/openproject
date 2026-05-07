@@ -236,7 +236,7 @@ RSpec.describe ModelContract do
 
         def validate_model? = false
       end
-      
+
       expect(multi_class.writable_attributes)
         .to contain_exactly("settings",
                             "settings_id",
@@ -244,7 +244,6 @@ RSpec.describe ModelContract do
                             "sprint_sharing_id",
                             "deactivate_work_package_attachments",
                             "deactivate_work_package_attachments_id")
-
     end
 
     context "with inheritance" do
