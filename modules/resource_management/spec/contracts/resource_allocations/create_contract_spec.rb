@@ -28,38 +28,33 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class ResourceAllocation < ApplicationRecord
-  belongs_to :entity, polymorphic: true, optional: false
-  belongs_to :principal, class_name: "User", optional: true
+require "spec_helper"
+require_relative "shared_contract_examples"
 
-  serialize :user_filter, coder: Queries::Serialization::Filters.new(UserQuery)
+RSpec.describe ResourceAllocations::CreateContract do
+  include_context "ModelContract shared context"
 
-  enum :state, {
-    requested: "requested",
-    allocated: "allocated",
-    rejected: "rejected",
-    canceled: "canceled"
-  }
-
-  validates :state, :start_date, :end_date, presence: true
-  validates :allocated_time,
-            presence: true,
-            numericality: { only_integer: true, greater_than: 0 }
-
-  validate :end_date_after_start_date
-
-  # Resource allocations are scoped to whatever project their (polymorphic)
-  # entity belongs to. Authorization in the contracts hangs off this.
-  def project
-    entity&.project
+  it_behaves_like "resource allocation contract" do
+    let(:contract) { described_class.new(resource_allocation, current_user) }
   end
 
-  private
+  describe "writable attributes" do
+    let(:project) { create(:project, enabled_module_names: %w[resource_management]) }
+    let(:current_user) do
+      create(:user, member_with_permissions: { project => %i[view_resource_planners allocate_user_resources] })
+    end
+    let(:planner) { create(:resource_planner, project:, principal: current_user) }
+    let(:resource_allocation) { build_stubbed(:resource_allocation, entity: planner, principal: current_user) }
+    let(:contract) { described_class.new(resource_allocation, current_user) }
 
-  def end_date_after_start_date
-    return if start_date.blank? || end_date.blank?
-    return if end_date > start_date
+    it "allows entity to be set" do
+      expect(contract.writable?(:entity)).to be(true)
+    end
 
-    errors.add :end_date, :greater_than_start_date
+    it "allows principal, state, dates, allocated_time, and user_filter" do
+      %i[principal state start_date end_date allocated_time user_filter].each do |attr|
+        expect(contract.writable?(attr)).to be(true), "expected #{attr} to be writable"
+      end
+    end
   end
 end

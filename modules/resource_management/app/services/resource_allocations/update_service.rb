@@ -28,38 +28,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class ResourceAllocation < ApplicationRecord
-  belongs_to :entity, polymorphic: true, optional: false
-  belongs_to :principal, class_name: "User", optional: true
-
-  serialize :user_filter, coder: Queries::Serialization::Filters.new(UserQuery)
-
-  enum :state, {
-    requested: "requested",
-    allocated: "allocated",
-    rejected: "rejected",
-    canceled: "canceled"
-  }
-
-  validates :state, :start_date, :end_date, presence: true
-  validates :allocated_time,
-            presence: true,
-            numericality: { only_integer: true, greater_than: 0 }
-
-  validate :end_date_after_start_date
-
-  # Resource allocations are scoped to whatever project their (polymorphic)
-  # entity belongs to. Authorization in the contracts hangs off this.
-  def project
-    entity&.project
-  end
-
-  private
-
-  def end_date_after_start_date
-    return if start_date.blank? || end_date.blank?
-    return if end_date > start_date
-
-    errors.add :end_date, :greater_than_start_date
+module ResourceAllocations
+  class UpdateService < ::BaseServices::Update
   end
 end

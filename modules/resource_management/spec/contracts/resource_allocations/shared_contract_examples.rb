@@ -28,38 +28,37 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class ResourceAllocation < ApplicationRecord
-  belongs_to :entity, polymorphic: true, optional: false
-  belongs_to :principal, class_name: "User", optional: true
+require "spec_helper"
+require "contracts/shared/model_contract_shared_context"
 
-  serialize :user_filter, coder: Queries::Serialization::Filters.new(UserQuery)
+RSpec.shared_examples_for "resource allocation contract" do
+  shared_let(:project) { create(:project, enabled_module_names: %w[resource_management]) }
+  shared_let(:owner) { create(:user) }
+  shared_let(:planner) { create(:resource_planner, project:, principal: owner) }
 
-  enum :state, {
-    requested: "requested",
-    allocated: "allocated",
-    rejected: "rejected",
-    canceled: "canceled"
-  }
-
-  validates :state, :start_date, :end_date, presence: true
-  validates :allocated_time,
-            presence: true,
-            numericality: { only_integer: true, greater_than: 0 }
-
-  validate :end_date_after_start_date
-
-  # Resource allocations are scoped to whatever project their (polymorphic)
-  # entity belongs to. Authorization in the contracts hangs off this.
-  def project
-    entity&.project
+  let(:resource_allocation) do
+    build_stubbed(:resource_allocation, entity: planner, principal: owner)
   end
 
-  private
+  context "when user has the allocate_user_resources permission" do
+    let(:current_user) do
+      create(:user, member_with_permissions: { project => %i[view_resource_planners allocate_user_resources] })
+    end
 
-  def end_date_after_start_date
-    return if start_date.blank? || end_date.blank?
-    return if end_date > start_date
+    it_behaves_like "contract is valid"
+  end
 
-    errors.add :end_date, :greater_than_start_date
+  context "when user only has view_resource_planners" do
+    let(:current_user) do
+      create(:user, member_with_permissions: { project => %i[view_resource_planners] })
+    end
+
+    it_behaves_like "contract user is unauthorized"
+  end
+
+  context "when user has no permissions on the project" do
+    let(:current_user) { create(:user) }
+
+    it_behaves_like "contract user is unauthorized"
   end
 end
