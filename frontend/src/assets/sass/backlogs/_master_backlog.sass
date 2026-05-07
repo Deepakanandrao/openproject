@@ -33,6 +33,15 @@ $op-backlogs-header--points-min-width-narrow: 2rem
 .controller-backlogs\/backlog.action-details
   @include extended-content--bottom
 
+  #content-body
+    padding-right: 0
+
+  // Base layout restores padding-right: 1rem on #content-body when the
+  // split pane is open (specificity 0,3,0,0). Override it back to 0.
+  #content:has(#content-bodyRight > *)
+    #content-body
+      padding-right: 0
+
 .op-sprint-header
   display: grid
   grid-template-columns: 1fr minmax($op-backlogs-header--points-min-width, max-content) auto
@@ -96,9 +105,11 @@ $op-backlogs-header--points-min-width-narrow: 2rem
 
 //------------------ Sprint planning divider (side-by-side only) ----
 @container backlogsListsContainer (min-width: 655px)
-  .op-sprint-planning-lists:not(:last-child)
-    border-right: 1px solid var(--borderColor-default)
+  .op-sprint-planning-lists
     padding-right: var(--stack-gap-normal)
+
+    &:not(:last-child)
+      border-right: 1px solid var(--borderColor-default)
 
 //------------------ Mobile responsive styling -----------------------
 @container backlogsListsContainer (max-width: 654px)
