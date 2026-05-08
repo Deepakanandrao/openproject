@@ -33,11 +33,34 @@ FactoryBot.define do
     entity factory: :resource_planner
     principal factory: :user
     state { "requested" }
-    start_date { Date.new(2026, 1, 1) }
-    end_date { Date.new(2026, 1, 31) }
-    allocated_time { 8 }
+    start_date { Date.new(2026, 1, 5) }
+    end_date { Date.new(2026, 1, 9) }
+    allocated_time { 5 * 8 * 60 } # 5 days of 8 hours in minutes
     user_filter { [] }
 
     traits_for_enum :state
+
+    trait :with_user_filter do
+      principal { nil }
+      transient do
+        job_title_custom_field do
+          UserCustomField.find_by(name: "Job title") ||
+            create(:user_custom_field, :list,
+                   name: "Job title",
+                   possible_values: ["Developer", "Designer", "Project Manager", "Product Manager"])
+        end
+      end
+      user_filter do
+        cf = job_title_custom_field
+        developer_option = cf.custom_options.find_by(value: "Developer")
+        [
+          {
+            "attribute" => cf.column_name,
+            "operator" => "=",
+            "values" => [developer_option.id.to_s]
+          }
+        ]
+      end
+    end
   end
 end
