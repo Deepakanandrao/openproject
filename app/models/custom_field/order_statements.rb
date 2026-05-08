@@ -113,10 +113,10 @@ module CustomField::OrderStatements
   #   ) cf_order_NNN ON cf_order_NNN.customized_id = …
   #
   def join_for_order_sql(value:, add_select: nil, join: nil, multi_value: false)
-    <<-SQL.squish
+    <<~SQL.squish
       LEFT OUTER JOIN (
         SELECT
-          #{multi_value ? '' : 'DISTINCT ON (cv.customized_id)'}
+          #{'DISTINCT ON (cv.customized_id)' unless multi_value}
             cv.customized_id
             , #{value} "value"
             #{", #{add_select}" if add_select}
