@@ -40,6 +40,8 @@ module OpenProject::ResourceManagement
       OpenProject::FeatureDecisions.add :resource_management, allow_enabling: Rails.env.local?
     end
 
+    replace_principal_references "ResourceAllocation" => :principal_id
+
     register "openproject-resource_management",
              author_url: "https://www.openproject.org",
              bundled: true,

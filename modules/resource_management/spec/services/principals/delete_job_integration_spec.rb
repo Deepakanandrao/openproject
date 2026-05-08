@@ -28,38 +28,31 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class ResourceAllocation < ApplicationRecord
-  belongs_to :entity, polymorphic: true, optional: false
-  belongs_to :principal, class_name: "User", optional: true, inverse_of: :resource_allocations
+require "spec_helper"
 
-  serialize :user_filter, coder: Queries::Serialization::Filters.new(UserQuery)
+RSpec.describe Principals::DeleteJob, "ResourceAllocation", type: :model do
+  subject(:job) { described_class.perform_now(principal) }
 
-  enum :state, {
-    requested: "requested",
-    allocated: "allocated",
-    rejected: "rejected",
-    canceled: "canceled"
-  }
+  shared_let(:deleted_user) { create(:deleted_user) }
+  let(:principal) { create(:user) }
 
-  validates :state, :start_date, :end_date, presence: true
-  validates :allocated_time,
-            presence: true,
-            numericality: { only_integer: true, greater_than: 0 }
+  context "with a resource allocation assigned to the principal" do
+    let!(:allocation) { create(:resource_allocation, principal:) }
+    let!(:other_allocation) { create(:resource_allocation, principal: create(:user)) }
+    let!(:unassigned_allocation) { create(:resource_allocation, principal: nil) }
 
-  validate :end_date_after_start_date
+    it "rewrites the principal to the deleted user placeholder" do
+      job
 
-  # Resource allocations are scoped to whatever project their (polymorphic)
-  # entity belongs to. Authorization in the contracts hangs off this.
-  def project
-    entity&.project
-  end
+      expect(allocation.reload.principal).to eq deleted_user
+    end
 
-  private
+    it "does not affect allocations belonging to other users" do
+      expect { job }.not_to change { other_allocation.reload.principal }
+    end
 
-  def end_date_after_start_date
-    return if start_date.blank? || end_date.blank?
-    return if end_date > start_date
-
-    errors.add :end_date, :greater_than_start_date
+    it "does not affect unassigned allocations" do
+      expect { job }.not_to change { unassigned_allocation.reload.principal_id }
+    end
   end
 end
