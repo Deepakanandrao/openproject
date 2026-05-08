@@ -62,23 +62,37 @@ module Pages
         end
 
         def filter_by_status(value)
-          select value, from: "Status:"
-          click_button "Apply"
+          open_filter_panel
+          select "Status", from: "Add filter"
+          within_filter("status") do
+            find("[data-filter-name='status'] select").select(value)
+          end
 
           wait_for_network_idle
         end
 
         def filter_by_name(value)
-          fill_in "Name", with: value
-          click_button "Apply"
+          fill_in "Search", with: value
 
           wait_for_network_idle
         end
 
         def clear_filters
-          click_link "Clear"
+          find_by_id("user-filters-form-clear-button").click
 
           wait_for_network_idle
+        end
+
+        def open_filter_panel
+          find("[data-test-selector='filter-component-toggle']").click unless filter_panel_open?
+        end
+
+        def filter_panel_open?
+          page.has_css?(".advanced-filters--container.-expanded", wait: 0)
+        end
+
+        def within_filter(name, &)
+          within("[data-filter-name='#{name}']", &)
         end
 
         def order_by(key)

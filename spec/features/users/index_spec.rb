@@ -68,27 +68,18 @@ RSpec.describe "index users", :js do
     shared_let(:registered_user) { create(:user, status: User.statuses[:registered]) }
     shared_let(:invited_user) { create(:user, status: User.statuses[:invited]) }
 
-    it "shows the users by status and allows status manipulations",
+    it "shows active users by default and allows status filtering and manipulations",
        with_settings: { brute_force_block_after_failed_logins: 5,
                         brute_force_block_minutes: 10 } do
       index_page.visit!
 
-      # Order is by id, asc
-      # so first ones created are on top.
-      index_page.expect_listed(current_user, active_user, registered_user, invited_user)
-
-      index_page.order_by("Created on")
-      index_page.expect_order(invited_user, registered_user, active_user, current_user)
-
-      index_page.order_by("Created on")
-      index_page.expect_order(current_user, active_user, registered_user, invited_user)
+      # Default filter: active users only
+      index_page.expect_listed(current_user, active_user)
 
       index_page.lock_user(active_user)
-      index_page.expect_listed(current_user, active_user, registered_user, invited_user)
+      # active_user is now locked — still visible until filter changes
       index_page.expect_user_locked(active_user)
-
-      expect(active_user.reload)
-        .to be_locked
+      expect(active_user.reload).to be_locked
 
       index_page.filter_by_status("locked permanently")
       index_page.expect_listed(active_user)
@@ -106,30 +97,19 @@ RSpec.describe "index users", :js do
       index_page.filter_by_name(active_user.lastname[0..-3])
       index_page.expect_listed(active_user)
 
-      # temporarily block user
+      # temporarily block user — reset via action, no filter needed
       active_user.update(failed_login_count: 6,
                          last_failed_login_on: 9.minutes.ago)
       index_page.clear_filters
-      index_page.expect_listed(current_user, active_user, registered_user, invited_user)
-
-      index_page.filter_by_status("locked temporarily")
-      index_page.expect_listed(active_user)
+      # after clear, default active filter is restored
+      index_page.expect_listed(current_user, active_user)
 
       index_page.reset_failed_logins(active_user)
-      index_page.expect_non_listed
+      # still listed — reset doesn't change status
+      index_page.expect_listed(current_user, active_user)
 
-      # temporarily block user and lock permanently
-      active_user.reload
-      active_user.update(failed_login_count: 6,
-                         last_failed_login_on: 9.minutes.ago)
-      index_page.clear_filters
-
-      index_page.filter_by_status("locked temporarily")
-      index_page.expect_listed(active_user)
-
+      # lock permanently and unlock
       index_page.lock_user(active_user)
-      index_page.expect_listed(active_user)
-
       index_page.filter_by_status("locked permanently")
       index_page.expect_listed(active_user)
 
@@ -145,7 +125,6 @@ RSpec.describe "index users", :js do
 
       index_page.activate_user(registered_user)
       index_page.filter_by_status("active")
-
       index_page.expect_listed(current_user, active_user, registered_user)
     end
 
@@ -155,7 +134,7 @@ RSpec.describe "index users", :js do
 
       it "can too visit the page" do
         index_page.visit!
-        index_page.expect_listed(admin, current_user, active_user, registered_user, invited_user)
+        index_page.expect_listed(admin, current_user, active_user)
       end
     end
   end

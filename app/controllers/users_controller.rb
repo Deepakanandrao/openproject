@@ -79,11 +79,15 @@ class UsersController < ApplicationController
   include SortHelper
   include CustomFieldsHelper
   include PaginationHelper
+  include Queries::Loading
+
+  before_action :load_query_or_deny_access, only: :index
 
   def index
-    @groups = Group.visible.sort
-    @status = Users::UserFilterComponent.status_param params
-    @users = Users::UserFilterComponent.filter params
+    respond_to do |format|
+      format.html
+      format.turbo_stream { render_index_turbo_stream }
+    end
   end
 
   def show
@@ -421,6 +425,13 @@ class UsersController < ApplicationController
       .merge(admin: params[:user][:admin] || false,
              login: params[:user][:login] || params[:user][:mail],
              status: User.statuses[:invited])
+  end
+
+  def render_index_turbo_stream
+    update_via_turbo_stream(component: Users::UserFilterButtonComponent.new(query: @query))
+    replace_via_turbo_stream(component: Users::TableComponent.new(rows: @query, current_user:))
+    turbo_streams << turbo_stream.push_state(url_for(params.permit(:filters, :sortBy, :sort, :page, :per_page)))
+    render turbo_stream: turbo_streams
   end
 
   def prepare_views_for_tab # rubocop:disable Metrics/AbcSize

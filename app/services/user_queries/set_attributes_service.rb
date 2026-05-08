@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#-- copyright
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,12 +26,35 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
-class Queries::Users::Orders::DefaultOrder < Queries::Orders::Base
-  self.model = User
+class UserQueries::SetAttributesService < BaseServices::SetAttributes
+  private
 
-  def self.key
-    /\A(id|lastname|firstname|mail|login|admin|created_at|last_login_on)\z/
+  def set_attributes(params)
+    set_filters(params.delete(:filters))
+    set_order(params.delete(:orders))
+
+    super
+  end
+
+  def set_default_attributes(_params)
+    # No user or project association needed for admin-scoped user queries
+  end
+
+  def set_filters(filters)
+    return unless filters
+
+    model.filters.clear
+    filters.each do |filter|
+      model.where(filter[:attribute], filter[:operator], filter[:values])
+    end
+  end
+
+  def set_order(orders)
+    return unless orders
+
+    model.orders.clear
+    model.order(orders.to_h { |o| [o[:attribute], o[:direction]] })
   end
 end

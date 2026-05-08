@@ -29,6 +29,8 @@
 #++
 
 class UserQuery < PersistedQuery
+  scope :visible, ->(user = User.current) { where(principal: user) }
+
   def self.model
     User
   end

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#-- copyright
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,16 +26,26 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
-module Users
-  class UserFilterComponent < ::UserFilterComponent
-    def filter_role(query, role_id)
-      super.uniq
+class UserQueries::Static
+  DEFAULT = "active"
+
+  class << self
+    def query(id)
+      case id
+      when DEFAULT, nil
+        static_query_active
+      end
     end
 
-    def clear_url
-      users_path
+    private
+
+    def static_query_active
+      UserQuery.new(name: I18n.t(:status_active)) do |query|
+        query.where("status", "=", "active")
+        query.clear_changes_information
+      end
     end
   end
 end

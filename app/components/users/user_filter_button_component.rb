@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#-- copyright
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,12 +26,19 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
-class Queries::Users::Orders::DefaultOrder < Queries::Orders::Base
-  self.model = User
+module Users
+  class UserFilterButtonComponent < Filter::FilterButtonComponent
+    HIDDEN_FILTERS = [
+      Queries::Users::Filters::AnyNameAttributeFilter,
+      Queries::Users::Filters::BlockedFilter
+    ].freeze
 
-  def self.key
-    /\A(id|lastname|firstname|mail|login|admin|created_at|last_login_on)\z/
+    private
+
+    def filters_count
+      query.filters.count { |f| HIDDEN_FILTERS.none? { |klass| f.is_a?(klass) } }
+    end
   end
 end

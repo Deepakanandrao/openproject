@@ -30,6 +30,6 @@ See COPYRIGHT and LICENSE files for more details.
 
 <%= render Users::IndexPageHeaderComponent.new %>
 
-<%= render Users::IndexSubHeaderComponent.new(groups: @groups, status: @status, params: params) %>
+<%= render Users::IndexSubHeaderComponent.new(query: @query) %>
 
-<%= render Users::TableComponent.new(rows: @users, current_user:) %>
+<%= render Users::TableComponent.new(rows: @query, current_user:) %>

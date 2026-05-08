@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#-- copyright
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,12 +26,33 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
-class Queries::Users::Orders::DefaultOrder < Queries::Orders::Base
-  self.model = User
+module Users
+  class UserFiltersComponent < Filter::FilterComponent
+    def turbo_requests? = true
 
-  def self.key
-    /\A(id|lastname|firstname|mail|login|admin|created_at|last_login_on)\z/
+    def allowed_filters
+      super
+        .grep_v(Queries::Users::Filters::AnyNameAttributeFilter)
+        .grep_v(Queries::Users::Filters::BlockedFilter)
+        .sort_by(&:human_name)
+    end
+
+    protected
+
+    def additional_filter_attributes(filter)
+      case filter
+      when Queries::Users::Filters::GroupFilter
+        {
+          autocomplete_options: {
+            component: "opce-group-autocompleter",
+            resource: "groups"
+          }
+        }
+      else
+        super
+      end
+    end
   end
 end
