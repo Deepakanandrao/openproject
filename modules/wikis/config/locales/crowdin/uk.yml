@@ -45,7 +45,7 @@ uk:
       empty_text: Manually add links to other related wiki pages.
       heading: Related pages
     oauth_login_component:
-      connect_button: Connect %{provider} account
+      connect_button: Підключити обліковий запис %{provider}
     admin:
       oauth_application_info_component:
         label_pending: Pending
@@ -66,8 +66,8 @@ uk:
         warning_html: You are about to delete %{wiki_provider}. This action is irreversible.
       forms:
         oauth_application_form_component:
-          application_id: Application ID
-          application_secret: Application secret
+          application_id: Ідентифікатор застосунку
+          application_secret: Секрет застосунку
         general_info_form_component:
           xwiki_instance_description: Please make sure you have administration privileges in your XWiki instance before doing the setup.
       wiki_providers:
@@ -89,11 +89,11 @@ uk:
         xwiki:
           oauth:
             openproject_oauth_description: Allow XWiki to access OpenProject data using an OAuth application. Copy the credentials below into your XWiki instance.
-            provider_oauth: XWiki OAuth
-            provider_oauth_description: Allow OpenProject to access XWiki data using an OAuth application. Enter the client credentials from your XWiki OAuth application.
-          openproject_oauth_description: Allow XWiki to access OpenProject data using an OAuth.
-          xwiki_oauth: XWiki OAuth
-          xwiki_oauth_description: Allow OpenProject to access XWiki data using an OAuth.
+            provider_oauth: OAuth для XWiki
+            provider_oauth_description: Надайте OpenProject доступ до даних XWiki за допомогою застосунку OAuth. Введіть облікові дані клієнта з вашого застосунку XWiki OAuth.
+          openproject_oauth_description: Надайте XWiki доступ до даних OpenProject за допомогою OAuth.
+          xwiki_oauth: OAuth для XWiki
+          xwiki_oauth_description: Надайте OpenProject доступ до даних XWiki за допомогою OAuth.
         delete:
           title: Видалити постачальника Wiki
           warning_html: Ви збираєтеся видалити %{wiki_provider}. Ця дія є незворотною.

@@ -71,7 +71,7 @@ zh-CN:
             version_id:
               task_version_must_be_the_same_as_story_version: 必须与父级故事的版本相同。
             sprint:
-              not_assignable: is not assignable since it is either not shared with the project or already finished.
+              not_assignable: 是不可分配的，因为它要么没有与项目共享，要么已经完成。
               not_eligible_for_moving: 在该工作包被移出的冲刺所属的项目中，没有处于有效状态的冲刺。
         agile/sprint:
           attributes:
@@ -191,11 +191,11 @@ zh-CN:
         copy_url_to_clipboard: 将 URL 复制到剪贴板
         copy_work_package_id: 复制工作包 ID
         move_menu: 移动
-        move_to_sprint: Move to sprint
+        move_to_sprint: 移动到冲刺
     burndown_chart:
       show:
-        blankslate_title: No burndown data available
-        blankslate_description: Set start and end date for the sprint to generate a burndown chart.
+        blankslate_title: 没有可用的燃尽数据
+        blankslate_description: 设置冲刺的开始和结束日期，以生成燃尽图。
   burndown:
     story_points: 故事点
     story_points_ideal: 故事点（理想）

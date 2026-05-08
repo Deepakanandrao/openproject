@@ -71,16 +71,16 @@ ru:
             version_id:
               task_version_must_be_the_same_as_story_version: должен совпадать с версией родительской истории.
             sprint:
-              not_assignable: is not assignable since it is either not shared with the project or already finished.
+              not_assignable: не может быть назначен, поскольку он либо не используется в проекте, либо уже завершен.
               not_eligible_for_moving: не является активным спринтом в проекте, в котором проводится спринт, из которого перемещается пакет работ.
         agile/sprint:
           attributes:
             base:
               unfinished_work_packages:
-                one: There is one work package that was not completed in this sprint.
-                few: There are %{count} work packages that were not completed in this sprint.
-                many: There are %{count} work packages that were not completed in this sprint.
-                other: There are %{count} work packages that were not completed in this sprint.
+                one: Есть один пакет работ, который не был завершен в этом спринте.
+                few: Есть %{count} пакета работ, которые не были завершены в этом спринте.
+                many: Есть %{count} пакетов работ, которые не были завершены в этом спринте.
+                other: Есть %{count} пакетов работ, которые не были завершены в этом спринте.
               format: "%{message}"
             status:
               not_active: не активен, поэтому не может быть закрыт.
@@ -123,13 +123,13 @@ ru:
       title: Настройки администрирования бэклога будут в будущем
       text: В настоящее время мы переделываем модуль Backlogs. В ближайшем будущем здесь появятся административные настройки для спринтов и бэклогов. Настройки на уровне проекта остаются доступными.
     backlog_bucket_component:
-      blankslate_title: Backlog bucket is empty
-      blankslate_description: Drag items here to add them.
+      blankslate_title: Сегмент бэклога пуст
+      blankslate_description: Перетащите элементы сюда, чтобы их добавить.
     backlog_bucket_destroy_modal_component:
-      title: Delete backlog bucket?
-      details: The backlog bucket '%{name}' will be deleted and all work packages will be moved to the backlog inbox. No work package will be deleted.
+      title: Удалить сегмент бэклога?
+      details: Сегмент бэклога '%{name}' будет удалён, а все пакеты работ будут перемещены в папку "Входящие" бэклога. Ни один пакет работ не будет удален.
     backlog_bucket_item_component:
-      label_actions: Work package actions
+      label_actions: Действия с пакетом работ
     sprint_component:
       blankslate_title: "%{name} пустой"
       blankslate_description: Пока ничего не запланировано. Перетащите элементы сюда, чтобы добавить их.
@@ -163,15 +163,15 @@ ru:
         receive_shared_no_actions_description_text: Этот проект получает общие спринты из другого проекта, но пока ни один из них не доступен.
         settings_link_text: настройки проекта
     backlog_bucket_menu_component:
-      label_actions: Backlog bucket actions
+      label_actions: Действия с сегментом бэклога
       action_menu:
-        edit_backlog_bucket: Edit backlog bucket
-        delete_backlog_bucket: Delete backlog bucket
+        edit_backlog_bucket: Редактировать сегмент бэклога
+        delete_backlog_bucket: Удалить сегмент бэклога
     backlog_bucket_header_component:
       label_work_package_count:
-        zero: No stories in backlog bucket
-        one: "%{count} story in backlog bucket"
-        other: "%{count} stories in backlog bucket"
+        zero: Нет историй в сегменте бэклога
+        one: "%{count} история в сегменте бэклога"
+        other: "%{count} историй в сегменте бэклога"
     sprint_header_component:
       label_start_sprint: Начало
       label_complete_sprint: Завершено
