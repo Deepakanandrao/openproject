@@ -49,6 +49,12 @@ module Queries::Users::CustomFieldContext
       custom_field_class.visible
     end
 
+    def find_custom_field(id)
+      custom_field_cache.fetch(id.to_i) do |key|
+        custom_field_cache[key] = custom_fields.where(id: key).first
+      end
+    end
+
     def where_subselect_joins(custom_field)
       # Custom values are stored against Principal (the STI base class of User / Group /
       # PlaceholderUser), all sharing the `users` table. Constraining the join by
@@ -69,5 +75,6 @@ module Queries::Users::CustomFieldContext
 
     def cv_db_table = CustomValue.table_name
     def users_db_table = User.table_name
+    def custom_field_cache = RequestStore.fetch("Queries::Users::CustomFieldContext/cache") { {} }
   end
 end

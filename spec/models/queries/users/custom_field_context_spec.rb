@@ -94,4 +94,34 @@ RSpec.describe Queries::Users::CustomFieldContext do
       expect(described_class.where_subselect_conditions).to be_nil
     end
   end
+
+  describe ".find_custom_field" do
+    shared_let(:admin) { create(:admin) }
+    shared_let(:cf) { create(:user_custom_field, :string) }
+
+    before do
+      RequestStore.clear!
+      login_as(admin)
+    end
+
+    it "returns the custom field for an existing id" do
+      expect(described_class.find_custom_field(cf.id)).to eq(cf)
+    end
+
+    it "returns nil for a missing id" do
+      expect(described_class.find_custom_field(0)).to be_nil
+    end
+
+    it "memoizes lookups in RequestStore" do
+      described_class.find_custom_field(cf.id)
+
+      expect { described_class.find_custom_field(cf.id) }.to have_a_query_limit(0)
+    end
+
+    it "memoizes nil for missing ids" do
+      described_class.find_custom_field(0)
+
+      expect { described_class.find_custom_field(0) }.to have_a_query_limit(0)
+    end
+  end
 end

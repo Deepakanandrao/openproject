@@ -122,7 +122,7 @@ module CustomField::OrderStatements
             #{", #{add_select}" if add_select}
           FROM #{CustomValue.quoted_table_name} cv
           #{join}
-          WHERE cv.customized_type = #{CustomValue.connection.quote(self.class.customized_class.name)}
+          WHERE cv.customized_type = #{CustomValue.connection.quote(self.class.customized_class.base_class.name)}
             AND cv.custom_field_id = #{id}
             AND cv.value IS NOT NULL
             AND cv.value != ''

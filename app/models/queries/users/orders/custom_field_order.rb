@@ -28,30 +28,52 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class UserQuery < PersistedQuery
-  def self.model
-    User
+class Queries::Users::Orders::CustomFieldOrder < Queries::Orders::Base
+  self.model = User.all
+
+  EXCLUDED_CUSTOM_FIELD_TYPES = %w[text].freeze
+
+  validates :custom_field, presence: { message: I18n.t(:"activerecord.errors.messages.does_not_exist") }
+
+  def self.key
+    valid_ids = RequestStore.fetch(:custom_sortable_user_custom_fields) do
+      scope.pluck(:id)
+    end
+
+    /\Acf_(#{valid_ids.join('|')})\z/
   end
 
-  def default_scope
-    # Excludes the SystemUser, DeletedUser, AnonymousUser STI descendants of User.
-    User.user
+  def self.scope
+    UserCustomField.where.not(field_format: EXCLUDED_CUSTOM_FIELD_TYPES).visible
   end
 
-  register_query do
-    filter Queries::Users::Filters::NameFilter
-    filter Queries::Users::Filters::AnyNameAttributeFilter
-    filter Queries::Users::Filters::GroupFilter
-    filter Queries::Users::Filters::StatusFilter
-    filter Queries::Users::Filters::LoginFilter
-    filter Queries::Users::Filters::BlockedFilter
-    filter Queries::Users::Filters::CustomFieldFilter
+  def custom_field
+    return @custom_field if defined?(@custom_field)
 
-    order Queries::Users::Orders::DefaultOrder
-    order Queries::Users::Orders::NameOrder
-    order Queries::Users::Orders::GroupOrder
-    order Queries::Users::Orders::CustomFieldOrder
+    @custom_field = self.class.scope.find_by(id: attribute[/\Acf_(\d+)\z/, 1])
+  end
 
-    select Queries::Users::Selects::CustomField
+  def available?
+    custom_field.present?
+  end
+
+  private
+
+  def order(scope)
+    if (join_statement = custom_field.order_join_statement)
+      scope = scope.joins(join_statement)
+    end
+
+    if (order_statement = custom_field.order_statement)
+      order_statement = "#{order_statement} #{direction}"
+
+      if (null_handling = custom_field.order_null_handling(direction == :asc))
+        order_statement = "#{order_statement} #{null_handling}"
+      end
+
+      scope = scope.order(Arel.sql(order_statement))
+    end
+
+    scope
   end
 end
