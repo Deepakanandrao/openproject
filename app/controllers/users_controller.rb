@@ -427,10 +427,11 @@ class UsersController < ApplicationController
              status: User.statuses[:invited])
   end
 
-  def render_index_turbo_stream
+  def render_index_turbo_stream # rubocop:disable Metrics/AbcSize
     update_via_turbo_stream(component: Users::UserFilterButtonComponent.new(query: @query))
     replace_via_turbo_stream(component: Users::TableComponent.new(rows: @query, current_user:))
     turbo_streams << turbo_stream.push_state(url_for(params.permit(:filters, :sortBy, :sort, :page, :per_page)))
+    turbo_streams << turbo_stream.replace("primerized-flash-messages", helpers.render_flash_messages)
     render turbo_stream: turbo_streams
   end
 

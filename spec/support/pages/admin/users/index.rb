@@ -39,8 +39,12 @@ module Pages
         end
 
         def expect_listed(*users)
-          rows = page.all "td.username a", count: users.count
-          expect(rows.map(&:text)).to include(*users.map(&:login))
+          # Wait for each expected user to appear (have_css auto-waits, page.all does not),
+          # then assert the total row count to catch unexpected extras.
+          users.each do |user|
+            expect(page).to have_css("td.username a", text: user.login)
+          end
+          expect(page).to have_css("td.username a", count: users.count)
         end
 
         def expect_order(*users)
@@ -63,9 +67,13 @@ module Pages
 
         def filter_by_status(value)
           open_filter_panel
-          select "Status", from: "Add filter"
-          within_filter("status") do
-            find("[data-filter-name='status'] select").select(value)
+          unless page.has_css?("li.advanced-filters--filter[data-filter-name='status']:not(.hidden)")
+            select "Status", from: "add_filter_select"
+          end
+          # Status renders a single-select and a hidden multi-select side by side;
+          # both share id="status_value". Scope to the visible single-select to disambiguate.
+          within("li.advanced-filters--filter[data-filter-name='status']:not(.hidden) .single-select") do
+            select value, from: "status_value"
           end
 
           wait_for_network_idle
@@ -84,11 +92,16 @@ module Pages
         end
 
         def open_filter_panel
-          find("[data-test-selector='filter-component-toggle']").click unless filter_panel_open?
+          return if filter_panel_open?
+
+          find("[data-test-selector='filter-component-toggle']").click
+          # Wait for the toggle's Stimulus action to actually expand the panel —
+          # otherwise subsequent selectors run against still-collapsed (hidden) UI.
+          expect(page).to have_css(".op-filters-form.-expanded")
         end
 
         def filter_panel_open?
-          page.has_css?(".advanced-filters--container.-expanded", wait: 0)
+          page.has_css?(".op-filters-form.-expanded", wait: 0)
         end
 
         def within_filter(name, &)
