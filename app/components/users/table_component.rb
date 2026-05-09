@@ -33,6 +33,19 @@ module Users
     columns :login, :firstname, :lastname, :mail, :admin, :created_at, :last_login_on
     options :current_user
 
+    def before_render
+      @user_query = model if model.is_a?(Queries::BaseQuery)
+      super
+    end
+
+    def columns
+      @columns ||= if @user_query&.selects&.any?
+                     @user_query.selects.map(&:attribute)
+                   else
+                     super
+                   end
+    end
+
     def initial_sort
       %i[id asc]
     end
@@ -44,10 +57,14 @@ module Users
     end
 
     def header_options(name)
-      options = { caption: User.human_attribute_name(name) }
+      caption = if @user_query
+                  @user_query.selects.find { |s| s.attribute == name }&.caption || User.human_attribute_name(name)
+                else
+                  User.human_attribute_name(name)
+                end
 
-      options[:default_order] = "desc" if desc_by_default.include? name
-
+      options = { caption: }
+      options[:default_order] = "desc" if desc_by_default.include?(name)
       options
     end
 

@@ -44,6 +44,7 @@ class UserQueries::Static
     def static_query_active
       UserQuery.new(name: I18n.t(:status_active)) do |query|
         query.where("status", "=", "active")
+        query.select(*Queries::Users::Selects::Default::KEYS, add_not_existing: false)
         query.clear_changes_information
       end
     end

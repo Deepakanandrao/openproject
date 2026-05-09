@@ -81,13 +81,17 @@ class UsersController < ApplicationController
   include PaginationHelper
   include Queries::Loading
 
-  before_action :load_query_or_deny_access, only: :index
+  before_action :load_query_or_deny_access, only: %i[index configure_view_modal]
 
   def index
     respond_to do |format|
       format.html
       format.turbo_stream { render_index_turbo_stream }
     end
+  end
+
+  def configure_view_modal
+    respond_with_dialog Users::ConfigureViewModalComponent.new(query: @query)
   end
 
   def show
@@ -428,9 +432,10 @@ class UsersController < ApplicationController
   end
 
   def render_index_turbo_stream # rubocop:disable Metrics/AbcSize
+    replace_via_turbo_stream(component: Users::IndexPageHeaderComponent.new(query: @query))
     update_via_turbo_stream(component: Users::UserFilterButtonComponent.new(query: @query))
     replace_via_turbo_stream(component: Users::TableComponent.new(rows: @query, current_user:))
-    turbo_streams << turbo_stream.push_state(url_for(params.permit(:filters, :sortBy, :sort, :page, :per_page)))
+    turbo_streams << turbo_stream.push_state(url_for(params.permit(:filters, :sortBy, :sort, :page, :per_page, :columns)))
     turbo_streams << turbo_stream.replace("primerized-flash-messages", helpers.render_flash_messages)
     render turbo_stream: turbo_streams
   end

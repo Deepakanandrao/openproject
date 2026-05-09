@@ -34,12 +34,19 @@ class UserQueries::SetAttributesService < BaseServices::SetAttributes
   def set_attributes(params)
     set_filters(params.delete(:filters))
     set_order(params.delete(:orders))
+    set_select(params.delete(:selects))
 
     super
   end
 
   def set_default_attributes(_params)
-    # No user or project association needed for admin-scoped user queries
+    set_default_selects
+  end
+
+  def set_default_selects
+    return if model.selects.any?
+
+    model.select(*Queries::Users::Selects::Default::KEYS, add_not_existing: false)
   end
 
   def set_filters(filters)
@@ -49,6 +56,13 @@ class UserQueries::SetAttributesService < BaseServices::SetAttributes
     filters.each do |filter|
       model.where(filter[:attribute], filter[:operator], filter[:values])
     end
+  end
+
+  def set_select(selects)
+    return unless selects
+
+    model.selects.clear
+    model.select(*selects, add_not_existing: false)
   end
 
   def set_order(orders)

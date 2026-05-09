@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#-- copyright
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,35 +26,38 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
-class UserQuery < PersistedQuery
-  scope :visible, ->(user = User.current) { where(principal: user) }
+module Users
+  class ConfigureViewModalComponent < ApplicationComponent
+    include OpTurbo::Streamable
 
-  def self.model
-    User
-  end
+    MODAL_ID = "op-user-list-configure-dialog"
+    QUERY_FORM_ID = "op-user-list-configure-query-form"
+    COLUMN_HTML_NAME = "columns"
+    COLUMN_HTML_ID = "columns-select"
 
-  def default_scope
-    # Excludes the SystemUser, DeletedUser, AnonymousUser STI descendants of User.
-    User.user
-  end
+    options :query
 
-  register_query do
-    filter Queries::Users::Filters::NameFilter
-    filter Queries::Users::Filters::AnyNameAttributeFilter
-    filter Queries::Users::Filters::GroupFilter
-    filter Queries::Users::Filters::StatusFilter
-    filter Queries::Users::Filters::LoginFilter
-    filter Queries::Users::Filters::BlockedFilter
-    filter Queries::Users::Filters::CustomFieldFilter
+    def selectable_columns
+      @selectable_columns ||= UserQuery.new
+                                       .available_selects
+                                       .reject { |c| text_format_custom_field?(c) }
+                                       .sort_by(&:caption)
+                                       .map { |c| { id: c.attribute, name: c.caption } }
+    end
 
-    order Queries::Users::Orders::DefaultOrder
-    order Queries::Users::Orders::NameOrder
-    order Queries::Users::Orders::GroupOrder
-    order Queries::Users::Orders::CustomFieldOrder
+    def selected_columns
+      @selected_columns ||= query.selects
+                                 .reject { |c| text_format_custom_field?(c) }
+                                 .map { |c| { id: c.attribute, name: c.caption } }
+    end
 
-    select Queries::Users::Selects::Default
-    select Queries::Users::Selects::CustomField
+    private
+
+    def text_format_custom_field?(select)
+      select.is_a?(Queries::Users::Selects::CustomField) &&
+        select.custom_field&.field_format == "text"
+    end
   end
 end

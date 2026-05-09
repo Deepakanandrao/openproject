@@ -28,7 +28,7 @@ See COPYRIGHT and LICENSE files for more details.
 ++#%>
 <% html_title t(:label_administration), t(:label_user_plural) -%>
 
-<%= render Users::IndexPageHeaderComponent.new %>
+<%= render Users::IndexPageHeaderComponent.new(query: @query) %>
 
 <%= render Users::IndexSubHeaderComponent.new(query: @query) %>
 
