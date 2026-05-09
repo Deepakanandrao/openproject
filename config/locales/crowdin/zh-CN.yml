@@ -118,7 +118,7 @@ zh-CN:
       description: 使用此工具从您的 Jira 实例中导入数据。您可以配置多个 Jira 主机，并选择每次导入运行要导入的内容。
       errors:
         cannot_delete_with_imports: 无法删除具有现有导入的 Jira 主机
-        custom_field_creation_failed: 'Failed to create custom field ''%{name}'': %{message}'
+        custom_field_creation_failed: 无法创建自定义字段“%{name}”：%{message}
       blank:
         title: 尚未配置 Jira 主机
         description: 配置 Jira 主机，以开始将 Jira 中的条目导入此 OpenProject 实例。
@@ -159,7 +159,7 @@ zh-CN:
         connection_timeout: 与 Jira 服务器的连接超时：%{message}
         parse_error: 无法解析 Jira API 响应：%{message}
         api_error: Jira API 返回错误状态 %{status}
-        401_error: Jira API returned a 401 error. Your authentication token may have expired or lack the required permissions. Please ensure the token belongs to a Jira administrator.
+        401_error: Jira API 返回 401 错误。您的身份验证令牌可能已过期或缺少所需的权限。请确保该令牌属于 Jira 管理员。
       columns:
         projects: 项目
         last_change: 上次更改
@@ -241,8 +241,8 @@ zh-CN:
               label_info: 请注意，此导入工具仍处于测试阶段，不能导入所有类型的数据。以下是主机 Jira 实例提供的导入摘要，以及此工具目前能够导入的内容。
               description: 在从主机 Jira 实例获取的可用数据中选择要导入的数据。
               label_supported_data: 支持的数据
-              label_coming_soon: Coming soon (Q2 2026)
-              label_coming_later: Coming later
+              label_coming_soon: 即将推出（2026 年第二季度）
+              label_coming_later: 稍后推出
               label_available_server_data: "%{server_info} 现有数据"
               button_select_projects: 选择要导入的项目
               button_continue: 继续
@@ -268,7 +268,7 @@ zh-CN:
               caption: 审核导入设置并开始导入
               caption_done: 已完成
               label_available_data: 要导入的数据
-              label_users_import_explanation: Users that are involved in selected projects (group memberships included)
+              label_users_import_explanation: 参与所选项目的用户（包括群组成员资格）
               button_start: 开始导入
               description: 您即将使用以下设置开始导入运行。
               label_progress: 正在导入…
@@ -407,12 +407,12 @@ zh-CN:
         autofix_preview:
           error_too_long: 必须为 10 个字符或更少字符
           error_numerical: 不能只包含数字
-          error_does_not_start_with_letter: Must start with an uppercase letter
+          error_does_not_start_with_letter: 必须以大写字母开头
           error_special_characters: 不允许使用特殊字符
           error_not_fully_uppercased: 必须为大写字母
           error_in_use: 已用作另一个项目的有效标识名
-          error_used_in_past: Reserved by another project's handle history
-          error_reserved_by_system: Reserved as a system keyword
+          error_used_in_past: 由另一个项目的标识名历史保留
+          error_reserved_by_system: 保留为系统关键字
           error_unknown: 需要手动检查
           remaining_projects:
             other: "…其他 %{count} 个项目"
@@ -427,8 +427,8 @@ zh-CN:
           checkbox_label: 我了解此操作将永久更改所有工作包 ID
         success_banner: 已成功更新工作包标识符格式。
         in_progress:
-          converting_banner_message: Project identifiers are currently being converted to semantic format. This may take some time.
-          reverting_banner_message: Project identifiers are currently being reverted to classic format. This may take some time.
+          converting_banner_message: 项目标识符目前正在转换为语义格式。此过程可能需要一些时间。
+          reverting_banner_message: 项目标识符目前正在恢复为经典格式。此过程可能需要一些时间。
     workflows:
       tabs:
         default_transitions: 默认转换
@@ -451,11 +451,11 @@ zh-CN:
         ignore: 忽略更改
         save: 保存更改并继续
       role_selector:
-        title: Select roles
+        title: 选择角色
         label: 角色：%{role}
         no_role: 选择角色
         roles:
-          other: "%{count} roles selected"
+          other: 已选择 %{count} 个角色
       blankslate:
         title: 未配置状态过渡
         description: 添加状态，以开始为此角色配置工作流
@@ -697,13 +697,13 @@ zh-CN:
     add_department: 添加部门
     blankslate:
       heading: 您的组织没有部门
-      description: 'Start by adding departments or users to the organization. Each department can be used to create a hierarchy below it, to navigate and create sub-department inside a hierarchy click on the created item.
+      description: '首先，将部门或用户添加到组织中。每个部门都可以用于在其下方创建一个层次结构，要在一个层次结构中导航和创建子部门，请点击已创建的条目。
 
         '
       add_button: 添加
     detail_blankslate:
-      heading: This department doesn’t have any hierarchy level below
-      description: Add departments or users to create sub-items inside another one.
+      heading: 此部门下面没有任何层级
+      description: 添加部门或用户以在另一个部门或用户中创建子条目。
       add_button: 添加
     add_department_form:
       name_label: 部门名称
@@ -711,17 +711,17 @@ zh-CN:
     move_user_dialog:
       title: 用户已经在一个部门
       heading: 将用户移动到此部门？
-      description: "%{user} is currently a member of %{from_department}. Moving them will remove them from that department."
+      description: "%{user} 目前是 %{from_department} 的成员。移动他们会将其从该部门中移除。"
       confirm: 移动用户
     context_menu:
       add_sub_department: 添加子部门
       add_user: 添加用户
     flash:
-      user_added: User was successfully added to the department.
-      user_removed: User was successfully removed from the department.
-      department_created: Department was successfully created.
+      user_added: 用户已成功添加到该部门。
+      user_removed: 用户已成功从该部门中移除。
+      department_created: 部门已成功创建。
     errors:
-      move_user_failed: Failed to move user between departments.
+      move_user_failed: 无法在部门之间移动用户。
   pagination:
     label: 分页
     prev: 上一页
@@ -1097,7 +1097,7 @@ zh-CN:
       no_results_content_text: 添加新闻项
   roles:
     edit:
-      default_for_new_projects_warning: 'This role is configured as the default role given to non-admin users who create a project. Do not remove the following permissions, otherwise project creators will be unable to complete the setup of their newly created projects:'
+      default_for_new_projects_warning: 此角色被配置为创建项目的非管理员用户所具有的默认角色。请勿移除以下权限，否则项目创建者将无法完成新建项目的设置：
     permissions:
       section_check_all_label: 指定所有 %{module} 权限
       section_uncheck_all_label: 取消指定所有 %{module} 权限
@@ -1372,10 +1372,10 @@ zh-CN:
           label: 目标类型
         mode:
           from_role:
-            label: Copy to other roles
-            caption: Copy the current workflow to one or more roles inside the same work package type. If the selected role already has a workflow the current one will be overwritten.
+            label: 复制到其他角色
+            caption: 将当前工作流复制到同一工作包类型中的一个或多个角色。如果所选角色已具有工作流，则当前工作流将被覆盖。
           from_type:
-            label: Copy to another type
+            label: 复制到其他类型
             caption: Copy the current workflow to another work packages type. If the selected type already has a workflow the current one will be overwritten. This affects all roles.
       from_roles:
         create:
@@ -3393,7 +3393,7 @@ zh-CN:
             '
           new_features_list:
             line_0: Jira Migrator with support for basic custom fields.
-            line_1: Backlog buckets for structuring and prioritizing work packages during backlog refinement.
+            line_1: 积压工作存储桶，用于在完善积压工作时构建工作包并确定其优先次序。
             line_2: Easier drag and drop and improved move options in the Backlogs module.
             line_3: Sprint Start and Complete buttons in the sprint header.
             line_4: 复制角色之间的工作流设置。

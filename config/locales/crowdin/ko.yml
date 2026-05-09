@@ -693,22 +693,22 @@ ko:
     confirmation_live_message_checked: 진행 버튼이 이제 활성화되었습니다.
     confirmation_live_message_unchecked: 진행 버튼이 이제 비활성화되었습니다. 계속하려면 확인란을 선택해야 합니다.
   departments:
-    edit: Edit department
-    add_user: Add user
-    add_department: Add department
+    edit: 부서 편집
+    add_user: 사용자 추가
+    add_department: 부서 추가
     blankslate:
-      heading: Your organization has no departments
+      heading: 해당 조직에 부서가 없습니다
       description: 'Start by adding departments or users to the organization. Each department can be used to create a hierarchy below it, to navigate and create sub-department inside a hierarchy click on the created item.
 
         '
-      add_button: Add
+      add_button: 추가
     detail_blankslate:
-      heading: This department doesn’t have any hierarchy level below
+      heading: 이 부서에는 아래 계층 수준이 없습니다
       description: Add departments or users to create sub-items inside another one.
-      add_button: Add
+      add_button: 추가
     add_department_form:
-      name_label: Department name
-      name_placeholder: Enter department name
+      name_label: 부서 이름
+      name_placeholder: 부서 이름 입력
     move_user_dialog:
       title: User already in a department
       heading: 이 부서로 사용자를 이동하시겠습니까?
@@ -1377,7 +1377,7 @@ ko:
             label: 다른 역할에 복사
             caption: Copy the current workflow to one or more roles inside the same work package type. If the selected role already has a workflow the current one will be overwritten.
           from_type:
-            label: Copy to another type
+            label: 다른 유형에 복사
             caption: Copy the current workflow to another work packages type. If the selected type already has a workflow the current one will be overwritten. This affects all roles.
       from_roles:
         create:
@@ -1409,14 +1409,14 @@ ko:
       no_results_title_text: 작업 흐름이 없습니다.
   work_packages:
     delete_dialog:
-      title: Delete work package
-      heading: Permanently delete this work package?
-      description: Are you sure you want to delete the work package "%{name}"?
-      confirm_descendants_deletion: I acknowledge that ALL descendants of this work package will be recursively removed.
-      cross_project_warning: 'Work packages from the following projects will be deleted: %{projects}'
+      title: 작업 패키지 삭제
+      heading: 이 작업 패키지를 영구적으로 삭제하시겠습니까?
+      description: 작업 패키지 "%{name}"을(를) 삭제하시겠습니까?
+      confirm_descendants_deletion: 본인은 이 작업 패키지의 모든 하위 항목이 재귀적으로 제거됨을 확인합니다.
+      cross_project_warning: '다음 프로젝트의 작업 패키지가 삭제됩니다: %{projects}'
     bulk_delete_dialog:
-      title: Delete %{count} work packages
-      heading: Permanently delete these %{count} work packages?
+      title: "%{count}개 작업 패키지 삭제"
+      heading: 이러한 작업 패키지 %{count}개를 영구적으로 삭제하시겠습니까?
       description: 'The following work packages, including children and all associated data, will permanently be deleted:'
       description_with_children: 'The following work packages, including child work packages, and all associated data will be permanently deleted:'
       confirm_children_deletion: I acknowledge that all selected work packages and their children will be permanently deleted.
@@ -4114,10 +4114,10 @@ ko:
   label_password_rule_numeric: 숫자 문자
   label_password_rule_special: 특수 문자
   label_password_rule_uppercase: 대문자
-  label_password_requirement_lowercase: Must contain at least one lowercase character.
-  label_password_requirement_numeric: Must contain at least one numeric character.
-  label_password_requirement_special: Must contain at least one special character.
-  label_password_requirement_uppercase: Must contain at least one uppercase character.
+  label_password_requirement_lowercase: 소문자를 하나 이상 포함해야 합니다.
+  label_password_requirement_numeric: 숫자 문자를 하나 이상 포함해야 합니다.
+  label_password_requirement_special: 특수 문자를 하나 이상 포함해야 합니다.
+  label_password_requirement_uppercase: 대문자를 하나 이상 포함해야 합니다.
   label_path_encoding: 경로 인코딩
   label_per_page: '페이지당:'
   label_people: 사용자
@@ -4702,14 +4702,14 @@ ko:
     common:
       work_package_card_component:
         menu:
-          label_actions: Work package actions
+          label_actions: 작업 패키지 액션
       work_package_card_box_component:
         header:
-          label_actions: Open menu
+          label_actions: 메뉴 열기
           label_work_package_count:
-            zero: No work packages
-            one: "%{count} work package"
-            other: "%{count} work packages"
+            zero: 작업 패키지 없음
+            one: "%{count}개 작업 패키지"
+            other: "%{count}개 작업 패키지"
   permission_add_work_package_comments: 코멘트 추가
   permission_add_work_packages: 작업 패키지 추가
   permission_add_messages: 메시지 게시
@@ -5082,7 +5082,7 @@ ko:
     '
   setting_app_subtitle: 응용 프로그램 부제목
   setting_app_title: 응용 프로그램 제목
-  setting_organization_name: Organization name
+  setting_organization_name: 조직 이름
   setting_attachment_max_size: 첨부 파일 최대 크기
   setting_show_work_package_attachments: 기본적으로 파일 탭에 첨부 파일 표시
   setting_antivirus_scan_mode: 스캔 모드
@@ -5575,7 +5575,7 @@ ko:
   text_project_identifier_format: 소문자로 시작해야 합니다. 소문자(a-z), 숫자, 대시 및 밑줄만 허용됩니다.
   text_reassign: '작업 패키지에 다시 할당:'
   text_regexp_multiline: 멀티라인 모드에서 정규식이 적용됩니다. 예, e.g., ^---\s+
-  text_rename_wiki_page: Rename wiki page
+  text_rename_wiki_page: 위키 페이지 이름 바꾸기
   text_repository_usernames_mapping: |-
     리포지토리 로그에 있는 각 사용자 이름에 매핑된 OpenProject 사용자를 선택하거나 업데이트하세요.
     동일한 OpenProject 및 리포지토리 사용자 이름이나 이메일을 가진 사용자가 자동으로 매핑됩니다.
@@ -6018,7 +6018,7 @@ ko:
 
       '
     confirm_revoke_my_application:
-      other: Do you really want to remove this application? This will revoke %{count} tokens active for it.
+      other: 이 애플리케이션을 제거하시겠습니까? 그러면 이 애플리케이션에 대해 활성화된 토큰 %{count}개가 취소됩니다.
     authorization_error: 권한 부여 오류가 발생했습니다.
     my_registered_applications: 등록된 OAuth 애플리케이션
   oauth_client:

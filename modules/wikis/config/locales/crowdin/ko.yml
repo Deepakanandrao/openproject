@@ -2,6 +2,8 @@
 ko:
   activerecord:
     attributes:
+      wikis/page_link:
+        provider: Wiki Provider
       wikis/xwiki_provider:
         authentication_method: 인증 방법
         authentication_methods:
