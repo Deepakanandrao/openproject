@@ -689,22 +689,22 @@ ko:
     confirmation_live_message_checked: 진행 버튼이 이제 활성화되었습니다.
     confirmation_live_message_unchecked: 진행 버튼이 이제 비활성화되었습니다. 계속하려면 확인란을 선택해야 합니다.
   departments:
-    edit: Edit department
-    add_user: Add user
-    add_department: Add department
+    edit: 부서 편집
+    add_user: 사용자 추가
+    add_department: 부서 추가
     blankslate:
-      heading: Your organization has no departments
+      heading: 해당 조직에 부서가 없습니다
       description: 'Start by adding departments or users to the organization. Each department can be used to create a hierarchy below it, to navigate and create sub-department inside a hierarchy click on the created item.
 
         '
-      add_button: Add
+      add_button: 추가
     detail_blankslate:
-      heading: This department doesn’t have any hierarchy level below
+      heading: 이 부서에는 아래 계층 수준이 없습니다
       description: Add departments or users to create sub-items inside another one.
-      add_button: Add
+      add_button: 추가
     add_department_form:
-      name_label: Department name
-      name_placeholder: Enter department name
+      name_label: 부서 이름
+      name_placeholder: 부서 이름 입력
     move_user_dialog:
       title: User already in a department
       heading: 이 부서로 사용자를 이동하시겠습니까?
@@ -1371,7 +1371,7 @@ ko:
             label: 다른 역할에 복사
             caption: Copy the current workflow to one or more roles inside the same work package type. If the selected role already has a workflow the current one will be overwritten.
           from_type:
-            label: Copy to another type
+            label: 다른 유형에 복사
             caption: Copy the current workflow to another work packages type. If the selected type already has a workflow the current one will be overwritten. This affects all roles.
       from_roles:
         create:
@@ -1403,14 +1403,14 @@ ko:
       no_results_title_text: 작업 흐름이 없습니다.
   work_packages:
     delete_dialog:
-      title: Delete work package
-      heading: Permanently delete this work package?
-      description: Are you sure you want to delete the work package "%{name}"?
-      confirm_descendants_deletion: I acknowledge that ALL descendants of this work package will be recursively removed.
-      cross_project_warning: 'Work packages from the following projects will be deleted: %{projects}'
+      title: 작업 패키지 삭제
+      heading: 이 작업 패키지를 영구적으로 삭제하시겠습니까?
+      description: 작업 패키지 "%{name}"을(를) 삭제하시겠습니까?
+      confirm_descendants_deletion: 본인은 이 작업 패키지의 모든 하위 항목이 재귀적으로 제거됨을 확인합니다.
+      cross_project_warning: '다음 프로젝트의 작업 패키지가 삭제됩니다: %{projects}'
     bulk_delete_dialog:
-      title: Delete %{count} work packages
-      heading: Permanently delete these %{count} work packages?
+      title: "%{count}개 작업 패키지 삭제"
+      heading: 이러한 작업 패키지 %{count}개를 영구적으로 삭제하시겠습니까?
       description: 'The following work packages, including children and all associated data, will permanently be deleted:'
       description_with_children: 'The following work packages, including child work packages, and all associated data will be permanently deleted:'
       confirm_children_deletion: I acknowledge that all selected work packages and their children will be permanently deleted.
@@ -4065,10 +4065,10 @@ ko:
   label_password_rule_numeric: 숫자 문자
   label_password_rule_special: 특수 문자
   label_password_rule_uppercase: 대문자
-  label_password_requirement_lowercase: Must contain at least one lowercase character.
-  label_password_requirement_numeric: Must contain at least one numeric character.
-  label_password_requirement_special: Must contain at least one special character.
-  label_password_requirement_uppercase: Must contain at least one uppercase character.
+  label_password_requirement_lowercase: 소문자를 하나 이상 포함해야 합니다.
+  label_password_requirement_numeric: 숫자 문자를 하나 이상 포함해야 합니다.
+  label_password_requirement_special: 특수 문자를 하나 이상 포함해야 합니다.
+  label_password_requirement_uppercase: 대문자를 하나 이상 포함해야 합니다.
   label_path_encoding: 경로 인코딩
   label_per_page: '페이지당:'
   label_people: 사용자
@@ -5028,7 +5028,7 @@ ko:
     '
   setting_app_subtitle: 응용 프로그램 부제목
   setting_app_title: 응용 프로그램 제목
-  setting_organization_name: Organization name
+  setting_organization_name: 조직 이름
   setting_attachment_max_size: 첨부 파일 최대 크기
   setting_show_work_package_attachments: 기본적으로 파일 탭에 첨부 파일 표시
   setting_antivirus_scan_mode: 스캔 모드

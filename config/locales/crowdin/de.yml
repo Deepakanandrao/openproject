@@ -415,7 +415,7 @@ de:
         autofix_preview:
           error_too_long: Muss 10 Zeichen oder weniger sein
           error_numerical: Kann nicht rein numerisch sein
-          error_does_not_start_with_letter: Must start with an uppercase letter
+          error_does_not_start_with_letter: Muss mit einem Großbuchstaben beginnen
           error_special_characters: Sonderzeichen sind nicht erlaubt
           error_not_fully_uppercased: Muss in Großbuchstaben sein
           error_in_use: Bereits als aktive Kennung für ein anderes Projekt verwendet
@@ -435,7 +435,7 @@ de:
           checkbox_label: Mir ist bewusst, dass dies alle Arbeitspaket-Kennungen dauerhaft ändern wird
         success_banner: Das Format der Arbeitspaket-Kennung wurde erfolgreich aktualisiert.
         in_progress:
-          converting_banner_message: Project identifiers are currently being converted to semantic format. This may take some time.
+          converting_banner_message: Projektkennungen werden derzeit in das semantische Format konvertiert. Dies kann einige Zeit dauern.
           reverting_banner_message: Project identifiers are currently being reverted to classic format. This may take some time.
     workflows:
       tabs:
@@ -698,36 +698,36 @@ de:
     confirmation_live_message_checked: Die Schaltfläche zum Fortfahren ist nun aktiv.
     confirmation_live_message_unchecked: Die Schaltfläche zum Fortfahren ist inaktiv. Sie müssen das Kontrollkästchen ankreuzen, um fortzufahren.
   departments:
-    edit: Edit department
-    add_user: Add user
-    add_department: Add department
+    edit: Abteilung bearbeiten
+    add_user: Benutzer hinzufügen
+    add_department: Abteilung hinzufügen
     blankslate:
-      heading: Your organization has no departments
-      description: 'Start by adding departments or users to the organization. Each department can be used to create a hierarchy below it, to navigate and create sub-department inside a hierarchy click on the created item.
+      heading: Ihre Organisation hat keine Abteilungen
+      description: 'Beginnen Sie mit dem Hinzufügen von Abteilungen oder Benutzern in Ihrer Organisation. Jede Abteilung kann verwendet werden, um eine Hierarchie darunter zu erstellen. Um innerhalb einer Hierarchie zu navigieren und Unterabteilungen zu erstellen, klicken Sie auf das erstellte Element.
 
         '
-      add_button: Add
+      add_button: Hinzufügen
     detail_blankslate:
-      heading: This department doesn’t have any hierarchy level below
-      description: Add departments or users to create sub-items inside another one.
-      add_button: Add
+      heading: Diese Abteilung hat keine untergeordnete Hierarchiestufe
+      description: Fügen Sie Abteilungen oder Benutzer hinzu, um Unterelemente innerhalb einer anderen zu erstellen.
+      add_button: Hinzufügen
     add_department_form:
-      name_label: Department name
-      name_placeholder: Enter department name
+      name_label: Name der Abteilung
+      name_placeholder: Name der Abteilung eingeben
     move_user_dialog:
-      title: User already in a department
-      heading: Move user to this department?
-      description: "%{user} is currently a member of %{from_department}. Moving them will remove them from that department."
-      confirm: Move user
+      title: Benutzer bereits in einer Abteilung enthalten
+      heading: Benutzer in diese Abteilung verschieben?
+      description: "%{user} ist derzeit Mitglied von %{from_department}. Wenn Sie ihn verschieben wird er aus dieser Abteilung entfernt."
+      confirm: Benutzer verschieben
     context_menu:
-      add_sub_department: Add sub-department
-      add_user: Add user
+      add_sub_department: Unterabteilung hinzufügen
+      add_user: Benutzer hinzufügen
     flash:
-      user_added: User was successfully added to the department.
-      user_removed: User was successfully removed from the department.
-      department_created: Department was successfully created.
+      user_added: Der Benutzer wurde erfolgreich zur Abteilung hinzugefügt.
+      user_removed: Der Benutzer wurde erfolgreich aus der Abteilung entfernt.
+      department_created: Die Abteilung wurde erfolgreich erstellt.
     errors:
-      move_user_failed: Failed to move user between departments.
+      move_user_failed: Der Benutzer konnte nicht zwischen Abteilungen verschoben werden.
   pagination:
     label: Paginierung
     prev: Zurück
@@ -1120,8 +1120,8 @@ de:
       matrix_check_uncheck_all_in_row_label_html: Umschalten von <em>%{permission}</em> Berechtigung für alle Rollen
       matrix_check_uncheck_all_in_col_label_html: Umschalten aller %{module} Berechtigungen für die Rolle <em>%{role}</em>
   users:
-    force_password_change_hint: The user must set a new password on their next login. Automatically enabled when sending credentials via email.
-    send_information_hint: Emails the password in plain text. When checked, the user will be required to change their password on first login.
+    force_password_change_hint: Der Benutzer muss bei seiner nächsten Anmeldung ein neues Passwort festlegen. Wird automatisch aktiviert, wenn die Anmeldedaten per E-Mail gesendet werden.
+    send_information_hint: Sendet das Passwort im Klartext per E-Mail. Wenn diese Option aktiviert ist, wird der Benutzer aufgefordert, sein Passwort bei der ersten Anmeldung zu ändern.
     autologins:
       prompt: "%{num_days} lang angemeldet bleiben"
     sessions:
@@ -1378,14 +1378,14 @@ de:
     copies:
       form:
         source_role_id:
-          label: Source role
+          label: Ausgehende Rolle
         target_role_ids:
-          label: Target roles
+          label: Zielrollen
         target_type_ids:
-          label: Target types
+          label: Zieltyp
         mode:
           from_role:
-            label: Copy to other roles
+            label: In andere Rollen kopieren
             caption: Kopieren Sie den aktuellen Workflow auf eine oder mehrere Rollen in demselben Typ. Wenn die ausgewählte Rolle bereits über einen Workflow verfügt, wird der aktuelle Workflow überschrieben.
           from_type:
             label: In einen anderen Typ kopieren
@@ -4105,9 +4105,9 @@ de:
   label_password_rule_special: Sonderzeichen
   label_password_rule_uppercase: Großbuchstaben
   label_password_requirement_lowercase: Must contain at least one lowercase character.
-  label_password_requirement_numeric: Must contain at least one numeric character.
-  label_password_requirement_special: Must contain at least one special character.
-  label_password_requirement_uppercase: Must contain at least one uppercase character.
+  label_password_requirement_numeric: Muss mindestens ein numerisches Zeichen enthalten.
+  label_password_requirement_special: Muss mindestens ein Sonderzeichen enthalten.
+  label_password_requirement_uppercase: Muss mindestens einen Großbuchstaben enthalten.
   label_path_encoding: Path encoding
   label_per_page: 'Pro Seite:'
   label_people: Personen
@@ -5018,7 +5018,7 @@ de:
 
     '
   setting_after_first_login_redirect_url: Weiterleitung nach erster Anmeldung
-  setting_after_first_login_redirect_url_text_html: 'Legen Sie einen Pfad fest, an den Nutzer:innen nach der ersten Anmeldung weitergeleitet werden. Wenn leer, führt er auf die Startseite des Onboarding-Tours. <br/> Beispiel: <code>/meine/seite</code>
+  setting_after_first_login_redirect_url_text_html: 'Legen Sie einen Pfad fest, an den Nutzer:innen nach der ersten Anmeldung weitergeleitet werden. Wenn leer, führt er auf die Startseite des Onboarding-Tours. <br/> Beispiel: <code>/my/page</code>
 
     '
   setting_after_login_default_redirect_url: Weiterleitung nach Anmeldung
@@ -5077,7 +5077,7 @@ de:
     '
   setting_app_subtitle: Applikations-Untertitel
   setting_app_title: Applikations-Titel
-  setting_organization_name: Organization name
+  setting_organization_name: Name der Organisation
   setting_attachment_max_size: Max. Dateigröße
   setting_show_work_package_attachments: Anhänge standardmäßig auf dem Tab Dateien anzeigen
   setting_antivirus_scan_mode: Scanmodus
@@ -5155,7 +5155,7 @@ de:
   setting_new_project_user_role_id: Rolle, die einem Nicht-Administrator zugeordnet wird, der ein Projekt erstellt
   setting_new_project_send_confirmation_email: Benachrichtigung an den Autor senden, wenn ein neues Projekt erstellt wird
   setting_new_project_notification_text: Benachrichtigungstext
-  setting_password_active_rules: Password requirements
+  setting_password_active_rules: Passwortanforderungen
   setting_password_count_former_banned: Anzahl zuletzt benutzter Passwörter, die nicht wiederverwendet werden dürfen
   setting_password_days_valid: Anzahl von Tagen, nach denen ein Passwortwechsel erzwungen wird
   setting_password_min_length: Minimale Länge

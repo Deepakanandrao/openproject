@@ -43,7 +43,7 @@ pt-PT:
       user_preference:
         backlogs_versions_default_fold_state: Mostrar sprints dobrados
       work_package:
-        backlog_bucket: Backlog Bucket
+        backlog_bucket: Grupo de backlog
         backlogs_work_package_type: Tipo de backlog
         position: Posição
         sprint: Sprint
@@ -61,24 +61,24 @@ pt-PT:
               share_all_projects_already_taken: não pode ser definido porque o projeto "%{name}" já está a partilhar com todos os projetos.
               share_all_projects_already_taken_anonymous: não pode ser definido porque outro projeto já está a partilhar com todos os projetos.
         work_package:
-          backlog_bucket_xor_sprint: cannot be assigned to both a sprint and a backlog bucket.
+          backlog_bucket_xor_sprint: não pode ser atribuído simultaneamente a um sprint e a um grupo de backlog.
           attributes:
             backlog_bucket:
-              backlog_bucket_from_another_project: must belong to the same project as the work package.
+              backlog_bucket_from_another_project: deve pertencer ao mesmo projeto que o pacote de trabalho.
             blocks_ids:
               can_only_contain_work_packages_of_current_sprint: pode conter somente os IDs dos pacotes de trabalho no sprint atual.
               must_block_at_least_one_work_package: deve conter a identificação de pelo menos um bilhete.
             version_id:
               task_version_must_be_the_same_as_story_version: tem ser o mesmo que a versão da história do pai.
             sprint:
-              not_assignable: is not assignable since it is either not shared with the project or already finished.
+              not_assignable: não é atribuível, uma vez que ou não é partilhado com o projeto ou já está terminado.
               not_eligible_for_moving: não é um sprint ativo no projeto em que está a decorrer o sprint do qual o pacote de trabalho está a ser transferido.
         agile/sprint:
           attributes:
             base:
               unfinished_work_packages:
-                one: There is one work package that was not completed in this sprint.
-                other: There are %{count} work packages that were not completed in this sprint.
+                one: Existe um pacote de trabalho que não foi concluído neste sprint.
+                other: Existem %{count} pacotes de trabalho que não foram concluídos neste sprint.
               format: "%{message}"
             status:
               not_active: não está ativo, portanto não pode ser concluído.
@@ -117,13 +117,13 @@ pt-PT:
       title: As definições de administração do backlog estão a evoluir
       text: Estamos a reformular o módulo Backlogs. As definições de administração para os sprints e backlogs estarão disponíveis aqui num futuro próximo. As definições ao nível do projeto continuam disponíveis.
     backlog_bucket_component:
-      blankslate_title: Backlog bucket is empty
-      blankslate_description: Drag items here to add them.
+      blankslate_title: O grupo de backlog está vazio
+      blankslate_description: Arraste elementos até aqui para os adicionar.
     backlog_bucket_destroy_modal_component:
-      title: Delete backlog bucket?
-      details: The backlog bucket '%{name}' will be deleted and all work packages will be moved to the backlog inbox. No work package will be deleted.
+      title: Eliminar grupo de backlog?
+      details: O grupo de backlog '%{name}' será eliminado e todos os pacotes de trabalho serão movidos para a caixa de entrada de backlogs. Nenhum pacote de trabalho será eliminado.
     backlog_bucket_item_component:
-      label_actions: Work package actions
+      label_actions: Ações do pacote de trabalho
     sprint_component:
       blankslate_title: "%{name} está vazio"
       blankslate_description: Ainda não existem elementos planeados. Arraste elementos para aqui para os adicionar.
@@ -134,7 +134,7 @@ pt-PT:
         one: Mostrar mais 1 elemento
         other: Mostrar mais %{count} elementos
     inbox_item_component:
-      label_actions: Work package actions
+      label_actions: Ações do pacote de trabalho
     inbox_menu_component:
       action_menu:
         copy_url_to_clipboard: Copiar URL para a área de transferência
@@ -155,15 +155,15 @@ pt-PT:
         receive_shared_no_actions_description_text: Este projeto recebe sprints partilhados de um projeto diferente, mas nenhum está disponível neste momento.
         settings_link_text: definições do projeto
     backlog_bucket_menu_component:
-      label_actions: Backlog bucket actions
+      label_actions: Ações do grupo de backlog
       action_menu:
-        edit_backlog_bucket: Edit backlog bucket
-        delete_backlog_bucket: Delete backlog bucket
+        edit_backlog_bucket: Editar grupo de backlog
+        delete_backlog_bucket: Eliminar grupo de backlog
     backlog_bucket_header_component:
       label_work_package_count:
-        zero: No stories in backlog bucket
-        one: "%{count} story in backlog bucket"
-        other: "%{count} stories in backlog bucket"
+        zero: Não há histórias no grupo de backlog
+        one: "%{count} história no grupo de backlog"
+        other: "%{count} histórias no grupo de backlog"
     sprint_header_component:
       label_start_sprint: Início
       label_complete_sprint: Concluído
@@ -189,23 +189,23 @@ pt-PT:
         edit_sprint: Editar sprint
         add_work_package: Adicionar pacote de trabalho
     story_component:
-      label_actions: Story actions
+      label_actions: Ações de história
     story_menu_list_component:
       action_menu:
-        copy_url_to_clipboard: Copy URL to clipboard
-        copy_work_package_id: Copy work package ID
-        move_menu: Move
-        move_to_sprint: Move to sprint
+        copy_url_to_clipboard: Copiar URL para a área de transferência
+        copy_work_package_id: Copiar ID do pacote de trabalho
+        move_menu: Mover
+        move_to_sprint: Mover para sprint
     burndown_chart:
       show:
-        blankslate_title: No burndown data available
-        blankslate_description: Set start and end date for the sprint to generate a burndown chart.
+        blankslate_title: Não há dados de burndown disponíveis
+        blankslate_description: Defina a data de início e de fim do sprint para gerar um gráfico de burndown.
   burndown:
     story_points: Pontos de história
     story_points_ideal: Pontos de história (ideal)
   label_backlog: Backlog
-  label_backlog_bucket_edit: Edit backlog bucket
-  label_backlog_bucket_new: New backlog bucket
+  label_backlog_bucket_edit: Editar grupo de backlog
+  label_backlog_bucket_new: Novo grupo de backlog
   label_inbox: Caixa de entrada
   label_backlogs: Backlogs
   label_burndown_chart: Gráfico de burndown
