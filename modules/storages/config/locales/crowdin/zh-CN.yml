@@ -334,8 +334,8 @@ zh-CN:
         nc_unlinked_project_folders: 部分项目文件夹尚未创建 (%{actual}/%{expected})。这可能表明 AMPF 后台同步过程中出错。
         nc_userless_access_denied: 已配置的应用密码无效。
         not_configured: 无法验证连接。请先完成配置。
-        od_client_cant_delete_folder: 客户端在删除文件夹时遇到问题。请检查您的存储的设置文档。
-        od_client_write_permission_missing: 客户端似乎没有写入权限。请检查您的存储的设置文档。
+        od_client_cant_delete_folder: 客户端在删除文件夹时遇到问题。请查看您的存储空间的设置文档。
+        od_client_write_permission_missing: 客户端似乎没有写入权限。请查看您的存储空间的设置文档。
         od_drive_id_invalid: 配置的驱动器 ID 似乎无效。请检查配置。
         od_drive_id_not_found: 找不到配置的驱动器 ID。请检查配置。
         od_oauth_request_not_found: 未找到获取当前连接用户的端点。请检查服务器日志以获取更多信息。

@@ -22,8 +22,8 @@ fr:
         one: Lien de la page de relation
         other: Liens de la page de relation
       wikis/xwiki_provider: Fournisseur XWiki
-  permission_manage_wiki_page_links: Gérer les liens de la page Wiki
-  permission_view_wiki_page_links: Gérer les liens de la page Wiki
+  permission_manage_wiki_page_links: Gérer les liens de la page wiki
+  permission_view_wiki_page_links: Gérer les liens de la page wiki
   project_module_wiki_platforms: Fournisseurs de wiki
   wikis:
     buttons:
@@ -37,26 +37,26 @@ fr:
     page_link_component:
       remove: Supprimer le lien de la page
     relation_page_links_component:
-      empty_heading: Pas de pages liées
-      empty_text: Ajouter manuellement des liens vers d'autres pages wiki liées.
+      empty_heading: Aucune page liée
+      empty_text: Ajoutez manuellement des liens vers d'autres pages wiki liées.
       heading: Pages liées
     oauth_login_component:
-      connect_button: Connectez votre compte %{provider}
+      connect_button: Connecter le compte %{provider}
     admin:
       oauth_application_info_component:
         label_pending: En attente
-        replace_oauth_application: Remplacer l'application OAuth OpenProject
-        confirm_replace_oauth_application: Cette action réinitialisera les informations d'identification OAuth actuelles. Après confirmation, vous devrez saisir à nouveau les informations d'identification dans votre instance XWiki et tous les utilisateurs devront se réautoriser. Êtes-vous sûr de vouloir continuer ?
+        replace_oauth_application: Remplacer l'application OpenProject OAuth
+        confirm_replace_oauth_application: Cette action réinitialisera les informations d'identification OAuth actuelles. Après confirmation, vous devrez saisir à nouveau les informations d'identification dans votre instance XWiki et tous les utilisateurs devront se réautoriser. Voulez-vous vraiment continuer ?
       oauth_client_info_component:
         label_pending: En attente
         replace_oauth_client: Remplacer l'application XWiki OAuth
-        confirm_replace_oauth_client: Cette action réinitialisera les identifiants XWiki OAuth actuels. Tous les utilisateurs devront réautoriser sur XWiki. Êtes-vous sûr de vouloir continuer ?
+        confirm_replace_oauth_client: Cette action réinitialisera les identifiants XWiki OAuth actuels. Tous les utilisateurs devront réautoriser sur XWiki. Voulez-vous vraiment continuer ?
       wiki_provider_list_component:
         label_name: Nom
         label_provider: Fournisseur
         label_creation_time: Créé
         no_results_title: Vous n'avez pas encore de fournisseur de wiki.
-        no_results_description: Ajouter un fournisseur de wiki pour les voir ici.
+        no_results_description: Ajouter un fournisseur de wiki pour le voir ici.
       destroy_confirmation_dialog_component:
         title: Supprimer le fournisseur de wiki
         warning_html: Vous êtes sur le point de supprimer %{wiki_provider}. Cette action est irréversible.
@@ -85,11 +85,11 @@ fr:
         xwiki:
           oauth:
             openproject_oauth_description: Permettre à XWiki d'accéder aux données d'OpenProject en utilisant une application OAuth. Copiez les informations d'identification ci-dessous dans votre instance XWiki.
-            provider_oauth: OAuth XWiki
+            provider_oauth: XWiki OAuth
             provider_oauth_description: Permettre à OpenProject d'accéder aux données XWiki en utilisant une application OAuth. Saisissez les informations d'identification du client de votre application XWiki OAuth.
-          openproject_oauth_description: Autoriser XWiki à accéder aux données d'OpenProject en utilisant un OAuth.
-          xwiki_oauth: OAuth XWiki
-          xwiki_oauth_description: Autoriser OpenProject à accéder aux données XWiki en utilisant un OAuth.
+          openproject_oauth_description: Autoriser XWiki à accéder aux données d'OpenProject via OAuth.
+          xwiki_oauth: XWiki OAuth
+          xwiki_oauth_description: Autoriser OpenProject à accéder aux données XWiki via OAuth.
         delete:
           title: Supprimer le fournisseur de wiki
           warning_html: Vous êtes sur le point de supprimer %{wiki_provider}. Cette action est irréversible.
