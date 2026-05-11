@@ -1397,10 +1397,10 @@ es:
       from_types:
         create:
           notice:
-            one: Successfully copied workflow to '%{type_name}' type.
-            other: Successfully copied workflow to %{count} types.
+            one: Se ha copiado correctamente el flujo de trabajo al tipo «%{type_name}.
+            other: Se ha copiado correctamente el flujo de trabajo a los tipos «%{count}».
       new:
-        title: Copy workflow of "%{source_type}"
+        title: Copiar el flujo de trabajo de «%{source_type}»
     form:
       matrix_caption: Matriz de flujo de trabajo
       matrix_caption_assignee: Matriz de flujo de trabajo para el asignado
@@ -1412,10 +1412,10 @@ es:
       matrix_check_uncheck_all_in_col_label_html: Conmutar transiciones de todos los estados antiguos a <em>%{new_status}</em>
     index:
       type_filter:
-        label: Filter by type name…
+        label: Filtrar por nombre de tipo…
     page_headers:
       index_component:
-        description: Configure status transitions for each work package type.
+        description: Configura las transiciones de estado para cada tipo de paquete de trabajo.
   work_flows:
     index:
       no_results_title_text: Actualmente no existen flujos de trabajo.
@@ -1894,7 +1894,7 @@ es:
         identity_url: URL de identidad
         parent: Grupo principal
         organizational_unit: Unidad organizativa
-        group_users: Group users
+        group_users: Usuarios de grupo
       group_detail:
         parent: Grupo principal
         organizational_unit: Unidad organizativa
@@ -2052,7 +2052,7 @@ es:
         not_a_datetime: no es una fecha/hora válida.
         not_a_number: No es un número.
         not_allowed: no es válido porque faltan permisos.
-        host_not_allowed: is not an allowed host.
+        host_not_allowed: no es un host permitido.
         not_json: no se puede analizar como JSON.
         not_json_object: no es un objeto JSON.
         not_an_integer: No es un entero.
@@ -3023,7 +3023,7 @@ es:
       title: Extensión Enterprise
       plan_title: Extensión Enterprise de %{plan}
       plan_name: Plan Enterprise %{plan}
-      trial_text: This feature is included in your active Enterprise trial.
+      trial_text: Esta función está incluida en su versión de prueba activa de Enterprise.
       plan_text_html: Disponible a partir del %{plan_name}.
       unlimited: Ilimitado
       already_have_token: "¿Ya tiene un token? Añádalo utilizando el botón de abajo para actualizar al plan Enterprise reservado.\n"
@@ -3564,7 +3564,7 @@ es:
         personal_reminder: Notificarme para recibir recordatorios personales
       daily_reminders:
         title: Enviarme recordatorios por correo electrónico diarios con las notificaciones sin leer
-        description: You will receive these reminders only for unread notifications and only at hours you specify. Until you configure a time zone for your account, the times will be interpreted to be in UTC.
+        description: Recibirás estos recordatorios solo para las notificaciones no leídas y únicamente a las horas que indiques. Hasta que configures una zona horaria para tu cuenta, se considerará que las horas están en UTC.
         enabled: Habilitar recordatorios por correo electrónico diarios
         add_time: Añadir tiempo
         remove_time: Eliminar el tiempo
@@ -5066,7 +5066,7 @@ es:
     '
   setting_app_subtitle: Subtítulo de aplicación
   setting_app_title: Título de aplicación
-  setting_organization_name: Organization name
+  setting_organization_name: Nombre de la organización
   setting_attachment_max_size: Tamaño máximo de adjunto
   setting_show_work_package_attachments: Mostrar archivos adjuntos en la pestaña de archivos por defecto
   setting_antivirus_scan_mode: Modo de escaneo
@@ -5144,7 +5144,7 @@ es:
   setting_new_project_user_role_id: Papel ortorgado a usuario no administrador que crea un proyecto
   setting_new_project_send_confirmation_email: Enviar notificación al autor al crear un nuevo proyecto
   setting_new_project_notification_text: Texto de la notificación
-  setting_password_active_rules: Password requirements
+  setting_password_active_rules: Requisitos de la contraseña
   setting_password_count_former_banned: Numero de contraseñas usadas mas recientemente bloqueadas para re-uso
   setting_password_days_valid: Número de días, después de que sea necesario imponer un cambio de contraseña
   setting_password_min_length: Longitud mínima
