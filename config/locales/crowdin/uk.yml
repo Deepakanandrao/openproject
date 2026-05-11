@@ -5219,7 +5219,7 @@ uk:
 
     '
   setting_after_login_default_redirect_url: Переспрямування після входу
-  setting_after_login_default_redirect_url_text_html: 'Задайте шлях за замовчуванням для переспрямування користувачів після входу, якщо зворотне посилання не надано. Якщо не задано, користувачі переспрямовуються на головну сторінку. <br/>Приклад: <code>/my/page</code>
+  setting_after_login_default_redirect_url_example_html: 'Set a default path to redirect users after login, if no back link was provided. Redirects to home page if not set. <br/> Example: %{example_code}
 
     '
   setting_apiv3_cors_title: Спільне використання ресурсів із різних джерел (CORS)
