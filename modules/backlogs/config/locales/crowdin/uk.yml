@@ -62,7 +62,7 @@ uk:
           attributes:
             base:
               unfinished_work_packages:
-                one: У цьому спринті не завершено %{count} пакет робіт.
+                one: У цьому спринті не завершено один пакет робіт.
                 few: У цьому спринті не завершено %{count} пакети робіт.
                 many: У цьому спринті не завершено %{count} пакетів робіт.
                 other: У цьому спринті не завершено %{count} пакета робіт.
@@ -121,7 +121,7 @@ uk:
     bucket_component:
       blankslate_title: Сегмент беклогу порожній
       blankslate_description: Щоб додати елементи, перетягніть їх сюди.
-      label_actions: Дії сегмента беклогу
+      label_actions: Дії із сегментом беклогу
       action_menu:
         edit_backlog_bucket: Змінити сегмент беклогу
         delete_backlog_bucket: Видалити сегмент беклогу
@@ -131,7 +131,7 @@ uk:
     sprint_component:
       blankslate_title: "%{name} нічого не містить"
       blankslate_description: Ще нічого не заплановано. Перетягніть елементи сюди, щоб додати їх.
-      label_actions: Дії в спринті
+      label_actions: Дії зі спринтом
       label_start_sprint: Почати
       label_complete_sprint: Завершити
       start_sprint_disabled_reason_active_sprint: Інший спринт уже розпочато.

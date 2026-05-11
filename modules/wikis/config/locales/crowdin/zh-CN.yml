@@ -64,7 +64,7 @@ zh-CN:
         label_pending: 待处理
         replace_oauth_client: 替换 XWiki OAuth 应用程序
       wiki_provider_list_component:
-        label_creation_time: 已创建
+        label_creation_time: 创建时间
         label_name: 名称
         label_provider: 提供商
         no_results_description: 添加 Wiki 提供商，以在此处查看。
