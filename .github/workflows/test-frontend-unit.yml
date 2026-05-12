@@ -51,8 +51,13 @@ jobs:
       - name: Register plugins
         run: npm run ci:plugins:register_frontend
 
+      - name: Install Playwright dependencies
+        timeout-minutes: 5
+        run: npx playwright install-deps ${{ matrix.browser }}
+
       - name: Install Playwright Browser
-        run: npx playwright install --only-shell --with-deps ${{ matrix.browser }}
+        timeout-minutes: 5
+        run: npx playwright install --only-shell ${{ matrix.browser }}
 
       - name: Test
         run: npm test -- --browsers ${{ matrix.browser }} --reporters dot --reporters github-actions
