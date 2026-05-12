@@ -1,5 +1,5 @@
 import {
-  HttpEvent, HttpHandler, HttpHeaders, HttpInterceptor, HttpRequest,
+  HttpEvent, HttpHandler, HttpInterceptor, HttpRequest,
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
@@ -30,19 +30,18 @@ export class OpenProjectHeaderInterceptor implements HttpInterceptor {
   }
 
   private handleAuthenticatedRequest(req:HttpRequest<any>, next:HttpHandler):Observable<HttpEvent<any>> {
-    let headers:HttpHeaders;
     const csrfToken = getMetaContent('csrf-token');
 
+    let newHeaders = req.headers.set('X-Requested-With', 'XMLHttpRequest');
+
     if (csrfToken) {
-      headers = req.headers.set('X-CSRF-TOKEN', csrfToken);
-    } else {
-      headers = req.headers;
+      newHeaders = newHeaders.set('X-CSRF-TOKEN', csrfToken);
     }
 
     // Clone the request to add the new header
     const clonedRequest = req.clone({
       withCredentials: true,
-      headers: headers,
+      headers: newHeaders,
     });
 
     // Pass the cloned request instead of the original request to the next handle
