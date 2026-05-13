@@ -195,7 +195,7 @@ module OpenProject::TextFormatting
       def self.build_lookup(identifiers)
         work_packages = WorkPackage.where_display_id_in(identifiers).select(:id, :identifier).to_a
         lookup = index_by_id_and_identifier(work_packages)
-        fold_in_alias_keys(lookup, identifiers, work_packages)
+        fold_in_alias_keys(lookup, identifiers)
         lookup
       end
 
@@ -207,15 +207,14 @@ module OpenProject::TextFormatting
       end
       private_class_method :index_by_id_and_identifier
 
-      def self.fold_in_alias_keys(lookup, identifiers, work_packages)
+      def self.fold_in_alias_keys(lookup, identifiers)
         unmapped = identifiers.map(&:to_s) - lookup.keys
         return if unmapped.empty?
 
-        wps_by_id = work_packages.index_by(&:id)
         WorkPackageSemanticAlias
           .where(identifier: unmapped)
           .pluck(:identifier, :work_package_id)
-          .each { |ident, wp_id| lookup[ident] = wps_by_id[wp_id] }
+          .each { |ident, wp_id| lookup[ident] = lookup[wp_id.to_s] }
       end
       private_class_method :fold_in_alias_keys
 
