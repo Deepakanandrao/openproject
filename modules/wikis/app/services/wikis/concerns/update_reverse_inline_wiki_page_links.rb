@@ -38,13 +38,18 @@ module Wikis::Concerns
 
       Wikis::ReverseInlinePageLink.where(provider:, identifier: wiki_page.id).delete_all
 
-      identifiers = find_wp_links(wiki_page.text).uniq
+      # Bound the per-save lookup so a multi-megabyte pasted body can't push
+      # an unbounded IN-list into the alias-aware WP lookup. References past
+      # the cap simply don't get a reverse link recorded.
+      identifiers = find_wp_links(wiki_page.text).uniq.first(MAX_PRELOAD_IDENTIFIERS)
       return if identifiers.empty?
 
       WorkPackage.where_display_id_in(identifiers).find_each do |wp|
         Wikis::ReverseInlinePageLink.create!(linkable: wp, provider:, identifier: wiki_page.id)
       end
     end
+
+    MAX_PRELOAD_IDENTIFIERS = 500
 
     # Mirrors the prefix character class of the inline-text macro matcher
     # (lib/open_project/text_formatting/matchers/resource_links_matcher.rb).
