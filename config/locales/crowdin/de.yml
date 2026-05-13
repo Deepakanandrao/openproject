@@ -266,7 +266,7 @@ de:
                 permissions: Berechtigungen
                 projects: Projekte
                 issues: Tickets
-                issue_details: Beschreibung, Verlaud, Kommentare und Anhänge
+                issue_details: Beschreibung, Verlauf, Kommentare und Anhänge
                 custom_fields: Ein Teil der benutzerdefinierten Felder
                 users: Beteiligte Benutzer und Gruppen
             confirm_import:
