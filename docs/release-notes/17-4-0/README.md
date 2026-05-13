@@ -60,7 +60,7 @@ Guides to setting this for your installation method:
 
 
 
-    *   If you have an existing strong secret, you are safe already and nothing needs to be done. You _can optionally_ place it as the `existingSecret` as shown [in the Helm chart documentation](https://www.openproject.org/docs/installation-and-operations/installation/helm-chart/#secrets) to use the conventional secret to pass it into the specs.
+    *   If you have an existing strong secret, you are safe already and nothing needs to be done. You _can optionally_ place it as the `existingSecret` as shown [in the Helm chart documentation](https://www.openproject.org/docs/installation-and-operations/installation/helm-chart/#secret_key_base) to use the conventional secret to pass it into the specs.
 
 
 
