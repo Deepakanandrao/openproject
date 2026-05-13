@@ -3420,8 +3420,8 @@ de:
     report_component:
       checks:
         failures:
-          one: "%{count} check failed"
-          other: "%{count} checks failed"
+          one: "%{count} Überprüfung fehlgeschlagen"
+          other: "%{count} Überprüfungen fehlgeschlagen"
         success: All checks passed
         warnings:
           one: "%{count} check returned a warning"
