@@ -4934,13 +4934,6 @@ en:
       work_package_card_component:
         menu:
           label_actions: "Work package actions"
-      work_package_card_list_component:
-        header:
-          label_actions: "Open menu"
-          label_work_package_count:
-            zero: "No work packages"
-            one: "%{count} work package"
-            other: "%{count} work packages"
 
   permission_add_work_package_comments: "Add comments"
   permission_add_work_packages: "Add work packages"
