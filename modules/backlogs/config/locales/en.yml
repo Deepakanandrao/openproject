@@ -202,12 +202,6 @@ en:
         blankslate_title: "No burndown data available"
         blankslate_description: "Set start and end date for the sprint to generate a burndown chart."
 
-    work_package_card_list_component:
-      label_work_package_count:
-        zero: "No work packages"
-        one: "%{count} work package"
-        other: "%{count} work packages"
-
   burndown:
     story_points: "Story points"
     story_points_ideal: "Story points (ideal)"

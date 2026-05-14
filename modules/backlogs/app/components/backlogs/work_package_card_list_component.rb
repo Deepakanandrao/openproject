@@ -77,7 +77,7 @@ module Backlogs
       @list.with_header(
         title:,
         count:,
-        count_label: t(".label_work_package_count", count:),
+        count_label: I18n.t(:label_x_work_packages, count:),
         collapsed: folded?,
         **system_arguments,
         &

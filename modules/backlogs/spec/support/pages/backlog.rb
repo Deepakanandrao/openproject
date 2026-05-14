@@ -350,7 +350,7 @@ module Pages
       within_backlog_bucket(bucket) do
         expect(page).to have_css(
           ".Counter",
-          accessible_name: I18n.t("backlogs.work_package_card_list_component.label_work_package_count", count:)
+          accessible_name: I18n.t(:label_x_work_packages, count:)
         )
       end
     end
@@ -467,7 +467,7 @@ module Pages
       within(sprint_selector(sprint)) do
         expect(page).to have_css(
           ".Counter",
-          accessible_name: I18n.t("backlogs.work_package_card_list_component.label_work_package_count", count:)
+          accessible_name: I18n.t(:label_x_work_packages, count:)
         )
       end
     end

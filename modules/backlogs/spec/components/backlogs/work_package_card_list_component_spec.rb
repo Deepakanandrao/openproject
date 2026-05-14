@@ -184,7 +184,7 @@ RSpec.describe Backlogs::WorkPackageCardListComponent, type: :component do
         expect(rendered_component).to have_css(
           ".Counter",
           text: "2",
-          aria: { label: I18n.t("backlogs.work_package_card_list_component.label_work_package_count", count: 2) }
+          aria: { label: I18n.t(:label_x_work_packages, count: 2) }
         )
       end
     end
