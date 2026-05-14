@@ -87,6 +87,49 @@ RSpec.describe "Recurring meetings schedule text",
         end
       end
 
+      context "when setting monthly by day of month" do
+        let(:frequency) { "monthly_day_of_month" }
+        let(:start_date) { "2024-12-01" }
+        let(:params) do
+          {
+            meeting: {
+              start_time_hour:,
+              start_date:,
+              frequency:,
+              interval:,
+              monthly_day: "16"
+            }
+          }
+        end
+
+        it "returns the monthly day text" do
+          expect(subject).to have_http_status(:ok)
+          expect(subject.body).to include("Every month on the 16th at 10:00 AM")
+        end
+      end
+
+      context "when setting monthly by nth weekday" do
+        let(:frequency) { "monthly_nth_weekday" }
+        let(:start_date) { "2024-12-01" }
+        let(:params) do
+          {
+            meeting: {
+              start_time_hour:,
+              start_date:,
+              frequency:,
+              interval:,
+              monthly_ordinal: "1",
+              monthly_weekday: "tuesday"
+            }
+          }
+        end
+
+        it "returns the monthly pattern text" do
+          expect(subject).to have_http_status(:ok)
+          expect(subject.body).to include("Every month on the first Tuesday at 10:00 AM")
+        end
+      end
+
       context "when leaving the interval empty" do
         let(:interval) { "" }
 
@@ -103,6 +146,44 @@ RSpec.describe "Recurring meetings schedule text",
           expect(subject).to have_http_status(:ok)
           expect(subject.body).to include("turbo-stream")
           expect(subject.body).to include("Every day at 10:00 AM")
+          expect(subject.body).to include("target=\"recurring-meeting-start-warning\"")
+          expect(subject.body).not_to include("The first occurrence will be")
+        end
+      end
+
+      context "when requesting monthly pattern with turbo and misaligned start date" do
+        let(:format) { :turbo_stream }
+        let(:frequency) { "monthly_nth_weekday" }
+        let(:start_date) { "2024-12-01" }
+        let(:params) do
+          {
+            meeting: {
+              start_time_hour:,
+              start_date:,
+              frequency:,
+              interval:,
+              monthly_ordinal: "1",
+              monthly_weekday: "tuesday"
+            }
+          }
+        end
+
+        it "updates the warning target with the first actual occurrence" do
+          expect(subject).to have_http_status(:ok)
+          expect(subject.body).to include("target=\"recurring-meeting-start-warning\"")
+          expect(subject.body).to include("The first occurrence will be")
+        end
+      end
+
+      context "when requesting working days with turbo and weekend start date" do
+        let(:format) { :turbo_stream }
+        let(:frequency) { "working_days" }
+        let(:start_date) { "2024-12-01" } # Sunday
+
+        it "updates the warning target with the first actual occurrence" do
+          expect(subject).to have_http_status(:ok)
+          expect(subject.body).to include("target=\"recurring-meeting-start-warning\"")
+          expect(subject.body).to include("The first occurrence will be")
         end
       end
     end
@@ -110,7 +191,7 @@ RSpec.describe "Recurring meetings schedule text",
 
   context "when not logged in" do
     it "does not allow to request it" do
-      expect(subject).to have_http_status(:found)
+      expect(subject).to have_http_status(:unauthorized)
     end
   end
 end
