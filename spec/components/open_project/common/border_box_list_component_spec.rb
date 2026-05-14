@@ -767,4 +767,40 @@ RSpec.describe OpenProject::Common::BorderBoxListComponent, type: :component do
       expect(rendered).to have_css("collapsible-header")
     end
   end
+
+  describe "scheme" do
+    it "defaults to :default" do
+      rendered = render_inline(
+        described_class.new(container: "scheme-default")
+      ) do |list|
+        list.with_header(title: "Default")
+        list.with_item { "row" }
+      end
+
+      expect(rendered).to have_no_css(".op-border-box-list_transparent")
+    end
+
+    it "applies the transparent CSS class when scheme is :transparent" do
+      rendered = render_inline(
+        described_class.new(container: "scheme-transparent", scheme: :transparent)
+      ) do |list|
+        list.with_header(title: "Transparent")
+        list.with_item { "row" }
+      end
+
+      expect(rendered).to have_css(".Box.op-border-box-list_transparent")
+    end
+
+    it "keeps collapsible independent of the transparent scheme" do
+      rendered = render_inline(
+        described_class.new(container: "transparent-collapse", scheme: :transparent, collapsible: true)
+      ) do |list|
+        list.with_header(title: "Transparent collapsible")
+        list.with_item { "row" }
+      end
+
+      expect(rendered).to have_css(".Box.op-border-box-list_transparent")
+      expect(rendered).to have_css("collapsible-header")
+    end
+  end
 end

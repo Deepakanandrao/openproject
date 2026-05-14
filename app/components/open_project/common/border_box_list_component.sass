@@ -8,6 +8,14 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
+.op-border-box-list_transparent
+  > .Box-header
+    background-color: transparent
+    border-bottom: none
+
+  > ul > .Box-row:first-of-type
+    border-top: none
+
 .op-border-box-list-header
   display: grid
   grid-template-columns: 1fr minmax(5rem, max-content) auto
@@ -20,3 +28,4 @@
     align-self: flex-start
     // Unfortunately, the invisible button style bites us here again.
     margin-top: -6px
+

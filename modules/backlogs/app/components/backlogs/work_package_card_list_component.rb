@@ -68,6 +68,7 @@ module Backlogs
         container:,
         current_user:,
         interactive: true,
+        scheme: :transparent,
         **@system_arguments
       )
     end
