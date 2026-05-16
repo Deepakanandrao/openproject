@@ -65,7 +65,7 @@ module OpenProject
         def call
           blankslate = Primer::Beta::Blankslate.new(**@system_arguments)
           blankslate.with_heading(tag: :h4).with_content(@title)
-          blankslate.with_description { @description } if @description
+          blankslate.with_description_content(@description) if @description
           blankslate.with_visual_icon(icon: @icon) if @icon
 
           render(blankslate)
