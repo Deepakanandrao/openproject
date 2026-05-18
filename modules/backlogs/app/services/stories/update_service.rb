@@ -56,7 +56,9 @@ class Stories::UpdateService
   private
 
   def resolve_required_attributes(direction:, target_id:)
-    if target_id
+    if target_id && direction
+      ServiceResult.failure(message: I18n.t("backlogs.stories.update_service.ambiguous_target"))
+    elsif target_id
       attributes_result_from_target(target_id)
     elsif direction
       attributes_result_from_direction(direction)

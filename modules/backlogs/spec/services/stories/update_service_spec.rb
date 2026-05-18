@@ -65,6 +65,12 @@ RSpec.describe Stories::UpdateService, type: :model do
                         "backlogs.stories.update_service.missing_target"
       end
 
+      context "with both target_id and direction" do
+        it_behaves_like "returns failure without delegating",
+                        { target_id: "inbox", direction: "highest" },
+                        "backlogs.stories.update_service.ambiguous_target"
+      end
+
       context "when target_id contains an invalid type and id" do
         it_behaves_like "returns failure without delegating", { target_id: "unknown:42" }
       end
