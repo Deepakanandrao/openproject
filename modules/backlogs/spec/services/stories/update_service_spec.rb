@@ -47,106 +47,62 @@ RSpec.describe Stories::UpdateService, type: :model do
 
   describe "#call" do
     describe "error handling" do
-      context "with neither target_id nor direction" do
+      shared_examples "returns failure without delegating" do |call_args, i18n_key = nil|
         it "returns failure without delegating", :aggregate_failures do
-          result = instance.call
+          i18n_key ||= "backlogs.stories.update_service.invalid_target_type"
+
+          result = instance.call(**call_args)
 
           expect(result).to be_failure
-          expect(result.message).to eq(I18n.t("backlogs.stories.update_service.missing_target"))
+          expect(result.message).to eq(I18n.t(i18n_key))
           expect(inner_service).not_to have_received(:call)
         end
+      end
+
+      context "with neither target_id nor direction" do
+        it_behaves_like "returns failure without delegating",
+                        {},
+                        "backlogs.stories.update_service.missing_target"
       end
 
       context "when target_id contains an invalid type and id" do
-        it "returns failure without delegating", :aggregate_failures do
-          result = instance.call(target_id: "unknown:42")
-
-          expect(result).to be_failure
-          expect(result.message).to eq(I18n.t("backlogs.stories.update_service.invalid_target_type"))
-          expect(inner_service).not_to have_received(:call)
-        end
+        it_behaves_like "returns failure without delegating", { target_id: "unknown:42" }
       end
 
       context "when target_id contains an invalid type and no id" do
-        it "returns failure without delegating", :aggregate_failures do
-          result = instance.call(target_id: "unknown")
-
-          expect(result).to be_failure
-          expect(result.message).to eq(I18n.t("backlogs.stories.update_service.invalid_target_type"))
-          expect(inner_service).not_to have_received(:call)
-        end
+        it_behaves_like "returns failure without delegating", { target_id: "unknown" }
       end
 
       %w[sprint backlog_bucket].each do |target_type|
         context "when target_id is '#{target_type}' missing the colon and id" do
-          it "returns failure without delegating", :aggregate_failures do
-            result = instance.call(target_id: target_type)
-
-            expect(result).to be_failure
-            expect(result.message).to eq(I18n.t("backlogs.stories.update_service.invalid_target_type"))
-            expect(inner_service).not_to have_received(:call)
-          end
+          it_behaves_like "returns failure without delegating", { target_id: target_type }
         end
 
         context "when target_id is '#{target_type}:' missing id" do
-          it "returns failure without delegating", :aggregate_failures do
-            result = instance.call(target_id: "#{target_type}:")
-
-            expect(result).to be_failure
-            expect(result.message).to eq(I18n.t("backlogs.stories.update_service.invalid_target_type"))
-            expect(inner_service).not_to have_received(:call)
-          end
+          it_behaves_like "returns failure without delegating", { target_id: "#{target_type}:" }
         end
 
         context "when target_id is '#{target_type}:unknown' having an invalid id" do
-          it "returns failure without delegating", :aggregate_failures do
-            result = instance.call(target_id: "#{target_type}:unknown")
-
-            expect(result).to be_failure
-            expect(result.message).to eq(I18n.t("backlogs.stories.update_service.invalid_target_type"))
-            expect(inner_service).not_to have_received(:call)
-          end
+          it_behaves_like "returns failure without delegating", { target_id: "#{target_type}:unknown" }
         end
       end
 
       context "when target_id is 'inbox:' having an extra colon" do
-        it "returns failure without delegating", :aggregate_failures do
-          result = instance.call(target_id: "inbox:")
-
-          expect(result).to be_failure
-          expect(result.message).to eq(I18n.t("backlogs.stories.update_service.invalid_target_type"))
-          expect(inner_service).not_to have_received(:call)
-        end
+        it_behaves_like "returns failure without delegating", { target_id: "inbox:" }
       end
 
       context "when target_id is 'inbox:1' having a valid id" do
-        it "returns failure without delegating", :aggregate_failures do
-          result = instance.call(target_id: "inbox:1")
-
-          expect(result).to be_failure
-          expect(result.message).to eq(I18n.t("backlogs.stories.update_service.invalid_target_type"))
-          expect(inner_service).not_to have_received(:call)
-        end
+        it_behaves_like "returns failure without delegating", { target_id: "inbox:1" }
       end
 
       context "when target_id is 'inbox:unknown' having an invalid id" do
-        it "returns failure without delegating", :aggregate_failures do
-          result = instance.call(target_id: "inbox:unknown")
-
-          expect(result).to be_failure
-          expect(result.message).to eq(I18n.t("backlogs.stories.update_service.invalid_target_type"))
-          expect(inner_service).not_to have_received(:call)
-        end
+        it_behaves_like "returns failure without delegating", { target_id: "inbox:unknown" }
       end
 
       context "with an invalid direction" do
-        it "returns failure without delegating", :aggregate_failures do
-          result = instance.call(direction: "sideways")
-
-          expect(result).to be_failure
-          expect(result.message).to eq(I18n.t("backlogs.stories.update_service.invalid_direction"))
-          expect(inner_service).not_to have_received(:call)
-        end
+        it_behaves_like "returns failure without delegating",
+                        { direction: "sideways" },
+                        "backlogs.stories.update_service.invalid_direction"
       end
     end
 
