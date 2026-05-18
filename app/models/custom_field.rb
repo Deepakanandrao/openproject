@@ -91,7 +91,7 @@ class CustomField < ApplicationRecord
 
   after_destroy :destroy_help_text
 
-  def visible?(usr = User.current, project: nil)
+  def visible?(usr = User.current, **)
     self.class.visible(usr).exists?(id: id)
   end
 
