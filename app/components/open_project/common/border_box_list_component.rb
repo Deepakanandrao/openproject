@@ -129,6 +129,9 @@ module OpenProject
       # @!parse
       #   # Adds empty-state content.
       #   #
+      #   # Interactive lists announce this empty state only when the slot is
+      #   # configured explicitly.
+      #   #
       #   # @param title [String] empty-state title.
       #   # @param description [String, nil] optional supporting text.
       #   # @param icon [Symbol, nil] optional Primer icon.
@@ -161,7 +164,9 @@ module OpenProject
       # @param container [String, Symbol, Class, Object] value passed to
       #   `dom_target` to derive DOM ids for the list and related controls.
       # @param interactive [Boolean] whether dynamic list updates should be
-      #   announced politely to assistive technology.
+      #   announced politely to assistive technology. This affects the counter
+      #   and an explicitly configured empty state; it does not create default
+      #   empty-state content for manually composed lists.
       # @param collapsible [Boolean] whether the header renders a collapsible
       #   toggle. Defaults to `false`.
       # @param current_user [User] user context passed to work-package items.
