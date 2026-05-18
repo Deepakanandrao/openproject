@@ -8,15 +8,9 @@ module RecurringMeetings
     no_authorization_required! :humanize_schedule
 
     def humanize_schedule
-      text = @recurring_meeting.human_frequency_schedule
-
-      respond_to do |format|
-        format.html { render plain: text }
-        format.turbo_stream do
-          render turbo_stream: turbo_stream.update("recurring-meeting-frequency-schedule",
-                                                   plain: text)
-        end
-      end
+      component = RecurringMeetings::HumanScheduleComponent.new(recurring_meeting: @recurring_meeting)
+      update_via_turbo_stream(component:)
+      respond_with_turbo_streams
     end
 
     private

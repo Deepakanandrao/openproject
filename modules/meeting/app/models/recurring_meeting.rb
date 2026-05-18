@@ -386,6 +386,13 @@ class RecurringMeeting < ApplicationRecord
       .not_cancelled
   end
 
+  def actual_start_differs?
+    return false if start_time.blank?
+    return false if first_occurrence.blank?
+
+    first_occurrence != start_time
+  end
+
   private
 
   def unset_schedule
