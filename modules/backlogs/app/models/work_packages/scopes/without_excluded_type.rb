@@ -38,7 +38,6 @@ module WorkPackages::Scopes::WithoutExcludedType
           SELECT type_id
           FROM backlog_excluded_types
           WHERE project_id = work_packages.project_id
-          AND type_id IS NOT NULL
         )
       SQL
 
