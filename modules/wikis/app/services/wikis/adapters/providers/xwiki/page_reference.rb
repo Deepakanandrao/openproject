@@ -31,36 +31,24 @@
 module Wikis
   module Adapters
     module Providers
-      module Internal
-        module Queries
-          class PageInfo < BaseQuery
-            def call(input_data:, auth_strategy:)
-              Adapters::Authentication[auth_strategy].call do |user|
-                wiki_page = WikiPage.visible(user).find_by(id: input_data.identifier)
-                return failure(code: :not_found) if wiki_page.nil?
+      module XWiki
+        # Represents a parsed XWiki stable page identifier in canonical document reference format:
+        # "wikiName:Space1.Space2.PageName" — e.g. "xwiki:Main.WebHome"
+        # Maps to the REST API path: /wikis/{wiki}/spaces/{s1}/spaces/{s2}/pages/{page}
+        PageReference = Data.define(:wiki, :spaces, :page) do
+          def self.parse(identifier)
+            wiki, page_path = identifier.split(":", 2)
+            return nil if page_path.blank?
 
-                success(
-                  Results::PageInfo.new(
-                    identifier: input_data.identifier,
-                    title: wiki_page.title,
-                    provider:,
-                    href: url_for(only_path: true,
-                                  controller: "/wiki",
-                                  action: "show",
-                                  project_id: wiki_page.project.identifier,
-                                  id: wiki_page.slug)
-                  )
-                )
-              end
-            end
+            *spaces, page = page_path.split(".")
+            return nil if spaces.empty?
 
-            private
+            new(wiki:, spaces:, page:)
+          end
 
-            delegate :url_for, to: :url_helpers
-
-            def url_helpers
-              OpenProject::StaticRouting::StaticRouter.new.url_helpers
-            end
+          def rest_path
+            spaces_path = spaces.map { "/spaces/#{CGI.escapeURIComponent(it)}" }.join
+            "/wikis/#{CGI.escapeURIComponent(wiki)}#{spaces_path}/pages/#{CGI.escapeURIComponent(page)}"
           end
         end
       end
