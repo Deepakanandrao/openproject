@@ -48,17 +48,17 @@ Rails.application.routes.draw do
     get :load
   end
 
+  resources :relation_wiki_page_links, only: %i[destroy], controller: "wikis/relation_page_link" do
+    member do
+      get :confirm_delete_dialog
+    end
+  end
+
   resources :projects, only: %i[] do
     resources :work_packages, only: %i[] do
       resources :wikis, only: %i[] do
         collection do
           resources :tab, only: %i[index], controller: "work_package_wikis_tab", as: "wikis_tab"
-        end
-      end
-
-      resources :relation_wiki_page_links, only: %i[destroy], controller: "wikis/relation_page_link" do
-        member do
-          get :confirm_delete
         end
       end
     end

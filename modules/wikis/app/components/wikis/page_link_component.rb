@@ -69,14 +69,8 @@ module Wikis
       page_info_result.value!.page_link
     end
 
-    def work_package_id = page_link.linkable_id
-
-    def project_id = page_link.linkable.project_id
-
     def deletion_action_item(menu)
-      href = url_helpers.confirm_delete_project_work_package_relation_wiki_page_link_path(page_link,
-                                                                                          work_package_id:,
-                                                                                          project_id:)
+      href = url_helpers.confirm_delete_dialog_relation_wiki_page_link_path(page_link)
 
       menu.with_item(label: t(".remove"),
                      scheme: :danger,

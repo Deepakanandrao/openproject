@@ -33,22 +33,22 @@ module Wikis
     include OpTurbo::ComponentStream
 
     before_action :find_page_link
-    before_action :authorize, except: %i[confirm_delete]
+    before_action :authorize, except: %i[confirm_delete_dialog]
 
-    no_authorization_required! :confirm_delete
+    no_authorization_required! :confirm_delete_dialog
 
     def destroy
       # TODO: implement delete service
     end
 
-    def confirm_delete
+    def confirm_delete_dialog
       respond_with_dialog(DeletePageLinkConfirmationDialogComponent.new(page_link: @page_link))
     end
 
     private
 
     def find_page_link
-      @page_link = RelationPageLink.find(params[:id])
+      @page_link = RelationPageLink.find(params.expect(:id))
     end
   end
 end

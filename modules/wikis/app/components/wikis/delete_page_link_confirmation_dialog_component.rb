@@ -47,15 +47,7 @@ module Wikis
     private
 
     def page_link_url
-      url_helpers.project_work_package_relation_wiki_page_link_path(@page_link, work_package_id:, project_id:)
-    end
-
-    def work_package_id
-      @page_link.linkable_id
-    end
-
-    def project_id
-      @page_link.linkable.project_id
+      url_helpers.relation_wiki_page_link_path(@page_link)
     end
   end
 end
