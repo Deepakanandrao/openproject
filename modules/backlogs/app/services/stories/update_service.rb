@@ -37,20 +37,15 @@ class Stories::UpdateService
   end
 
   def call(direction: nil, target_id: nil, position: nil, prev_id: nil)
-    attributes_result = resolve_required_attributes(direction:, target_id:)
-    return attributes_result if attributes_result.failure?
-
-    create_call = WorkPackages::UpdateService
-                  .new(user:, model: story)
-                  .call(**attributes_result.result)
-
-    create_call.on_success do
-      if prev_id
-        create_call.result.move_after(prev_id:)
-      elsif position
-        create_call.result.move_after(position:)
+    resolve_required_attributes(direction:, target_id:)
+      .bind { |attrs| WorkPackages::UpdateService.new(user:, model: story).call(**attrs) }
+      .on_success do |call|
+        if prev_id
+          call.result.move_after(prev_id:)
+        elsif position
+          call.result.move_after(position:)
+        end
       end
-    end
   end
 
   private
