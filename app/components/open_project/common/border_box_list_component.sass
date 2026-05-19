@@ -12,6 +12,7 @@
   > .Box-header
     background-color: transparent
     border-bottom: none
+    padding-bottom: var(--stack-padding-condensed)
 
   > ul > .Box-row:first-of-type
     border-top: none
@@ -45,6 +46,12 @@
 
     .Box-title
       font-size: var(--text-title-size-medium)
+
+  &.op-border-box-list_transparent
+    &.op-border-box-list_header-padding-default,
+    &.op-border-box-list_header-padding-spacious
+      > .Box-header
+        padding-bottom: var(--stack-padding-condensed)
 
 .op-border-box-list-header
   display: grid
