@@ -58,16 +58,18 @@ RSpec.describe Projects::Settings::BacklogsController do
     context "when service call succeeds" do
       let(:project_params) do
         {
-          done_status_ids: %w[1 2],
           backlog_excluded_type_ids: ["3"],
+          done_status_ids: %w[1 2],
           name: "must_be_ignored"
         }
       end
 
       it "updates backlogs type and status settings and redirects to show", :aggregate_failures do
         expect(update_service).to have_received(:call).with(
-          done_status_ids: %w[1 2],
-          backlog_excluded_type_ids: ["3"]
+          ActionController::Parameters.new(
+            "done_status_ids" => %w[1 2],
+            "backlog_excluded_type_ids" => ["3"]
+          ).permit!
         )
 
         expect(response).to redirect_to(project_settings_backlogs_path(project))
@@ -79,8 +81,8 @@ RSpec.describe Projects::Settings::BacklogsController do
       let(:service_result) { ServiceResult.failure(result: project, message: "invalid setting") }
       let(:project_params) do
         {
-          done_status_ids: ["999"],
-          backlog_excluded_type_ids: []
+          backlog_excluded_type_ids: [],
+          done_status_ids: ["999"]
         }
       end
 
@@ -91,17 +93,20 @@ RSpec.describe Projects::Settings::BacklogsController do
       end
     end
 
-    context "when done_status_ids is omitted by an empty multi-select" do
+    context "when only hidden empty value is sent for an empty done_status_ids multi-select" do
       let(:project_params) do
         {
+          done_status_ids: [""],
           backlog_excluded_type_ids: ["3"]
         }
       end
 
-      it "still passes an empty done_status_ids array to the service", :aggregate_failures do
+      it "passes through the Rails hidden-field payload", :aggregate_failures do
         expect(update_service).to have_received(:call).with(
-          done_status_ids: [],
-          backlog_excluded_type_ids: ["3"]
+          ActionController::Parameters.new(
+            "done_status_ids" => [""],
+            "backlog_excluded_type_ids" => ["3"]
+          ).permit!
         )
 
         expect(response).to redirect_to(project_settings_backlogs_path(project))
@@ -112,15 +117,17 @@ RSpec.describe Projects::Settings::BacklogsController do
     context "when duplicate ids are sent" do
       let(:project_params) do
         {
-          done_status_ids: %w[2 2],
-          backlog_excluded_type_ids: %w[3 3]
+          backlog_excluded_type_ids: %w[3 3],
+          done_status_ids: %w[2 2]
         }
       end
 
-      it "deduplicates the ids before passing to the service", :aggregate_failures do
+      it "deduplicates them before passing to the service", :aggregate_failures do
         expect(update_service).to have_received(:call).with(
-          done_status_ids: ["2"],
-          backlog_excluded_type_ids: ["3"]
+          ActionController::Parameters.new(
+            "done_status_ids" => ["2"],
+            "backlog_excluded_type_ids" => ["3"]
+          ).permit!
         )
 
         expect(response).to redirect_to(project_settings_backlogs_path(project))
