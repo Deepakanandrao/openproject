@@ -36,9 +36,9 @@ RSpec.describe Sprints::FinishService do
   shared_let(:open_status) { create(:status, is_closed: false) }
   shared_let(:closed_status) { create(:status, is_closed: true) }
   shared_let(:project) do
-    create(:project, enabled_module_names: %w[backlogs work_package_tracking]) do |p|
-      p.done_status_ids = [closed_status.id]
-    end
+    create(:project,
+           enabled_module_names: %w[backlogs work_package_tracking],
+           backlog_considered_closed_statuses: [closed_status])
   end
 
   let(:user) do
