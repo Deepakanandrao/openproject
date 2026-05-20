@@ -44,9 +44,7 @@ module OpenProject::GithubIntegration
         # Or with the following prefix: OP#
         # e.g.,: This is a reference to OP#1234 or OP#PROJ-42
         host_name = Regexp.escape(Setting.host_name)
-        classic   = /\d+/
-        semantic  = WorkPackage::SemanticIdentifier::SEMANTIC_ID_PATTERN
-        wp_id     = /#{semantic}|#{classic}/
+        wp_id     = WorkPackage::SemanticIdentifier::ID_ROUTE_CONSTRAINT
         wp_regex  = /
           OP\#(#{wp_id})
           |
