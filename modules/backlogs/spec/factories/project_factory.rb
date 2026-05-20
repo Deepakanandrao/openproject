@@ -28,26 +28,17 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class BacklogBucket < ApplicationRecord
-  self.table_name = "backlog_buckets"
+FactoryBot.modify do
+  factory :project do
+    transient do
+      backlog_considered_closed_statuses { [] }
+    end
 
-  belongs_to :project
-  has_many :work_packages, inverse_of: :backlog_bucket, dependent: :nullify
-  has_many :displayed_work_packages, # rubocop:disable Rails/HasManyOrHasOneDependent
-           -> do
-             visible(User.current)
-               .without_status_considered_closed
-               .without_excluded_type
-               .order_by_position
-           end,
-           class_name: "WorkPackage",
-           inverse_of: :backlog_bucket
+    after(:create) do |project, evaluator|
+      statuses = Array(evaluator.backlog_considered_closed_statuses)
+      next unless statuses.any?
 
-  scope :order_alphabetically, -> { order(:name) }
-
-  validates :name, :project, presence: true
-
-  def self.for_project(project)
-    where(project:).order_alphabetically.includes(displayed_work_packages: %i[assigned_to priority parent])
+      project.done_status_ids = (project.done_status_ids | statuses.map(&:id))
+    end
   end
 end

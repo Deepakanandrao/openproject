@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#-- copyright
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,28 +26,34 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
-class BacklogBucket < ApplicationRecord
-  self.table_name = "backlog_buckets"
+module WorkPackages::Scopes::WithoutStatusConsideredClosed
+  extend ActiveSupport::Concern
 
-  belongs_to :project
-  has_many :work_packages, inverse_of: :backlog_bucket, dependent: :nullify
-  has_many :displayed_work_packages, # rubocop:disable Rails/HasManyOrHasOneDependent
-           -> do
-             visible(User.current)
-               .without_status_considered_closed
-               .without_excluded_type
-               .order_by_position
-           end,
-           class_name: "WorkPackage",
-           inverse_of: :backlog_bucket
+  class_methods do
+    def without_status_considered_closed
+      # Excludes work packages whose status is configured as "done" on the project
+      # the work package belongs to. The correlated subquery ensures each work package
+      # is always checked against its own project's status configuration.
+      # Additionally, all globally closed statuses are always treated as done,
+      # safeguarding against empty/corrupt project configuration (per AC).
+      status_subquery = <<~SQL.squish
+        work_packages.status_id NOT IN (
+          SELECT status_id
+          FROM done_statuses_for_project
+          WHERE project_id = work_packages.project_id
+          AND status_id IS NOT NULL
+        )
+        AND work_packages.status_id NOT IN (
+          SELECT id
+          FROM statuses
+          WHERE is_closed = TRUE
+        )
+      SQL
 
-  scope :order_alphabetically, -> { order(:name) }
-
-  validates :name, :project, presence: true
-
-  def self.for_project(project)
-    where(project:).order_alphabetically.includes(displayed_work_packages: %i[assigned_to priority parent])
+      where(status_subquery)
+        .includes(:status)
+    end
   end
 end

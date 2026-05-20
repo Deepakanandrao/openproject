@@ -28,26 +28,18 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class BacklogBucket < ApplicationRecord
-  self.table_name = "backlog_buckets"
-
-  belongs_to :project
-  has_many :work_packages, inverse_of: :backlog_bucket, dependent: :nullify
-  has_many :displayed_work_packages, # rubocop:disable Rails/HasManyOrHasOneDependent
-           -> do
-             visible(User.current)
-               .without_status_considered_closed
-               .without_excluded_type
-               .order_by_position
-           end,
-           class_name: "WorkPackage",
-           inverse_of: :backlog_bucket
-
-  scope :order_alphabetically, -> { order(:name) }
-
-  validates :name, :project, presence: true
-
-  def self.for_project(project)
-    where(project:).order_alphabetically.includes(displayed_work_packages: %i[assigned_to priority parent])
+class AddBacklogExcludedTypes < ActiveRecord::Migration[8.1]
+  def change
+    create_join_table :projects,
+                      :types,
+                      table_name: :backlog_excluded_types,
+                      column_options: {
+                        null: false,
+                        foreign_key: { on_delete: :cascade, on_update: :cascade }
+                      } do |t|
+      t.index %i[project_id type_id],
+              unique: true,
+              name: "idx_backlog_excluded_types"
+    end
   end
 end

@@ -36,6 +36,8 @@ en:
     attributes:
       project:
         sprint_sharing: "Sprint sharing"
+        backlog_excluded_types: "Excluded work package types"
+        statuses_considered_closed: "Statuses considered closed"
       sprint:
         duration: "Duration"
         finish_date: "Finish date"
@@ -116,10 +118,10 @@ en:
         blankslate_description: "Set start and end date for the sprint to generate a burndown chart."
 
     caption_sprints_default_fold_state: "Sprints will not be expanded by default when viewing the 'Backlog and sprints' page. Each one has to be manually expanded."
-    definition_of_done: "Definition of Done"
-    definition_of_done_caption: "Work packages with these statuses are treated as completed in backlog views and reporting."
-    done_status: "Done status"
-
+    excluded_work_package_types_caption: >
+      Choose which work package types to hide from the backlog. Items of the selected types will not appear in the backlog automatically,
+      keeping it focused on the work that matters to your team.
+      For example, types like Epics or Milestones that are managed at a higher level can be hidden to keep the backlog focused on actionable items.
     finish_sprint_dialog_component:
       title: "There are work in progress items"
       body: "%{message} What would you like to do with these?"
@@ -186,6 +188,11 @@ en:
     story_points:
       one: "%{count} story point"
       other: "%{count} story points"
+    statuses_considered_closed_caption: >
+      Choose the statuses that represent a closed or finished state in your workflow.
+      These will be treated as the "Closed" state across reporting (e.g. burndown) and sprint planning.
+      For example, statuses like Done, Resolved, or Won't Fix may all represent a closed work item in your process.
+    types_and_statuses: "Types and statuses"
 
     unassigned: "Unassigned"
 
@@ -235,7 +242,10 @@ en:
 
   permission_create_sprints: "Create sprints"
   permission_manage_sprint_items: "Manage sprint items"
-  permission_select_done_statuses: "Select done statuses"
+  permission_select_backlog_types_and_statuses: "Select backlog types and statuses"
+  permission_select_backlog_types_and_statuses_explanation: >
+    Allows choosing which work package types to hide from the backlog. Also allows defining
+    which statuses represent a closed or finished state in the project's workflow.
   permission_share_sprint: "Share sprint"
   permission_start_complete_sprint: "Start/complete sprint"
   permission_view_sprints: "View sprints"

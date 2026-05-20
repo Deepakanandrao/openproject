@@ -28,26 +28,21 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class BacklogBucket < ApplicationRecord
-  self.table_name = "backlog_buckets"
+module WorkPackages::Scopes::WithoutExcludedType
+  extend ActiveSupport::Concern
 
-  belongs_to :project
-  has_many :work_packages, inverse_of: :backlog_bucket, dependent: :nullify
-  has_many :displayed_work_packages, # rubocop:disable Rails/HasManyOrHasOneDependent
-           -> do
-             visible(User.current)
-               .without_status_considered_closed
-               .without_excluded_type
-               .order_by_position
-           end,
-           class_name: "WorkPackage",
-           inverse_of: :backlog_bucket
+  class_methods do
+    def without_excluded_type
+      type_subquery = <<~SQL.squish
+        work_packages.type_id NOT IN (
+          SELECT type_id
+          FROM backlog_excluded_types
+          WHERE project_id = work_packages.project_id
+        )
+      SQL
 
-  scope :order_alphabetically, -> { order(:name) }
-
-  validates :name, :project, presence: true
-
-  def self.for_project(project)
-    where(project:).order_alphabetically.includes(displayed_work_packages: %i[assigned_to priority parent])
+      where(type_subquery)
+        .includes(:type)
+    end
   end
 end

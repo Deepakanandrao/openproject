@@ -28,26 +28,40 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class BacklogBucket < ApplicationRecord
-  self.table_name = "backlog_buckets"
+module Projects
+  class BacklogsTypesAndStatusesContract < ::ModelContract
+    validate :validate_permissions
+    validate :validate_done_status_ids
+    validate :validate_backlog_excluded_type_ids
 
-  belongs_to :project
-  has_many :work_packages, inverse_of: :backlog_bucket, dependent: :nullify
-  has_many :displayed_work_packages, # rubocop:disable Rails/HasManyOrHasOneDependent
-           -> do
-             visible(User.current)
-               .without_status_considered_closed
-               .without_excluded_type
-               .order_by_position
-           end,
-           class_name: "WorkPackage",
-           inverse_of: :backlog_bucket
+    def validate_model? = false
 
-  scope :order_alphabetically, -> { order(:name) }
+    private
 
-  validates :name, :project, presence: true
+    def validate_permissions
+      unless user.allowed_in_project?(:select_backlog_types_and_statuses, model)
+        errors.add :base, :error_unauthorized
+      end
+    end
 
-  def self.for_project(project)
-    where(project:).order_alphabetically.includes(displayed_work_packages: %i[assigned_to priority parent])
+    def validate_done_status_ids
+      submitted_ids = model.done_status_ids.map(&:to_i)
+
+      existing_ids = Status.where(id: submitted_ids).ids
+      invalid_ids = submitted_ids - existing_ids
+
+      errors.add :done_status_ids, :invalid if invalid_ids.any?
+    end
+
+    def validate_backlog_excluded_type_ids
+      submitted_ids = model.backlog_excluded_type_ids
+      return if submitted_ids.empty?
+
+      # Only types enabled on the project are allowed:
+      project_type_ids = model.types.pluck(:id)
+      invalid_ids = submitted_ids.map(&:to_i) - project_type_ids
+
+      errors.add :backlog_excluded_type_ids, :invalid if invalid_ids.any?
+    end
   end
 end

@@ -28,26 +28,18 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class BacklogBucket < ApplicationRecord
-  self.table_name = "backlog_buckets"
+class BackfillDoneStatusesForBacklogsProjects < ActiveRecord::Migration[8.1]
+  def up
+    mandatory_ids = Status.where(is_closed: true).ids
+    return if mandatory_ids.empty?
 
-  belongs_to :project
-  has_many :work_packages, inverse_of: :backlog_bucket, dependent: :nullify
-  has_many :displayed_work_packages, # rubocop:disable Rails/HasManyOrHasOneDependent
-           -> do
-             visible(User.current)
-               .without_status_considered_closed
-               .without_excluded_type
-               .order_by_position
-           end,
-           class_name: "WorkPackage",
-           inverse_of: :backlog_bucket
-
-  scope :order_alphabetically, -> { order(:name) }
-
-  validates :name, :project, presence: true
-
-  def self.for_project(project)
-    where(project:).order_alphabetically.includes(displayed_work_packages: %i[assigned_to priority parent])
+    Project
+      .joins(:enabled_modules)
+      .where(enabled_modules: { name: "backlogs" })
+      .find_each do |project|
+        project.done_status_ids = (project.done_status_ids | mandatory_ids)
+      end
   end
+
+  def down; end
 end

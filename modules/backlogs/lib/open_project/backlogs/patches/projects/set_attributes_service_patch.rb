@@ -28,26 +28,23 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class BacklogBucket < ApplicationRecord
-  self.table_name = "backlog_buckets"
+module OpenProject::Backlogs::Patches::Projects::SetAttributesServicePatch
+  def self.included(base)
+    base.prepend InstanceMethods
+  end
 
-  belongs_to :project
-  has_many :work_packages, inverse_of: :backlog_bucket, dependent: :nullify
-  has_many :displayed_work_packages, # rubocop:disable Rails/HasManyOrHasOneDependent
-           -> do
-             visible(User.current)
-               .without_status_considered_closed
-               .without_excluded_type
-               .order_by_position
-           end,
-           class_name: "WorkPackage",
-           inverse_of: :backlog_bucket
+  module InstanceMethods
+    private
 
-  scope :order_alphabetically, -> { order(:name) }
+    def set_attributes(params)
+      super
 
-  validates :name, :project, presence: true
+      return unless params.key?(:done_status_ids)
 
-  def self.for_project(project)
-    where(project:).order_alphabetically.includes(displayed_work_packages: %i[assigned_to priority parent])
+      # Statuses marked as globally closed are mandatory and must always be
+      # included regardless of what the user submitted.
+      mandatory_ids = Status.where(is_closed: true).ids
+      model.done_status_ids = (model.done_status_ids | mandatory_ids) if mandatory_ids.any?
+    end
   end
 end
