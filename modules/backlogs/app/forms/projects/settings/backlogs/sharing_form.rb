@@ -59,7 +59,7 @@ module Projects
             group.radio_button(
               label: sharing_option_label(Project::SHARE_ALL_PROJECTS),
               value: Project::SHARE_ALL_PROJECTS,
-              disabled: only_fallback_allowed || share_all_projects_disabled?,
+              disabled: only_fallback_allowed || all_projects_shared_by_other_project?,
               caption: shared_all_projects_caption,
               data: { "show-when-value-selected-target": "cause" }
             )
@@ -110,7 +110,7 @@ module Projects
           I18n.t("projects.settings.backlog_sharing.options.#{option}.#{key}", **)
         end
 
-        def share_all_projects_disabled?
+        def all_projects_shared_by_other_project?
           global_sprint_sharer && global_sprint_sharer != model
         end
 
@@ -134,12 +134,17 @@ module Projects
         end
 
         def shared_all_projects_caption
-          if !only_fallback_allowed && !share_all_projects_disabled?
-            sharing_option_caption(Project::SHARE_ALL_PROJECTS)
-          elsif User.current.allowed_in_project?(:view_project, global_sprint_sharer)
-            sharing_option_text(Project::SHARE_ALL_PROJECTS, :disabled_caption, name: global_sprint_sharer.name)
+          if all_projects_shared_by_other_project?
+            if User.current.allowed_in_project?(:view_project, global_sprint_sharer)
+              sharing_option_text(Project::SHARE_ALL_PROJECTS,
+                                  :disabled_caption,
+                                  name: global_sprint_sharer.name)
+            else
+              sharing_option_text(Project::SHARE_ALL_PROJECTS,
+                                  :disabled_caption_anonymous)
+            end
           else
-            sharing_option_text(Project::SHARE_ALL_PROJECTS, :disabled_caption_anonymous)
+            sharing_option_caption(Project::SHARE_ALL_PROJECTS)
           end
         end
       end
