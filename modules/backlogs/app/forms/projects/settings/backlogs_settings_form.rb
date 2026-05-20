@@ -47,12 +47,10 @@ module Projects
           }
         ) do |list|
           available_statuses.each do |label, value, is_closed|
-            active = is_closed || value.in?(model.done_status_ids)
-
             list.option(
               label:,
               value:,
-              selected: active,
+              selected: value.in?(model.done_status_ids),
               disabled: is_closed
             )
           end
