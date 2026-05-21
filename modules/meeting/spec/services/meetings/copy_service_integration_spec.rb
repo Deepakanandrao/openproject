@@ -196,4 +196,20 @@ RSpec.describe Meetings::CopyService, "integration", type: :model do
       end
     end
   end
+
+  context "with a work_package agenda item whose work package was deleted" do
+    before do
+      item = create(:wp_meeting_agenda_item, meeting:)
+      # Simulate the work package being destroyed (dependent: :nullify)
+      item.update_columns(work_package_id: nil)
+    end
+
+    it "copies the deleted-WP agenda item preserving its type and nil work_package_id" do
+      expect(service_result).to be_success
+      deleted_item = copy.reload.agenda_items.last
+      expect(deleted_item).to be_present
+      expect(deleted_item).to be_work_package
+      expect(deleted_item.work_package_id).to be_nil
+    end
+  end
 end
