@@ -59,15 +59,18 @@ RSpec.describe Wikis::Adapters::Providers::Internal::Queries::RelationPageLinks 
 
   it { is_expected.to be_success }
 
-  it "returns the page info results of the wiki pages" do
+  it "returns aggregates with the page info results of the wiki pages and the page links" do
     result = subject.value!
     expect(result.size).to eq(2)
-    expect(result[0]).to be_success
-    expect(result[0].value!.title).to eq(wiki_page.title)
-    expect(result[0].value!.href).to eq("/projects/#{project.identifier}/wiki/#{wiki_page.slug}")
+    expect(result[0]).to be_a(Wikis::Adapters::Results::PageLinkAggregate)
+    expect(result[0].page_info_result.value!.title).to eq(wiki_page.title)
+    expect(result[0].page_info_result.value!.href).to eq("/projects/#{project.identifier}/wiki/#{wiki_page.slug}")
+    expect(result[0].page_link).to eq(link_to_existing_page)
 
-    expect(result[1]).to be_failure
-    expect(result[1].failure.code).to eq(:not_found)
+    expect(result[1]).to be_a(Wikis::Adapters::Results::PageLinkAggregate)
+    expect(result[1].page_info_result).to be_failure
+    expect(result[1].page_info_result.failure.code).to eq(:not_found)
+    expect(result[1].page_link).to eq(link_to_non_existing_page)
   end
 
   context "when user can't see wiki pages" do
@@ -77,10 +80,12 @@ RSpec.describe Wikis::Adapters::Providers::Internal::Queries::RelationPageLinks 
       result = subject.value!
       expect(result.size).to eq(2)
 
-      expect(result[0]).to be_failure
-      expect(result[0].failure.code).to eq(:not_found)
-      expect(result[1]).to be_failure
-      expect(result[1].failure.code).to eq(:not_found)
+      expect(result[0].page_info_result).to be_failure
+      expect(result[0].page_info_result.failure.code).to eq(:not_found)
+      expect(result[0].page_link).to eq(link_to_existing_page)
+      expect(result[1].page_info_result).to be_failure
+      expect(result[1].page_info_result.failure.code).to eq(:not_found)
+      expect(result[1].page_link).to eq(link_to_non_existing_page)
     end
   end
 end
