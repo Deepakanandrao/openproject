@@ -51,6 +51,25 @@ zh-CN:
           description: 您的评论将对任何能够访问此工作包的人可见。您确定要这样做吗？
           confirm_button_text: 设为公开
   admin:
+    reserved_identifiers:
+      title: Reserved project identifiers
+      lede_html: When a project's identifier is renamed, the previous identifier is kept reserved so that existing links and integrations keep working.<br>Here you can release reserved identifiers so that they may be used by other projects.
+      col_identifier: Identifier
+      col_project: Project
+      col_reserved: Reserved
+      not_available_in_semantic_mode: Reserved identifiers are only available in classic identifier mode.
+      filter_label: Filter identifiers
+      btn_release: Release
+      released_notice: Identifier "%{identifier}" has been released.
+      dialog:
+        title: Release identifier
+        heading: Release "%{identifier}"?
+        description: Releasing this identifier cannot be undone. External links and integrations using it will stop resolving, and the name becomes available for any new project to claim.
+        checkbox_label: I understand that this cannot be undone.
+        confirm_button: Release identifier
+      empty_heading: No reserved identifiers
+      reserved_ago: "%{time} ago"
+      empty_body: When a project's identifier changes, the previous one will appear here so you can release it once it's safe to do so.
     plugins:
       no_results_title_text: 目前没有安装插件。
       no_results_content_text: 更多信息，请参阅我们的集成和插件页面。
@@ -119,6 +138,9 @@ zh-CN:
       errors:
         cannot_delete_with_imports: 无法删除具有现有导入的 Jira 主机
         custom_field_creation_failed: 无法创建自定义字段 '%{name}'：%{message}
+        semantic_identifiers_must_be_enabled:
+          title: Project-based semantic identifiers must be enabled.
+          description: Jira uses work items identifiers consisting of project key and a sequence number (PRJ-123). OpenProject also supports it, but it needs to be enabled [here](link).
       blank:
         title: 尚未配置 Jira 主机
         description: 配置 Jira 主机，以开始将 Jira 中的条目导入此 OpenProject 实例。
@@ -157,6 +179,9 @@ zh-CN:
       client:
         connection_error: 无法连接到 Jira 服务器：%{message}
         connection_timeout: 与 Jira 服务器的连接超时：%{message}
+        ssrf_blocked: 'Connection blocked: the Jira host resolves to a private IP address. If your Jira instance runs on an internal network, allow its IP via the OPENPROJECT_SSRF__PROTECTION__IP__ALLOWLIST environment variable.'
+        ssrf_block_doc_link: Please see our [documentation](docs_url).
+        ssl_error: 'SSL error connecting to Jira server: %{message}'
         parse_error: 无法解析 Jira API 响应：%{message}
         api_error: Jira API 返回错误状态 %{status}
         401_error: Jira API 返回 401 错误。您的身份验证令牌可能已过期或缺少所需权限。请确保该令牌属于 Jira 管理员。
@@ -398,7 +423,9 @@ zh-CN:
         page_header:
           description: 可以选择经典的数字工作包 ID，或者将项目标识符作为工作包 ID 前缀的语义化项目特定工作包 ID。
         banner:
-          existing_identifiers_notice: "%{project_count} 个项目的现有标识符不符合基于项目的语义标识符要求。OpenProject 可以自动更新这些标识符，使其成为如下例中所示的有效格式。点击“自动修正并保存”按钮，以这种方式更新所有项目的标识符，并启用基于项目的语义标识符。\n"
+          existing_identifiers_notice: 'Existing identifiers for %{project_count} projects don''t meet requirements for project-based semantic identifiers. OpenProject can automatically update these so that they are valid as in the examples below. Click on ''Convert identifiers'' to update identifiers for all projects in this manner and enable project-based semantic identifiers.
+
+            '
         box_header:
           label_project: 项目
           label_previous_identifier: 上一个标识符
@@ -416,7 +443,8 @@ zh-CN:
           error_unknown: 需要手动检查
           remaining_projects:
             other: "…其他 %{count} 个项目"
-        button_autofix: 自动修正并保存
+        button_autofix: Convert identifiers
+        button_save: Convert identifiers
         dialog:
           title: 更改工作包标识符
           heading: 是否启用基于项目的工作包 ID？
@@ -427,8 +455,9 @@ zh-CN:
           checkbox_label: 我了解此操作将永久更改所有工作包 ID
         success_banner: 已成功更新工作包标识符格式。
         in_progress:
-          converting_banner_message: 项目标识符目前正在转换为语义格式。此过程可能需要一些时间。
-          reverting_banner_message: 项目标识符目前正在恢复为经典格式。此过程可能需要一些时间。
+          header_semantic: Converting to project-based identifiers
+          header_classic: Converting to numeric identifiers
+          footer_message: Background conversion is in progress. You can safely leave this page.
     workflows:
       tabs:
         default_transitions: 默认转换
@@ -1317,7 +1346,7 @@ zh-CN:
     edit:
       form_configuration:
         tab: 表单配置
-        label_group: Group
+        label_group: 组
         reset_to_defaults: Reset to defaults
         add_attribute_group: Add attribute group
         add_query_group: Add table of related work packages
@@ -1337,7 +1366,7 @@ zh-CN:
         confirm_delete_group: Are you sure you want to delete this group? This action cannot be automatically reversed.
         group_name_label: Group name
         row_actions: Row actions
-        query_group_label: Work packages table
+        query_group_label: 工作包列表
         empty_group_hint: Drag attributes here
         invalid_attribute_groups: The form configuration payload is invalid.
         invalid_query: The embedded query configuration is invalid.
@@ -1446,7 +1475,7 @@ zh-CN:
     bulk_delete_dialog:
       title: 删除 %{count} 个工作包
       heading: 永久删除这些 %{count} 工作包？
-      description: 'The following work packages and all associated data will be permanently deleted:'
+      description: 以下工作包和所有相关数据将被永久删除：
       description_with_children: 'The following work packages, including children and all associated data, will be permanently deleted:'
       confirm_children_deletion: 我确认所有选定的工作包及其子工作包将被永久删除。
       cross_project_warning: 这些工作包跨越多个项目： %{projects}
@@ -2493,7 +2522,7 @@ zh-CN:
         other: 优先事项
       meeting_participant: 会议参与者
       member: 成员
-      message: Message
+      message: 消息
       news: 新闻
       notification:
         other: 通知
@@ -4172,6 +4201,7 @@ zh-CN:
   label_project_new: 新的项目
   label_project_plural: 项目
   label_project_list_plural: 项目列表
+  label_reserved_identifiers: Reserved identifiers
   label_project_life_cycle: 项目生命周期
   label_project_attributes_plural: 项目属性
   label_project_custom_field_plural: 项目属性
@@ -4385,9 +4415,9 @@ zh-CN:
     other: "%{count} 条评论"
     zero: 没有注释
   label_x_items:
-    one: 1 item
-    other: "%{count} items"
-    zero: no items
+    one: 1 个项目
+    other: "%{count} 个项目"
+    zero: 没有项目
   label_x_open_work_packages_abbr:
     one: 1 个打开
     other: "%{count} 个打开"
@@ -4716,10 +4746,10 @@ zh-CN:
     common:
       work_package_card_component:
         drag_handle:
-          label: Drag to reorder
+          label: 拖拽排序
         menu:
           label_actions: 工作包操作
-        parent: Parent
+        parent: 父
   permission_add_work_package_comments: 添加评论
   permission_add_work_packages: 添加工作包
   permission_add_messages: 发布消息

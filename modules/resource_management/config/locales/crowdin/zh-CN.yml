@@ -12,10 +12,10 @@ zh-CN:
       resource_allocation:
         entity: Entity
         principal: Assignee
-        state: State
-        start_date: Start date
-        end_date: Finish date
-        allocated_time: Allocated time
+        state: 地区
+        start_date: 开始日期
+        end_date: 结束日期
+        allocated_time: 分配时间
         user_filter: User filter
     errors:
       models:
@@ -26,7 +26,7 @@ zh-CN:
         resource_allocation:
           attributes:
             end_date:
-              greater_than_start_date: must be after the start date.
+              greater_than_start_date: 必须在开始日期之后。
   plugin_openproject_resource_management:
     name: OpenProject 资源管理
     description: 提供资源管理和能力规划。

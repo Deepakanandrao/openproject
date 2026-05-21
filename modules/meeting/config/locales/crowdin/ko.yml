@@ -65,6 +65,9 @@ ko:
         title: 제목
         frequency: 빈도
         interval: 간격
+        monthly_day: Day of month
+        monthly_ordinal: Position
+        monthly_weekday: Weekday
         start_date: '시작:'
         start_time: 시작 시간
         start_time_hour: 시작 시간
@@ -477,18 +480,41 @@ ko:
         other: "%{count}일마다"
       x_weekly:
         other: "%{count}주마다"
+      x_monthly:
+        other: Every %{count} months
+      monthly_day_of_month: Day of month
+      monthly_nth_weekday: Monthly on a weekday
       every_weekday: "%{day_of_the_week}마다"
       working_days: 근무일마다
+    monthly:
+      inflected_ordinal:
+        first: first
+        second: second
+        third: third
+        fourth: fourth
+        last: last
+      ordinal_options:
+        first: First
+        second: Second
+        third: Third
+        fourth: Fourth
+        last: Last
+    actual_first_occurrence_mismatch_html: The first occurrence of this series will be %{first_occurrence}
+    day_of_month_skipping_info: Months with fewer than %{monthly_day} days will be skipped
     end_after:
-      never: 안 함
-      specific_date: 특정 날짜 이후
-      iterations: 여러 항목 이후
+      never: Never
+      specific_date: After a specific date
+      iterations: After a number of occurrences
     starts: 시작
     in_words:
       daily_interval: "%{interval}일마다"
       working_days: 근무일마다
       weekly: 매주 %{weekday}
       weekly_interval: "%{interval}주마다 %{weekday}"
+      monthly_day: Every month on the %{day}
+      monthly_day_interval: Every %{interval} months on the %{day}
+      monthly_nth_weekday: Every month on the %{ordinal} %{weekday}
+      monthly_nth_weekday_interval: Every %{interval} months on the %{ordinal} %{weekday}
       frequency: "%{base}, %{time}"
       full: "%{base}, %{time}, %{end_date}에 종료"
       full_past: "%{base}, %{time}, %{end_date}에 종료"

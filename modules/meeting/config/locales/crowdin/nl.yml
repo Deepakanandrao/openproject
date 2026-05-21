@@ -66,6 +66,9 @@ nl:
         title: Title
         frequency: Frequentie
         interval: Interval
+        monthly_day: Day of month
+        monthly_ordinal: Position
+        monthly_weekday: Weekday
         start_date: Begint op
         start_time: Starttijd
         start_time_hour: Starttijd
@@ -484,18 +487,42 @@ nl:
       x_weekly:
         one: Every week
         other: Every %{count} weeks
+      x_monthly:
+        one: Every month
+        other: Every %{count} months
+      monthly_day_of_month: Day of month
+      monthly_nth_weekday: Monthly on a weekday
       every_weekday: Elke %{day_of_the_week}
       working_days: Elke werkdag
+    monthly:
+      inflected_ordinal:
+        first: first
+        second: second
+        third: third
+        fourth: fourth
+        last: last
+      ordinal_options:
+        first: First
+        second: Second
+        third: Third
+        fourth: Fourth
+        last: Last
+    actual_first_occurrence_mismatch_html: The first occurrence of this series will be %{first_occurrence}
+    day_of_month_skipping_info: Months with fewer than %{monthly_day} days will be skipped
     end_after:
-      never: nooit
-      specific_date: na een specifieke datum
-      iterations: na een aantal gebeurtenissen
+      never: Never
+      specific_date: After a specific date
+      iterations: After a number of occurrences
     starts: Begint
     in_words:
       daily_interval: Elke %{interval} dagen
       working_days: Elke werkdag
       weekly: Elke week op %{weekday}
       weekly_interval: Elke %{interval} weken op %{weekday}
+      monthly_day: Every month on the %{day}
+      monthly_day_interval: Every %{interval} months on the %{day}
+      monthly_nth_weekday: Every month on the %{ordinal} %{weekday}
+      monthly_nth_weekday_interval: Every %{interval} months on the %{ordinal} %{weekday}
       frequency: "%{base} op %{time}"
       full: "%{base} op %{time}, eindigt op %{end_date}"
       full_past: "%{base} op %{time}, geëindigd op %{end_date}"

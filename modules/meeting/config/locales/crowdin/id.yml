@@ -65,6 +65,9 @@ id:
         title: Title
         frequency: Kekerapan
         interval: Sela Waktu
+        monthly_day: Day of month
+        monthly_ordinal: Position
+        monthly_weekday: Weekday
         start_date: Mulai pada
         start_time: Waktu mulai
         start_time_hour: Waktu mulai
@@ -477,18 +480,41 @@ id:
         other: Setiap %{count} hari
       x_weekly:
         other: Setiap %{count} mingu
+      x_monthly:
+        other: Every %{count} months
+      monthly_day_of_month: Day of month
+      monthly_nth_weekday: Monthly on a weekday
       every_weekday: Setiap %{day_of_the_week}
       working_days: Setiap hari kerja
+    monthly:
+      inflected_ordinal:
+        first: first
+        second: second
+        third: third
+        fourth: fourth
+        last: last
+      ordinal_options:
+        first: First
+        second: Second
+        third: Third
+        fourth: Fourth
+        last: Last
+    actual_first_occurrence_mismatch_html: The first occurrence of this series will be %{first_occurrence}
+    day_of_month_skipping_info: Months with fewer than %{monthly_day} days will be skipped
     end_after:
-      never: tidak pernah
-      specific_date: setelah tanggal tertentu
-      iterations: setelah beberapa acara
+      never: Never
+      specific_date: After a specific date
+      iterations: After a number of occurrences
     starts: Mulai
     in_words:
       daily_interval: Setiap %{interval} hari
       working_days: Setiap hari kerja
       weekly: Setiap minggu pada hari %{weekday}
       weekly_interval: Setiap %{interval} minggu pada hari %{weekday}
+      monthly_day: Every month on the %{day}
+      monthly_day_interval: Every %{interval} months on the %{day}
+      monthly_nth_weekday: Every month on the %{ordinal} %{weekday}
+      monthly_nth_weekday_interval: Every %{interval} months on the %{ordinal} %{weekday}
       frequency: "%{base} pada %{time}"
       full: "%{base} pada %{time}, berakhir pada %{end_date}"
       full_past: "%{base} pada %{time}, berakhir pada %{end_date}"

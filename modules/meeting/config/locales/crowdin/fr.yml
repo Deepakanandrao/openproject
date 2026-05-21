@@ -39,8 +39,8 @@ fr:
           other: "%{count} participants"
         participants_attended: Présent(s)
         participants_invited: Invités
-        participants_added: 'Participants added:'
-        participants_removed: 'Participants removed:'
+        participants_added: 'Participants ajoutés:'
+        participants_removed: 'Participants retirés :'
         project: Projet
         start_date: Date
         start_time: Heure de début
@@ -66,6 +66,9 @@ fr:
         title: Titre
         frequency: Fréquence
         interval: Intervalle
+        monthly_day: Day of month
+        monthly_ordinal: Position
+        monthly_weekday: Weekday
         start_date: Commence le
         start_time: Heure de début
         start_time_hour: Heure de début
@@ -288,8 +291,8 @@ fr:
         new_date_time: Nouvelle date/heure
         old_location: Ancien emplacement
         new_location: Nouvel emplacement
-        added_participants: Added
-        removed_participants: Removed
+        added_participants: Ajouté
+        removed_participants: Retiré
     label_mail_all_participants: Envoyer une invitation par e-mail aux participants
     types:
       one_time: Ponctuelle
@@ -484,18 +487,42 @@ fr:
       x_weekly:
         one: Toutes les semaines
         other: Toutes les %{count} semaines
+      x_monthly:
+        one: Every month
+        other: Every %{count} months
+      monthly_day_of_month: Day of month
+      monthly_nth_weekday: Monthly on a weekday
       every_weekday: Chaque %{day_of_the_week}
       working_days: Chaque jour ouvrable
+    monthly:
+      inflected_ordinal:
+        first: first
+        second: second
+        third: third
+        fourth: fourth
+        last: last
+      ordinal_options:
+        first: First
+        second: Second
+        third: Third
+        fourth: Fourth
+        last: Last
+    actual_first_occurrence_mismatch_html: The first occurrence of this series will be %{first_occurrence}
+    day_of_month_skipping_info: Months with fewer than %{monthly_day} days will be skipped
     end_after:
-      never: jamais
-      specific_date: après une date précise
-      iterations: après un certain nombre d'occurrences
+      never: Never
+      specific_date: After a specific date
+      iterations: After a number of occurrences
     starts: Début
     in_words:
       daily_interval: Tous les %{interval} jours
       working_days: Chaque jour ouvrable
       weekly: Chaque semaine le %{weekday}
       weekly_interval: Toutes les %{interval} semaines le %{weekday}
+      monthly_day: Every month on the %{day}
+      monthly_day_interval: Every %{interval} months on the %{day}
+      monthly_nth_weekday: Every month on the %{ordinal} %{weekday}
+      monthly_nth_weekday_interval: Every %{interval} months on the %{ordinal} %{weekday}
       frequency: "%{base} à %{time}"
       full: "%{base} à %{time}, se termine le %{end_date}"
       full_past: "%{base} à %{time}, terminée le %{end_date}"

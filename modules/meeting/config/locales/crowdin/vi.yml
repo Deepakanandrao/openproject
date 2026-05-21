@@ -65,6 +65,9 @@ vi:
         title: Title
         frequency: tần số
         interval: khoảng thời gian
+        monthly_day: Day of month
+        monthly_ordinal: Position
+        monthly_weekday: Weekday
         start_date: Bắt đầu vào
         start_time: Thời gian bắt đầu
         start_time_hour: Thời gian bắt đầu
@@ -477,18 +480,41 @@ vi:
         other: Cứ %{count} ngày
       x_weekly:
         other: Mỗi %{count} tuần
+      x_monthly:
+        other: Every %{count} months
+      monthly_day_of_month: Day of month
+      monthly_nth_weekday: Monthly on a weekday
       every_weekday: Mọi %{day_of_the_week}
       working_days: Mỗi ngày làm việc
+    monthly:
+      inflected_ordinal:
+        first: first
+        second: second
+        third: third
+        fourth: fourth
+        last: last
+      ordinal_options:
+        first: First
+        second: Second
+        third: Third
+        fourth: Fourth
+        last: Last
+    actual_first_occurrence_mismatch_html: The first occurrence of this series will be %{first_occurrence}
+    day_of_month_skipping_info: Months with fewer than %{monthly_day} days will be skipped
     end_after:
-      never: không bao giờ
-      specific_date: sau một ngày cụ thể
-      iterations: sau một số lần xuất hiện
+      never: Never
+      specific_date: After a specific date
+      iterations: After a number of occurrences
     starts: bắt đầu
     in_words:
       daily_interval: Cứ %{interval} ngày
       working_days: Mỗi ngày làm việc
       weekly: Hàng tuần vào %{weekday}
       weekly_interval: Cứ %{interval} tuần vào %{weekday}
+      monthly_day: Every month on the %{day}
+      monthly_day_interval: Every %{interval} months on the %{day}
+      monthly_nth_weekday: Every month on the %{ordinal} %{weekday}
+      monthly_nth_weekday_interval: Every %{interval} months on the %{ordinal} %{weekday}
       frequency: "%{base} tại %{time}"
       full: "%{base} lúc %{time}, kết thúc vào %{end_date}"
       full_past: "%{base} lúc %{time}, đã kết thúc vào %{end_date}"

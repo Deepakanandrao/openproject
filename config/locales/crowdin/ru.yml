@@ -51,6 +51,25 @@ ru:
           description: Ваш комментарий будет виден всем, кто может получить доступ к этому пакету работ. Вы уверены, что хотите это сделать?
           confirm_button_text: Сделать общедоступным
   admin:
+    reserved_identifiers:
+      title: Reserved project identifiers
+      lede_html: When a project's identifier is renamed, the previous identifier is kept reserved so that existing links and integrations keep working.<br>Here you can release reserved identifiers so that they may be used by other projects.
+      col_identifier: Identifier
+      col_project: Project
+      col_reserved: Reserved
+      not_available_in_semantic_mode: Reserved identifiers are only available in classic identifier mode.
+      filter_label: Filter identifiers
+      btn_release: Release
+      released_notice: Identifier "%{identifier}" has been released.
+      dialog:
+        title: Release identifier
+        heading: Release "%{identifier}"?
+        description: Releasing this identifier cannot be undone. External links and integrations using it will stop resolving, and the name becomes available for any new project to claim.
+        checkbox_label: I understand that this cannot be undone.
+        confirm_button: Release identifier
+      empty_heading: No reserved identifiers
+      reserved_ago: "%{time} ago"
+      empty_body: When a project's identifier changes, the previous one will appear here so you can release it once it's safe to do so.
     plugins:
       no_results_title_text: В настоящее время плагины не установлены.
       no_results_content_text: Более подробную информацию см. на странице "Наши интеграции и плагины".
@@ -119,6 +138,9 @@ ru:
       errors:
         cannot_delete_with_imports: Невозможно удалить хост Jira с существующими импортами
         custom_field_creation_failed: 'Не удалось создать пользовательское поле ''%{name}'': %{message}'
+        semantic_identifiers_must_be_enabled:
+          title: Project-based semantic identifiers must be enabled.
+          description: Jira uses work items identifiers consisting of project key and a sequence number (PRJ-123). OpenProject also supports it, but it needs to be enabled [here](link).
       blank:
         title: Хосты Jira еще не настроены
         description: Настройте хост Jira, чтобы начать импортировать элементы из Jira в этот экземпляр OpenProject.
@@ -157,6 +179,9 @@ ru:
       client:
         connection_error: 'Не удалось подключиться к серверу Jira: %{message}'
         connection_timeout: 'Время подключения к серверу Jira истекло: %{message}'
+        ssrf_blocked: 'Connection blocked: the Jira host resolves to a private IP address. If your Jira instance runs on an internal network, allow its IP via the OPENPROJECT_SSRF__PROTECTION__IP__ALLOWLIST environment variable.'
+        ssrf_block_doc_link: Please see our [documentation](docs_url).
+        ssl_error: 'SSL error connecting to Jira server: %{message}'
         parse_error: 'Не удалось разобрать ответ Jira API: %{message}'
         api_error: Jira API вернул статус ошибки %{status}
         401_error: Jira API вернул ошибку 401. Ваш токен аутентификации может быть истёк или не хватает необходимых разрешений. Пожалуйста, убедитесь, что токен принадлежит администратору Jira.
@@ -416,7 +441,7 @@ ru:
         page_header:
           description: Выберите между классическими числовыми идентификаторами пакета работ или семантическими, специфичными для проекта, которые добавляют идентификатор проекта к ID пакета работ.
         banner:
-          existing_identifiers_notice: 'Существующие идентификаторы для проектов %{project_count} не соответствуют требованиям, предъявляемым к семантическим идентификаторам. OpenProject может автоматически обновить их, чтобы они были действительными, как показано в примерах ниже. Щелкните на ''Исправить и сохранить'', чтобы обновить идентификаторы для всех проектов и включить семантические идентификаторы на основе проекта.
+          existing_identifiers_notice: 'Existing identifiers for %{project_count} projects don''t meet requirements for project-based semantic identifiers. OpenProject can automatically update these so that they are valid as in the examples below. Click on ''Convert identifiers'' to update identifiers for all projects in this manner and enable project-based semantic identifiers.
 
             '
         box_header:
@@ -439,7 +464,8 @@ ru:
             few: "... еще %{count} проектов"
             many: "... еще %{count} проектов"
             other: "... еще %{count} проектов"
-        button_autofix: Исправить и сохранить
+        button_autofix: Convert identifiers
+        button_save: Convert identifiers
         dialog:
           title: Изменить идентификаторы пакета работ
           heading: Включить ID пакета работ на основе проектов?
@@ -450,8 +476,9 @@ ru:
           checkbox_label: Я понимаю, что это навсегда изменит все идентификаторы пакета работ
         success_banner: Формат идентификатора пакета работ успешно обновлен.
         in_progress:
-          converting_banner_message: Идентификаторы проекта в настоящее время обновляются до семантических идентификаторов. Это может занять некоторое время.
-          reverting_banner_message: В настоящее время идентификаторы проектов возвращаются к классическому формату. Это может занять некоторое время.
+          header_semantic: Converting to project-based identifiers
+          header_classic: Converting to numeric identifiers
+          footer_message: Background conversion is in progress. You can safely leave this page.
     workflows:
       tabs:
         default_transitions: Переходы по умолчанию
@@ -4371,6 +4398,7 @@ ru:
   label_project_new: Новый проект
   label_project_plural: Проекты
   label_project_list_plural: Списки проектов
+  label_reserved_identifiers: Reserved identifiers
   label_project_life_cycle: Жизненный цикл проекта
   label_project_attributes_plural: Атрибуты проекта
   label_project_custom_field_plural: Атрибуты проекта

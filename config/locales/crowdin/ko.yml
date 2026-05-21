@@ -51,6 +51,25 @@ ko:
           description: 이 작업 패키지에 액세스할 수 있는 모든 사용자에게 코멘트가 표시됩니다. 계속하시겠습니까?
           confirm_button_text: 공개로 설정
   admin:
+    reserved_identifiers:
+      title: Reserved project identifiers
+      lede_html: When a project's identifier is renamed, the previous identifier is kept reserved so that existing links and integrations keep working.<br>Here you can release reserved identifiers so that they may be used by other projects.
+      col_identifier: Identifier
+      col_project: Project
+      col_reserved: Reserved
+      not_available_in_semantic_mode: Reserved identifiers are only available in classic identifier mode.
+      filter_label: Filter identifiers
+      btn_release: Release
+      released_notice: Identifier "%{identifier}" has been released.
+      dialog:
+        title: Release identifier
+        heading: Release "%{identifier}"?
+        description: Releasing this identifier cannot be undone. External links and integrations using it will stop resolving, and the name becomes available for any new project to claim.
+        checkbox_label: I understand that this cannot be undone.
+        confirm_button: Release identifier
+      empty_heading: No reserved identifiers
+      reserved_ago: "%{time} ago"
+      empty_body: When a project's identifier changes, the previous one will appear here so you can release it once it's safe to do so.
     plugins:
       no_results_title_text: 현재 설치된 플러그인이 없습니다.
       no_results_content_text: 자세한 내용은 통합 및 플러그인 페이지를 참조하세요.
@@ -119,6 +138,9 @@ ko:
       errors:
         cannot_delete_with_imports: 기존 가져오기가 있는 Jira 호스트는 삭제할 수 없습니다
         custom_field_creation_failed: '사용자 지정 필드 ''%{name}''을(를) 만들지 못했습니다: %{message}'
+        semantic_identifiers_must_be_enabled:
+          title: Project-based semantic identifiers must be enabled.
+          description: Jira uses work items identifiers consisting of project key and a sequence number (PRJ-123). OpenProject also supports it, but it needs to be enabled [here](link).
       blank:
         title: 아직 구성된 Jira 호스트 없음
         description: Jira에서 이 OpenProject 인스턴스로 항목 가져오기를 시작하려면 Jira 호스트를 구성합니다.
@@ -157,6 +179,9 @@ ko:
       client:
         connection_error: 'Jira 서버에 연결하지 못했습니다: %{message}'
         connection_timeout: 'Jira 서버에 연결이 시간 초과되었습니다: %{message}'
+        ssrf_blocked: 'Connection blocked: the Jira host resolves to a private IP address. If your Jira instance runs on an internal network, allow its IP via the OPENPROJECT_SSRF__PROTECTION__IP__ALLOWLIST environment variable.'
+        ssrf_block_doc_link: Please see our [documentation](docs_url).
+        ssl_error: 'SSL error connecting to Jira server: %{message}'
         parse_error: 'Jira API 응답을 구문 분석하지 못했습니다: %{message}'
         api_error: Jira API가 오류 상태 %{status}을(를) 반환했습니다
         401_error: Jira API에서 401 오류를 반환했습니다. 인증 토큰이 만료되었거나 필요한 권한이 부족할 수 있습니다. 토큰이 Jira 관리자의 소유인지 확인하세요.
@@ -398,7 +423,9 @@ ko:
         page_header:
           description: 클래식 숫자 작업 패키지 ID 또는 작업 패키지 ID 앞에 프로젝트 식별자를 붙이는 프로젝트별 시맨틱 ID 중에서 선택합니다.
         banner:
-          existing_identifiers_notice: "%{project_count}개 프로젝트의 기존 식별자가 프로젝트 기반 시맨틱 식별자에 대한 요구 사항을 충족하지 않습니다. OpenProject는 아래 예와 같이 해당 식별자가 유효하도록 자동으로 업데이트할 수 있습니다. '자동 수정 및 저장'을 클릭하여 이러한 방식으로 모든 프로젝트의 식별자를 업데이트하고 프로젝트 기반 시맨틱 식별자를 활성화하세요.\n"
+          existing_identifiers_notice: 'Existing identifiers for %{project_count} projects don''t meet requirements for project-based semantic identifiers. OpenProject can automatically update these so that they are valid as in the examples below. Click on ''Convert identifiers'' to update identifiers for all projects in this manner and enable project-based semantic identifiers.
+
+            '
         box_header:
           label_project: 프로젝트
           label_previous_identifier: 이전 식별자
@@ -416,7 +443,8 @@ ko:
           error_unknown: 수동 검토가 필요합니다
           remaining_projects:
             other: "... %{count}개의 추가 프로젝트"
-        button_autofix: 자동 수정 및 저장
+        button_autofix: Convert identifiers
+        button_save: Convert identifiers
         dialog:
           title: 작업 패키지 식별자 변경
           heading: 프로젝트 기반 작업 패키지 ID를 활성화하시겠습니까?
@@ -427,8 +455,9 @@ ko:
           checkbox_label: 이렇게 하면 모든 작업 패키지 ID가 영구적으로 변경됨을 이해합니다
         success_banner: 작업 패키지 식별자 형식을 업데이트했습니다.
         in_progress:
-          converting_banner_message: 프로젝트 식별자를 시맨틱 형식으로 현재 변환하는 중입니다. 시간이 다소 걸릴 수 있습니다.
-          reverting_banner_message: 프로젝트 식별자를 클래식 형식으로 현재 되돌리는 중입니다. 시간이 다소 걸릴 수 있습니다.
+          header_semantic: Converting to project-based identifiers
+          header_classic: Converting to numeric identifiers
+          footer_message: Background conversion is in progress. You can safely leave this page.
     workflows:
       tabs:
         default_transitions: 기본 전환
@@ -4192,6 +4221,7 @@ ko:
   label_project_new: 새 프로젝트
   label_project_plural: 프로젝트
   label_project_list_plural: 프로젝트 목록
+  label_reserved_identifiers: Reserved identifiers
   label_project_life_cycle: 프로젝트 수명 주기
   label_project_attributes_plural: 프로젝트 특성
   label_project_custom_field_plural: 프로젝트 특성
