@@ -248,7 +248,7 @@ module RecurringMeetings
     end
 
     def past?
-      occurrence_time < Time.current
+      meeting.start_time + meeting.duration.hours < Time.current
     end
   end
 end
