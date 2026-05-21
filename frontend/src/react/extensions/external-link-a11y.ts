@@ -172,16 +172,23 @@ function sliceContainsLinkMark(slice:Slice):boolean {
  * Decides whether a step warrants rebuilding the widget set, vs. just
  * shifting existing decorations forward.
  *
- * Plain typing or moving content around merely shifts link runs — the
- * widget at the end of each run rides along correctly via decoration
- * mapping. The expensive doc walk is only needed when a step adds,
- * removes, or moves a link mark.
+ * Pure typing inserts content without touching link boundaries; the widget
+ * at the end of each run rides along correctly via decoration mapping, so
+ * the doc walk can be skipped. A rebuild is needed when:
+ *   - a link mark is added, removed, or moved by a mark step;
+ *   - an inserted slice itself carries a link mark (paste of linked HTML);
+ *   - any range is deleted or replaced. Deletions whose right edge meets a
+ *     link's trailing widget make `WidgetType.map` report the widget as
+ *     deleted (PM's mapping forces `side=1` at the deletion's right edge,
+ *     which clashes with our `assoc=-1`). The simplest robust answer is to
+ *     reseat the widget set whenever a range is removed.
  */
 function stepAffectsLinks(step:Step):boolean {
   if (step instanceof AddMarkStep || step instanceof RemoveMarkStep) {
     return step.mark.type.name === 'link';
   }
   if (step instanceof ReplaceStep || step instanceof ReplaceAroundStep) {
+    if (step.from !== step.to) return true;
     return sliceContainsLinkMark(step.slice);
   }
   return false;
