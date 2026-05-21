@@ -28,6 +28,8 @@ it:
     attributes:
       project:
         sprint_sharing: Condivisione dello sprint
+        backlog_excluded_types: Excluded work package types
+        statuses_considered_closed: Statuses considered closed
       sprint:
         duration: Durata
         finish_date: Data di fine
@@ -83,35 +85,12 @@ it:
     models:
       sprint: Sprint
   backlogs:
-    caption_sprints_default_fold_state: Gli sprint non verranno espansi automaticamente nella pagina "Backlog e sprint". Ognuno dovrà essere espanso manualmente.
-    definition_of_done: Definizione di fatto
-    definition_of_done_caption: Le macro-attività con questi stati sono considerate completate nelle viste backlog e nei report.
-    done_status: Stato Fatto
-    sharing_description: Questo progetto può condividere i propri sprint, ricevere sprint condivisi oppure gestire gli sprint in modo indipendente (senza condivisione).
-    sharing: Condivisione
-    label_burndown_chart: Grafico Burndown
-    label_sprint_board: Bacheca sprint
-    work_package_is_closed: Il pacchetto di lavoro è fatto, quando
-    label_is_done_status: Lo stato %{status_name} vuol dire completato
-    points_label:
-      one: punto
-      other: punti
-    positions_could_not_be_rebuilt: Le posizioni non potrebbero essere ricostruite.
-    positions_rebuilt_successfully: Posizioni ricostruite correttamente.
-    rebuild: Ricostruisci
-    rebuild_positions: Ricostruisce le posizioni
-    remaining_hours: Lavoro residuo
-    show_burndown_chart: Grafico Burndown
-    story_points:
-      one: "%{count} punto story"
-      other: "%{count} punti story"
-    unassigned: Non assegnato
-    user_preference:
-      header_backlogs: Modulo backlog
-      button_update_backlogs: Aggiorna il modulo backlog
     administration_blankslate:
       title: Le impostazioni amministrative del backlog sono in divenire
       text: Stiamo attualmente riprogettando il modulo Backlog. Le impostazioni amministrative per sprint e backlog saranno presto disponibili qui. Le impostazioni a livello di progetto restano disponibili.
+    bucket_destroy_modal_component:
+      title: Delete backlog bucket?
+      details: The backlog bucket '%{name}' will be deleted and all work packages will be moved to the backlog inbox. No work package will be deleted.
     bucket_component:
       blankslate_title: Il bucket del backlog è vuoto
       blankslate_description: Trascina gli elementi qui per aggiungerli.
@@ -119,45 +98,14 @@ it:
       action_menu:
         edit_backlog_bucket: Modifica il bucket del backlog
         delete_backlog_bucket: Elimina il bucket del backlog
-    backlog_bucket_destroy_modal_component:
-      title: Eliminare il bucket del backlog?
-      details: Il bucket del backlog '%{name}' verrà eliminato e tutte le macro-attività verranno spostate nella posta in arrivo del backlog. Nessuna macro-attività verrà eliminata.
-    sprint_component:
-      blankslate_title: "%{name} è vuoto"
-      blankslate_description: Nessun elemento pianificato ancora. Trascina gli elementi qui per aggiungerli.
-      label_actions: Azioni dello sprint
-      label_start_sprint: Inizia
-      label_complete_sprint: Completa
-      start_sprint_disabled_reason_active_sprint: Un altro sprint è già attivo.
-      start_sprint_disabled_reason_missing_dates: Per avviare lo sprint sono necessarie le date di inizio e fine.
-      action_menu:
-        edit_sprint: Modifica sprint
-        add_work_package: Aggiungi macro-attività
-    inbox_component:
-      blankslate_title: La casella del backlog è vuota
-      blankslate_description: Tutte le macro-attività aperte in questo progetto verranno visualizzate automaticamente qui.
-      show_more:
-        one: Mostra 1 altro elemento
-        other: Mostra altri %{count} elementi
-    inbox_menu_component:
-      action_menu:
-        copy_url_to_clipboard: Copia URL negli appunti
-        copy_work_package_id: Copia ID macro-attività
-        move_menu: Sposta
-      label_move_to_sprint: Sposta nello sprint
-    move_to_sprint_dialog_component:
-      title: Sposta nello sprint
-      label_sprint: Sprint
-    sprints_component:
-      blankslate:
-        title: Non ci sono ancora sprint
-        settings_link_text: impostazioni del progetto
-        receive_and_manage_description_html: Questo progetto riceve sprint da un altro progetto. Gestisci questa impostazione nelle %{settings_link}.
-        receive_description_text: Questo progetto riceve sprint condivisi da un altro progetto, ma al momento non sono disponibili.
-        create_and_manage_description_html: Per iniziare a pianificare il tuo sprint, creane uno qui oppure vai alle %{settings_link} per ricevere sprint da un altro progetto.
-        create_description_text: Per iniziare a pianificare il tuo sprint, creane uno qui.
-        manage_description_html: Per iniziare a pianificare il tuo sprint, vai alle %{settings_link} per ricevere sprint da un altro progetto.
-        no_actions_description_text: Non ci sono ancora sprint disponibili per questo progetto.
+    burndown_chart:
+      show:
+        blankslate_title: Non sono disponibili dati di burndown
+        blankslate_description: Imposta la data di inizio e di fine dello sprint per generare un grafico di burndown.
+    caption_sprints_default_fold_state: Gli sprint non verranno espansi automaticamente nella pagina "Backlog e sprint". Ognuno dovrà essere espanso manualmente.
+    excluded_work_package_types_caption: 'Choose which work package types to hide from the backlog. Items of the selected types will not appear in the backlog automatically, keeping it focused on the work that matters to your team. For example, types like Epics or Milestones that are managed at a higher level can be hidden to keep the backlog focused on actionable items.
+
+      '
     finish_sprint_dialog_component:
       title: Ci sono elementi in corso
       body: "%{message} Cosa desideri fare con questi?"
@@ -168,19 +116,83 @@ it:
         move_to_sprint: Spostale in un altro sprint
       select_sprint_label: Seleziona sprint
       button_complete_sprint: Completa lo sprint
-    story_menu_list_component:
+    inbox_component:
+      title: Inbox
+      blankslate_title: La casella del backlog è vuota
+      blankslate_description: Tutte le macro-attività aperte in questo progetto verranno visualizzate automaticamente qui.
+      show_more:
+        one: Mostra 1 altro elemento
+        other: Mostra altri %{count} elementi
+    label_burndown_chart: Grafico Burndown
+    label_is_done_status: Lo stato %{status_name} vuol dire completato
+    label_sprint_board: Bacheca sprint
+    move_to_sprint_dialog_component:
+      title: Sposta nello sprint
+      label_sprint: Sprint
+    points_label:
+      one: punto
+      other: punti
+    positions_could_not_be_rebuilt: Le posizioni non potrebbero essere ricostruite.
+    positions_rebuilt_successfully: Posizioni ricostruite correttamente.
+    rebuild: Ricostruisci
+    rebuild_positions: Ricostruisce le posizioni
+    remaining_hours: Lavoro residuo
+    sharing: Condivisione
+    show_burndown_chart: Grafico Burndown
+    sprint_component:
+      blankslate_title: "%{name} è vuoto"
+      blankslate_description: Nessun elemento pianificato ancora. Trascina gli elementi qui per aggiungerli.
+      label_actions: Azioni dello sprint
+      label_start_sprint: Start sprint
+      label_complete_sprint: Complete sprint
+      start_sprint_disabled_reason_active_sprint: Un altro sprint è già attivo.
+      start_sprint_disabled_reason_missing_dates: Per avviare lo sprint sono necessarie le date di inizio e fine.
       action_menu:
-        copy_url_to_clipboard: Copia URL negli appunti
-        copy_work_package_id: Copia ID macro-attività
-        move_menu: Sposta
-        move_to_sprint: Sposta nello sprint
-    burndown_chart:
-      show:
-        blankslate_title: Non sono disponibili dati di burndown
-        blankslate_description: Imposta la data di inizio e di fine dello sprint per generare un grafico di burndown.
+        edit_sprint: Modifica sprint
+        add_work_package: Aggiungi macro-attività
+    sprints_component:
+      blankslate:
+        title: Non ci sono ancora sprint
+        settings_link_text: impostazioni del progetto
+        receive_and_manage_description_html: Questo progetto riceve sprint da un altro progetto. Gestisci questa impostazione nelle %{settings_link}.
+        receive_description_text: Questo progetto riceve sprint condivisi da un altro progetto, ma al momento non sono disponibili.
+        create_and_manage_description_html: Per iniziare a pianificare il tuo sprint, creane uno qui oppure vai alle %{settings_link} per ricevere sprint da un altro progetto.
+        create_description_text: Per iniziare a pianificare il tuo sprint, creane uno qui.
+        manage_description_html: Per iniziare a pianificare il tuo sprint, vai alle %{settings_link} per ricevere sprint da un altro progetto.
+        no_actions_description_text: Non ci sono ancora sprint disponibili per questo progetto.
+    story_points:
+      one: "%{count} punto story"
+      other: "%{count} punti story"
+    statuses_considered_closed_caption: 'Choose the statuses that represent a closed or finished state in your workflow. These will be treated as the "Closed" state across reporting (e.g. burndown) and sprint planning. For example, statuses like Done, Resolved, or Won''t Fix may all represent a closed work item in your process.
+
+      '
+    types_and_statuses: Types and statuses
+    unassigned: Non assegnato
+    user_preference:
+      header_backlogs: Modulo backlog
+      button_update_backlogs: Aggiorna il modulo backlog
+    stories:
+      update_service:
+        missing_target: target_id or direction must be present.
+        ambiguous_target: target_id and direction cannot both be present.
+        invalid_target_type: 'target_type must be one of: backlog_bucket:<backlog_bucket_id>, sprint:<sprint_id>, inbox.'
+        invalid_direction: 'direction must be one of: higher, highest, lower, lowest.'
+    work_package_card_menu_component:
+      action_menu:
+        copy_url_to_clipboard: Copy URL to clipboard
+        copy_work_package_id: Copy work package ID
+        move_menu: Move
+        move_to_sprint: Move to sprint
+    work_package_is_closed: Il pacchetto di lavoro è fatto, quando
   burndown:
     story_points: Punti story
     story_points_ideal: Punti story (ideali)
+  ee:
+    features:
+      sprint_sharing: Sprint sharing
+    upsell:
+      sprint_sharing:
+        description: Share sprints across projects to align teams and coordinate work in scaled agile setups (SAFe).
   label_backlog: Backlog
   label_backlog_bucket_edit: Modifica il bucket del backlog
   label_backlog_bucket_new: Nuovo bucket del backlog
@@ -202,7 +214,10 @@ it:
   notice_unsuccessful_finish_with_reason: 'Impossibile completare lo sprint: %{reason}'
   permission_create_sprints: Crea gli sprint
   permission_manage_sprint_items: Gestisci gli elementi dello sprint
-  permission_select_done_statuses: Seleziona gli stati terminati
+  permission_select_backlog_types_and_statuses: Select backlog types and statuses
+  permission_select_backlog_types_and_statuses_explanation: 'Allows choosing which work package types to hide from the backlog. Also allows defining which statuses represent a closed or finished state in the project''s workflow.
+
+    '
   permission_share_sprint: Condividi lo sprint
   permission_start_complete_sprint: Iniziare/completa lo sprint
   permission_view_sprints: Visualizza gli sprint
@@ -228,4 +243,8 @@ it:
             caption: Gli sprint creati in questo progetto saranno disponibili per tutti i sottoprogetti del progetto corrente.
             info: La condivisione di uno sprint comporta la condivisione del nome, dello stato e delle date di inizio e fine in tutti i progetti. Questi non possono essere modificati nei progetti che ricevono e utilizzano tali sprint.
         sprint_sharing: Condividi sprint
+      backlogs:
+        sharing_form_component:
+          sharing_description: This project can either share its own sprints, receive shared sprints or handle sprints independently (no sharing).
+          sharing_fallback_description: Lacking a corporate enterprise plan, the sharing options are limited to the project's own sprints. The currently active setting remains active.
   remaining_hours: lavoro residuo

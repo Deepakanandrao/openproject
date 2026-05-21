@@ -38,8 +38,8 @@ zh-CN:
           other: "%{count}位参与者"
         participants_attended: 与会者
         participants_invited: 受邀者
-        participants_added: 'Participants added:'
-        participants_removed: 'Participants removed:'
+        participants_added: 参会人已添加：
+        participants_removed: 参会者已移除：
         project: 项目
         start_date: 日期
         start_time: 开始时间
@@ -65,6 +65,9 @@ zh-CN:
         title: 标题
         frequency: 周期
         interval: 间隔
+        monthly_day: Day of month
+        monthly_ordinal: Position
+        monthly_weekday: Weekday
         start_date: 开始日期：
         start_time: 开始时间
         start_time_hour: 开始时间
@@ -220,8 +223,8 @@ zh-CN:
         mark_as_attended: 标记为已参加
         mark_all_as_attended: 将所有标记为已参加
         remove_participant: 移除参与者
-        manage_participants: 管理与会者
-        no_participants: 无参加者
+        manage_participants: 管理参会者
+        no_participants: 无参会者
         show_all: 全部显示
         apply_to_upcoming_meetings: 将这些更改应用于此系列中所有即将召开的会议
       text:
@@ -229,8 +232,8 @@ zh-CN:
         manage_participants: 搜索并添加项目成员作为本次会议的参与者。
         search_for_members: 搜索项目成员
       blankslate:
-        heading: 沒有与会者
-        description: 还没有参加者。
+        heading: 无参会者
+        description: 尚无参会者。
     attachments:
       onetime_template: 今后所有使用此模板的会议都将包含这些随附文件。
       series_template: 今后此系列中的所有会议都将包含这些随附文件。
@@ -283,8 +286,8 @@ zh-CN:
         new_date_time: 新日期/时间
         old_location: 原位置
         new_location: 新位置
-        added_participants: Added
-        removed_participants: Removed
+        added_participants: 已添加
+        removed_participants: 已移除
     label_mail_all_participants: 向参与者发送电子邮件邀请
     types:
       one_time: 动态
@@ -427,7 +430,7 @@ zh-CN:
     widgets:
       blankslate:
         heading: 无会议安排
-        description: Upcoming meetings you are participating in will appear here.
+        description: 即将召开的项目会议将在此处显示。
       view_details: 查看所有会议
   meeting_section:
     untitled_title: 无标题章节
@@ -477,18 +480,41 @@ zh-CN:
         other: 每 %{count} 天
       x_weekly:
         other: 每 %{count} 周
+      x_monthly:
+        other: Every %{count} months
+      monthly_day_of_month: Day of month
+      monthly_nth_weekday: Monthly on a weekday
       every_weekday: 每个 %{day_of_the_week}
       working_days: 每个工作日
+    monthly:
+      inflected_ordinal:
+        first: first
+        second: second
+        third: third
+        fourth: fourth
+        last: last
+      ordinal_options:
+        first: First
+        second: Second
+        third: Third
+        fourth: Fourth
+        last: Last
+    actual_first_occurrence_mismatch_html: The first occurrence of this series will be %{first_occurrence}
+    day_of_month_skipping_info: Months with fewer than %{monthly_day} days will be skipped
     end_after:
-      never: 从不
-      specific_date: 在指定日期之后
-      iterations: 在数次事件之后
+      never: Never
+      specific_date: After a specific date
+      iterations: After a number of occurrences
     starts: 开始
     in_words:
       daily_interval: 每 %{interval} 天
       working_days: 每个工作日
       weekly: 每 %{weekday}
       weekly_interval: 每 %{interval} 周在 %{weekday}
+      monthly_day: Every month on the %{day}
+      monthly_day_interval: Every %{interval} months on the %{day}
+      monthly_nth_weekday: Every month on the %{ordinal} %{weekday}
+      monthly_nth_weekday_interval: Every %{interval} months on the %{ordinal} %{weekday}
       frequency: "%{base} 在 %{time}"
       full: "%{base} 在 %{time}，在 %{end_date} 结束"
       full_past: "%{base} 在 %{time}，于 %{end_date}结束"

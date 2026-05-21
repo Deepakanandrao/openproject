@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#-- copyright
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,37 +26,34 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
-require "spec_helper"
+module WorkPackages::Scopes::WithoutStatusConsideredClosed
+  extend ActiveSupport::Concern
 
-RSpec.describe Backlogs::InboxController do
-  describe "routing" do
-    it {
-      expect(put("/projects/project_42/backlogs/inbox/85/move")).to route_to(
-        controller: "backlogs/inbox",
-        action: "move",
-        project_id: "project_42",
-        id: "85"
-      )
-    }
+  class_methods do
+    def without_status_considered_closed
+      # Excludes work packages whose status is configured as "done" on the project
+      # the work package belongs to. The correlated subquery ensures each work package
+      # is always checked against its own project's status configuration.
+      # Additionally, all globally closed statuses are always treated as done,
+      # safeguarding against empty/corrupt project configuration (per AC).
+      status_subquery = <<~SQL.squish
+        work_packages.status_id NOT IN (
+          SELECT status_id
+          FROM done_statuses_for_project
+          WHERE project_id = work_packages.project_id
+          AND status_id IS NOT NULL
+        )
+        AND work_packages.status_id NOT IN (
+          SELECT id
+          FROM statuses
+          WHERE is_closed = TRUE
+        )
+      SQL
 
-    it {
-      expect(post("/projects/project_42/backlogs/inbox/85/reorder")).to route_to(
-        controller: "backlogs/inbox",
-        action: "reorder",
-        project_id: "project_42",
-        id: "85"
-      )
-    }
-
-    it {
-      expect(get("/projects/project_42/backlogs/inbox/85/menu")).to route_to(
-        controller: "backlogs/inbox",
-        action: "menu",
-        project_id: "project_42",
-        id: "85"
-      )
-    }
+      where(status_subquery)
+        .includes(:status)
+    end
   end
 end

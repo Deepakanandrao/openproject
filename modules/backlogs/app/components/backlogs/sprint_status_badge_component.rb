@@ -23,43 +23,29 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Wikis
-  module Adapters
-    module Providers
-      module XWiki
-        module Queries
-          class UserQuery < BaseQuery
-            def call(auth_strategy:)
-              url = "#{provider.url.chomp('/')}/rest/"
-              Adapters::Authentication[auth_strategy].call do |http|
-                handle_response(http.get(url))
-              end
-            end
+module Backlogs
+  class SprintStatusBadgeComponent < ApplicationComponent
+    include OpPrimer::ComponentHelpers
 
-            private
+    def initialize(sprint:, **system_arguments)
+      super()
 
-            def handle_response(response)
-              return failure(code: :connection_error) if response.is_a?(HTTPX::ErrorResponse)
+      @sprint = sprint
+      @system_arguments = system_arguments.merge(bg: status_color)
+    end
 
-              case response
-              in { status: 200..299 }
-                handle_success_response(response)
-              else
-                failure(code: :request_failed)
-              end
-            end
+    private
 
-            def handle_success_response(response)
-              xwiki_user = response.headers["xwiki-user"]
-              xwiki_user.present? ? success(xwiki_user) : failure(code: :unauthorized)
-            end
-          end
-        end
+    def status_color
+      case @sprint.status
+      when "active" then :success
+      when "completed" then :done
+      else :default
       end
     end
   end

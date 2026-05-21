@@ -51,6 +51,25 @@ it:
           description: Il tuo commento sarà visibile a chiunque possa accedere a questa macro-attività. Vuoi continuare?
           confirm_button_text: Rendi pubblico
   admin:
+    reserved_identifiers:
+      title: Reserved project identifiers
+      lede_html: When a project's identifier is renamed, the previous identifier is kept reserved so that existing links and integrations keep working.<br>Here you can release reserved identifiers so that they may be used by other projects.
+      col_identifier: Identifier
+      col_project: Project
+      col_reserved: Reserved
+      not_available_in_semantic_mode: Reserved identifiers are only available in classic identifier mode.
+      filter_label: Filter identifiers
+      btn_release: Release
+      released_notice: Identifier "%{identifier}" has been released.
+      dialog:
+        title: Release identifier
+        heading: Release "%{identifier}"?
+        description: Releasing this identifier cannot be undone. External links and integrations using it will stop resolving, and the name becomes available for any new project to claim.
+        checkbox_label: I understand that this cannot be undone.
+        confirm_button: Release identifier
+      empty_heading: No reserved identifiers
+      reserved_ago: "%{time} ago"
+      empty_body: When a project's identifier changes, the previous one will appear here so you can release it once it's safe to do so.
     plugins:
       no_results_title_text: Al momento non vi sono plugin installati.
       no_results_content_text: Per maggiori informazioni, consulta la pagina delle integrazioni e dei plugin.
@@ -119,6 +138,9 @@ it:
       errors:
         cannot_delete_with_imports: Impossibile eliminare l'host Jira con importazioni esistenti
         custom_field_creation_failed: 'Impossibile creare il campo personalizzato ''%{name}'': %{message}'
+        semantic_identifiers_must_be_enabled:
+          title: Project-based semantic identifiers must be enabled.
+          description: Jira uses work items identifiers consisting of project key and a sequence number (PRJ-123). OpenProject also supports it, but it needs to be enabled [here](link).
       blank:
         title: Nessun host Jira ancora configurato
         description: Configura un host Jira per iniziare a importare elementi da Jira a questa istanza di OpenProject.
@@ -157,6 +179,9 @@ it:
       client:
         connection_error: 'Impossibile connettersi al server Jira: %{message}'
         connection_timeout: 'La connessione al server Jira è scaduta: %{message}'
+        ssrf_blocked: 'Connection blocked: the Jira host resolves to a private IP address. If your Jira instance runs on an internal network, allow its IP via the OPENPROJECT_SSRF__PROTECTION__IP__ALLOWLIST environment variable.'
+        ssrf_block_doc_link: Please see our [documentation](docs_url).
+        ssl_error: 'SSL error connecting to Jira server: %{message}'
         parse_error: 'Impossibile analizzare la risposta dell''API Jira: %{message}'
         api_error: Jira API ha restituito lo stato di errore %{status}
         401_error: L'API di Jira ha restituito un errore 401. Il token di autenticazione potrebbe essere scaduto o non disporre delle autorizzazioni necessarie. Assicurati che il token appartenga a un amministratore Jira.
@@ -404,7 +429,7 @@ it:
         page_header:
           description: Scegli tra ID numerici classici delle macro-attività oppure ID semantici specifici del progetto che antepongono l'identificatore del progetto all'ID della macro-attività.
         banner:
-          existing_identifiers_notice: 'Gli identificatori esistenti per %{project_count} progetti non soddisfano i requisiti per gli identificatori semantici basati sul progetto. OpenProject può aggiornarli automaticamente per renderli validi, come negli esempi sotto. Fai clic su "Correggi automaticamente e salva" per aggiornare gli identificatori di tutti i progetti in questo modo e abilitare gli identificatori semantici basati sul progetto.
+          existing_identifiers_notice: 'Existing identifiers for %{project_count} projects don''t meet requirements for project-based semantic identifiers. OpenProject can automatically update these so that they are valid as in the examples below. Click on ''Convert identifiers'' to update identifiers for all projects in this manner and enable project-based semantic identifiers.
 
             '
         box_header:
@@ -425,7 +450,8 @@ it:
           remaining_projects:
             one: "... 1 altro progetto"
             other: "... altri %{count} progetti"
-        button_autofix: Correggi automaticamente e salva
+        button_autofix: Convert identifiers
+        button_save: Convert identifiers
         dialog:
           title: Cambia gli identificatori della macro-attività
           heading: Abilitare gli ID delle macro-attività basati sul progetto?
@@ -436,8 +462,9 @@ it:
           checkbox_label: Comprendo che questa operazione modificherà in modo permanente tutti gli ID delle macro-attività
         success_banner: Formato degli identificatori delle macro-attività aggiornato correttamente.
         in_progress:
-          converting_banner_message: Gli identificatori di progetto sono attualmente in fase di conversione al formato semantico. L'operazione potrebbe richiedere del tempo.
-          reverting_banner_message: Gli identificatori di progetto sono attualmente in fase di ripristino al formato classico. L'operazione potrebbe richiedere del tempo.
+          header_semantic: Converting to project-based identifiers
+          header_classic: Converting to numeric identifiers
+          footer_message: Background conversion is in progress. You can safely leave this page.
     workflows:
       tabs:
         default_transitions: Transizioni predefinite
@@ -2527,6 +2554,7 @@ it:
         other: Priorità
       meeting_participant: Partecipante alla riunione
       member: Membro
+      message: Message
       news: Notizie
       notification:
         one: Notifica
@@ -3454,19 +3482,19 @@ it:
   gui_validation_error: 1 errore
   gui_validation_error_plural: "%{count} errori"
   health_reports:
-    report_component:
+    common:
       checks:
         failures:
-          one: "%{count} controllo non superato"
-          other: "%{count} controlli non superati"
-        success: Tutti i controlli superati
+          one: "%{count} check failed"
+          other: "%{count} checks failed"
+        success: All checks passed
         warnings:
-          one: "%{count} controllo ha restituito un avviso"
-          other: "%{count} controlli hanno restituito un avviso"
+          one: "%{count} check returned a warning"
+          other: "%{count} checks returned a warning"
       summary:
-        failure: Alcuni controlli non sono riusciti e il sistema non funziona come previsto.
-        success: Tutte le connessioni e i sistemi funzionano come previsto.
-        warning: Alcuni controlli hanno restituito un avviso. Questo può causare comportamenti imprevisti.
+        failure: Some checks failed and the system does not work as expected.
+        success: All connections and systems are working as expected.
+        warning: Some checks returned a warning. This can lead to unexpected behaviour.
     result_component:
       status:
         failed: Non riuscito
@@ -4239,6 +4267,7 @@ it:
   label_project_new: Nuovo progetto
   label_project_plural: Progetti
   label_project_list_plural: Elenchi progetto
+  label_reserved_identifiers: Reserved identifiers
   label_project_life_cycle: Ciclo di vita del progetto
   label_project_attributes_plural: Attributi del progetto
   label_project_custom_field_plural: Attributi del progetto
@@ -4737,7 +4766,6 @@ it:
   notice_successful_delete: Cancellato con successo.
   notice_successful_cancel: Cancellato con successo.
   notice_successful_update: Aggiornato con successo.
-  notice_successful_move: Spostamento riuscito da %{from} a %{to}.
   notice_unsuccessful_create: Creazione fallita.
   notice_unsuccessful_create_with_reason: 'Creazione non riuscita: %{reason}'
   notice_unsuccessful_update: Aggiornamento non riuscito.
@@ -4785,8 +4813,11 @@ it:
   open_project:
     common:
       work_package_card_component:
+        drag_handle:
+          label: Drag to reorder
         menu:
           label_actions: Azioni sulla macro-attività
+        parent: Parent
   permission_add_work_package_comments: Aggiungi commenti
   permission_add_work_packages: Aggiungere macro-attività (work package)
   permission_add_messages: Postare messaggi

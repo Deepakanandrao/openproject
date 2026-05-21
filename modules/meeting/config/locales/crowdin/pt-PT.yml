@@ -66,6 +66,9 @@ pt-PT:
         title: Título
         frequency: Frequência
         interval: Intervalo
+        monthly_day: Day of month
+        monthly_ordinal: Position
+        monthly_weekday: Weekday
         start_date: Inicia em
         start_time: Hora de início
         start_time_hour: Hora de início
@@ -484,18 +487,42 @@ pt-PT:
       x_weekly:
         one: Todas as semanas
         other: A cada %{count} semanas
+      x_monthly:
+        one: Every month
+        other: Every %{count} months
+      monthly_day_of_month: Day of month
+      monthly_nth_weekday: Monthly on a weekday
       every_weekday: A cada %{day_of_the_week}
       working_days: Todos os dias úteis
+    monthly:
+      inflected_ordinal:
+        first: first
+        second: second
+        third: third
+        fourth: fourth
+        last: last
+      ordinal_options:
+        first: First
+        second: Second
+        third: Third
+        fourth: Fourth
+        last: Last
+    actual_first_occurrence_mismatch_html: The first occurrence of this series will be %{first_occurrence}
+    day_of_month_skipping_info: Months with fewer than %{monthly_day} days will be skipped
     end_after:
-      never: nunca
-      specific_date: após uma data específica
-      iterations: após um certo número de ocorrências
+      never: Never
+      specific_date: After a specific date
+      iterations: After a number of occurrences
     starts: Começa
     in_words:
       daily_interval: A cada %{interval} dias
       working_days: Todos os dias úteis
       weekly: Todas as semanas à/ao %{weekday}
       weekly_interval: A cada %{interval} semanas à/ao %{weekday}
+      monthly_day: Every month on the %{day}
+      monthly_day_interval: Every %{interval} months on the %{day}
+      monthly_nth_weekday: Every month on the %{ordinal} %{weekday}
+      monthly_nth_weekday_interval: Every %{interval} months on the %{ordinal} %{weekday}
       frequency: "%{base} às %{time}"
       full: "%{base} às %{time}, termina a %{end_date}"
       full_past: "%{base} às %{time}, terminou a %{end_date}"

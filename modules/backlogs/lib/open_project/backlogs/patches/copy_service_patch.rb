@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# -- copyright
+#-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,7 +26,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-# ++
+#++
 
 module OpenProject::Backlogs::Patches::CopyServicePatch
   extend ActiveSupport::Concern
@@ -38,8 +38,22 @@ module OpenProject::Backlogs::Patches::CopyServicePatch
   module InstanceMethods
     def clean_settings_attributes!(settings)
       # There can be only one project sharing with all projects.
-      settings.delete("sprint_sharing") if settings["sprint_sharing"] == Projects::SprintSharing::SHARE_ALL_PROJECTS
+      if settings["sprint_sharing"] == Projects::SprintSharing::SHARE_ALL_PROJECTS ||
+         !EnterpriseToken.allows_to?(:sprint_sharing)
+        settings.delete("sprint_sharing")
+      end
+
       super
+    end
+
+    def after_perform(call)
+      super.tap do |result_call|
+        next unless source.backlogs_enabled?
+        next unless result_call.result&.persisted?
+
+        result_call.result.done_statuses = source.done_statuses
+        result_call.result.backlog_excluded_types = source.backlog_excluded_types
+      end
     end
   end
 end

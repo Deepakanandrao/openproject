@@ -51,6 +51,25 @@ cs:
           description: Váš komentář bude viditelný pro každého, kdo má přístup k tomuto pracovnímu balíčku. Jste si jisti, že to chcete udělat?
           confirm_button_text: Zveřejnit
   admin:
+    reserved_identifiers:
+      title: Reserved project identifiers
+      lede_html: When a project's identifier is renamed, the previous identifier is kept reserved so that existing links and integrations keep working.<br>Here you can release reserved identifiers so that they may be used by other projects.
+      col_identifier: Identifier
+      col_project: Project
+      col_reserved: Reserved
+      not_available_in_semantic_mode: Reserved identifiers are only available in classic identifier mode.
+      filter_label: Filter identifiers
+      btn_release: Release
+      released_notice: Identifier "%{identifier}" has been released.
+      dialog:
+        title: Release identifier
+        heading: Release "%{identifier}"?
+        description: Releasing this identifier cannot be undone. External links and integrations using it will stop resolving, and the name becomes available for any new project to claim.
+        checkbox_label: I understand that this cannot be undone.
+        confirm_button: Release identifier
+      empty_heading: No reserved identifiers
+      reserved_ago: "%{time} ago"
+      empty_body: When a project's identifier changes, the previous one will appear here so you can release it once it's safe to do so.
     plugins:
       no_results_title_text: V současné době nejsou nainstalovány žádné pluginy.
       no_results_content_text: Pro více informací se podívejte na stránku pro integraci a pluginy.
@@ -119,6 +138,9 @@ cs:
       errors:
         cannot_delete_with_imports: Cannot delete Jira host with existing imports
         custom_field_creation_failed: 'Failed to create custom field ''%{name}'': %{message}'
+        semantic_identifiers_must_be_enabled:
+          title: Project-based semantic identifiers must be enabled.
+          description: Jira uses work items identifiers consisting of project key and a sequence number (PRJ-123). OpenProject also supports it, but it needs to be enabled [here](link).
       blank:
         title: No Jira hosts configured yet
         description: Configure a Jira host to start importing items from Jira to this OpenProject instance.
@@ -157,6 +179,9 @@ cs:
       client:
         connection_error: 'Nepodařilo se připojit k serveru Jira: %{message}'
         connection_timeout: 'Připojení k serveru Jira vypršelo: %{message}'
+        ssrf_blocked: 'Connection blocked: the Jira host resolves to a private IP address. If your Jira instance runs on an internal network, allow its IP via the OPENPROJECT_SSRF__PROTECTION__IP__ALLOWLIST environment variable.'
+        ssrf_block_doc_link: Please see our [documentation](docs_url).
+        ssl_error: 'SSL error connecting to Jira server: %{message}'
         parse_error: 'Nepodařilo se zpracovat odpověď z Jira API: %{message}'
         api_error: Jira API returned error status %{status}
         401_error: Jira API returned a 401 error. Your authentication token may have expired or lack the required permissions. Please ensure the token belongs to a Jira administrator.
@@ -416,7 +441,7 @@ cs:
         page_header:
           description: Choose between classic numerical work package IDs or semantic project-specific ones that prepend the project identifier to the work package ID.
         banner:
-          existing_identifiers_notice: 'Existing identifiers for %{project_count} projects don''t meet requirements for project-based semantic identifiers. OpenProject can automatically update these so that they are valid as in the examples below. Click on ''Autofix and save'' to update identifiers for all projects in this manner and enable project-based semantic identifiers.
+          existing_identifiers_notice: 'Existing identifiers for %{project_count} projects don''t meet requirements for project-based semantic identifiers. OpenProject can automatically update these so that they are valid as in the examples below. Click on ''Convert identifiers'' to update identifiers for all projects in this manner and enable project-based semantic identifiers.
 
             '
         box_header:
@@ -439,7 +464,8 @@ cs:
             few: "... %{count} more projects"
             many: "... %{count} more projects"
             other: "... %{count} dalších projektů"
-        button_autofix: Automaticky spravit a uložit
+        button_autofix: Convert identifiers
+        button_save: Convert identifiers
         dialog:
           title: Změna identifikátorů pracovních balíčků
           heading: Aktivovat projektové identifikátory pracovních balíčků?
@@ -450,8 +476,9 @@ cs:
           checkbox_label: Chápu, že se tím trvale změní všechny identifikátory pracovních balíčků
         success_banner: Úspěšně aktualizován formát identifikátoru pracovního balíčku.
         in_progress:
-          converting_banner_message: Project identifiers are currently being converted to semantic format. This may take some time.
-          reverting_banner_message: Project identifiers are currently being reverted to classic format. This may take some time.
+          header_semantic: Converting to project-based identifiers
+          header_classic: Converting to numeric identifiers
+          footer_message: Background conversion is in progress. You can safely leave this page.
     workflows:
       tabs:
         default_transitions: Default transitions
@@ -2583,6 +2610,7 @@ cs:
         other: Priorities
       meeting_participant: Účastník schůzky
       member: Člen
+      message: Message
       news: Novinky
       notification:
         one: Oznámení
@@ -3580,7 +3608,7 @@ cs:
   gui_validation_error: 1 chyba
   gui_validation_error_plural: "%{count} chyb"
   health_reports:
-    report_component:
+    common:
       checks:
         failures:
           one: "%{count} check failed"
@@ -4369,6 +4397,7 @@ cs:
   label_project_new: Nový projekt
   label_project_plural: Projekty
   label_project_list_plural: Seznamy projektů
+  label_reserved_identifiers: Reserved identifiers
   label_project_life_cycle: Životní cyklus projektu
   label_project_attributes_plural: Atributy projektu
   label_project_custom_field_plural: Atributy projektu
@@ -4875,7 +4904,6 @@ cs:
   notice_successful_delete: Úspěšné odstranění.
   notice_successful_cancel: Úspěšné zrušení.
   notice_successful_update: Úspěšná aktualizace.
-  notice_successful_move: Successful move from %{from} to %{to}.
   notice_unsuccessful_create: Vytvoření se nezdařilo.
   notice_unsuccessful_create_with_reason: 'Vytvoření se nezdařilo: %{reason}'
   notice_unsuccessful_update: Aktualizace selhala.
@@ -4925,8 +4953,11 @@ cs:
   open_project:
     common:
       work_package_card_component:
+        drag_handle:
+          label: Drag to reorder
         menu:
           label_actions: Work package actions
+        parent: Parent
   permission_add_work_package_comments: Přidat komentáře
   permission_add_work_packages: Přidat pracovní balíčky
   permission_add_messages: Odesílat zprávy

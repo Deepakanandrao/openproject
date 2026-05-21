@@ -65,6 +65,9 @@ ja:
         title: Title
         frequency: 頻度
         interval: インターバル
+        monthly_day: Day of month
+        monthly_ordinal: Position
+        monthly_weekday: Weekday
         start_date: '開始:'
         start_time: 開始時間
         start_time_hour: 開始時間
@@ -477,18 +480,41 @@ ja:
         other: "%{count} 日ごと"
       x_weekly:
         other: "%{count} 週ごと"
+      x_monthly:
+        other: Every %{count} months
+      monthly_day_of_month: Day of month
+      monthly_nth_weekday: Monthly on a weekday
       every_weekday: すべての %{day_of_the_week}
       working_days: 稼働日
+    monthly:
+      inflected_ordinal:
+        first: first
+        second: second
+        third: third
+        fourth: fourth
+        last: last
+      ordinal_options:
+        first: First
+        second: Second
+        third: Third
+        fourth: Fourth
+        last: Last
+    actual_first_occurrence_mismatch_html: The first occurrence of this series will be %{first_occurrence}
+    day_of_month_skipping_info: Months with fewer than %{monthly_day} days will be skipped
     end_after:
-      never: 期限なし
-      specific_date: 特定の日付
-      iterations: 何回かの発生後
+      never: Never
+      specific_date: After a specific date
+      iterations: After a number of occurrences
     starts: 開始
     in_words:
       daily_interval: "%{interval} 日ごと"
       working_days: 稼働日
       weekly: 毎週 %{weekday}
       weekly_interval: "%{interval} 週間ごとの %{weekday}"
+      monthly_day: Every month on the %{day}
+      monthly_day_interval: Every %{interval} months on the %{day}
+      monthly_nth_weekday: Every month on the %{ordinal} %{weekday}
+      monthly_nth_weekday_interval: Every %{interval} months on the %{ordinal} %{weekday}
       frequency: "%{base} で %{time}"
       full: "%{base} は %{time}で終了します。 %{end_date}"
       full_past: "%{base} が %{time}で終了しました。 %{end_date}"

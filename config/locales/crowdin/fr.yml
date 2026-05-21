@@ -51,6 +51,25 @@ fr:
           description: Votre commentaire sera visible pour tous ceux qui peuvent accéder à ce lot de travaux. Voulez-vous continuer ?
           confirm_button_text: Passer en public
   admin:
+    reserved_identifiers:
+      title: Reserved project identifiers
+      lede_html: When a project's identifier is renamed, the previous identifier is kept reserved so that existing links and integrations keep working.<br>Here you can release reserved identifiers so that they may be used by other projects.
+      col_identifier: Identifier
+      col_project: Project
+      col_reserved: Reserved
+      not_available_in_semantic_mode: Reserved identifiers are only available in classic identifier mode.
+      filter_label: Filter identifiers
+      btn_release: Release
+      released_notice: Identifier "%{identifier}" has been released.
+      dialog:
+        title: Release identifier
+        heading: Release "%{identifier}"?
+        description: Releasing this identifier cannot be undone. External links and integrations using it will stop resolving, and the name becomes available for any new project to claim.
+        checkbox_label: I understand that this cannot be undone.
+        confirm_button: Release identifier
+      empty_heading: No reserved identifiers
+      reserved_ago: "%{time} ago"
+      empty_body: When a project's identifier changes, the previous one will appear here so you can release it once it's safe to do so.
     plugins:
       no_results_title_text: Aucun plugin n'est actuellement installé.
       no_results_content_text: Consultez notre page sur les intégrations et les plugins pour plus d'informations.
@@ -119,6 +138,9 @@ fr:
       errors:
         cannot_delete_with_imports: Impossible de supprimer un hôte Jira avec des importations existantes
         custom_field_creation_failed: 'Échec de la création du champ personnalisé « %{name} » : %{message}'
+        semantic_identifiers_must_be_enabled:
+          title: Project-based semantic identifiers must be enabled.
+          description: Jira uses work items identifiers consisting of project key and a sequence number (PRJ-123). OpenProject also supports it, but it needs to be enabled [here](link).
       blank:
         title: Aucun hôte Jira n'est encore configuré
         description: Configurez un hôte Jira pour commencer à importer des éléments de Jira vers cette instance d'OpenProject.
@@ -135,7 +157,7 @@ fr:
       form:
         fields:
           name: Nom
-          url: URL du serveur/centre de données Jira
+          url: URL du Jira Server / Data Center
           personal_access_token: Jeton d'accès personnel
         button_add: Ajouter la configuration
         button_save: Enregistrer la configuration
@@ -157,6 +179,9 @@ fr:
       client:
         connection_error: 'Échec de la connexion au serveur Jira : %{message}'
         connection_timeout: 'La connexion au serveur Jira a expiré : %{message}'
+        ssrf_blocked: 'Connection blocked: the Jira host resolves to a private IP address. If your Jira instance runs on an internal network, allow its IP via the OPENPROJECT_SSRF__PROTECTION__IP__ALLOWLIST environment variable.'
+        ssrf_block_doc_link: Please see our [documentation](docs_url).
+        ssl_error: 'SSL error connecting to Jira server: %{message}'
         parse_error: 'Échec de l''analyse de la réponse de l''API Jira : %{message}'
         api_error: L'API Jira a renvoyé le statut d'erreur %{status}
         401_error: L'API Jira a renvoyé une erreur 401. Votre jeton d'authentification peut avoir expiré ou ne pas avoir les autorisations requises. Veuillez vous assurer que le jeton appartient à un administrateur Jira.
@@ -168,7 +193,7 @@ fr:
       run:
         title: Cycle d'importation
         history: Historique
-        remove_error: Une exécution d'importation Jira ne peut pas être supprimée lorsqu'elle est en cours d'exécution
+        remove_error: Un cycle d'importation Jira ne peut pas être supprimé pendant son exécution
         import_blocked_error: Un autre cycle d'importation Jira est actuellement en cours ou en attente de révision. Veuillez le terminer ou l'annuler avant de commencer une nouvelle importation.
         project_identifier_taken: 'Vous essayez d''importer un projet avec un identifiant déjà utilisé : %{taken_identifier}. Veuillez mettre à jour l''identifiant du projet dans Jira, puis cliquez sur Réessayer.'
         blank:
@@ -206,8 +231,8 @@ fr:
               one: 1 projet
               other: "%{count} projets"
             issues:
-              one: 1 problème
-              other: "%{count} problèmes"
+              one: 1 ticket
+              other: "%{count} tickets"
             work_packages:
               one: 1 lot de travaux
               other: "%{count} lots de travaux"
@@ -257,16 +282,16 @@ fr:
               label_selected_data: Données sélectionnées pour l'importation
               label_progress: Récupération des données de Jira...
               elements:
-                relations: Relations entre les problèmes
+                relations: Relations entre les tickets
                 project_ids: Identifiants de projet
-                issue_ids: Identifiants de problèmes
+                issue_ids: Identifiants de tickets
                 sprints: Affectation des sprints
                 workflows: Flux de travail au niveau du projet
                 schemes: Schémas
                 permissions: Permissions
                 projects: Projets
-                issues: Problèmes
-                issue_details: Description de la question, historique, commentaires et pièces jointes
+                issues: Tickets
+                issue_details: Description, historique, commentaires et pièces jointes du ticket
                 custom_fields: Un sous-ensemble de champs personnalisés
                 users: Utilisateurs et groupes concernés
             confirm_import:
@@ -404,7 +429,7 @@ fr:
         page_header:
           description: Vous avez le choix entre des identifiants numériques classiques pour les lots de travaux et des identifiants sémantiques spécifiques aux projets, qui ajoutent l'identifiant du projet à l'identifiant du lot de travaux.
         banner:
-          existing_identifiers_notice: 'Les identifiants existants de %{project_count} projets ne répondent pas aux exigences des identifiants sémantiques basés sur les projets. OpenProject peut les mettre à jour automatiquement pour qu''ils soient valides, comme dans les exemples ci-dessous. Cliquez sur « Corriger automatiquement et enregistrer » pour mettre à jour les identifiants de tous les projets de cette manière et activer les identifiants sémantiques basés sur les projets.
+          existing_identifiers_notice: 'Existing identifiers for %{project_count} projects don''t meet requirements for project-based semantic identifiers. OpenProject can automatically update these so that they are valid as in the examples below. Click on ''Convert identifiers'' to update identifiers for all projects in this manner and enable project-based semantic identifiers.
 
             '
         box_header:
@@ -425,7 +450,8 @@ fr:
           remaining_projects:
             one: "... 1 projet supplémentaire"
             other: "... %{count} projets supplémentaires"
-        button_autofix: Réparer automatiquement et enregistrer
+        button_autofix: Convert identifiers
+        button_save: Convert identifiers
         dialog:
           title: Modifier les identifiants de lots de travaux
           heading: Activer les ID de lots de travaux basés sur le projet ?
@@ -436,8 +462,9 @@ fr:
           checkbox_label: Je comprends que cela changera définitivement tous les identifiants du lot de travaux
         success_banner: Le format de l'identifiant du lot de travaux a été mis à jour.
         in_progress:
-          converting_banner_message: Les identifiants du projet sont actuellement convertis en format sémantique. Cela peut prendre un certain temps.
-          reverting_banner_message: Les identifiants du projet sont en cours de réinitialisation au format classique. Cela peut prendre un certain temps.
+          header_semantic: Converting to project-based identifiers
+          header_classic: Converting to numeric identifiers
+          footer_message: Background conversion is in progress. You can safely leave this page.
     workflows:
       tabs:
         default_transitions: Transitions par défaut
@@ -553,7 +580,7 @@ fr:
       plain_description: Ouvre une connexion non chiffrée au serveur LDAP. Déconseillé en production.
       simple_tls_description: Utiliser LDAPS. Nécessite un port séparé sur le serveur LDAP. Ce mode est souvent obsolète, nous vous recommandons d'utiliser STARTTLS dès que possible.
       start_tls_description: Envoie une commande STARTTLS après la connexion au port LDAP standard. Recommandé pour les connexions chiffrées.
-      section_more_info_link_html: 'Cette section concerne la sécurité de connexion de cette source d''authentification LDAP. Pour plus d''informations, visitez <a href="%{link}">the Net::LDAP documentation</a>.
+      section_more_info_link_html: 'Cette section concerne la sécurité de connexion de cette source d''authentification LDAP. Pour plus d''informations, consultez <a href="%{link}">la documentation de Net::LDAP</a>.
 
         '
     tls_options:
@@ -2518,6 +2545,7 @@ fr:
         other: Priorités
       meeting_participant: Participant à la réunion
       member: Membre
+      message: Message
       news: Actualités
       notification:
         one: Notification
@@ -3447,10 +3475,10 @@ fr:
   gui_validation_error: une erreur
   gui_validation_error_plural: "%{count} erreurs"
   health_reports:
-    report_component:
+    common:
       checks:
         failures:
-          one: "%{count} vérification a échoué"
+          one: "%{count} vérification échouée"
           other: "%{count} vérifications ont échoué"
         success: Toutes les vérifications ont été validées
         warnings:
@@ -3458,8 +3486,8 @@ fr:
           other: "%{count} vérifications ont renvoyé un avertissement"
       summary:
         failure: Certaines vérifications ont échoué et le système ne fonctionne pas comme prévu.
-        success: Toutes les connexions et les systèmes fonctionnent comme prévu.
-        warning: Certaines vérifications ont renvoyé un avertissement. Cela peut entraîner un comportement inattendu.
+        success: All connections and systems are working as expected.
+        warning: Some checks returned a warning. This can lead to unexpected behaviour.
     result_component:
       status:
         failed: Échec
@@ -4232,6 +4260,7 @@ fr:
   label_project_new: Nouveau projet
   label_project_plural: Projets
   label_project_list_plural: Listes de projets
+  label_reserved_identifiers: Reserved identifiers
   label_project_life_cycle: Cycle de vie du projet
   label_project_attributes_plural: Attributs du projet
   label_project_custom_field_plural: Attributs du projet
@@ -4445,9 +4474,9 @@ fr:
     other: "%{count} commentaires"
     zero: aucun commentaire
   label_x_items:
-    one: 1 item
-    other: "%{count} items"
-    zero: no items
+    one: 1 élément
+    other: "%{count} éléments"
+    zero: aucun élément
   label_x_open_work_packages_abbr:
     one: 1 ouvert
     other: "%{count} ouverts"
@@ -4730,7 +4759,6 @@ fr:
   notice_successful_delete: Suppression réussie.
   notice_successful_cancel: Annulation réussie.
   notice_successful_update: Mise à jour réussie.
-  notice_successful_move: Passage réussi de %{from} à %{to}.
   notice_unsuccessful_create: Échec de la création.
   notice_unsuccessful_create_with_reason: 'Échec de la création : %{reason}'
   notice_unsuccessful_update: Mise à jour échouée.
@@ -4778,8 +4806,11 @@ fr:
   open_project:
     common:
       work_package_card_component:
+        drag_handle:
+          label: Glisser pour réorganiser
         menu:
           label_actions: Actions du lot de travaux
+        parent: Parent
   permission_add_work_package_comments: Ajouter des commentaires
   permission_add_work_packages: Ajouter des lots de travaux
   permission_add_messages: Poster des messages

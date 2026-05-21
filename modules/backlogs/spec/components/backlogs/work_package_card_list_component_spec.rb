@@ -127,7 +127,7 @@ RSpec.describe Backlogs::WorkPackageCardListComponent, type: :component do
       )
       expect(rendered_component).to have_element(
         "include-fragment",
-        src: menu_project_backlogs_work_package_path(project, sprint, work_package)
+        src: menu_project_backlogs_work_package_path(project, work_package)
       )
     end
   end
@@ -137,6 +137,12 @@ RSpec.describe Backlogs::WorkPackageCardListComponent, type: :component do
 
     it "renders the header" do
       expect(rendered_component).to have_css(".Box-header")
+    end
+
+    it "keeps condensed row padding with spacious header padding" do
+      expect(rendered_component).to have_css(
+        ".Box.Box--condensed.op-border-box-list_header-padding-spacious"
+      )
     end
 
     it "renders the provided title" do

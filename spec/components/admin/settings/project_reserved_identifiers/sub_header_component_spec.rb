@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# -- copyright
+#-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,39 +26,30 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-# ++
+#++
 
-module Backlogs
-  class BacklogBucketDestroyModalComponent < ApplicationComponent
-    include OpTurbo::Streamable
-    include OpPrimer::ComponentHelpers
+require "rails_helper"
 
-    TEST_SELECTOR = "backlog-bucket-destroy-modal-dialog"
+RSpec.describe Admin::Settings::ProjectReservedIdentifiers::SubHeaderComponent, type: :component do
+  let(:query) { Queries::ProjectReservedIdentifiers::ProjectReservedIdentifierQuery.new(user: build(:admin)) }
 
-    attr_reader :backlog_bucket
+  subject(:rendered_component) { render_inline(described_class.new(query:)) }
 
-    def initialize(backlog_bucket:)
-      super()
-      @backlog_bucket = backlog_bucket
+  context "with no active filter" do
+    it "renders a filter input" do
+      expect(rendered_component).to have_field(type: :text)
     end
 
-    private
-
-    def title
-      t(".title")
+    it "wires the filters-form Stimulus controller" do
+      expect(rendered_component).to have_css "[data-controller='filter--filters-form']"
     end
+  end
 
-    def details
-      t(".details", name: backlog_bucket.name)
-    end
+  context "with a name filter active" do
+    before { query.where(:name, "~", ["my-search-term"]) }
 
-    def form_arguments
-      {
-        action: project_backlogs_backlog_bucket_path(backlog_bucket.project,
-                                                     backlog_bucket,
-                                                     helpers.all_backlogs_params),
-        method: :delete
-      }
+    it "pre-populates the filter input value" do
+      expect(rendered_component).to have_css "input[value='my-search-term']"
     end
   end
 end

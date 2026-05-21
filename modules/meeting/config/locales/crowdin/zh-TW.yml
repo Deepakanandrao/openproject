@@ -65,6 +65,9 @@ zh-TW:
         title: Title
         frequency: 頻率
         interval: 間隔
+        monthly_day: Day of month
+        monthly_ordinal: Position
+        monthly_weekday: Weekday
         start_date: 開始於
         start_time: 開始時間
         start_time_hour: 開始時間
@@ -479,18 +482,41 @@ zh-TW:
         other: 每 %{count} 天
       x_weekly:
         other: 每 %{count} 週
+      x_monthly:
+        other: Every %{count} months
+      monthly_day_of_month: Day of month
+      monthly_nth_weekday: Monthly on a weekday
       every_weekday: 每個 %{day_of_the_week}
       working_days: 每個工作天
+    monthly:
+      inflected_ordinal:
+        first: first
+        second: second
+        third: third
+        fourth: fourth
+        last: last
+      ordinal_options:
+        first: First
+        second: Second
+        third: Third
+        fourth: Fourth
+        last: Last
+    actual_first_occurrence_mismatch_html: The first occurrence of this series will be %{first_occurrence}
+    day_of_month_skipping_info: Months with fewer than %{monthly_day} days will be skipped
     end_after:
-      never: 永不
-      specific_date: 特定日期之後
-      iterations: 經過多次發生
+      never: Never
+      specific_date: After a specific date
+      iterations: After a number of occurrences
     starts: 開始
     in_words:
       daily_interval: 每 %{interval} 天
       working_days: 每個工作天
       weekly: 每週 %{weekday}
       weekly_interval: 每 %{interval} 週 %{weekday}
+      monthly_day: Every month on the %{day}
+      monthly_day_interval: Every %{interval} months on the %{day}
+      monthly_nth_weekday: Every month on the %{ordinal} %{weekday}
+      monthly_nth_weekday_interval: Every %{interval} months on the %{ordinal} %{weekday}
       frequency: "%{base} 在 %{time}"
       full: "%{base} 於 %{time}, 結束於 %{end_date}"
       full_past: "%{base} 於 %{time}, 結束於 %{end_date}"

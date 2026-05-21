@@ -51,6 +51,25 @@ uk:
           description: Ваш коментар буде видимий усім, хто має доступ до цього пакета робіт. Продовжити?
           confirm_button_text: Зробити загальнодоступним
   admin:
+    reserved_identifiers:
+      title: Reserved project identifiers
+      lede_html: When a project's identifier is renamed, the previous identifier is kept reserved so that existing links and integrations keep working.<br>Here you can release reserved identifiers so that they may be used by other projects.
+      col_identifier: Identifier
+      col_project: Project
+      col_reserved: Reserved
+      not_available_in_semantic_mode: Reserved identifiers are only available in classic identifier mode.
+      filter_label: Filter identifiers
+      btn_release: Release
+      released_notice: Identifier "%{identifier}" has been released.
+      dialog:
+        title: Release identifier
+        heading: Release "%{identifier}"?
+        description: Releasing this identifier cannot be undone. External links and integrations using it will stop resolving, and the name becomes available for any new project to claim.
+        checkbox_label: I understand that this cannot be undone.
+        confirm_button: Release identifier
+      empty_heading: No reserved identifiers
+      reserved_ago: "%{time} ago"
+      empty_body: When a project's identifier changes, the previous one will appear here so you can release it once it's safe to do so.
     plugins:
       no_results_title_text: Зараз немає встановлених плагінів.
       no_results_content_text: Щоб дізнатися більше, ознайомтеся з нашою сторінкою інтеграцій і планів.
@@ -119,6 +138,9 @@ uk:
       errors:
         cannot_delete_with_imports: Не вдається видалити хост Jira з наявними процесами імпорту
         custom_field_creation_failed: 'Не вдалося створити користувацьке поле «%{name}»: %{message}'
+        semantic_identifiers_must_be_enabled:
+          title: Project-based semantic identifiers must be enabled.
+          description: Jira uses work items identifiers consisting of project key and a sequence number (PRJ-123). OpenProject also supports it, but it needs to be enabled [here](link).
       blank:
         title: Ще немає налаштованих хостів Jira
         description: Налаштуйте хост Jira, щоб почати імпорт елементів із Jira в цей екземпляр OpenProject.
@@ -157,6 +179,9 @@ uk:
       client:
         connection_error: 'Не вдалося під’єднатися до сервера Jira: %{message}'
         connection_timeout: 'Час очікування на встановлення з’єднання до сервера Jira минув: %{message}'
+        ssrf_blocked: 'Connection blocked: the Jira host resolves to a private IP address. If your Jira instance runs on an internal network, allow its IP via the OPENPROJECT_SSRF__PROTECTION__IP__ALLOWLIST environment variable.'
+        ssrf_block_doc_link: Please see our [documentation](docs_url).
+        ssl_error: 'SSL error connecting to Jira server: %{message}'
         parse_error: 'Не вдалося проаналізувати відповідь Jira API: %{message}'
         api_error: Інтерфейс Jira API повернув статус помилки «%{status}»
         401_error: Інтерфейс Jira API повернув помилку 401. Можливо, закінчився строк дії вашого маркера автентифікації або в нього немає необхідних дозволів. Переконайтеся, що маркер належить адміністратору Jira.
@@ -416,7 +441,7 @@ uk:
         page_header:
           description: Виберіть класичні числові ідентифікатори пакетів робіт або семантичні із зазначенням проєкту (до ідентифікатора пакета робіт додається префікс з ідентифікатором проєкту).
         banner:
-          existing_identifiers_notice: 'Наявні ідентифікатори для кількох проєктів (%{project_count}) не відповідають вимогам до семантичних ідентифікаторів із зазначенням проєктів. OpenProject може автоматично оновити їх, щоб вони стали дійсними, як показано в прикладах нижче. Натисніть кнопку «Виправити й зберегти», щоб оновити в такий спосіб ідентифікатори для всіх проєктів і ввімкнути семантичні ідентифікатори із зазначенням проєктів.
+          existing_identifiers_notice: 'Existing identifiers for %{project_count} projects don''t meet requirements for project-based semantic identifiers. OpenProject can automatically update these so that they are valid as in the examples below. Click on ''Convert identifiers'' to update identifiers for all projects in this manner and enable project-based semantic identifiers.
 
             '
         box_header:
@@ -439,7 +464,8 @@ uk:
             few: "… ще %{count} проєкти"
             many: "… ще %{count} проєктів"
             other: "… ще %{count} проєкту"
-        button_autofix: Виправити й зберегти
+        button_autofix: Convert identifiers
+        button_save: Convert identifiers
         dialog:
           title: Змінити ідентифікатори пакетів робіт
           heading: Увімкнути ідентифікатори пакетів робіт із зазначенням проєктів?
@@ -450,8 +476,9 @@ uk:
           checkbox_label: Я розумію, що ця дія назавжди змінить усі ідентифікатори пакетів робіт
         success_banner: Формат ідентифікаторів пакетів робіт успішно оновлено.
         in_progress:
-          converting_banner_message: Ідентифікатори проєктів зараз конвертуються в семантичний формат. Це може зайняти деякий час.
-          reverting_banner_message: Ідентифікатори проєктів зараз конвертуються назад у класичний формат. Це може зайняти деякий час.
+          header_semantic: Converting to project-based identifiers
+          header_classic: Converting to numeric identifiers
+          footer_message: Background conversion is in progress. You can safely leave this page.
     workflows:
       tabs:
         default_transitions: Стандартні переходи
@@ -2580,6 +2607,7 @@ uk:
         other: Пріоритети
       meeting_participant: Учасник наради
       member: Учасник
+      message: Message
       news: Новини
       notification:
         one: Сповіщення
@@ -3577,23 +3605,23 @@ uk:
   gui_validation_error: 1 помилка
   gui_validation_error_plural: "%{count} помилок"
   health_reports:
-    report_component:
+    common:
       checks:
         failures:
-          one: "%{count} перевірку не пройдено"
-          few: "%{count} перевірки не пройдено"
-          many: "%{count} перевірок не пройдено"
-          other: "%{count} перевірки не пройдено"
-        success: Усі перевірки пройдено
+          one: "%{count} check failed"
+          few: "%{count} checks failed"
+          many: "%{count} checks failed"
+          other: "%{count} checks failed"
+        success: All checks passed
         warnings:
-          one: "%{count} перевірка завершилася з попередженням"
-          few: "%{count} перевірок завершилося з попередженням"
-          many: "%{count} перевірок завершилося з попередженням"
-          other: "%{count} перевірки завершилося з попередженням"
+          one: "%{count} check returned a warning"
+          few: "%{count} checks returned a warning"
+          many: "%{count} checks returned a warning"
+          other: "%{count} checks returned a warning"
       summary:
-        failure: Деякі перевірки не пройдено, і система працює неналежним чином.
-        success: Усі підключення й системи працюють належним чином.
-        warning: Деякі перевірки завершилися з попередженням. Це може призвести до неочікуваної поведінки.
+        failure: Some checks failed and the system does not work as expected.
+        success: All connections and systems are working as expected.
+        warning: Some checks returned a warning. This can lead to unexpected behaviour.
     result_component:
       status:
         failed: Не пройдено
@@ -4366,6 +4394,7 @@ uk:
   label_project_new: Новий проект
   label_project_plural: Проєкти
   label_project_list_plural: Списки проєкту
+  label_reserved_identifiers: Reserved identifiers
   label_project_life_cycle: Життєвий цикл проєкту
   label_project_attributes_plural: Атрибути проєкту
   label_project_custom_field_plural: Атрибути проєкту
@@ -4871,7 +4900,6 @@ uk:
   notice_successful_delete: Видалення успішно завершене.
   notice_successful_cancel: Успішно видалено.
   notice_successful_update: Успішно оновлено.
-  notice_successful_move: Успішне перенесення з %{from} у %{to}.
   notice_unsuccessful_create: Не вдалося створити.
   notice_unsuccessful_create_with_reason: 'Не вдалося створити: %{reason}'
   notice_unsuccessful_update: Не вдалось оновити.
@@ -4921,8 +4949,11 @@ uk:
   open_project:
     common:
       work_package_card_component:
+        drag_handle:
+          label: Drag to reorder
         menu:
           label_actions: Дії з пакетом робіт
+        parent: Parent
   permission_add_work_package_comments: Додавання коментарів
   permission_add_work_packages: Додати робочі пакети
   permission_add_messages: Відправка повідомлень

@@ -51,6 +51,25 @@ de:
           description: Ihr Kommentar wird für jeden sichtbar, der dieses Arbeitspaket sehen kann. Sind Sie sicher, dass Sie dies tun möchten?
           confirm_button_text: Veröffentlichen
   admin:
+    reserved_identifiers:
+      title: Reserved project identifiers
+      lede_html: When a project's identifier is renamed, the previous identifier is kept reserved so that existing links and integrations keep working.<br>Here you can release reserved identifiers so that they may be used by other projects.
+      col_identifier: Identifier
+      col_project: Project
+      col_reserved: Reserved
+      not_available_in_semantic_mode: Reserved identifiers are only available in classic identifier mode.
+      filter_label: Filter identifiers
+      btn_release: Release
+      released_notice: Identifier "%{identifier}" has been released.
+      dialog:
+        title: Release identifier
+        heading: Release "%{identifier}"?
+        description: Releasing this identifier cannot be undone. External links and integrations using it will stop resolving, and the name becomes available for any new project to claim.
+        checkbox_label: I understand that this cannot be undone.
+        confirm_button: Release identifier
+      empty_heading: No reserved identifiers
+      reserved_ago: "%{time} ago"
+      empty_body: When a project's identifier changes, the previous one will appear here so you can release it once it's safe to do so.
     plugins:
       no_results_title_text: Es sind derzeit keine Plugins installiert.
       no_results_content_text: Weitere Informationen finden Sie auf unserer Seite für Integrationen und Plugins.
@@ -119,6 +138,9 @@ de:
       errors:
         cannot_delete_with_imports: Jira-Hosts mit laufenden Importen können nicht gelöscht werden
         custom_field_creation_failed: 'Das nutzerdefinierte Feld ''%{name}'' konnte nicht erstellt werden: %{message}'
+        semantic_identifiers_must_be_enabled:
+          title: Project-based semantic identifiers must be enabled.
+          description: Jira uses work items identifiers consisting of project key and a sequence number (PRJ-123). OpenProject also supports it, but it needs to be enabled [here](link).
       blank:
         title: Noch keine Jira-Hosts konfiguriert
         description: Konfigurieren Sie einen Jira-Host, um mit dem Import von Elementen aus Jira in diese OpenProject-Instanz zu beginnen.
@@ -157,6 +179,9 @@ de:
       client:
         connection_error: 'Verbindung zum Jira-Server fehlgeschlagen: %{message}'
         connection_timeout: 'Die Verbindung zum Jira-Server wurde unterbrochen: %{message}'
+        ssrf_blocked: 'Connection blocked: the Jira host resolves to a private IP address. If your Jira instance runs on an internal network, allow its IP via the OPENPROJECT_SSRF__PROTECTION__IP__ALLOWLIST environment variable.'
+        ssrf_block_doc_link: Please see our [documentation](docs_url).
+        ssl_error: 'SSL error connecting to Jira server: %{message}'
         parse_error: 'Die Jira API-Antwort konnte nicht gelesen werden: %{message}'
         api_error: Jira API hat den Fehlerstatus %{status} zurückgegeben
         401_error: Jira API hat einen 401-Fehler zurückgegeben. Ihr Authentifizierungs-Token ist möglicherweise abgelaufen oder Sie haben nicht die erforderlichen Berechtigungen. Bitte stellen Sie sicher, dass das Token einem Jira-Administrator gehört.
@@ -404,7 +429,7 @@ de:
         page_header:
           description: Wählen Sie zwischen einfachen numerischen Arbeitspaket- oder projektspezifischen Kennungen, bei denen die Projektkennung der Arbeitspaket-ID vorangestellt wird.
         banner:
-          existing_identifiers_notice: 'Vorhandene Kennungen für %{project_count} Projekte entsprechen nicht den Anforderungen für projektbasierte alphanumerische Bezeichner. OpenProject kann diese automatisch aktualisieren, so dass sie wie in den folgenden Beispielen gültig sind. Klicken Sie auf ''Beheben und speichern'', um die Kennungen für alle Projekte auf diese Weise zu aktualisieren und projektbasierte alphanumerische Bezeichner zu aktivieren.
+          existing_identifiers_notice: 'Existing identifiers for %{project_count} projects don''t meet requirements for project-based semantic identifiers. OpenProject can automatically update these so that they are valid as in the examples below. Click on ''Convert identifiers'' to update identifiers for all projects in this manner and enable project-based semantic identifiers.
 
             '
         box_header:
@@ -425,7 +450,8 @@ de:
           remaining_projects:
             one: "... 1 weiteres Projekt"
             other: "... %{count} weitere Projekte"
-        button_autofix: Beheben und speichern
+        button_autofix: Convert identifiers
+        button_save: Convert identifiers
         dialog:
           title: Arbeitspaket-Kennungen ändern
           heading: Aktivieren Sie projektspezifische Arbeitspaket-Kennungen?
@@ -436,8 +462,9 @@ de:
           checkbox_label: Mir ist bewusst, dass dies alle Arbeitspaket-Kennungen dauerhaft ändern wird
         success_banner: Das Format der Arbeitspaket-Kennung wurde erfolgreich aktualisiert.
         in_progress:
-          converting_banner_message: Projektkennungen werden derzeit in das semantische Format konvertiert. Dies kann einige Zeit dauern.
-          reverting_banner_message: Project identifiers are currently being reverted to classic format. This may take some time.
+          header_semantic: Converting to project-based identifiers
+          header_classic: Converting to numeric identifiers
+          footer_message: Background conversion is in progress. You can safely leave this page.
     workflows:
       tabs:
         default_transitions: Standard-Übergänge
@@ -2521,6 +2548,7 @@ de:
         other: Prioritäten
       meeting_participant: Besprechungsteilnehmer
       member: Mitglied
+      message: Message
       news: Neuigkeiten
       notification:
         one: Benachrichtigung
@@ -3448,19 +3476,19 @@ de:
   gui_validation_error: 1 Fehler
   gui_validation_error_plural: "%{count} Fehler"
   health_reports:
-    report_component:
+    common:
       checks:
         failures:
-          one: "%{count} Überprüfung fehlgeschlagen"
-          other: "%{count} Überprüfungen fehlgeschlagen"
+          one: "%{count} check failed"
+          other: "%{count} checks failed"
         success: All checks passed
         warnings:
           one: "%{count} check returned a warning"
           other: "%{count} checks returned a warning"
       summary:
         failure: Some checks failed and the system does not work as expected.
-        success: Alle Verbindungen und Systeme funktionieren wie erwartet.
-        warning: Einige Überprüfungen ergaben eine Warnung. Dies kann zu unerwartetem Verhalten führen.
+        success: All connections and systems are working as expected.
+        warning: Some checks returned a warning. This can lead to unexpected behaviour.
     result_component:
       status:
         failed: Fehlgeschlagen
@@ -4233,6 +4261,7 @@ de:
   label_project_new: Neues Projekt
   label_project_plural: Projekte
   label_project_list_plural: Projektlisten
+  label_reserved_identifiers: Reserved identifiers
   label_project_life_cycle: Projekt-Lebenszyklus
   label_project_attributes_plural: Projektattribute
   label_project_custom_field_plural: Projektattribute
@@ -4735,7 +4764,6 @@ de:
   notice_successful_delete: Erfolgreich gelöscht.
   notice_successful_cancel: Erfolgreiche Absage.
   notice_successful_update: Erfolgreich aktualisiert.
-  notice_successful_move: Erfolgreich von %{from} nach %{to} verschoben.
   notice_unsuccessful_create: Erstellung fehlgeschlagen.
   notice_unsuccessful_create_with_reason: 'Erstellung fehlgeschlagen: %{reason}'
   notice_unsuccessful_update: Aktualisierung fehlgeschlagen.
@@ -4783,8 +4811,11 @@ de:
   open_project:
     common:
       work_package_card_component:
+        drag_handle:
+          label: Drag to reorder
         menu:
           label_actions: Arbeitspaket-Aktionen
+        parent: Parent
   permission_add_work_package_comments: Kommentare hinzufügen
   permission_add_work_packages: Arbeitspakete hinzufügen
   permission_add_messages: Forenbeiträge hinzufügen

@@ -66,6 +66,9 @@ tr:
         title: Title
         frequency: Sıklık
         interval: Zaman aralığı
+        monthly_day: Day of month
+        monthly_ordinal: Position
+        monthly_weekday: Weekday
         start_date: Başlama zamanı
         start_time: Başlama tarihi
         start_time_hour: Başlama saati
@@ -482,18 +485,42 @@ tr:
       x_weekly:
         one: Her hafta
         other: Her %{count} haftada bir
+      x_monthly:
+        one: Every month
+        other: Every %{count} months
+      monthly_day_of_month: Day of month
+      monthly_nth_weekday: Monthly on a weekday
       every_weekday: Her %{day_of_the_week}
       working_days: Her iş günü
+    monthly:
+      inflected_ordinal:
+        first: first
+        second: second
+        third: third
+        fourth: fourth
+        last: last
+      ordinal_options:
+        first: First
+        second: Second
+        third: Third
+        fourth: Fourth
+        last: Last
+    actual_first_occurrence_mismatch_html: The first occurrence of this series will be %{first_occurrence}
+    day_of_month_skipping_info: Months with fewer than %{monthly_day} days will be skipped
     end_after:
-      never: hiçbir zaman
-      specific_date: belirli bir tarihten sonra
-      iterations: birkaç tekrardan sonra
+      never: Never
+      specific_date: After a specific date
+      iterations: After a number of occurrences
     starts: Başlama zamanı
     in_words:
       daily_interval: Her %{interval} günde
       working_days: Her iş günü
       weekly: Her hafta %{weekday} günü
       weekly_interval: Her %{interval} haftada bir %{weekday} günleri
+      monthly_day: Every month on the %{day}
+      monthly_day_interval: Every %{interval} months on the %{day}
+      monthly_nth_weekday: Every month on the %{ordinal} %{weekday}
+      monthly_nth_weekday_interval: Every %{interval} months on the %{ordinal} %{weekday}
       frequency: "%{base} ve %{time}"
       full: "%{base} %{time} saatinde, %{end_date} tarihinde sona erdi"
       full_past: "%{base} %{time} saatinde, %{end_date} tarihinde sona erer"

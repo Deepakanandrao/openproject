@@ -51,6 +51,25 @@ pl:
           description: Twój komentarz będzie widoczny dla każdego, kto ma dostęp do tego pakietu roboczego. Czy na pewno chcesz to zrobić?
           confirm_button_text: Ustaw jako publiczny
   admin:
+    reserved_identifiers:
+      title: Reserved project identifiers
+      lede_html: When a project's identifier is renamed, the previous identifier is kept reserved so that existing links and integrations keep working.<br>Here you can release reserved identifiers so that they may be used by other projects.
+      col_identifier: Identifier
+      col_project: Project
+      col_reserved: Reserved
+      not_available_in_semantic_mode: Reserved identifiers are only available in classic identifier mode.
+      filter_label: Filter identifiers
+      btn_release: Release
+      released_notice: Identifier "%{identifier}" has been released.
+      dialog:
+        title: Release identifier
+        heading: Release "%{identifier}"?
+        description: Releasing this identifier cannot be undone. External links and integrations using it will stop resolving, and the name becomes available for any new project to claim.
+        checkbox_label: I understand that this cannot be undone.
+        confirm_button: Release identifier
+      empty_heading: No reserved identifiers
+      reserved_ago: "%{time} ago"
+      empty_body: When a project's identifier changes, the previous one will appear here so you can release it once it's safe to do so.
     plugins:
       no_results_title_text: Obecnie nie ma żadnych zainstalowanych wtyczek.
       no_results_content_text: Więcej informacji znajdziesz na naszej stronie poświęconej integracjom i wtyczkom.
@@ -119,6 +138,9 @@ pl:
       errors:
         cannot_delete_with_imports: Nie można usunąć hosta Jira z istniejącym importem
         custom_field_creation_failed: 'Nie udało się utworzyć pola niestandardowego „%{name}”: %{message}'
+        semantic_identifiers_must_be_enabled:
+          title: Project-based semantic identifiers must be enabled.
+          description: Jira uses work items identifiers consisting of project key and a sequence number (PRJ-123). OpenProject also supports it, but it needs to be enabled [here](link).
       blank:
         title: Nie skonfigurowano jeszcze hostów Jira
         description: Skonfiguruj host usługi Jira, aby rozpocząć importowanie elementów z Jira do tego wystąpienia OpenProject.
@@ -157,6 +179,9 @@ pl:
       client:
         connection_error: 'Nie udało się połączyć z serwerem Jira: %{message}'
         connection_timeout: 'Upłynął limit czasu połączenia z serwerem Jira: %{message}'
+        ssrf_blocked: 'Connection blocked: the Jira host resolves to a private IP address. If your Jira instance runs on an internal network, allow its IP via the OPENPROJECT_SSRF__PROTECTION__IP__ALLOWLIST environment variable.'
+        ssrf_block_doc_link: Please see our [documentation](docs_url).
+        ssl_error: 'SSL error connecting to Jira server: %{message}'
         parse_error: 'Nie udało się przeanalizować odpowiedzi interfejsu API usługi Jira: %{message}'
         api_error: Interfejs API usługi Jira zwrócił status błędu %{status}
         401_error: Interfejs API Jira zwrócił błąd 401. Twój token uwierzytelniający mógł wygasnąć lub nie ma wymaganych uprawnień. Upewnij się, że token należy do administratora Jira.
@@ -416,7 +441,7 @@ pl:
         page_header:
           description: Wybierz pomiędzy klasycznymi numerycznymi identyfikatorami pakietów roboczych albo semantycznymi identyfikatorami specyficznymi dla projektu, które dodają identyfikator projektu do identyfikatora pakietu roboczego.
         banner:
-          existing_identifiers_notice: 'Istniejące identyfikatory %{project_count} projektów nie spełniają wymagań dotyczących identyfikatorów semantycznych opartych na projektach. OpenProject może automatycznie zaktualizować je tak, aby były prawidłowe, jak w poniższych przykładach. Kliknij przycisk „Automatyczne napraw i zapisz”, aby zaktualizować identyfikatory wszystkich projektów w ten sposób i włączyć identyfikatory semantyczne oparte na projektach.
+          existing_identifiers_notice: 'Existing identifiers for %{project_count} projects don''t meet requirements for project-based semantic identifiers. OpenProject can automatically update these so that they are valid as in the examples below. Click on ''Convert identifiers'' to update identifiers for all projects in this manner and enable project-based semantic identifiers.
 
             '
         box_header:
@@ -439,7 +464,8 @@ pl:
             few: "...jeszcze %{count} projekty"
             many: "...jeszcze %{count} projektów"
             other: "...jeszcze %{count} projektu"
-        button_autofix: Automatycznie napraw i zapisz
+        button_autofix: Convert identifiers
+        button_save: Convert identifiers
         dialog:
           title: Zmień identyfikatory pakietów roboczych
           heading: Czy włączyć identyfikatory pakietów roboczych oparte na projektach?
@@ -450,8 +476,9 @@ pl:
           checkbox_label: Rozumiem, że spowoduje to trwałą zmianę wszystkich identyfikatorów pakietów roboczych
         success_banner: Pomyślnie zaktualizowano format identyfikatora pakietu roboczego.
         in_progress:
-          converting_banner_message: Identyfikatory projektów są obecnie konwertowane na format semantyczny. Może to zająć trochę czasu.
-          reverting_banner_message: Identyfikatory projektów są obecnie konwertowane na format klasyczny. Może to zająć trochę czasu.
+          header_semantic: Converting to project-based identifiers
+          header_classic: Converting to numeric identifiers
+          footer_message: Background conversion is in progress. You can safely leave this page.
     workflows:
       tabs:
         default_transitions: Przejścia domyślne
@@ -2577,6 +2604,7 @@ pl:
         other: Priorytety
       meeting_participant: Uczestnik spotkania
       member: Członek
+      message: Message
       news: Aktualności
       notification:
         one: Powiadomienie
@@ -3570,23 +3598,23 @@ pl:
   gui_validation_error: 1 błąd
   gui_validation_error_plural: "%{count} błędy/ów"
   health_reports:
-    report_component:
+    common:
       checks:
         failures:
-          one: "%{count} kontrola nie powiodła się"
-          few: "%{count} kontrole nie powiodły się"
-          many: "%{count} kontroli nie powiodło się"
-          other: "%{count} kontroli nie powiodło się"
-        success: Wszystkie kontrole powiodły się
+          one: "%{count} check failed"
+          few: "%{count} checks failed"
+          many: "%{count} checks failed"
+          other: "%{count} checks failed"
+        success: All checks passed
         warnings:
-          one: "%{count} kontrola zwróciła ostrzeżenie"
-          few: "%{count} kontrole zwróciły ostrzeżenie"
-          many: "%{count} kontroli zwróciło ostrzeżenie"
-          other: "%{count} kontroli zwróciło ostrzeżenie"
+          one: "%{count} check returned a warning"
+          few: "%{count} checks returned a warning"
+          many: "%{count} checks returned a warning"
+          other: "%{count} checks returned a warning"
       summary:
-        failure: Niektóre kontrole nie powiodły się i system nie działa zgodnie z oczekiwaniami.
-        success: Wszystkie połączenia i systemy działają zgodnie z oczekiwaniami.
-        warning: Niektóre kontrole zwróciły ostrzeżenie. Może to prowadzić do nieoczekiwanego sposobu działania.
+        failure: Some checks failed and the system does not work as expected.
+        success: All connections and systems are working as expected.
+        warning: Some checks returned a warning. This can lead to unexpected behaviour.
     result_component:
       status:
         failed: Niepowodzenie
@@ -4359,6 +4387,7 @@ pl:
   label_project_new: Nowy projekt
   label_project_plural: Projekty
   label_project_list_plural: Listy projektów
+  label_reserved_identifiers: Reserved identifiers
   label_project_life_cycle: Cykl życia projektu
   label_project_attributes_plural: Atrybuty projektu
   label_project_custom_field_plural: Atrybuty projektu
@@ -4869,7 +4898,6 @@ pl:
   notice_successful_delete: Usuwanie zakończone sukcesem.
   notice_successful_cancel: Anulowanie powiodło się.
   notice_successful_update: Aktualizacja zakończona sukcesem.
-  notice_successful_move: Udane przeniesienie z %{from} do %{to}.
   notice_unsuccessful_create: Utworzenie nie powiodło się.
   notice_unsuccessful_create_with_reason: 'Utworzenie nie powiodło się: %{reason}'
   notice_unsuccessful_update: Aktualizacja nie powiodła się.
@@ -4919,8 +4947,11 @@ pl:
   open_project:
     common:
       work_package_card_component:
+        drag_handle:
+          label: Drag to reorder
         menu:
           label_actions: Działania pakietu roboczego
+        parent: Parent
   permission_add_work_package_comments: Dodaj komentarze
   permission_add_work_packages: Dodawanie pakietów roboczych
   permission_add_messages: Wysyłanie wiadomości

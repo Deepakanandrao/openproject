@@ -28,26 +28,21 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Backlogs
-  # TODO: remove this very temporary concern
-  module Move
-    extend ActiveSupport::Concern
+module WorkPackages::Scopes::WithoutExcludedType
+  extend ActiveSupport::Concern
 
-    private
+  class_methods do
+    def without_excluded_type
+      type_subquery = <<~SQL.squish
+        work_packages.type_id NOT IN (
+          SELECT type_id
+          FROM backlog_excluded_types
+          WHERE project_id = work_packages.project_id
+        )
+      SQL
 
-    def move_attributes_from_target
-      target_type, target_id = move_params[:target_id].split(":", 2)
-
-      case target_type
-      when "sprint"
-        { backlog_bucket_id: nil, sprint_id: target_id }
-      when "backlog_bucket"
-        { backlog_bucket_id: target_id, sprint_id: nil }
-      when "inbox"
-        { backlog_bucket_id: nil, sprint_id: nil }
-      else
-        raise ArgumentError, "target_type must be one of: backlog_bucket, sprint, inbox."
-      end
+      where(type_subquery)
+        .includes(:type)
     end
   end
 end
