@@ -29,29 +29,24 @@
 #++
 
 module Wikis
-  class RelationPageLinksComponent < ApplicationComponent
-    include ApplicationHelper
-    include OpPrimer::ComponentHelpers
+  class RelationPageLinksController < ApplicationController
+    include OpTurbo::ComponentStream
 
-    alias_method :provider, :model
+    before_action :find_page_link
+    before_action :authorize
 
-    def initialize(model = nil, work_package: nil, **)
-      @work_package = work_package
-      super(model, **)
+    def destroy
+      # TODO: implement delete service
     end
 
-    def page_links
-      @page_links ||= page_link_service.relation_page_links_for(provider:, linkable: @work_package)
-    end
-
-    def user_connected?
-      provider.user_connected?(User.current)
+    def confirm_delete_dialog
+      respond_with_dialog(DeleteRelationPageLinkConfirmationDialog.new(page_link: @page_link))
     end
 
     private
 
-    def page_link_service
-      @page_link_service ||= PageLinkService.new
+    def find_page_link
+      @page_link = RelationPageLink.find(params.expect(:id))
     end
   end
 end

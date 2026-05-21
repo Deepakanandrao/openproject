@@ -29,29 +29,39 @@
 #++
 
 module Wikis
-  class RelationPageLinksComponent < ApplicationComponent
-    include ApplicationHelper
-    include OpPrimer::ComponentHelpers
+  class PageLinkMacroController < ApplicationController
+    include Dry::Monads[:result]
 
-    alias_method :provider, :model
+    # The view component shown in `load` will be rendered regardless of the current user's authorization status.
+    # The component itself handles the states of "unauthorized", "forbidden", and "not_found".
+    authorization_checked! :load
 
-    def initialize(model = nil, work_package: nil, **)
-      @work_package = work_package
-      super(model, **)
-    end
+    def load
+      provider = Provider.visible.find_by(id: params[:provider_id])
+      @page_info_result = page_info_result(provider)
+      @turbo_frame_id = turbo_frame_id
 
-    def page_links
-      @page_links ||= page_link_service.relation_page_links_for(provider:, linkable: @work_package)
-    end
-
-    def user_connected?
-      provider.user_connected?(User.current)
+      render layout: false
     end
 
     private
 
-    def page_link_service
-      @page_link_service ||= PageLinkService.new
+    def page_info_result(provider)
+      return Failure() if provider.nil?
+
+      Adapters::Input::PageInfo.build(identifier:).bind do |input_data|
+        provider.auth_strategy_for(User.current).bind do |auth_strategy|
+          provider.resolve("queries.page_info").call(input_data:, auth_strategy:)
+        end
+      end
+    end
+
+    def identifier
+      params[:page_identifier]
+    end
+
+    def turbo_frame_id
+      params[:turbo_frame_id]
     end
   end
 end

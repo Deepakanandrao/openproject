@@ -37,8 +37,9 @@ module Wikis
 
     attr_reader :actions
 
-    def initialize(model = nil, actions: [], **)
+    def initialize(model = nil, actions: [], page_link: nil, **)
       @actions = actions
+      @page_link = page_link
 
       super(model, **)
     end
@@ -54,7 +55,38 @@ module Wikis
     end
 
     def show_action_menu?
-      actions.any?
+      page_info_result.success? && actions.any?
+    end
+
+    def menu_items(menu)
+      if actions.include?(:remove)
+        deletion_action_item(menu)
+      end
+    end
+
+    private
+
+    def project
+      @page_link&.linkable&.project
+    end
+
+    def deletion_action_item(menu)
+      return if @page_link.nil?
+      return unless user_allowed_to_delete?
+
+      href = url_helpers.confirm_delete_dialog_relation_wiki_page_link_path(@page_link)
+
+      menu.with_item(label: t(".remove"),
+                     scheme: :danger,
+                     tag: :a,
+                     href:,
+                     content_arguments: { data: { controller: "async-dialog" } }) do |item|
+        item.with_leading_visual_icon(icon: :trash)
+      end
+    end
+
+    def user_allowed_to_delete?
+      helpers.current_user.allowed_in_project?(:manage_wiki_page_links, project)
     end
   end
 end
