@@ -33,9 +33,7 @@ module Wikis
     include OpTurbo::ComponentStream
 
     before_action :find_page_link
-    before_action :authorize, except: %i[confirm_delete_dialog]
-
-    no_authorization_required! :confirm_delete_dialog
+    before_action :authorize
 
     def destroy
       # TODO: implement delete service
