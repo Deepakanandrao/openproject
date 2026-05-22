@@ -36,7 +36,7 @@ See COPYRIGHT and LICENSE files for more details.
         render(Primer::Beta::Link.new(href: page_info.href)) { page_info.title }
       end,
       ->(_error) do
-        render(Primer::Beta::Text.new(color: :muted)) { I18n.t("wikis.macro.page_not_found") }
+        render(Primer::Beta::Text.new(color: :muted)) { I18n.t("wikis.page_links.errors.page_not_found") }
       end
     )
   end
