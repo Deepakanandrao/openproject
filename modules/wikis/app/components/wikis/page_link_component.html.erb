@@ -28,7 +28,13 @@ See COPYRIGHT and LICENSE files for more details.
 ++#%>
 
 <%= render(Primer::Alpha::Stack.new(direction: :horizontal, gap: :condensed, align: :center)) do %>
-  <%= render(Primer::Beta::Octicon.new(icon: :"op-file-doc")) %>
+  <%=
+    if error?
+      render(Primer::Beta::Octicon.new(icon: :alert, color: :muted))
+    else
+      render(Primer::Beta::Octicon.new(icon: :"op-file-doc"))
+    end
+  %>
 
   <%=
     render(Primer::Alpha::StackItem.new(grow: true, classes: "ellipsis")) do

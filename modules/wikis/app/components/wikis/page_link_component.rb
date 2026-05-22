@@ -48,13 +48,13 @@ module Wikis
       page_info_result.either(
         ->(pi) { pi.title },
         ->(error) do
-          case error.code
-          when :not_found
+          case error
+          in { code: :not_found }
             I18n.t("wikis.page_links.errors.page_not_found")
-          when :forbidden
+          in { code: :forbidden }
             I18n.t("wikis.page_links.errors.page_access_forbidden")
           else
-            I18n.t("wikis.page_links.errors.unknown")
+            I18n.t("wikis.page_links.errors.unexpected")
           end
         end
       )

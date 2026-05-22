@@ -45,7 +45,7 @@ RSpec.describe Wikis::PageLinkComponent, type: :component do
     )
   end
   let(:page_info_result) { Success(page_info) }
-  let(:permissions) { [] }
+  let(:permissions) { [:manage_wiki_page_links] }
   let(:actions) { [] }
 
   current_user { create(:user, member_with_permissions: { project => permissions }) }
@@ -54,7 +54,7 @@ RSpec.describe Wikis::PageLinkComponent, type: :component do
 
   before { render_component }
 
-  it "renders the page link successful" do
+  it "renders the page link successfully" do
     expect(page).to have_link(text: page_info.title, href: page_info.href)
   end
 
@@ -62,14 +62,14 @@ RSpec.describe Wikis::PageLinkComponent, type: :component do
     let(:actions) { [:remove] }
 
     context "when the user has no permission to manage wiki page links" do
+      let(:permissions) { [] }
+
       it "does not render the action menu" do
         expect(page).not_to have_test_selector("wiki-page-link-action-menu")
       end
     end
 
     context "when the user has the permission to manage wiki page links" do
-      let(:permissions) { [:manage_wiki_page_links] }
-
       it "shows the remove page link action in the action menu" do
         expect(page).to have_test_selector("wiki-page-link-action-menu")
       end
@@ -95,7 +95,7 @@ RSpec.describe Wikis::PageLinkComponent, type: :component do
     context "if the page was not found" do
       let(:error_code) { :not_found }
 
-      it "renders the page link successful" do
+      it "renders an error text" do
         expect(page).not_to have_link
         expect(page).to have_text(I18n.t("wikis.page_links.errors.page_not_found"))
       end
@@ -104,18 +104,18 @@ RSpec.describe Wikis::PageLinkComponent, type: :component do
     context "if the page access is forbidden" do
       let(:error_code) { :forbidden }
 
-      it "renders the page link successful" do
+      it "renders an error text" do
         expect(page).not_to have_link
         expect(page).to have_text(I18n.t("wikis.page_links.errors.page_access_forbidden"))
       end
     end
 
     context "if an unknown error occurred" do
-      let(:error_code) { "IT'S NO MOON" }
+      let(:error_code) { :timeout }
 
-      it "renders the page link successful" do
+      it "renders an error text" do
         expect(page).not_to have_link
-        expect(page).to have_text(I18n.t("wikis.page_links.errors.unknown"))
+        expect(page).to have_text(I18n.t("wikis.page_links.errors.unexpected"))
       end
     end
   end

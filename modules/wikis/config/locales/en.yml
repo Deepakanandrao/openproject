@@ -61,7 +61,7 @@ en:
       errors:
         page_not_found: Linked wiki page no longer available
         page_access_forbidden: You do not have permission to access this wiki page
-        unknown: An unknown error occurred
+        unexpected: An unexpected error occurred
     page_link_component:
       remove: Remove page link
     relation_page_links_component:
