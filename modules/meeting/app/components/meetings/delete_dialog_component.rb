@@ -90,12 +90,8 @@ module Meetings
       end
     end
 
-    def past?
-      @meeting.start_time + @meeting.duration.hours < Time.current
-    end
-
     def occurrence_key
-      past? ? "occurrence_past" : "occurrence"
+      @meeting.past? ? "occurrence_past" : "occurrence"
     end
   end
 end

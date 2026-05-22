@@ -151,7 +151,7 @@ module Meetings
 
       back_url = current_project ? nil : meetings_path
       label = if recurring_meeting.present?
-                past? ? I18n.t(:label_recurring_meeting_delete) : I18n.t(:label_recurring_meeting_cancel)
+                model.past? ? I18n.t(:label_recurring_meeting_delete) : I18n.t(:label_recurring_meeting_cancel)
               else
                 I18n.t(:label_meeting_delete)
               end
@@ -164,10 +164,6 @@ module Meetings
                      }) do |item|
         item.with_leading_visual_icon(icon: :trash)
       end
-    end
-
-    def past?
-      model.start_time + model.duration.hours < Time.current
     end
 
     def recurring_label
