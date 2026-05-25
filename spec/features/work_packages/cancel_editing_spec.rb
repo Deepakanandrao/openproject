@@ -152,15 +152,18 @@ RSpec.describe "Cancel editing work package", :js, :selenium do
 
     # Try to move back to list, expect warning
     page.execute_script("window.history.back()")
+    expect(wp_page).to have_alert_dialog
     wp_page.dismiss_alert_dialog!
+    description.expect_active!
 
     # Now cancel the field
     description.cancel_by_click
+    description.expect_inactive!
 
     # Now we should be able to get back to list
     page.execute_script("window.history.back()")
 
-    expect(wp_page.has_alert_dialog?).to be false
+    wait_for { wp_page.has_alert_dialog? }.to be false
   end
 
   context "when user does not want to be warned" do
