@@ -36,6 +36,7 @@ module Admin
 
         DIALOG_ID = "new-cost-type-projects-modal"
         DIALOG_BODY_ID = "new-cost-type-projects-modal-body"
+        FORM_ID = "new-cost-type-projects-form"
 
         def initialize(cost_type_project_mapping:, cost_type:, **)
           @cost_type_project_mapping = cost_type_project_mapping
@@ -51,6 +52,7 @@ module Admin
 
         def dialog_id = DIALOG_ID
         def dialog_body_id = DIALOG_BODY_ID
+        def form_id = FORM_ID
 
         attr_reader :cost_type_project_mapping, :cost_type
 
