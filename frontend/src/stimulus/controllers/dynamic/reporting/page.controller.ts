@@ -916,7 +916,7 @@ export default class PageController extends Controller {
       return undefined;
     }
 
-    const { id } = value as { id:unknown };
+    const { id } = value;
     if (typeof id === 'string') {
       return id;
     }
