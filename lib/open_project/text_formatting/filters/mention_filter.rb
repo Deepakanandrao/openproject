@@ -72,7 +72,7 @@ module OpenProject::TextFormatting
       end
 
       def mention_work_package_ids
-        doc.css('mention[data-type="work_package"]').filter_map { |m| mention_id(m)&.to_i }.uniq
+        doc.css('mention[data-type="work_package"]').filter_map { mention_id(it)&.to_i }.uniq
       end
 
       def mention_anchor(mention)

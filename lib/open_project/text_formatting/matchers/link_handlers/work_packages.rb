@@ -38,9 +38,6 @@ module OpenProject::TextFormatting::Matchers
       # Shared with the PDF-export subclass in `app/models/work_package/exports/macros/links.rb`.
       HASH_TRIGGERS = %w[# ## ###].freeze
 
-      # Builds the user-facing label for the static-anchor variant of `##`/
-      # `###` macros. Centralised so the PatternMatcherFilter path here and
-      # the `<mention>`-envelope path in `MentionFilter` stay in lockstep.
       def self.compose_static_macro_label(work_package, label:, detailed:)
         parts = []
         parts << work_package.status&.name if detailed
