@@ -66,9 +66,9 @@ RSpec.describe Import::JiraFetchAndImportProjectsJob do
       end
 
       it "logs the error" do
-        allow(Rails.logger).to receive(:error)
+        allow(Rails.logger).to receive(:info)
         job.send(:resolve_mention_user_keys, %w[alice ghost], user_keys, jira_client)
-        expect(Rails.logger).to have_received(:error).with(a_string_including("ghost"))
+        expect(Rails.logger).to have_received(:info).with(a_string_including("ghost"))
       end
     end
   end
