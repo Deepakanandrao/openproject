@@ -53,14 +53,15 @@ module Admin
           input_width: :medium
         )
 
-        f.text_field(
-          name: :current_rate,
-          label: ::CostType.human_attribute_name(:current_rate),
-          input_width: :small,
-          inputmode: :decimal,
-          value: current_rate_value,
-          trailing_visual: { text: { text: Setting.costs_currency } }
-        )
+        if model.new_record?
+          f.text_field(
+            name: :current_rate,
+            label: ::CostType.human_attribute_name(:current_rate),
+            input_width: :small,
+            inputmode: :decimal,
+            trailing_visual: { text: { text: Setting.costs_currency } }
+          )
+        end
 
         f.check_box(
           name: :default,
@@ -71,13 +72,6 @@ module Admin
           name: :for_all_projects,
           label: ::CostType.human_attribute_name(:for_all_projects)
         )
-      end
-
-      def current_rate_value
-        rate = model.rate_at(Date.current)
-        return "" unless rate
-
-        helpers.unitless_currency_number(rate.rate.round(2))
       end
     end
   end
