@@ -26,6 +26,13 @@ updates:
       fullcalendar:
         patterns:
           - '@fullcalendar/*'
+      eslint:
+        patterns:
+          - 'eslint'
+          - 'eslint-plugin-*'
+          - '@eslint/*'
+          - '@stylistic/eslint-plugin'
+          - 'globals'
       html-eslint:
         patterns:
           - '@html-eslint/*'
