@@ -195,6 +195,7 @@ en:
         parse_error: "Failed to parse Jira API response: %{message}"
         api_error: "Jira API returned error status %{status}"
         401_error: "Jira API returned a 401 error. Your authentication token may have expired or lack the required permissions. Please ensure the token belongs to a Jira administrator."
+        429_error: "Jira API returned a 429 error. It means token owner has been rate limited by the Jira instance. Please disable rate limiting for this user."
       columns:
         projects: "Projects"
         last_change: "Last change"
@@ -5738,7 +5739,7 @@ en:
       section_work_week: "Work week"
       section_holidays_and_closures: "Holidays and closures"
     work_packages:
-      work_package_identifier: "Work package identifier"
+      work_package_identifier: "Work package identifiers"
       not_allowed_text: "You do not have the necessary permissions to view this page."
       activities:
         enable_internal_comments: "Enable internal comments"
