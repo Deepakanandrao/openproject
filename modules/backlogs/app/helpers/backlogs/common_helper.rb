@@ -47,13 +47,17 @@ module Backlogs
       user_allowed?(:share_sprint)
     end
 
-    def show_all_backlog
-      ActiveRecord::Type::Boolean.new.cast(params[:all]) || false
+    def backlog_filters
+      RequestStore.fetch(:backlog_filters) { Backlogs::BacklogFilters.from_params(params) }
     end
 
-    # Optional query params for backlog URLs when showing all items (`?all=1`).
-    def all_backlogs_params
-      show_all_backlog ? { all: 1 } : {}
+    def backlog_filter_params
+      backlog_filters.to_h
+    end
+
+    def filter_fields_for(selector_type)
+      except = selector_type == :buckets ? :bucket_ids : :sprint_ids
+      backlog_filters.to_inputs(except:)
     end
   end
 end

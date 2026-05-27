@@ -31,63 +31,57 @@
 require "rails_helper"
 
 RSpec.describe Backlogs::CommonHelper do
-  describe "#show_all_backlog" do
-    before do
-      allow(helper).to receive(:params).and_return(params)
-    end
+  before do
+    allow(helper).to receive(:params).and_return(params)
+  end
 
-    context "when the all param is absent" do
+  describe "#backlog_filters" do
+    context "with no params" do
       let(:params) { {} }
 
-      it "is false" do
-        expect(helper.show_all_backlog).to be false
+      it "returns filters with empty to_h" do
+        expect(helper.backlog_filters.to_h).to eq({})
       end
     end
 
-    context "when the all param is a Rails boolean truthy string" do
+    context "with all: '1'" do
       let(:params) { { all: "1" } }
 
-      it "is true" do
-        expect(helper.show_all_backlog).to be true
+      it "returns filters with all: 1 in to_h" do
+        expect(helper.backlog_filters.to_h).to eq({ all: 1 })
       end
     end
 
-    context "when the all param is the string false" do
-      let(:params) { { all: "false" } }
+    context "with bucket_ids and sprint_ids" do
+      let(:params) { { bucket_ids: %w[1 2], sprint_ids: %w[3] } }
 
-      it "is false" do
-        expect(helper.show_all_backlog).to be false
-      end
-    end
-
-    context "when the all param is the string zero" do
-      let(:params) { { all: "0" } }
-
-      it "is false" do
-        expect(helper.show_all_backlog).to be false
+      it "includes both in to_h" do
+        expect(helper.backlog_filters.to_h).to eq({ bucket_ids: [1, 2], sprint_ids: [3] })
       end
     end
   end
 
-  describe "#all_backlogs_params" do
-    before do
-      allow(helper).to receive(:params).and_return(params)
+  describe "#backlog_filter_params" do
+    let(:params) { { bucket_ids: %w[1 2], all: "1" } }
+
+    it "returns the same hash as backlog_filters.to_h" do
+      expect(helper.backlog_filter_params).to eq(helper.backlog_filters.to_h)
+    end
+  end
+
+  describe "#filter_fields_for" do
+    let(:params) { { bucket_ids: %w[1 2], sprint_ids: %w[3], all: "1" } }
+
+    it "excludes bucket_ids when selector_type is :buckets" do
+      names = helper.filter_fields_for(:buckets).map { |i| i[:name].to_s }
+      expect(names).not_to include("bucket_ids[]")
+      expect(names).to include("sprint_ids[]", "all")
     end
 
-    context "when show_all_backlog is true" do
-      let(:params) { { all: "1" } }
-
-      it "returns the all query hash" do
-        expect(helper.all_backlogs_params).to eq({ all: 1 })
-      end
-    end
-
-    context "when show_all_backlog is false" do
-      let(:params) { {} }
-
-      it "returns an empty hash" do
-        expect(helper.all_backlogs_params).to eq({})
-      end
+    it "excludes sprint_ids when selector_type is :sprints" do
+      names = helper.filter_fields_for(:sprints).map { |i| i[:name].to_s }
+      expect(names).not_to include("sprint_ids[]")
+      expect(names).to include("bucket_ids[]", "all")
     end
   end
 end

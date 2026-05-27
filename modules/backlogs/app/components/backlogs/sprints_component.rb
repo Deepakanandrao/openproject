@@ -33,9 +33,11 @@ module Backlogs
     include Primer::AttributesHelper
     include CommonHelper
 
-    attr_reader :sprints, :work_packages_by_sprint_id, :active_sprint_ids, :project, :current_user
+    attr_reader :sprints, :all_sprints, :work_packages_by_sprint_id, :active_sprint_ids,
+                :project, :current_user
 
     def initialize(sprints:,
+                   all_sprints:,
                    work_packages_by_sprint_id:,
                    active_sprint_ids:,
                    project:,
@@ -43,6 +45,7 @@ module Backlogs
       super()
 
       @sprints = sprints
+      @all_sprints = all_sprints
       @work_packages_by_sprint_id = work_packages_by_sprint_id
       @active_sprint_ids = active_sprint_ids
       @project = project
@@ -50,6 +53,9 @@ module Backlogs
     end
 
     private
+
+    def selected_sprint_ids = backlog_filters.sprint_ids
+    def selected_bucket_ids = backlog_filters.bucket_ids
 
     def blankslate_description
       if sprint_management_allowed?
@@ -81,6 +87,16 @@ module Backlogs
         t(".blankslate.create_description_text")
       else
         t(".blankslate.no_actions_description_text")
+      end
+    end
+
+    def sprint_selector_label
+      if selected_sprint_ids.blank?
+        t(".all_sprints")
+      elsif selected_sprint_ids.one?
+        all_sprints.find { |s| s.id == selected_sprint_ids.first }&.name || t(".all_sprints")
+      else
+        t(".n_sprints", count: selected_sprint_ids.size)
       end
     end
   end

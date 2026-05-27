@@ -54,7 +54,7 @@ See COPYRIGHT and LICENSE files for more details.
           render Primer::Beta::Button.new(
             tag: :a,
             label: BacklogBucket.human_model_name,
-            href: new_dialog_project_backlogs_buckets_path(project, all_backlogs_params),
+            href: new_dialog_project_backlogs_buckets_path(project, backlog_filter_params),
             data: {
               controller: "async-dialog",
               test_selector: "op-backlog-buckets--new-backlog-bucket-button"
@@ -74,6 +74,43 @@ See COPYRIGHT and LICENSE files for more details.
       end
     end
   %>
+
+  <%= primer_form_with(
+        url: project_backlogs_backlog_path(project), method: :get,
+        data: { turbo_frame: "backlogs_container", turbo_action: "advance" }
+      ) do |f| %>
+    <% filter_fields_for(:buckets).each do |input| %>
+      <%= hidden_field_tag input[:name], input[:value] %>
+    <% end %>
+
+    <%= render(
+          Primer::Alpha::SelectPanel.new(
+            select_variant: :multiple,
+            fetch_strategy: :local,
+            form_arguments: { builder: f, name: "bucket_ids" }
+          )
+        ) do |panel| %>
+      <% panel.with_show_button(scheme: :secondary) do |button| %>
+        <% button.with_trailing_visual_icon(icon: :"triangle-down") %>
+        <%= bucket_selector_label %>
+      <% end %>
+      <% all_buckets.each do |bucket| %>
+        <% panel.with_item(
+             label: bucket.name,
+             active: selected_bucket_ids&.include?(bucket.id) || false,
+             content_arguments: { data: { value: bucket.id } }
+           ) %>
+      <% end %>
+      <% panel.with_footer(show_divider: true) do %>
+        <%= render(
+              Primer::Beta::Button.new(
+                scheme: :primary,
+                type: :submit
+              )
+            ) { t(:button_apply) } %>
+      <% end %>
+    <% end %>
+  <% end %>
 
   <%= render Backlogs::BucketComponent.with_collection(buckets, project:) %>
 

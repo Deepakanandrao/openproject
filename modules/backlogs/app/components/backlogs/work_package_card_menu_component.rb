@@ -96,11 +96,13 @@ module Backlogs
                  [{ name: "target_id", value: move_target_id }, { name: "prev_id", value: prev_id }]
                end
 
+      inputs += backlog_filters.to_inputs
+
       menu.with_item(
         id: dom_target(work_package, :menu, label),
         label: I18n.t(label),
         tag: :button,
-        href: move_project_backlogs_work_package_path(project, work_package, all_backlogs_params),
+        href: move_project_backlogs_work_package_path(project, work_package, backlog_filter_params),
         form_arguments: { method: :put, inputs: }
       ) do |item|
         item.with_leading_visual_icon(icon:)

@@ -99,6 +99,13 @@ en:
       title: "Backlog admin settings are evolving"
       text: "We are currently redesigning the Backlogs module. Admin settings for sprints and backlogs will be visible here in the near future. Project-level settings remain available."
 
+    backlog_component:
+      all_backlog_items: "All backlog items"
+      n_buckets:
+        one: "%{count} bucket"
+        other: "%{count} buckets"
+      select_buckets_title: "Filter backlog buckets"
+
     bucket_destroy_modal_component:
       title: "Delete backlog bucket?"
       details: "The backlog bucket '%{name}' will be deleted and all work packages will be moved to the backlog inbox. No work package will be deleted."
@@ -175,6 +182,11 @@ en:
         add_work_package: "Add work package"
 
     sprints_component:
+      all_sprints: "All sprints"
+      n_sprints:
+        one: "%{count} sprint"
+        other: "%{count} sprints"
+      select_sprints_title: "Filter sprints"
       blankslate:
         title: "No sprints present yet"
         settings_link_text: "project settings"
