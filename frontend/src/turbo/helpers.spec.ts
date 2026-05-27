@@ -22,8 +22,8 @@ describe('TurboHelpers.showProgressBar / hideProgressBar', () => {
   afterEach(() => {
     TurboHelpers.hideProgressBar();
     Turbo.config.drive.progressBarDelay = savedDelay;
-    vi.restoreAllMocks();
     vi.useRealTimers();
+    vi.restoreAllMocks();
   });
 
   it('sets value to 0 immediately', () => {
