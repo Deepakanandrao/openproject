@@ -28,42 +28,42 @@
  * ++
  */
 
-import { Controller } from '@hotwired/stimulus';
 import { toggleEnabled } from 'core-app/shared/helpers/dom-helpers';
+import { ApplicationController } from 'stimulus-use';
 
-export default class RolesController extends Controller {
-  static targets = [
-    'memberAttributes',
-    'globalPermissions',
-    'memberPermissions',
-  ];
+export default class OpDisableWhenValueSelectedController extends ApplicationController {
+  static targets = ['cause', 'effect'];
 
-  static values = {
-    globalRole: Boolean,
-  };
+  declare readonly effectTargets:(HTMLInputElement|HTMLFieldSetElement)[];
 
-  declare globalRoleValue:boolean;
+  private boundListener = this.toggleDisabled.bind(this);
 
-  declare readonly memberAttributesTarget:HTMLElement;
-
-  declare readonly memberPermissionsTarget:HTMLElement;
-
-  declare readonly globalPermissionsTarget:HTMLElement;
-
-  toggle() {
-    this.globalRoleValue = !this.globalRoleValue;
+  causeTargetConnected(target:HTMLElement) {
+    target.addEventListener('change', this.boundListener);
   }
 
-  globalRoleValueChanged() {
-    this.togglePermissionSection(this.memberAttributesTarget, !this.globalRoleValue);
-    this.togglePermissionSection(this.memberPermissionsTarget, !this.globalRoleValue);
-    this.togglePermissionSection(this.globalPermissionsTarget, this.globalRoleValue);
+  causeTargetDisconnected(target:HTMLElement) {
+    target.removeEventListener('change', this.boundListener);
   }
 
-  private togglePermissionSection(target:HTMLElement, enabled:boolean) {
-    toggleEnabled(target, enabled, true);
-    target
-      .querySelectorAll('input,select')
-      .forEach((input:HTMLInputElement) => toggleEnabled(input, enabled));
+  private toggleDisabled(evt:Event):void {
+    const input = evt.target as HTMLInputElement;
+    const targetName = input.dataset.targetName;
+
+    this
+      .effectTargets
+      .filter((el) => targetName === el.dataset.targetName)
+      .forEach((el) => {
+        const disabled = this.willDisable(el, input.value);
+        toggleEnabled(el, !disabled);
+      });
+  }
+
+  private willDisable(el:HTMLElement, value:string):boolean {
+    if (el.dataset.notValue) {
+      return el.dataset.notValue === value;
+    }
+
+    return !(el.dataset.value === value);
   }
 }
