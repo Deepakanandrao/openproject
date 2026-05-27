@@ -38,7 +38,7 @@ module Queries::Operators
       values = values.map(&:to_s)
 
       if values.present?
-        not_in = ActiveRecord::Base.send(:sanitize_sql_array, ["#{db_table}.#{db_field} NOT IN (?)", values])
+        not_in = OpenProject::SqlSanitization.sanitize("#{db_table}.#{db_field} NOT IN (?)", values)
         "(#{db_table}.#{db_field} IS NULL OR #{not_in})"
       else
         # empty set of forbidden values allows all results

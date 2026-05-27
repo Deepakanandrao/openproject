@@ -34,7 +34,7 @@ module Queries::Operators
     set_symbol "="
 
     def self.sql_for_field(values, db_table, db_field)
-      ActiveRecord::Base.send(:sanitize_sql_array, ["#{db_table}.#{db_field} IN (?)", values])
+      OpenProject::SqlSanitization.sanitize("#{db_table}.#{db_field} IN (?)", values)
     end
   end
 end

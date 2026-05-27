@@ -73,9 +73,8 @@ module API
           end
 
           def ancestor_projection
-            undisclosed_ancestor_title = ActiveRecord::Base.send(
-              :sanitize_sql_array,
-              ["?", I18n.t(:"api_v3.undisclosed.ancestor")]
+            undisclosed_ancestor_title = OpenProject::SqlSanitization.sanitize(
+              "?", I18n.t(:"api_v3.undisclosed.ancestor")
             )
 
             if User.current.admin?

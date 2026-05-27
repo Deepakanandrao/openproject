@@ -59,17 +59,14 @@ module Actions::Scopes
       def map_actions(permission, actions:, global:, module_name:, grant_to_admin:, public:)
         actions.map do |namespace, actions|
           actions.map do |action|
-            ActiveRecord::Base.send(
-              :sanitize_sql_array,
-              [
-                "(?, ?, ?, ?, ?, ?)",
-                "#{action_v3_name(namespace)}/#{action}",
-                permission,
-                global,
-                module_name,
-                grant_to_admin,
-                public
-              ]
+            OpenProject::SqlSanitization.sanitize(
+              "(?, ?, ?, ?, ?, ?)",
+              "#{action_v3_name(namespace)}/#{action}",
+              permission,
+              global,
+              module_name,
+              grant_to_admin,
+              public
             )
           end
         end

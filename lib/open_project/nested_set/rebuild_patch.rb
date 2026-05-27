@@ -55,9 +55,8 @@ module OpenProject::NestedSet::RebuildPatch
       if acts_as_nested_set_options[:scope]
         scope = lambda { |node|
           scope_column_names.inject("") do |str, column_name|
-            str << ActiveRecord::Base.send(
-              :sanitize_sql_array,
-              ["AND #{connection.quote_column_name(column_name)} = ? ", node.send(column_name.to_sym)]
+            str << OpenProject::SqlSanitization.sanitize(
+              "AND #{connection.quote_column_name(column_name)} = ? ", node.send(column_name.to_sym)
             )
           end
         }

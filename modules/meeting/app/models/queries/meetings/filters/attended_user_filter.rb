@@ -48,17 +48,14 @@ class Queries::Meetings::Filters::AttendedUserFilter < Queries::Meetings::Filter
       user_id = normalized_user_id(values.first)
       return "1=1" if user_id.nil?
 
-      ActiveRecord::Base.send(
-        :sanitize_sql_array,
-        [<<~SQL.squish, user_id]
-          NOT EXISTS (
-            SELECT 1 FROM #{MeetingParticipant.table_name}
-            WHERE #{MeetingParticipant.table_name}.meeting_id = meetings.id
-            AND #{MeetingParticipant.table_name}.user_id = ?
-            AND #{condition}
-          )
-        SQL
-      )
+      OpenProject::SqlSanitization.sanitize(<<~SQL.squish, user_id)
+        NOT EXISTS (
+          SELECT 1 FROM #{MeetingParticipant.table_name}
+          WHERE #{MeetingParticipant.table_name}.meeting_id = meetings.id
+          AND #{MeetingParticipant.table_name}.user_id = ?
+          AND #{condition}
+        )
+      SQL
     when "*"
       ["#{MeetingParticipant.table_name}.user_id IS NOT NULL", condition].join(" AND ")
     when "!*"

@@ -113,9 +113,8 @@ module CustomField::OrderStatements
   #   ) cf_order_NNN ON cf_order_NNN.customized_id = …
   #
   def join_for_order_sql(value:, add_select: nil, join: nil, multi_value: false)
-    customized_type_condition = ActiveRecord::Base.send(
-      :sanitize_sql_array,
-      ["cv.customized_type = ?", self.class.customized_class.base_class.name]
+    customized_type_condition = OpenProject::SqlSanitization.sanitize(
+      "cv.customized_type = ?", self.class.customized_class.base_class.name
     )
 
     <<~SQL.squish

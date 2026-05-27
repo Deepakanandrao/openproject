@@ -41,17 +41,14 @@ module Queries::Operators
 
         if values.present?
           sql = values.map do |val|
-            ActiveRecord::Base.send(
-              :sanitize_sql_array,
-              [
-                "EXISTS (SELECT 1 FROM #{cv_table} WHERE customized_type = ? " \
-                "AND custom_field_id = ? " \
-                "AND customized_id = #{customized_id_join_field} " \
-                "AND value = ?)",
-                customized_type,
-                custom_field_id,
-                val
-              ]
+            OpenProject::SqlSanitization.sanitize(
+              "EXISTS (SELECT 1 FROM #{cv_table} WHERE customized_type = ? " \
+              "AND custom_field_id = ? " \
+              "AND customized_id = #{customized_id_join_field} " \
+              "AND value = ?)",
+              customized_type,
+              custom_field_id,
+              val
             )
           end
 

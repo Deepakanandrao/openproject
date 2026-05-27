@@ -98,15 +98,12 @@ class Queries::WorkPackages::Filter::SharedWithUserFilter <
       if normalized_user_id.nil?
         "1=0"
       else
-        ActiveRecord::Base.send(
-          :sanitize_sql_array,
-          [<<~SQL.squish, normalized_user_id]
-            EXISTS (SELECT 1
-                    FROM #{members_table}
-                    WHERE #{members_table}.entity_id = #{work_packages_table}.id
-                    AND #{members_table}.user_id = ?)
-          SQL
-        )
+        OpenProject::SqlSanitization.sanitize(<<~SQL.squish, normalized_user_id)
+          EXISTS (SELECT 1
+                  FROM #{members_table}
+                  WHERE #{members_table}.entity_id = #{work_packages_table}.id
+                  AND #{members_table}.user_id = ?)
+        SQL
       end
     end
 

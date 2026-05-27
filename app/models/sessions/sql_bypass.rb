@@ -82,40 +82,34 @@ module Sessions
 
     def insert!
       @new_record = false
-      sql = ActiveRecord::Base.send(
-        :sanitize_sql_array,
-        [
-          <<~SQL.squish,
-            INSERT INTO sessions (session_id, data, user_id, updated_at)
-            VALUES (?, ?, ?, (now() at time zone 'utc'))
-          SQL
-          session_id,
-          self.class.serialize(data),
-          user_id
-        ]
+      sql = OpenProject::SqlSanitization.sanitize(
+        <<~SQL.squish,
+          INSERT INTO sessions (session_id, data, user_id, updated_at)
+          VALUES (?, ?, ?, (now() at time zone 'utc'))
+        SQL
+        session_id,
+        self.class.serialize(data),
+        user_id
       )
 
       connection.update sql, "Create session"
     end
 
     def update!
-      sql = ActiveRecord::Base.send(
-        :sanitize_sql_array,
-        [
-          <<~SQL.squish,
-            UPDATE sessions
-            SET
-              data = ?,
-              session_id = ?,
-              user_id = ?,
-              updated_at = (now() at time zone 'utc')
-            WHERE session_id = ?
-          SQL
-          self.class.serialize(data),
-          session_id,
-          user_id,
-          @retrieved_by
-        ]
+      sql = OpenProject::SqlSanitization.sanitize(
+        <<~SQL.squish,
+          UPDATE sessions
+          SET
+            data = ?,
+            session_id = ?,
+            user_id = ?,
+            updated_at = (now() at time zone 'utc')
+          WHERE session_id = ?
+        SQL
+        self.class.serialize(data),
+        session_id,
+        user_id,
+        @retrieved_by
       )
 
       connection.update sql, "Update session"
