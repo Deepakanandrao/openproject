@@ -40,6 +40,10 @@ updates:
         patterns:
           - '@hotwired/turbo'
           - '@hotwired/turbo-rails'
+      jquery:
+        patterns:
+          - 'jquery'
+          - 'jquery-migrate'
       ng-select:
         patterns:
           - '@ng-select/*'
