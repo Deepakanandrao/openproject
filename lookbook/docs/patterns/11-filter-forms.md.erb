@@ -1,0 +1,87 @@
+Filters in OpenProject are driven by query objects (subclasses of
+`Queries::BaseQuery`). Each query exposes the filters that are available for
+its target model and the ones that are currently active. There are two
+building blocks for rendering those filters as a UI:
+
+* **`Filter::FilterComponent`** — the full filter panel as it appears on
+  index pages: a turbo frame, a `BorderBox`, lazy loading, action buttons
+  (Apply / Close), and the filter rows themselves. Use this when you want
+  the standard OpenProject filter dropdown experience.
+* **`Filters::FilterForm`** — just the filter rows plus the "Add filter"
+  select, rendered as a primer form object. Use this when you want filters
+  inside *your own* form (e.g. a configuration dialog) or when the
+  surrounding chrome of `FilterComponent` doesn't fit.
+
+Internally `FilterComponent` delegates to `FilterForm`, so the two stay in
+lockstep — `FilterForm` is the single source of truth for which inputs to
+render, and `FilterComponent` adds the wrapping chrome on top.
+
+## Filter::FilterComponent
+
+The component takes a query and renders the complete filter UI. The
+surrounding host (typically a sub-header component) is responsible for
+attaching the `filter--filters-form` Stimulus controller because it needs
+to coordinate with co-located quick filter inputs.
+
+```erb
+<%%= render(::Projects::ProjectsFiltersComponent.new(
+  query: @query,
+  lazy_loaded_path: :projects_filters_path,
+  initially_expanded: filters_expanded?
+)) %>
+```
+
+To restrict or reorder the advertised filters, subclass `Filter::FilterComponent`
+and override `allowed_filters`:
+
+```ruby
+class MyFiltersComponent <Filter::FilterComponent
+  def allowed_filters
+    super
+      .grep_v
+<%= embed OpenProject::Filter::FiltersComponentPreview, :default, panels: %i[source] %>
+<%= embed OpenProject::Filter::FilterFormPreview, :default, panels: %i[source] %>
+<%= embed OpenProject::Filter::FilterFormPreview, :with_active_filter, panels: %i[source] %>
+<%= embed OpenProject::Filter::FilterFormPreview, :with_hidden_input, panels: %i[source] %>
+<%= embed OpenProject::Filter::FilterFormPreview, :combined_with_other_inputs, panels: %i[source] %>
+<%%= primer_form_with(...) do |f| %>
+  <%%= render(
+    Filters::FilterForm.new(
+      f,
+      query: @query,
+      wrap_with_controller: true,
+      hidden_input_name: "filters",
+      autocomplete_append_to: "#my-dialog"
+    )
+  ) %>
+<%% end %>
+```
+
+## When to use which
+
+| You want…                                                | Use                       |
+|----------------------------------------------------------|---------------------------|
+| The standard OpenProject filter panel on an index page   | `Filter::FilterComponent` |
+| Filters inside a dialog or a non-filter form             | `Filters::FilterForm`     |
+| Coordination with a quick filter input in a sub-header   | `Filter::FilterComponent` (the sub-header attaches the controller) |
+| The serialized filter string in `params` on submit       | `Filters::FilterForm` + `hidden_input_name:` |
+| Autocompleter dropdowns to escape a clipping container   | `Filters::FilterForm` + `autocomplete_append_to:` |
+
+## Stimulus controller placement
+
+The `filter--filters-form` controller has to sit on a **common ancestor**
+of every filter UI that should coordinate. It does two things callers tend
+to forget about:
+
+1. `parseFilters()` collects values from both the inline quick filter
+   (`simpleFilter` targets) and the advanced filter rows (`filter`
+   targets). If they live under different controller instances, typing in
+   the quick input won't include active advanced filters in the URL.
+2. The clear-button on a quick filter (`clearButtonIdValue`) hooks back
+   into the same controller.
+
+That's why `Filter::FilterComponent` does *not* attach the controller
+itself — the surrounding `IndexSubHeaderComponent` does, so quick filter
+and advanced form share one. For standalone embeds without a co-located
+quick filter, `FilterForm`'s `wrap_with_controller: true` is the right
+default.
