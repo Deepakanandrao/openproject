@@ -130,9 +130,9 @@ RSpec.describe ProjectIdentifiers::RevertProjectToClassicService do
         expect { described_class.new(project).call }.not_to raise_error
       end
 
-      it "assigns the conflicting identifier with a 5-character random suffix" do
+      it "assigns a project-NNNNN fallback identifier" do
         described_class.new(project).call
-        expect(project.reload.identifier).to match(/\Amy-app-[a-z0-9]{5}\z/)
+        expect(project.reload.identifier).to match(/\Aproject-[a-z0-9]{5}\z/)
       end
 
       it "logs a warning containing the project id and the conflicting identifier" do

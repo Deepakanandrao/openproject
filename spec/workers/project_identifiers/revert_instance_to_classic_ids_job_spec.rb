@@ -130,7 +130,8 @@ RSpec.describe ProjectIdentifiers::RevertInstanceToClassicIdsJob do
         let!(:project_conflict) do
           create(:project).tap do |p|
             p.update_columns(identifier: "CONFLICT1")
-            FriendlyId::Slug.create!(sluggable: p, slug: "conflict-slug")
+            FriendlyId::Slug.where(sluggable_id: p.id, sluggable_type: "Project").delete_all
+            FriendlyId::Slug.where(slug: "conflict-slug", sluggable_type: "Project").update_all(sluggable_id: p.id)
           end
         end
 
@@ -154,10 +155,8 @@ RSpec.describe ProjectIdentifiers::RevertInstanceToClassicIdsJob do
           expect(project_after.reload.identifier).to eq("project-after")
         end
 
-        it "assigns project_conflict a valid classic identifier that is not the conflicting one" do
-          reloaded = project_conflict.reload
-          expect(reloaded.identifier).to match(Projects::Identifier::CLASSIC_FORMAT)
-          expect(reloaded.identifier).not_to eq("conflict-slug")
+        it "assigns project_conflict a project-NNNNN fallback identifier" do
+          expect(project_conflict.reload.identifier).to match(/\Aproject-[a-z0-9]{5}\z/)
         end
       end
     end
