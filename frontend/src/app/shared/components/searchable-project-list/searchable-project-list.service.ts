@@ -102,11 +102,11 @@ export class SearchableProjectListService {
       // such as favorites or the preloaded projects (current project, selected projects)
       // in a filtered view, it's legitimate for them to be missing, thus we skip extra fetching if a search text is present
       if(!loadingEnabled || searchText.length > 0) {
-        return of([projects, false as boolean]);
+        return of([projects, false]);
       }
 
       return this.pipeConcatProjects(projects, this.preloadProjectIds.concat(favoriteIds))
-                 .pipe(map((p) => [p, true as boolean]));
+                 .pipe(map((p) => [p, true]));
     }),
     switchMap(([projects, enhancePreloadedProjects]:[IProject[],boolean]) => {
       // These can be fetched in parallel to ancestors, since they share ancestors with preloadProjectIds entries and thus

@@ -83,8 +83,8 @@ export class TimelineCellRenderer {
   }
 
   public isEmpty(wp:WorkPackageResource) {
-    const start = moment(wp.startDate as any);
-    const due = moment(wp.dueDate as any);
+    const start = moment(wp.startDate);
+    const due = moment(wp.dueDate);
     const noStartAndDueValues = _.isNaN(start.valueOf()) && _.isNaN(due.valueOf());
     return noStartAndDueValues;
   }
