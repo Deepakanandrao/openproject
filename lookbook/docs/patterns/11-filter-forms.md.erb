@@ -85,3 +85,22 @@ itself — the surrounding `IndexSubHeaderComponent` does, so quick filter
 and advanced form share one. For standalone embeds without a co-located
 quick filter, `FilterForm`'s `wrap_with_controller: true` is the right
 default.
+
+## Compatibility with the legacy `Query` (work packages)
+
+`Filters::FilterForm` reads three things off the query: `available_advanced_filters`,
+`filters`, and `find_active_filter(name)`. The first two come from the
+`Queries::Filters::AvailableFilters` concern, which the legacy work-package
+`Query` model also includes. `find_active_filter` is defined directly on
+`Queries::BaseQuery` and used to live only there — `Query` now mirrors it
+with the same signature, so passing a `Query` (or any of its subclasses)
+to `FilterForm` works exactly like passing a `BaseQuery` subclass.
+
+What `FilterForm` does *not* do for you on the legacy side: parsing the
+form submission back into a `Query#filters` collection. The work-package
+filter pipeline still uses its own serialization (URL `filters=[...]`
+JSON / YAML in the DB), so a controller receiving a `FilterForm` submit
+either needs to use `hidden_input_name:` with a format the existing
+parser understands, or translate the `operator_<name>` / `<name>_value`
+fields by hand. The form renders fine either way; what to do with the
+submitted values is the caller's call.
