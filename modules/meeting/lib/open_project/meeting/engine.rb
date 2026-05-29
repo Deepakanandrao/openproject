@@ -244,6 +244,14 @@ module OpenProject::Meeting
       "#{meeting(meeting_id)}/agenda_items/#{id}"
     end
 
+    add_api_path :meeting_agenda_item_outcomes do |meeting_id, agenda_item_id|
+      "#{meeting_agenda_item(meeting_id, agenda_item_id)}/outcomes"
+    end
+
+    add_api_path :meeting_agenda_item_outcome do |meeting_id, agenda_item_id, id|
+      "#{meeting_agenda_item_outcomes(meeting_id, agenda_item_id)}/#{id}"
+    end
+
     add_api_path :meeting_sections do |meeting_id|
       "#{meeting(meeting_id)}/sections"
     end

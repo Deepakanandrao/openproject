@@ -30,35 +30,37 @@
 
 module API
   module V3
-    module MeetingAgendaItems
-      class AgendaItemsByMeetingAPI < ::API::OpenProjectAPI
-        resources :agenda_items do
+    module MeetingOutcomes
+      class OutcomesByAgendaItemAPI < ::API::OpenProjectAPI
+        resources :outcomes do
           get do
-            items = @meeting.agenda_items.includes(:author, :presenter, :work_package, :meeting_section)
-            MeetingAgendaItemCollectionRepresenter.new(items,
-                                                       self_link: api_v3_paths.meeting_agenda_items(@meeting.id),
-                                                       current_user:)
+            outcomes = @meeting_agenda_item.outcomes.includes(:author, :work_package, :meeting_agenda_item)
+
+            MeetingOutcomeCollectionRepresenter.new(outcomes,
+                                                    self_link: api_v3_paths
+                                                      .meeting_agenda_item_outcomes(@meeting.id, @meeting_agenda_item.id),
+                                                    current_user:)
           end
 
           post(&::API::V3::Utilities::Endpoints::Create
-                 .new(model: MeetingAgendaItem,
+                 .new(model: MeetingOutcome,
                       params_modifier: ->(params) {
-                        params.except(:meeting, :meeting_id).merge(meeting: @meeting)
+                        params
+                          .except(:meeting_agenda_item, :meeting_agenda_item_id)
+                          .merge(meeting_agenda_item: @meeting_agenda_item)
                       })
                  .mount)
 
-          route_param :agenda_item_id, type: Integer, desc: "Agenda item ID" do
+          route_param :outcome_id, type: Integer, desc: "Outcome ID" do
             after_validation do
-              @meeting_agenda_item = @meeting.agenda_items.find(declared_params[:agenda_item_id])
+              @meeting_outcome = @meeting_agenda_item.outcomes.find(declared_params[:outcome_id])
             end
 
-            get &::API::V3::Utilities::Endpoints::Show.new(model: MeetingAgendaItem).mount
+            get &::API::V3::Utilities::Endpoints::Show.new(model: MeetingOutcome).mount
 
-            patch &::API::V3::Utilities::Endpoints::Update.new(model: MeetingAgendaItem).mount
+            patch &::API::V3::Utilities::Endpoints::Update.new(model: MeetingOutcome).mount
 
-            delete &::API::V3::Utilities::Endpoints::Delete.new(model: MeetingAgendaItem).mount
-
-            mount ::API::V3::MeetingOutcomes::OutcomesByAgendaItemAPI
+            delete &::API::V3::Utilities::Endpoints::Delete.new(model: MeetingOutcome).mount
           end
         end
       end
