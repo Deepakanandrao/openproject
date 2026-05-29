@@ -28,28 +28,16 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class Projects::Settings::BacklogSharingsController < Projects::SettingsController
-  menu_item :settings_backlogs
+module Backlogs::Sprints
+  class CreateContract < BaseContract
+    validate :no_receiving_project
 
-  def show; end
+    private
 
-  def update
-    call = Projects::UpdateService
-      .new(model: @project, user: current_user, contract_class: ::Backlogs::Projects::BacklogSettingsContract)
-      .call(backlog_settings_params)
-
-    if call.success?
-      flash[:notice] = I18n.t(:notice_successful_update)
-      redirect_to project_settings_backlog_sharing_path(@project)
-    else
-      flash.now[:error] = I18n.t(:notice_unsuccessful_update_with_reason, reason: call.message)
-      render action: :show, status: :unprocessable_entity
+    def no_receiving_project
+      if model.project&.receive_shared_sprints?
+        errors.add :project, :receiving_sprints
+      end
     end
-  end
-
-  private
-
-  def backlog_settings_params
-    params.expect(project: %i[sprint_sharing])
   end
 end

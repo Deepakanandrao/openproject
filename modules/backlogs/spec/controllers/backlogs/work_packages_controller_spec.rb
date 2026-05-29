@@ -228,9 +228,9 @@ RSpec.describe Backlogs::WorkPackagesController do
 
         context "when service call fails" do
           before do
-            allow(Stories::UpdateService)
+            allow(Backlogs::Stories::UpdateService)
               .to receive(:new)
-              .and_return(instance_double(Stories::UpdateService, call: ServiceResult.failure(message: "Error")))
+              .and_return(instance_double(Backlogs::Stories::UpdateService, call: ServiceResult.failure(message: "Error")))
           end
 
           it "renders an error flash with 422", :aggregate_failures do
@@ -466,9 +466,9 @@ RSpec.describe Backlogs::WorkPackagesController do
       let(:service_result) { ServiceResult.failure(message: "Something went wrong") }
 
       before do
-        update_service = instance_double(Stories::UpdateService, call: service_result)
+        update_service = instance_double(Backlogs::Stories::UpdateService, call: service_result)
 
-        allow(Stories::UpdateService)
+        allow(Backlogs::Stories::UpdateService)
           .to receive(:new)
           .and_return(update_service)
       end

@@ -28,28 +28,40 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class Projects::Settings::BacklogSharingsController < Projects::SettingsController
-  menu_item :settings_backlogs
+require "spec_helper"
+require "contracts/shared/model_contract_shared_context"
 
-  def show; end
+RSpec.describe ::Backlogs::BacklogBuckets::DeleteContract do
+  include_context "ModelContract shared context"
 
-  def update
-    call = Projects::UpdateService
-      .new(model: @project, user: current_user, contract_class: ::Backlogs::Projects::BacklogSettingsContract)
-      .call(backlog_settings_params)
+  let(:project) { build_stubbed(:project) }
+  let(:backlog_bucket) { build_stubbed(:backlog_bucket, project:) }
+  let(:user) { build_stubbed(:user) }
+  let(:permissions) { [:create_sprints] }
 
-    if call.success?
-      flash[:notice] = I18n.t(:notice_successful_update)
-      redirect_to project_settings_backlog_sharing_path(@project)
-    else
-      flash.now[:error] = I18n.t(:notice_unsuccessful_update_with_reason, reason: call.message)
-      render action: :show, status: :unprocessable_entity
+  let(:contract) { described_class.new(backlog_bucket, user) }
+
+  before do
+    mock_permissions_for(user) do |mock|
+      mock.allow_in_project(*permissions, project:)
     end
   end
 
-  private
-
-  def backlog_settings_params
-    params.expect(project: %i[sprint_sharing])
+  context "when user has create_sprints permission" do
+    it_behaves_like "contract is valid"
   end
+
+  context "when user does not have create_sprints permission" do
+    let(:permissions) { [] }
+
+    it_behaves_like "contract is invalid", base: :error_unauthorized
+  end
+
+  context "when user has an unrelated permission" do
+    let(:permissions) { [:view_work_packages] }
+
+    it_behaves_like "contract is invalid", base: :error_unauthorized
+  end
+
+  include_examples "contract reuses the model errors"
 end

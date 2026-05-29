@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#-- copyright
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,30 +26,31 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
-class Projects::Settings::BacklogSharingsController < Projects::SettingsController
-  menu_item :settings_backlogs
+require "spec_helper"
+require_relative "shared_contract_examples"
 
-  def show; end
+RSpec.describe ::Backlogs::BacklogBuckets::UpdateContract do
+  include_context "as backlog bucket contract"
 
-  def update
-    call = Projects::UpdateService
-      .new(model: @project, user: current_user, contract_class: ::Backlogs::Projects::BacklogSettingsContract)
-      .call(backlog_settings_params)
-
-    if call.success?
-      flash[:notice] = I18n.t(:notice_successful_update)
-      redirect_to project_settings_backlog_sharing_path(@project)
-    else
-      flash.now[:error] = I18n.t(:notice_unsuccessful_update_with_reason, reason: call.message)
-      render action: :show, status: :unprocessable_entity
-    end
+  let(:backlog_bucket) do
+    build_stubbed(:backlog_bucket, name:, project:)
   end
 
-  private
+  context "when trying to update project id" do
+    before do
+      backlog_bucket.project_id = build_stubbed(:project).id
+    end
 
-  def backlog_settings_params
-    params.expect(project: %i[sprint_sharing])
+    it_behaves_like "contract is invalid", project_id: :error_readonly
+  end
+
+  context "when trying to update project" do
+    before do
+      backlog_bucket.project = build_stubbed(:project)
+    end
+
+    it_behaves_like "contract is invalid", project_id: :error_readonly
   end
 end

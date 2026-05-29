@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#-- copyright
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,30 +26,20 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
-class Projects::Settings::BacklogSharingsController < Projects::SettingsController
-  menu_item :settings_backlogs
+require "spec_helper"
+require_relative "shared_contract_examples"
 
-  def show; end
+RSpec.describe Backlogs::Sprints::UpdateContract do
+  include_context "as sprint contract"
 
-  def update
-    call = Projects::UpdateService
-      .new(model: @project, user: current_user, contract_class: ::Backlogs::Projects::BacklogSettingsContract)
-      .call(backlog_settings_params)
-
-    if call.success?
-      flash[:notice] = I18n.t(:notice_successful_update)
-      redirect_to project_settings_backlog_sharing_path(@project)
-    else
-      flash.now[:error] = I18n.t(:notice_unsuccessful_update_with_reason, reason: call.message)
-      render action: :show, status: :unprocessable_entity
-    end
-  end
-
-  private
-
-  def backlog_settings_params
-    params.expect(project: %i[sprint_sharing])
+  let(:sprint) do
+    build_stubbed(:sprint,
+                  name: sprint_name,
+                  project: sprint_project,
+                  start_date: sprint_start_date,
+                  finish_date: sprint_finish_date,
+                  status: sprint_status)
   end
 end

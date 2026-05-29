@@ -28,28 +28,25 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class Projects::Settings::BacklogSharingsController < Projects::SettingsController
-  menu_item :settings_backlogs
+require "spec_helper"
+require_relative "shared_contract_examples"
 
-  def show; end
+RSpec.describe Backlogs::Sprints::CreateContract do
+  include_context "as sprint contract"
 
-  def update
-    call = Projects::UpdateService
-      .new(model: @project, user: current_user, contract_class: ::Backlogs::Projects::BacklogSettingsContract)
-      .call(backlog_settings_params)
-
-    if call.success?
-      flash[:notice] = I18n.t(:notice_successful_update)
-      redirect_to project_settings_backlog_sharing_path(@project)
-    else
-      flash.now[:error] = I18n.t(:notice_unsuccessful_update_with_reason, reason: call.message)
-      render action: :show, status: :unprocessable_entity
-    end
+  let(:sprint) do
+    Sprint.new(name: sprint_name,
+                      project: sprint_project,
+                      start_date: sprint_start_date,
+                      finish_date: sprint_finish_date,
+                      status: sprint_status)
   end
 
-  private
+  describe "validation" do
+    context "when the project is configured to receive sprints" do
+      let(:sprint_project) { build_stubbed(:project, sprint_sharing: Projects::SprintSharing::RECEIVE_SHARED) }
 
-  def backlog_settings_params
-    params.expect(project: %i[sprint_sharing])
+      it_behaves_like "contract is invalid", project: :receiving_sprints
+    end
   end
 end

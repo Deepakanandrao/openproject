@@ -28,28 +28,40 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class Projects::Settings::BacklogSharingsController < Projects::SettingsController
-  menu_item :settings_backlogs
+module Backlogs::Projects
+  class BacklogsTypesAndStatusesContract < ::ModelContract
+    validate :validate_permissions
+    validate :validate_done_status_ids
+    validate :validate_backlog_excluded_type_ids
 
-  def show; end
+    def validate_model? = false
 
-  def update
-    call = Projects::UpdateService
-      .new(model: @project, user: current_user, contract_class: ::Backlogs::Projects::BacklogSettingsContract)
-      .call(backlog_settings_params)
+    private
 
-    if call.success?
-      flash[:notice] = I18n.t(:notice_successful_update)
-      redirect_to project_settings_backlog_sharing_path(@project)
-    else
-      flash.now[:error] = I18n.t(:notice_unsuccessful_update_with_reason, reason: call.message)
-      render action: :show, status: :unprocessable_entity
+    def validate_permissions
+      unless user.allowed_in_project?(:select_backlog_types_and_statuses, model)
+        errors.add :base, :error_unauthorized
+      end
     end
-  end
 
-  private
+    def validate_done_status_ids
+      submitted_ids = model.done_status_ids.map(&:to_i)
 
-  def backlog_settings_params
-    params.expect(project: %i[sprint_sharing])
+      existing_ids = Status.where(id: submitted_ids).ids
+      invalid_ids = submitted_ids - existing_ids
+
+      errors.add :done_status_ids, :invalid if invalid_ids.any?
+    end
+
+    def validate_backlog_excluded_type_ids
+      submitted_ids = model.backlog_excluded_type_ids
+      return if submitted_ids.empty?
+
+      # Only types enabled on the project are allowed:
+      project_type_ids = model.types.pluck(:id)
+      invalid_ids = submitted_ids.map(&:to_i) - project_type_ids
+
+      errors.add :backlog_excluded_type_ids, :invalid if invalid_ids.any?
+    end
   end
 end

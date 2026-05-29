@@ -28,28 +28,48 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class Projects::Settings::BacklogSharingsController < Projects::SettingsController
-  menu_item :settings_backlogs
+module Backlogs::Sprints
+  class StartContract < ::BaseContract
+    validate :validate_permission
+    validate :validate_status_in_planning
+    validate :validate_dates_present
+    validate :validate_no_other_active_sprint
 
-  def show; end
-
-  def update
-    call = Projects::UpdateService
-      .new(model: @project, user: current_user, contract_class: ::Backlogs::Projects::BacklogSettingsContract)
-      .call(backlog_settings_params)
-
-    if call.success?
-      flash[:notice] = I18n.t(:notice_successful_update)
-      redirect_to project_settings_backlog_sharing_path(@project)
-    else
-      flash.now[:error] = I18n.t(:notice_unsuccessful_update_with_reason, reason: call.message)
-      render action: :show, status: :unprocessable_entity
+    def self.can_start_or_complete?(user:, sprint:)
+      user.allowed_in_project?(:start_complete_sprint, sprint.project)
     end
-  end
 
-  private
+    def self.can_start?(user:, sprint:, project:)
+      can_start_or_complete?(user:, sprint:) &&
+        user.allowed_in_project?(:show_board_views, project)
+    end
 
-  def backlog_settings_params
-    params.expect(project: %i[sprint_sharing])
+    private
+
+    def validate_permission
+      return if self.class.can_start_or_complete?(user:, sprint: model)
+
+      errors.add :base, :error_unauthorized
+    end
+
+    def validate_status_in_planning
+      return if model.in_planning?
+
+      errors.add :status, :must_be_in_planning
+    end
+
+    def validate_dates_present
+      return unless model.in_planning?
+      return if model.start_date? && model.finish_date?
+
+      errors.add :base, :dates_required
+    end
+
+    def validate_no_other_active_sprint
+      return unless model.in_planning?
+      return unless Sprint.where(project: model.project).active.where.not(id: model.id).exists?
+
+      errors.add :status, :only_one_active_sprint_allowed
+    end
   end
 end

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#-- copyright
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,30 +26,33 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
-class Projects::Settings::BacklogSharingsController < Projects::SettingsController
-  menu_item :settings_backlogs
-
-  def show; end
-
-  def update
-    call = Projects::UpdateService
-      .new(model: @project, user: current_user, contract_class: ::Backlogs::Projects::BacklogSettingsContract)
-      .call(backlog_settings_params)
-
-    if call.success?
-      flash[:notice] = I18n.t(:notice_successful_update)
-      redirect_to project_settings_backlog_sharing_path(@project)
-    else
-      flash.now[:error] = I18n.t(:notice_unsuccessful_update_with_reason, reason: call.message)
-      render action: :show, status: :unprocessable_entity
-    end
+class Backlogs::WorkPackages::RebuildPositionsService
+  def initialize(project: nil)
+    @project = project
   end
 
-  private
+  def call
+    condition = if @project
+                  ::OpenProject::SqlSanitization.sanitize " AND work_packages.project_id = :project_id",
+                                                          project_id: @project.id
+                end
 
-  def backlog_settings_params
-    params.expect(project: %i[sprint_sharing])
+    WorkPackage.connection.execute <<~SQL.squish
+      UPDATE work_packages
+      SET position = mapping.new_position
+      FROM (
+        SELECT
+          id,
+          ROW_NUMBER() OVER (
+            PARTITION BY project_id, backlog_bucket_id, sprint_id
+            ORDER BY position, created_at
+          ) AS new_position
+        FROM work_packages
+      ) AS mapping
+      WHERE work_packages.id = mapping.id
+      #{condition}
+    SQL
   end
 end

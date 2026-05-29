@@ -28,28 +28,50 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class Projects::Settings::BacklogSharingsController < Projects::SettingsController
-  menu_item :settings_backlogs
-
-  def show; end
-
-  def update
-    call = Projects::UpdateService
-      .new(model: @project, user: current_user, contract_class: ::Backlogs::Projects::BacklogSettingsContract)
-      .call(backlog_settings_params)
-
-    if call.success?
-      flash[:notice] = I18n.t(:notice_successful_update)
-      redirect_to project_settings_backlog_sharing_path(@project)
-    else
-      flash.now[:error] = I18n.t(:notice_unsuccessful_update_with_reason, reason: call.message)
-      render action: :show, status: :unprocessable_entity
-    end
+class Backlogs::Sprints::StartService < BaseServices::BaseContracted
+  def initialize(user:, model:, contract_class: ::Backlogs::Sprints::StartContract)
+    super(user:, contract_class:)
+    self.model = model
   end
 
   private
 
-  def backlog_settings_params
-    params.expect(project: %i[sprint_sharing])
+  def persist(service_call)
+    ensure_task_boards(service_call)
+    return service_call if service_call.failure?
+
+    model.active!
+
+    service_call
+  rescue ActiveRecord::RecordNotUnique
+    add_only_one_active_sprint_error
+    service_call.success = false
+    service_call.result = model
+    service_call.errors = model.errors
+    service_call
+  end
+
+  def ensure_task_boards(service_call)
+    projects = Sprint.receiving_projects(model)
+
+    projects.each do |project|
+      next if model.task_board_for(project).present?
+
+      service_call.add_dependent!(
+        Boards::SprintTaskBoardCreateService
+          .new(user: User.system)
+          .call(project:, sprint: model, name: board_name)
+      )
+    end
+  end
+
+  def board_name
+    "#{model.project.name}: #{model.name}"
+  end
+
+  def add_only_one_active_sprint_error
+    return if model.errors.added?(:status, :only_one_active_sprint_allowed)
+
+    model.errors.add(:status, :only_one_active_sprint_allowed)
   end
 end

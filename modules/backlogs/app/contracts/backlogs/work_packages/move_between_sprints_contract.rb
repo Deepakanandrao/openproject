@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-#-- copyright
+# -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,30 +26,27 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-#++
+# ++
 
-class Projects::Settings::BacklogSharingsController < Projects::SettingsController
-  menu_item :settings_backlogs
+module Backlogs::WorkPackages
+  # Contract used for moving work packages between two sprints at the end
+  # of a sprint. It does not enforce permissions as this change is carried
+  # out in the background.
+  class MoveBetweenSprintsContract < ModelContract
+    attribute :sprint
+    attribute :position
 
-  def show; end
+    validate :active_sprint_in_sharer_project
 
-  def update
-    call = Projects::UpdateService
-      .new(model: @project, user: current_user, contract_class: ::Backlogs::Projects::BacklogSettingsContract)
-      .call(backlog_settings_params)
+    private
 
-    if call.success?
-      flash[:notice] = I18n.t(:notice_successful_update)
-      redirect_to project_settings_backlog_sharing_path(@project)
-    else
-      flash.now[:error] = I18n.t(:notice_unsuccessful_update_with_reason, reason: call.message)
-      render action: :show, status: :unprocessable_entity
+    def active_sprint_in_sharer_project
+      unless Sprint
+               .native_to_sprint_source(Sprint.find_by(id: model.sprint_id_was).project)
+               .in_planning
+               .exists?(id: model.sprint_id)
+        errors.add(:sprint, :not_eligible_for_moving)
+      end
     end
-  end
-
-  private
-
-  def backlog_settings_params
-    params.expect(project: %i[sprint_sharing])
   end
 end

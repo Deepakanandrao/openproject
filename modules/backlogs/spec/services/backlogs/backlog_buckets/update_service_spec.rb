@@ -28,28 +28,12 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class Projects::Settings::BacklogSharingsController < Projects::SettingsController
-  menu_item :settings_backlogs
+require "spec_helper"
+require "services/base_services/behaves_like_update_service"
 
-  def show; end
-
-  def update
-    call = Projects::UpdateService
-      .new(model: @project, user: current_user, contract_class: ::Backlogs::Projects::BacklogSettingsContract)
-      .call(backlog_settings_params)
-
-    if call.success?
-      flash[:notice] = I18n.t(:notice_successful_update)
-      redirect_to project_settings_backlog_sharing_path(@project)
-    else
-      flash.now[:error] = I18n.t(:notice_unsuccessful_update_with_reason, reason: call.message)
-      render action: :show, status: :unprocessable_entity
-    end
-  end
-
-  private
-
-  def backlog_settings_params
-    params.expect(project: %i[sprint_sharing])
+RSpec.describe ::Backlogs::BacklogBuckets::UpdateService, type: :model do
+  it_behaves_like "BaseServices update service" do
+    let(:model_class) { BacklogBucket }
+    let(:factory) { :backlog_bucket }
   end
 end

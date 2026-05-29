@@ -28,28 +28,30 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class Projects::Settings::BacklogSharingsController < Projects::SettingsController
-  menu_item :settings_backlogs
+module Backlogs::Sprints
+  class FinishContract < ModelContract
+    validate :sprint_must_be_active
+    validate :user_allowed_to_finish
+    validate :no_unfinished_work_packages
 
-  def show; end
-
-  def update
-    call = Projects::UpdateService
-      .new(model: @project, user: current_user, contract_class: ::Backlogs::Projects::BacklogSettingsContract)
-      .call(backlog_settings_params)
-
-    if call.success?
-      flash[:notice] = I18n.t(:notice_successful_update)
-      redirect_to project_settings_backlog_sharing_path(@project)
-    else
-      flash.now[:error] = I18n.t(:notice_unsuccessful_update_with_reason, reason: call.message)
-      render action: :show, status: :unprocessable_entity
+    def self.model
+      Sprint
     end
-  end
 
-  private
+    private
 
-  def backlog_settings_params
-    params.expect(project: %i[sprint_sharing])
+    def sprint_must_be_active
+      errors.add(:status, :not_active) unless model.active?
+    end
+
+    def user_allowed_to_finish
+      errors.add(:base, :error_unauthorized) unless user.allowed_in_project?(:start_complete_sprint, model.project)
+    end
+
+    def no_unfinished_work_packages
+      unfinished_work_package_count = model.work_packages.without_status_considered_closed.count
+
+      errors.add(:base, :unfinished_work_packages, count: unfinished_work_package_count) if unfinished_work_package_count > 0
+    end
   end
 end

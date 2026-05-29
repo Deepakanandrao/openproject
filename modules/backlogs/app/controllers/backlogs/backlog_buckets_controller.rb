@@ -49,7 +49,7 @@ module Backlogs
     end
 
     def create
-      call = ::BacklogBuckets::CreateService
+      call = ::Backlogs::BacklogBuckets::CreateService
                .new(user: current_user)
                .call(attributes: backlog_bucket_params)
 
@@ -63,7 +63,7 @@ module Backlogs
     end
 
     def update
-      call = ::BacklogBuckets::UpdateService
+      call = ::Backlogs::BacklogBuckets::UpdateService
                .new(user: current_user, model: @backlog_bucket)
                .call(attributes: edit_backlog_bucket_params)
 
@@ -77,7 +77,7 @@ module Backlogs
     end
 
     def destroy
-      call = ::BacklogBuckets::DeleteService
+      call = ::Backlogs::BacklogBuckets::DeleteService
                .new(user: current_user, model: @backlog_bucket)
                .call
 
