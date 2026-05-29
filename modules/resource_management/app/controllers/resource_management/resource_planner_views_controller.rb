@@ -92,6 +92,7 @@ module ::ResourceManagement
           view:,
           url: project_resource_planner_views_path(@project, @resource_planner),
           hidden_fields: { view_class_name: view.class.name },
+          dialog_id: ResourcePlannerViews::NewDialogComponent::DIALOG_ID,
           filter_query: view.build_default_query
         ),
         status:
@@ -110,6 +111,7 @@ module ::ResourceManagement
           url: project_resource_planner_view_path(@project, @resource_planner, view),
           method: :patch,
           form_id: ResourcePlannerViews::EditDialogComponent::FORM_ID,
+          dialog_id: ResourcePlannerViews::EditDialogComponent::DIALOG_ID,
           filter_query: view.effective_query
         ),
         status:

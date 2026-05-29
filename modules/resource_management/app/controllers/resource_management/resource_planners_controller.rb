@@ -177,6 +177,7 @@ module ::ResourceManagement
           url: project_resource_planner_views_path(@project, @resource_planner),
           hidden_fields: { view_class_name: view_class.name },
           form_id: dialog::FORM_ID,
+          dialog_id: dialog::DIALOG_ID,
           wrapper_key: ResourcePlanners::FormComponent.wrapper_key,
           filter_query: view.build_default_query
         )

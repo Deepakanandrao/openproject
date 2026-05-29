@@ -47,6 +47,7 @@ module ResourcePlannerViews
                      method: :post,
                      hidden_fields: {},
                      form_id: ResourcePlannerViews::NewDialogComponent::FORM_ID,
+                     dialog_id: ResourcePlannerViews::NewDialogComponent::DIALOG_ID,
                      wrapper_key: "resource_planner_view_step_body",
                      filter_query: nil)
         super
@@ -55,6 +56,7 @@ module ResourcePlannerViews
         @method = method
         @hidden_fields = hidden_fields
         @form_id = form_id
+        @dialog_id = dialog_id
         @wrapper_key = wrapper_key
         @filter_query = filter_query
       end
@@ -68,8 +70,7 @@ module ResourcePlannerViews
       end
 
       def has_filter_query?
-        # TODO: Properly handle the WorkPackage Query in the filter component as well
-        @filter_query.present? && !@filter_query.is_a?(::Query)
+        @filter_query.present?
       end
     end
   end
