@@ -272,6 +272,10 @@ RSpec.describe "form configuration", :js, :selenium do
         initial_order = form.group_order
 
         form.add_button_dropdown.click
+
+        expect(page).to have_text(I18n.t("types.edit.form_configuration.add_attribute_group"))
+        expect(page).to have_text(I18n.t("types.edit.form_configuration.add_query_group"))
+
         click_on I18n.t("types.edit.form_configuration.add_attribute_group")
 
         expect(page.find_test_selector("type-form-configuration-group-name-input", wait: 10).value).to eq("")
