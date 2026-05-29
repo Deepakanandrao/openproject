@@ -35,15 +35,83 @@ To restrict or reorder the advertised filters, subclass `Filter::FilterComponent
 and override `allowed_filters`:
 
 ```ruby
-class MyFiltersComponent <Filter::FilterComponent
+class MyFiltersComponent < Filter::FilterComponent
   def allowed_filters
     super
-      .grep_v
-<%= embed OpenProject::Filter::FiltersComponentPreview, :default, panels: %i[source] %>
-<%= embed OpenProject::Filter::FilterFormPreview, :default, panels: %i[source] %>
-<%= embed OpenProject::Filter::FilterFormPreview, :with_active_filter, panels: %i[source] %>
-<%= embed OpenProject::Filter::FilterFormPreview, :with_hidden_input, panels: %i[source] %>
-<%= embed OpenProject::Filter::FilterFormPreview, :combined_with_other_inputs, panels: %i[source] %>
+      .grep_v(SomeNoisyFilter)
+      .sort_by(&:human_name)
+  end
+end
+```
+
+`turbo_requests?` toggles whether changes auto-submit via a turbo stream or
+require an explicit Apply click. `lazy_loaded_path` defers the actual filter
+rendering until the dropdown is opened (a skeleton is shown in the meantime).
+
+<%= embed OpenProject::Filter::FiltersComponentPreview, :default, panels: %i[preview source] %>
+
+## Filters::FilterForm
+
+For everything that isn't a standard filter dropdown, render `FilterForm`
+inside any `primer_form_with` block. It accepts the parent's primer form
+builder so its inputs sit at the top level of the surrounding form (field
+names like `operator_<filter>` and `<filter>_value` — same as
+`FilterComponent`).
+
+### Default usage
+
+`wrap_with_controller: true` makes the form emit its own
+`<div class="op-filters-form -expanded" data-controller="filter--filters-form">`
+wrapper. Use this in any standalone embed (a dialog body, a settings page,
+etc.) where there's no surrounding sub-header attaching the controller for
+you.
+
+<%= embed OpenProject::Filter::FilterFormPreview, :default, panels: %i[preview source] %>
+
+### With an active filter
+
+Pre-populate the query and the corresponding row is rendered visible with
+its operator/values filled in. Inactive filters still render but stay
+hidden until the user picks them from the "Add filter" select.
+
+<%= embed OpenProject::Filter::FilterFormPreview, :with_active_filter, panels: %i[preview source] %>
+
+### Submitting via a hidden field
+
+By default the form relies on the Stimulus controller to redirect via
+`sendForm` (the projects-index style). Inside a regular form you usually
+want the filter state to ride along with a normal submit instead. Pass
+`hidden_input_name:` and the form renders a hidden input whose value is
+kept in sync with the serialized filter selections.
+
+`output_format:` controls the serialization:
+
+* `:params` (default) — URL-style: `name ~ "foo"&login ! "bar"`.
+* `:json` — JSON array of `{name: {operator, values}}` objects, easier to
+  parse server-side.
+
+The host server receives the canonical string in
+`params[:<hidden_input_name>]` — no special routing or interception needed.
+
+<%= embed OpenProject::Filter::FilterFormPreview, :with_hidden_input, panels: %i[preview params] %>
+
+### Combining with non-filter inputs
+
+`FilterForm` is a regular primer form object, so it composes with other
+forms via `Primer::Forms::FormList`. All children share the same builder
+and therefore submit through the same `<form>`.
+
+<%= embed OpenProject::Filter::FilterFormPreview, :combined_with_other_inputs, panels: %i[preview source] %>
+
+### Inside a clipping container (dialogs)
+
+ng-select dropdowns are positioned by their parent; if the form lives
+inside a Primer dialog or any other overflow-clipping container, the
+dropdown gets cut off. Pass `autocomplete_append_to:` with a CSS selector
+that ng-select can resolve (typically the dialog id, or `"body"`) — the
+form forwards it as `appendTo` to every autocompleter it renders.
+
+```erb
 <%%= primer_form_with(...) do |f| %>
   <%%= render(
     Filters::FilterForm.new(
