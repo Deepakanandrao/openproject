@@ -144,13 +144,18 @@ module WorkPackages
           elsif completed?
             { values: identifier_values(checked: Setting[:work_packages_identifier]) }
           else
-            { button_options: { data: { action: "change->admin--work-packages-identifier#handleChange" } } }
+            {
+              values: identifier_values(checked: Setting[:work_packages_identifier]),
+              button_options: { data: { action: "change->admin--work-packages-identifier#handleChange" } }
+            }
           end
         end
 
         def identifier_values(checked:)
           Setting::WorkPackageIdentifier::ALLOWED_VALUES.map do |v|
-            { name: v, value: v, checked: v == checked }
+            entry = { name: v, value: v, checked: v == checked }
+            entry[:label] = "#{I18n.t("setting_work_packages_identifier_#{v}")} (Beta)" if v == "semantic"
+            entry
           end
         end
       end

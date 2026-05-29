@@ -65,7 +65,7 @@ en:
       col_identifier: "Identifier"
       col_project: "Project"
       col_reserved: "Reserved"
-      not_available_in_semantic_mode: "Reserved identifiers are only available in classic identifier mode."
+      not_available_in_semantic_mode: "Reserved identifiers are only available in numeric identifier mode."
       filter_label: "Filter identifiers"
       btn_release: "Release"
       released_notice: "Identifier \"%{identifier}\" has been released."
