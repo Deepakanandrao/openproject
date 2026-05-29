@@ -29,22 +29,32 @@
 #++
 
 module Wikis
-  class LinkExistingWikiPageForm < ApplicationForm
-    form do |f|
-      f.hidden(name: :provider_id)
-      f.hidden(name: :linkable_type)
-      f.hidden(name: :linkable_id)
-      f.hidden(
-        name: :identifier,
-        data: { wikis__add_existing_page_target: "identifierInput" }
-      )
+  class PageSearchResults < ApplicationComponent
+    include OpPrimer::ComponentHelpers
 
-      # f.text_field(
-      #   name: :identifier,
-      #   label: RelationPageLink.human_attribute_name(:identifier),
-      #   required: true,
-      #   input_width: :large
-      # )
+    alias_method :search_result, :model
+
+    # attr_reader :form
+    #
+    # def initialize(model = nil, form:, **)
+    #   @form = form
+    #   super(model, **)
+    # end
+
+    def build_search_results_tree(tree_view)
+      search_result.value!.each do |page_info|
+        tree_view.with_leaf(**item_options(page_info))
+      end
+    end
+
+    private
+
+    def item_options(page_info)
+      {
+        select_variant: :single,
+        label: page_info.title,
+        data: { identifier: page_info.identifier }
+      }
     end
   end
 end
