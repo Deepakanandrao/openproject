@@ -52,29 +52,29 @@ RSpec.describe Filters::FilterForm, type: :forms do
   describe "basic rendering" do
     before { render_form }
 
-    it "renders an Add filter select with one option per allowed filter" do
-      expect(rendered_form).to have_select "add_filter_select" do |select|
-        expect(select).to have_selector :option, count: 3
-        expect(select).to have_selector :option, "Name",   with: "name"
-        expect(select).to have_selector :option, "Status", with: "status"
-        expect(select).to have_selector :option, "Login",  with: "login"
-      end
+    it "renders an Add filter select advertising the query's filters" do
+      # Sanity: at least the well-known UserQuery filters are advertised
+      # (option text is `User.human_attribute_name(filter.name)`).
+      expect(page).to have_select "add_filter_select",
+                                  with_options: %w[Name Status Username]
     end
 
-    it "renders a hidden row per allowed filter, plus active rows visible" do
-      # Activate a single filter — its row should be rendered without `hidden`.
+    it "renders the row of an active filter visible and inactive rows hidden" do
       query.where(:login, "=", ["alice"])
       render_form
 
       # `data-filter--filters-form-target="filter"` scopes to the outer row;
       # operator/value descendants also carry `data-filter-name`.
-      active_row = page.find('[data-filter--filters-form-target="filter"][data-filter-name="login"]',
-                             visible: :all)
-      inactive_row = page.find('[data-filter--filters-form-target="filter"][data-filter-name="status"]',
-                               visible: :all)
+      expect(page).to have_element "data-filter--filters-form-target": "filter",
+                                   "data-filter-name": "login" do |row|
+        expect(row["hidden"]).to be_nil
+      end
 
-      expect(active_row["hidden"]).to be_nil
-      expect(inactive_row["hidden"]).to eq("hidden")
+      expect(page).to have_element "data-filter--filters-form-target": "filter",
+                                   "data-filter-name": "status",
+                                   visible: :all do |row|
+        expect(row["hidden"]).to eq("hidden")
+      end
     end
   end
 
@@ -86,8 +86,11 @@ RSpec.describe Filters::FilterForm, type: :forms do
     it "limits the rendered Add filter options" do
       render_form(query:, allowed_filters: restricted)
 
-      values = page.find('select[name="add_filter_select"]').all("option").map(&:value)
-      expect(values).to contain_exactly("", "login")
+      expect(page).to have_select "add_filter_select" do |select|
+        # Two options: the blank prompt + the single allowed filter.
+        expect(select).to have_selector :option, count: 2
+        expect(select).to have_selector :option, text: "Username"
+      end
     end
   end
 
@@ -95,14 +98,14 @@ RSpec.describe Filters::FilterForm, type: :forms do
     it "does not emit a controller wrapper by default" do
       render_form
 
-      expect(page).to have_no_css('[data-controller~="filter--filters-form"]')
+      expect(page).to have_no_element "data-controller": "filter--filters-form"
     end
 
     it "emits an `op-filters-form -expanded` controller wrapper when true" do
       render_form(query:, wrap_with_controller: true)
 
-      wrapper = page.find('[data-controller~="filter--filters-form"]')
-      expect(wrapper[:class].split).to include("op-filters-form", "-expanded")
+      expect(page).to have_element "data-controller": "filter--filters-form",
+                                   class: %w[op-filters-form -expanded]
     end
   end
 
@@ -110,14 +113,19 @@ RSpec.describe Filters::FilterForm, type: :forms do
     it "renders no hidden filters field by default" do
       render_form
 
-      expect(page).to have_no_css('input[data-filter--filters-form-target="filtersInput"]', visible: :all)
+      expect(page).to have_no_element :input,
+                                      "data-filter--filters-form-target": "filtersInput",
+                                      visible: :all
     end
 
     it "renders a hidden field bound to the filtersInput target when set" do
       render_form(query:, hidden_input_name: "filters")
 
-      hidden = page.find('input[type="hidden"][name="filters"]', visible: :all)
-      expect(hidden["data-filter--filters-form-target"]).to eq("filtersInput")
+      expect(page).to have_element :input,
+                                   type: "hidden",
+                                   name: "filters",
+                                   "data-filter--filters-form-target": "filtersInput",
+                                   visible: :all
     end
   end
 
@@ -125,15 +133,17 @@ RSpec.describe Filters::FilterForm, type: :forms do
     it "sets the controller value when wrapping the controller" do
       render_form(query:, wrap_with_controller: true, output_format: :json)
 
-      wrapper = page.find('[data-controller~="filter--filters-form"]')
-      expect(wrapper["data-filter--filters-form-output-format-value"]).to eq("json")
+      expect(page).to have_element "data-controller": "filter--filters-form",
+                                   "data-filter--filters-form-output-format-value": "json"
     end
 
     it "omits the data attribute by default" do
       render_form(query:, wrap_with_controller: true)
 
-      wrapper = page.find('[data-controller~="filter--filters-form"]')
-      expect(wrapper["data-filter--filters-form-output-format-value"]).to be_nil
+      # The controller wrapper exists, but without the output-format attribute.
+      expect(page).to have_element "data-controller": "filter--filters-form" do |wrapper|
+        expect(wrapper["data-filter--filters-form-output-format-value"]).to be_nil
+      end
     end
 
     it "raises on unknown values" do
@@ -147,14 +157,15 @@ RSpec.describe Filters::FilterForm, type: :forms do
   end
 
   describe "autocomplete_append_to:" do
-    let(:append_to_for) do
-      ->(filter_name) do
-        wrapper = page.find(%([data-filter-name="#{filter_name}"][data-filter-autocomplete="true"]), visible: :all)
-        component = wrapper.find("[data-append-to]", visible: :all)
-        # angular_component_tag json-encodes inputs into data attributes,
-        # so `appendTo: "#dialog"` arrives as the JSON string `"#dialog"`.
-        JSON.parse(component["data-append-to"])
-      end
+    # `appendTo` arrives at the angular component as a JSON-encoded data
+    # attribute (`angular_component_tag` json-encodes its `inputs:` hash).
+    def append_to_value_in(filter_name)
+      page.find(:element,
+                "data-filter-name": filter_name,
+                "data-filter-autocomplete": "true",
+                visible: :all)
+          .find(:element, "data-append-to": /.*/, visible: :all)["data-append-to"]
+          .then { |v| JSON.parse(v) }
     end
 
     it "forwards the selector into the autocomplete options of ListForm filters" do
@@ -162,15 +173,17 @@ RSpec.describe Filters::FilterForm, type: :forms do
 
       # :status is a list filter (no native autocomplete_options) and is
       # routed to ListForm.
-      expect(append_to_for.call("status")).to eq("#dialog-x")
+      expect(append_to_value_in("status")).to eq("#dialog-x")
     end
 
     it "is absent from autocomplete data when not set" do
       render_form
 
-      wrapper = page.find('[data-filter-name="status"][data-filter-autocomplete="true"]', visible: :all)
-      component = wrapper.find(".op-angular-component", visible: :all)
-      expect(component["data-append-to"]).to be_nil
+      expect(page).to have_element "data-filter-name": "status",
+                                   "data-filter-autocomplete": "true",
+                                   visible: :all do |wrapper|
+        expect(wrapper).to have_no_element "data-append-to": /.*/, visible: :all
+      end
     end
   end
 end

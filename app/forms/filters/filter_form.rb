@@ -143,7 +143,7 @@ class Filters::FilterForm < ApplicationForm
 
   def sub_forms
     forms = map_filter do |filter, active, additional_attributes|
-      filter_form_class(filter, additional_attributes)
+      filter_form_class(filter)
         .new(@builder, filter:, additional_attributes:, active:)
     end
 
