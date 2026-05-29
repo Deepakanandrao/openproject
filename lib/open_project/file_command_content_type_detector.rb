@@ -90,8 +90,11 @@ module OpenProject
     end
 
     def extract_mime_and_charset(type)
-      mime, charset_param = type.split(";", 2).map(&:strip)
-      charset = charset_param&.match(/\Acharset=(.+)\z/)&.[](1)
+      parts = type.split(";").map(&:strip)
+      mime = parts.first
+      charset = parts.drop(1)
+                     .filter_map { |p| p.match(/\Acharset=([^\s;]+)\z/)&.[](1) }
+                     .first
       charset = nil if charset == "binary"
       [mime, charset]
     end
