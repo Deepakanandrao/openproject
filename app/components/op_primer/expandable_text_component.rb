@@ -108,7 +108,7 @@ module OpPrimer
     private
 
     def set_expander_arguments!(expander_arguments)
-      @expander_arguments = expander_arguments.dup
+      @expander_arguments = expander_arguments.deep_dup
       @expander_arguments[:hidden] = true unless @expander_arguments.key?(:hidden)
       @expander_arguments[:mt] ||= 1
       @expander_arguments[:aria] = merge_aria(

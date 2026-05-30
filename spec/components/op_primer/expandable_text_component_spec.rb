@@ -121,12 +121,12 @@ RSpec.describe OpPrimer::ExpandableTextComponent, type: :component do
       )
     end
 
-    it "does not mutate the caller-provided hash" do
-      arguments = { mt: 3 }
+    it "does not mutate the caller-provided hash, including nested button_arguments" do
+      arguments = { mt: 3, button_arguments: { classes: "x" } }
 
       render_component(expander_arguments: arguments) { "Content" }
 
-      expect(arguments).to eq(mt: 3)
+      expect(arguments).to eq(mt: 3, button_arguments: { classes: "x" })
     end
   end
 
