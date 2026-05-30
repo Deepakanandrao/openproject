@@ -29,36 +29,12 @@
 #++
 
 module OpPrimer
-  # Clamps block content to a fixed number of lines via CSS `-webkit-line-clamp`,
-  # styled through the `.op-vertical-truncate` class hierarchy.
-  #
-  # The vertical counterpart to `Primer::Beta::Truncate` (which clips a single
-  # line horizontally). Like `Truncate`, it wraps whatever block content it is
-  # given; callers pass system arguments (e.g. `flex:`, `data:`) through.
-  class VerticalTruncateComponent < Primer::Component
-    LINES_RANGE = (1..6)
-    LINES_DEFAULT = 3
-
-    # @param lines [Integer] number of visible rows, clamped to `1..6`.
-    # @param tag [Symbol] wrapping element; defaults to `:div` (safe for block
-    #   content). Overridable, mirroring `Primer::Beta::Truncate`.
-    # @param system_arguments [Hash] forwarded to the wrapping `Primer::BaseComponent`.
-    def initialize(lines: LINES_DEFAULT, **system_arguments)
-      super()
-
-      @system_arguments = system_arguments
-      @system_arguments[:tag] ||= :div
-
-      lines = lines.to_i.clamp(LINES_RANGE)
-      @system_arguments[:classes] = class_names(
-        @system_arguments[:classes],
-        "op-vertical-truncate",
-        "op-vertical-truncate--lines-#{lines}"
-      )
-    end
-
-    def call
-      render(Primer::BaseComponent.new(**@system_arguments)) { content }
+  # @logical_path OpenProject/Primer
+  class VerticalTruncateComponentPreview < ViewComponent::Preview
+    # Clamps multi-line content to a number of rows via `-webkit-line-clamp`.
+    # @param lines "Number of visible lines" range { min: 1, max: 6, step: 1 }
+    def default(lines: 3)
+      render_with_template(locals: { lines: })
     end
   end
 end
