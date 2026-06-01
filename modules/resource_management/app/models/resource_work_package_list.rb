@@ -108,6 +108,6 @@ class ResourceWorkPackageList < PersistedView
     resolved = effective_query
     return if resolved.nil? || resolved.is_a?(::Query)
 
-    errors.add(:query, I18n.t(:must_be_work_package_query))
+    errors.add(:query, :must_be_work_package_query)
   end
 end
