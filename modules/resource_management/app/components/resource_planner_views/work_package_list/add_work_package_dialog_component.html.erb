@@ -51,7 +51,8 @@ See COPYRIGHT and LICENSE files for more details.
           ResourcePlannerViews::WorkPackageList::AddWorkPackageForm.new(
             f,
             project: @project,
-            append_to: DIALOG_ID
+            append_to: DIALOG_ID,
+            excluded_ids: already_added_work_package_ids
           )
         )
       end
