@@ -29,10 +29,8 @@
 #++
 
 module ResourcePlannerViews
-  # Destroying the view also tears down its dependents: the backing query is
-  # removed by PersistedView#destroy_query_if_orphaned (which cascades to the
-  # query's ordered_work_packages at the database level) and favorites are
-  # cleaned up by acts_as_favoritable.
+  # The query is torn down by PersistedView#destroy_query_if_orphaned (which
+  # cascades to its ordered_work_packages) and favorites by acts_as_favoritable.
   class DeleteService < ::BaseServices::Delete
     private
 

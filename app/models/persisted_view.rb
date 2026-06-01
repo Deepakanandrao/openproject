@@ -31,9 +31,6 @@
 class PersistedView < ApplicationRecord
   belongs_to :project, optional: true
   belongs_to :principal, optional: true, inverse_of: :persisted_views
-  # `autosave` so that filter/sort changes made to an already-persisted query
-  # (e.g. when editing a view's configuration) are written when the view is
-  # saved. For a brand new query the foreign key is filled in on save anyway.
   belongs_to :query, polymorphic: true, optional: true, autosave: true
 
   belongs_to :parent, class_name: "PersistedView", optional: true
@@ -75,10 +72,6 @@ class PersistedView < ApplicationRecord
   # Resolves a (potentially user-supplied) class name to a view class, but only
   # if it is an allowed child of this view. Returns nil for any unknown or
   # forbidden name.
-  #
-  # `constantize` is applied only to the developer-controlled `allowed_children`
-  # list, never to the passed-in name, so untrusted input can never resolve an
-  # arbitrary constant.
   def self.allowed_child_class(name)
     allowed_children.index_with(&:constantize)[name.to_s]
   end

@@ -29,9 +29,6 @@
 #++
 
 module ResourcePlannerViews::WorkPackageList
-  # Visual stub of the work package list sub header. None of the controls are
-  # wired up yet; they merely reproduce the intended layout (search, sort,
-  # hierarchy, quick filters, settings and add button).
   class SubHeaderComponent < ApplicationComponent
     include OpPrimer::ComponentHelpers
 

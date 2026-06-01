@@ -32,9 +32,8 @@ module ResourcePlannerViews
   class SetAttributesService < ::BaseServices::SetAttributes
     private
 
-    # `filters` (the serialized filter selection) and `filter_mode` are not
-    # view attributes — pull them out before `super` hands the params to
-    # `model.attributes=`, then translate them into the backing query.
+    # `filters` and `filter_mode` are not view attributes; pull them out before
+    # `super` calls `model.attributes=`, then apply them to the query.
     def set_attributes(params)
       filters = params.delete(:filters)
       filter_mode = params.delete(:filter_mode)
@@ -50,10 +49,9 @@ module ResourcePlannerViews
       end
     end
 
-    # Builds the view's query if it does not have one yet and lets the view
-    # type translate the configure form's filter selection (and the
-    # automatic/manual toggle) into concrete query filters. View types that
-    # are not query-configurable (or have no query at all) are left untouched.
+    # Builds the query if missing and lets the view type translate the filter
+    # selection and mode into query filters. Non-configurable view types are
+    # left untouched.
     def configure_query(filters:, filter_mode:)
       return unless model.respond_to?(:apply_query_configuration)
 

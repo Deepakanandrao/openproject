@@ -37,10 +37,8 @@ See COPYRIGHT and LICENSE files for more details.
   ) do |dialog|
     dialog.with_header(variant: :large)
 
-    # This is a content-sized centered modal, so without a body min-height the
-    # single autocompleter field collapses the dialog and its dropdown is
-    # clipped. `Overlay-body_autocomplete_height` is the shared fix for
-    # autocompleters in centered dialogs (see WorkPackageRelationsTab pickers).
+    # Gives the autocompleter dropdown room in this content-sized modal — the
+    # shared fix for autocompleters in centered dialogs.
     dialog.with_body(classes: "Overlay-body_autocomplete_height") do
       primer_form_with(
         url: form_url,

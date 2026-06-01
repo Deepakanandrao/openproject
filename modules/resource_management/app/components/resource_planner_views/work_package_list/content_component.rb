@@ -29,9 +29,6 @@
 #++
 
 module ResourcePlannerViews::WorkPackageList
-  # Renders the work package list view results (sub header + table). Dispatched
-  # to by the generic ResourcePlannerViews::ContentComponent, which owns the
-  # turbo-streamable wrapper.
   class ContentComponent < ApplicationComponent
     def initialize(view:, project:, resource_planner:)
       super

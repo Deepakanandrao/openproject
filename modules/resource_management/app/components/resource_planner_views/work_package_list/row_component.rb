@@ -36,12 +36,10 @@ module ResourcePlannerViews::WorkPackageList
     # generic-drag-and-drop controller only accepts rows from this list.
     DRAGGABLE_TYPE = "resource-work-package"
 
-    # Manual lists are reorderable: tag each row with the attributes the
-    # generic-drag-and-drop controller expects (type, id and the drop URL it
-    # PUTs to). Automatic lists render plain rows.
-    # NB: `row_data` is invoked by the parent table while building the row
-    # wrapper, before this component enters the render pipeline, so `helpers`
-    # is not yet available — use the route helpers module directly.
+    # Drag-and-drop attributes for the generic-drag-and-drop controller (manual
+    # lists only). `row_data` runs while the parent table builds the row, before
+    # this component enters the render pipeline, so `helpers` is unavailable —
+    # hence the direct route-helpers call.
     def row_data
       return {} unless manual?
 
@@ -122,9 +120,8 @@ module ResourcePlannerViews::WorkPackageList
       I18n.t("resource_management.work_package_list.allocation_placeholder")
     end
 
-    # Context menu for a row. Most items are still stubs. The manual-list
-    # actions (reorder + remove) only apply to hand-picked views; automatic
-    # (filtered) views instead offer the filter-criteria shortcut.
+    # Most items are still stubs. Reorder + remove apply only to manual views;
+    # automatic views offer the filter-criteria shortcut instead.
     def context_menu
       render(Primer::Alpha::ActionMenu.new) do |menu|
         menu.with_show_button(icon: "kebab-horizontal",

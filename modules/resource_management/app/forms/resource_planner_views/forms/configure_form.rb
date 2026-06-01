@@ -38,16 +38,10 @@ module ResourcePlannerViews
           required: true
         )
 
-        # `filter_mode` is a UI-only toggle: "automatic" means the view is
-        # backed by a filtered query, "manual" means items are managed by
-        # hand. Both are expressed at the query level, so the value is not
-        # persisted on the view itself. The `show-when-value-selected`
-        # Stimulus controller (one level above this form) listens for
-        # changes and toggles the filter form sibling accordingly.
-        #
-        # The initially-checked radio reflects the view's persisted query so
-        # that editing a hand-picked view does not silently reset it back to
-        # automatic (which would re-apply the default status filter on save).
+        # `filter_mode` is a UI-only toggle (not persisted on the view); the
+        # `show-when-value-selected` controller toggles the filter form. The
+        # checked radio reflects the persisted query so editing a hand-picked
+        # view does not silently revert it to automatic.
         manual = model.respond_to?(:manually_picked?) && model.manually_picked?
 
         f.advanced_radio_button_group(

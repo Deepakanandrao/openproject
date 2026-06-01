@@ -29,8 +29,6 @@
 #++
 
 module ResourcePlannerViews::WorkPackageList
-  # Dialog that lets the user search the current project's work packages and
-  # add the chosen one to a manually hand-picked view's query.
   class AddWorkPackageDialogComponent < ApplicationComponent
     include OpTurbo::Streamable
     include OpPrimer::ComponentHelpers
@@ -56,8 +54,6 @@ module ResourcePlannerViews::WorkPackageList
       work_packages_project_resource_planner_view_path(@project, @resource_planner, @view)
     end
 
-    # Work packages already on the list — excluded from the search so the user
-    # can't add a duplicate.
     def already_added_work_package_ids
       @view.effective_query&.ordered_work_packages&.pluck(:work_package_id) || []
     end

@@ -29,9 +29,6 @@
 #++
 
 module ResourcePlannerViews
-  # Deleting a view follows the same authorization rules as managing it: the
-  # owner of the parent planner (with view permission), a public-planner
-  # manager, or an admin.
   class DeleteContract < ::DeleteContract
     delete_permission(lambda do
       next true if user.active_admin?

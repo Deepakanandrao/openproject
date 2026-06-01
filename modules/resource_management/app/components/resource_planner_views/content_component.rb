@@ -29,9 +29,6 @@
 #++
 
 module ResourcePlannerViews
-  # Generic, turbo-streamable wrapper around a view's rendered content. It owns
-  # the wrapper element (so the controller can replace it without knowing the
-  # view type) and dispatches to the matching per-type content component.
   class ContentComponent < ApplicationComponent
     include OpTurbo::Streamable
 
@@ -45,8 +42,6 @@ module ResourcePlannerViews
 
     private
 
-    # Returns the component rendering the body for the current view type, or nil
-    # for types that don't have a dedicated content component yet.
     def inner_component
       case @view
       when ResourceWorkPackageList

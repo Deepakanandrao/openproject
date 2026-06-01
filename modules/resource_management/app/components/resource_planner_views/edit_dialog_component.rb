@@ -29,9 +29,6 @@
 #++
 
 module ResourcePlannerViews
-  # Dialog for editing an existing view. Unlike the new-view flow there is no
-  # type-selection step — it opens straight on the reusable configure form,
-  # pre-filled with the view and its query.
   class EditDialogComponent < ApplicationComponent
     include OpTurbo::Streamable
     include OpPrimer::ComponentHelpers

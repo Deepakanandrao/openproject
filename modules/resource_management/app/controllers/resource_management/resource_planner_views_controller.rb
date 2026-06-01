@@ -97,7 +97,6 @@ module ::ResourceManagement
       )
     end
 
-    # Opens the search dialog for manually hand-picked views.
     def new_work_package
       respond_with_dialog ResourcePlannerViews::WorkPackageList::AddWorkPackageDialogComponent.new(
         view: @view,
@@ -106,8 +105,6 @@ module ::ResourceManagement
       )
     end
 
-    # Appends the chosen work package to the view's query and re-renders the
-    # list in place.
     def add_work_package
       work_package = WorkPackage
                        .visible(current_user)
@@ -125,8 +122,6 @@ module ::ResourceManagement
       respond_with_turbo_streams
     end
 
-    # Drops the chosen work package from the manually hand-picked query and
-    # re-renders the list in place.
     def remove_work_package
       @view.effective_query
            .ordered_work_packages
@@ -137,8 +132,7 @@ module ::ResourceManagement
       respond_with_turbo_streams
     end
 
-    # Moves a work package within the manually hand-picked order. `direction`
-    # is one of top/up/down/bottom (from the row's Move sub-menu).
+    # `direction` is one of top/up/down/bottom (from the row's Move sub-menu).
     def move_work_package
       move_to_index(params[:work_package_id]) do |index, count|
         case params[:direction].to_s
@@ -172,11 +166,10 @@ module ::ResourceManagement
       query.ordered_work_packages.create!(work_package:, position: next_position)
     end
 
-    # Reorders the ordered work package identified by `work_package_id`. The
-    # block receives the current index and total count and returns the desired
-    # index; positions are then re-packed 1..n. Re-packing keeps the logic the
-    # same whether the move comes from the menu or a drag-and-drop drop, and
-    # tolerates the sparse positions the work-package table may have left.
+    # The block receives the current index and total count and returns the
+    # desired index. Positions are re-packed 1..n afterwards, which keeps menu
+    # moves and drag-drop drops consistent and tolerates sparse positions left
+    # by the work-package table.
     def move_to_index(work_package_id)
       ordered = @view.effective_query.ordered_work_packages.order(:position).to_a
       from = ordered.index { |owp| owp.work_package_id == work_package_id.to_i }
@@ -226,9 +219,8 @@ module ::ResourceManagement
       respond_with_turbo_streams
     end
 
-    # Re-renders the edit dialog's form and footer in place when the update
-    # fails validation. Mirrors render_configure_step but targets the edit
-    # dialog's form/footer ids and uses the PATCH update path.
+    # Re-renders the edit dialog's form in place when the update fails
+    # validation. The footer is static, so only the form is replaced.
     def render_edit_step(view, status: :ok)
       replace_via_turbo_stream(
         component: ResourcePlannerViews::ConfigureStep::FormComponent.new(
@@ -241,15 +233,11 @@ module ::ResourceManagement
         ),
         status:
       )
-      # The edit dialog's footer is static (rendered once with the dialog), so
-      # only the form is re-rendered on validation failure.
       respond_with_turbo_streams
     end
 
-    # On a successful update we don't navigate away: the edit dialog is closed
-    # and both the tab nav (the view's name may have changed) and the view's
-    # content are replaced in place. The generic ContentComponent knows how to
-    # render whichever view type this is.
+    # Closes the dialog and replaces the tab nav (the name may have changed)
+    # and content in place rather than navigating away.
     def render_update_success(view)
       # The cached children association still holds the pre-update name.
       @resource_planner.children.reload
@@ -279,12 +267,9 @@ module ::ResourceManagement
       params.expect(view: %i[name]).to_h.merge(query_configuration_params)
     end
 
-    # The configure form renders inside a `scope: :view` form, so the
-    # automatic/manual radio is submitted as `view[filter_mode]` even though
-    # it is not a view attribute (the filters JSON, emitted via a plain
-    # `hidden_field_tag`, stays top-level). Read the toggle from the view
-    # scope, falling back to a top-level param. The SetAttributesService
-    # consumes both to configure the backing query.
+    # `filters` and `filter_mode` configure the backing query, not the view.
+    # The radio is scoped to the `:view` form (`view[filter_mode]`) while the
+    # filters JSON is top-level, so read the toggle from either place.
     def query_configuration_params
       { filters: params[:filters], filter_mode: filter_mode_param }
     end

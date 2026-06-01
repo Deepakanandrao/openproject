@@ -43,12 +43,9 @@ See COPYRIGHT and LICENSE files for more details.
   )
 %>
 <% if @view.manually_picked? %>
-  <%#
-    Manual lists are reorderable via drag-and-drop. The generic-drag-and-drop
-    controller drives the rows; `target-container-accessor` points it at the
-    body rowgroup (the header rowgroup carries the .Box-header class) since the
-    BorderBox markup leaves no hook on the list element itself.
-  %>
+  <%# `target-container-accessor` points the drag controller at the body
+      rowgroup (the header one carries .Box-header), as the BorderBox markup
+      offers no hook on the list element itself. %>
   <%= content_tag(
         :div,
         data: { controller: "generic-drag-and-drop", "generic-drag-and-drop-position-mode-value": "position" }
