@@ -475,7 +475,7 @@ en:
           heading: Enable project-based work package IDs?
           description: >
             This will change IDs for all work packages in all projects in this instance.
-            Previous identifiers and URLs will continue to redirect properly.
+            Previous identifiers and URLs will continue to work.
             This change will take some time to complete.
           confirm_button: Change identifiers
           checkbox_label: I understand that this will permanently change all work package IDs
