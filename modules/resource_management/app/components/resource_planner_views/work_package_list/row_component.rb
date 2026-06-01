@@ -62,7 +62,16 @@ module ResourcePlannerViews::WorkPackageList
     # manual lists a drag handle is prepended — the generic-drag-and-drop
     # controller only starts a drag from a `.DragHandle` (handle: true).
     def subject
-      content = safe_join(
+      return subject_content unless manual?
+
+      flex_layout(align_items: :center) do |row|
+        row.with_column(mr: 2) { render(Primer::OpenProject::DragHandle.new) }
+        row.with_column(flex: 1) { subject_content }
+      end
+    end
+
+    def subject_content
+      safe_join(
         [
           render(WorkPackages::InfoLineComponent.new(work_package:, show_status: true)),
           render(
@@ -74,13 +83,6 @@ module ResourcePlannerViews::WorkPackageList
           ) { work_package.subject }
         ]
       )
-
-      return content unless manual?
-
-      flex_layout(align_items: :center) do |row|
-        row.with_column(mr: 2) { render(Primer::OpenProject::DragHandle.new) }
-        row.with_column(flex: 1) { content }
-      end
     end
 
     def priority
