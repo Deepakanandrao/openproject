@@ -29,6 +29,8 @@
 #++
 
 class UserCard < PersistedView
+  include ResourceManagement::Categorized
+
   SECONDARY_INFO = %w[role email login none].freeze
   TAG_SOURCES    = %w[groups roles none].freeze
   CARD_SIZES     = %w[compact default expanded].freeze

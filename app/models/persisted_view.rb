@@ -31,7 +31,10 @@
 class PersistedView < ApplicationRecord
   belongs_to :project, optional: true
   belongs_to :principal, optional: true, inverse_of: :persisted_views
-  belongs_to :query, polymorphic: true, optional: true
+  # `autosave` so that filter/sort changes made to an already-persisted query
+  # (e.g. when editing a view's configuration) are written when the view is
+  # saved. For a brand new query the foreign key is filled in on save anyway.
+  belongs_to :query, polymorphic: true, optional: true, autosave: true
 
   belongs_to :parent, class_name: "PersistedView", optional: true
   has_many :children, class_name: "PersistedView", foreign_key: "parent_id", dependent: :destroy, inverse_of: :parent

@@ -28,34 +28,31 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-Rails.application.routes.draw do
-  #  resources :resource_management,
-  #            controller: "resource_management/resource_management",
-  #            only: %i[] do
-  #    collection do
-  #      get "/", to: "resource_management/resource_management#overview", as: :overview
-  #    end
-  #  end
-
-  scope "projects/:project_id", as: "project" do
-    resources :resource_planners, controller: "resource_management/resource_planners" do
-      member do
-        post :toggle_public
+module ResourcePlannerViews
+  module WorkPackageList
+    # Single-field form used inside the "add existing work package" dialog of a
+    # manually hand-picked view. The autocompleter is scoped to the current
+    # project and its dropdown is appended to the dialog so it is not clipped.
+    class AddWorkPackageForm < ApplicationForm
+      form do |f|
+        f.work_package_autocompleter(
+          name: :work_package_id,
+          label: WorkPackage.model_name.human,
+          required: true,
+          autocomplete_options: {
+            openDirectly: false,
+            focusDirectly: true,
+            dropdownPosition: "bottom",
+            appendTo: "##{@append_to}",
+            filters: [{ name: "project_id", operator: "=", values: [@project.id] }]
+          }
+        )
       end
 
-      resources :views,
-                controller: "resource_management/resource_planner_views",
-                only: %i[show new create edit update destroy] do
-        member do
-          # Search-and-pick dialog for manually hand-picked views, and the
-          # endpoint that appends the chosen work package to the query.
-          get :new_work_package
-          post :work_packages, action: :add_work_package
-        end
-      end
-
-      collection do
-        get "menu" => "resource_management/menus#show"
+      def initialize(project:, append_to:)
+        super()
+        @project = project
+        @append_to = append_to
       end
     end
   end

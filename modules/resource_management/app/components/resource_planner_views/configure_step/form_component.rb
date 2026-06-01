@@ -65,8 +65,12 @@ module ResourcePlannerViews
 
       private
 
+      # Whether the filter form is shown on first render. It is hidden for
+      # manually hand-picked views so it matches the initially-checked radio
+      # in ConfigureForm; the show-when-value-selected controller takes over
+      # once the user toggles the mode.
       def initial_filter_mode_automatic?
-        @view.errors.empty?
+        !(@view.respond_to?(:manually_picked?) && @view.manually_picked?)
       end
 
       def has_filter_query?

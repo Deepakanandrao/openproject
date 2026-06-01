@@ -44,6 +44,12 @@ module ResourcePlannerViews
         # persisted on the view itself. The `show-when-value-selected`
         # Stimulus controller (one level above this form) listens for
         # changes and toggles the filter form sibling accordingly.
+        #
+        # The initially-checked radio reflects the view's persisted query so
+        # that editing a hand-picked view does not silently reset it back to
+        # automatic (which would re-apply the default status filter on save).
+        manual = model.respond_to?(:manually_picked?) && model.manually_picked?
+
         f.advanced_radio_button_group(
           name: :filter_mode,
           label: I18n.t("resource_management.configure_view_dialog.filter_mode.label"),
@@ -52,13 +58,14 @@ module ResourcePlannerViews
         ) do |group|
           group.radio_button(
             value: "automatic",
-            checked: true,
+            checked: !manual,
             label: I18n.t("resource_management.configure_view_dialog.filter_mode.automatic.label"),
             caption: I18n.t("resource_management.configure_view_dialog.filter_mode.automatic.caption"),
             data: { target_name: "filter_mode", "show-when-value-selected-target": "cause" }
           )
           group.radio_button(
             value: "manual",
+            checked: manual,
             label: I18n.t("resource_management.configure_view_dialog.filter_mode.manual.label"),
             caption: I18n.t("resource_management.configure_view_dialog.filter_mode.manual.caption"),
             data: { target_name: "filter_mode", "show-when-value-selected-target": "cause" }

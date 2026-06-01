@@ -28,35 +28,32 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-Rails.application.routes.draw do
-  #  resources :resource_management,
-  #            controller: "resource_management/resource_management",
-  #            only: %i[] do
-  #    collection do
-  #      get "/", to: "resource_management/resource_management#overview", as: :overview
-  #    end
-  #  end
+module ResourcePlannerViews::WorkPackageList
+  # Dialog that lets the user search the current project's work packages and
+  # add the chosen one to a manually hand-picked view's query.
+  class AddWorkPackageDialogComponent < ApplicationComponent
+    include OpTurbo::Streamable
+    include OpPrimer::ComponentHelpers
 
-  scope "projects/:project_id", as: "project" do
-    resources :resource_planners, controller: "resource_management/resource_planners" do
-      member do
-        post :toggle_public
-      end
+    DIALOG_ID = "rm-add-work-package-dialog"
+    FORM_ID = "rm-add-work-package-form"
 
-      resources :views,
-                controller: "resource_management/resource_planner_views",
-                only: %i[show new create edit update destroy] do
-        member do
-          # Search-and-pick dialog for manually hand-picked views, and the
-          # endpoint that appends the chosen work package to the query.
-          get :new_work_package
-          post :work_packages, action: :add_work_package
-        end
-      end
+    def initialize(view:, project:, resource_planner:)
+      super
 
-      collection do
-        get "menu" => "resource_management/menus#show"
-      end
+      @view = view
+      @project = project
+      @resource_planner = resource_planner
+    end
+
+    private
+
+    def title
+      I18n.t("resource_management.work_package_list.add_work_package_dialog.title")
+    end
+
+    def form_url
+      work_packages_project_resource_planner_view_path(@project, @resource_planner, @view)
     end
   end
 end

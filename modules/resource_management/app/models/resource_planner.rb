@@ -50,7 +50,7 @@ class ResourcePlanner < PersistedView
 
   validate :end_date_after_start_date
 
-  after_initialize :set_default_category
+  include ResourceManagement::Categorized
 
   def visible?(user)
     return false if project.nil?
@@ -60,10 +60,6 @@ class ResourcePlanner < PersistedView
   end
 
   private
-
-  def set_default_category
-    self.category ||= "resource_management" if new_record?
-  end
 
   def end_date_after_start_date
     return if start_date.blank? || end_date.blank?

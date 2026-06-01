@@ -32,9 +32,50 @@ module ResourcePlannerViews
   class SetAttributesService < ::BaseServices::SetAttributes
     private
 
+    # `filters` (the serialized filter selection) and `filter_mode` are not
+    # view attributes — pull them out before `super` hands the params to
+    # `model.attributes=`, then translate them into the backing query.
+    def set_attributes(params)
+      filters = params.delete(:filters)
+      filter_mode = params.delete(:filter_mode)
+
+      super
+
+      configure_query(filters:, filter_mode:)
+    end
+
     def set_default_attributes(_params)
       model.change_by_system do
         model.principal ||= user
+      end
+    end
+
+    # Builds the view's query if it does not have one yet and lets the view
+    # type translate the configure form's filter selection (and the
+    # automatic/manual toggle) into concrete query filters. View types that
+    # are not query-configurable (or have no query at all) are left untouched.
+    def configure_query(filters:, filter_mode:)
+      return unless model.respond_to?(:apply_query_configuration)
+
+      ensure_query
+      return if model.query.nil?
+
+      model.apply_query_configuration(filters_json: filters, filter_mode:)
+    end
+
+    def ensure_query
+      return if model.query.present?
+
+      query = model.build_default_query
+      return if query.nil?
+
+      # `query=` touches `query_id`/`query_type`; on create the model has been
+      # extended with ChangedBySystem so the contract does not flag them as
+      # user-written readonly attributes.
+      if model.respond_to?(:change_by_system)
+        model.change_by_system { model.query = query }
+      else
+        model.query = query
       end
     end
   end

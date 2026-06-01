@@ -113,6 +113,8 @@ en:
           list of user cards
         label: Users card list
     work_package_list:
+      add_work_package_dialog:
+        title: Add existing work package
       allocation_placeholder: —
       blank:
         description: There are no work packages matching this view's filters yet.
@@ -130,9 +132,12 @@ en:
         remove: Remove
         see_allocation: See allocation
       mobile_title: Work packages
+      query_name: "Resource management work packages: %{name}"
       subheader:
         add: Add
+        add_work_package: Add existing work package
         all_filters: All filters
+        allocate: Allocate
         hierarchy: Display hierarchy
         search: Search
         settings: Configure view

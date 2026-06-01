@@ -28,35 +28,21 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-Rails.application.routes.draw do
-  #  resources :resource_management,
-  #            controller: "resource_management/resource_management",
-  #            only: %i[] do
-  #    collection do
-  #      get "/", to: "resource_management/resource_management#overview", as: :overview
-  #    end
-  #  end
+module ResourceManagement
+  # Tags persisted views that belong to the resource management area with the
+  # matching `category` so they can be told apart from work-package or project
+  # views. Applies to the planner and every view type nested below it.
+  module Categorized
+    extend ActiveSupport::Concern
 
-  scope "projects/:project_id", as: "project" do
-    resources :resource_planners, controller: "resource_management/resource_planners" do
-      member do
-        post :toggle_public
-      end
+    included do
+      after_initialize :set_default_category
+    end
 
-      resources :views,
-                controller: "resource_management/resource_planner_views",
-                only: %i[show new create edit update destroy] do
-        member do
-          # Search-and-pick dialog for manually hand-picked views, and the
-          # endpoint that appends the chosen work package to the query.
-          get :new_work_package
-          post :work_packages, action: :add_work_package
-        end
-      end
+    private
 
-      collection do
-        get "menu" => "resource_management/menus#show"
-      end
+    def set_default_category
+      self.category ||= "resource_management" if new_record?
     end
   end
 end

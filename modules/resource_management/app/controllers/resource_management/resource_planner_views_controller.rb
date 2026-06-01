@@ -36,7 +36,7 @@ module ::ResourceManagement
     before_action :find_project_by_project_id
     before_action :authorize
     before_action :find_resource_planner
-    before_action :find_view, only: %i[show edit update destroy]
+    before_action :find_view, only: %i[show edit update destroy new_work_package add_work_package]
 
     def show; end
 
@@ -80,7 +80,52 @@ module ::ResourceManagement
 
     def destroy; end
 
+    # Opens the search dialog for manually hand-picked views.
+    def new_work_package
+      respond_with_dialog ResourcePlannerViews::WorkPackageList::AddWorkPackageDialogComponent.new(
+        view: @view,
+        project: @project,
+        resource_planner: @resource_planner
+      )
+    end
+
+    # Appends the chosen work package to the view's query and re-renders the
+    # list in place.
+    def add_work_package
+      work_package = WorkPackage
+                       .visible(current_user)
+                       .where(project: @project)
+                       .find_by(id: params[:work_package_id])
+
+      return render_400(message: I18n.t(:notice_file_not_found)) if work_package.nil?
+
+      append_work_package(work_package)
+      render_work_package_added
+    end
+
     private
+
+    def append_work_package(work_package)
+      query = @view.effective_query
+      return if query.ordered_work_packages.exists?(work_package_id: work_package.id)
+
+      next_position = (query.ordered_work_packages.maximum(:position) || 0) + 1
+      query.ordered_work_packages.create!(work_package:, position: next_position)
+    end
+
+    def render_work_package_added
+      replace_via_turbo_stream(
+        component: ResourcePlannerViews::ContentComponent.new(
+          view: @view,
+          project: @project,
+          resource_planner: @resource_planner
+        )
+      )
+      close_dialog_via_turbo_stream(
+        "##{ResourcePlannerViews::WorkPackageList::AddWorkPackageDialogComponent::DIALOG_ID}"
+      )
+      respond_with_turbo_streams
+    end
 
     def render_configure_step(view, status: :ok)
       update_dialog_title_via_turbo_stream(
@@ -158,7 +203,21 @@ module ::ResourceManagement
     end
 
     def view_params
-      params.expect(view: %i[name]).to_h
+      params.expect(view: %i[name]).to_h.merge(query_configuration_params)
+    end
+
+    # The configure form renders inside a `scope: :view` form, so the
+    # automatic/manual radio is submitted as `view[filter_mode]` even though
+    # it is not a view attribute (the filters JSON, emitted via a plain
+    # `hidden_field_tag`, stays top-level). Read the toggle from the view
+    # scope, falling back to a top-level param. The SetAttributesService
+    # consumes both to configure the backing query.
+    def query_configuration_params
+      { filters: params[:filters], filter_mode: filter_mode_param }
+    end
+
+    def filter_mode_param
+      params.dig(:view, :filter_mode) || params[:filter_mode]
     end
 
     def create_params

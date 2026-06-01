@@ -52,6 +52,16 @@ RSpec.describe ResourcePlannerViews::UpdateService, type: :model do
     expect(view.reload.name).to eq("Updated")
   end
 
+  it "persists filter changes onto the associated query" do
+    described_class
+      .new(user:, model: view)
+      .call(name: "Updated",
+            filter_mode: "automatic",
+            filters: [{ assigned_to_id: { operator: "=", values: [user.id.to_s] } }].to_json)
+
+    expect(view.query.reload.filters.map(&:name)).to contain_exactly(:assigned_to_id)
+  end
+
   context "when the user is not allowed to manage the parent planner" do
     let(:other_user) { create(:user) }
 
