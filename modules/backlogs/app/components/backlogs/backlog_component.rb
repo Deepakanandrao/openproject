@@ -34,18 +34,16 @@ module Backlogs
     include OpTurbo::Streamable
     include CommonHelper
 
-    attr_reader :inbox_work_packages, :buckets, :all_buckets, :project, :current_user
+    attr_reader :inbox_work_packages, :buckets, :project, :current_user
 
     def initialize(inbox_work_packages:,
                    buckets:,
-                   all_buckets:,
                    project:,
                    current_user: User.current)
       super()
 
       @inbox_work_packages = inbox_work_packages
       @buckets = buckets
-      @all_buckets = all_buckets
       @project = project
       @current_user = current_user
     end
@@ -56,21 +54,8 @@ module Backlogs
 
     private
 
-    def selected_bucket_ids = backlog_filters.bucket_ids
-    def selected_sprint_ids = backlog_filters.sprint_ids
-
     def total
       @total ||= inbox_work_packages.count + (buckets&.sum { it.work_packages.size } || 0)
-    end
-
-    def bucket_selector_label
-      if selected_bucket_ids.blank?
-        t(".all_backlog_items")
-      elsif selected_bucket_ids.one?
-        all_buckets.find { |b| b.id == selected_bucket_ids.first }&.name || t(".all_backlog_items")
-      else
-        t(".n_buckets", count: selected_bucket_ids.size)
-      end
     end
   end
 end

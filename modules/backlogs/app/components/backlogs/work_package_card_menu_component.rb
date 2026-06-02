@@ -96,8 +96,6 @@ module Backlogs
                  [{ name: "target_id", value: move_target_id }, { name: "prev_id", value: prev_id }]
                end
 
-      inputs += backlog_filters.to_inputs
-
       menu.with_item(
         id: dom_target(work_package, :menu, label),
         label: I18n.t(label),

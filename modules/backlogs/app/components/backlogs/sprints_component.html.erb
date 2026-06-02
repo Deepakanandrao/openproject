@@ -50,41 +50,7 @@ See COPYRIGHT and LICENSE files for more details.
   end
 %>
 
-<%= primer_form_with(
-      url: project_backlogs_backlog_path(project), method: :get,
-      data: { turbo_frame: "backlogs_container", turbo_action: "advance" }
-    ) do |f| %>
-  <% backlog_filters.to_inputs(except: :sprint_ids).each do |input| %>
-    <%= hidden_field_tag input[:name], input[:value] %>
-  <% end %>
-  <%= render(
-        Primer::Alpha::SelectPanel.new(
-          select_variant: :multiple,
-          fetch_strategy: :local,
-          form_arguments: { builder: f, name: "sprint_ids" }
-        )
-      ) do |panel| %>
-    <% panel.with_show_button(scheme: :secondary) do |button| %>
-      <% button.with_trailing_visual_icon(icon: :"triangle-down") %>
-      <%= sprint_selector_label %>
-    <% end %>
-    <% all_sprints.each do |sprint| %>
-      <% panel.with_item(
-           label: sprint.name,
-           active: selected_sprint_ids&.include?(sprint.id) || false,
-           content_arguments: { data: { value: sprint.id } }
-         ) %>
-    <% end %>
-    <% panel.with_footer(show_divider: true) do %>
-      <%= render(
-            Primer::Beta::Button.new(
-              scheme: :primary,
-              type: :submit
-            )
-          ) { t(:button_apply) } %>
-    <% end %>
-  <% end %>
-<% end %>
+<%= render Backlogs::BacklogFilterSelectPanelComponent.new(project:, field_name: :sprint_ids) %>
 
 <% if sprints.empty? %>
   <%=

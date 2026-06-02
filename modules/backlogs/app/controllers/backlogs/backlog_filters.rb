@@ -48,15 +48,5 @@ module Backlogs
     end
 
     alias to_hash to_h
-
-    def to_inputs(except: nil)
-      to_h.except(except).flat_map do |name, value|
-        if value.is_a?(Array)
-          value.map { |v| { name: "#{name}[]", value: v } }
-        else
-          { name:, value: }
-        end
-      end
-    end
   end
 end

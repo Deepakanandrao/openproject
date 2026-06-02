@@ -1,0 +1,37 @@
+<%= primer_form_with(
+      url: project_backlogs_path(project), method: :get,
+      data: { turbo_frame: "backlogs_container", turbo_action: "advance" }
+    ) do |f| %>
+  <% filter_fields_for.each do |input| %>
+    <%= hidden_field_tag input[:name], input[:value] %>
+  <% end %>
+  <%= render(
+        Primer::Alpha::SelectPanel.new(
+          id: select_panel_id,
+          select_variant: :multiple,
+          fetch_strategy: :local,
+          form_arguments: { builder: f, name: filter_field.to_s }
+        )
+      ) do |panel|
+        panel.with_show_button(scheme: :secondary) do |button|
+          button.with_trailing_visual_icon(icon: :"triangle-down")
+          selector_label
+        end
+        items.each do |item|
+          panel.with_item(
+            label: item.name,
+            active: selected_ids&.include?(item.id) || false,
+            content_arguments: { data: { value: item.id } }
+          )
+        end
+        panel.with_footer(show_divider: true) do
+          render(
+            Primer::Beta::Button.new(
+              scheme: :primary,
+              type: :submit,
+              data: { close_dialog_id: "#{select_panel_id}-dialog" }
+            )
+          ) { t(:button_apply) }
+        end
+      end %>
+<% end %>

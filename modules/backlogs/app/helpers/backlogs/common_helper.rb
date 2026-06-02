@@ -55,9 +55,16 @@ module Backlogs
       backlog_filters.to_h
     end
 
-    def filter_fields_for(selector_type)
-      except = selector_type == :buckets ? :bucket_ids : :sprint_ids
-      backlog_filters.to_inputs(except:)
+    def all_sprints_for(project)
+      RequestStore.fetch(:"all_sprints_#{project.id}") do
+        Sprint.for_project(project).not_completed.order_by_date.includes(:project, :task_boards)
+      end
+    end
+
+    def all_buckets_for(project)
+      RequestStore.fetch(:"all_buckets_#{project.id}") do
+        BacklogBucket.for_project(project)
+      end
     end
   end
 end

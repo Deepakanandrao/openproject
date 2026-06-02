@@ -140,43 +140,4 @@ RSpec.describe Backlogs::BacklogFilters, type: :model do
       expect(filters.to_hash).to eq(filters.to_h)
     end
   end
-
-  describe "#to_inputs" do
-    context "with no params" do
-      let(:params) { {} }
-
-      it "returns an empty array" do
-        expect(filters.to_inputs).to eq([])
-      end
-    end
-
-    context "with show_all" do
-      let(:params) { { all: "1" } }
-
-      it "includes all: 1 as a single input" do
-        expect(filters.to_inputs).to eq([{ name: :all, value: 1 }])
-      end
-    end
-
-    context "with array values" do
-      let(:params) { { bucket_ids: %w[1 2] } }
-
-      it "expands arrays into multiple inputs with [] suffix" do
-        expect(filters.to_inputs).to eq([
-                                          { name: "bucket_ids[]", value: 1 },
-                                          { name: "bucket_ids[]", value: 2 }
-                                        ])
-      end
-    end
-
-    context "with except:" do
-      let(:params) { { bucket_ids: %w[1], sprint_ids: %w[2], all: "1" } }
-
-      it "excludes the specified key" do
-        names = filters.to_inputs(except: :bucket_ids).map { |i| i[:name].to_s }
-        expect(names).not_to include("bucket_ids[]")
-        expect(names).to include("sprint_ids[]", "all")
-      end
-    end
-  end
 end

@@ -28,44 +28,50 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require "rails_helper"
+module Backlogs
+  class BacklogFilterSelectPanelComponent < ApplicationComponent
+    include CommonHelper
 
-RSpec.describe Backlogs::CommonHelper do
-  before do
-    allow(helper).to receive(:params).and_return(params)
-  end
+    attr_reader :project, :filter_field
 
-  describe "#backlog_filters" do
-    context "with no params" do
-      let(:params) { {} }
-
-      it "returns filters with empty to_h" do
-        expect(helper.backlog_filters.to_h).to eq({})
-      end
+    def initialize(project:, field_name:)
+      super()
+      @project = project
+      @filter_field = field_name.to_sym
     end
 
-    context "with all: '1'" do
-      let(:params) { { all: "1" } }
+    private
 
-      it "returns filters with all: 1 in to_h" do
-        expect(helper.backlog_filters.to_h).to eq({ all: 1 })
-      end
+    def select_panel_id
+      "#{filter_field.to_s.sub(/_ids$/, '').tr('_', '-')}-filter-select-panel"
     end
 
-    context "with bucket_ids and sprint_ids" do
-      let(:params) { { bucket_ids: %w[1 2], sprint_ids: %w[3] } }
-
-      it "includes both in to_h" do
-        expect(helper.backlog_filters.to_h).to eq({ bucket_ids: [1, 2], sprint_ids: [3] })
-      end
+    def selector_type
+      filter_field == :sprint_ids ? :sprints : :buckets
     end
-  end
 
-  describe "#backlog_filter_params" do
-    let(:params) { { bucket_ids: %w[1 2], all: "1" } }
+    def filter_fields_for
+      backlog_filters.to_h
+        .reject { |name, _| name.to_s.start_with?(filter_field.to_s) }
+        .flat_map do |name, value|
+          if value.is_a?(Array)
+            value.map { |v| { name: "#{name}[]", value: v } }
+          else
+            { name:, value: }
+          end
+        end
+    end
 
-    it "returns the same hash as backlog_filters.to_h" do
-      expect(helper.backlog_filter_params).to eq(helper.backlog_filters.to_h)
+    def items
+      filter_field == :sprint_ids ? all_sprints_for(project) : all_buckets_for(project)
+    end
+
+    def selected_ids
+      filter_field == :sprint_ids ? backlog_filters.sprint_ids : backlog_filters.bucket_ids
+    end
+
+    def selector_label
+      filter_field == :sprint_ids ? Sprint.human_model_name.pluralize : BacklogBucket.human_model_name.pluralize
     end
   end
 end

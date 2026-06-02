@@ -64,22 +64,11 @@ module Backlogs
     end
 
     def load_backlogs
-      @all_backlog_buckets = BacklogBucket.for_project(@project)
-      @backlog_buckets = @all_backlog_buckets
+      @backlog_buckets = all_buckets_for(@project)
+      @backlog_buckets = @backlog_buckets.where(id: backlog_filters.bucket_ids) if backlog_filters.bucket_ids.present?
 
-      if backlog_filters.bucket_ids.present?
-        @backlog_buckets = @backlog_buckets.where(id: backlog_filters.bucket_ids)
-      end
-
-      @all_sprints = Sprint.for_project(@project)
-                          .not_completed
-                          .order_by_date
-                          .includes(:project, :task_boards)
-      @sprints = @all_sprints
-
-      if backlog_filters.sprint_ids.present?
-        @sprints = @sprints.where(id: backlog_filters.sprint_ids)
-      end
+      @sprints = all_sprints_for(@project)
+      @sprints = @sprints.where(id: backlog_filters.sprint_ids) if backlog_filters.sprint_ids.present?
 
       @work_packages_by_sprint_id = WorkPackage
                                       .where(sprint: @sprints, project: @project)
