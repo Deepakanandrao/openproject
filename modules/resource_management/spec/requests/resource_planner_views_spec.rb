@@ -101,6 +101,18 @@ RSpec.describe "ResourcePlannerViews requests",
     end
   end
 
+  describe "GET new (configure step)" do
+    it "pre-fills the view name with the view type's label" do
+      get new_project_resource_planner_view_path(project, resource_planner),
+          params: { view_class_name: "ResourceWorkPackageList" },
+          as: :turbo_stream
+
+      expect(response).to have_http_status(:ok)
+      name_field = response.body[/<input[^>]*name="view\[name\]"[^>]*>/]
+      expect(name_field).to include(%(value="#{I18n.t('resource_management.view_types.resource_work_package_list.label')}"))
+    end
+  end
+
   describe "PATCH update" do
     subject(:perform) do
       patch project_resource_planner_view_path(project, resource_planner, view),

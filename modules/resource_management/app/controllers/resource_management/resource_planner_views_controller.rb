@@ -264,7 +264,17 @@ module ::ResourceManagement
     end
 
     def build_view(view_class: allowed_view_class(params[:view_class_name]))
-      view_class.new(parent: @resource_planner, project: @project, principal: current_user)
+      view_class.new(parent: @resource_planner, project: @project, principal: current_user,
+                     name: default_view_name(view_class))
+    end
+
+    # Pre-fills the view name so the configure step is not a second blank
+    # "Name" field after naming the planner. Falls back to the view type's
+    # label (e.g. "Work packages list"); the user can still rename it. On
+    # create the submitted name overrides this.
+    def default_view_name(view_class)
+      I18n.t("resource_management.view_types.#{view_class.model_name.i18n_key}.label",
+             default: view_class.model_name.human)
     end
 
     def view_params
