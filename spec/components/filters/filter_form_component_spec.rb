@@ -181,7 +181,7 @@ RSpec.describe Filters::FilterFormComponent, type: :component do
 
       expect(page).to have_element :div,
                                    class: %w[op-filters-form -expanded custom-class],
-                                   "data-controller": "filter--filters-form",
+                                   "data-controller": "custom-controller filter--filters-form",
                                    "data-action": "keydown->custom#close"
     end
   end

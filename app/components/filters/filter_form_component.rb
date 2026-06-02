@@ -74,7 +74,7 @@
 # in a Primer dialog or another container that clips overflow, so the dropdown
 # portal renders outside that container instead of being clipped.
 class Filters::FilterFormComponent < ApplicationComponent
-  include Primer::AttributesHelper
+  include OpPrimer::AttributesHelper
   include Primer::FetchOrFallbackHelper
 
   OUTPUT_FORMATS = %i[params json].freeze
