@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# -- copyright
+#-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,39 +26,50 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-# ++
+#++
 
-module Backlogs
-  class BucketDestroyModalComponent < ApplicationComponent
-    include OpTurbo::Streamable
-    include OpPrimer::ComponentHelpers
+module Backlogs::Sprints
+  class StartContract < ::BaseContract
+    validate :validate_permission
+    validate :validate_status_in_planning
+    validate :validate_dates_present
+    validate :validate_no_other_active_sprint
 
-    TEST_SELECTOR = "backlog-bucket-destroy-modal-dialog"
+    def self.can_start_or_complete?(user:, sprint:)
+      user.allowed_in_project?(:start_complete_sprint, sprint.project)
+    end
 
-    attr_reader :backlog_bucket
-
-    def initialize(backlog_bucket:)
-      super()
-      @backlog_bucket = backlog_bucket
+    def self.can_start?(user:, sprint:, project:)
+      can_start_or_complete?(user:, sprint:) &&
+        user.allowed_in_project?(:show_board_views, project)
     end
 
     private
 
-    def title
-      t(".title")
+    def validate_permission
+      return if self.class.can_start_or_complete?(user:, sprint: model)
+
+      errors.add :base, :error_unauthorized
     end
 
-    def details
-      t(".details", name: backlog_bucket.name)
+    def validate_status_in_planning
+      return if model.in_planning?
+
+      errors.add :status, :must_be_in_planning
     end
 
-    def form_arguments
-      {
-        action: project_backlogs_bucket_path(backlog_bucket.project,
-                                                     backlog_bucket,
-                                                     helpers.all_backlogs_params),
-        method: :delete
-      }
+    def validate_dates_present
+      return unless model.in_planning?
+      return if model.start_date? && model.finish_date?
+
+      errors.add :base, :dates_required
+    end
+
+    def validate_no_other_active_sprint
+      return unless model.in_planning?
+      return unless Sprint.where(project: model.project).active.where.not(id: model.id).exists?
+
+      errors.add :status, :only_one_active_sprint_allowed
     end
   end
 end

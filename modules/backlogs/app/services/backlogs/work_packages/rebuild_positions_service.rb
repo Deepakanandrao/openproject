@@ -28,37 +28,31 @@
 # See COPYRIGHT and LICENSE files for more details.
 # ++
 
-module Backlogs
-  class BucketDestroyModalComponent < ApplicationComponent
-    include OpTurbo::Streamable
-    include OpPrimer::ComponentHelpers
+class Backlogs::WorkPackages::RebuildPositionsService
+  def initialize(project: nil)
+    @project = project
+  end
 
-    TEST_SELECTOR = "backlog-bucket-destroy-modal-dialog"
+  def call
+    condition = if @project
+                  ::OpenProject::SqlSanitization.sanitize " AND work_packages.project_id = :project_id",
+                                                          project_id: @project.id
+                end
 
-    attr_reader :backlog_bucket
-
-    def initialize(backlog_bucket:)
-      super()
-      @backlog_bucket = backlog_bucket
-    end
-
-    private
-
-    def title
-      t(".title")
-    end
-
-    def details
-      t(".details", name: backlog_bucket.name)
-    end
-
-    def form_arguments
-      {
-        action: project_backlogs_bucket_path(backlog_bucket.project,
-                                                     backlog_bucket,
-                                                     helpers.all_backlogs_params),
-        method: :delete
-      }
-    end
+    WorkPackage.connection.execute <<~SQL.squish
+      UPDATE work_packages
+      SET position = mapping.new_position
+      FROM (
+        SELECT
+          id,
+          ROW_NUMBER() OVER (
+            PARTITION BY project_id, backlog_bucket_id, sprint_id
+            ORDER BY position, created_at
+          ) AS new_position
+        FROM work_packages
+      ) AS mapping
+      WHERE work_packages.id = mapping.id
+      #{condition}
+    SQL
   end
 end

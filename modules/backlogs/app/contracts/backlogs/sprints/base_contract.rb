@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# -- copyright
+#-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,39 +26,29 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-# ++
+#++
 
-module Backlogs
-  class BucketDestroyModalComponent < ApplicationComponent
-    include OpTurbo::Streamable
-    include OpPrimer::ComponentHelpers
+module Backlogs::Sprints
+  class BaseContract < ::ModelContract
+    validate :user_authorized
 
-    TEST_SELECTOR = "backlog-bucket-destroy-modal-dialog"
-
-    attr_reader :backlog_bucket
-
-    def initialize(backlog_bucket:)
-      super()
-      @backlog_bucket = backlog_bucket
+    def self.model
+      Sprint
     end
+
+    attribute :name
+    attribute :project_id
+    attribute :start_date
+    attribute :finish_date
 
     private
 
-    def title
-      t(".title")
-    end
+    def user_authorized
+      return unless model.project
 
-    def details
-      t(".details", name: backlog_bucket.name)
-    end
-
-    def form_arguments
-      {
-        action: project_backlogs_bucket_path(backlog_bucket.project,
-                                                     backlog_bucket,
-                                                     helpers.all_backlogs_params),
-        method: :delete
-      }
+      unless user.allowed_in_project?(:create_sprints, model.project)
+        errors.add :base, :error_unauthorized
+      end
     end
   end
 end

@@ -28,37 +28,29 @@
 # See COPYRIGHT and LICENSE files for more details.
 # ++
 
-module Backlogs
-  class BucketDestroyModalComponent < ApplicationComponent
-    include OpTurbo::Streamable
-    include OpPrimer::ComponentHelpers
+require "spec_helper"
+require_relative "shared_contract_examples"
 
-    TEST_SELECTOR = "backlog-bucket-destroy-modal-dialog"
+RSpec.describe Backlogs::Buckets::UpdateContract do
+  include_context "as backlog bucket contract"
 
-    attr_reader :backlog_bucket
+  let(:backlog_bucket) do
+    build_stubbed(:backlog_bucket, name:, project:)
+  end
 
-    def initialize(backlog_bucket:)
-      super()
-      @backlog_bucket = backlog_bucket
+  context "when trying to update project id" do
+    before do
+      backlog_bucket.project_id = build_stubbed(:project).id
     end
 
-    private
+    it_behaves_like "contract is invalid", project_id: :error_readonly
+  end
 
-    def title
-      t(".title")
+  context "when trying to update project" do
+    before do
+      backlog_bucket.project = build_stubbed(:project)
     end
 
-    def details
-      t(".details", name: backlog_bucket.name)
-    end
-
-    def form_arguments
-      {
-        action: project_backlogs_bucket_path(backlog_bucket.project,
-                                                     backlog_bucket,
-                                                     helpers.all_backlogs_params),
-        method: :delete
-      }
-    end
+    it_behaves_like "contract is invalid", project_id: :error_readonly
   end
 end

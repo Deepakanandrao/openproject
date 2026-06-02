@@ -28,37 +28,18 @@
 # See COPYRIGHT and LICENSE files for more details.
 # ++
 
-module Backlogs
-  class BucketDestroyModalComponent < ApplicationComponent
-    include OpTurbo::Streamable
-    include OpPrimer::ComponentHelpers
+require "spec_helper"
+require_relative "shared_contract_examples"
 
-    TEST_SELECTOR = "backlog-bucket-destroy-modal-dialog"
+RSpec.describe Backlogs::Sprints::UpdateContract do
+  include_context "as sprint contract"
 
-    attr_reader :backlog_bucket
-
-    def initialize(backlog_bucket:)
-      super()
-      @backlog_bucket = backlog_bucket
-    end
-
-    private
-
-    def title
-      t(".title")
-    end
-
-    def details
-      t(".details", name: backlog_bucket.name)
-    end
-
-    def form_arguments
-      {
-        action: project_backlogs_bucket_path(backlog_bucket.project,
-                                                     backlog_bucket,
-                                                     helpers.all_backlogs_params),
-        method: :delete
-      }
-    end
+  let(:sprint) do
+    build_stubbed(:sprint,
+                  name: sprint_name,
+                  project: sprint_project,
+                  start_date: sprint_start_date,
+                  finish_date: sprint_finish_date,
+                  status: sprint_status)
   end
 end

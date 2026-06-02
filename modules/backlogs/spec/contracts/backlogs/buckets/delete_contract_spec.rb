@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# -- copyright
+#-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,39 +26,42 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-# ++
+#++
 
-module Backlogs
-  class BucketDestroyModalComponent < ApplicationComponent
-    include OpTurbo::Streamable
-    include OpPrimer::ComponentHelpers
+require "spec_helper"
+require "contracts/shared/model_contract_shared_context"
 
-    TEST_SELECTOR = "backlog-bucket-destroy-modal-dialog"
+RSpec.describe Backlogs::Buckets::DeleteContract do
+  include_context "ModelContract shared context"
 
-    attr_reader :backlog_bucket
+  let(:project) { build_stubbed(:project) }
+  let(:backlog_bucket) { build_stubbed(:backlog_bucket, project:) }
+  let(:user) { build_stubbed(:user) }
+  let(:permissions) { [:create_sprints] }
 
-    def initialize(backlog_bucket:)
-      super()
-      @backlog_bucket = backlog_bucket
-    end
+  let(:contract) { described_class.new(backlog_bucket, user) }
 
-    private
-
-    def title
-      t(".title")
-    end
-
-    def details
-      t(".details", name: backlog_bucket.name)
-    end
-
-    def form_arguments
-      {
-        action: project_backlogs_bucket_path(backlog_bucket.project,
-                                                     backlog_bucket,
-                                                     helpers.all_backlogs_params),
-        method: :delete
-      }
+  before do
+    mock_permissions_for(user) do |mock|
+      mock.allow_in_project(*permissions, project:)
     end
   end
+
+  context "when user has create_sprints permission" do
+    it_behaves_like "contract is valid"
+  end
+
+  context "when user does not have create_sprints permission" do
+    let(:permissions) { [] }
+
+    it_behaves_like "contract is invalid", base: :error_unauthorized
+  end
+
+  context "when user has an unrelated permission" do
+    let(:permissions) { [:view_work_packages] }
+
+    it_behaves_like "contract is invalid", base: :error_unauthorized
+  end
+
+  include_examples "contract reuses the model errors"
 end

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# -- copyright
+#-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,39 +26,42 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-# ++
+#++
 
-module Backlogs
-  class BucketDestroyModalComponent < ApplicationComponent
-    include OpTurbo::Streamable
-    include OpPrimer::ComponentHelpers
+module Backlogs::Projects
+  class BacklogsTypesAndStatusesContract < ::ModelContract
+    validate :validate_permissions
+    validate :validate_done_status_ids
+    validate :validate_backlog_excluded_type_ids
 
-    TEST_SELECTOR = "backlog-bucket-destroy-modal-dialog"
-
-    attr_reader :backlog_bucket
-
-    def initialize(backlog_bucket:)
-      super()
-      @backlog_bucket = backlog_bucket
-    end
+    def validate_model? = false
 
     private
 
-    def title
-      t(".title")
+    def validate_permissions
+      unless user.allowed_in_project?(:select_backlog_types_and_statuses, model)
+        errors.add :base, :error_unauthorized
+      end
     end
 
-    def details
-      t(".details", name: backlog_bucket.name)
+    def validate_done_status_ids
+      submitted_ids = model.done_status_ids.map(&:to_i)
+
+      existing_ids = Status.where(id: submitted_ids).ids
+      invalid_ids = submitted_ids - existing_ids
+
+      errors.add :done_status_ids, :invalid if invalid_ids.any?
     end
 
-    def form_arguments
-      {
-        action: project_backlogs_bucket_path(backlog_bucket.project,
-                                                     backlog_bucket,
-                                                     helpers.all_backlogs_params),
-        method: :delete
-      }
+    def validate_backlog_excluded_type_ids
+      submitted_ids = model.backlog_excluded_type_ids
+      return if submitted_ids.empty?
+
+      # Only types enabled on the project are allowed:
+      project_type_ids = model.types.pluck(:id)
+      invalid_ids = submitted_ids.map(&:to_i) - project_type_ids
+
+      errors.add :backlog_excluded_type_ids, :invalid if invalid_ids.any?
     end
   end
 end

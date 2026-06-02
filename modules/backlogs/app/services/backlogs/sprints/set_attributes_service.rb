@@ -28,36 +28,46 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Backlogs
-  class BucketFormComponent < ApplicationComponent
-    include ApplicationHelper
-    include OpTurbo::Streamable
-    include OpPrimer::ComponentHelpers
-    include CommonHelper
-
-    FORM_ID = BucketDialogComponent::FORM_ID
-
-    attr_reader :backlog_bucket
-
-    def initialize(backlog_bucket:, base_errors: nil)
-      super
-
-      @backlog_bucket = backlog_bucket
-      @base_errors = base_errors
-    end
-
+module Backlogs::Sprints
+  class SetAttributesService < ::BaseServices::SetAttributes
     private
 
-    def http_verb
-      @backlog_bucket.new_record? ? :post : :put
+    def sprint_name_from_predecessor
+      return model.name unless model.new_record?
+
+      predecessor = model.project.sprints.last
+      next_name_in_succession(predecessor)
     end
 
-    def form_url
-      if @backlog_bucket.new_record?
-        project_backlogs_buckets_path(@backlog_bucket.project, all_backlogs_params)
+    def set_default_attributes(_params)
+      set_sprint_name
+      set_default_status
+    end
+
+    def set_sprint_name
+      model.name ||= sprint_name_from_predecessor
+    end
+
+    def set_default_status
+      model.status ||= "in_planning"
+    end
+
+    def next_name_in_succession(predecessor)
+      if predecessor.nil?
+        default_sprint_name
+      elsif (match = predecessor.name.match(/\A(.*)\s(\d+)\z/))
+        # If the predecessor's name ends with a number, increment that number for the new sprint's name.
+        # E.g., if the previous sprint was called "Be ambitious 42", the next one will be "Be ambitious 43".
+        [match[1], match[2].to_i + 1].join(" ")
       else
-        project_backlogs_bucket_path(@backlog_bucket.project, @backlog_bucket, all_backlogs_params)
+        # The predecessor's name doesn't end with a number. The user has chosen a custom name. Do not assume
+        # how the next sprint should be called. Return an empty string and let the user choose.
+        ""
       end
+    end
+
+    def default_sprint_name
+      [I18n.t("activerecord.models.sprint"), 1].join(" ")
     end
   end
 end

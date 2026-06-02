@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# -- copyright
+#-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,39 +26,52 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-# ++
+#++
 
-module Backlogs
-  class BucketDestroyModalComponent < ApplicationComponent
-    include OpTurbo::Streamable
-    include OpPrimer::ComponentHelpers
+class Backlogs::Sprints::StartService < BaseServices::BaseContracted
+  def initialize(user:, model:, contract_class: ::Backlogs::Sprints::StartContract)
+    super(user:, contract_class:)
+    self.model = model
+  end
 
-    TEST_SELECTOR = "backlog-bucket-destroy-modal-dialog"
+  private
 
-    attr_reader :backlog_bucket
+  def persist(service_call)
+    ensure_task_boards(service_call)
+    return service_call if service_call.failure?
 
-    def initialize(backlog_bucket:)
-      super()
-      @backlog_bucket = backlog_bucket
+    model.active!
+
+    service_call
+  rescue ActiveRecord::RecordNotUnique
+    add_only_one_active_sprint_error
+    service_call.success = false
+    service_call.result = model
+    service_call.errors = model.errors
+    service_call
+  end
+
+  def ensure_task_boards(service_call)
+    projects = Sprint.receiving_projects(model)
+
+    projects.each do |project|
+      next if model.task_board_for(project).present?
+
+      service_call.add_dependent!(
+        Boards::SprintTaskBoardCreateService
+          .new(user: User.system)
+          .call(project:, sprint: model, name: board_name)
+      )
     end
+  end
 
-    private
+  def board_name
+    "#{model.project.name}: #{model.name}"
+  end
 
-    def title
-      t(".title")
-    end
+  def add_only_one_active_sprint_error
+    return if model.errors.added?(:status, :only_one_active_sprint_allowed)
 
-    def details
-      t(".details", name: backlog_bucket.name)
-    end
-
-    def form_arguments
-      {
-        action: project_backlogs_bucket_path(backlog_bucket.project,
-                                                     backlog_bucket,
-                                                     helpers.all_backlogs_params),
-        method: :delete
-      }
-    end
+    model.errors.add(:status, :only_one_active_sprint_allowed)
   end
 end

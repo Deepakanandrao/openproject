@@ -28,37 +28,25 @@
 # See COPYRIGHT and LICENSE files for more details.
 # ++
 
-module Backlogs
-  class BucketDestroyModalComponent < ApplicationComponent
-    include OpTurbo::Streamable
-    include OpPrimer::ComponentHelpers
+module Backlogs::WorkPackages
+  # Contract used for moving work packages between two sprints at the end
+  # of a sprint. It does not enforce permissions as this change is carried
+  # out in the background.
+  class MoveBetweenSprintsContract < ModelContract
+    attribute :sprint
+    attribute :position
 
-    TEST_SELECTOR = "backlog-bucket-destroy-modal-dialog"
-
-    attr_reader :backlog_bucket
-
-    def initialize(backlog_bucket:)
-      super()
-      @backlog_bucket = backlog_bucket
-    end
+    validate :active_sprint_in_sharer_project
 
     private
 
-    def title
-      t(".title")
-    end
-
-    def details
-      t(".details", name: backlog_bucket.name)
-    end
-
-    def form_arguments
-      {
-        action: project_backlogs_bucket_path(backlog_bucket.project,
-                                                     backlog_bucket,
-                                                     helpers.all_backlogs_params),
-        method: :delete
-      }
+    def active_sprint_in_sharer_project
+      unless Sprint
+               .native_to_sprint_source(Sprint.find_by(id: model.sprint_id_was).project)
+               .in_planning
+               .exists?(id: model.sprint_id)
+        errors.add(:sprint, :not_eligible_for_moving)
+      end
     end
   end
 end

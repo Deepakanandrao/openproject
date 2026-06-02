@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# -- copyright
+#-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,39 +26,32 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-# ++
+#++
 
-module Backlogs
-  class BucketDestroyModalComponent < ApplicationComponent
-    include OpTurbo::Streamable
-    include OpPrimer::ComponentHelpers
+module Backlogs::Sprints
+  class FinishContract < ModelContract
+    validate :sprint_must_be_active
+    validate :user_allowed_to_finish
+    validate :no_unfinished_work_packages
 
-    TEST_SELECTOR = "backlog-bucket-destroy-modal-dialog"
-
-    attr_reader :backlog_bucket
-
-    def initialize(backlog_bucket:)
-      super()
-      @backlog_bucket = backlog_bucket
+    def self.model
+      Sprint
     end
 
     private
 
-    def title
-      t(".title")
+    def sprint_must_be_active
+      errors.add(:status, :not_active) unless model.active?
     end
 
-    def details
-      t(".details", name: backlog_bucket.name)
+    def user_allowed_to_finish
+      errors.add(:base, :error_unauthorized) unless user.allowed_in_project?(:start_complete_sprint, model.project)
     end
 
-    def form_arguments
-      {
-        action: project_backlogs_bucket_path(backlog_bucket.project,
-                                                     backlog_bucket,
-                                                     helpers.all_backlogs_params),
-        method: :delete
-      }
+    def no_unfinished_work_packages
+      unfinished_work_package_count = model.work_packages.without_status_considered_closed.count
+
+      errors.add(:base, :unfinished_work_packages, count: unfinished_work_package_count) if unfinished_work_package_count > 0
     end
   end
 end

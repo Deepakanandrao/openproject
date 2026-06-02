@@ -66,7 +66,7 @@ module Backlogs
     end
 
     def new_dialog
-      call = ::Sprints::SetAttributesService.new(
+      call = ::Backlogs::Sprints::SetAttributesService.new(
         user: current_user,
         model: Sprint.new,
         contract_class: ::EmptyContract
@@ -85,7 +85,7 @@ module Backlogs
       id = edit_sprint_params.dig(:sprint, :id)
       sprint = id.present? ? Sprint.for_project(@project).visible.find(id) : Sprint.new
 
-      call = ::Sprints::SetAttributesService.new(
+      call = ::Backlogs::Sprints::SetAttributesService.new(
         user: current_user,
         model: sprint,
         contract_class: ::EmptyContract
@@ -97,7 +97,7 @@ module Backlogs
     end
 
     def create # rubocop:disable Metrics/AbcSize
-      call = ::Sprints::CreateService
+      call = ::Backlogs::Sprints::CreateService
                .new(user: current_user)
                .call(attributes: converted_sprint_params)
 
@@ -111,7 +111,7 @@ module Backlogs
     end
 
     def update
-      call = ::Sprints::UpdateService
+      call = ::Backlogs::Sprints::UpdateService
                .new(user: current_user, model: @sprint)
                .call(attributes: sprint_params[:sprint])
 
@@ -204,13 +204,13 @@ module Backlogs
     end
 
     def start_sprint
-      ::Sprints::StartService
+      ::Backlogs::Sprints::StartService
         .new(user: current_user, model: @sprint)
         .call(send_notifications: false)
     end
 
     def finish_sprint
-      ::Sprints::FinishService
+      ::Backlogs::Sprints::FinishService
         .new(user: current_user, model: @sprint)
         .call(
           unfinished_action: params[:unfinished_action],
@@ -241,12 +241,12 @@ module Backlogs
 
     def authorize_start!
       deny_access unless current_user.allowed_in_project?(:view_sprints, @project) &&
-        ::Sprints::StartContract.can_start?(user: current_user, sprint: @sprint, project: @project)
+        ::Backlogs::Sprints::StartContract.can_start?(user: current_user, sprint: @sprint, project: @project)
     end
 
     def authorize_finish!
       deny_access unless current_user.allowed_in_project?(:view_sprints, @project) &&
-        ::Sprints::StartContract.can_start_or_complete?(user: current_user, sprint: @sprint)
+        ::Backlogs::Sprints::StartContract.can_start_or_complete?(user: current_user, sprint: @sprint)
     end
   end
 end
