@@ -420,7 +420,7 @@ RSpec.describe "Inbox column in sprint planning view", :js do
         end
 
         it "hides the work package after move and shows an explanation" do
-          planning_page.drag_sprint_item_to_inbox(sprint_wp1)
+          planning_page.drag_work_package_to_backlog_inbox(sprint_wp1)
           wait_for_network_idle
 
           message =
@@ -428,7 +428,7 @@ RSpec.describe "Inbox column in sprint planning view", :js do
             "its type or status is excluded from the backlog."
 
           planning_page.expect_and_dismiss_flash(message:, type: :default)
-          planning_page.expect_story_not_in_sprint(sprint_wp1, sprint)
+          planning_page.expect_work_package_not_in_sprint(sprint_wp1, sprint)
           planning_page.expect_no_inbox_item(sprint_wp1)
         end
       end
