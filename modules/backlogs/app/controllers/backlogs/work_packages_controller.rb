@@ -39,8 +39,8 @@ module Backlogs
       render(Backlogs::WorkPackageCardMenuComponent.new(
                project: @project,
                work_package: work_package_with_backlog_neighbours,
-               open_sprints_exist: open_sprints_exist?,
-               other_buckets_exist: other_buckets_exist?,
+               open_sprints_exist: target_open_sprints.exists?,
+               other_buckets_exist: target_buckets.exists?,
                current_user:
              ),
              layout: false)
@@ -54,8 +54,8 @@ module Backlogs
       )
     end
 
-    def move_to_backlog_bucket_dialog
-      respond_with_dialog Backlogs::MoveToBacklogBucketDialogComponent.new(
+    def move_to_bucket_dialog
+      respond_with_dialog Backlogs::MoveToBucketDialogComponent.new(
         work_package: @work_package,
         project: @project,
         move_action: move_project_backlogs_work_package_path(@project, @work_package, helpers.all_backlogs_params)
@@ -141,17 +141,15 @@ module Backlogs
       displayed_work_packages.with_backlogs_neighbours.find(@work_package.id)
     end
 
-    def open_sprints_exist?
-      Sprint.for_project(@project).visible
-                                  .not_completed
-                                  .where.not(id: @work_package.sprint_id)
-                                  .exists?
+    def target_open_sprints
+      Sprint.for_project(@project)
+            .visible.not_completed
+            .where.not(id: @work_package.sprint_id)
     end
 
-    def other_buckets_exist?
+    def target_buckets
       BacklogBucket.where(project: @project)
                    .where.not(id: @work_package.backlog_bucket_id)
-                   .exists?
     end
 
     # After a work package is moved to the backlog, it might no longer be visible due to

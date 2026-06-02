@@ -29,7 +29,7 @@
 #++
 
 module Backlogs
-  class MoveToBacklogBucketDialogComponent < ApplicationComponent
+  class MoveToBucketDialogComponent < ApplicationComponent
     include OpTurbo::Streamable
     include OpPrimer::ComponentHelpers
 

@@ -35,7 +35,7 @@ module Backlogs
     include OpPrimer::ComponentHelpers
     include CommonHelper
 
-    attr_reader :work_package, :project, :current_user, :open_sprints_exist, :other_buckets_exist
+    attr_reader :work_package, :project, :open_sprints_exist, :other_buckets_exist, :current_user
 
     def initialize(work_package:, project:, open_sprints_exist:, other_buckets_exist:, current_user: User.current)
       super()

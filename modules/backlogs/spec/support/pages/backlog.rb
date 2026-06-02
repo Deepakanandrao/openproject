@@ -355,7 +355,7 @@ module Pages
       expect(page).to have_css("#create-work-package-dialog")
     end
 
-    def open_create_backlog_bucket_dialog
+    def open_create_bucket_dialog
       within_owner_backlogs do
         click_on accessible_name: BacklogBucket.human_model_name
       end
@@ -377,7 +377,7 @@ module Pages
       expect(page).to have_no_css(bucket_selector(bucket))
     end
 
-    def expect_backlog_bucket_dialog
+    def expect_bucket_dialog
       expect(page).to have_dialog(I18n.t(:label_backlog_bucket_new))
     end
 

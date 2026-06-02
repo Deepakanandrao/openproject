@@ -30,7 +30,7 @@
 
 require "rails_helper"
 
-RSpec.describe Backlogs::MoveToBacklogBucketDialogComponent, type: :component do
+RSpec.describe Backlogs::MoveToBucketDialogComponent, type: :component do
   shared_let(:admin) { create(:admin) }
   current_user { admin }
 
@@ -45,14 +45,14 @@ RSpec.describe Backlogs::MoveToBacklogBucketDialogComponent, type: :component do
   it "renders the dialog with the correct title" do
     render_component
 
-    expect(page).to have_text(I18n.t(:"backlogs.move_to_backlog_bucket_dialog_component.title"))
+    expect(page).to have_text(I18n.t(:"backlogs.move_to_bucket_dialog_component.title"))
   end
 
   it "renders a form targeting the move path via PUT" do
     render_component
 
     expect(page).to have_element(:form, action: move_path, method: "post")
-    expect(page).to have_css("form[action='#{move_path}'] input[name='_method'][value='put']", visible: :all)
+    expect(page).to have_element(:input, name: "_method", value: "put", visible: :all)
   end
 
   context "when params[:all] is true" do
@@ -63,7 +63,7 @@ RSpec.describe Backlogs::MoveToBacklogBucketDialogComponent, type: :component do
     it "submits the move form with the all query preserved" do
       render_component
 
-      expect(page).to have_css("form[action*='all=1']", visible: :all)
+      expect(page).to have_element(:form, action: /all=1/)
     end
   end
 
@@ -81,8 +81,8 @@ RSpec.describe Backlogs::MoveToBacklogBucketDialogComponent, type: :component do
     it "lists them as select options with backlog_bucket: prefix values" do
       render_component
 
-      expect(page).to have_css("option[value='backlog_bucket:#{bucket_a.id}']", text: "Alpha")
-      expect(page).to have_css("option[value='backlog_bucket:#{bucket_b.id}']", text: "Beta")
+      expect(page).to have_element(:option, value: "backlog_bucket:#{bucket_a.id}", text: "Alpha")
+      expect(page).to have_element(:option, value: "backlog_bucket:#{bucket_b.id}", text: "Beta")
     end
   end
 
@@ -92,7 +92,7 @@ RSpec.describe Backlogs::MoveToBacklogBucketDialogComponent, type: :component do
     it "does not list buckets from other projects" do
       render_component
 
-      expect(page).to have_no_css("option", text: "Other")
+      expect(page).to have_no_css(:option, text: "Other")
     end
   end
 
@@ -104,8 +104,8 @@ RSpec.describe Backlogs::MoveToBacklogBucketDialogComponent, type: :component do
     it "excludes the current bucket from the options" do
       render_component
 
-      expect(page).to have_no_css("option", text: "Current")
-      expect(page).to have_css("option[value='backlog_bucket:#{target_bucket.id}']", text: "Target")
+      expect(page).to have_no_css(:option, text: "Current")
+      expect(page).to have_element(:option, value: "backlog_bucket:#{target_bucket.id}", text: "Target")
     end
   end
 end

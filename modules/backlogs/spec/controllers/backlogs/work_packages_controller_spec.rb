@@ -892,13 +892,13 @@ RSpec.describe Backlogs::WorkPackagesController do
     end
   end
 
-  describe "GET #move_to_backlog_bucket_dialog" do
+  describe "GET #move_to_bucket_dialog" do
     let!(:displayed_buckets) { create_list(:backlog_bucket, 2, project:) }
     let!(:other_bucket) { create(:backlog_bucket, project: create(:project)) }
 
     let(:params) { { project_id: project.id, id: work_package.id } }
 
-    subject { get :move_to_backlog_bucket_dialog, params:, format: :turbo_stream }
+    subject { get :move_to_bucket_dialog, params:, format: :turbo_stream }
 
     context "with a Sprint source" do
       it "responds with a dialog turbo stream", :aggregate_failures do

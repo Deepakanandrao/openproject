@@ -60,9 +60,9 @@ RSpec.describe Backlogs::WorkPackagesController do
     }
 
     it {
-      expect(get("/projects/project_42/backlogs/work_packages/85/move_to_backlog_bucket_dialog")).to route_to(
+      expect(get("/projects/project_42/backlogs/work_packages/85/move_to_bucket_dialog")).to route_to(
         controller: "backlogs/work_packages",
-        action: "move_to_backlog_bucket_dialog",
+        action: "move_to_bucket_dialog",
         project_id: "project_42",
         id: "85"
       )

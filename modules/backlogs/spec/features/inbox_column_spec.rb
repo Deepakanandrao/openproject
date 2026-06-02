@@ -268,7 +268,7 @@ RSpec.describe "Inbox column in sprint planning view", :js do
       it "moves the item to the bottom of the selected sprint" do
         planning_page.click_in_work_package_move_submenu(inbox_wp1, "Move to sprint", wait: false)
 
-        within("#move-to-sprint-dialog") do
+        within_modal "Move to sprint" do
           # Expect to have all sprints listed
           expect(page).to have_select("target_id", with_options: ["Sprint 1", "Sprint 2"])
 
@@ -285,7 +285,7 @@ RSpec.describe "Inbox column in sprint planning view", :js do
         it "shows an error and does not move the item" do
           planning_page.click_in_work_package_move_submenu(inbox_wp1, "Move to sprint", wait: false)
 
-          within("#move-to-sprint-dialog") do
+          within_modal "Move to sprint" do
             expect(page).to have_select("target_id", with_options: ["Sprint 1", "Sprint 2"])
             select sprint.name, from: "target_id"
 
@@ -469,7 +469,7 @@ RSpec.describe "Inbox column in sprint planning view", :js do
 
       # Move an inbox item to the sprint via the dialog
       planning_page.click_in_work_package_move_submenu(inbox_items.last, "Move to sprint", wait: false)
-      within("#move-to-sprint-dialog") do
+      within_modal "Move to sprint" do
         select sprint.name, from: "target_id"
         click_button "Move"
       end
