@@ -164,11 +164,25 @@ export default class extends Controller {
       requestAnimationFrame(() => {
         try {
           element.setSelectionRange(offset, offset);
+          this.scrollToCursor(element, offset);
         } catch {
           // ignore
         }
       });
     }
+  }
+
+  // setSelectionRange moves the cursor but does not update scrollLeft.
+  // Approximate the cursor's pixel position proportionally via scrollWidth
+  // and center it in the visible area.
+  private scrollToCursor(element:HTMLInputElement|HTMLTextAreaElement, offset:number):void {
+    const { scrollWidth, clientWidth, value } = element;
+    if (!value.length) return;
+    // Estimate the cursor's pixel position proportionally within the full text width.
+    // Then shift scrollLeft so the cursor lands in the center of the visible area.
+    // Math.max(0, ...) prevents a negative scroll when the cursor is near the start.
+    const cursorX = (offset / value.length) * scrollWidth;
+    element.scrollLeft = Math.max(0, cursorX - clientWidth / 2);
   }
 
   private storeCursorPositionData(e:Event):void {
