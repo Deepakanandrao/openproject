@@ -2097,6 +2097,7 @@ uk:
         priority: Пріоритет
         progress: "% завершення"
         readonly: Лише читання
+        relatable: Relatable to
         remaining_hours: Залишок роботи
         remaining_time: Залишок роботи
         sequence_number: Порядковий номер
@@ -4210,6 +4211,7 @@ uk:
   label_journal_diff: Опис Порівняння
   label_language: Мова
   label_languages: Мови
+  label_export_plural: Exports
   label_external_links: Зовнішні посилання
   label_locale: Мова й регіон
   label_jump_to_a_project: Перейти до проекту...
@@ -4680,6 +4682,7 @@ uk:
   label_total_days_off: Усього вихідних днів
   macro_execution_error: Помилка виконання макросу %{macro_name}
   macro_unavailable: Макрос %{macro_name} не може бути відображений.
+  macro_unknown: Unknown or unsupported macro.
   macros:
     placeholder: "[Placeholder] Макрос %{macro_name}"
     errors:
@@ -5369,6 +5372,10 @@ uk:
   setting_consent_required: Потрібна згода
   setting_consent_decline_mail: Згода на контактну пошту
   setting_cross_project_work_package_relations: Дозволити взаємозв'язок між робочими пакетами і проектами
+  setting_csv_escape_formulas: Escape formulas in CSV exports
+  setting_csv_escape_formulas_text: 'Escape spreadsheet formulas in CSV exports by prefixing cells that begin with characters such as =, +, -, or @ with a single quote. This mitigates CSV formula injection when exported files are opened in spreadsheet applications such as Excel. This comes at the downside of modifying the string values inside the CSV, so you may want to disable this if downstream tools require the exact, unescaped cell values.
+
+    '
   setting_first_week_of_year: Перший тиждень у році містить
   setting_date_format: Дата
   setting_default_language: Мова за замовчуванням
@@ -5409,6 +5416,9 @@ uk:
   setting_work_package_properties: Властивості робочого пакета
   setting_work_package_startdate_is_adddate: Використовувати поточну дату в якості дати початку роботи для нових пакетів
   setting_work_packages_projects_export_limit: Ліміт експорту пакетів робіт / проєктів
+  setting_work_packages_projects_export_limit_text: 'Maximum number of work packages or projects that can be included in a single export. Larger exports are truncated to this limit.
+
+    '
   setting_journal_aggregation_time_minutes: Період агрегації
   setting_log_requesting_user: Запишіть логін користувача, ім'я та поштову адресу для всіх запитів
   setting_login_required: Необхідна аутентифікація

@@ -2104,6 +2104,7 @@ cs:
         priority: Priorita
         progress: "% Dokončeno"
         readonly: Pouze pro čtení
+        relatable: Relatable to
         remaining_hours: Zbývající práce
         remaining_time: Zbývající práce
         sequence_number: Sequence number
@@ -4213,6 +4214,7 @@ cs:
   label_journal_diff: Popis porovnání
   label_language: Jazyk
   label_languages: Jazyky
+  label_export_plural: Exports
   label_external_links: Externí odkazy
   label_locale: Jazyk a region
   label_jump_to_a_project: Přejít na projekt...
@@ -4683,6 +4685,7 @@ cs:
   label_total_days_off: Total days off
   macro_execution_error: Chyba při provádění makra %{macro_name}
   macro_unavailable: Makro %{macro_name} nelze zobrazit.
+  macro_unknown: Unknown or unsupported macro.
   macros:
     placeholder: "[Placeholder] Macro %{macro_name}"
     errors:
@@ -5373,6 +5376,10 @@ cs:
   setting_consent_required: Souhlas vyžadován
   setting_consent_decline_mail: Kontaktní e-mailová adresa pro souhlas
   setting_cross_project_work_package_relations: Povolit vztahy mezi projekty a pracovními balíčky
+  setting_csv_escape_formulas: Escape formulas in CSV exports
+  setting_csv_escape_formulas_text: 'Escape spreadsheet formulas in CSV exports by prefixing cells that begin with characters such as =, +, -, or @ with a single quote. This mitigates CSV formula injection when exported files are opened in spreadsheet applications such as Excel. This comes at the downside of modifying the string values inside the CSV, so you may want to disable this if downstream tools require the exact, unescaped cell values.
+
+    '
   setting_first_week_of_year: První týden v roce obsahuje
   setting_date_format: Datum
   setting_default_language: Výchozí jazyk
@@ -5413,6 +5420,9 @@ cs:
   setting_work_package_properties: Vlastnosti pracovního balíčku
   setting_work_package_startdate_is_adddate: Použít aktuální datum jako počáteční datum pro nové úkoly
   setting_work_packages_projects_export_limit: Limit exportu pracovních balíčků / projektů
+  setting_work_packages_projects_export_limit_text: 'Maximum number of work packages or projects that can be included in a single export. Larger exports are truncated to this limit.
+
+    '
   setting_journal_aggregation_time_minutes: Aggregation period
   setting_log_requesting_user: Logovat uživatelský login a emailovou adresu pro všechny požadavky
   setting_login_required: Vyžadována autentizace

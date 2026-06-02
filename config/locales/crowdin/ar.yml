@@ -2144,6 +2144,7 @@ ar:
         priority: الأولوية
         progress: "% Complete"
         readonly: Read only
+        relatable: Relatable to
         remaining_hours: Remaining work
         remaining_time: Remaining work
         sequence_number: Sequence number
@@ -4337,6 +4338,7 @@ ar:
   label_journal_diff: مقارنة التوصيف
   label_language: اللغة
   label_languages: Languages
+  label_export_plural: Exports
   label_external_links: External links
   label_locale: Language and region
   label_jump_to_a_project: الانتقال بسرعة إلى مشروع...
@@ -4813,6 +4815,7 @@ ar:
   label_total_days_off: Total days off
   macro_execution_error: خطأ في تنفيذ %{macro_name} الماكرو
   macro_unavailable: لا يمكن عرض الماكرو %{macro_name}.
+  macro_unknown: Unknown or unsupported macro.
   macros:
     placeholder: "[Placeholder] Macro %{macro_name}"
     errors:
@@ -5499,6 +5502,10 @@ ar:
   setting_consent_required: Consent required
   setting_consent_decline_mail: Consent contact mail address
   setting_cross_project_work_package_relations: السماح بعلاقات عبر-المشروع مجموعة العمل
+  setting_csv_escape_formulas: Escape formulas in CSV exports
+  setting_csv_escape_formulas_text: 'Escape spreadsheet formulas in CSV exports by prefixing cells that begin with characters such as =, +, -, or @ with a single quote. This mitigates CSV formula injection when exported files are opened in spreadsheet applications such as Excel. This comes at the downside of modifying the string values inside the CSV, so you may want to disable this if downstream tools require the exact, unescaped cell values.
+
+    '
   setting_first_week_of_year: First week in year contains
   setting_date_format: التاريخ
   setting_default_language: اللغة الافتراضية
@@ -5539,6 +5546,9 @@ ar:
   setting_work_package_properties: خصائص مجموعة العمل
   setting_work_package_startdate_is_adddate: استخدام التاريخ الحالي كتاريخ البدء لمجموعات العمل الجديدة
   setting_work_packages_projects_export_limit: حد تصدير حزم العمل / المشاريع
+  setting_work_packages_projects_export_limit_text: 'Maximum number of work packages or projects that can be included in a single export. Larger exports are truncated to this limit.
+
+    '
   setting_journal_aggregation_time_minutes: Aggregation period
   setting_log_requesting_user: تسجيل الدخول تسجيل دخول المستخدم واسم وعنوان البريد لجميع الطلبات
   setting_login_required: مطلوب مصادقة

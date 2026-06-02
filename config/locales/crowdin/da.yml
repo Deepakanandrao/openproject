@@ -2059,6 +2059,7 @@ da:
         priority: Prioritet
         progress: "% Complete"
         readonly: Read only
+        relatable: Relatable to
         remaining_hours: Resterende arbejde
         remaining_time: Resterende arbejde
         sequence_number: Sequence number
@@ -4082,6 +4083,7 @@ da:
   label_journal_diff: Sammenligning af beskrivelser
   label_language: Sprog
   label_languages: Languages
+  label_export_plural: Exports
   label_external_links: External links
   label_locale: Language and region
   label_jump_to_a_project: Gå til et projekt...
@@ -4546,6 +4548,7 @@ da:
   label_total_days_off: Total days off
   macro_execution_error: Fejl ved udførelse af makroen %{macro_name}
   macro_unavailable: Makro %{macro_name} kan ikke vises.
+  macro_unknown: Unknown or unsupported macro.
   macros:
     placeholder: "[Placeholder] Macro %{macro_name}"
     errors:
@@ -5226,6 +5229,10 @@ da:
   setting_consent_required: Consent required
   setting_consent_decline_mail: Consent contact mail address
   setting_cross_project_work_package_relations: Tillad forbindelser mellem arbejdspakker på tværs af projekter
+  setting_csv_escape_formulas: Escape formulas in CSV exports
+  setting_csv_escape_formulas_text: 'Escape spreadsheet formulas in CSV exports by prefixing cells that begin with characters such as =, +, -, or @ with a single quote. This mitigates CSV formula injection when exported files are opened in spreadsheet applications such as Excel. This comes at the downside of modifying the string values inside the CSV, so you may want to disable this if downstream tools require the exact, unescaped cell values.
+
+    '
   setting_first_week_of_year: Første uge i året indeholder
   setting_date_format: Dato
   setting_default_language: Forhåndsvalgt sprog
@@ -5266,6 +5273,9 @@ da:
   setting_work_package_properties: Egenskaber for arbejdspakke
   setting_work_package_startdate_is_adddate: Brug dags dato som start for nye arbejdspakker
   setting_work_packages_projects_export_limit: Work packages / Projects export limit
+  setting_work_packages_projects_export_limit_text: 'Maximum number of work packages or projects that can be included in a single export. Larger exports are truncated to this limit.
+
+    '
   setting_journal_aggregation_time_minutes: Aggregation period
   setting_log_requesting_user: Log bruger-login, navn og mail-adresse ved hver forespørgsel
   setting_login_required: Godkendelse påkrævet

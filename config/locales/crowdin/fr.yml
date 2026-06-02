@@ -57,7 +57,7 @@ fr:
       col_identifier: Identifiant
       col_project: Projet
       col_reserved: Réservé
-      not_available_in_semantic_mode: Reserved identifiers are only available in numeric identifier mode.
+      not_available_in_semantic_mode: Les identifiants réservés ne sont disponibles qu'en mode identifiant numérique.
       filter_label: Filter identifiers
       btn_release: Release
       released_notice: L'identifiant "%{identifier}" a été publié.
@@ -2053,6 +2053,7 @@ fr:
         priority: Priorité
         progress: "% réalisé"
         readonly: Lecture seule
+        relatable: Relatable to
         remaining_hours: Travail restant
         remaining_time: Travail restant
         sequence_number: Numéro de séquence
@@ -4076,6 +4077,7 @@ fr:
   label_journal_diff: Comparaison de description
   label_language: Langue
   label_languages: Langues
+  label_export_plural: Exports
   label_external_links: Liens externes
   label_locale: Langue et région
   label_jump_to_a_project: Accéder à un projet...
@@ -4540,6 +4542,7 @@ fr:
   label_total_days_off: Nombre total de jours de congé
   macro_execution_error: Erreur lors de l'exécution de la macro %{macro_name}
   macro_unavailable: La macro %{macro_name} ne peut être affichée.
+  macro_unknown: Unknown or unsupported macro.
   macros:
     placeholder: "[Placeholder] Macro %{macro_name}"
     errors:
@@ -5224,6 +5227,10 @@ fr:
   setting_consent_required: Accord requis
   setting_consent_decline_mail: Adresse mail de contact de l'accord
   setting_cross_project_work_package_relations: Autoriser les relations entre lots de travaux de projets différents
+  setting_csv_escape_formulas: Escape formulas in CSV exports
+  setting_csv_escape_formulas_text: 'Escape spreadsheet formulas in CSV exports by prefixing cells that begin with characters such as =, +, -, or @ with a single quote. This mitigates CSV formula injection when exported files are opened in spreadsheet applications such as Excel. This comes at the downside of modifying the string values inside the CSV, so you may want to disable this if downstream tools require the exact, unescaped cell values.
+
+    '
   setting_first_week_of_year: La première semaine de l'année contient
   setting_date_format: Date
   setting_default_language: Langue par défaut
@@ -5264,6 +5271,9 @@ fr:
   setting_work_package_properties: Propriétés du lot de travaux
   setting_work_package_startdate_is_adddate: Utiliser la date actuelle comme date de début des nouveaux lots de travaux
   setting_work_packages_projects_export_limit: Limite d'exportation des lots de travaux/projets
+  setting_work_packages_projects_export_limit_text: 'Maximum number of work packages or projects that can be included in a single export. Larger exports are truncated to this limit.
+
+    '
   setting_journal_aggregation_time_minutes: Période d'agrégation
   setting_log_requesting_user: Enregistrer le login utilisateur, nom et adresse e-mail pour toutes les requêtes
   setting_login_required: Authentification requise
@@ -5351,7 +5361,7 @@ fr:
   setting_welcome_on_homescreen: Afficher le bloc de bienvenue sur l'écran d'accueil
   setting_work_packages_identifier_classic: Séquence numérique à l'échelle de l'instance (par défaut)
   setting_work_packages_identifier_classic_caption: 'Every work package gets a sequential number starting with 1 (for example, #1234). The numbers are unique within the instance and remain the same even if work packages are moved between projects.'
-  setting_work_packages_identifier_semantic: Project-based semantic identifiers (Beta)
+  setting_work_packages_identifier_semantic: Identificateurs sémantiques basés sur des projets (Beta)
   setting_work_packages_identifier_semantic_caption: Every project has a unique project identifier prefixed to a number (for example, PROJ-11). The numbering of each project starts at 1. If a work package is moved to another project, a new identifier is generated but the old one will continue to function.
   setting_work_package_list_default_highlighting_mode: Mode de surbrillance par défaut
   setting_work_package_list_default_highlighted_attributes: Attributs en ligne mis en surbrillance par défaut

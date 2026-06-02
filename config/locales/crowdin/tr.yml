@@ -2061,6 +2061,7 @@ tr:
         priority: Öncelik
         progress: Tamamlanma yüzdesi
         readonly: Salt okunur
+        relatable: Relatable to
         remaining_hours: Kalan çalışma
         remaining_time: Kalan çalışma
         sequence_number: Sıra numarası
@@ -4088,6 +4089,7 @@ tr:
   label_journal_diff: Açıklama Karşılaştırması
   label_language: Dil
   label_languages: Diller
+  label_export_plural: Exports
   label_external_links: Harici Bağlantılar
   label_locale: Dil ve bölge
   label_jump_to_a_project: Projeye git...
@@ -4552,6 +4554,7 @@ tr:
   label_total_days_off: Total days off
   macro_execution_error: Makroyu çalıştırırken hata oluştu %{macro_name}
   macro_unavailable: Makro %{macro_name} görüntülenemiyor.
+  macro_unknown: Unknown or unsupported macro.
   macros:
     placeholder: "[Yer Tutucu] Makro %{macro_name}"
     errors:
@@ -5237,6 +5240,10 @@ tr:
   setting_consent_required: Onay gerekli
   setting_consent_decline_mail: Onay iletişim posta adresi
   setting_cross_project_work_package_relations: Projeler arası iş paketi ilişkilerine izin ver
+  setting_csv_escape_formulas: Escape formulas in CSV exports
+  setting_csv_escape_formulas_text: 'Escape spreadsheet formulas in CSV exports by prefixing cells that begin with characters such as =, +, -, or @ with a single quote. This mitigates CSV formula injection when exported files are opened in spreadsheet applications such as Excel. This comes at the downside of modifying the string values inside the CSV, so you may want to disable this if downstream tools require the exact, unescaped cell values.
+
+    '
   setting_first_week_of_year: Yılın ilk haftası
   setting_date_format: Tarih
   setting_default_language: Varsayılan dil
@@ -5275,6 +5282,9 @@ tr:
   setting_work_package_properties: İş paketi özellikleri
   setting_work_package_startdate_is_adddate: Yeni iş paketlerinde şu anki tarihi başlangıç tarihi olarak kullan
   setting_work_packages_projects_export_limit: İş paketleri / Projeler dışa aktarım limiti
+  setting_work_packages_projects_export_limit_text: 'Maximum number of work packages or projects that can be included in a single export. Larger exports are truncated to this limit.
+
+    '
   setting_journal_aggregation_time_minutes: Aggregation period
   setting_log_requesting_user: Tüm istekler için kullanıcı oturum açma, ad ve posta adresini girme
   setting_login_required: Kimlik doğrulaması gerekli
