@@ -78,7 +78,7 @@ Rails.application.routes.draw do
         end
       end
 
-      resources :sprints, param: :sprint_id, only: %i[create update] do
+      resources :sprints, param: :sprint_id, only: %i[index create update] do
         collection do
           get :new_dialog
           get :refresh_form

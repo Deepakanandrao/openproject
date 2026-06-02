@@ -31,10 +31,15 @@ pt-PT:
         authentication_method: Método de autenticação
         creator: Criador
         drive: ID da unidade
+        file_link_origin: File link origin ID
         host: Hospedeiro
+        linkable_to_storage: Linkable to storage
+        linkable_to_storage_url: Linkable to storage URL
         name: Nome
         password: Palavra-passe da aplicação
         provider_type: Tipo de fornecedor
+        storage: Storage
+        storage_url: Storage URL
         tenant: ID do Diretório (inquilino)
     errors:
       messages:

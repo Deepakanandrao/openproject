@@ -32,18 +32,38 @@ module Backlogs
   class SprintsController < BaseController
     include OpTurbo::ComponentStream
 
-    NEW_SPRINT_ACTIONS = %i[new_dialog
-                            edit_dialog
-                            create
-                            refresh_form].freeze
+    ACTIONS_WITHOUT_SPRINT = %i[
+      new_dialog
+      edit_dialog
+      index
+      create
+      refresh_form
+    ].freeze
     SPRINT_STATE_ACTIONS = %i[start finish].freeze
 
-    skip_before_action :load_sprint_and_project, only: NEW_SPRINT_ACTIONS
+    skip_before_action :load_sprint_and_project, only: ACTIONS_WITHOUT_SPRINT
     skip_before_action :authorize, only: SPRINT_STATE_ACTIONS
 
-    before_action :load_project, only: NEW_SPRINT_ACTIONS
+    before_action :load_project, only: ACTIONS_WITHOUT_SPRINT
     before_action :authorize_start!, only: :start
     before_action :authorize_finish!, only: :finish
+
+    current_menu_item %i[index] do
+      :all_sprints
+    end
+
+    def index
+      @sprints = Sprint.for_project(@project)
+                       .order_by_date
+                       .order(:name)
+                       .page(helpers.page_param(params))
+                       .per_page(helpers.per_page_param)
+
+      @work_package_counts = WorkPackage
+                               .where(sprint: @sprints, project: @project)
+                               .group(:sprint_id)
+                               .count
+    end
 
     def new_dialog
       call = ::Sprints::SetAttributesService.new(

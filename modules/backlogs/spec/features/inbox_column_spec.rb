@@ -270,7 +270,7 @@ RSpec.describe "Inbox column in sprint planning view", :js do
       before { planning_page.visit! }
 
       it "moves the item to the bottom of the selected sprint" do
-        planning_page.click_in_inbox_move_menu(inbox_wp1, "Move to sprint")
+        planning_page.click_in_inbox_move_menu(inbox_wp1, "Move to sprint", wait: false)
 
         within("#move-to-sprint-dialog") do
           # Expect to have all sprints listed
@@ -287,7 +287,7 @@ RSpec.describe "Inbox column in sprint planning view", :js do
 
       context "when the target sprint is completed (race condition #73750)" do
         it "shows an error and does not move the item" do
-          planning_page.click_in_inbox_move_menu(inbox_wp1, "Move to sprint")
+          planning_page.click_in_inbox_move_menu(inbox_wp1, "Move to sprint", wait: false)
 
           within("#move-to-sprint-dialog") do
             expect(page).to have_select("target_id", with_options: ["Sprint 1", "Sprint 2"])
@@ -417,6 +417,29 @@ RSpec.describe "Inbox column in sprint planning view", :js do
         planning_page.expect_inbox_item(sprint_wp1)
         planning_page.expect_inbox_item(sprint_wp2)
       end
+
+      context "when the sprint item is configured to be excluded from backlogs" do
+        let!(:status) { create(:status) }
+        let!(:sprint_wp1) { create(:work_package, project:, sprint:, status:) }
+
+        before do
+          project.done_statuses << status
+          planning_page.visit!
+        end
+
+        it "hides the work package after move and shows an explanation" do
+          planning_page.drag_sprint_item_to_inbox(sprint_wp1)
+          wait_for_network_idle
+
+          message =
+            "The work package was moved to Inbox but is not visible because " \
+            "its type or status is excluded from the backlog."
+
+          planning_page.expect_and_dismiss_flash(message:, type: :default)
+          planning_page.expect_story_not_in_sprint(sprint_wp1, sprint)
+          planning_page.expect_no_inbox_item(sprint_wp1)
+        end
+      end
     end
   end
 
@@ -453,7 +476,7 @@ RSpec.describe "Inbox column in sprint planning view", :js do
       planning_page.expect_no_inbox_show_more
 
       # Move an inbox item to the sprint via the dialog
-      planning_page.click_in_inbox_move_menu(inbox_items.last, "Move to sprint")
+      planning_page.click_in_inbox_move_menu(inbox_items.last, "Move to sprint", wait: false)
       within("#move-to-sprint-dialog") do
         select sprint.name, from: "target_id"
         click_button "Move"
