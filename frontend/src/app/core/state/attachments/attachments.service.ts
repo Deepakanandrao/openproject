@@ -55,7 +55,7 @@ import {
   ResourceStore,
   ResourceStoreService,
 } from 'core-app/core/state/resource-store.service';
-import { InjectField } from 'core-app/shared/helpers/angular/inject-field.decorator';
+import { LazyInject } from 'core-app/shared/helpers/angular/lazy-inject.decorator';
 import isNewResource, { HAL_NEW_RESOURCE_ID } from 'core-app/features/hal/helpers/is-new-resource';
 import waitForUploadsFinished from 'core-app/core/upload/wait-for-uploads-finished';
 
@@ -64,7 +64,7 @@ export class AttachmentsResourceService extends ResourceStoreService<IAttachment
   readonly I18n = inject(I18nService);
 
   // Keep lazy: the upload service factory depends on loaded configuration.
-  @InjectField() uploadService:OpUploadService;
+  @LazyInject() uploadService:OpUploadService;
 
   readonly configurationService = inject(ConfigurationService);
 

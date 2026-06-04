@@ -6,7 +6,7 @@ export interface InjectableClass {
   injector:Injector;
 }
 
-export function InjectField<T = unknown>(
+export function LazyInject<T = unknown>(
   token?:ProviderToken<T>,
   defaultValue:T | null = null,
   options?:InjectOptions,
@@ -22,7 +22,7 @@ export function InjectField<T = unknown>(
           return this.injector.get(resolvedToken, defaultValue, options);
         },
         set(this:InjectableClass):void {
-          debugLog(`Trying to set InjectField property ${property}`);
+          debugLog(`Trying to set LazyInject property ${property}`);
         },
       });
     }
