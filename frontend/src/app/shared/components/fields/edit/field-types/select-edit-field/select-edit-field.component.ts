@@ -128,7 +128,7 @@ export class SelectEditFieldComponent extends EditFieldComponent implements OnIn
           });
       });
 
-    this._syncUrlParamsOnChangeIfNeeded(this.handler.fieldName, this.editFormComponent?.editMode);
+    this.syncUrlParamsOnChangeIfNeeded(this.handler.fieldName, this.editFormComponent?.editMode);
   }
 
   protected initialize() {
@@ -302,7 +302,7 @@ export class SelectEditFieldComponent extends EditFieldComponent implements OnIn
     return _.find(this.availableOptions, (el) => el.name === this.text.placeholder);
   }
 
-  private _syncUrlParamsOnChangeIfNeeded(fieldName:string, editMode?:boolean) {
+  private syncUrlParamsOnChangeIfNeeded(fieldName:string, editMode?:boolean) {
     // Work package type changes need to be synced with the type url param
     // in order to keep the form changes (changeset) between route/state changes
     if (fieldName === 'type' && editMode) {
