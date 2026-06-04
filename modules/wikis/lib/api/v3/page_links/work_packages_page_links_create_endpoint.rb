@@ -28,15 +28,14 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Wikis
-  class PageLink < ApplicationRecord
-    self.table_name = "wiki_page_links"
-
-    belongs_to :provider
-    belongs_to :linkable, polymorphic: true
-
-    def relation? = false
-
-    def inline? = false
+module API
+  module V3
+    module PageLinks
+      class WorkPackagesPageLinksCreateEndpoint < CreateEndpoint
+        def self_link(request)
+          request.api_v3_paths.work_package_wiki_page_links(request.work_package.id)
+        end
+      end
+    end
   end
 end

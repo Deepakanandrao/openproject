@@ -31,16 +31,49 @@
 module API
   module V3
     module PageLinks
-      class PageLinkCollectionRepresenter < Decorators::OffsetPaginatedCollection
-        def _type = "WikiPageLinkCollection"
+      class ParsePageLinkParamsService < API::ParseResourceParamsService
+        MAX_ELEMENTS = 20
 
-        collection :elements,
-                   getter: ->(*) { represented.map { decorator_for(it).create(it, current_user:) } },
-                   exec_context: :decorator,
-                   embedded: true
+        attr_reader :request_body
 
-        def decorator_for(model)
-          model.relation? ? RelationPageLinkRepresenter : PageLinkRepresenter
+        private
+
+        def parse_attributes(request_body)
+          @request_body = request_body
+          assert_valid_elements
+
+          elements.map { |element| super(element) }
+        end
+
+        def elements
+          @elements ||= request_body.dig("_embedded", "elements")
+        end
+
+        def assert_valid_elements
+          assert_elements_is_present
+          assert_elements_is_an_array
+          assert_elements_does_not_exceed_maximum
+        end
+
+        def assert_elements_is_present
+          return if elements.present?
+
+          raise API::Errors::PropertyMissingError.new("_embedded/elements")
+        end
+
+        def assert_elements_is_an_array
+          return if elements.is_a?(Array)
+
+          raise API::Errors::PropertyFormatError.new("_embedded/elements", "Array", elements.class.name)
+        end
+
+        def assert_elements_does_not_exceed_maximum
+          return if elements.size <= MAX_ELEMENTS
+
+          raise API::Errors::Validation.new(
+            "_embedded/elements",
+            I18n.t("api_v3.errors.too_many_elements_created_at_once", max: MAX_ELEMENTS, actual: elements.size)
+          )
         end
       end
     end

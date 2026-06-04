@@ -28,15 +28,45 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Wikis
-  class PageLink < ApplicationRecord
-    self.table_name = "wiki_page_links"
+module API
+  module V3
+    module PageLinks
+      class CreateEndpoint < Utilities::Endpoints::Create
+        include Utilities::Endpoints::V3Deductions
+        include Utilities::Endpoints::V3PresentSingle
 
-    belongs_to :provider
-    belongs_to :linkable, polymorphic: true
+        def process(request, params)
+          global_result = ServiceResult.success
 
-    def relation? = false
+          ::Wikis::PageLink.transaction do
+            params.each do |attributes|
+              global_result.add_dependent!(super(request, attributes))
+            end
 
-    def inline? = false
+            raise ActiveRecord::Rollback if global_result.failure?
+          end
+
+          global_result
+        end
+
+        private
+
+        def present_success(request, service_call)
+          ids = service_call.all_results.map(&:id)
+
+          render_representer.create(
+            Wikis::PageLink.where(id: ids),
+            self_link: self_link(request),
+            current_user: request.current_user
+          )
+        end
+
+        def dependent_error_subject(result) = result.identifier
+
+        def self_link(*)
+          "#{URN_PREFIX}wiki_page_links:no_link_provided"
+        end
+      end
+    end
   end
 end

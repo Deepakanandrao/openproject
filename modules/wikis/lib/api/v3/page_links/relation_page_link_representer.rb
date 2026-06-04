@@ -28,15 +28,39 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Wikis
-  class PageLink < ApplicationRecord
-    self.table_name = "wiki_page_links"
+module API
+  module V3
+    module PageLinks
+      class RelationPageLinkRepresenter < PageLinkRepresenter
+        defaults
 
-    belongs_to :provider
-    belongs_to :linkable, polymorphic: true
+        property :wiki_page_link_type, getter: ->(*) { URN_RELATION_PAGE_LINK }
 
-    def relation? = false
+        link :delete, cache_if: ->(*) { user_allowed_to_manage?(represented) } do
+          {
+            href: api_v3_paths.wiki_page_link(represented.id),
+            method: :delete
+          }
+        end
 
-    def inline? = false
+        associated_resource :user,
+                            as: :author,
+                            setter: ->(fragment:, **) { fetch_and_set_author(fragment) },
+                            link: ::API::V3::Principals::PrincipalRepresenterFactory.create_link_lambda(:author)
+
+        private
+
+        def fetch_and_set_author(fragment)
+          if current_user.admin? && Setting.apiv3_write_readonly_attributes?
+            author_id = extract_id_from_resource_link(fragment["href"], :author, :users)
+            represented.author = User.find_by(id: author_id) || ::Users::InexistentUser.new
+          else
+            represented.author = current_user
+          end
+        rescue API::Errors::InvalidResourceLink
+          represented.author = nil
+        end
+      end
+    end
   end
 end

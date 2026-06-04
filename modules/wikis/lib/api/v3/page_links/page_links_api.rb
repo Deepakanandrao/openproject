@@ -28,15 +28,22 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Wikis
-  class PageLink < ApplicationRecord
-    self.table_name = "wiki_page_links"
-
-    belongs_to :provider
-    belongs_to :linkable, polymorphic: true
-
-    def relation? = false
-
-    def inline? = false
+module API
+  module V3
+    module PageLinks
+      class PageLinksAPI < OpenProjectAPI
+        resources :wiki_page_links do
+          post &::API::V3::PageLinks::CreateEndpoint.new(
+            model: ::Wikis::RelationPageLink,
+            instance_generator: ->(*) { Wikis::RelationPageLink.new },
+            parse_representer: RelationPageLinkRepresenter,
+            parse_service: ParsePageLinkParamsService,
+            process_service: ::Wikis::RelationPageLinks::CreateService,
+            process_contract: ::Wikis::RelationPageLinks::CreateContract,
+            render_representer: PageLinkCollectionRepresenter
+          ).mount
+        end
+      end
+    end
   end
 end
