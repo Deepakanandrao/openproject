@@ -26,53 +26,28 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-import { Injectable, Injector, inject } from '@angular/core';
-import moment, { Moment } from 'moment';
-import {
-  take,
-  tap,
-} from 'rxjs/operators';
+import { TestBed } from '@angular/core/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { States } from 'core-app/core/states/states.service';
+import { ConfigurationService } from 'core-app/core/config/configuration.service';
 import { WeekdayResourceService } from 'core-app/core/state/days/weekday.service';
-import { IWeekday } from 'core-app/core/state/days/weekday.model';
-import {
-  Observable,
-  of,
-} from 'rxjs';
+import { WeekdayService } from './weekday.service';
 
-@Injectable({ providedIn: 'root' })
-export class WeekdayService {
-  readonly injector = inject(Injector);
+describe('WeekdayService', () => {
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [
+        WeekdayResourceService,
+        { provide: States, useValue: new States() },
+        { provide: ConfigurationService, useValue: {} },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+      ],
+    });
+  });
 
-  readonly weekdaysService = inject(WeekdayResourceService);
-
-  private weekdays:IWeekday[];
-
-  /**
-   * @param date The iso day number (1-7) or a date instance
-   * @return {boolean} whether the given iso day is working or not
-   */
-  public isNonWorkingDay(date:Moment|Date|number):boolean {
-    const isoDayOfWeek = (typeof date === 'number') ? date : moment(date).isoWeekday();
-    return !!(this.weekdays || []).find((wd) => wd.day === isoDayOfWeek && !wd.working);
-  }
-
-  public get nonWorkingDays():IWeekday[] {
-    return this.weekdays.filter((day) => !day.working);
-  }
-
-  loadWeekdays():Observable<IWeekday[]> {
-    if (this.weekdays) {
-      return of(this.weekdays);
-    }
-
-    return this
-      .weekdaysService
-      .requireCollection()
-      .pipe(
-        take(1),
-        tap((weekdays) => {
-          this.weekdays = weekdays;
-        }),
-      );
-  }
-}
+  it('initialises via dependency injection', () => {
+    expect(TestBed.inject(WeekdayService)).toBeTruthy();
+  });
+});
