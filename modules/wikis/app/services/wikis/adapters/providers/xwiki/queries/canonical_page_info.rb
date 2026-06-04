@@ -44,7 +44,7 @@ module Wikis
               perform_request(ref, auth_strategy:) do |data|
                 success(
                   Results::PageInfo.new(
-                    identifier: StablePageReference.parse(data.fetch("id")).to_s,
+                    identifier: StablePageReference.parse(fetch_json(data, "id")).to_s,
                     title: data.fetch("title"),
                     href: data.fetch("xwikiAbsoluteUrl"),
                     provider:
