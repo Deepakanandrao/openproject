@@ -8,8 +8,8 @@ import {
   ResourceStoreService,
 } from 'core-app/core/state/resource-store.service';
 
-@EffectHandler
 @Injectable()
+@EffectHandler
 export class ViewsResourceService extends ResourceStoreService<IView> {
   readonly actions$ = inject(ActionsService);
 

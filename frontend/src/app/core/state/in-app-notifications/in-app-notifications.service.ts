@@ -48,8 +48,8 @@ import {
   ResourceStoreService,
 } from 'core-app/core/state/resource-store.service';
 
-@EffectHandler
 @Injectable()
+@EffectHandler
 export class InAppNotificationsResourceService extends ResourceStoreService<INotification> {
   readonly actions$ = inject(ActionsService);
 
