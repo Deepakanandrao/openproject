@@ -39,7 +39,7 @@ module WorkPackages::Scopes::InBacklogFor
         .without_excluded_type
         .without_status_considered_closed
         .order_by_position
-        .order(WorkPackage.arel_table[:id].asc)
+        .order(id: :asc)
     end
   end
 end
