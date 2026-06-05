@@ -79,10 +79,7 @@ See COPYRIGHT and LICENSE files for more details.
 
   <%= render Backlogs::BucketComponent.with_collection(buckets, project:) %>
 
-  <%=
-    render Backlogs::InboxComponent.new(
-      work_packages: inbox_work_packages,
-      project: project
-    )
-  %>
+  <% if backlog_filters.show_inbox? %>
+    <%= render Backlogs::InboxComponent.new(work_packages: inbox_work_packages, project:) %>
+  <% end %>
 <% end %>

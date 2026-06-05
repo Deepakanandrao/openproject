@@ -32,6 +32,8 @@ module Backlogs
   class BacklogFilterSelectPanelComponent < ApplicationComponent
     include CommonHelper
 
+    InboxItem = Data.define(:id, :name)
+
     attr_reader :project, :filter_field
 
     def initialize(project:, field_name:)
@@ -55,15 +57,27 @@ module Backlogs
     end
 
     def items
-      filter_field == :sprint_ids ? all_sprints_for(project) : all_buckets_for(project)
+      if filter_field == :sprint_ids
+        all_sprints_for(project)
+      else
+        all_buckets_for(project).to_a + [InboxItem.new(id: "inbox", name: I18n.t(:label_inbox))]
+      end
     end
 
     def selected_ids
       backlog_filters.public_send(filter_field)
     end
 
+    def counter
+      render Primer::Beta::Counter.new(count: selected_ids&.size, hide_if_zero: true, ml: 2)
+    end
+
     def selector_label
       filter_field == :sprint_ids ? Sprint.human_model_name.pluralize : BacklogBucket.human_model_name.pluralize
+    end
+
+    def selector_color
+      selected_ids ? :default : :muted
     end
 
     def select_panel_id

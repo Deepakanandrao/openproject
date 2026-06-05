@@ -32,13 +32,19 @@ module Backlogs
   BacklogFilters = Struct.new(:bucket_ids, :sprint_ids, :show_all) do
     def self.from_params(params)
       new(
-        bucket_ids: Array(params[:bucket_ids]).filter_map { |id| id.to_i.nonzero? }.presence,
+        bucket_ids: Array(params[:bucket_ids]).filter_map do |id|
+                      id == "inbox" ? "inbox" : id.to_i.nonzero?
+                    end.presence,
         sprint_ids: Array(params[:sprint_ids]).filter_map { |id| id.to_i.nonzero? }.presence,
         show_all: ActiveRecord::Type::Boolean.new.cast(params[:all]) || false
       )
     end
 
     def show_all? = show_all
+
+    def show_inbox?
+      bucket_ids.nil? || bucket_ids.include?("inbox")
+    end
 
     def to_h
       result = show_all? ? { all: true } : {}

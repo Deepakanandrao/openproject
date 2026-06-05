@@ -70,7 +70,9 @@ module Backlogs
 
     def filtered_buckets_for(project)
       relation = all_buckets_for(project)
-      backlog_filters.bucket_ids.present? ? relation.where(id: backlog_filters.bucket_ids) : relation
+      bucket_ids = backlog_filters.bucket_ids&.reject { |id| id == "inbox" }
+
+      bucket_ids.present? ? relation.where(id: bucket_ids) : relation
     end
   end
 end
