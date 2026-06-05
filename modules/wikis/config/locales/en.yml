@@ -40,20 +40,13 @@ en:
       open_wiki: Open wiki
       save_and_continue: Save and continue
       wiki_page: Wiki page
-    instructions:
-      xwiki:
-        integration: XWiki Administration
-        oauth_application_details_html: The client secret value will not be accessible again after you close this window. Please copy these values into the [XWiki OpenProject Integration settings](xwiki_admin_link).
-    provider_types:
-      xwiki:
-        name: XWiki
+    create_new_wiki_page_dialog:
+      page_title: Title
+      parent_help_text: Select a parent for this new wiki page.
+      title: Create new wiki page
     delete_relation_page_link_confirmation_dialog:
       title: Delete related wiki page link
       heading: Delete related wiki page link?
-    create_new_wiki_page_dialog:
-      title: Create new wiki page
-      page_title: Title
-      parent_help_text: Select a parent for this new wiki page.
     health_checks:
       authentication:
         existing_token: User token
@@ -68,6 +61,10 @@ en:
         xwiki_oauth_request_error: An unexpected error occured when trying to communicate with the XWiki instance.
         xwiki_oauth_token_missing: OpenProject cannot test the user-level communication with XWiki as the user did not yet connect their XWiki account.
         xwiki_oauth_unauthorized: The user token was not recognized by XWiki.
+    instructions:
+      xwiki:
+        integration: XWiki Administration
+        oauth_application_details_html: The client secret value will not be accessible again after you close this window. Please copy these values into the [XWiki OpenProject Integration settings](xwiki_admin_link).
     link_existing_wiki_page_dialog:
       title: Add existing wiki page
     link_existing_wiki_page_form:
@@ -83,6 +80,9 @@ en:
         unexpected: An unexpected error occurred
     page_link_component:
       remove: Remove page link
+    provider_types:
+      xwiki:
+        name: XWiki
     relation_page_links_component:
       link_existing: Existing wiki page
       link_new: New wiki page
