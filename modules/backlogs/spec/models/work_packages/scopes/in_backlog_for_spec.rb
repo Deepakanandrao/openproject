@@ -97,8 +97,10 @@ RSpec.describe WorkPackages::Scopes::InBacklogFor do
     create(:work_package, project:, status: open_status, sprint:, backlog_bucket: nil)
   end
 
+  # This is invalid as buckets are not shared.
+  # It is nevertheless added
   shared_let(:other_project_wp) do
-    create(:work_package, project: other_project, status: open_status, sprint:, backlog_bucket: nil)
+    create(:work_package, project: other_project, status: open_status, sprint: nil, backlog_bucket:)
   end
 
   shared_let(:user_with_permission) do
