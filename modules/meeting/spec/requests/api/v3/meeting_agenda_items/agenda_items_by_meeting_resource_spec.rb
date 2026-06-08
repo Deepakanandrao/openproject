@@ -203,6 +203,42 @@ RSpec.describe "API v3 Meeting Agenda Items sub-resource", content_type: :json d
       end
     end
 
+    context "when the agenda item is part of the backlog" do
+      let(:backlog) { meeting.backlog }
+      let!(:backlog_agenda_item) do
+        create(:meeting_agenda_item,
+               meeting:,
+               meeting_section: backlog,
+               author: current_user,
+               title: "Backlog agenda item")
+      end
+      let(:path) { api_v3_paths.meeting_agenda_item(backlog_agenda_item.id, meeting_id: meeting.id) }
+
+      it "renders the backlog section correctly" do
+        expect(last_response).to have_http_status(:ok)
+
+        expect(last_response.body)
+          .to be_json_eql(api_v3_paths.meeting_section(backlog.id).to_json)
+          .at_path("_links/section/href")
+
+        expect(last_response.body)
+          .to be_json_eql(backlog.title.to_json)
+          .at_path("_links/section/title")
+
+        expect(last_response.body)
+          .to be_json_eql(backlog.id.to_json)
+          .at_path("_embedded/section/id")
+
+        expect(last_response.body)
+          .to be_json_eql(true.to_json)
+          .at_path("_embedded/section/backlog")
+
+        expect(last_response.body)
+          .to be_json_eql(api_v3_paths.meeting(meeting.id).to_json)
+          .at_path("_embedded/section/_links/meeting/href")
+      end
+    end
+
     context "when the agenda item is linked to a work package in an inaccessible project" do
       let(:private_project) { create(:project, public: false) }
       let(:private_work_package) { create(:work_package, project: private_project) }
