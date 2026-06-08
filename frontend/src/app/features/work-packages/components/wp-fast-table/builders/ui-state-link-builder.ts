@@ -6,6 +6,7 @@ import { InjectField } from 'core-app/shared/helpers/angular/inject-field.decora
 
 export const uiStateLinkClass = '__ui-state-link';
 export const checkedClassName = '-checked';
+export const pressedClassName = '-pressed';
 
 export class UiStateLinkBuilder {
   constructor(
