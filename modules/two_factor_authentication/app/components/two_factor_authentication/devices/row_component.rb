@@ -80,7 +80,11 @@ module ::TwoFactorAuthentication
               size: :small,
               type: :submit,
               disabled: deletion_blocked?,
-              "aria-label": deletion_blocked? ? I18n.t("two_factor_authentication.devices.is_default_cannot_delete") : I18n.t(:button_delete)
+              "aria-label": if deletion_blocked?
+                              I18n.t("two_factor_authentication.devices.is_default_cannot_delete")
+                            else
+                              I18n.t(:button_delete)
+                            end
             )
           )
         end

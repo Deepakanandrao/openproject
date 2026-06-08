@@ -6,6 +6,8 @@ module ::TwoFactorAuthentication
       def initialize(user:, cookies:)
         @user = user
         @cookies = cookies
+
+        super()
       end
 
       def render?
@@ -29,14 +31,14 @@ module ::TwoFactorAuthentication
       def any_remember_token_present?
         return false unless remember_2fa_enabled?
 
-        ::TwoFactorAuthentication::RememberedAuthToken.not_expired.where(user: @user).exists?
+        ::TwoFactorAuthentication::RememberedAuthToken.not_expired.exists?(user: @user)
       end
 
       def current_remember_token
         return false unless remember_2fa_enabled?
 
         value = @cookies.encrypted[:op2fa_remember_token]
-        return false unless value.present?
+        return false if value.blank?
 
         ::TwoFactorAuthentication::RememberedAuthToken.where(user: @user).find_by_plaintext_value(value)
       end
