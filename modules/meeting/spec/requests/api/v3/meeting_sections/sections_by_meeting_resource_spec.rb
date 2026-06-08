@@ -36,16 +36,38 @@ RSpec.describe "API v3 Meeting Sections sub-resource", content_type: :json do
   include API::V3::Utilities::PathHelper
 
   shared_let(:project) { create(:project, enabled_module_names: %w[meetings]) }
+  shared_let(:other_project) { create(:project, enabled_module_names: %w[meetings]) }
+  shared_let(:author) { create(:user) }
 
   let(:permissions) { %i[view_meetings manage_agendas] }
   let(:current_user) do
     create(:user, member_with_permissions: { project => permissions })
   end
-  let(:meeting) { create(:meeting, project:, author: current_user) }
+  let(:meeting) { create(:meeting, project:, author:) }
   let!(:section) { create(:meeting_section, meeting:, title: "First Section") }
 
   before do
     login_as current_user
+  end
+
+  shared_examples "not found without meeting visibility" do
+    context "without view_meetings permission" do
+      let(:permissions) { [] }
+
+      it "returns 404" do
+        expect(last_response).to have_http_status(:not_found)
+      end
+    end
+
+    context "with view_meetings permission in another project" do
+      let(:current_user) do
+        create(:user, member_with_permissions: { other_project => %i[view_meetings manage_agendas] })
+      end
+
+      it "returns 404" do
+        expect(last_response).to have_http_status(:not_found)
+      end
+    end
   end
 
   describe "GET /api/v3/meetings/:meeting_id/sections" do
@@ -65,13 +87,7 @@ RSpec.describe "API v3 Meeting Sections sub-resource", content_type: :json do
         .at_path("_embedded/elements/0/_links/self/href")
     end
 
-    context "without view_meetings permission" do
-      let(:permissions) { [] }
-
-      it "returns 404" do
-        expect(last_response).to have_http_status(:not_found)
-      end
-    end
+    it_behaves_like "not found without meeting visibility"
   end
 
   describe "POST /api/v3/meeting_sections" do
@@ -115,6 +131,26 @@ RSpec.describe "API v3 Meeting Sections sub-resource", content_type: :json do
         expect(response).to have_http_status(:forbidden)
       end
     end
+
+    context "without any permissions" do
+      let(:permissions) { [] }
+
+      it "returns 422 and does not create a section" do
+        expect(response).to have_http_status(:unprocessable_entity)
+        expect(meeting.sections.find_by(title: "New Section")).to be_nil
+      end
+    end
+
+    context "with manage_agendas permission in another project" do
+      let(:current_user) do
+        create(:user, member_with_permissions: { other_project => %i[view_meetings manage_agendas] })
+      end
+
+      it "returns 422 and does not create a section" do
+        expect(response).to have_http_status(:unprocessable_entity)
+        expect(meeting.sections.find_by(title: "New Section")).to be_nil
+      end
+    end
   end
 
   describe "GET /api/v3/meetings/:meeting_id/sections/:id" do
@@ -135,13 +171,15 @@ RSpec.describe "API v3 Meeting Sections sub-resource", content_type: :json do
     end
 
     context "with a section from another meeting" do
-      let(:other_meeting) { create(:meeting, project:, author: current_user) }
+      let(:other_meeting) { create(:meeting, project:, author:) }
       let(:path) { api_v3_paths.meeting_section(section.id, meeting_id: other_meeting.id) }
 
       it "returns 404" do
         expect(last_response).to have_http_status(:not_found)
       end
     end
+
+    it_behaves_like "not found without meeting visibility"
   end
 
   describe "GET /api/v3/meeting_sections/:id" do
@@ -161,13 +199,7 @@ RSpec.describe "API v3 Meeting Sections sub-resource", content_type: :json do
         .at_path("_links/self/href")
     end
 
-    context "without view_meetings permission" do
-      let(:permissions) { [] }
-
-      it "returns 404" do
-        expect(last_response).to have_http_status(:not_found)
-      end
-    end
+    it_behaves_like "not found without meeting visibility"
   end
 
   describe "PATCH /api/v3/meeting_sections/:id" do
@@ -196,6 +228,26 @@ RSpec.describe "API v3 Meeting Sections sub-resource", content_type: :json do
         expect(response).to have_http_status(:forbidden)
       end
     end
+
+    context "without any permissions" do
+      let(:permissions) { [] }
+
+      it "returns 404 and does not update the section" do
+        expect(response).to have_http_status(:not_found)
+        expect(section.reload.title).to eq("First Section")
+      end
+    end
+
+    context "with manage_agendas permission in another project" do
+      let(:current_user) do
+        create(:user, member_with_permissions: { other_project => %i[view_meetings manage_agendas] })
+      end
+
+      it "returns 404 and does not update the section" do
+        expect(response).to have_http_status(:not_found)
+        expect(section.reload.title).to eq("First Section")
+      end
+    end
   end
 
   describe "DELETE /api/v3/meeting_sections/:id" do
@@ -219,6 +271,26 @@ RSpec.describe "API v3 Meeting Sections sub-resource", content_type: :json do
       let(:permissions) { %i[view_meetings] }
 
       it_behaves_like "unauthorized access"
+    end
+
+    context "without any permissions" do
+      let(:permissions) { [] }
+
+      it "returns 404 and does not delete the section" do
+        expect(subject).to have_http_status(:not_found)
+        expect(MeetingSection).to exist(section.id)
+      end
+    end
+
+    context "with manage_agendas permission in another project" do
+      let(:current_user) do
+        create(:user, member_with_permissions: { other_project => %i[view_meetings manage_agendas] })
+      end
+
+      it "returns 404 and does not delete the section" do
+        expect(subject).to have_http_status(:not_found)
+        expect(MeetingSection).to exist(section.id)
+      end
     end
   end
 end
