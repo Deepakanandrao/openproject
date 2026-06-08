@@ -39,10 +39,18 @@ module Primer
           super()
 
           @input = input
+          @input.add_label_classes("FormControl-label")
 
-          @input.input_arguments[:form_arguments] = {
-            name: @input.name,
-            builder: builder
+          @fieldset_arguments = @input.input_arguments.extract!(:hidden, :class, :classes)
+          Primer::Forms::Utils.classify(@fieldset_arguments)
+          @fieldset_arguments.delete(:class) if @fieldset_arguments[:class].blank?
+
+          @tree_view_arguments = {
+            **@input.input_arguments,
+            form_arguments: {
+              name: @input.name,
+              builder: builder
+            }
           }
         end
       end

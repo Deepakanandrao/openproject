@@ -59,6 +59,10 @@ module Primer
             true
           end
           # :nocov:
+
+          def supports_validation?
+            false
+          end
         end
       end
     end

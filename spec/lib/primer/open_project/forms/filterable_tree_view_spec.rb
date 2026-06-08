@@ -41,7 +41,7 @@ RSpec.describe Primer::OpenProject::Forms::FilterableTreeView, type: :forms do
       render_in_view_context(model, params) do |model, params|
         primer_form_with(url: "/foo", model:) do |f|
           render_inline_form(f) do |form|
-            form.filterable_tree_view(name: :ingredients, **params) do |tree|
+            form.filterable_tree_view(name: :ingredients, label: "Ingredients", **params) do |tree|
               tree.with_leaf(select_variant: :multiple, label: "flour")
               tree.with_leaf(select_variant: :multiple, label: "sugar")
               tree.with_leaf(select_variant: :multiple, label: "eggs")
@@ -60,10 +60,30 @@ RSpec.describe Primer::OpenProject::Forms::FilterableTreeView, type: :forms do
       expect(rendered_form).to have_element :"filterable-tree-view"
     end
 
+    it "renders the fieldset" do
+      expect(rendered_form).to have_selector :fieldset, "Ingredients"
+    end
+
+    it "renders the label as the fieldset legend" do
+      expect(rendered_form).to have_element :legend, class: "FormControl-label", text: "Ingredients"
+    end
+
     it "renders the leafs", :aggregate_failures do
       expect(rendered_form).to have_element(:li, class: "TreeViewItem", role: "none", text: "flour")
       expect(rendered_form).to have_element(:li, class: "TreeViewItem", role: "none", text: "sugar")
       expect(rendered_form).to have_element(:li, class: "TreeViewItem", role: "none", text: "eggs")
+    end
+
+    it "wires the tree view up for form submission" do
+      expect(rendered_form).to have_element :input, type: "hidden", name: "comment[ingredients][]", visible: :all
+    end
+
+    context "when hidden" do
+      let(:params) { { hidden: true } }
+
+      it "hides the whole fieldset" do
+        expect(rendered_form).to have_selector :fieldset, visible: :hidden
+      end
     end
   end
 end
