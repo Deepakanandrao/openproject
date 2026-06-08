@@ -41,6 +41,7 @@ import {
   openProjectWorkPackageInlineSpec,
   workPackageSlashMenu,
   useOpBlockNoteExtensions,
+  PasteDeduplicateInstanceIdsExtension,
   useHashWpMenu,
 } from 'op-blocknote-extensions';
 import { useCallback, useEffect, useMemo } from 'react';
@@ -119,7 +120,7 @@ export function OpBlockNoteEditor({
       // When external link capture is enabled, intercept clicks on external
       // links via a ProseMirror plugin and route through /external_redirect.
       ...(captureExternalLinks && {
-        extensions: [ExternalLinkCaptureExtension],
+        extensions: [PasteDeduplicateInstanceIdsExtension, ExternalLinkCaptureExtension],
       }),
     };
   }, [hocuspocusProvider, doc, activeUser, localeDictionary, attachmentsEnabled, uploadFile, captureExternalLinks]);
