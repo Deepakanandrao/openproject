@@ -5779,6 +5779,7 @@ en:
     user_attributes:
       heading: "User attributes"
       heading_description: "These user attributes appear on user profiles and information cards. You can add new attributes, group them into sections and re-order them."
+      label_add_attribute: "Add a user attribute"
       label_built_in: "Built-in"
       label_built_in_attribute_actions: "Built-in attribute actions"
       label_edit_section: "Edit title"
