@@ -83,5 +83,9 @@ module Backlogs
     def select_panel_id
       "#{filter_field.to_s.delete_suffix('_ids')}-filter-select-panel"
     end
+
+    def clear_form_id
+      "#{select_panel_id}-clear-form"
+    end
   end
 end
