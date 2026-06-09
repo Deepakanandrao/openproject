@@ -88,19 +88,10 @@ module OpPrimer
         active_filter&.values&.map(&:to_s) || []
       end
 
-      def current_label
-        return @name if current_values.empty?
-        return I18n.t(:label_x_items_selected, count: current_values.size) if current_values.size > 1
+      def button_label
+        return render(Primer::Beta::Text.new(color: :muted)) { @name } if current_values.empty?
 
-        single_label || @name
-      end
-
-      def single_label
-        if async?
-          active_filter.value_objects.first.send(@label_method)
-        elsif local?
-          items.find { |item| current_values.include?(item.value.to_s) }.label
-        end
+        @name
       end
 
       def panel_src

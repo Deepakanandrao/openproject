@@ -106,16 +106,21 @@ RSpec.describe OpPrimer::QuickFilter::SelectPanelComponent, type: :component do
     end
   end
 
-  context "with the show button label" do
+  context "with the show button" do
     context "when no filter is active" do
       before { render_with_items }
 
-      it "shows the component name" do
+      it "shows the component name in muted text" do
         expect(page).to have_button("Project")
+        expect(page).to have_css("button .color-fg-muted", text: "Project")
       end
 
-      it "does not render a dynamic label prefix" do
-        expect(page).to have_no_css("[data-dynamic-label-prefix]")
+      it "does not show a counter" do
+        expect(page).to have_no_css("button .Counter")
+      end
+
+      it "renders the trailing icon in muted color" do
+        expect(page).to have_css("button .octicon-triangle-down.color-fg-muted")
       end
     end
 
@@ -124,12 +129,20 @@ RSpec.describe OpPrimer::QuickFilter::SelectPanelComponent, type: :component do
 
       before { render_with_items }
 
-      it "shows the selected item name" do
-        expect(page).to have_button("Project 1")
+      it "shows the component name as the label" do
+        expect(page).to have_button("Project")
       end
 
-      it "renders the dynamic label prefix" do
-        expect(page).to have_css("[data-dynamic-label-prefix='Project']")
+      it "does not render muted text" do
+        expect(page).to have_no_css("button .color-fg-muted", text: "Project")
+      end
+
+      it "shows a counter with the selected count" do
+        expect(page).to have_css("button .Counter", text: "1")
+      end
+
+      it "renders the trailing icon in default color" do
+        expect(page).to have_css("button .octicon-triangle-down.color-fg-default")
       end
     end
 
@@ -138,12 +151,40 @@ RSpec.describe OpPrimer::QuickFilter::SelectPanelComponent, type: :component do
 
       before { render_with_items }
 
-      it "shows the item count" do
-        expect(page).to have_button(I18n.t(:label_x_items_selected, count: 2))
+      it "shows the component name as the label" do
+        expect(page).to have_button("Project")
       end
 
-      it "renders the dynamic label prefix" do
-        expect(page).to have_css("[data-dynamic-label-prefix='Project']")
+      it "shows a counter with the selected count" do
+        expect(page).to have_css("button .Counter", text: "2")
+      end
+    end
+  end
+
+  context "with the footer" do
+    context "when no filter is active" do
+      before { render_with_items }
+
+      it "renders an apply button" do
+        expect(page).to have_test_selector("quick-filter-apply-button")
+      end
+
+      it "does not render a clear button" do
+        expect(page).to have_no_test_selector("quick-filter-clear-button")
+      end
+    end
+
+    context "when a filter is active" do
+      let(:query) { build_meeting_query.where("project_id", "=", ["1"]) }
+
+      before { render_with_items }
+
+      it "renders a clear button" do
+        expect(page).to have_test_selector("quick-filter-clear-button")
+      end
+
+      it "renders an apply button" do
+        expect(page).to have_test_selector("quick-filter-apply-button")
       end
     end
   end

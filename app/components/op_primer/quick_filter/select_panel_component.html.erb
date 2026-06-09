@@ -36,14 +36,13 @@ See COPYRIGHT and LICENSE files for more details.
           select_variant: @select_variant,
           fetch_strategy: fetch_strategy,
           src: panel_src,
-          title: @name,
-          dynamic_label: true,
-          dynamic_label_prefix: current_values.any? ? @name : nil
+          title: @name
         )
       ) do |panel| %>
     <% panel.with_show_button(scheme: :secondary, data: { test_selector: "quick-filter-select-panel-button" }) do |button|
-         button.with_trailing_visual_icon(icon: :"triangle-down")
-         current_label
+         button.with_trailing_visual_counter(count: current_values.size) if current_values.any?
+         button.with_trailing_action_icon(icon: :"triangle-down", color: current_values.empty? ? :muted : :default)
+         button_label
        end %>
     <% if local? %>
       <% items.each do |item| %>
@@ -58,12 +57,12 @@ See COPYRIGHT and LICENSE files for more details.
     <% if @select_variant == :multiple || current_values.any? %>
       <% panel.with_footer(show_divider: true) do %>
         <% if current_values.any? %>
-          <%= render(Primer::Beta::Button.new(scheme: :secondary, data: { action: "click->quick-filter--select-panel#clear" })) do %>
+          <%= render(Primer::Beta::Button.new(scheme: :secondary, data: { action: "click->quick-filter--select-panel#clear", test_selector: "quick-filter-clear-button" })) do %>
             <%= t(:button_clear) %>
           <% end %>
         <% end %>
         <% if @select_variant == :multiple %>
-          <%= render(Primer::Beta::Button.new(scheme: :primary, data: { action: "click->quick-filter--select-panel#apply" })) do %>
+          <%= render(Primer::Beta::Button.new(scheme: :primary, data: { action: "click->quick-filter--select-panel#apply", test_selector: "quick-filter-apply-button" })) do %>
             <%= t(:button_apply) %>
           <% end %>
         <% end %>
