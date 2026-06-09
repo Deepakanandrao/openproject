@@ -300,5 +300,25 @@ RSpec.describe "ResourceAllocations requests",
 
       expect(response).to have_http_status(:forbidden)
     end
+
+    it "denies creating an allocation" do
+      expect do
+        post project_resource_allocations_path(project),
+             params: {
+               allocation_kind: "principal",
+               resource_allocation: {
+                 principal_id: assignee.id,
+                 entity_type: "WorkPackage",
+                 entity_id: work_package.id,
+                 start_date: "2026-03-02",
+                 end_date: "2026-03-03",
+                 allocated_hours: "40h"
+               }
+             },
+             as: :turbo_stream
+      end.not_to change(ResourceAllocation, :count)
+
+      expect(response).to have_http_status(:forbidden)
+    end
   end
 end
