@@ -92,7 +92,7 @@ module ::ResourceManagement
           form_values: submitted_allocation_params,
           filters: params[:filters],
           overbooked_ranges: ranges,
-          daily_working_minutes: daily_working_minutes(allocation, ranges)
+          working_schedule: working_schedule(allocation, ranges)
         )
       )
       replace_via_turbo_stream(
@@ -151,10 +151,10 @@ module ::ResourceManagement
         UserWorkingHours.for_user(allocation.principal).exists?
     end
 
-    def daily_working_minutes(allocation, ranges)
+    def working_schedule(allocation, ranges)
       return if ranges.empty?
 
-      availability(allocation).max_daily_minutes(start_date: allocation.start_date, end_date: allocation.end_date)
+      availability(allocation).working_schedule_summary(date: allocation.start_date)
     end
 
     def availability(allocation)

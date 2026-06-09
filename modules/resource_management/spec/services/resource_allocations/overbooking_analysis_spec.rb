@@ -62,7 +62,8 @@ RSpec.describe ResourceAllocations::OverbookingAnalysis do
         start_date: mon,
         end_date: tue,
         work_package_ids: [7],
-        over_by_minutes: 1200 - 960
+        over_by_minutes: 1200 - 960,
+        available_minutes: 960
       )
     end
 

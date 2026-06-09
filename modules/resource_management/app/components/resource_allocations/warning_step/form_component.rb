@@ -38,14 +38,14 @@ module ResourceAllocations
       include OpPrimer::ComponentHelpers
 
       def initialize(allocation:, project:, allocation_kind:, form_values:, overbooked_ranges: [],
-                     daily_working_minutes: nil, filters: nil)
+                     working_schedule: nil, filters: nil)
         super
         @allocation = allocation
         @project = project
         @allocation_kind = allocation_kind
         @form_values = form_values
         @overbooked_ranges = overbooked_ranges
-        @daily_working_minutes = daily_working_minutes
+        @working_schedule = working_schedule
         @filters = filters
       end
 
@@ -84,15 +84,41 @@ module ResourceAllocations
       end
 
       def overbooking_description
+        t("resource_management.allocate_resource_dialog.overbooking.description", user: @allocation.principal.name)
+      end
+
+      def working_schedule?
+        @working_schedule.present?
+      end
+
+      def schedule_note
+        t("resource_management.allocate_resource_dialog.overbooking.schedule_note", schedule: @working_schedule)
+      end
+
+      def capacity_summary(range)
         t(
-          "resource_management.allocate_resource_dialog.overbooking.description",
-          user: @allocation.principal.name,
-          hours: format_hours(@daily_working_minutes)
+          "resource_management.allocate_resource_dialog.overbooking.capacity_summary",
+          available: format_hours(range.available_minutes),
+          scheduled: format_hours(scheduled_minutes(range))
         )
       end
 
-      # The work package for each forced item, restricted to those the current
-      # user may see. Items for unreadable work packages render anonymously.
+      def scheduled_minutes(range)
+        range.items.sum(&:minutes)
+      end
+
+      # The forced items whose work package the current user may see, each
+      # rendered individually.
+      def visible_items(range)
+        range.items.select { |item| work_package_for(item) }
+      end
+
+      # Work scheduled into the range for work packages the user cannot see,
+      # collapsed into a single lump sum so no cross-project subjects leak.
+      def hidden_minutes(range)
+        range.items.reject { |item| work_package_for(item) }.sum(&:minutes)
+      end
+
       def work_packages_by_id
         @work_packages_by_id ||=
           WorkPackage
@@ -103,15 +129,6 @@ module ResourceAllocations
 
       def work_package_for(item)
         work_packages_by_id[item.work_package_id]
-      end
-
-      # The label for a forced item's row. Items whose work package the user may
-      # not see are shown anonymously to avoid leaking subjects across projects.
-      def work_package_label(item)
-        work_package = work_package_for(item)
-        return t("resource_management.allocate_resource_dialog.overbooking.other_allocation") if work_package.nil?
-
-        "#{work_package.type.name} #{work_package.subject}"
       end
 
       def candidate?(item)

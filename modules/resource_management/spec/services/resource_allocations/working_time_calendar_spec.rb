@@ -61,13 +61,30 @@ RSpec.describe ResourceAllocations::WorkingTimeCalendar do
   end
 
   context "with a newer working hours record mid-range" do
+    # The new record takes effect on a Monday so its overridden monday hours are
+    # distinguishable from the old record's on the switch boundary.
+    let(:switch_day) { Date.new(2026, 1, 19) } # a Monday
+
     before do
-      create(:user_working_hours, user:, valid_from: Date.new(2026, 1, 15), monday: 240)
+      create(:user_working_hours, user:, valid_from: switch_day, monday: 240)
     end
 
-    it "uses the record valid on each date" do
-      expect(calendar.capacity_on(Date.new(2026, 1, 12))).to eq(480)
-      expect(calendar.capacity_on(Date.new(2026, 1, 19))).to eq(240)
+    it "uses the record valid on each date across the switch" do
+      expect(calendar.capacity_on(Date.new(2026, 1, 12))).to eq(480) # Monday before the switch
+      expect(calendar.capacity_on(Date.new(2026, 1, 26))).to eq(240) # Monday after the switch
+    end
+
+    it "applies the newer record from its valid_from date onwards" do
+      expect(calendar.capacity_on(switch_day)).to eq(240) # the switch day itself
+    end
+  end
+
+  context "when no working hours record is in effect yet" do
+    let(:range) { Date.new(2024, 12, 1)..Date.new(2024, 12, 31) }
+
+    it "has zero capacity, even on a weekday the user would otherwise work" do
+      # 2024-12-30 is a Monday, but the only record is valid from 2025-01-01.
+      expect(calendar.capacity_on(Date.new(2024, 12, 30))).to eq(0)
     end
   end
 

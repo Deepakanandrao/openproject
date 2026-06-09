@@ -160,15 +160,22 @@ RSpec.describe ResourceAllocations::Availability do
     end
   end
 
-  describe "#max_daily_minutes" do
-    it "returns the highest single-day capacity in the range" do
-      expect(availability.max_daily_minutes(start_date: monday, end_date: friday)).to eq(480)
+  describe "#working_schedule_summary" do
+    it "summarises the schedule effective on the given date" do
+      expect(availability.working_schedule_summary(date: monday)).to eq("Mon-Fri 8h")
     end
 
-    it "is zero when the user has no working time configured" do
+    it "is nil when the user has no working time configured" do
       other = described_class.new(user: create(:user))
 
-      expect(other.max_daily_minutes(start_date: monday, end_date: friday)).to eq(0)
+      expect(other.working_schedule_summary(date: monday)).to be_nil
+    end
+
+    it "is nil when no schedule is in effect yet on that date" do
+      future_user = create(:user)
+      create(:user_working_hours, user: future_user, valid_from: Date.new(2027, 1, 1))
+
+      expect(described_class.new(user: future_user).working_schedule_summary(date: monday)).to be_nil
     end
   end
 end

@@ -107,7 +107,8 @@ module ResourceAllocations
         end_date: last,
         items:,
         work_package_ids: items.filter_map(&:work_package_id).uniq,
-        over_by_minutes: in_block.map(&:over_by_minutes).max
+        over_by_minutes: in_block.map(&:over_by_minutes).max,
+        available_minutes: capacity_between(first, last)
       )
     end
 

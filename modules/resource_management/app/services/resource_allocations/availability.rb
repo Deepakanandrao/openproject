@@ -86,14 +86,11 @@ module ResourceAllocations
       OverbookingAnalysis.new(calendar: calendar_for(work_items), items: work_items).call
     end
 
-    # The user's highest single-day working capacity (in minutes) across the
-    # range, i.e. the most they could work on any one of those days.
-    def max_daily_minutes(start_date:, end_date:)
-      WorkingTimeCalendar
-        .new(user: @user, range: start_date..end_date)
-        .each_day
-        .map { |_date, minutes| minutes }
-        .max || 0
+    # A compact, human-readable description of the user's working schedule
+    # active on the given date, e.g. "Mon-Fri 8h". Nil when no schedule is in
+    # effect on that date.
+    def working_schedule_summary(date:)
+      UserWorkingHours.for_user(@user).valid_for_date(date)&.working_days_summary
     end
 
     private

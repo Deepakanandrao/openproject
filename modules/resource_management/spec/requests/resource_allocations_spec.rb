@@ -344,6 +344,8 @@ RSpec.describe "ResourceAllocations requests",
 
         expect(response).to have_http_status(:ok)
         expect(response.body).to include(I18n.t("resource_management.allocate_resource_dialog.overbooking.title"))
+        # The user's compact working schedule is shown in the description.
+        expect(response.body).to include("Mon-Fri 8h")
         expect(response.body).to include('name="confirmed"')
       end
 
