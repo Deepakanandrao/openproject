@@ -5791,6 +5791,10 @@ en:
       label_user_custom_field_actions: "User attribute actions"
       new:
         heading: "New attribute"
+    user_custom_fields:
+      header_component:
+        attribute_filter:
+          label: "Filter by attribute name…"
     working_days:
       section_work_week: "Work week"
       section_holidays_and_closures: "Holidays and closures"

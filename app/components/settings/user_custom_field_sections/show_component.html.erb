@@ -60,7 +60,7 @@
         end
       end
       if @ordered_attributes.empty?
-        component.with_row(data: { "empty-list-item": true }) do
+        component.with_row(data: { "empty-list-item": true, "filter--filter-list-target": "searchItem" }) do
           flex_layout(align_items: :center, justify_content: :space_between) do |empty_list_container|
             empty_list_container.with_column(ml: 4, mr: 2) do
               render(Primer::Beta::Text.new(color: :subtle)) { t("settings.user_attributes.label_no_user_custom_fields") }
@@ -92,7 +92,7 @@
           last  = index == @ordered_attributes.size - 1
 
           if UserCustomFieldSection::BUILT_IN_ATTRIBUTES.include?(key)
-            component.with_row(data: draggable_item_config_for_built_in(key)) do
+            component.with_row(data: draggable_item_config_for_built_in(key).merge("filter--filter-list-target": "searchItem")) do
               render(
                 Settings::UserCustomFieldSections::BuiltInAttributeRowComponent.new(
                   section: @user_custom_field_section,
@@ -103,7 +103,7 @@
               )
             end
           elsif (cf = @custom_fields_by_key[key])
-            component.with_row(data: draggable_item_config_for_custom_field(cf)) do
+            component.with_row(data: draggable_item_config_for_custom_field(cf).merge("filter--filter-list-target": "searchItem")) do
               render(
                 custom_field_row_component_class.new(
                   user_custom_field: cf,
