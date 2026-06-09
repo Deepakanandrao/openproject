@@ -40,7 +40,7 @@
 
         @overbooked_ranges.each do |range|
           body.with_row(w: :full, mb: 2) do
-            render(Primer::Box.new(border: true, border_radius: 2, p: 3, text_align: :left)) do
+            render(Primer::Box.new(border: true, border_radius: 2, p: 3, text_align: :left, bg: :subtle)) do
               flex_layout do |box|
                 box.with_row do
                   render(Primer::Beta::Text.new(font_weight: :bold)) { "#{date_range(range.start_date, range.end_date)}:" }
