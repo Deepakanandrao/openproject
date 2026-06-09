@@ -243,5 +243,5 @@ de:
       backlogs:
         sharing_form_component:
           sharing_description: Dieses Projekt kann entweder eigene Sprints teilen, geteilte Sprints empfangen oder Sprints eigenständig bearbeiten (ohne Teilen).
-          sharing_fallback_description: Da es keinen Enterprise-Plan gibt, sind die Optionen für die gemeinsame Nutzung auf die eigenen Sprints des Projekts beschränkt. Die derzeit aktive Einstellung bleibt aktiv.
+          sharing_fallback_description: Ohne einen Enterprise-Plan sind die Optionen für die gemeinsame Nutzung auf die eigenen Sprints des Projekts beschränkt. Die derzeit aktive Einstellung bleibt bestehen.
   remaining_hours: verbleibender Aufwand

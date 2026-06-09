@@ -409,7 +409,7 @@ de:
           enabled: 'Alle Teilnehmenden erhalten aktualisierte Kalendereinladungen per E-Mail, wenn Sie Teilnehmende hinzufügen oder entfernen.
 
             '
-          disabled: 'Die Teilnehmended erhalten keine E-Mail, die sie über Änderungen des Datums, der Uhrzeit oder der Teilnehmer der Besprechung informiert.
+          disabled: 'Die Teilnehmenden erhalten keine E-Mail, die sie über Änderungen des Datums, der Uhrzeit oder der Teilnehmer der Besprechung informiert.
 
             '
         occurrence:

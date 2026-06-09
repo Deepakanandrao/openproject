@@ -28,7 +28,7 @@ de:
         other: Verwandte Seitenlinks
       wikis/xwiki_provider:
         one: XWiki-Anbieter
-        other: XWiki providers
+        other: XWiki-Anbieter
   permission_manage_wiki_page_links: Wiki-Seitenlinks verwalten
   project_module_wiki_platforms: Wiki-Anbieter
   wikis:
@@ -47,10 +47,10 @@ de:
         provider_configured: Konfiguration abgeschlossen
       errors:
         not_configured: Die Verbindung konnte nicht validiert werden. Bitte schließen Sie zuerst die Konfiguration ab.
-        xwiki_oauth_connection_error: OpenProject could not connect to the configured XWiki instance.
-        xwiki_oauth_request_error: An unexpected error occured when trying to communicate with the XWiki instance.
-        xwiki_oauth_token_missing: OpenProject cannot test the user-level communication with XWiki as the user did not yet connect their XWiki account.
-        xwiki_oauth_unauthorized: The user token was not recognized by XWiki.
+        xwiki_oauth_connection_error: OpenProject konnte sich nicht mit der konfigurierten XWiki-Instanz verbinden.
+        xwiki_oauth_request_error: Beim Versuch, mit der XWiki-Instanz zu kommunizieren, ist ein unerwarteter Fehler aufgetreten.
+        xwiki_oauth_token_missing: OpenProject kann die Kommunikation auf Benutzerebene mit XWiki nicht testen, da noch kein XWiki-Konto verknüpft wurde.
+        xwiki_oauth_unauthorized: Das Benutzer-Token wurde von XWiki nicht erkannt.
     work_package_wikis_tab_component:
       inline_page_links: Inline-Seitenlinks
       referencing_pages: Referenziert in
@@ -66,8 +66,8 @@ de:
     admin:
       destroy_confirmation_dialog_component:
         title: Wiki-Anbieter löschen
-        heading: Permanently delete this wiki provider?
-        description_html: The wiki provider %{wiki_provider} and all the related wiki page links will be deleted. In addition, every inline wiki page link will no longer be accessible. This action is irreversible.
+        heading: Diesen Wiki-Anbieter dauerhaft löschen?
+        description_html: Der Wiki-Anbieter %{wiki_provider} und alle zugehörigen Wikiseiten-Links werden gelöscht. Zusätzlich wird jeder Inline-Wiki-Link nicht mehr zugänglich sein. Diese Aktion kann nicht rückgängig gemacht werden.
       forms:
         general_info_form_component:
           xwiki_instance_description: Vergewissern Sie sich, dass Sie über Administratorrechte in Ihrer XWiki-Instanz verfügen, bevor Sie diese Einrichtung starten.
