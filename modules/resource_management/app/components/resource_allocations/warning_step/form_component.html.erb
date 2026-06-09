@@ -1,24 +1,6 @@
 <%=
   component_wrapper do
     flex_layout(align_items: :center, text_align: :center, p: 3) do |body|
-      if schedule_violation?
-        body.with_row(mb: 2) do
-          render(Primer::Beta::Octicon.new(:calendar, size: :medium, color: :danger))
-        end
-
-        body.with_row(mb: 2) do
-          render(Primer::Beta::Heading.new(tag: :h2, font_size: 4)) { outside_dates_heading }
-        end
-
-        body.with_row(mb: 1) do
-          render(Primer::Beta::Text.new(tag: :p, color: :muted, m: 0)) { outside_dates_description }
-        end
-
-        body.with_row(mb: overbooked? ? 4 : 0) do
-          render(Primer::Beta::Text.new(tag: :p, color: :muted, m: 0)) { outside_dates_confirmation }
-        end
-      end
-
       if overbooked?
         body.with_row(mb: 2) do
           render(Primer::Beta::Octicon.new(:hourglass, size: :medium, color: :danger))

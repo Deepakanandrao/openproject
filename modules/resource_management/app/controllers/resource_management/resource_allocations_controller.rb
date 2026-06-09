@@ -48,6 +48,21 @@ module ::ResourceManagement
       render_allocation_step(ResourceAllocation.new(entity: context_work_package))
     end
 
+    # Re-renders the editable step so the inline "outside dates" warning can be
+    # recomputed whenever a date field changes. Uses the EmptyContract so
+    # in-progress input never surfaces validation errors while the user types.
+    def refresh_form
+      allocation = set_attributes(create_params, contract_class: EmptyContract).result
+      replace_via_turbo_stream(
+        component: ResourceAllocations::AllocationStep::FormComponent.new(
+          allocation:,
+          project: @project,
+          allocation_kind:
+        )
+      )
+      respond_with_turbo_streams
+    end
+
     def edit; end
 
     def create
@@ -96,7 +111,7 @@ module ::ResourceManagement
         )
       )
       replace_via_turbo_stream(
-        component: ResourceAllocations::WarningStep::FooterComponent.new(overbooked: ranges.any?)
+        component: ResourceAllocations::WarningStep::FooterComponent.new
       )
       respond_with_turbo_streams
     end
@@ -117,13 +132,13 @@ module ::ResourceManagement
       render_allocation_step(set_attributes(create_params).result)
     end
 
-    # A final confirmation step is shown when the allocation falls outside its
-    # work package's dates and/or would overbook the assigned user. Both
-    # warnings share the one step for now.
+    # A final confirmation step is shown only when the allocation would overbook
+    # the assigned user. The "outside dates" case is now surfaced as an inline
+    # warning in the editable step instead.
     def needs_confirmation?(allocation)
       return false if params[:confirmed].present?
 
-      allocation.schedule_violation.present? || overbooked_ranges(allocation).any?
+      overbooked_ranges(allocation).any?
     end
 
     def overbooked_ranges(allocation)
@@ -161,9 +176,9 @@ module ::ResourceManagement
       @availability ||= ResourceAllocations::Availability.new(user: allocation.principal)
     end
 
-    def set_attributes(attributes)
+    def set_attributes(attributes, contract_class: ResourceAllocations::CreateContract)
       ResourceAllocations::SetAttributesService
-        .new(user: current_user, model: ResourceAllocation.new, contract_class: ResourceAllocations::CreateContract)
+        .new(user: current_user, model: ResourceAllocation.new, contract_class:)
         .call(attributes)
     end
 

@@ -30,8 +30,8 @@
 
 module ResourceAllocations
   module WarningStep
-    # Final confirmation step shown before an allocation is created. It hosts the
-    # "outside dates" and "overbooking" warnings; either or both may be present.
+    # Final confirmation step shown before an overbooking allocation is created.
+    # The "outside dates" case is surfaced inline in the editable step instead.
     class FormComponent < ApplicationComponent
       include ApplicationHelper
       include OpTurbo::Streamable
@@ -53,31 +53,11 @@ module ResourceAllocations
         ResourceAllocations::NewDialogComponent::BODY_ID
       end
 
-      def schedule_violation?
-        @allocation.schedule_violation.present?
-      end
-
       def overbooked?
         @overbooked_ranges.any?
       end
 
       private
-
-      def outside_dates_heading
-        t("resource_management.allocate_resource_dialog.outside_dates.title")
-      end
-
-      def outside_dates_description
-        t(
-          "resource_management.allocate_resource_dialog.outside_dates.description",
-          resource_dates: date_range(@allocation.start_date, @allocation.end_date),
-          work_package_dates: date_range(@allocation.entity_start_date, @allocation.entity_due_date)
-        )
-      end
-
-      def outside_dates_confirmation
-        t("resource_management.allocate_resource_dialog.outside_dates.confirm_#{@allocation.schedule_violation}")
-      end
 
       def overbooking_heading
         t("resource_management.allocate_resource_dialog.overbooking.title")

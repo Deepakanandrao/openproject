@@ -34,11 +34,6 @@ module ResourceAllocations
       include OpTurbo::Streamable
       include OpPrimer::ComponentHelpers
 
-      def initialize(overbooked: false)
-        super
-        @overbooked = overbooked
-      end
-
       def wrapper_key
         ResourceAllocations::NewDialogComponent::FOOTER_ID
       end

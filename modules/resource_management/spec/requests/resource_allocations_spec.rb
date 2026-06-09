@@ -79,6 +79,44 @@ RSpec.describe "ResourceAllocations requests",
     end
   end
 
+  describe "GET refresh_form" do
+    shared_let(:dated_work_package) do
+      create(:work_package, project:, start_date: Date.new(2026, 1, 15), due_date: Date.new(2026, 2, 20))
+    end
+
+    def refresh(start_date:, end_date:)
+      get refresh_form_project_resource_allocations_path(project),
+          params: {
+            allocation_kind: "principal",
+            resource_allocation: {
+              principal_id: assignee.id,
+              entity_type: "WorkPackage",
+              entity_id: dated_work_package.id,
+              start_date:,
+              end_date:,
+              allocated_hours: "40h"
+            }
+          },
+          as: :turbo_stream
+    end
+
+    it "re-renders the editable step with the inline warning when the dates fall outside the work package" do
+      refresh(start_date: "2026-02-24", end_date: "2026-02-25")
+
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include("opce-user-autocompleter")
+      expect(response.body).to include("outside of the work")
+    end
+
+    it "re-renders the editable step without the warning when the dates fit" do
+      refresh(start_date: "2026-01-20", end_date: "2026-01-21")
+
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include("opce-user-autocompleter")
+      expect(response.body).not_to include("outside of the work")
+    end
+  end
+
   describe "POST create" do
     context "for an explicit user" do
       subject(:perform) do
@@ -257,36 +295,14 @@ RSpec.describe "ResourceAllocations requests",
         }
       end
 
-      it "does not create yet and renders the confirmation step" do
+      # Falling outside the work package's dates no longer blocks creation; it is
+      # surfaced as an inline warning in the editable step instead.
+      it "creates the allocation directly without a confirmation step" do
         expect do
           post project_resource_allocations_path(project), params: base_params, as: :turbo_stream
-        end.not_to change(ResourceAllocation, :count)
-
-        expect(response).to have_http_status(:ok)
-        expect(response.body).to include("outside of the work")
-        expect(response.body).to include('name="confirmed"')
-      end
-
-      it "creates the allocation once confirmed" do
-        expect do
-          post project_resource_allocations_path(project),
-               params: base_params.merge(confirmed: "1"),
-               as: :turbo_stream
         end.to change(ResourceAllocation, :count).by(1)
 
         expect(ResourceAllocation.last.entity).to eq(dated_work_package)
-      end
-
-      it "returns to the editable step without creating when going back" do
-        expect do
-          post project_resource_allocations_path(project),
-               params: base_params.merge(back: "1"),
-               as: :turbo_stream
-        end.not_to change(ResourceAllocation, :count)
-
-        expect(response).to have_http_status(:ok)
-        # The editable step re-renders the user autocompleter.
-        expect(response.body).to include("opce-user-autocompleter")
       end
     end
 
