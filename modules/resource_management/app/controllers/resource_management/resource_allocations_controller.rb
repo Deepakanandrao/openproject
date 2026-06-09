@@ -53,17 +53,11 @@ module ::ResourceManagement
     def create
       # The confirmation step's "Back" button resubmits the carried form values
       # so the editable step can be re-rendered pre-filled.
-      return render_allocation_step(set_attributes(create_params).result) if params[:back].present?
+      return render_back_step if params[:back].present?
 
       validation = set_attributes(create_params)
-
-      if validation.failure?
-        return render_allocation_step(validation.result, status: :unprocessable_entity)
-      end
-
-      if validation.result.schedule_violation && params[:confirmed].blank?
-        return render_outside_dates_step(validation.result)
-      end
+      return render_allocation_step(validation.result, status: :unprocessable_entity) if validation.failure?
+      return render_outside_dates_step(validation.result) if needs_date_confirmation?(validation.result)
 
       persist_allocation
     end
@@ -111,6 +105,14 @@ module ::ResourceManagement
       else
         render_allocation_step(call.result, status: :unprocessable_entity)
       end
+    end
+
+    def render_back_step
+      render_allocation_step(set_attributes(create_params).result)
+    end
+
+    def needs_date_confirmation?(allocation)
+      allocation.schedule_violation && params[:confirmed].blank?
     end
 
     def set_attributes(attributes)
