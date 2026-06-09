@@ -78,7 +78,7 @@ module Settings
         [
           { href: admin_index_path, text: t("label_administration") },
           { href: admin_settings_user_custom_fields_path, text: t("label_user_and_permission") },
-          { href: admin_settings_user_custom_fields_path, text: t("settings.user_attributes.heading") },
+          { href: admin_settings_user_custom_fields_path, text: t("settings.user_custom_fields.heading") },
           helpers.nested_breadcrumb_element(helpers.label_for_custom_field_format(@custom_field.field_format),
                                             @custom_field.attribute_in_database("name"))
         ]

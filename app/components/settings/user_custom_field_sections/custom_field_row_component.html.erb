@@ -32,7 +32,7 @@
       end
       main_container.with_column do
         render(Primer::Alpha::ActionMenu.new(data: { test_selector: "user-custom-field-action-menu" })) do |menu|
-          menu.with_show_button(icon: "kebab-horizontal", "aria-label": t("settings.user_attributes.label_user_custom_field_actions"), scheme: :invisible)
+          menu.with_show_button(icon: "kebab-horizontal", "aria-label": t(".label_user_custom_field_actions"), scheme: :invisible)
           edit_action_item(menu)
           move_actions(menu)
           delete_action_item(menu)

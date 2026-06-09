@@ -45,7 +45,7 @@ module Settings
       def breadcrumbs_items
         [{ href: admin_index_path, text: t("label_administration") },
          { href: admin_settings_user_custom_fields_path, text: t("label_user_and_permission") },
-         t("settings.user_attributes.heading")]
+         t("settings.user_custom_fields.heading")]
       end
 
       def allow_custom_field_creation?

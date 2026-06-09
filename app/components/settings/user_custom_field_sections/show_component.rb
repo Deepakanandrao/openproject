@@ -111,7 +111,7 @@ module Settings
       end
 
       def edit_action_item(menu)
-        menu.with_item(label: t("settings.user_attributes.label_edit_section"),
+        menu.with_item(label: t(".label_edit_section"),
                        tag: :button,
                        content_arguments: {
                          "data-show-dialog-id": "user-custom-field-section-dialog#{@user_custom_field_section.id}",

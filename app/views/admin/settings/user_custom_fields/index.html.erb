@@ -26,7 +26,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
-<% html_title t(:label_administration), t("settings.user_attributes.heading") %>
+<% html_title t(:label_administration), t("settings.user_custom_fields.heading") %>
 
 <div data-turbo="true" data-controller="filter--filter-list" data-filter--filter-list-clear-button-id-value="attribute-filter-clear-button">
   <%= render(Settings::UserCustomFields::HeaderComponent.new(allow_custom_field_creation: @allow_custom_field_creation)) %>

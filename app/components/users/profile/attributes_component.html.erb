@@ -16,7 +16,7 @@
 
         sections_with_fields.each do |custom_field_section, fields|
           details_container.with_row(mt: 3, font_weight: :bold, color: :subtle) do
-            custom_field_section.name.presence || t("settings.user_attributes.label_untitled_section")
+            custom_field_section.name.presence || t("settings.user_custom_fields.label_untitled_section")
           end
 
           fields.each do |custom_field|

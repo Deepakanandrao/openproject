@@ -32,7 +32,7 @@ module Settings
   module UserCustomFields
     class NewFormHeaderComponent < ApplicationComponent
       def page_title
-        concat t("settings.user_attributes.new.heading")
+        concat t("settings.user_custom_fields.new.heading")
         concat render(Primer::Beta::Text.new(color: :muted)) { " (#{helpers.label_for_custom_field_format(model.field_format)})" }
       end
 
@@ -40,9 +40,9 @@ module Settings
         [
           { href: admin_index_path, text: t("label_administration") },
           { href: admin_settings_user_custom_fields_path, text: t("label_user_and_permission") },
-          { href: admin_settings_user_custom_fields_path, text: t("settings.user_attributes.heading") },
+          { href: admin_settings_user_custom_fields_path, text: t("settings.user_custom_fields.heading") },
           helpers.nested_breadcrumb_element(helpers.label_for_custom_field_format(model.field_format),
-                                            t("settings.user_attributes.new.heading"))
+                                            t("settings.user_custom_fields.new.heading"))
         ]
       end
     end

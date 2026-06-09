@@ -13,7 +13,7 @@
         end
         content_container.with_column do
           render(Primer::Beta::Label.new(scheme: :secondary, size: :medium)) do
-            t("settings.user_attributes.label_built_in")
+            t(".label_built_in")
           end
         end
       end
@@ -21,7 +21,7 @@
         render(Primer::Alpha::ActionMenu.new(data: { test_selector: "built-in-attribute-action-menu" })) do |menu|
           menu.with_show_button(
             icon: "kebab-horizontal",
-            "aria-label": t("settings.user_attributes.label_built_in_attribute_actions"),
+            "aria-label": t(".label_built_in_attribute_actions"),
             scheme: :invisible
           )
           move_actions(menu)

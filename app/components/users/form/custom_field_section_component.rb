@@ -41,7 +41,7 @@ module Users
       end
 
       def title
-        @section.name.presence || I18n.t("settings.user_attributes.label_untitled_section")
+        @section.name.presence || I18n.t("settings.user_custom_fields.label_untitled_section")
       end
 
       def built_in?(key)

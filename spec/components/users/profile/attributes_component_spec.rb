@@ -78,7 +78,7 @@ RSpec.describe Users::Profile::AttributesComponent, type: :component do
       let(:section) { create(:user_custom_field_section).tap { |s| s.update_column(:name, nil) } }
 
       it "renders the I18n fallback label" do
-        expect(page).to have_text(I18n.t("settings.user_attributes.label_untitled_section"))
+        expect(page).to have_text(I18n.t("settings.user_custom_fields.label_untitled_section"))
       end
     end
 

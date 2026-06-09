@@ -9,7 +9,7 @@
             end
             content_container.with_column do
               render(Primer::Beta::Text.new(font_weight: :bold)) do
-                @user_custom_field_section.name.presence || t("settings.user_attributes.label_untitled_section")
+                @user_custom_field_section.name.presence || t("settings.user_custom_fields.label_untitled_section")
               end
             end
           end
@@ -17,7 +17,7 @@
           section_header_container.with_column(flex_layout: true, justify_content: :flex_end) do |actions_container|
             actions_container.with_column do
               render(Primer::Alpha::ActionMenu.new(data: { test_selector: "user-custom-field-section-action-menu" })) do |menu|
-                menu.with_show_button(icon: "kebab-horizontal", "aria-label": t("settings.user_attributes.label_section_actions"), scheme: :invisible)
+                menu.with_show_button(icon: "kebab-horizontal", "aria-label": t(".label_section_actions"), scheme: :invisible)
                 edit_action_item(menu)
                 move_actions(menu)
                 if @ordered_attributes.empty?
@@ -29,9 +29,9 @@
                 menu.with_divider
 
                 menu.with_sub_menu_item(
-                  label: t("settings.user_attributes.label_new_attribute"),
+                  label: t("settings.user_custom_fields.label_new_attribute"),
                   content_arguments: {
-                    aria: { label: t("settings.user_attributes.label_add_attribute") },
+                    aria: { label: t(".label_add_attribute") },
                     data: { test_selector: "new-user-custom-field-in-section-submenu" }
                   }
                 ) do |sub_menu|
@@ -48,7 +48,7 @@
             actions_container.with_column do
               render(
                 Primer::Alpha::Dialog.new(
-                  id: "user-custom-field-section-dialog#{@user_custom_field_section.id}", title: t("settings.user_attributes.label_new_section"),
+                  id: "user-custom-field-section-dialog#{@user_custom_field_section.id}", title: t("settings.user_custom_fields.label_new_section"),
                   size: :medium_portrait,
                   data: { "keep-open-on-submit": true }
                 )
@@ -63,18 +63,18 @@
         component.with_row(data: { "empty-list-item": true, "filter--filter-list-target": "searchItem" }) do
           flex_layout(align_items: :center, justify_content: :space_between) do |empty_list_container|
             empty_list_container.with_column(ml: 4, mr: 2) do
-              render(Primer::Beta::Text.new(color: :subtle)) { t("settings.user_attributes.label_no_user_custom_fields") }
+              render(Primer::Beta::Text.new(color: :subtle)) { t(".label_no_user_custom_fields") }
             end
             empty_list_container.with_column do
               render(Primer::Alpha::ActionMenu.new(data: { test_selector: "new-user-custom-field-in-section-button" })) do |menu|
                 menu.with_show_button(
                   scheme: :secondary,
-                  "aria-label": t("settings.user_attributes.label_new_attribute")
+                  "aria-label": t("settings.user_custom_fields.label_new_attribute")
                 ) do |btn|
                   btn.with_leading_visual_icon(icon: :plus)
                   btn.with_trailing_visual_icon(icon: :"triangle-down")
 
-                  t("settings.user_attributes.label_new_attribute")
+                  t("settings.user_custom_fields.label_new_attribute")
                 end
 
                 OpenProject::CustomFieldFormat.available_for_class_name("User")
