@@ -3,11 +3,11 @@ cs:
   activerecord:
     attributes:
       wikis/page_link:
-        provider: Wiki Provider
+        provider: Poskytovatel Wiki
       wikis/xwiki_provider:
         authentication_method: Způsob ověření
         authentication_methods:
-          oauth2_sso: Single-Sign-On through OpenID Connect Identity Provider
+          oauth2_sso: Jednotné přihlášení prostřednictvím poskytovatele identit OpenID Connect
           two_way_oauth2: Two-way OAuth 2.0 authorization code flow
         name: Name
         token_exchange_scope: XWiki Scope
