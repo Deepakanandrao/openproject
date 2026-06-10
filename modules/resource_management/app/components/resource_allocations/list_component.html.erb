@@ -27,33 +27,21 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
 
-<%=
-  render(Primer::Alpha::Dialog.new(id: DIALOG_ID, title:, size: :large, classes: "Overlay--size-large-portrait")) do |dialog|
-    dialog.with_header(variant: :large)
-
-    dialog.with_body do
-      render(ResourceAllocations::ListComponent.new(project:, work_package:, allocations:, visible_principal_ids:))
-    end
-
-    dialog.with_footer(show_divider: true) do
-      flex_layout(justify_content: :space_between, align_items: :center) do |footer|
-        footer.with_column do
-          render Primer::Beta::Button.new(
-            scheme: :link,
-            tag: :a,
-            href: allocate_resource_path,
-            data: { controller: "async-dialog" }
-          ) do |button|
-            button.with_leading_visual_icon(icon: :"person-add")
-            t("resource_management.work_package_allocations_dialog.allocate_resource")
-          end
-        end
-        footer.with_column do
-          render(Primer::Beta::Button.new(data: { "close-dialog-id": DIALOG_ID })) do
-            t(:button_close)
-          end
-        end
-      end
-    end
-  end
-%>
+<%= component_wrapper do %>
+  <%= flex_layout do |body| %>
+    <%= body.with_row(mb: 3) do %>
+      <%= render(ResourceAllocations::ProgressComponent.new(work_package:, allocations:)) %>
+    <% end %>
+    <% if allocations.any? %>
+      <%= body.with_row do %>
+        <%= render(Primer::Beta::BorderBox.new) do |box| %>
+          <% allocations.each do |allocation| %>
+            <% box.with_row do %>
+              <%= render(ResourceAllocations::ListItemComponent.new(allocation:, visible: visible_principal?(allocation))) %>
+            <% end %>
+          <% end %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>

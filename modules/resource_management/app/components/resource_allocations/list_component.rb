@@ -28,14 +28,15 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
+
 module ResourceAllocations
-  # The dialog shell around a work package's allocation list, with a footer to
-  # allocate another resource.
-  class ListDialogComponent < ApplicationComponent
+  # The body of the work package allocations dialog: the allocation progress
+  # summary and one row per allocation. Streamable so the dialog content can be
+  # refreshed after an allocation changes. Allocations whose principal is not
+  # visible to the current user are still listed, but anonymised.
+  class ListComponent < ApplicationComponent
     include OpTurbo::Streamable
     include OpPrimer::ComponentHelpers
-
-    DIALOG_ID = "work-package-allocations-dialog"
 
     def initialize(project:, work_package:, allocations:, visible_principal_ids:)
       super
@@ -50,12 +51,8 @@ module ResourceAllocations
 
     attr_reader :project, :work_package, :allocations, :visible_principal_ids
 
-    def title
-      I18n.t("resource_management.work_package_allocations_dialog.title")
-    end
-
-    def allocate_resource_path
-      new_project_resource_allocation_path(project, work_package_id: work_package.id)
+    def visible_principal?(allocation)
+      allocation.principal_id.nil? || visible_principal_ids.include?(allocation.principal_id)
     end
   end
 end
