@@ -68,7 +68,7 @@ module ResourceAllocations
     end
 
     def context_menu
-      render(Primer::Alpha::ActionMenu.new) do |menu|
+      render(Primer::Alpha::ActionMenu.new(size: :small, anchor_align: :end)) do |menu|
         menu.with_show_button(icon: "kebab-horizontal",
                               "aria-label": t("resource_management.work_package_allocations_dialog.context_menu_label"),
                               scheme: :invisible)

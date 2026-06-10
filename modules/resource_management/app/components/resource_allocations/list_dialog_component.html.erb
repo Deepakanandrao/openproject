@@ -36,24 +36,27 @@ See COPYRIGHT and LICENSE files for more details.
     end
 
     dialog.with_footer(show_divider: true) do
-      flex_layout(justify_content: :space_between, align_items: :center) do |footer|
-        footer.with_column do
-          render Primer::Beta::Button.new(
+      # `mr: :auto` pushes the allocate action to the left of the footer's
+      # flex row, leaving the close button right-aligned.
+      concat(
+        render(
+          Primer::Beta::Button.new(
             scheme: :link,
             tag: :a,
             href: allocate_resource_path,
+            mr: :auto,
             data: { controller: "async-dialog" }
-          ) do |button|
-            button.with_leading_visual_icon(icon: :"person-add")
-            t("resource_management.work_package_allocations_dialog.allocate_resource")
-          end
+          )
+        ) do |button|
+          button.with_leading_visual_icon(icon: :"person-add")
+          t("resource_management.work_package_allocations_dialog.allocate_resource")
         end
-        footer.with_column do
-          render(Primer::Beta::Button.new(data: { "close-dialog-id": DIALOG_ID })) do
-            t(:button_close)
-          end
+      )
+      concat(
+        render(Primer::Beta::Button.new(data: { "close-dialog-id": DIALOG_ID })) do
+          t(:button_close)
         end
-      end
+      )
     end
   end
 %>
