@@ -151,6 +151,13 @@ to requests and also can't be added or altered through JavaScript. It's unlikely
 should only be used for browser-contexts, where the new header will still be present. Non-browser API-access should use different authentication
 methods (e.g. OAuth or API tokens), which are not affected by this change.
 
+### SSRF protection for the SAML integration
+
+In previous releases, we have introduced improved mechanisms to prevent Server-Side Request Forgery (SSRF) for integrations that communicate with external hosts. In this release, we have extended the SSRF protections to SAML.
+
+In most installations, this will not require any changes.
+However, if you operate your SAML using internal IP addresses, you may need to add your IP or range to the `OPENPROJECT_SSRF_PROTECTION_IP_ALLOWLIST` configuration. Please see [the configuration guide for SSRF](https://www.openproject.org/docs/installation-and-operations/configuration/ssrf-protection/) for more information.
+
 <!-- Remove this section if empty, add to it in pull requests linking to tickets and provide information -->
 
 <!-- BEGIN SECURITY FIXES AUTOMATED SECTION -->
