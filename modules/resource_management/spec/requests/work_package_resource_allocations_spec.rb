@@ -76,6 +76,32 @@ RSpec.describe "WorkPackage resource allocations requests", type: :rails_request
       expect(response.body).to include(I18n.t("resource_management.work_package_allocations_dialog.hidden_user"))
     end
 
+    it "offers no row actions to a user who may not manage allocations" do
+      get path, as: :turbo_stream
+
+      expect(response.body).not_to include("/edit")
+    end
+
+    context "when the user may manage allocations" do
+      shared_let(:manager) do
+        create(:user,
+               member_with_permissions: {
+                 project => %i[view_resource_planners allocate_user_resources view_work_packages]
+               })
+      end
+
+      before { login_as(manager) }
+
+      it "offers edit and delete row actions" do
+        allocation = ResourceAllocation.find_by(principal: assignee)
+
+        get path, as: :turbo_stream
+
+        expect(response.body).to include(edit_project_resource_allocation_path(project, allocation))
+        expect(response.body).to include(I18n.t(:button_delete))
+      end
+    end
+
     context "when an assigned user is overbooked" do
       let!(:overbooked_allocation) do
         create(:resource_allocation,

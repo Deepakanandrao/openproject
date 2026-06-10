@@ -30,40 +30,31 @@
 
 
 module ResourceAllocations
-  # The body of the work package allocations dialog: the allocation progress
-  # summary and one row per allocation. Streamable so the dialog content can be
-  # refreshed after an allocation changes. Allocations whose principal is not
-  # visible to the current user are still listed, but anonymised.
-  class ListComponent < ApplicationComponent
+  # A single-step dialog to edit a persisted allocation, reusing the create
+  # wizard's allocation form (which submits an update for persisted records).
+  class EditDialogComponent < ApplicationComponent
     include OpTurbo::Streamable
     include OpPrimer::ComponentHelpers
 
-    def initialize(project:, work_package:, allocations:, visible_principal_ids:, overbooked_ids: Set.new)
+    DIALOG_ID = "edit-resource-allocation-dialog"
+
+    def initialize(project:, allocation:)
       super
 
       @project = project
-      @work_package = work_package
-      @allocations = allocations
-      @visible_principal_ids = visible_principal_ids
-      @overbooked_ids = overbooked_ids
+      @allocation = allocation
     end
 
     private
 
-    attr_reader :project, :work_package, :allocations, :visible_principal_ids, :overbooked_ids
+    attr_reader :project, :allocation
 
-    def visible_principal?(allocation)
-      allocation.principal_id.nil? || visible_principal_ids.include?(allocation.principal_id)
+    def allocation_kind
+      allocation.principal_explicit? ? "principal" : "filter"
     end
 
-    def overbooked?(allocation)
-      overbooked_ids.include?(allocation.id)
-    end
-
-    def editable?
-      return @editable if defined?(@editable)
-
-      @editable = User.current.allowed_in_project?(:allocate_user_resources, project)
+    def title
+      I18n.t("resource_management.edit_allocation_dialog.title")
     end
   end
 end

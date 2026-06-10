@@ -38,17 +38,22 @@ module ResourceAllocations
 
     AVATAR_SIZE = 24
 
-    def initialize(allocation:, visible:, overbooked: false)
+    # `editable` enables the row's edit/delete menu (the caller checks the
+    # permission). It stays hidden for an anonymised row regardless, since the
+    # edit form would reveal the hidden user.
+    def initialize(allocation:, project:, visible:, overbooked: false, editable: false)
       super
 
       @allocation = allocation
+      @project = project
       @visible = visible
       @overbooked = overbooked
+      @editable = editable
     end
 
     private
 
-    attr_reader :allocation
+    attr_reader :allocation, :project
 
     def visible?
       @visible
@@ -56,6 +61,49 @@ module ResourceAllocations
 
     def overbooked?
       @overbooked
+    end
+
+    def menu?
+      @editable && visible?
+    end
+
+    def context_menu
+      render(Primer::Alpha::ActionMenu.new) do |menu|
+        menu.with_show_button(icon: "kebab-horizontal",
+                              "aria-label": t("resource_management.work_package_allocations_dialog.context_menu_label"),
+                              scheme: :invisible)
+
+        edit_item(menu)
+        delete_item(menu)
+      end
+    end
+
+    def edit_item(menu)
+      menu.with_item(
+        label: I18n.t(:button_edit),
+        tag: :a,
+        href: helpers.edit_project_resource_allocation_path(project, allocation),
+        content_arguments: { data: { controller: "async-dialog" } }
+      ) do |item|
+        item.with_leading_visual_icon(icon: :pencil)
+      end
+    end
+
+    def delete_item(menu)
+      menu.with_item(
+        label: I18n.t(:button_delete),
+        scheme: :danger,
+        href: helpers.project_resource_allocation_path(project, allocation),
+        form_arguments: {
+          method: :delete,
+          data: {
+            turbo_confirm: t("resource_management.work_package_allocations_dialog.delete_confirmation"),
+            turbo_stream: true
+          }
+        }
+      ) do |item|
+        item.with_leading_visual_icon(icon: :trash)
+      end
     end
 
     def name

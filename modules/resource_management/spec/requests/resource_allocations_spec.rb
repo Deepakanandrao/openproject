@@ -451,13 +451,112 @@ RSpec.describe "ResourceAllocations requests",
     end
   end
 
+  describe "GET edit" do
+    shared_let(:allocation) { create(:resource_allocation, entity: work_package, principal: assignee) }
+
+    it "opens the edit dialog with the allocation form" do
+      get edit_project_resource_allocation_path(project, allocation), as: :turbo_stream
+
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include(I18n.t("resource_management.edit_allocation_dialog.title"))
+      expect(response.body).to include("resource_allocation[allocated_hours]")
+    end
+
+    context "for an allocation of another project's work package" do
+      let(:other_allocation) { create(:resource_allocation) }
+
+      it "is not found" do
+        get edit_project_resource_allocation_path(project, other_allocation), as: :turbo_stream
+
+        expect(response).to have_http_status(:not_found)
+      end
+    end
+  end
+
+  describe "PATCH update" do
+    let!(:allocation) do
+      create(:resource_allocation, entity: work_package, principal: assignee, allocated_time: 600)
+    end
+
+    def perform(allocated_hours: "16h")
+      patch project_resource_allocation_path(project, allocation),
+            params: {
+              allocation_kind: "principal",
+              resource_allocation: {
+                principal_id: assignee.id,
+                entity_type: "WorkPackage",
+                entity_id: work_package.id,
+                start_date: "2026-03-02",
+                end_date: "2026-03-06",
+                allocated_hours:
+              }
+            },
+            as: :turbo_stream
+    end
+
+    it "updates the allocation and confirms it" do
+      perform
+
+      expect(response).to have_http_status(:ok)
+      expect(allocation.reload.allocated_time).to eq(16 * 60)
+      expect(allocation.start_date).to eq(Date.new(2026, 3, 2))
+      expect(allocation.end_date).to eq(Date.new(2026, 3, 6))
+      expect(response.body).to include(I18n.t("resource_management.edit_allocation_dialog.success_message"))
+    end
+
+    context "with invalid input" do
+      it "re-renders the form unprocessable and keeps the allocation unchanged" do
+        perform(allocated_hours: "")
+
+        expect(response).to have_http_status(:unprocessable_entity)
+        expect(allocation.reload.allocated_time).to eq(600)
+      end
+    end
+  end
+
+  describe "DELETE destroy" do
+    let!(:allocation) { create(:resource_allocation, entity: work_package, principal: assignee) }
+
+    it "deletes the allocation and confirms it" do
+      expect do
+        delete project_resource_allocation_path(project, allocation), as: :turbo_stream
+      end.to change(ResourceAllocation, :count).by(-1)
+
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include(I18n.t("resource_management.work_package_allocations_dialog.delete_success"))
+    end
+  end
+
   context "without the allocate_user_resources permission" do
     shared_let(:viewer) { create(:user, member_with_permissions: { project => %i[view_resource_planners] }) }
+    shared_let(:allocation) { create(:resource_allocation, entity: work_package, principal: assignee) }
 
     before { login_as viewer }
 
     it "denies access to the new dialog" do
       get new_project_resource_allocation_path(project), as: :turbo_stream
+
+      expect(response).to have_http_status(:forbidden)
+    end
+
+    it "denies access to the edit dialog" do
+      get edit_project_resource_allocation_path(project, allocation), as: :turbo_stream
+
+      expect(response).to have_http_status(:forbidden)
+    end
+
+    it "denies updating an allocation" do
+      patch project_resource_allocation_path(project, allocation),
+            params: { allocation_kind: "principal", resource_allocation: { allocated_hours: "1h" } },
+            as: :turbo_stream
+
+      expect(response).to have_http_status(:forbidden)
+    end
+
+    it "denies deleting an allocation" do
+      expect do
+        delete project_resource_allocation_path(project, allocation), as: :turbo_stream
+      end.not_to change(ResourceAllocation, :count)
 
       expect(response).to have_http_status(:forbidden)
     end

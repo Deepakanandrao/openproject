@@ -53,4 +53,9 @@ See COPYRIGHT and LICENSE files for more details.
           ) %>
     <% end %>
   <% end %>
+  <% if menu? %>
+    <%= row.with_column(ml: 2) do %>
+      <%= context_menu %>
+    <% end %>
+  <% end %>
 <% end %>

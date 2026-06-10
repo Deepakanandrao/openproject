@@ -36,9 +36,10 @@ RSpec.describe ResourceAllocations::ListItemComponent, type: :component do
 
   let(:visible) { true }
   let(:overbooked) { false }
+  let(:editable) { false }
 
   subject(:rendered) do
-    render_inline(described_class.new(allocation:, visible:, overbooked:))
+    render_inline(described_class.new(allocation:, project: work_package.project, visible:, overbooked:, editable:))
     page
   end
 
@@ -61,6 +62,35 @@ RSpec.describe ResourceAllocations::ListItemComponent, type: :component do
 
     it "shows a danger warning icon" do
       expect(rendered).to have_css(".octicon-alert-fill#resource-allocation-overbooked-#{allocation.id}")
+    end
+  end
+
+  context "when the user may manage allocations" do
+    let(:allocation) { create(:resource_allocation, entity: work_package, principal: member, allocated_time: 720) }
+    let(:editable) { true }
+
+    it "offers an edit/delete menu" do
+      expect(rendered).to have_css("action-menu")
+      expect(rendered).to have_css("a[href*='/resource_allocations/#{allocation.id}/edit']", visible: :all)
+      expect(rendered).to have_button(I18n.t(:button_delete), visible: :all)
+    end
+  end
+
+  context "when the user may manage allocations but not see the member" do
+    let(:allocation) { create(:resource_allocation, entity: work_package, principal: member, allocated_time: 720) }
+    let(:editable) { true }
+    let(:visible) { false }
+
+    it "offers no menu, since editing would reveal the hidden user" do
+      expect(rendered).to have_no_css("action-menu")
+    end
+  end
+
+  context "when the user may not manage allocations" do
+    let(:allocation) { create(:resource_allocation, entity: work_package, principal: member, allocated_time: 720) }
+
+    it "offers no menu" do
+      expect(rendered).to have_no_css("action-menu")
     end
   end
 
