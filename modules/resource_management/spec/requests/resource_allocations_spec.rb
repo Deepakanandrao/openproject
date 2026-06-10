@@ -161,6 +161,14 @@ RSpec.describe "ResourceAllocations requests",
         expect(allocation.user_filter).to eq([])
         expect(allocation.requested_by).to eq(user)
       end
+
+      it "refreshes the open allocations list and announces the change for the planner table" do
+        perform
+
+        expect(response).to have_http_status(:ok)
+        expect(response.body).to include('target="resource-allocations-list-component"')
+        expect_allocation_change_announced_for(work_package)
+      end
     end
 
     context "for a filter-criteria placeholder" do
@@ -504,6 +512,12 @@ RSpec.describe "ResourceAllocations requests",
       expect(response.body).to include(I18n.t("resource_management.edit_allocation_dialog.success_message"))
     end
 
+    it "announces the change so the planner table can refresh" do
+      perform
+
+      expect_allocation_change_announced_for(work_package)
+    end
+
     context "with invalid input" do
       it "re-renders the form unprocessable and keeps the allocation unchanged" do
         perform(allocated_hours: "")
@@ -590,6 +604,13 @@ RSpec.describe "ResourceAllocations requests",
       expect(response).to have_http_status(:ok)
       expect(response.body).to include(I18n.t("resource_management.work_package_allocations_dialog.delete_success"))
     end
+
+    it "refreshes the open allocations list and announces the change for the planner table" do
+      delete project_resource_allocation_path(project, allocation), as: :turbo_stream
+
+      expect(response.body).to include('target="resource-allocations-list-component"')
+      expect_allocation_change_announced_for(work_package)
+    end
   end
 
   context "without the allocate_user_resources permission" do
@@ -645,5 +666,15 @@ RSpec.describe "ResourceAllocations requests",
 
       expect(response).to have_http_status(:forbidden)
     end
+  end
+
+  # The controller emits a `dispatchEvent` turbo stream carrying the changed
+  # work package so an open resource planner table can reload it.
+  def expect_allocation_change_announced_for(work_package)
+    event = Nokogiri::HTML5.fragment(response.body).at_css('turbo-stream[action="dispatchEvent"]')
+
+    expect(event).to be_present
+    expect(event["event-name"]).to eq("resource-allocations:changed")
+    expect(JSON.parse(event["detail"])).to eq("work_package_id" => work_package.id)
   end
 end

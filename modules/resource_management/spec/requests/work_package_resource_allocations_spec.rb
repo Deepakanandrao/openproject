@@ -62,6 +62,15 @@ RSpec.describe "WorkPackage resource allocations requests", type: :rails_request
       expect(response.body).to include(I18n.t("resource_management.work_package_allocations_dialog.title"))
     end
 
+    # An inline delete submits a form inside the dialog; without this flag the
+    # global submit-end handler would close the dialog on success.
+    it "keeps the dialog open across in-dialog form submissions" do
+      get path, as: :turbo_stream
+
+      dialog = Nokogiri::HTML5.fragment(response.body).at_css("dialog")
+      expect(dialog["data-keep-open-on-submit"]).to eq("true")
+    end
+
     it "names the visible member and the filter allocation" do
       get path, as: :turbo_stream
 
