@@ -30,6 +30,7 @@
 module ::ResourceManagement
   class ResourcePlannerViewsController < BaseController
     include OpTurbo::ComponentStream
+    include PlannerViewContent
 
     menu_item :resource_management
 
@@ -47,7 +48,7 @@ module ::ResourceManagement
                            move_work_package reorder_work_package]
 
     def show
-      @content_component = work_package_list_content
+      @content_component = work_package_list_content(@view)
     end
 
     def new
@@ -190,24 +191,7 @@ module ::ResourceManagement
     end
 
     def replace_work_package_list
-      replace_via_turbo_stream(component: work_package_list_content)
-    end
-
-    # Loads the view's work packages and their allocations in one place so the
-    # allocation columns (progress bar and members) share a single query rather
-    # than each issuing their own.
-    def work_package_list_content(view = @view)
-      work_packages = view.is_a?(ResourceWorkPackageList) ? view.work_packages.to_a : []
-      allocations = ResourceAllocation.allocated_for_work_packages(work_packages)
-
-      ResourcePlannerViews::ContentComponent.new(
-        view:,
-        project: @project,
-        resource_planner: @resource_planner,
-        work_packages:,
-        allocations:,
-        visible_principal_ids: ResourceAllocation.visible_principal_ids(allocations.values.flatten, current_user)
-      )
+      replace_via_turbo_stream(component: work_package_list_content(@view))
     end
 
     def render_configure_step(view, status: :ok)
