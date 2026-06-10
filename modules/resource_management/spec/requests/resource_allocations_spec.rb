@@ -512,6 +512,71 @@ RSpec.describe "ResourceAllocations requests",
         expect(allocation.reload.allocated_time).to eq(600)
       end
     end
+
+    context "when the update would overbook the assigned user" do
+      shared_let(:working_assignee) do
+        create(:user, member_with_permissions: { project => %i[view_work_packages] }).tap do |member|
+          # Mon-Fri 8h => 480 minutes/day of capacity.
+          create(:user_working_hours, user: member, valid_from: Date.new(2025, 1, 1))
+        end
+      end
+
+      # Books 10h across Mon-Tue (16h of capacity).
+      let!(:allocation) do
+        create(:resource_allocation,
+               entity: work_package, principal: working_assignee,
+               start_date: Date.new(2026, 3, 2), end_date: Date.new(2026, 3, 3), allocated_time: 600)
+      end
+
+      def perform(extra = {})
+        patch project_resource_allocation_path(project, allocation),
+              params: {
+                allocation_kind: "principal",
+                resource_allocation: {
+                  principal_id: working_assignee.id,
+                  entity_type: "WorkPackage",
+                  entity_id: work_package.id,
+                  start_date: "2026-03-02",
+                  end_date: "2026-03-03",
+                  allocated_hours: "40h"
+                }
+              }.deep_merge(extra),
+              as: :turbo_stream
+      end
+
+      it "does not save yet and renders the overbooking confirmation step" do
+        perform
+
+        expect(response).to have_http_status(:ok)
+        expect(allocation.reload.allocated_time).to eq(600)
+        expect(response.body).to include(I18n.t("resource_management.allocate_resource_dialog.overbooking.title"))
+        expect(response.body).to include('name="confirmed"')
+      end
+
+      it "applies the update once confirmed" do
+        perform(confirmed: "1")
+
+        expect(allocation.reload.allocated_time).to eq(40 * 60)
+        expect(response.body).to include(I18n.t("resource_management.edit_allocation_dialog.success_message"))
+      end
+
+      it "returns to the pre-filled edit form when going back from the confirmation" do
+        perform(back: "1")
+
+        expect(response).to have_http_status(:ok)
+        expect(allocation.reload.allocated_time).to eq(600)
+        expect(response.body).to include("resource_allocation[allocated_hours]")
+      end
+
+      it "does not count the allocation's previous booking against its own update" do
+        # 16h exactly fills Mon-Tue only if the allocation's persisted 10h are
+        # excluded from the check; no confirmation step expected.
+        perform(resource_allocation: { allocated_hours: "16h" })
+
+        expect(allocation.reload.allocated_time).to eq(16 * 60)
+        expect(response.body).to include(I18n.t("resource_management.edit_allocation_dialog.success_message"))
+      end
+    end
   end
 
   describe "DELETE destroy" do

@@ -51,19 +51,12 @@ See COPYRIGHT and LICENSE files for more details.
     end
 
     dialog.with_footer do
-      component_collection do |buttons|
-        buttons.with_component(
-          Primer::Beta::Button.new(data: { "close-dialog-id": DIALOG_ID }, mr: 1)
-        ) { I18n.t(:button_cancel) }
-
-        buttons.with_component(
-          Primer::Beta::Button.new(
-            scheme: :primary,
-            form: ResourceAllocations::NewDialogComponent::FORM_ID,
-            type: :submit
-          )
-        ) { I18n.t("resource_management.edit_allocation_dialog.submit") }
-      end
+      render(
+        ResourceAllocations::AllocationStep::FooterComponent.new(
+          dialog_id: DIALOG_ID,
+          submit_label: I18n.t("resource_management.edit_allocation_dialog.submit")
+        )
+      )
     end
   end
 %>

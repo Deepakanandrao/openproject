@@ -82,15 +82,19 @@ module ::ResourceManagement
     end
 
     def update
-      call = ResourceAllocations::UpdateService
-               .new(user: current_user, model: @resource_allocation)
-               .call(allocation_params)
+      # The confirmation step's "Back" button resubmits the carried form values
+      # so the editable step can be re-rendered pre-filled.
+      return render_edit_form(set_update_attributes.result) if params[:back].present?
 
-      if call.success?
-        render_update_success(call.result)
-      else
-        render_edit_form(call.result, status: :unprocessable_entity)
+      validation = set_update_attributes
+      return render_edit_form(validation.result, status: :unprocessable_entity) if validation.failure?
+
+      if needs_confirmation?(validation.result)
+        return render_warning_step(validation.result,
+                                   dialog_id: ResourceAllocations::EditDialogComponent::DIALOG_ID)
       end
+
+      persist_update
     end
 
     def destroy
@@ -122,7 +126,7 @@ module ::ResourceManagement
       respond_with_turbo_streams(status:)
     end
 
-    def render_warning_step(allocation)
+    def render_warning_step(allocation, dialog_id: ResourceAllocations::NewDialogComponent::DIALOG_ID)
       ranges = overbooked_ranges(allocation)
 
       replace_via_turbo_stream(
@@ -137,7 +141,7 @@ module ::ResourceManagement
         )
       )
       replace_via_turbo_stream(
-        component: ResourceAllocations::WarningStep::FooterComponent.new
+        component: ResourceAllocations::WarningStep::FooterComponent.new(dialog_id:)
       )
       respond_with_turbo_streams
     end
@@ -177,11 +181,14 @@ module ::ResourceManagement
     def compute_overbooked_ranges(allocation)
       return [] unless overbooking_checkable?(allocation)
 
+      # `exclude_id` drops the persisted version of an allocation being edited,
+      # so its old booking does not count against the new one.
       availability(allocation).overbooking_with(
         start_date: allocation.start_date,
         end_date: allocation.end_date,
         minutes: allocation.allocated_time,
-        work_package_id: allocation.entity_id
+        work_package_id: allocation.entity_id,
+        exclude_id: allocation.id
       )
     end
 
@@ -219,7 +226,25 @@ module ::ResourceManagement
       respond_with_turbo_streams
     end
 
-    def render_edit_form(allocation, status:)
+    def set_update_attributes
+      ResourceAllocations::SetAttributesService
+        .new(user: current_user, model: @resource_allocation, contract_class: ResourceAllocations::UpdateContract)
+        .call(allocation_params)
+    end
+
+    def persist_update
+      call = ResourceAllocations::UpdateService
+               .new(user: current_user, model: @resource_allocation)
+               .call(allocation_params)
+
+      if call.success?
+        render_update_success(call.result)
+      else
+        render_edit_form(call.result, status: :unprocessable_entity)
+      end
+    end
+
+    def render_edit_form(allocation, status: :ok)
       replace_via_turbo_stream(
         component: ResourceAllocations::AllocationStep::FormComponent.new(
           allocation:,
@@ -228,6 +253,12 @@ module ::ResourceManagement
           dialog_id: ResourceAllocations::EditDialogComponent::DIALOG_ID
         ),
         status:
+      )
+      replace_via_turbo_stream(
+        component: ResourceAllocations::AllocationStep::FooterComponent.new(
+          dialog_id: ResourceAllocations::EditDialogComponent::DIALOG_ID,
+          submit_label: I18n.t("resource_management.edit_allocation_dialog.submit")
+        )
       )
       respond_with_turbo_streams(status:)
     end
