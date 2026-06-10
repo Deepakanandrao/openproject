@@ -28,28 +28,28 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Wikis
-  module Adapters
-    module Providers
-      module Internal
-        Registry = Dry::Core::Container::Namespace.new("internal") do
-          namespace("authentication") do
-            register(:user_bound, Authentication::UserBound)
-          end
+module Wikis::Adapters
+  class BaseCommand
+    include Dry::Monads[:result]
 
-          namespace("commands") do
-            register(:create_page, Commands::CreatePage)
-          end
+    attr_reader :provider
 
-          namespace("queries") do
-            register(:page_info, Queries::PageInfo)
-            register(:page_info_for_url, Queries::PageInfoForUrl)
-            register(:referencing_pages, Queries::ReferencingPages)
-            register(:relation_page_links, Queries::RelationPageLinks)
-            register(:search_pages, Queries::SearchPages)
-          end
-        end
-      end
+    def initialize(model:)
+      @provider = model
+    end
+
+    def call(input_data:, auth_strategy:) # rubocop:disable Lint/UnusedMethodArgument
+      raise SubclassResponsibilityError
+    end
+
+    private
+
+    def success(result)
+      Success(result)
+    end
+
+    def failure(code:)
+      Failure(Results::Error.new(source: self.class, code:))
     end
   end
 end
