@@ -400,9 +400,8 @@ RSpec.describe ResourceAllocation do
           allocation.end_date = Date.new(2026, 1, 1)
         end
 
-        it "is invalid" do
-          expect(allocation).not_to be_valid
-          expect(allocation.errors.symbols_for(:end_date)).to include(:greater_than_start_date)
+        it "is valid (single-day allocation)" do
+          expect(allocation).to be_valid
         end
       end
 
