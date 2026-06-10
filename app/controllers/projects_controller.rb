@@ -38,7 +38,7 @@ class ProjectsController < ApplicationController
   before_action :find_project_including_archived, only: %i[destroy destroy_info]
   before_action :load_query_or_deny_access, only: %i[index]
   before_action :authorize,
-                only: %i[copy_form copy deactivate_work_package_attachments export_project_initiation_pdf]
+                only: %i[copy_form copy deactivate_work_package_attachments export_project_initiation_pdf menu]
   before_action :authorize_global, only: %i[new create]
   before_action :require_admin, only: %i[destroy destroy_info]
   before_action :find_optional_parent, only: :new
@@ -93,6 +93,10 @@ class ProjectsController < ApplicationController
         render turbo_stream: turbo_streams
       end
     end
+  end
+
+  def menu
+    render Projects::RowActionsComponent.new(project: @project, params:), layout: false
   end
 
   def new
