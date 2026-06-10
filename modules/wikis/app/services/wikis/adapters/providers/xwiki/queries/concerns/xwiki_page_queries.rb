@@ -28,18 +28,22 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require "dry/core/container/stub"
-require "dry/monads"
-
-Dir[File.join(File.dirname(__FILE__), "support/**/*.rb")].each { |f| require f }
-
-RSpec.configure do |config|
-  config.include Dry::Monads[:result]
-
-  config.prepend_before do
-    Wikis::Adapters::Registry.enable_stubs!
-  end
-  config.append_after do
-    Wikis::Adapters::Registry.unstub
+module Wikis
+  module Adapters
+    module Providers
+      module XWiki
+        module Queries
+          module Concerns
+            module XWikiPageQueries
+              def canonical_page_info(identifier:, auth_strategy:)
+                Input::PageInfo.build(identifier:).bind do |input_data|
+                  Internal::CanonicalPageInfo.new(model: provider).call(input_data:, auth_strategy:)
+                end
+              end
+            end
+          end
+        end
+      end
+    end
   end
 end

@@ -28,18 +28,25 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require "dry/core/container/stub"
-require "dry/monads"
-
-Dir[File.join(File.dirname(__FILE__), "support/**/*.rb")].each { |f| require f }
-
-RSpec.configure do |config|
-  config.include Dry::Monads[:result]
-
-  config.prepend_before do
-    Wikis::Adapters::Registry.enable_stubs!
+module XWikiStubs
+  def search_endpoint(linkable, provider:, number: 25)
+    "#{provider.url}rest/openproject/links/workPackages/#{linkable.id}?number=#{number}"
   end
-  config.append_after do
-    Wikis::Adapters::Registry.unstub
+
+  def stub_canonical_page_info(identifier, uid:, title:, href:, provider:, token: "user-bearer-token")
+    stub_request(:get, "#{provider.url}rest/openproject/documents")
+      .with(query: { "docRef" => identifier },
+            headers: { "Authorization" => "Bearer #{token}" })
+      .to_return(status: 200,
+                 body: { "id" => uid, "title" => title, "xwikiAbsoluteUrl" => href }.to_json,
+                 headers: { "Content-Type" => "application/json" })
+  end
+
+  def stub_search(search_results, provider:, linkable:, number: 25, token: "user-bearer-token")
+    stub_request(:get, search_endpoint(linkable, provider:, number:))
+      .with(headers: { "Authorization" => "Bearer #{token}" })
+      .to_return(status: 200,
+                 body: { "searchResults" => search_results }.to_json,
+                 headers: { "Content-Type" => "application/json" })
   end
 end
