@@ -5,7 +5,7 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
-    "@angular-builders/custom-esbuild": "^21.0.3",
+    "@angular-builders/custom-esbuild": "^22.0.0",
     "@angular/language-service": "22.0.0",
     "@eslint/js": "^10.0.1",
     "@html-eslint/eslint-plugin": "^0.61.0",
@@ -175,9 +175,6 @@
   },
   "optionalDependencies": {
     "fsevents": "*"
-  },
-  "overrides": {
-    "@angular/build": "^22.0.0"
   },
   "browser": {
     "fs": false,
