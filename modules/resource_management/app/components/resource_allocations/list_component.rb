@@ -28,7 +28,6 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-
 module ResourceAllocations
   # The body of the work package allocations dialog: the allocation progress
   # summary and one row per allocation. Streamable so the dialog content can be

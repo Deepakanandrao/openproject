@@ -28,7 +28,6 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-
 module ResourceAllocations
   # A single-step dialog to edit a persisted allocation, reusing the create
   # wizard's allocation form (which submits an update for persisted records).
