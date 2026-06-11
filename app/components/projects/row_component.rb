@@ -277,19 +277,29 @@ module Projects
     def button_links
       # The action menu is currently only relevant for logged in users
       # short-circuiting this call for anonymous users, which often hit our projects page.
-      return [] unless User.current.logged?
+      return [] if !User.current.logged? || menu_items&.empty?
 
-      [action_menu]
+      if menu_items
+        [action_menu(items: menu_items)]
+      else
+        [action_menu(src: menu_href)]
+      end
     end
 
-    def action_menu
-      render(
-        Primer::Alpha::ActionMenu.new(
-          menu_id: Projects::RowActionsComponent.menu_id(project),
-          src: menu_project_path(project, status: params[:status]),
-          test_selector: "project-list-row--action-menu"
-        )
-      ) do |menu|
+    # Subclasses can override inline `menu_items` or `menu_href` in order to control
+    # what is displayed in the action menu.
+    def menu_items = nil
+    def menu_href = menu_project_path(project, status: params[:status])
+
+    def action_menu(src: nil, items: nil)
+      raise ArgumentError, "provide either src: or items:, not both" if src && items
+      raise ArgumentError, "provide either src: or items:" unless src || items
+
+      render(Primer::Alpha::ActionMenu.new(
+               menu_id: Projects::RowActionsComponent.menu_id(project),
+               test_selector: "project-list-row--action-menu",
+               src:
+             )) do |menu|
         menu.with_show_button(
           scheme: :invisible,
           size: :small,
@@ -297,6 +307,15 @@ module Projects
           "aria-label": t(:label_open_menu),
           tooltip_direction: :w
         )
+        items&.each do |action_options|
+          action_options => { scheme:, label:, icon:, **button_options }
+          menu.with_item(scheme:,
+                         label:,
+                         test_selector: "project-list-row--action-menu-item",
+                         content_arguments: button_options) do |item|
+            item.with_leading_visual_icon(icon:) if icon
+          end
+        end
       end
     end
 
