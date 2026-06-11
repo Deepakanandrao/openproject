@@ -387,7 +387,7 @@ cs:
       submit_button: Stáhnout
     notifications:
       sidepanel:
-        title: Email calendar updates
+        title: E-mailové aktualizace kalendářů
         description:
           disabled: Participants will not receive an email informing them of changes.
           enabled: All participants will receive updated calendar invites via email informing them of changes.
@@ -411,7 +411,7 @@ cs:
           enabled: 'Všichni účastníci obdrží e-mailem aktualizované pozvánky do kalendáře, když přidáte nebo odeberete účastníky.
 
             '
-          disabled: 'Email calendar updates are disabled. Participants will not receive an email informing them when you add or remove participants.
+          disabled: 'E-mailové aktualizace kalendářů jsou zakázány. Účastníci nedostanou e-mail s informacemi o přidání nebo odebrání účastníků.
 
             '
           draft_disabled: 'Participants will not receive an email informing them when you add or remove participants.
@@ -425,17 +425,17 @@ cs:
 
             '
         occurrence:
-          enabled: 'Email calendar updates are enabled for the meeting series. All participants will receive updated calendar invites informing them of your changes to this occurrence.
+          enabled: 'E-mailové aktualizace kalendářů jsou povoleny pro tuto sérii schůzek. Účastníci dostanou e-mail s informacemi, když provedete změny.
 
             '
-          disabled: 'Email calendar updates are disabled for the meeting series. Participants will not receive an email informing them of your changes to this occurrence.
+          disabled: 'E-mailové aktualizace kalendářů jsou zakázány pro tuto sérii schůzek. Účastníci nedostanou e-mail s informacemi, když provedete změny.
 
             '
         template:
-          enabled: 'Email calendar updates are enabled for the meeting series. All participants will receive updated calendar invites informing them of your changes to this template or to individual occurrences.
+          enabled: 'E-mailové aktualizace kalendářů jsou povoleny. Účastníci budou dostávat aktualizované pozvánky e-mailem, když upravíte tuto šablonu či individuální výskyty.
 
             '
-          disabled: 'Email calendar updates are disabled for the meeting series. Participants will not receive an email informing them of your changes to this template or to individual occurrences.
+          disabled: 'E-mailové aktualizace kalendářů jsou zakázány pro tuto sérii schůzek. Účastníci nebudou dostávat aktualizované pozvánky e-mailem, když upravíte tuto šablonu či individuální výskyty.
 
             '
     presentation_mode:
@@ -449,13 +449,13 @@ cs:
       no_items: Žádné body programu
       no_items_flash: Na programu nejsou žádné body.
     ical_response:
-      update_failed: Could not update participation status.
+      update_failed: Nelze aktualizovat stav účasti.
       meeting_not_found: Schůzka pro daný UID nebyla nalezena.
     widgets:
       blankslate:
-        heading: No upcoming meetings
+        heading: Žádné nadcházející schůzky
         description: Upcoming meetings you are participating in will appear here.
-      view_details: View all meetings
+      view_details: Zobrazit všechny schůzky
   meeting_section:
     untitled_title: Sekce bez názvu
     delete_confirmation: Smazáním sekce také smažete všechny body agendy. Opravdu to chcete udělat?
@@ -757,8 +757,8 @@ cs:
   text_agenda_item_dialog_skipping_closed_many: "%{count} closed meetings"
   text_work_package_add_to_meeting_hint: Použijte tlačítko "Přidat do schůzky" pro přidání tohoto pracovního balíčku na nadcházející schůzku.
   text_work_package_has_no_past_meeting_agenda_items: Tento pracovní balíček nebyl na minulém zasedání zařazen jako bod programu.
-  text_email_updates_muted: Email calendar updates are muted. Participants will not receive updated invites via email when you make changes.
-  text_email_updates_enabled: Email calendar updates are enabled. All participants will receive updated invites via email when you make changes.
+  text_email_updates_muted: E-mailové aktualizace kalendářů jsou ztlumeny. Účastníci nebudou dostávat aktualizované pozvánky e-mailem, když provedete změny.
+  text_email_updates_enabled: E-mailové aktualizace kalendářů jsou povoleny. Účastníci budou dostávat aktualizované pozvánky e-mailem, když provedete změny.
   my_account:
     access_tokens:
       token/ical_meeting:
