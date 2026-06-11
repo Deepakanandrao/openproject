@@ -29,22 +29,22 @@ See COPYRIGHT and LICENSE files for more details.
 
 <% if named? %>
   <%= flex_layout(align_items: :center) do |container| %>
-    <%= container.with_column do %>
+    <%= container.with_column(flex_shrink: 0) do %>
       <%= render(Primer::OpenProject::AvatarStack.new(tooltipped: true, body_arguments: { label: tooltip_label })) do |stack| %>
         <% avatar_options.each do |options| %>
           <% stack.with_avatar_with_fallback(**options) %>
         <% end %>
       <% end %>
     <% end %>
-    <%= container.with_column(ml: 2) do %>
-      <%= render(Primer::Beta::Text.new(font_size: :small)) { lead_name } %>
+    <%= container.with_column(ml: 2, classes: "min-width-0") do %>
+      <%= render(Primer::Beta::Truncate.new) { lead_name } %>
     <% end %>
     <% if additional? %>
-      <%= container.with_column(ml: 1) do %>
-        <%= render(Primer::Beta::Text.new(font_size: :small, color: :muted)) { additional_label } %>
+      <%= container.with_column(ml: 1, flex_shrink: 0) do %>
+        <%= render(Primer::Beta::Label.new(scheme: :secondary, inline: true)) { additional_label } %>
       <% end %>
     <% end %>
   <% end %>
 <% else %>
-  <%= render(Primer::Beta::Text.new(font_size: :small, color: :muted)) { anonymous_label } %>
+  <%= render(Primer::Beta::Text.new(color: :muted)) { anonymous_label } %>
 <% end %>
