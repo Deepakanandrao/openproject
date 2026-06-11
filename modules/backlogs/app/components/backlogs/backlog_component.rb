@@ -56,7 +56,7 @@ module Backlogs
 
     def total
       @total ||= (backlog_filters.show_inbox? ? inbox_work_packages.count : 0) +
-                 (buckets&.sum { it.work_packages.size } || 0)
+                 (buckets&.sum { it.displayed_work_packages.size } || 0)
     end
   end
 end
