@@ -20,10 +20,7 @@
 
 @media screen and (min-width: $breakpoint-md)
   .op-border-box-grid
-    // Distribute data columns evenly while sizing the optional actions column to
-    // its content (see BorderBoxTableComponent#grid_template_columns). The
-    // implicit grid below stays as a fallback if the property is ever unset.
-    grid-template-columns: var(--op-border-box-grid-template-columns)
+    // Distribute columns evenly on desktop
     grid-auto-columns: minmax(0, 1fr)
     grid-auto-flow: column
     justify-content: flex-start
