@@ -68,4 +68,44 @@ RSpec.describe Backlogs::CommonHelper do
       expect(helper.backlog_filter_params).to eq(helper.backlog_filters.to_h)
     end
   end
+
+  describe "#filtered_buckets_for" do
+    let(:project) { create(:project) }
+    let!(:bucket_a) { create(:backlog_bucket, project:) }
+    let!(:bucket_b) { create(:backlog_bucket, project:) }
+
+    before { RequestStore.clear! }
+
+    context "with no bucket_ids filter" do
+      let(:params) { {} }
+
+      it "returns all buckets for the project" do
+        expect(helper.filtered_buckets_for(project)).to contain_exactly(bucket_a, bucket_b)
+      end
+    end
+
+    context "when only inbox is selected" do
+      let(:params) { { bucket_ids: ["inbox"] } }
+
+      it "returns no buckets" do
+        expect(helper.filtered_buckets_for(project)).to be_empty
+      end
+    end
+
+    context "when inbox and a specific bucket are selected" do
+      let(:params) { { bucket_ids: [bucket_a.id.to_s, "inbox"] } }
+
+      it "returns only the selected bucket" do
+        expect(helper.filtered_buckets_for(project)).to contain_exactly(bucket_a)
+      end
+    end
+
+    context "when only specific bucket IDs are selected" do
+      let(:params) { { bucket_ids: [bucket_a.id.to_s] } }
+
+      it "returns only the matching bucket" do
+        expect(helper.filtered_buckets_for(project)).to contain_exactly(bucket_a)
+      end
+    end
+  end
 end
