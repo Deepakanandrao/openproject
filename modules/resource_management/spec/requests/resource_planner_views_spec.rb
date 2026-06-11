@@ -45,6 +45,30 @@ RSpec.describe "ResourcePlannerViews requests",
 
   before { login_as user }
 
+  describe "GET show" do
+    it "renders the view's work package list" do
+      get project_resource_planner_view_path(project, resource_planner, view)
+
+      expect(response).to have_http_status(:ok)
+    end
+
+    # Regression: the planner's own show page renders the same template and
+    # must build the list content as well.
+    it "renders the planner's show page with its default view" do
+      view
+
+      get project_resource_planner_path(project, resource_planner)
+
+      expect(response).to have_http_status(:ok)
+    end
+
+    it "renders the planner's show page when it has no views yet" do
+      get project_resource_planner_path(project, resource_planner)
+
+      expect(response).to have_http_status(:ok)
+    end
+  end
+
   describe "POST create" do
     subject(:perform) do
       post project_resource_planner_views_path(project, resource_planner),
@@ -143,16 +167,13 @@ RSpec.describe "ResourcePlannerViews requests",
     it "closes the dialog and replaces the tab nav and content in place" do
       perform
 
-      # Dialog is closed via a CSS selector target (not a bare id).
       expect(response.body).to include('action="closeDialog"')
       expect(response.body).to include('target="#edit-resource-planner-view-dialog"')
 
-      # Tab nav and the view content are replaced rather than redirecting.
       expect(response.body).to include('action="replace"')
       expect(response.body).to include('target="resource-planners-sub-views-component"')
       expect(response.body).to include('target="resource-planner-views-content-component"')
 
-      # The replaced tab nav reflects the new name.
       expect(response.body).to include("Renamed view")
     end
 
