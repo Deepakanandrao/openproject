@@ -34,17 +34,19 @@ class ProjectsController < ApplicationController
   menu_item :overview
   menu_item :roadmap, only: :roadmap
 
-  before_action :find_project, except: %i[index new create destroy destroy_info]
-  before_action :find_project_including_archived, only: %i[destroy destroy_info]
+  before_action :find_project, except: %i[index new create menu destroy destroy_info]
+  before_action :find_project_including_archived, only: %i[menu destroy destroy_info]
   before_action :load_query_or_deny_access, only: %i[index]
   before_action :authorize,
-                only: %i[copy_form copy deactivate_work_package_attachments export_project_initiation_pdf menu]
+                only: %i[copy_form copy deactivate_work_package_attachments export_project_initiation_pdf]
   before_action :authorize_global, only: %i[new create]
   before_action :require_admin, only: %i[destroy destroy_info]
+  before_action :require_admin_or_active_project, only: :menu
   before_action :find_optional_parent, only: :new
   before_action :find_optional_template, only: %i[new create]
 
   no_authorization_required! :index
+  authorization_checked! :menu
 
   include SortHelper
   include PaginationHelper
@@ -185,6 +187,12 @@ class ProjectsController < ApplicationController
   end
 
   private
+
+  def require_admin_or_active_project
+    return authorize unless @project.archived?
+
+    render_403 message: :notice_not_authorized_archived_project unless current_user.admin?
+  end
 
   def find_project_including_archived
     # The actions that use this method are only accessible to admins, so we can show them archived projects as well and
