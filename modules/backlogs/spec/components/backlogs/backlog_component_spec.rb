@@ -31,56 +31,46 @@
 require "rails_helper"
 
 RSpec.describe Backlogs::BacklogComponent, type: :component do
-  shared_let(:type_feature) { create(:type_feature) }
   shared_let(:default_status) { create(:default_status) }
-  shared_let(:default_priority) { create(:default_priority) }
   shared_let(:closed_status) { create(:status, is_closed: true) }
+  shared_let(:project) { create(:project) }
+  shared_let(:bucket) { create(:backlog_bucket, project:) }
+  shared_let(:buckets) { BacklogBucket.for_project(project) }
   shared_let(:user) { create(:admin) }
 
   current_user { user }
 
-  let(:project) { create(:project, types: [type_feature]) }
-  let(:bucket) { create(:backlog_bucket, project:) }
+  let(:work_packages_by_backlog_id) do
+    WorkPackage.in_backlog_for(project:).group_by(&:backlog_bucket_id)
+  end
 
-  def render_component(buckets: [], inbox_work_packages: [])
-    render_inline described_class.new(
-      inbox_work_packages:,
-      buckets:,
-      project:,
-      current_user: user
-    )
+  def render_component
+    render_inline described_class.new(work_packages_by_backlog_id:, buckets:, project:, current_user:)
   end
 
   describe "total counter" do
     context "when buckets contain only open work packages" do
       let!(:work_packages) do
-        create_list(:work_package, 2, project:, backlog_bucket: bucket,
-                                      type: type_feature, status: default_status,
-                                      priority: default_priority, position: 1)
+        create_list(:work_package, 2, project:, backlog_bucket: bucket, status: default_status)
       end
 
       it "counts all bucket work packages" do
-        buckets = BacklogBucket.for_project(project)
-        render_component(buckets:)
+        render_component
         expect(page).to have_css(".Counter", text: "2")
       end
     end
 
     context "when buckets contain a mix of open and closed work packages" do
       let!(:open_wp) do
-        create(:work_package, project:, backlog_bucket: bucket,
-                              type: type_feature, status: default_status,
-                              priority: default_priority, position: 1)
+        create(:work_package, project:, backlog_bucket: bucket, status: default_status)
       end
+
       let!(:closed_wp) do
-        create(:work_package, project:, backlog_bucket: bucket,
-                              type: type_feature, status: closed_status,
-                              priority: default_priority, position: 2)
+        create(:work_package, project:, backlog_bucket: bucket, status: closed_status)
       end
 
       it "counts only displayed (non-closed) work packages" do
-        buckets = BacklogBucket.for_project(project)
-        render_component(buckets:)
+        render_component
         expect(page).to have_css(".Counter", text: "1")
       end
     end
