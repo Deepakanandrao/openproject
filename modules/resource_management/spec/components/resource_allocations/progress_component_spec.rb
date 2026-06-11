@@ -111,5 +111,12 @@ RSpec.describe ResourceAllocations::ProgressComponent, type: :component do
       expect(rendered).to have_css(".octicon-alert-fill")
       expect(rendered).to have_text(I18n.t("resource_management.allocation.no_work"))
     end
+
+    it "returns a zero ratio instead of dividing by zero" do
+      component = described_class.new(work_package:, allocations:)
+
+      expect { component.send(:ratio) }.not_to raise_error
+      expect(component.send(:ratio)).to eq(0)
+    end
   end
 end

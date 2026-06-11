@@ -66,6 +66,8 @@ module ResourceAllocations
     # Share of the scheduled work covered by allocations. Capped at 100 for the
     # bar width; the raw value still drives the label and over-allocation color.
     def ratio
+      return 0 unless work_scheduled?
+
       ((allocated_hours / scheduled_hours) * 100).round
     end
 
