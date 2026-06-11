@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
-# The webhook URL is the only globally unique identifier for a pull request,
-# merge request or issue: per-project sequential numbers (GitLab's iid) repeat
-# across repositories. Enforce that uniqueness at the database level so a
-# missed lookup site or a concurrent webhook can never split one entity across
-# two rows. Surviving duplicates are folded into the most recent row first;
+# The webhook URL is the only globally unique identifier stored for a pull
+# request, merge request or issue: GitLab records hold only the per-project
+# iid, which repeats across repositories, and GitHub records created from
+# comment payloads carry no github_id at all. Enforce the URL's uniqueness at
+# the database level so a missed lookup site or a concurrent webhook can never
+# split one entity across two rows. Surviving duplicates are folded into the most recent row first;
 # none are expected, since every write path already keys on the URL.
 class AddUniqueIndexToIntegrationHtmlUrls < ActiveRecord::Migration[8.1]
   disable_ddl_transaction!

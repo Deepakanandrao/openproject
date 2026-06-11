@@ -58,6 +58,8 @@ class GitlabMergeRequest < ApplicationRecord
   def self.find_by_gitlab_identifiers(url:, id: nil, initialize: false)
     raise ArgumentError, "needs an url" if url.blank?
 
+    # gitlab_id holds GitLab's per-project iid, which repeats across
+    # repositories, so the URL is the only identifier safe to look up by.
     found = find_by(gitlab_html_url: url)
     found || (new(gitlab_id: id, gitlab_html_url: url) if initialize)
   end
