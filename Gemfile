@@ -28,7 +28,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-source "https://rubygems.org"
+source "https://rubygems.org", cooldown: 7
 
 # TODO: Once packager.io and heroku buildpacks support bundler 2.4.22,
 # then we can use the new bundler syntax `ruby file: '.ruby-version'`.
@@ -429,6 +429,9 @@ gemfiles.each do |file|
   send(:eval_gemfile, file) if File.readable?(file)
 end
 
-gem "openproject-octicons", "~>19.35.0"
-gem "openproject-octicons_helper", "~>19.35.0"
-gem "openproject-primer_view_components", "~>0.86.2"
+# Set cooldown 0 for our own gems
+source "https://rubygems.org", cooldown: 0 do
+  gem "openproject-octicons", "~>19.35.0"
+  gem "openproject-octicons_helper", "~>19.35.0"
+  gem "openproject-primer_view_components", "~>0.86.2"
+end
