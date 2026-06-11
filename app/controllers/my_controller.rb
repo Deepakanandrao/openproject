@@ -152,6 +152,11 @@ class MyController < ApplicationController
 
   private
 
+  def render_password_change(_user, message, show_user_name: false) # rubocop:disable Lint/UnusedMethodArgument
+    flash[:error] = message unless message.nil?
+    redirect_to action: "security"
+  end
+
   def redirect_if_password_change_not_allowed_for(user)
     unless user.change_password_allowed?
       flash[:error] = I18n.t(:notice_can_t_change_password)
