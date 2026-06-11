@@ -401,6 +401,17 @@ RSpec.describe ResourceAllocation do
         allocation.allocated_time = 1
         expect(allocation).to be_valid
       end
+
+      it "is valid at the upper cap" do
+        allocation.allocated_time = described_class::MAX_ALLOCATED_TIME
+        expect(allocation).to be_valid
+      end
+
+      it "is invalid (rather than overflowing the column) above the cap" do
+        allocation.allocated_time = described_class::MAX_ALLOCATED_TIME + 1
+        expect(allocation).not_to be_valid
+        expect(allocation.errors.symbols_for(:allocated_time)).to include(:less_than_or_equal_to)
+      end
     end
 
     describe "date range" do

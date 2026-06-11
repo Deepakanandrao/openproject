@@ -525,6 +525,18 @@ RSpec.describe "ResourceAllocations requests",
         expect(response).to have_http_status(:unprocessable_entity)
         expect(allocation.reload.allocated_time).to eq(600)
       end
+
+      # Regression: an absurdly large value used to overflow the integer column
+      # and raise ActiveModel::RangeError (500) instead of failing validation.
+      it "rejects a value above the maximum with an hours-formatted message" do
+        perform(allocated_hours: "999999999999h")
+
+        expect(response).to have_http_status(:unprocessable_entity)
+        expect(allocation.reload.allocated_time).to eq(600)
+        expect(response.body).to include(
+          DurationConverter.output(ResourceAllocation::MAX_ALLOCATED_TIME / 60.0)
+        )
+      end
     end
 
     context "when the update would overbook the assigned user" do

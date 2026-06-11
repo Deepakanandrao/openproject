@@ -31,6 +31,11 @@
 class ResourceAllocation < ApplicationRecord
   ALLOWED_ENTITY_TYPES = %w[WorkPackage].freeze
 
+  # `allocated_time` is stored in minutes in an integer column. Cap it at 5000
+  # hours so an absurdly large input is rejected with a validation error rather
+  # than overflowing the column and raising ActiveModel::RangeError on save.
+  MAX_ALLOCATED_TIME = (5000.hours / 1.minute).to_i
+
   belongs_to :entity, polymorphic: true, optional: false
   belongs_to :principal, class_name: "User", optional: true, inverse_of: :resource_allocations
   belongs_to :requested_by, class_name: "User", optional: true
@@ -119,6 +124,8 @@ class ResourceAllocation < ApplicationRecord
             presence: true,
             numericality: { only_integer: true, greater_than: 0 }
 
+  validate :allocated_time_within_limit
+
   validates :entity_type,
             inclusion: { in: ALLOWED_ENTITY_TYPES },
             allow_blank: true
@@ -206,6 +213,17 @@ class ResourceAllocation < ApplicationRecord
   end
 
   private
+
+  # Capped above to keep `allocated_time` within the integer column. The field is
+  # entered in hours, so the message reports the limit in the same duration
+  # format rather than the raw minutes the column stores.
+  def allocated_time_within_limit
+    return if allocated_time.blank?
+    return if allocated_time <= MAX_ALLOCATED_TIME
+
+    errors.add(:allocated_time, :less_than_or_equal_to,
+               count: DurationConverter.output(MAX_ALLOCATED_TIME / 60.0))
+  end
 
   def starts_before_entity?
     entity_start_date.present? && start_date.present? && start_date < entity_start_date

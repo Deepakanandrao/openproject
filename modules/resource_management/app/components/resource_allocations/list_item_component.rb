@@ -115,12 +115,13 @@ module ResourceAllocations
     end
 
     # An allocation without a user yet (filter placeholder or lost principal)
-    # shows a person-add icon instead of an avatar.
+    # shows a person-add icon instead of an avatar. Sized to match the avatar so
+    # the leading column keeps the same width and the row stays aligned.
     def leading_visual
       if allocation.principal
         Primer::OpenProject::AvatarWithFallback.new(size: AVATAR_SIZE, **avatar_options)
       else
-        Primer::Beta::Octicon.new(icon: :"person-add", color: :muted, "aria-hidden": true)
+        Primer::Beta::Octicon.new(icon: :"person-add", size: :medium, color: :muted, "aria-hidden": true)
       end
     end
 
