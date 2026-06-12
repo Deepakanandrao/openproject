@@ -358,7 +358,7 @@ RSpec.describe Backlogs::WorkPackageCardMenuComponent, type: :component do
     end
   end
 
-  describe "Move to inbox item" do
+  describe "Move to backlog inbox item" do
     context "when work package is in a sprint" do
       it "is shown with inbox icon" do
         render_component

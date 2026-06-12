@@ -53,13 +53,13 @@ RSpec.describe "Move to backlog", :js do
 
   current_user { user }
 
-  describe "Move to inbox" do
+  describe "Move to backlog inbox" do
     context "when in a sprint" do
       let!(:work_package) { create(:work_package, project:, sprint:) }
 
       it "moves the work package to the backlog inbox" do
         planning_page.visit!
-        planning_page.click_in_work_package_menu(work_package, "Move to inbox")
+        planning_page.click_in_work_package_menu(work_package, "Move to backlog inbox")
 
         planning_page.expect_work_package_not_in_sprint(work_package, sprint)
         planning_page.expect_inbox_item(work_package)
@@ -71,7 +71,7 @@ RSpec.describe "Move to backlog", :js do
 
       it "moves the work package to the backlog inbox" do
         planning_page.visit!
-        planning_page.click_in_work_package_menu(work_package, "Move to inbox")
+        planning_page.click_in_work_package_menu(work_package, "Move to backlog inbox")
 
         planning_page.expect_work_package_not_in_backlog_bucket(work_package, bucket_a)
         planning_page.expect_inbox_item(work_package)
