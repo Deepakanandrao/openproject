@@ -2839,6 +2839,7 @@ fr:
   button_login: Connexion
   button_move: Déplacer
   button_move_and_follow: Déplacer et suivre
+  button_next: Suivant
   button_print: Imprimer
   button_quote: Citer
   button_remove: Supprimer
@@ -3470,10 +3471,10 @@ fr:
     no_results_text: Aucun résultat
   header:
     project_select_component:
-      all_projects: All projects
-      favorites: Favorites
-      leave_project: Leave project
-      title: Projects
+      all_projects: Tous les projets
+      favorites: Favoris
+      leave_project: Quitter le projet
+      title: Projets
   toggle_switch:
     label_on: Activé
     label_off: Désactivé
@@ -3995,7 +3996,7 @@ fr:
   label_enumerations: Énumérations
   label_enterprise: Entreprise
   label_enterprise_active_users: "%{current}/%{limit} utilisateurs actifs inscrits"
-  label_enterprise_edition: édition Enterprise
+  label_enterprise_edition: Édition Enterprise
   label_enterprise_support: Support Enterprise
   label_environment: Environnement
   label_estimates_and_progress: Estimations et progression
@@ -4524,6 +4525,9 @@ fr:
   label_x_working_days_time_off:
     one: 'Temps libre : 1 jour ouvrable'
     other: 'Temps libre : %{count} jours ouvrables'
+  label_x_items_selected:
+    one: Un élément sélectionné
+    other: "%{count} éléments sélectionnés"
   label_yesterday: hier
   label_zen_mode: Mode zen
   label_role_type: Type
