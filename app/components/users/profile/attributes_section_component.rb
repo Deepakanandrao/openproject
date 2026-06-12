@@ -30,18 +30,25 @@
 
 module Users
   module Profile
-    # Renders a single user custom field section as a side panel section,
-    # so each section gets its own heading and separator (provided by the
-    # surrounding SidePanel) consistently with the other profile sections.
-    class CustomFieldSectionComponent < ApplicationComponent
+    # Renders a single user custom field section (its built-in attributes and custom
+    # fields, in attribute_order) as a side panel section. Empty sections are skipped
+    # by the panel via render?.
+    class AttributesSectionComponent < ApplicationComponent
       include OpPrimer::ComponentHelpers
 
-      def initialize(section:, fields:, user:)
+      def initialize(section:, user:)
         super()
 
         @section = section
-        @fields = fields
         @user = user
+      end
+
+      def render?
+        attributes.any?
+      end
+
+      def attributes
+        @attributes ||= SectionAttributes.for(section: @section, user: @user, current_user: User.current)
       end
 
       def section_title

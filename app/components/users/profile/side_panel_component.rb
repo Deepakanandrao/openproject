@@ -45,8 +45,7 @@ module Users
       # are provided consistently by the panel rather than drawn by hand.
       def sections
         [
-          Users::Profile::AttributesComponent.new(user: @user),
-          *custom_field_section_components,
+          *attributes_section_components,
           Users::Profile::GroupsComponent.new(user: @user),
           Users::Profile::ProjectsComponent.new(user: @user)
         ]
@@ -54,9 +53,9 @@ module Users
 
       private
 
-      def custom_field_section_components
-        UserCustomFieldSection.with_filled_fields_for(@user).map do |section, fields|
-          Users::Profile::CustomFieldSectionComponent.new(section:, fields:, user: @user)
+      def attributes_section_components
+        UserCustomFieldSection.includes(:custom_fields).map do |section|
+          Users::Profile::AttributesSectionComponent.new(section:, user: @user)
         end
       end
     end

@@ -30,19 +30,18 @@
 
 module Users
   module Profile
-    class AttributesComponent < ApplicationComponent
-      include ApplicationHelper
-      include OpTurbo::Streamable
-      include OpPrimer::ComponentHelpers
+    # A single renderable profile attribute (built-in or custom field).
+    # `value` is a scalar for single values, or an Array for multi-value custom fields.
+    class SectionAttribute
+      attr_reader :label, :value
 
-      def initialize(user:)
-        super()
-
-        @user = user
+      def initialize(label:, value:)
+        @label = label
+        @value = value
       end
 
-      def render?
-        User.current == @user || User.current.allowed_globally?(:view_user_email)
+      def multi_value?
+        value.is_a?(Array)
       end
     end
   end
