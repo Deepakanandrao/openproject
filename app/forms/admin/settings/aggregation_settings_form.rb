@@ -34,11 +34,9 @@ module Admin
       include Redmine::I18n
 
       settings_form do |f|
-        allowed = ::Settings::Definition[:journal_aggregation_time_minutes].allowed
         f.text_field name: :journal_aggregation_time_minutes,
                      type: :number,
-                     min: allowed.min,
-                     max: allowed.max,
+                     min: 0,
                      input_width: :medium,
                      trailing_visual: { text: { text: I18n.t("datetime.units.minute_abbreviated", count: 2) } }
 
