@@ -29,7 +29,7 @@
 # ++
 
 require "spec_helper"
-require_relative "../shared_custom_field_expectations"
+require_relative "format_field_expectations"
 
 RSpec.describe "users list custom fields", :js do
   let(:user) { create(:admin) }
@@ -93,5 +93,5 @@ RSpec.describe "users list custom fields", :js do
     expect(page).to have_field("custom_field_custom_options_attributes_2_default_value", checked: false)
   end
 
-  it_behaves_like "expected fields for the custom field's format", "Users", "List"
+  it_behaves_like "expected fields for the User custom field's format", "List"
 end
