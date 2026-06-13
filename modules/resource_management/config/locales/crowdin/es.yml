@@ -58,8 +58,8 @@ es:
       make_public: Marcar como público
       unfavorite: Eliminar de favoritos
     allocation:
-      hours: "%{value}h"
-      no_work: No work planned on this work package
+      hours: "%{value}hs"
+      no_work: Sin trabajo planeado en este paquete de trabajo
       summary: "%{allocated} / %{scheduled}"
     allocate_resource_dialog:
       kind:
@@ -99,9 +99,9 @@ es:
           label: Selección manual
       title: Configurar vista
     edit_allocation_dialog:
-      submit: Save
-      success_message: Resource allocation updated.
-      title: Edit allocation
+      submit: Guardar
+      success_message: Asignación de recursos actualizada.
+      title: Editar asignación
     favorite_caption: Convierta esta vista en favorita para añadirla a la sección superior del menú de la barra lateral.
     label_new_resource_planner: Nuevo planificador de recursos
     label_resource_planner: Planificador de recursos
@@ -123,22 +123,22 @@ es:
         caption: Crea una vista basada en los usuarios y consulta sus datos y su asignación en una lista de fichas de usuario
         label: Lista de tarjetas de usuario
     work_package_allocations_dialog:
-      allocate_resource: Allocate resource
-      context_menu_label: Allocation actions
-      delete_confirmation: Are you sure you want to delete this allocation? This cannot be undone.
-      delete_success: Resource allocation deleted.
-      hidden_user: Hidden user
+      allocate_resource: Asignar recurso
+      context_menu_label: Acciones de asignación
+      delete_confirmation: "¿Está seguro de que desea eliminar esta asignación? Esta acción no se puede deshacer."
+      delete_success: Asignación de recurso eliminada.
+      hidden_user: Usuario oculto
       overbooked: The user is allocated beyond their working hours during this period.
-      title: Allocation
+      title: Asignación
     work_package_list:
       add_work_package_dialog:
         title: Añadir paquete de trabajo
       allocated_members:
         additional: "+%{count}"
         other_users:
-          one: "%{count} user"
+          one: "%{count} usuario"
           other: "%{count} users"
-        unassigned: Unassigned
+        unassigned: Sin asignar
       allocation_placeholder: "—"
       blank:
         description: Todavía no hay paquetes de trabajo que se ajusten a los filtros de esta vista.
