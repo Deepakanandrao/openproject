@@ -26,6 +26,7 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
+import { omitBy } from 'lodash-es';
 import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Injector, Input, ViewChild, inject } from '@angular/core';
 import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { TimezoneService } from 'core-app/core/datetime/timezone.service';
@@ -245,7 +246,7 @@ export class OpWpDatePickerInstanceComponent extends UntilDestroyedMixin impleme
       minDate: this.minDate,
     } as flatpickr.Options.Options;
 
-    return _.omitBy(options, (v) => v == null);
+    return omitBy(options, (v) => v == null);
   }
 
   private onFlatpickrChange(dates:Date[], _datestr:string, _instance:flatpickr.Instance) {

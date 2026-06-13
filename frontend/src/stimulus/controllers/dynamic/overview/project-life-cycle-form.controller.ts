@@ -34,7 +34,7 @@ import FormPreviewController from '../../form-preview.controller';
 import {
   debounce,
   DebouncedFunc,
-} from 'lodash';
+} from 'lodash-es';
 import { type TurboBeforeMorphAttributeEvent } from '@hotwired/turbo';
 import { useAngularServices, type ServiceKey } from 'core-stimulus/mixins/use-angular-services';
 
