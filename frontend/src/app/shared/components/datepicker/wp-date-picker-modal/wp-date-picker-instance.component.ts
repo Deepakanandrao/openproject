@@ -206,7 +206,7 @@ export class OpWpDatePickerInstanceComponent extends UntilDestroyedMixin impleme
   }
 
   private currentDates():string[] {
-    const compactedDates = _.compact([this.startDateValue, this.dueDateValue]);
+    const compactedDates = [this.startDateValue, this.dueDateValue].filter((x):x is NonNullable<typeof x> => Boolean(x));
     return this.timezoneService.utcDatesToISODateStrings(compactedDates);
   }
 
@@ -245,7 +245,7 @@ export class OpWpDatePickerInstanceComponent extends UntilDestroyedMixin impleme
       minDate: this.minDate,
     } as flatpickr.Options.Options;
 
-    return _.omitBy(options, (v) => _.isNil(v));
+    return _.omitBy(options, (v) => v == null);
   }
 
   private onFlatpickrChange(dates:Date[], _datestr:string, _instance:flatpickr.Instance) {

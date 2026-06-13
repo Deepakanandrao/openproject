@@ -325,7 +325,7 @@ export class IanCenterService extends UntilDestroyedMixin {
     const promise = this
       .apiV3Service
       .work_packages
-      .requireAll(_.compact(wpIds));
+      .requireAll(wpIds.filter(Boolean));
 
     wpIds.forEach((id) => {
       cache.clearAndLoad(
