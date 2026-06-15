@@ -45,17 +45,7 @@ module Wikis
           label: I18n.t("wikis.page_link_forms.labels.parent"),
           src: helpers.search_wiki_pages_path(provider_id: model.provider_id, name: "wiki_page_selection"),
           filter_mode_control_arguments: { hidden: true },
-          filter_input_arguments: {
-            placeholder: I18n.t("wikis.page_link_forms.search.placeholder"),
-            # every other property is just refilling the default values,
-            # as those are not merged into custom arguments
-            name: :filter,
-            label: I18n.t(:button_filter),
-            type: :search,
-            leading_visual: { icon: :search },
-            visually_hide_label: true,
-            show_clear_button: true
-          },
+          filter_input_arguments: { placeholder: I18n.t("wikis.page_link_forms.search.placeholder") },
           include_sub_items_check_box_arguments: { hidden: true },
           no_results_node_arguments: { label: I18n.t("wikis.page_link_forms.search.no_results") }
         )

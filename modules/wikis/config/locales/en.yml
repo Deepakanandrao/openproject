@@ -163,7 +163,7 @@ en:
         wiki_page: Wiki page
       search:
         no_results: No wiki pages found
-        placeholder: Search for a wiki page
+        placeholder: Search for a wiki page (or enter its URL)
     page_links:
       errors:
         page_access_forbidden: You do not have permission to access this wiki page

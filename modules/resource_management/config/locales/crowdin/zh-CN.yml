@@ -59,7 +59,7 @@ zh-CN:
       unfavorite: 取消收藏
     allocation:
       hours: "%{value}h"
-      no_work: No work planned on this work package
+      no_work: 此工作包没有计划的工作
       summary: "%{allocated} / %{scheduled}"
     allocate_resource_dialog:
       kind:
@@ -73,7 +73,7 @@ zh-CN:
       outside_dates:
         description: 所选资源日期 %{resource_dates}在工作包日期 %{work_package_dates} 之外。
       overbooking:
-        capacity_summary: "%{available} available · %{scheduled} scheduled"
+        capacity_summary: "%{available} 可用 - %{scheduled} 预定"
         description: The selected user, %{user}, would be allocated beyond their working hours during this period.
         hidden_work: Other allocations
         schedule_availability: "%{schedule} (%{factor}% 可用于项目工作)"
@@ -99,7 +99,7 @@ zh-CN:
           label: 人工挑选
       title: 配置视图
     edit_allocation_dialog:
-      submit: Save
+      submit: 保存
       success_message: Resource allocation updated.
       title: Edit allocation
     favorite_caption: 将此视图标记为收藏项，并添加到边栏菜单的顶部。
