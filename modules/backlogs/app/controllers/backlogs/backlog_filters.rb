@@ -29,7 +29,7 @@
 #++
 
 module Backlogs
-  BacklogFilters = Struct.new(:bucket_ids, :sprint_ids, :show_all) do
+  BacklogFilters = Data.define(:bucket_ids, :sprint_ids, :show_all) do
     def self.from_params(params)
       new(
         bucket_ids: Array(params[:bucket_ids]).filter_map do |id|

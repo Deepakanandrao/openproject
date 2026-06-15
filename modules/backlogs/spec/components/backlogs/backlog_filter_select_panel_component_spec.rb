@@ -36,7 +36,7 @@ RSpec.describe Backlogs::BacklogFilterSelectPanelComponent, type: :component do
 
   current_user { user }
 
-  def render_component(field_name:, filters: Backlogs::BacklogFilters.new(nil, nil, false))
+  def render_component(field_name:, filters: Backlogs::BacklogFilters.from_params({}))
     RequestStore.store[:backlog_filters] = filters
     render_inline(described_class.new(project:, field_name:))
   end
@@ -57,7 +57,7 @@ RSpec.describe Backlogs::BacklogFilterSelectPanelComponent, type: :component do
     end
 
     it "marks selected sprints as active" do
-      filters = Backlogs::BacklogFilters.new(nil, [sprint1.id], false)
+      filters = Backlogs::BacklogFilters.from_params(sprint_ids: [sprint1.id])
       render_component(field_name: :sprint_ids, filters:)
       expect(page).to have_css("[aria-selected='true']", text: "Alpha Sprint")
       expect(page).to have_css("[aria-selected='false']", text: "Beta Sprint")
@@ -80,7 +80,7 @@ RSpec.describe Backlogs::BacklogFilterSelectPanelComponent, type: :component do
     end
 
     it "marks selected buckets as active" do
-      filters = Backlogs::BacklogFilters.new([bucket2.id], nil, false)
+      filters = Backlogs::BacklogFilters.from_params(bucket_ids: [bucket2.id])
       render_component(field_name: :bucket_ids, filters:)
       expect(page).to have_css("[aria-selected='false']", text: "Ideas")
       expect(page).to have_css("[aria-selected='true']", text: "Backlog")
@@ -90,19 +90,19 @@ RSpec.describe Backlogs::BacklogFilterSelectPanelComponent, type: :component do
   describe "hidden filter fields" do
     it "passes through sprint_ids when rendering the bucket panel" do
       render_component(field_name: :bucket_ids,
-                       filters: Backlogs::BacklogFilters.new(nil, [""], false))
-      expect(page).to have_css("input[name='sprint_ids[]'][value='']", visible: :all)
+                       filters: Backlogs::BacklogFilters.from_params(sprint_ids: ["1"]))
+      expect(page).to have_css("input[name='sprint_ids[]'][value='1']", visible: :all)
     end
 
     it "passes through bucket_ids when rendering the sprint panel" do
       render_component(field_name: :sprint_ids,
-                       filters: Backlogs::BacklogFilters.new([""], nil, false))
-      expect(page).to have_css("input[name='bucket_ids[]'][value='']", visible: :all)
+                       filters: Backlogs::BacklogFilters.from_params(bucket_ids: ["2"]))
+      expect(page).to have_css("input[name='bucket_ids[]'][value='2']", visible: :all)
     end
 
     it "expands array values into multiple hidden inputs" do
       render_component(field_name: :sprint_ids,
-                       filters: Backlogs::BacklogFilters.new([1, 2], nil, false))
+                       filters: Backlogs::BacklogFilters.from_params(bucket_ids: [1, 2]))
       expect(page).to have_css("input[name='bucket_ids[]'][value='1']", visible: :all)
       expect(page).to have_css("input[name='bucket_ids[]'][value='2']", visible: :all)
     end
