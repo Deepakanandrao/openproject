@@ -237,11 +237,11 @@ RSpec.describe "Backlog filter panel", :js do
       end
 
       it "preserves the filter after moving work packages via the action menu" do
-        backlogs_page.click_in_work_package_move_submenu(sprint_a_wp, "Move to inbox")
+        backlogs_page.click_in_work_package_menu(sprint_a_wp, "Move to backlog inbox")
         expect_selected_filters_preserved
         backlogs_page.expect_inbox_item(sprint_a_wp)
 
-        backlogs_page.click_in_work_package_move_submenu(sprint_a_wp, "Move to backlog bucket")
+        backlogs_page.click_in_work_package_menu(sprint_a_wp, "Move to backlog bucket")
         within_modal "Move to backlog bucket" do
           select bucket_a.name, from: "target_id"
           click_on "Move"
@@ -250,7 +250,7 @@ RSpec.describe "Backlog filter panel", :js do
         expect_selected_filters_preserved
         backlogs_page.expect_work_package_in_backlog_bucket(sprint_a_wp, bucket_a)
 
-        backlogs_page.click_in_work_package_move_submenu(bucket_a_wp, "Move to sprint")
+        backlogs_page.click_in_work_package_menu(bucket_a_wp, "Move to sprint")
         within_modal "Move to sprint" do
           select sprint_a.name, from: "target_id"
           click_on "Move"
