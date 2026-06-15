@@ -28,26 +28,51 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require "spec_helper"
+module Wikis
+  class PageSearchService
+    include Dry::Monads[:result]
 
-RSpec.describe Wikis::LinkExistingWikiPageForm, type: :forms do
-  include Rails.application.routes.url_helpers
+    attr_reader :provider, :user
 
-  include_context "with rendered form"
+    def initialize(provider:, user:)
+      @provider = provider
+      @user = user
+    end
 
-  let(:model) { build_stubbed(:relation_wiki_page_link) }
+    def search_pages(query)
+      return Success([]) if query.blank?
 
-  it "renders the link attributes as hidden fields", :aggregate_failures do
-    expect(page).to have_field("wikis_relation_page_link[provider_id]", type: :hidden, with: model.provider_id)
-    expect(page).to have_field("wikis_relation_page_link[linkable_type]", type: :hidden, with: model.linkable_type)
-    expect(page).to have_field("wikis_relation_page_link[linkable_id]", type: :hidden, with: model.linkable_id)
-  end
+      if url?(query)
+        search_by_url(query)
+      else
+        search_by_query(query)
+      end
+    end
 
-  it "renders the wiki page selection", :aggregate_failures do
-    expect(page).to have_selector :fieldset, "Wiki page"
-    expect(page).to have_element :"filterable-tree-view",
-                                 src: search_wiki_pages_path(provider_id: model.provider_id,
-                                                             name: "wiki_page_selection")
-    expect(page).to have_field "Filter", type: :search, placeholder: "Search for a wiki page (or enter its URL)"
+    private
+
+    def url?(string)
+      uri = URI.parse(string)
+
+      %w[http https].include?(uri.scheme)
+    rescue URI::InvalidURIError
+      false
+    end
+
+    def search_by_url(query)
+      Adapters::Input::PageInfoForUrl.build(url: query).bind do |input_data|
+        provider.auth_strategy_for(user).bind do |auth_strategy|
+          provider.resolve("queries.page_info_for_url").call(input_data:, auth_strategy:).fmap { [it] }
+        end
+      end
+    end
+
+    def search_by_query(query)
+      Adapters::Input::SearchPages.build(query:).bind do |input_data|
+        provider.auth_strategy_for(user).bind do |auth_strategy|
+          provider.resolve("queries.search_pages").call(input_data:, auth_strategy:)
+        end
+      end
+    end
   end
 end
