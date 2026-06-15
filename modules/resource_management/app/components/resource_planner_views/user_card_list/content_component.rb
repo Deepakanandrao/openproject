@@ -28,45 +28,21 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module ResourcePlannerViews
+module ResourcePlannerViews::UserCardList
   class ContentComponent < ApplicationComponent
-    include OpTurbo::Streamable
-
-    def initialize(view:, project:, resource_planner:, work_packages: [], allocations: {}, visible_principal_ids: nil)
+    def initialize(view:, project:, resource_planner:)
       super
 
       @view = view
       @project = project
       @resource_planner = resource_planner
-      @work_packages = work_packages
-      @allocations = allocations
-      @visible_principal_ids = visible_principal_ids
     end
 
     private
 
-    def inner_component
-      case @view
-      when ResourceWorkPackageList
-        ResourcePlannerViews::WorkPackageList::ContentComponent.new(
-          view: @view,
-          project: @project,
-          resource_planner: @resource_planner,
-          work_packages: @work_packages,
-          allocations: @allocations,
-          visible_principal_ids: @visible_principal_ids
-        )
-      when UserCard
-        ResourcePlannerViews::UserCardList::ContentComponent.new(
-          view: @view,
-          project: @project,
-          resource_planner: @resource_planner
-        )
-      end
-    end
-
-    def placeholder_heading
-      @view&.name || @resource_planner.name
+    # TODO - Show multiple cards
+    def user
+      @user ||= @view.results&.first || @view.principal
     end
   end
 end
