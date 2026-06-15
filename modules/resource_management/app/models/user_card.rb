@@ -31,6 +31,7 @@
 class UserCard < PersistedView
   include ResourceManagement::Categorized
 
+  # TODO - review and remove
   SECONDARY_INFO = %w[role email login none].freeze
   TAG_SOURCES    = %w[groups roles none].freeze
   CARD_SIZES     = %w[compact default expanded].freeze
@@ -58,6 +59,8 @@ class UserCard < PersistedView
   def build_default_query
     UserQuery.new(project:, principal:)
   end
+
+  # TODO - implement `apply_query_configuration(filters_json:, filter_mode:)`
 
   private
 

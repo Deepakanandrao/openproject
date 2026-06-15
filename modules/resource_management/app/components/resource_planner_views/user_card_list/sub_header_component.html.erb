@@ -27,24 +27,29 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
 
-<%= render(
-      ResourcePlannerViews::UserCardList::SubHeaderComponent.new(
-        project: @project,
-        resource_planner: @resource_planner,
-        view: @view
-      )
-    ) %>
+<%=
+  render(Primer::OpenProject::SubHeader.new) do |subheader|
+    subheader.with_action_button(
+      icon_only: true,
+      leading_icon: :gear,
+      label: t("resource_management.user_card_list.subheader.settings"),
+      tag: :a,
+      href: edit_project_resource_planner_view_path(@project, @resource_planner, @view),
+      data: { controller: "async-dialog" }
+    )
 
-<% if users.empty? %>
-  <%= render(Primer::Beta::Blankslate.new) do |blankslate|
-        blankslate.with_visual_icon(icon: :people)
-        blankslate.with_heading(tag: :h2) { t("resource_management.user_card_list.blank.title") }
-        blankslate.with_description { t("resource_management.user_card_list.blank.description") }
-      end %>
-<% else %>
-  <div class="op-user-card-list">
-    <% users.each do |user| %>
-      <%= render(ResourcePlannerViews::UserCardList::CardComponent.new(user:)) %>
-    <% end %>
-  </div>
-<% end %>
+    # TODO
+    if allowed_to_allocate?
+      subheader.with_action_button(
+        leading_icon: :plus,
+        scheme: :primary,
+        label: t("resource_management.user_card_list.subheader.resource"),
+        tag: :a,
+        href: new_project_resource_allocation_path(@project),
+        data: { controller: "async-dialog" }
+      ) do
+        t("resource_management.user_card_list.subheader.resource")
+      end
+    end
+  end
+%>

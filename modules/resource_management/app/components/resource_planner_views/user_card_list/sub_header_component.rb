@@ -29,19 +29,20 @@
 #++
 
 module ResourcePlannerViews::UserCardList
-  class ContentComponent < ApplicationComponent
-    def initialize(view:, project:, resource_planner:)
-      super
+  class SubHeaderComponent < ApplicationComponent
+    include OpPrimer::ComponentHelpers
 
-      @view = view
+    def initialize(project:, resource_planner:, view:)
+      super
       @project = project
       @resource_planner = resource_planner
+      @view = view
     end
 
     private
 
-    def users
-      @users ||= @view.results.to_a
+    def allowed_to_allocate?
+      User.current.allowed_in_project?(:allocate_user_resources, @project)
     end
   end
 end

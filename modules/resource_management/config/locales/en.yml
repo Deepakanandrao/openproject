@@ -128,6 +128,13 @@ en:
       private: Private
       public: Public
     sub_views: Views in this resource planner
+    user_card_list:
+      blank:
+        description: There are no users matching this view's filters yet.
+        title: No users to display
+      subheader:
+        resource: Resource
+        settings: Configure view
     view_types:
       resource_work_package_list:
         caption: >-
