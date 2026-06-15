@@ -60,9 +60,33 @@ class UserCard < PersistedView
     UserQuery.new(project:, principal:)
   end
 
-  # TODO - implement `apply_query_configuration(filters_json:, filter_mode:)`
+  def apply_query_configuration(filters_json:, filter_mode:)
+    query = effective_query
+    return if query.nil?
+
+    query.filters.clear
+
+    # TODO - manual mode
+    return if manual_mode?(filter_mode)
+
+    parse_filters(filters_json).each do |filter|
+      query.where(filter[:attribute], filter[:operator], filter[:values])
+    end
+  end
 
   private
+
+  def manual_mode?(filter_mode)
+    filter_mode.to_s == "manual"
+  end
+
+  def parse_filters(filters_json)
+    return [] if filters_json.blank?
+
+    ::Queries::ParamsParser::APIV3FiltersParser.parse(filters_json)
+  rescue JSON::ParserError
+    []
+  end
 
   def query_must_be_user_query
     resolved = effective_query
