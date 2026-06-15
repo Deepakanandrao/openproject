@@ -41,7 +41,7 @@ module Wikis
         src: helpers.search_wiki_pages_path(provider_id: model.provider_id, name: "wiki_page_selection"),
         filter_mode_control_arguments: { hidden: true },
         filter_input_arguments: {
-          placeholder: I18n.t("wikis.link_existing_wiki_page_form.placeholder"),
+          placeholder: I18n.t("wikis.link_existing_wiki_page_form.placeholder")
         },
         include_sub_items_check_box_arguments: { hidden: true },
         no_results_node_arguments: { label: I18n.t("wikis.link_existing_wiki_page_form.no_results") }
