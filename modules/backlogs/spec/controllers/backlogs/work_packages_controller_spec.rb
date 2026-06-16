@@ -215,7 +215,7 @@ RSpec.describe Backlogs::WorkPackagesController do
         include_examples "respecting the all param for inbox pagination"
       end
 
-      context "with a Backlog Bucket as target" do
+      context "with a Backlog bucket as target" do
         let(:bucket) { create(:backlog_bucket, name: "My Bucket", project:) }
         let!(:bucket_items) { create_list(:work_package, 2, project:, status:, backlog_bucket: bucket) }
         let(:target_id) { "backlog_bucket:#{bucket.id}" }
@@ -345,7 +345,7 @@ RSpec.describe Backlogs::WorkPackagesController do
         include_examples "respecting the all param for inbox pagination"
       end
 
-      context "with a Backlog Bucket as target" do
+      context "with a Backlog bucket as target" do
         let(:bucket) { create(:backlog_bucket, project:) }
         let!(:bucket_items) { create_list(:work_package, 2, project:, status:, backlog_bucket: bucket) }
         let(:target_id) { "backlog_bucket:#{bucket.id}" }
@@ -443,7 +443,7 @@ RSpec.describe Backlogs::WorkPackagesController do
         include_examples "respecting the all param for inbox pagination"
       end
 
-      context "with the same Backlog Bucket as target" do
+      context "with the same Backlog bucket as target" do
         let(:target_id) { "backlog_bucket:#{bucket.id}" }
         let(:prev_id) { bucket_items.first.id }
 
@@ -465,7 +465,7 @@ RSpec.describe Backlogs::WorkPackagesController do
         include_examples "respecting the all param for inbox pagination"
       end
 
-      context "with another Backlog Bucket as target" do
+      context "with another Backlog bucket as target" do
         let(:other_bucket) { create(:backlog_bucket, project:) }
         let!(:other_bucket_items) { create_list(:work_package, 2, project:, status:, backlog_bucket: other_bucket) }
         let(:target_id) { "backlog_bucket:#{other_bucket.id}" }
@@ -591,6 +591,32 @@ RSpec.describe Backlogs::WorkPackagesController do
         expect(Backlogs::WorkPackageCardMenuComponent)
           .to have_received(:new)
           .with(hash_including(open_sprints_exist: false))
+      end
+    end
+
+    context "when other backlog buckets exist" do
+      let!(:buckets) { create_list(:backlog_bucket, 2, project:) }
+
+      before { allow(Backlogs::WorkPackageCardMenuComponent).to receive(:new).and_call_original }
+
+      it "passes other_buckets_exist: true to the menu component" do
+        subject
+
+        expect(Backlogs::WorkPackageCardMenuComponent)
+          .to have_received(:new)
+          .with(hash_including(other_buckets_exist: true))
+      end
+    end
+
+    context "when no backlog buckets exist" do
+      before { allow(Backlogs::WorkPackageCardMenuComponent).to receive(:new).and_call_original }
+
+      it "passes other_buckets_exist: false to the menu component" do
+        subject
+
+        expect(Backlogs::WorkPackageCardMenuComponent)
+          .to have_received(:new)
+          .with(hash_including(other_buckets_exist: false))
       end
     end
 
@@ -834,6 +860,93 @@ RSpec.describe Backlogs::WorkPackagesController do
         subject
 
         expect(response.body).not_to include("sprint:#{other_sprint.id}")
+      end
+    end
+
+    context "when all=1 is in params" do
+      let(:params) { { project_id: project.id, id: work_package.id, all: "1" } }
+
+      it "embeds the all query in the dialog form action URL" do
+        subject
+
+        expect(response.body).to match(/all=1/)
+      end
+    end
+
+    context "with a user lacking manage_sprint_items permission" do
+      let(:user) { create(:user, member_with_permissions: { project => %i[view_sprints view_work_packages] }) }
+
+      it "responds with 403" do
+        subject
+        expect(response).to have_http_status :forbidden
+      end
+    end
+
+    context "with a user lacking project permission" do
+      let(:user) { create(:user) }
+
+      it "responds with 404" do
+        subject
+        expect(response).to have_http_status :not_found
+      end
+    end
+  end
+
+  describe "GET #move_to_bucket_dialog" do
+    let!(:displayed_buckets) { create_list(:backlog_bucket, 2, project:) }
+    let!(:other_bucket) { create(:backlog_bucket, project: create(:project)) }
+
+    let(:params) { { project_id: project.id, id: work_package.id } }
+
+    subject { get :move_to_bucket_dialog, params:, format: :turbo_stream }
+
+    context "with a Sprint source" do
+      it "responds with a dialog turbo stream", :aggregate_failures do
+        subject
+
+        expect(response).to be_successful
+        expect(response).to have_turbo_stream action: "dialog"
+      end
+
+      it "includes the project buckets in the target_id options" do
+        subject
+
+        displayed_buckets.each do |bucket|
+          expect(response.body).to include("backlog_bucket:#{bucket.id}")
+        end
+      end
+
+      it "does not include buckets from other projects" do
+        subject
+
+        expect(response.body).not_to include("backlog_bucket:#{other_bucket.id}")
+      end
+    end
+
+    context "when the work package is in a bucket" do
+      let(:current_bucket) { create(:backlog_bucket, project:) }
+      let(:current_bucket_wp) { create(:work_package, status:, project:, backlog_bucket: current_bucket) }
+      let(:params) { { project_id: project.id, id: current_bucket_wp.id } }
+
+      it "responds with a dialog turbo stream" do
+        subject
+
+        expect(response).to be_successful
+        expect(response).to have_turbo_stream action: "dialog"
+      end
+
+      it "excludes the current bucket from the options" do
+        subject
+
+        expect(response.body).not_to include("backlog_bucket:#{current_bucket.id}")
+      end
+
+      it "includes the other project buckets" do
+        subject
+
+        displayed_buckets.each do |bucket|
+          expect(response.body).to include("backlog_bucket:#{bucket.id}")
+        end
       end
     end
 

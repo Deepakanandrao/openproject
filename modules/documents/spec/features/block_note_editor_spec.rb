@@ -104,15 +104,13 @@ RSpec.describe "BlockNote editor rendering", :js, :selenium, with_settings: { re
     context "when inserting work package links into the editor" do
       let(:status) { create(:status, name: "Open") }
       let(:type) { create(:type, name: "Life Goals") }
-      let(:work_package) do
+      let!(:work_package) do
         create(:work_package,
                project: document.project,
                subject: "pet a tiger",
                status:,
                type:)
       end
-
-      before { work_package } # force eager creation before visiting the page
 
       it "inserts link work package cards with slash command" do
         visit document_path(document)
@@ -122,11 +120,13 @@ RSpec.describe "BlockNote editor rendering", :js, :selenium, with_settings: { re
         editor.search_and_select_work_package("tiger", "pet a tiger")
 
         expect(editor.element).to have_no_text("Link existing work package") # search dialog is closed
-        expect(editor.element).to have_no_text("…") # work package is loaded
-        expect(editor.element.text).to match(/##{work_package.display_id}\sLIFE GOALS\sOpen\spet a tiger/)
+        expect(editor.element).to have_no_text("Loading")
+        expect(editor.element.text).to match(/LIFE GOALS\s##{work_package.display_id}\sOpen\spet a tiger/)
 
         # Capybara's have_link seems not to work in a shadow dom, so it's tested via the property
         expect(editor.element.find_link(text: "pet a tiger").native.property("href")).to end_with("/wp/#{work_package.id}")
+
+        editor.wait_for_autosave { document.reload.description&.include?("[####{work_package.id}](https://openproject.local/wp/#{work_package.id})") }
       end
 
       it "inserts an xxs inline link via # notation" do
@@ -141,6 +141,8 @@ RSpec.describe "BlockNote editor rendering", :js, :selenium, with_settings: { re
         expect(editor.element).to have_no_text("…") # inline chip loading state
         expect(editor.element.text).to match(/##{work_package.display_id}/)
         # xxs chip shows only the ID — no title link
+
+        editor.wait_for_autosave { document.reload.description&.include?("[##{work_package.id}](https://openproject.local/wp/#{work_package.id})") }
       end
 
       it "inserts an xs inline link via ## notation" do
@@ -157,6 +159,8 @@ RSpec.describe "BlockNote editor rendering", :js, :selenium, with_settings: { re
         # Capybara's have_link seems not to work in a shadow dom, so it's tested via the property
         expect(editor.element.find_link(text: "pet a tiger").native.property("href"))
           .to end_with("/wp/#{work_package.id}")
+
+        editor.wait_for_autosave { document.reload.description&.include?("[###{work_package.id}](https://openproject.local/wp/#{work_package.id})") }
       end
 
       it "inserts an s inline link via ### notation" do
@@ -173,6 +177,39 @@ RSpec.describe "BlockNote editor rendering", :js, :selenium, with_settings: { re
         # Capybara's have_link seems not to work in a shadow dom, so it's tested via the property
         expect(editor.element.find_link(text: "pet a tiger").native.property("href"))
           .to end_with("/wp/#{work_package.id}")
+
+        editor.wait_for_autosave { document.reload.description&.include?("####{work_package.id}") }
+      end
+
+      describe "CTRL-Z undo behavior" do
+        it "undoes typed text with CTRL-Z" do
+          visit document_path(document)
+          expect(page).to have_test_selector("blocknote-document-description")
+
+          editor.fill_in("X")
+          expect(editor.element).to have_text("X")
+
+          editor.undo
+
+          expect(editor.element).to have_no_text("X")
+        end
+
+        it "undoes an inline work package chip inserted via # notation with CTRL-Z" do
+          visit document_path(document)
+          expect(page).to have_test_selector("blocknote-document-description")
+
+          editor.element.send_keys("#tiger")
+          editor.wait_for_shadow_content("pet a tiger")
+          send_keys(:enter)
+          expect(editor.element).to have_no_text("#tiger") # chip replaced autocomplete text
+
+          expect(editor.element).to have_no_text("…") # chip finished loading
+          expect(editor.element).to have_text(/##{work_package.display_id}/)
+
+          editor.undo
+
+          expect(editor.element).to have_no_text(/##{work_package.display_id}/)
+        end
       end
     end
   end

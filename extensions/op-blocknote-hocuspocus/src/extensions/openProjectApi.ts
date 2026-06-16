@@ -2,7 +2,10 @@ import { BlockNoteSchema } from "@blocknote/core";
 import { ServerBlockNoteEditor } from "@blocknote/server-util";
 import type { beforeHandleMessagePayload, onAuthenticatePayload, onLoadDocumentPayload, onStoreDocumentPayload, onTokenSyncPayload } from "@hocuspocus/server";
 import { Extension } from "@hocuspocus/server";
-import { openProjectWorkPackageStaticBlockSpec } from "op-blocknote-extensions";
+import {
+  openProjectWorkPackageStaticBlockSpec,
+  openProjectWorkPackageStaticInlineSpec,
+} from "op-blocknote-extensions/server";
 import * as Y from "yjs";
 import { TokenExpired, TokenExpiryMissing, unauthorized } from "../closeEvents";
 import { decryptAndValidateToken } from "../services/tokenValidationService";
@@ -11,7 +14,10 @@ import { fetchResource } from "../services/resourceService";
 
 export const editorSchema = BlockNoteSchema.create().extend({
   blockSpecs: {
-    "openProjectWorkPackage": openProjectWorkPackageStaticBlockSpec(),
+    openProjectWorkPackageBlock: openProjectWorkPackageStaticBlockSpec(),
+  },
+  inlineContentSpecs: {
+    openProjectWorkPackageInline: openProjectWorkPackageStaticInlineSpec,
   },
 });
 
@@ -116,7 +122,6 @@ export class OpenProjectApi implements Extension {
     Y.applyUpdate(tempYdoc, Y.encodeStateAsUpdate(data.document));
     const tempFragment = tempYdoc.getXmlFragment("document-store");
     const editorData = editor.yXmlFragmentToBlocks(tempFragment);
-    // @ts-expect-error BlockNote types are complicated
     const markdownData = await editor.blocksToMarkdownLossy(editorData);
 
     const response = await fetchResource(resourceUrl, data.context.token, {

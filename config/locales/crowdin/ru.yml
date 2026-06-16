@@ -54,13 +54,14 @@ ru:
     reserved_identifiers:
       title: Reserved project identifiers
       lede_html: When a project's identifier is renamed, the previous identifier is kept reserved so that existing links and integrations keep working.<br>Here you can release reserved identifiers so that they may be used by other projects.
-      col_identifier: Identifier
-      col_project: Project
-      col_reserved: Reserved
-      not_available_in_semantic_mode: Reserved identifiers are only available in numeric identifier mode.
-      filter_label: Filter identifiers
-      btn_release: Release
+      col_identifier: Идентификатор
+      col_project: Проект
+      col_reserved: Зарезервировано
+      not_available_in_semantic_mode: Reserved project identifiers are only available in numeric identifier mode.
+      filter_label: Search identifiers
+      btn_release: Релиз
       released_notice: Identifier "%{identifier}" has been released.
+      identifier_not_found: The reserved identifier could not be found. It may have already been released or the project may have been deleted. Please refresh the page.
       dialog:
         title: Release identifier
         heading: Release "%{identifier}"?
@@ -448,6 +449,7 @@ ru:
 
             '
         box_header:
+          table_title: Projects with identifiers to update
           label_project: Проект
           label_previous_identifier: Предыдущий идентификатор
           label_autofixed_suggestion: Следующий идентификатор
@@ -1405,12 +1407,12 @@ ru:
     edit:
       form_configuration:
         tab: Настройка форм
-        label_group: Группа
-        reset_to_defaults: Восстановить значения по умолчанию
-        add_attribute_group: Добавить группу атрибутов
-        add_query_group: Добавить таблицу связанных пакетов работ
-        delete_group: Удалить группу
-        remove_attribute: Удалить из группы
+        label_group: Section
+        reset_to_defaults: Reset form
+        add_attribute_group: Section
+        add_query_group: Related work packages table
+        delete_group: Delete section
+        remove_attribute: Remove from section
         drag_to_activate: Чтобы включить поля, перетащите их отсюда
         drag_to_reorder: Перетащите, чтобы изменить порядок
         edit_query: Редактировать представление
@@ -1420,12 +1422,12 @@ ru:
         no_inactive_attributes: Нет неактивных атрибутов
         blankslate_title: Нет групп
         blankslate_description: Добавьте группы с помощью кнопки выше или перетащите атрибуты с левой панели.
-        group_actions: Действия с группами
-        rename_group: Переименовать группу
-        confirm_delete_group: Вы уверены, что хотите удалить эту группу? Это действие не может быть автоматически отменено.
-        group_name_label: Имя группы
+        group_actions: Section actions
+        rename_group: Rename section
+        confirm_delete_group: Are you sure you want to delete this section? This action cannot be automatically reversed.
+        group_name_label: Section name
         row_actions: Действия со строками
-        query_group_label: Таблица пакетов работ
+        query_group_label: Related work packages table
         empty_group_hint: Перетащите атрибуты сюда
         invalid_attribute_groups: Конфигурация формы является недопустимой.
         invalid_query: Недопустимая конфигурация встраиваемого представления.
@@ -2150,17 +2152,14 @@ ru:
         before: должны быть до %{date}.
         before_or_equal_to: должны быть до или ровно %{date}.
         blank: не может быть пустым.
-        not_before_start_date: должно быть после даты начала.
-        overlapping_range: пересекается с существующим диапазоном нерабочих дней.
         blank_nested: должно быть установлено свойство '%{property}'.
         cannot_delete_mapping: требуется. Невозможно удалить.
-        is_for_all_cannot_modify: предназначено для всех проектов и поэтому не может быть изменено.
         cant_link_a_work_package_with_a_descendant: Пакет работ не может быть связан с одной из своих подзадач.
         circular_dependency: Это отношение создаст циклическую зависимость.
         confirmation: не совпадает со значением поля %{attribute}.
         could_not_be_copied: "%{dependency} не может быть скопировано (полностью)."
+        datetime_must_be_in_future: должно быть в будущем.
         does_not_exist: не существует.
-        user_already_in_department: Пользователь %{user_id} уже является членом департамента %{department_id}.
         error_enterprise_only: "%{action} доступно только в корпоративной версии OpenProject."
         error_unauthorized: не доступен.
         error_readonly: запись не разрешена.
@@ -2181,36 +2180,38 @@ ru:
         greater_than_or_equal_to: должен быть больше или равно %{count}.
         greater_than_or_equal_to_start_date: должна быть позднее даты начала или совпадать с ней.
         greater_than_start_date: должна быть позднее даты начала.
+        hexcode_invalid: неверный 6-значный шестнадцатеричный код цвета.
         inclusion: не задано ни одно из допустимых значений.
         inclusion_nested: не задано одно из допустимых значений в пути '%{path}'.
         invalid: неверно.
         invalid_uri: должен быть допустимым URI.
         invalid_url: не является допустимым URL-адресом.
         invalid_url_scheme: 'не является поддерживаемым протоколом (разрешены следующие: %{allowed_schemes}).'
+        is_for_all_cannot_modify: предназначено для всех проектов и поэтому не может быть изменено.
         less_than_or_equal_to: должно быть меньше или равно %{count}.
         not_available: недоступно из-за конфигурации системы.
+        not_before_start_date: должно быть после даты начала.
         not_deletable: не может быть удален.
         not_editable: не может быть отредактирован, поскольку он уже действует.
         not_current_user: не является текущим пользователем.
-        system_wide_non_working_day_exists: конфликтует с существующим общесистемным нерабочим днем для этой даты.
         not_found: не найдено.
         not_a_date: не является допустимой датой.
         not_a_datetime: дата и время не являются допустимыми.
         not_a_number: не является числом.
         not_allowed: неверно, ввиду отсутствия прав.
-        host_not_allowed: не является разрешенным хостом.
         not_json: не может быть разобран как JSON.
         not_json_object: не является объектом JSON.
         not_an_integer: не является целым числом.
         not_an_iso_date: 'недопустимая дата. Требуемый формат: гггг-мм-дд.'
         not_same_project: не принадлежит тому же проекту.
-        datetime_must_be_in_future: должно быть в будущем.
         odd: должно быть нечетным.
+        overlapping_range: пересекается с существующим диапазоном нерабочих дней.
         regex_match_failed: не соответствует регулярному выражению %{expression}.
         regex_invalid: не может быть проверен связанным регулярным выражением.
         regex_list_invalid: Строки %{invalid_lines} не могут быть проанализированы как регулярное выражение.
-        hexcode_invalid: неверный 6-значный шестнадцатеричный код цвета.
         smaller_than_or_equal_to_max_length: должно быть меньше или равно максимальной длине.
+        ssrf_filtered: violates the SSRF policy of this OpenProject instance.
+        system_wide_non_working_day_exists: конфликтует с существующим общесистемным нерабочим днем для этой даты.
         taken: уже принято.
         too_long: слишком длинно (максимум — %{count} знаков).
         too_short: слишком коротко (минимум — %{count} знаков).
@@ -2223,6 +2224,7 @@ ru:
         url_not_secure_context: 'не предоставляет "Secure Context". Используйте HTTPS или обратный адрес, например localhost.
 
           '
+        user_already_in_department: Пользователь %{user_id} уже является членом департамента %{department_id}.
         wrong_length: неправильная длина (должно быть %{count} знаков).
       models:
         group:
@@ -2915,7 +2917,7 @@ ru:
   button_download: Скачать
   button_disable: Отключить
   button_duplicate: Дублировать
-  button_duplicate_and_follow: Скопировать и наблюдать
+  button_duplicate_and_follow: Дублировать и следовать
   button_edit: Правка
   button_enable: Включить
   button_edit_associated_wikipage: 'Редактировать связанную wiki-страницу: %{page_title}'
@@ -2929,6 +2931,7 @@ ru:
   button_login: Войти
   button_move: Переместить
   button_move_and_follow: Переместить и следовать
+  button_next: Next
   button_print: Печать
   button_quote: Цитата
   button_remove: Удалить
@@ -3287,8 +3290,8 @@ ru:
       edit_attribute_groups:
         description: 'Настроить конфигурацию формы с помощью этих дополнений:'
         features:
-          groups: Добавить новую группу атрибутов
-          rename: Переименовать группы атрибутов
+          groups: Add new attribute sections
+          rename: Rename attribute sections
           related: Добавить таблицу связанных пакетов работ
       readonly_work_packages:
         description: Отметить пакеты работ только для чтения для определённых статусов.
@@ -3600,6 +3603,12 @@ ru:
       selected: Выбрано
     include_sub_items: Включить подпроекты
     no_results_text: Нет результатов
+  header:
+    project_select_component:
+      all_projects: All projects
+      favorites: Favorites
+      leave_project: Leave project
+      title: Projects
   toggle_switch:
     label_on: Включено
     label_off: Выключено
@@ -4021,6 +4030,7 @@ ru:
   label_send_invitation: Отправить приглашение
   label_calculated_value: Рассчитываемое значение
   label_change_parent: Изменить родителя
+  label_change_password: Change password
   label_change_plural: Изменения
   label_change_properties: Изменить свойства
   label_change_status: Изменить статус
@@ -4307,6 +4317,7 @@ ru:
   label_my_account_data: Данные моей учетной записи
   label_my_avatar: Мой аватар
   label_my_queries: Мои пользовательские запросы
+  label_my_security: Security
   label_name: Имя
   label_never: Никогда
   label_new: Новое
@@ -4412,7 +4423,7 @@ ru:
   label_project_new: Новый проект
   label_project_plural: Проекты
   label_project_list_plural: Списки проектов
-  label_reserved_identifiers: Зарезервированные идентификаторы
+  label_reserved_identifiers: Reserved project identifiers
   label_project_life_cycle: Жизненный цикл проекта
   label_project_attributes_plural: Атрибуты проекта
   label_project_custom_field_plural: Атрибуты проекта
@@ -4660,6 +4671,11 @@ ru:
     few: 'Время отдыха: %{count} рабочих дней'
     many: 'Время отдыха: %{count} рабочих дней'
     other: 'Время отдыха: %{count} рабочих дней'
+  label_x_items_selected:
+    one: One item selected
+    few: "%{count} items selected"
+    many: "%{count} items selected"
+    other: "%{count} items selected"
   label_yesterday: вчера
   label_zen_mode: Режим «Дзен» (только доска и часы)
   label_role_type: Тип
@@ -4972,6 +4988,7 @@ ru:
         menu:
           label_actions: Действия с пакетом работ
         parent: Parent
+        undisclosed: Undisclosed
   permission_add_work_package_comments: Добавить комментарии
   permission_add_work_packages: Добавление пакетов работ
   permission_add_messages: Написать сообщения
@@ -5155,7 +5172,7 @@ ru:
   query_fields:
     active_or_archived: активно или в архиве
     assigned_to_role: Роль назначенного
-    assignee_or_group: Назначенец или его группа
+    assignee_or_group: Назначенный или его группа
     member_of_group: Группа назначенного
     name_or_identifier: Имя или идентификатор
     only_subproject_id: Только подпроект
@@ -5772,7 +5789,7 @@ ru:
   text_default_administrator_account_changed: Первоначальная учетная запись администратора была изменена
   text_default_encoding: 'По-умолчанию: UTF-8'
   text_destroy: Удалить
-  text_destroy_with_associated: 'Есть дополнительные объекты, ассоцированные с пакетом(-ами) работ, которые должны быть удалены. Это объекты следующих типов:'
+  text_destroy_with_associated: 'Существуют дополнительные объекты, связанные с удаляемым рабочим пакетом (пакетами). Эти объекты относятся к следующим типам:'
   text_destroy_what_to_do: Что Вы хотите сделать?
   text_diff_truncated: "... Этот разностность(diff) была усечена, так как она превышает максимальный размер, которые может быть отображен."
   text_email_delivery_not_configured: |-

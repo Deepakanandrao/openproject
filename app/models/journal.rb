@@ -49,6 +49,7 @@ class Journal < ApplicationRecord
   register_journal_formatter OpenProject::JournalFormatter::AgendaItemDuration
   register_journal_formatter OpenProject::JournalFormatter::AgendaItemPosition
   register_journal_formatter OpenProject::JournalFormatter::AgendaItemTitle
+  register_journal_formatter OpenProject::JournalFormatter::AllocatedTime
   register_journal_formatter OpenProject::JournalFormatter::Attachment
   register_journal_formatter OpenProject::JournalFormatter::Cause
   register_journal_formatter OpenProject::JournalFormatter::CustomComment
@@ -163,9 +164,9 @@ class Journal < ApplicationRecord
 
   def attachments_visible?(user = User.current)
     if internal?
-      super && user.allowed_in_project?(:view_internal_comments, project)
+      journable.attachments_visible?(user) && user.allowed_in_project?(:view_internal_comments, project)
     else
-      super
+      journable.attachments_visible?(user)
     end
   end
 

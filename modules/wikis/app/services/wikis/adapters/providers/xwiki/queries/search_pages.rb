@@ -34,16 +34,36 @@ module Wikis
       module XWiki
         module Queries
           class SearchPages < BaseQuery
-            def call(input_data:, **)
-              # TODO: use real API endpoints once available
+            include Concerns::XWikiQuery
+            include Concerns::XWikiPageQueries
 
-              titles = [
-                "#{input_data.query} makes XWiki special",
-                "API documentation of #{input_data.query}",
-                "A brief introduction on configuring your own #{input_data.query}."
-              ]
+            # Limiting result size rather strictly, because each result will cause another HTTP call to XWiki, this does not
+            # scale well. A stricter limit improves the worst case latency.
+            MAXIMUM_RESULTS = 20
 
-              success(titles.map { Results::PageInfo.new(identifier: "1338", title: it, href: "#", provider:) })
+            def call(input_data:, auth_strategy:)
+              query = { q: "\"#{escape_quotes input_data.query}\"", number: MAXIMUM_RESULTS }
+
+              authenticated(auth_strategy) do |http|
+                handle_response(http.get(rest_url("wikis/query", query:))) do |json|
+                  success(
+                    fetch_json(json, "searchResults")
+                      .uniq { |r| fetch_json(r, "id") }
+                      .map do |r|
+                        result = canonical_page_info(identifier: fetch_json(r, "id"), auth_strategy:)
+                        return result if result.failure?
+
+                        result.value!
+                      end
+                  )
+                end
+              end
+            end
+
+            private
+
+            def escape_quotes(string)
+              string.gsub("\\", "\\\\").gsub('"', '\"')
             end
           end
         end

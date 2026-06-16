@@ -109,6 +109,36 @@ module FormFields
         shadow_root.find("div[role='textbox']")
       end
 
+      # Retries the given block using Capybara's default wait time until it returns
+      # truthy. Use this before checking a database field that is written by the
+      # editor's async autosave.
+      def wait_for_autosave(&)
+        page.document.synchronize(Capybara.default_max_wait_time) do
+          raise Capybara::ElementNotFound unless yield
+        end
+      end
+
+      # Triggers undo in the editor by dispatching a synthetic Ctrl-Z keydown event
+      # directly to the shadow-DOM contenteditable element. Selenium's send_keys does
+      # not reliably deliver modifier-key chords to elements inside a shadow DOM, so
+      # we use execute_script instead. ProseMirror processes all keydown events on
+      # its editor div regardless of isTrusted.
+      def undo
+        page.execute_script(<<~JS)
+          var shadowRoot = #{shadow_root_query}
+          var element = shadowRoot.querySelector('div[role="textbox"]');
+          element.focus();
+          element.dispatchEvent(new KeyboardEvent('keydown', {
+            key: 'z',
+            code: 'KeyZ',
+            ctrlKey: true,
+            bubbles: true,
+            cancelable: true,
+            composed: true
+          }));
+        JS
+      end
+
       private
 
       # Attention: This only works with selenium, not with cuprite,
