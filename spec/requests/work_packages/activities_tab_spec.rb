@@ -98,7 +98,7 @@ RSpec.describe "Work package activities tab",
 
       expect(response).to have_http_status(:not_found)
       expect(response.media_type).to eq("text/vnd.turbo-stream.html")
-      expect(response.body.scan(I18n.t("label_not_found")).size).to eq(1)
+      expect(response.body.scan('<turbo-stream action="flash"').size).to eq(1)
     end
   end
 
