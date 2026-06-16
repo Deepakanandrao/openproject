@@ -38,23 +38,34 @@ module OpPrimer
   #
   # The companion `expandable-text` Stimulus controller toggles the expanded state.
   # With `expansion: :inline` the expander reveals the text in place; with
-  # `expansion: :external` the expander is left to a caller-provided action (for
-  # example, a dialog) and only its visibility is managed.
+  # `expansion: :dialog` the expander opens the component's `dialog` slot and the
+  # controller only manages the expander's visibility.
   class ExpandableTextComponent < Primer::Component
     DIRECTION_OPTIONS = %i[horizontal vertical].freeze
     DIRECTION_DEFAULT = :horizontal
 
-    EXPANSION_OPTIONS = %i[inline external].freeze
+    EXPANSION_OPTIONS = %i[inline dialog].freeze
     EXPANSION_DEFAULT = :inline
 
     attr_reader :direction, :expansion
 
+    # The dialog revealed when `expansion: :dialog`. The component owns the
+    # dialog's `id` and wires the expander button to open it, so callers only
+    # configure the dialog's own content (title, header, body). The slot is
+    # optional: in `:dialog` mode without it, the component renders a default
+    # dialog showing the full content.
+    renders_one :dialog, lambda { |**system_arguments|
+      Primer::Alpha::Dialog.new(**system_arguments, id: @dialog_id)
+    }
+
     # @param direction [Symbol] truncation direction. `:horizontal` clips a
     #   single line; `:vertical` clamps to `lines` rows.
     # @param lines [Integer] number of visible rows in `:vertical` mode, clamped to `1..6`.
-    # @param expansion [Symbol] `:inline` reveals the text in place; `:external`
-    #   leaves the expander's click to the caller (e.g. a dialog) and only manages
-    #   its visibility.
+    # @param expansion [Symbol] `:inline` reveals the text in place; `:dialog`
+    #   opens the component's `dialog` slot (the expander button is wired to it
+    #   automatically) and the controller only manages the expander's visibility.
+    # @param dialog_id [String] `id` for the dialog in `:dialog` mode; defaults to
+    #   a generated value. The expander button is wired to this id automatically.
     # @param expander_arguments [Hash] system arguments forwarded to the
     #   `Primer::Alpha::HiddenTextExpander`.
     # @param system_arguments [Hash] forwarded to the wrapping
@@ -64,6 +75,7 @@ module OpPrimer
       direction: DIRECTION_DEFAULT,
       lines: 3,
       expansion: EXPANSION_DEFAULT,
+      dialog_id: "expandable-text-dialog-#{SecureRandom.hex(4)}",
       expander_arguments: {},
       **system_arguments
     )
@@ -75,6 +87,7 @@ module OpPrimer
       @expansion = ActiveSupport::StringInquirer.new(
         fetch_or_fallback(EXPANSION_OPTIONS, expansion, EXPANSION_DEFAULT).to_s
       )
+      @dialog_id = dialog_id
 
       @system_arguments = deny_tag_argument(**system_arguments)
       @system_arguments[:tag] = :div
@@ -118,6 +131,18 @@ module OpPrimer
       @expander_arguments[:data] = merge_data(
         { data: { expandable_text_target: "expander" } },
         @expander_arguments
+      )
+
+      wire_expander_to_dialog! if @expansion.dialog?
+    end
+
+    # In dialog mode the expander button opens the component-owned dialog, so the
+    # caller never sets `show_dialog_id` themselves.
+    def wire_expander_to_dialog!
+      button_arguments = (@expander_arguments[:button_arguments] ||= {})
+      button_arguments[:data] = merge_data(
+        button_arguments,
+        data: { show_dialog_id: @dialog_id }
       )
     end
   end

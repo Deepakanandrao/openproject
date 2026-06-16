@@ -101,11 +101,39 @@ RSpec.describe OpPrimer::ExpandableTextComponent, type: :component do
     end
   end
 
-  describe "external expansion (expansion: :external)" do
-    it "sets the inline value to false on the controller" do
-      render_component(expansion: :external) { "Content" }
+  describe "dialog expansion (expansion: :dialog)" do
+    def render_with_dialog(**)
+      render_component(expansion: :dialog, **) do |component|
+        component.with_dialog(title: "Full text") { "Full content" }
+        "Content"
+      end
+    end
+
+    it "sets the inline value to false and renders the owned dialog" do
+      render_with_dialog(dialog_id: "my-dialog")
 
       expect(page).to have_css("div[data-expandable-text-inline-value='false']")
+      expect(page).to have_css("#my-dialog", visible: :all)
+    end
+
+    it "wires the expander button to the owned dialog without the caller setting it" do
+      render_with_dialog(dialog_id: "my-dialog")
+
+      expect(page).to have_css("button[data-show-dialog-id='my-dialog']", visible: :all)
+    end
+
+    it "generates a dialog id when none is given" do
+      render_with_dialog
+
+      expect(page).to have_css("[id^='expandable-text-dialog-']", visible: :all)
+    end
+
+    it "falls back to a default dialog showing the full content when no slot is provided" do
+      render_component(expansion: :dialog, dialog_id: "my-dialog") { "Full content" }
+
+      expect(page).to have_css("#my-dialog", visible: :all)
+      expect(page).to have_css("#my-dialog", text: "Full content", visible: :all)
+      expect(page).to have_css("button[data-show-dialog-id='my-dialog']", visible: :all)
     end
   end
 

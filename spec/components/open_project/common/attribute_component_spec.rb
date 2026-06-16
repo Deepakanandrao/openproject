@@ -50,4 +50,14 @@ RSpec.describe OpenProject::Common::AttributeComponent, type: :component do
       expect(page).to have_css(".op-vertical-truncate--lines-3[data-expandable-text-target='truncate']", text: "Some long text")
     end
   end
+
+  describe "dialog expansion" do
+    it "renders the full text in an owned dialog wired to the expander" do
+      render_component(lines: 3)
+
+      expect(page).to have_css("[data-expandable-text-inline-value='false']")
+      expect(page).to have_css("button[data-show-dialog-id='dialog-1']", visible: :all)
+      expect(page).to have_css("#dialog-1[data-test-selector='attribute-dialog']", visible: :all)
+    end
+  end
 end
