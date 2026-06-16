@@ -36,7 +36,6 @@ class WorkPackages::ActivitiesTabController < ApplicationController
   include WorkPackages::ActivitiesTab::PollingTimestamp
   include WorkPackages::ActivitiesTab::ReactionGrouping
   include WorkPackages::ActivitiesTab::ComponentStreaming
-  include WorkPackages::ActivitiesTab::UpdateStreaming
 
   Filters = WorkPackages::ActivitiesTab::Filters
 
@@ -274,7 +273,14 @@ class WorkPackages::ActivitiesTabController < ApplicationController
 
     if last_update_timestamp.present?
       editing_journals = params[:editing_journals]&.split(",")&.map(&:to_i) || []
-      stream_journal_updates_since(Time.zone.parse(last_update_timestamp), editing_journals)
+
+      WorkPackages::ActivitiesTab::UpdateStreams.new(
+        work_package: @work_package,
+        filter: @filter,
+        since: Time.zone.parse(last_update_timestamp),
+        editing_journal_ids: editing_journals,
+        sorting: journal_sorting
+      ).emit_into(self)
     else
       @turbo_status = :bad_request
     end
