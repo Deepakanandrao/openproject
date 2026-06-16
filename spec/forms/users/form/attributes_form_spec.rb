@@ -33,7 +33,6 @@ require "spec_helper"
 RSpec.describe Users::Form::AttributesForm, type: :forms do
   before do
     User.current = current_user
-    create(:user_custom_field_section, attribute_order: UserCustomFieldSection::BUILT_IN_ATTRIBUTES)
   end
 
   include_context "with rendered form"

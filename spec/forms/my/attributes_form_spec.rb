@@ -10,7 +10,6 @@ RSpec.describe My::AttributesForm, type: :forms do
   # over the shared context's defaults (e.g. `params`).
   before do
     User.current = current_user
-    create(:user_custom_field_section, attribute_order: UserCustomFieldSection::BUILT_IN_ATTRIBUTES)
     allow(Users::UpdateContract).to receive(:new).and_return(contract)
     allow(contract).to receive(:writable?) { |attr| writable_attributes.include?(attr.to_sym) }
   end

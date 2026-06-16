@@ -33,11 +33,6 @@ require "spec_helper"
 RSpec.describe "my", :js do
   let(:user_password) { "bob" * 4 }
   let!(:string_cf) { create(:user_custom_field, :string, name: "Hobbies", is_required: false) }
-  let!(:default_section) do
-    create(:user_custom_field_section).tap do |section|
-      section.update_column(:attribute_order, UserCustomFieldSection::BUILT_IN_ATTRIBUTES)
-    end
-  end
   let(:user) do
     create(:user,
            mail: "old@mail.com",
@@ -134,8 +129,7 @@ RSpec.describe "my", :js do
 
   describe "non-editable custom fields" do
     let!(:readonly_cf) do
-      create(:user_custom_field, :string, name: "Employee ID", editable: false,
-                                          user_custom_field_section: default_section)
+      create(:user_custom_field, :string, name: "Employee ID", editable: false)
     end
 
     it "renders them read-only on the account page" do

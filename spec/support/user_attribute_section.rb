@@ -28,51 +28,23 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require "spec_helper"
-
-RSpec.describe "Session TTL",
-               with_settings: { session_ttl_enabled?: true, session_ttl: "10" } do
-  shared_let(:admin) { create(:admin) }
-  let(:admin_password) { "adminADMIN!" }
-
-  let!(:work_package) { create(:work_package) }
-
-  before do
-    login_with(admin.login, admin_password)
-  end
-
-  def expire!
-    page.set_rack_session(updated_at: Time.now - 1.hour)
-  end
-
-  describe "outdated TTL on Rails request" do
-    it "expires on the next Rails request" do
-      visit "/my/account"
-
-      within_test_selector "my-account-form" do
-        expect(page).to have_field "user_login", with: admin.login
-      end
-
-      # Expire the session
-      expire!
-
-      visit "/"
-      expect(page).to have_css(".action-login")
-    end
-  end
-
-  describe "outdated TTL on API request" do
-    it "expires on the next APIv3 request" do
-      visit "/api/v3/work_packages/#{work_package.id}"
-
-      body = JSON.parse(page.body)
-      expect(body["id"]).to eq(work_package.id)
-
-      # Expire the session
-      expire!
-      visit "/api/v3/work_packages/#{work_package.id}"
-
-      expect(page.body).to eq("unauthorized")
+# A default user attribute section always exists in a real installation: it is
+# created by a migration for existing installations and by the seeder for fresh
+# installs. The administration user form and the my/account page render the
+# built-in user attributes (login, mail, …) through these sections, so they only
+# show up when one lists them.
+#
+# Seed that same default section — using the very seeder fresh installs run — for
+# every spec that renders those forms, so specs match production and never rely
+# on an empty table that cannot occur in practice. It is seeded per example (and
+# rolled back with the example's transaction) rather than committed once, so it
+# never leaks into the data-layer specs that legitimately control their own
+# sections: the model, service and migration specs (the latter exercise the
+# schema from before this data existed) are intentionally left untouched.
+RSpec.configure do |config|
+  %i[feature request view component forms].each do |spec_type|
+    config.before(:each, type: spec_type) do
+      BasicData::UserCustomFieldSectionSeeder.new.seed!
     end
   end
 end

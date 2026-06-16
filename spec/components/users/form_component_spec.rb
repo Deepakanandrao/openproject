@@ -36,7 +36,6 @@ RSpec.describe Users::FormComponent, type: :component do
 
   before do
     User.current = current_user
-    create(:user_custom_field_section, attribute_order: UserCustomFieldSection::BUILT_IN_ATTRIBUTES)
   end
 
   def render_component(user:)
