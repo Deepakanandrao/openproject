@@ -35,7 +35,7 @@ module OpPrimer
   # The vertical counterpart to `Primer::Beta::Truncate` (which clips a single
   # line horizontally). Like `Truncate`, it wraps whatever block content it is
   # given; callers pass system arguments (e.g. `flex:`, `data:`) through.
-  class VerticalTruncateComponent < Primer::Component
+  class VerticalTruncateComponent < Primer::Component # rubocop:disable OpenProject/AddPreviewForViewComponent
     LINES_RANGE = (1..6)
     LINES_DEFAULT = 3
 
