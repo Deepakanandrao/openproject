@@ -85,7 +85,7 @@ RSpec.describe Avatars::MyAvatarController do
       delete :destroy
       expect(flash[:notice]).to include "message"
       expect(flash[:error]).not_to be_present
-      expect(response).to redirect_to controller.send :redirect_path
+      expect(response.body).to include 'action="reload"'
     end
 
     it "calls the service for delete" do
@@ -97,10 +97,9 @@ RSpec.describe Avatars::MyAvatarController do
         .and_return(result)
 
       delete :destroy
-      expect(response).not_to be_successful
       expect(flash[:notice]).not_to be_present
       expect(flash[:error]).to include "error"
-      expect(response).to redirect_to controller.send :redirect_path
+      expect(response.body).to include 'action="reload"'
     end
   end
 end

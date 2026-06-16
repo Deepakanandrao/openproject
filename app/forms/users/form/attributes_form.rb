@@ -36,7 +36,7 @@ module Users
       include CustomFields::CustomFieldRendering
 
       form do |f|
-        admin_flag(f) if User.current.admin?
+        account_section(f)
         user_sections(f)
       end
 
@@ -52,10 +52,33 @@ module Users
         @custom_fields ||= @user.available_custom_fields
       end
 
-      def admin_flag(form)
-        form.check_box(name: :admin,
-                       label: User.human_attribute_name(:admin),
-                       disabled: @user == User.current)
+      # Built-in account attributes grouped under their own section so they read
+      # as account settings rather than as part of the avatar block rendered
+      # above the form. The current status is folded into the section title
+      # (e.g. "Account: active") for persisted users.
+      def account_section(form)
+        return unless show_account_section?
+
+        form.fieldset_group(title: account_title) do |group|
+          admin_flag(group) if User.current.admin?
+        end
+      end
+
+      def show_account_section?
+        @user.persisted? || User.current.admin?
+      end
+
+      def account_title
+        title = I18n.t(:label_account)
+        return title unless @user.persisted?
+
+        "#{title}: #{helpers.full_user_status(@user, true)}"
+      end
+
+      def admin_flag(group)
+        group.check_box(name: :admin,
+                        label: User.human_attribute_name(:admin),
+                        disabled: @user == User.current)
       end
 
       def user_sections(form)

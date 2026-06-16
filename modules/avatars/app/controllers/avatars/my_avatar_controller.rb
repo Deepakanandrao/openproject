@@ -16,10 +16,6 @@ module ::Avatars
 
     private
 
-    def redirect_path
-      edit_my_avatar_path
-    end
-
     def set_user
       @user = current_user
     end

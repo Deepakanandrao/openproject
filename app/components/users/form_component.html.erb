@@ -1,10 +1,3 @@
-<% if editing? %>
-  <%= render(Primer::Box.new(mb: 3)) do %>
-    <%= render(Primer::Beta::Text.new(tag: :div, font_weight: :bold)) { I18n.t("attributes.status") } %>
-    <%= render(Primer::Beta::Text.new(tag: :div)) { helpers.full_user_status(@user, true) } %>
-  <% end %>
-<% end %>
-
 <%= render(form_list) %>
 
 <% if show_no_login_message? %>

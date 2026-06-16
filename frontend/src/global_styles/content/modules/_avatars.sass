@@ -1,19 +1,41 @@
-.avatars--current-gravatar,
-.avatars--current-local-avatar
+.avatars--layout
+  display: flex
+  align-items: flex-start
+  gap: 1.5rem
+
+.avatars--media
+  display: flex
+  flex-direction: column
+  align-items: center
+  gap: 0.25rem
+  flex-shrink: 0
+
+.avatars--description
+  flex: 1
+
+.avatars--current-avatar
   display: inline-block
-  padding: 10px
-  border: 1px solid #aaa
-  img
-    width: 64px
+
+  .op-avatar
     height: 64px
+    width: 64px
+    line-height: 60px
+    font-size: 28px
 
-.avatars--local-avatar-preview
-  width: 128px
-  height: 128px
-  border-radius: 50%
+.avatars--upload-trigger
+  cursor: pointer
+  &:hover
+    opacity: 0.8
 
-.avatars--current-gravatar
-  margin-bottom: 20px
+.avatars--file-input
+  position: absolute
+  width: 1px
+  height: 1px
+  padding: 0
+  margin: -1px
+  overflow: hidden
+  clip: rect(0, 0, 0, 0)
+  border: 0
 
 .avatars--error-pane
   color: var(--content-form-error-color)
