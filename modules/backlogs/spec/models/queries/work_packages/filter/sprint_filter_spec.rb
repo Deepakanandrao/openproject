@@ -62,10 +62,11 @@ RSpec.describe Queries::WorkPackages::Filter::SprintFilter do
           .to receive(:for_project)
           .with(project)
           .and_return(scope)
-      end
 
-      allow(scope).to receive(:pluck).with(:id, :id).and_return([[sprint.id, sprint.id]])
-      allow(visible_scope).to receive(:pluck).with(:id, :id).and_return([[sprint.id, sprint.id]])
+        allow(scope).to receive(:pluck).with(:id).and_return([sprint.id])
+      else
+        allow(visible_scope).to receive(:pluck).with(:id).and_return([sprint.id])
+      end
 
       mock_permissions_for current_user do |mock|
         if project
@@ -73,6 +74,29 @@ RSpec.describe Queries::WorkPackages::Filter::SprintFilter do
         else
           # To mock having permissions for the `allowed_in_any_project?` check
           mock.allow_in_project(*project_permissions, project: build_stubbed(:project))
+        end
+      end
+    end
+
+    describe "#allowed_values" do
+      let(:sprint2) { build_stubbed(:sprint) }
+
+      before do
+        allow(scope).to receive(:pluck).with(:id).and_return([sprint.id, sprint2.id])
+      end
+
+      it "returns id pairs for sprints visible in the project" do
+        expect(instance.allowed_values).to contain_exactly(
+          [sprint.id.to_s, sprint.id.to_s],
+          [sprint2.id.to_s, sprint2.id.to_s]
+        )
+      end
+
+      context "when outside a project" do
+        let(:project) { nil }
+
+        it "returns id pairs for all visible sprints" do
+          expect(instance.allowed_values).to contain_exactly([sprint.id.to_s, sprint.id.to_s])
         end
       end
     end
