@@ -1,7 +1,7 @@
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
 import { Server } from "@hocuspocus/server";
 import { HocuspocusProvider } from "@hocuspocus/provider";
-import { HocuspocusProvider as HocuspocusProviderPrev } from "@hocuspocus/provider-prev";
+import { HocuspocusProvider as HocuspocusProviderPrev } from "@hocuspocus/provider-prev-test-only";
 import * as Y from "yjs";
 import { ws } from "msw";
 import { readFileSync } from "node:fs";
@@ -61,7 +61,7 @@ type ProviderConstructor = new (config: ProviderConfig) => ProviderInstance;
 
 const providers = [
   { label: `v${CURRENT_MAJOR} (current)`, pkg: "@hocuspocus/provider", major: CURRENT_MAJOR, Provider: HocuspocusProvider as unknown as ProviderConstructor },
-  { label: `v${PREVIOUS_MAJOR} (previous)`, pkg: "@hocuspocus/provider-prev", major: PREVIOUS_MAJOR, Provider: HocuspocusProviderPrev as unknown as ProviderConstructor },
+  { label: `v${PREVIOUS_MAJOR} (previous)`, pkg: "@hocuspocus/provider-prev-test-only", major: PREVIOUS_MAJOR, Provider: HocuspocusProviderPrev as unknown as ProviderConstructor },
 ] as const;
 
 let hocuspocus: Server;
@@ -88,7 +88,7 @@ it("provider matrix stays within Hocuspocus's one-major skew window", () => {
   }
   expect(
     CURRENT_MAJOR - PREVIOUS_MAJOR,
-    "the matrix must stay exactly one major apart; bump the @hocuspocus/provider-prev alias in package.json",
+    "the matrix must stay exactly one major apart; bump the @hocuspocus/provider-prev-test-only alias in package.json",
   ).toBe(1);
 });
 
