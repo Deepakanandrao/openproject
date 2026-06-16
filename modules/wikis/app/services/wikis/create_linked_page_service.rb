@@ -54,8 +54,6 @@ module Wikis
       )
     end
 
-    private
-
     def create_page(title:, parent_identifier:)
       provider.auth_strategy_for(user).bind do |auth_strategy|
         Adapters::Input::CreatePage.build(title:, parent_identifier:).bind do |input_data|
@@ -63,6 +61,8 @@ module Wikis
         end
       end
     end
+
+    private
 
     def link_page(identifier:, linkable_type:, linkable_id:)
       create_service = RelationPageLinks::CreateService.new(user:)

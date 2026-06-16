@@ -38,7 +38,11 @@ module Wikis
     # The component itself handles the states of "unauthorized", "forbidden", and "not_found".
     # The dialogs rendered here will perform global wiki page searches and will result in inserting a link view
     # component rendered with `load`.
-    authorization_checked! :load, :inline_existing_page_dialog, :close_dialog_and_inline
+    authorization_checked! :load,
+                           :inline_existing_page_dialog,
+                           :inline_new_page_dialog,
+                           :close_dialog_and_inline,
+                           :close_dialog_create_and_inline
 
     def load
       provider = Provider.visible.find_by(id: params[:provider_id])
@@ -56,17 +60,47 @@ module Wikis
       end
 
       form_model = Forms::InlineExistingWikiPageFormModel.new(provider_id:)
-      respond_with_dialog Wikis::InlineExistingWikiPageDialog.new(form_model)
+      respond_with_dialog Wikis::InlineWikiPageDialog.new(form_model)
+    end
+
+    def inline_new_page_dialog
+      parameters = inline_new_params
+      form_model = Forms::InlineNewWikiPageFormModel.new(provider_id: parameters[:provider_id],
+                                                         page_title: parameters[:page_title])
+      respond_with_dialog Wikis::InlineWikiPageDialog.new(form_model)
     end
 
     def close_dialog_and_inline
       params = inline_existing_params
-      close_dialog_via_turbo_stream("##{InlineExistingWikiPageDialog::DIALOG_ID}",
+      close_dialog_via_turbo_stream("##{InlineWikiPageDialog::DIALOG_ID}",
                                     additional: {
                                       action: "close_dialog_and_inline",
                                       providerId: params[:provider_id],
                                       pageIdentifier: params[:page_identifier]
                                     })
+      respond_with_turbo_streams
+    end
+
+    def close_dialog_create_and_inline # rubocop:disable Metrics/AbcSize
+      parameters = inline_new_params
+
+      provider = Provider.visible.find(parameters[:provider_id])
+      result = CreateLinkedPageService.new(provider:, user: current_user)
+                                      .create_page(title: parameters[:page_title],
+                                                   parent_identifier: parameters[:parent_page_identifier])
+
+      result.either(
+        ->(info) do
+          close_dialog_via_turbo_stream("##{InlineWikiPageDialog::DIALOG_ID}",
+                                        additional: {
+                                          action: "close_dialog_create_and_inline",
+                                          providerId: provider.id,
+                                          pageIdentifier: info.identifier
+                                        })
+        end,
+        ->(error) { render_error_flash_message_via_turbo_stream(message: error.inspect) }
+      )
+
       respond_with_turbo_streams
     end
 
@@ -94,6 +128,15 @@ module Wikis
       if params.key?(:wikis_forms_inline_existing_wiki_page_form_model)
         params.expect(wikis_forms_inline_existing_wiki_page_form_model: %i[provider_id])
               .merge(page_identifier: parse_identifier(params[:wiki_page_selection]))
+      else
+        params
+      end
+    end
+
+    def inline_new_params
+      if params.key?(:wikis_forms_inline_new_wiki_page_form_model)
+        params.expect(wikis_forms_inline_new_wiki_page_form_model: %i[provider_id page_title])
+              .merge(parent_page_identifier: parse_identifier(params[:wiki_page_selection]))
       else
         params
       end

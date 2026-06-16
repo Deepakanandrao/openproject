@@ -483,4 +483,8 @@ export class PathHelperService {
   public inlineExistingWikiPageDialog() {
     return `${this.staticBase}/wiki_page_link_macro/inline_existing_page_dialog`;
   }
+
+  public inlineNewWikiPageDialog() {
+    return `${this.staticBase}/wiki_page_link_macro/inline_new_page_dialog`;
+  }
 }

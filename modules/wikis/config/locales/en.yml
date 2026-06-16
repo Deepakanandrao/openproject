@@ -168,7 +168,7 @@ en:
       remove: Remove page link
     page_link_forms:
       labels:
-        page_tile: Title
+        page_title: Title
         parent: Parent wiki page
         wiki_page: Wiki page
       search:
