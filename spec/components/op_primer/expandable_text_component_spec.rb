@@ -47,7 +47,7 @@ RSpec.describe OpPrimer::ExpandableTextComponent, type: :component do
       )
       expect(page).to have_css(".Truncate.flex-1[data-expandable-text-target='truncate']", text: "Long permission label")
       expect(page).to have_css(".hidden-text-expander[data-expandable-text-target='expander'][hidden]", visible: :hidden)
-      expect(page).to have_css("button.ellipsis-expander[aria-label='Show full text']", visible: :hidden)
+      expect(page).to have_button(class: "ellipsis-expander", aria: { label: "Show full text" }, visible: :hidden)
     end
 
     it "merges classes and data attributes" do
@@ -112,14 +112,14 @@ RSpec.describe OpPrimer::ExpandableTextComponent, type: :component do
     it "sets the inline value to false and renders the owned dialog" do
       render_with_dialog(dialog_id: "my-dialog")
 
-      expect(page).to have_css("div[data-expandable-text-inline-value='false']")
+      expect(page).to have_element("div", "data-expandable-text-inline-value": "false")
       expect(page).to have_css("#my-dialog", visible: :all)
     end
 
     it "wires the expander button to the owned dialog without the caller setting it" do
       render_with_dialog(dialog_id: "my-dialog")
 
-      expect(page).to have_css("button[data-show-dialog-id='my-dialog']", visible: :all)
+      expect(page).to have_element("button", "data-show-dialog-id": "my-dialog", visible: :all)
     end
 
     it "exposes the dialog to assistive technology on the expander button" do
@@ -139,7 +139,7 @@ RSpec.describe OpPrimer::ExpandableTextComponent, type: :component do
 
       expect(page).to have_css("#my-dialog", visible: :all)
       expect(page).to have_css("#my-dialog", text: "Full content", visible: :all)
-      expect(page).to have_css("button[data-show-dialog-id='my-dialog']", visible: :all)
+      expect(page).to have_element("button", "data-show-dialog-id": "my-dialog", visible: :all)
     end
   end
 
