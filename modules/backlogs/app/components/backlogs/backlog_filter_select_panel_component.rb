@@ -68,11 +68,11 @@ module Backlogs
       backlog_filters.public_send(filter_field)
     end
 
-    def counter
+    def counter_arguments
       count = selected_ids&.size || 0
       aria = { label: I18n.t(:label_x_items, count:), live: "polite" }
 
-      render Primer::Beta::Counter.new(count:, hide_if_zero: true, ml: 2, aria:)
+      { count:, hide_if_zero: true, ml: 2, aria: }
     end
 
     def selector_label

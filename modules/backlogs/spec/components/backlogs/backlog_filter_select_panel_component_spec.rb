@@ -82,8 +82,8 @@ RSpec.describe Backlogs::BacklogFilterSelectPanelComponent, type: :component do
     it "marks selected buckets as active" do
       filters = Backlogs::BacklogFilters.from_params(bucket_ids: [bucket2.id])
       render_component(field_name: :bucket_ids, filters:)
-      expect(page).to have_css("[aria-selected='false']", text: "Ideas")
-      expect(page).to have_css("[aria-selected='true']", text: "Backlog")
+      expect(page).to have_element(aria: { selected: false }, text: "Ideas")
+      expect(page).to have_element(aria: { selected: true }, text: "Backlog")
     end
   end
 

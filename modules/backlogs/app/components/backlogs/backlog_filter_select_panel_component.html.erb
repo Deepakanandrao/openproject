@@ -26,7 +26,8 @@
       ) do |panel| %>
         <% panel.with_show_button(scheme: :secondary, color: selector_color) do |button| %>
           <% button.with_trailing_visual_icon(icon: :"triangle-down", color: :default) %>
-          <%= safe_join([selector_label, counter]) %>
+          <%= selector_label %>
+          <%= render Primer::Beta::Counter.new(**counter_arguments) %>
         <% end %>
 
         <% items.each do |item|
