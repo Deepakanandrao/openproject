@@ -46,10 +46,6 @@ module Queries::WorkPackages::Filter
       :backlog_bucket_id
     end
 
-    def human_name
-      WorkPackage.human_attribute_name(:backlog_bucket)
-    end
-
     def ar_object_filter?
       true
     end
