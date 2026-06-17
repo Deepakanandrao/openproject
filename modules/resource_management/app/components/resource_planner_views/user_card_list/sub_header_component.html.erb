@@ -49,18 +49,6 @@ See COPYRIGHT and LICENSE files for more details.
       ) do
         t("resource_management.user_card_list.subheader.resource")
       end
-    elsif allowed_to_allocate?
-      # TODO
-      subheader.with_action_button(
-        leading_icon: :plus,
-        scheme: :primary,
-        label: t("resource_management.user_card_list.subheader.resource"),
-        tag: :a,
-        href: new_project_resource_allocation_path(@project),
-        data: { controller: "async-dialog" }
-      ) do
-        t("resource_management.user_card_list.subheader.resource")
-      end
     end
   end
 %>
