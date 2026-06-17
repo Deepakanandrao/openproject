@@ -29,38 +29,30 @@
 #++
 
 module Wikis
-  class InlineExistingWikiPageDialog < ApplicationComponent
-    include OpTurbo::Streamable
-
-    DIALOG_ID = "inline-existing-wiki-page-dialog"
-
-    def form_id = "#{DIALOG_ID}-form"
-
-    def form_options
+  class InlineNewWikiPageForm < ApplicationForm
+    form do |f|
       if model.final_step?
-        {
-          id: form_id,
-          model:,
-          url: close_dialog_and_inline_wiki_page_link_macro_path,
-          data: { turbo_stream: true }
-        }
+        f.hidden(name: :provider_id)
+        f.hidden(name: :page_title)
+
+        f.filterable_tree_view(
+          name: "wiki_page_selection",
+          label: I18n.t("wikis.page_link_forms.labels.wiki_page"),
+          src: helpers.search_wiki_pages_path(provider_id: model.provider_id, name: "wiki_page_selection"),
+          filter_mode_control_arguments: { hidden: true },
+          filter_input_arguments: { placeholder: I18n.t("wikis.page_link_forms.search.placeholder") },
+          include_sub_items_check_box_arguments: { hidden: true },
+          no_results_node_arguments: { label: I18n.t("wikis.page_link_forms.search.no_results") }
+        )
       else
-        {
-          id: form_id,
-          model:,
-          url: inline_existing_page_dialog_wiki_page_link_macro_path,
-          method: :get,
-          data: { turbo_stream: true }
-        }
+        f.text_field(name: :page_title, label: I18n.t("wikis.page_link_forms.labels.page_title"), required: true)
+
+        f.select_list(name: :provider_id, label: PageLink.human_attribute_name(:provider), required: true) do |list|
+          Provider.visible.enabled.each do |provider|
+            list.option(label: provider.name, value: provider.id)
+          end
+        end
       end
-    end
-
-    def keep_dialog_open?
-      model.final_step?
-    end
-
-    def system_arguments
-      options
     end
   end
 end

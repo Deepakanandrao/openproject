@@ -28,23 +28,39 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-# Allows to use the service as a source for ActiveModel::Errors, i.e.
-#
-#     ActiveModel::Errors.new(self)
-#
-# It adds neccessary translation and naming helpers to the service.
-module ServiceAsErrorSource
-  def self.included(base)
-    base.extend ActiveModel::Naming
-    base.extend ActiveModel::Translation
-    base.extend ClassMethods
+module Wikis
+  class InlineWikiPageDialog < ApplicationComponent
+    include OpTurbo::Streamable
+
+    DIALOG_ID = "inline-wiki-page-dialog"
+
+    def form_id = "#{DIALOG_ID}-form"
+
+    def form_options
+      if model.final_step?
+        {
+          id: form_id,
+          model:,
+          url: model.close_form_url,
+          data: { turbo_stream: true }
+        }
+      else
+        {
+          id: form_id,
+          model:,
+          url: model.continue_form_url,
+          method: :get,
+          data: { turbo_stream: true }
+        }
+      end
+    end
+
+    def keep_dialog_open?
+      model.final_step?
+    end
+
+    def system_arguments
+      options
+    end
   end
-
-  module ClassMethods
-    def i18n_scope = "services"
-
-    def model_name = ActiveModel::Name.new(self)
-  end
-
-  def read_attribute_for_validation(attr) = attr
 end

@@ -32,16 +32,17 @@ require "spec_helper"
 require_module_spec_helper
 
 module Wikis
-  RSpec.describe CreateLinkedPageService do
+  RSpec.describe CreatePageService do
     include Dry::Monads[:result]
 
     subject(:service_result) do
-      described_class.new(provider:, user:).call(
-        title:,
-        parent_identifier:,
-        linkable_type: linkable.class.name,
-        linkable_id: linkable.id
-      )
+      described_class.new(provider:, user:)
+                     .create_page_and_link(
+                       title:,
+                       parent_identifier:,
+                       linkable_type: linkable.class.name,
+                       linkable_id: linkable.id
+                     )
     end
 
     let(:user) { build_stubbed(:user) }
@@ -64,8 +65,8 @@ module Wikis
       allow(provider).to receive(:auth_strategy_for).with(user).and_return(Success(auth_strategy))
       allow(provider).to receive(:resolve).with("commands.create_page").and_return(create_page_command)
       allow(create_page_command).to receive(:call)
-        .with(input_data: anything, auth_strategy: auth_strategy)
-        .and_return(Success(page_info))
+                                      .with(input_data: anything, auth_strategy: auth_strategy)
+                                      .and_return(Success(page_info))
       allow(RelationPageLinks::CreateService).to receive(:new).with(user:).and_return(create_link_service)
       allow(create_link_service).to receive(:call).and_return(create_link_result)
     end
@@ -76,7 +77,7 @@ module Wikis
       end
 
       it "returns the created page link as the result" do
-        expect(service_result.result).to eq(page_link)
+        expect(service_result.value!).to eq(page_link)
       end
 
       it "creates a page link with the page identifier from the command result" do
@@ -93,27 +94,33 @@ module Wikis
     end
 
     context "when the create link service fails" do
-      let(:create_link_result) { ServiceResult.failure }
+      let(:create_link_result) { ServiceResult.failure(message: "Failed to create link") }
 
-      it "returns the failure" do
-        expect(service_result).to eq(create_link_result)
+      it "returns a failure message" do
+        expect(service_result).to be_failure
+        expect(service_result.failure).to eq("Failed to create link")
       end
     end
 
     context "when auth strategy fails" do
+      let(:token_error) { Adapters::Results::Error.new(source: self, code: :missing_token) }
+
       before do
-        allow(provider).to receive(:auth_strategy_for).with(user)
-          .and_return(Failure(Adapters::Results::Error.new(source: self, code: :missing_token)))
+        allow(provider).to receive(:auth_strategy_for)
+                             .with(user)
+                             .and_return(Failure(token_error))
       end
 
       it "returns a failure service result with the auth error code" do
         expect(service_result).to be_failure
-        expect(service_result.errors.where(:base).map(&:type)).to include(:missing_token)
+        expect(service_result.failure).to eq(token_error)
       end
     end
 
     context "when the create page command fails" do
-      let(:command_error) { Adapters::Results::Error.new(source: Adapters::Providers::XWiki::Commands::CreatePage, code: :not_found) }
+      let(:command_error) do
+        Adapters::Results::Error.new(source: Adapters::Providers::XWiki::Commands::CreatePage, code: :not_found)
+      end
 
       before do
         allow(create_page_command).to receive(:call).and_return(Failure(command_error))
@@ -124,7 +131,7 @@ module Wikis
       end
 
       it "adds the command error code to the wiki_page attribute" do
-        expect(service_result.errors.where(:wiki_page).map(&:type)).to include(:not_found)
+        expect(service_result.failure).to eq(command_error)
       end
     end
   end
