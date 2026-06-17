@@ -48,11 +48,8 @@ module Backlogs
       backlog_filter_params
         .except(filter_field)
         .flat_map do |name, value|
-          if value.is_a?(Array)
-            value.map { |v| ["#{name}[]", v, { id: nil }] }
-          else
-            [name, value, { id: nil }]
-          end
+          field_name = value.is_a?(Array) ? "#{name}[]" : name
+          Array(value).map { |v| [field_name, v, { id: nil }] }
         end
     end
 

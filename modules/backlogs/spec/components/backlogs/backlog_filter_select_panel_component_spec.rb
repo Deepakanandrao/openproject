@@ -36,8 +36,8 @@ RSpec.describe Backlogs::BacklogFilterSelectPanelComponent, type: :component do
 
   current_user { user }
 
-  def render_component(field_name:, filters: Backlogs::BacklogFilters.from_params({}))
-    RequestStore.store[:backlog_filters] = filters
+  def render_component(field_name:, **params)
+    params.each { |k, v| vc_test_controller.params[k] = v }
     render_inline(described_class.new(project:, field_name:))
   end
 
@@ -47,7 +47,7 @@ RSpec.describe Backlogs::BacklogFilterSelectPanelComponent, type: :component do
 
     it "shows 'Sprints' as the button label" do
       render_component(field_name: :sprint_ids)
-      expect(page).to have_button("Sprints")
+      expect(page).to have_button("All sprints")
     end
 
     it "renders all sprints as items" do
@@ -57,8 +57,7 @@ RSpec.describe Backlogs::BacklogFilterSelectPanelComponent, type: :component do
     end
 
     it "marks selected sprints as active" do
-      filters = Backlogs::BacklogFilters.from_params(sprint_ids: [sprint1.id])
-      render_component(field_name: :sprint_ids, filters:)
+      render_component(field_name: :sprint_ids, sprint_ids: [sprint1.id])
       expect(page).to have_css("[aria-selected='true']", text: "Alpha Sprint")
       expect(page).to have_css("[aria-selected='false']", text: "Beta Sprint")
     end
@@ -70,7 +69,7 @@ RSpec.describe Backlogs::BacklogFilterSelectPanelComponent, type: :component do
 
     it "shows 'Backlog buckets' as the button label" do
       render_component(field_name: :bucket_ids)
-      expect(page).to have_button("Backlog buckets")
+      expect(page).to have_button("All backlog buckets")
     end
 
     it "renders all buckets as items" do
@@ -80,8 +79,7 @@ RSpec.describe Backlogs::BacklogFilterSelectPanelComponent, type: :component do
     end
 
     it "marks selected buckets as active" do
-      filters = Backlogs::BacklogFilters.from_params(bucket_ids: [bucket2.id])
-      render_component(field_name: :bucket_ids, filters:)
+      render_component(field_name: :bucket_ids, bucket_ids: [bucket2.id])
       expect(page).to have_element(aria: { selected: false }, text: "Ideas")
       expect(page).to have_element(aria: { selected: true }, text: "Backlog")
     end
@@ -89,22 +87,27 @@ RSpec.describe Backlogs::BacklogFilterSelectPanelComponent, type: :component do
 
   describe "hidden filter fields" do
     it "passes through sprint_ids when rendering the bucket panel" do
-      render_component(field_name: :bucket_ids,
-                       filters: Backlogs::BacklogFilters.from_params(sprint_ids: ["1"]))
-      expect(page).to have_css("input[name='sprint_ids[]'][value='1']", visible: :all)
+      render_component(field_name: :bucket_ids, sprint_ids: ["1"])
+      expect(page).to have_field("sprint_ids[]", type: :hidden, with: "1", visible: :all)
     end
 
     it "passes through bucket_ids when rendering the sprint panel" do
-      render_component(field_name: :sprint_ids,
-                       filters: Backlogs::BacklogFilters.from_params(bucket_ids: ["2"]))
-      expect(page).to have_css("input[name='bucket_ids[]'][value='2']", visible: :all)
+      render_component(field_name: :sprint_ids, bucket_ids: ["2"])
+      expect(page).to have_field("bucket_ids[]", type: :hidden, with: "2", visible: :all)
     end
 
     it "expands array values into multiple hidden inputs" do
-      render_component(field_name: :sprint_ids,
-                       filters: Backlogs::BacklogFilters.from_params(bucket_ids: [1, 2]))
-      expect(page).to have_css("input[name='bucket_ids[]'][value='1']", visible: :all)
-      expect(page).to have_css("input[name='bucket_ids[]'][value='2']", visible: :all)
+      render_component(field_name: :sprint_ids, bucket_ids: [1, 2])
+      expect(page).to have_field("bucket_ids[]", type: :hidden, with: "1", visible: :all)
+      expect(page).to have_field("bucket_ids[]", type: :hidden, with: "2", visible: :all)
+    end
+
+    it "passes through scalar params as a single hidden input without brackets" do
+      render_component(field_name: :sprint_ids, all: true)
+      # The clear form has 1 `all`, the filter form has 1 `all` and 1 `sprint_ids[]` parameter
+      expect(page).to have_field(type: :hidden, count: 3, visible: :all)
+      expect(page).to have_field("all", type: :hidden, with: "true", count: 2, visible: :all)
+      expect(page).to have_field("sprint_ids[]", type: :hidden, count: 1, visible: :all)
     end
   end
 end
