@@ -38,8 +38,20 @@ See COPYRIGHT and LICENSE files for more details.
         header.with_column(classes: "op-user-card--identity") do
           flex_layout do |identity|
             identity.with_row(classes: "op-user-card--name") do
-              render(Primer::Beta::Text.new(font_weight: :semibold, data: { test_selector: "user-card-name" })) do
-                @user.name
+              # TODO - make the whole card clickable to open the dialog?
+              if @details_path
+                render(
+                  Primer::Beta::Link.new(
+                    href: @details_path,
+                    font_weight: :semibold,
+                    underline: false,
+                    data: { controller: "async-dialog", test_selector: "user-card-name" }
+                  )
+                ) { @user.name }
+              else
+                render(Primer::Beta::Text.new(font_weight: :semibold, data: { test_selector: "user-card-name" })) do
+                  @user.name
+                end
               end
             end
 
@@ -120,13 +132,7 @@ See COPYRIGHT and LICENSE files for more details.
           end
 
           bar.with_row do
-            render(Primer::Beta::ProgressBar.new) do |progress|
-              progress.with_item(
-                percentage: utilization_bar_percentage,
-                bg: utilization_bar_color,
-                aria: { label: utilization_label }
-              )
-            end
+            render(ResourcePlannerViews::UserCardList::UtilizationBarComponent.new(value: @utilization))
           end
         end
       end

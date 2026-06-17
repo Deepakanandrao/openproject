@@ -107,10 +107,6 @@ module ResourceAllocations
       active_index.nil? ? records : records[active_index..]
     end
 
-    # How booked the user is across `range`, as a percentage of their working
-    # capacity in that range.
-    # Each allocation contributes the share of its minutes that falls in the range,
-    # prorated by working capacity.
     def utilization_ratio(range)
       capacity = WorkingTimeCalendar.new(user: @user, range:).total
       return if capacity.zero?

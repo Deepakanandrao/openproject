@@ -87,5 +87,11 @@ Rails.application.routes.draw do
                 controller: "resource_management/work_package_resource_allocations",
                 only: :index
     end
+
+    resources :users, only: [] do
+      resources :resource_allocations,
+                controller: "resource_management/user_resource_allocations",
+                only: :index
+    end
   end
 end

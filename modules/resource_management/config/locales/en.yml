@@ -128,6 +128,12 @@ en:
       private: Private
       public: Public
     sub_views: Views in this resource planner
+    user_allocations_dialog:
+      allocate_work_package: Allocate work package
+      other_work_packages:
+        one: "1 other work package"
+        other: "%{count} other work packages"
+      title: Utilization
     user_card_list:
       add_user_dialog:
         title: Add user

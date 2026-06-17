@@ -52,6 +52,10 @@ module ResourcePlannerViews::UserCardList
       )
     end
 
+    def details_path_for(user)
+      helpers.project_user_resource_allocations_path(@project, user, resource_planner_id: @resource_planner.id)
+    end
+
     def utilization_for(user)
       return nil unless utilization_window
 
