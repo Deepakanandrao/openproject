@@ -30,8 +30,8 @@
 
 module Backlogs
   module CommonHelper
-    def user_allowed?(permission)
-      current_user.allowed_in_project?(permission, project)
+    def user_allowed?(permission, project: nil)
+      current_user.allowed_in_project?(permission, project || self.project)
     end
 
     def backlog_bucket_creation_allowed?

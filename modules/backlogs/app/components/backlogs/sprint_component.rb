@@ -144,9 +144,5 @@ module Backlogs
         user_allowed?(:create_sprints) || user_allowed?(:create_sprints, project: sprint.project)
       end
     end
-
-    def user_allowed?(permission, project: self.project)
-      current_user.allowed_in_project?(permission, project)
-    end
   end
 end
