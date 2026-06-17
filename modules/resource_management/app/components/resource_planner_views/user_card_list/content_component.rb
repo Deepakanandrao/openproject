@@ -52,6 +52,31 @@ module ResourcePlannerViews::UserCardList
       )
     end
 
+    def utilization_for(user)
+      return nil unless utilization_window
+
+      ResourceAllocations::Availability
+        .new(user:, allocations: booked_allocations.fetch(user.id, []))
+        .utilization_ratio(utilization_window)
+    end
+
+    def utilization_window
+      return @utilization_window if defined?(@utilization_window)
+
+      from = @resource_planner.start_date
+      to = @resource_planner.end_date
+      @utilization_window = from && to ? from..to : nil
+    end
+
+    def booked_allocations
+      @booked_allocations ||=
+        if utilization_window
+          ResourceAllocation.allocated.for_principal(users).group_by(&:principal_id)
+        else
+          {}
+        end
+    end
+
     def blank_description
       key = @view.manually_picked? ? "manual_description" : "description"
       t("resource_management.user_card_list.blank.#{key}")

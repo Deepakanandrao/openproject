@@ -95,6 +95,43 @@ See COPYRIGHT and LICENSE files for more details.
       end
     end
 
+    if utilization?
+      card.with_row do
+        flex_layout do |bar|
+          bar.with_row(mb: 1) do
+            flex_layout(justify_content: :space_between, align_items: :center) do |line|
+              line.with_column do
+                render(Primer::Beta::Text.new(font_size: :small)) do
+                  t("resource_management.user_card_list.utilization.label")
+                end
+              end
+              line.with_column do
+                render(
+                  Primer::Beta::Text.new(
+                    font_size: :small,
+                    color: :muted,
+                    data: { test_selector: "user-card-utilization" }
+                  )
+                ) do
+                  utilization_label
+                end
+              end
+            end
+          end
+
+          bar.with_row do
+            render(Primer::Beta::ProgressBar.new) do |progress|
+              progress.with_item(
+                percentage: utilization_bar_percentage,
+                bg: utilization_bar_color,
+                aria: { label: utilization_label }
+              )
+            end
+          end
+        end
+      end
+    end
+
     card.with_row do
       render(
         Primer::Beta::Button.new(

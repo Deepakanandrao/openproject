@@ -34,11 +34,12 @@ module ResourcePlannerViews::UserCardList
   class CardComponent < ApplicationComponent
     include OpPrimer::ComponentHelpers
 
-    def initialize(user:, remove_path: nil)
+    def initialize(user:, remove_path: nil, utilization: nil)
       super
 
       @user = user
       @remove_path = remove_path
+      @utilization = utilization
     end
 
     def render?
@@ -47,6 +48,28 @@ module ResourcePlannerViews::UserCardList
 
     def show_email?
       (@user == User.current) || User.current.allowed_globally?(:view_user_email)
+    end
+
+    def utilization?
+      !@utilization.nil?
+    end
+
+    def utilization_label
+      helpers.number_to_percentage(@utilization, precision: 0)
+    end
+
+    def utilization_bar_percentage
+      @utilization.clamp(0, 100)
+    end
+
+    def utilization_bar_color
+      if @utilization > 100
+        :danger_emphasis
+      elsif @utilization == 100
+        :success_emphasis
+      else
+        :accent_emphasis
+      end
     end
 
     # Constructs a string in the form of:

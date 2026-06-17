@@ -44,7 +44,13 @@ See COPYRIGHT and LICENSE files for more details.
 <% else %>
   <div class="op-user-card-list">
     <% users.each do |user| %>
-      <%= render(ResourcePlannerViews::UserCardList::CardComponent.new(user:, remove_path: remove_path_for(user))) %>
+      <%= render(
+            ResourcePlannerViews::UserCardList::CardComponent.new(
+              user:,
+              remove_path: remove_path_for(user),
+              utilization: utilization_for(user)
+            )
+          ) %>
     <% end %>
   </div>
 <% end %>

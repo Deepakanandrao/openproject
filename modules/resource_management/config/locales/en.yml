@@ -141,6 +141,8 @@ en:
       subheader:
         resource: Resource
         settings: Configure view
+      utilization:
+        label: Utilization
     view_types:
       resource_work_package_list:
         caption: >-
