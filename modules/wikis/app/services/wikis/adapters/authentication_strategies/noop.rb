@@ -29,13 +29,14 @@
 #++
 
 module Wikis
-  module XWikiProviders
-    class UpdateService < ::BaseServices::Update
-      include Concerns::FetchesInstanceId
-
-      private
-
-      def should_fetch_instance_id?(model) = model.url.present? && model.url_changed?
+  module Adapters
+    module AuthenticationStrategies
+      # Used for public endpoints that do not require authentication.
+      class Noop
+        def call(http_options: {}, **)
+          yield OpenProject.httpx.with(http_options)
+        end
+      end
     end
   end
 end

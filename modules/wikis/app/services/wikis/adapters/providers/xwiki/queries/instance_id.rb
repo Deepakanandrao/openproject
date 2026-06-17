@@ -29,13 +29,23 @@
 #++
 
 module Wikis
-  module XWikiProviders
-    class UpdateService < ::BaseServices::Update
-      include Concerns::FetchesInstanceId
+  module Adapters
+    module Providers
+      module XWiki
+        module Queries
+          class InstanceId < BaseQuery
+            include Concerns::XWikiRequest
 
-      private
-
-      def should_fetch_instance_id?(model) = model.url.present? && model.url_changed?
+            def call(auth_strategy:)
+              authenticated(auth_strategy) do |http|
+                handle_response(http.get(rest_url("openproject/metadata"))) do |data|
+                  success(fetch_json(data, "instanceId"))
+                end
+              end
+            end
+          end
+        end
+      end
     end
   end
 end

@@ -29,13 +29,19 @@
 #++
 
 module Wikis
-  module XWikiProviders
-    class UpdateService < ::BaseServices::Update
-      include Concerns::FetchesInstanceId
+  module Adapters
+    module Providers
+      module XWiki
+        module Authentication
+          class Noop
+            def initialize(**); end
 
-      private
-
-      def should_fetch_instance_id?(model) = model.url.present? && model.url_changed?
+            def call
+              Input::AuthStrategy.build(key: :noop)
+            end
+          end
+        end
+      end
     end
   end
 end

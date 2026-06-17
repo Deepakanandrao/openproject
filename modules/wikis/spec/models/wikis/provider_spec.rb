@@ -28,14 +28,37 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Wikis
-  module XWikiProviders
-    class UpdateService < ::BaseServices::Update
-      include Concerns::FetchesInstanceId
+require "spec_helper"
+require_module_spec_helper
 
-      private
+RSpec.describe Wikis::Provider do
+  describe "validations" do
+    describe "unique_universal_identifier" do
+      let(:existing) { create(:xwiki_provider, universal_identifier: "xwiki-instance-abc123") }
+      let(:duplicate) { build(:xwiki_provider, universal_identifier: existing.universal_identifier) }
 
-      def should_fetch_instance_id?(model) = model.url.present? && model.url_changed?
+      before { existing }
+
+      it "is invalid when universal_identifier is already taken" do
+        expect(duplicate).not_to be_valid
+        expect(duplicate.errors[:url]).to include(
+          "belongs to the wiki provider that's already known as \"#{existing.name}\"."
+        )
+      end
+
+      it "is valid when universal_identifier is unique" do
+        provider = build(:xwiki_provider, universal_identifier: "different-id")
+        expect(provider).to be_valid
+      end
+
+      it "is valid when universal_identifier is blank" do
+        provider = build(:xwiki_provider, universal_identifier: nil)
+        expect(provider).to be_valid
+      end
+
+      it "does not flag itself as a duplicate on update" do
+        expect(existing).to be_valid
+      end
     end
   end
 end

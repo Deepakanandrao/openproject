@@ -30,12 +30,32 @@
 
 module Wikis
   module XWikiProviders
-    class UpdateService < ::BaseServices::Update
-      include Concerns::FetchesInstanceId
+    module Concerns
+      module FetchesInstanceId
+        private
 
-      private
+        def after_validate(service_call)
+          call = super
+          return call unless call.success?
 
-      def should_fetch_instance_id?(model) = model.url.present? && model.url_changed?
+          model = call.result
+          return call unless should_fetch_instance_id?(model)
+
+          result = Wikis::XWikiProviders::FetchInstanceIdService.new(provider: model).call
+          if result.success?
+            model.universal_identifier = result.value!
+          else
+            call.errors.add(:url, :wiki_provider_unreachable)
+            call.success = false
+          end
+
+          call
+        end
+
+        def should_fetch_instance_id?(_model)
+          raise SubclassResponsibilityError
+        end
+      end
     end
   end
 end

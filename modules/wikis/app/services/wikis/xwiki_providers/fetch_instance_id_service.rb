@@ -30,12 +30,18 @@
 
 module Wikis
   module XWikiProviders
-    class UpdateService < ::BaseServices::Update
-      include Concerns::FetchesInstanceId
+    class FetchInstanceIdService
+      attr_reader :provider
 
-      private
+      def initialize(provider:)
+        @provider = provider
+      end
 
-      def should_fetch_instance_id?(model) = model.url.present? && model.url_changed?
+      def call
+        provider.resolve("authentication.noop").call.bind do |auth_strategy|
+          provider.resolve("queries.instance_id").call(auth_strategy:)
+        end
+      end
     end
   end
 end
