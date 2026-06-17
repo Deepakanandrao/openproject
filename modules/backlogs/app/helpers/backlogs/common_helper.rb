@@ -30,8 +30,8 @@
 
 module Backlogs
   module CommonHelper
-    def user_allowed?(permission)
-      current_user.allowed_in_project?(permission, project)
+    def user_allowed?(permission, project: nil)
+      current_user.allowed_in_project?(permission, project || self.project)
     end
 
     def backlog_bucket_creation_allowed?
@@ -56,7 +56,7 @@ module Backlogs
     end
 
     def all_sprints_for(project)
-      Sprint.for_project(project).not_completed.order_by_date.includes(:project, :task_boards)
+      Sprint.for_project(project).not_completed.order_by_date.includes(:project, :task_boards, :goals)
     end
 
     def all_buckets_for(project)

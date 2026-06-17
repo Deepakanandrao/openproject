@@ -101,6 +101,11 @@ RSpec.describe Wikis::Admin::WikiProvidersController do
     let(:valid_params) { { wikis_xwiki_provider: { name: "My XWiki", url: "https://xwiki.example.com" } } }
     let(:invalid_params) { { wikis_xwiki_provider: { name: "", url: "https://xwiki.example.com" } } }
 
+    before do
+      allow(Wikis::XWikiProviders::FetchInstanceIdService).to receive(:new)
+        .and_return(instance_double(Wikis::XWikiProviders::FetchInstanceIdService, call: Dry::Monads::Success("xwiki-test-id")))
+    end
+
     context "with a token that includes the xwiki integration", with_ee: [:xwiki_integration] do
       context "with valid params" do
         it "creates a provider and redirects to the wizard" do
