@@ -46,11 +46,11 @@ module Wikis
       end
 
       def continue_form_url
-        url_helpers.inline_existing_page_dialog_wiki_page_link_macro_path
+        url_helpers.existing_page_dialog_wiki_page_link_macro_path
       end
 
       def close_form_url
-        url_helpers.close_dialog_and_inline_wiki_page_link_macro_path
+        url_helpers.close_existing_page_dialog_wiki_page_link_macro_path
       end
 
       def new_form(form)

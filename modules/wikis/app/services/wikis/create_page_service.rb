@@ -30,7 +30,6 @@
 
 module Wikis
   class CreatePageService
-    include ServiceAsErrorSource
     include Dry::Monads[:result]
 
     attr_reader :provider, :user

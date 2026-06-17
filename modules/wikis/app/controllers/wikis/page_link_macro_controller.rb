@@ -40,10 +40,10 @@ module Wikis
     # The dialogs rendered here will perform global wiki page searches and will result in inserting a link view
     # component rendered with `load`.
     authorization_checked! :load,
-                           :inline_existing_page_dialog,
-                           :inline_new_page_dialog,
-                           :close_dialog_and_inline,
-                           :close_dialog_create_and_inline
+                           :existing_page_dialog,
+                           :new_page_dialog,
+                           :close_existing_page_dialog,
+                           :close_new_page_dialog
 
     def load
       provider = Provider.visible.find_by(id: params[:provider_id])
@@ -53,7 +53,7 @@ module Wikis
       render layout: false
     end
 
-    def inline_existing_page_dialog
+    def existing_page_dialog
       provider_id = inline_existing_params[:provider_id]
       if provider_id.blank? && Provider.visible.enabled.one?
         # If no provider data was passed and there is only one enabled provider, use it by default
@@ -64,25 +64,25 @@ module Wikis
       respond_with_dialog Wikis::InlineWikiPageDialog.new(form_model)
     end
 
-    def inline_new_page_dialog
+    def new_page_dialog
       parameters = inline_new_params
       form_model = Forms::InlineNewWikiPageFormModel.new(provider_id: parameters[:provider_id],
                                                          page_title: parameters[:page_title])
       respond_with_dialog Wikis::InlineWikiPageDialog.new(form_model)
     end
 
-    def close_dialog_and_inline
+    def close_existing_page_dialog
       params = inline_existing_params
       close_dialog_via_turbo_stream("##{InlineWikiPageDialog::DIALOG_ID}",
                                     additional: {
-                                      action: "close_dialog_and_inline",
+                                      action: "close_existing_page_dialog",
                                       providerId: params[:provider_id],
                                       pageIdentifier: params[:page_identifier]
                                     })
       respond_with_turbo_streams
     end
 
-    def close_dialog_create_and_inline # rubocop:disable Metrics/AbcSize
+    def close_new_page_dialog # rubocop:disable Metrics/AbcSize
       parameters = inline_new_params
 
       provider = Provider.visible.find(parameters[:provider_id])
@@ -94,7 +94,7 @@ module Wikis
         ->(info) do
           close_dialog_via_turbo_stream("##{InlineWikiPageDialog::DIALOG_ID}",
                                         additional: {
-                                          action: "close_dialog_create_and_inline",
+                                          action: "close_new_page_dialog",
                                           providerId: provider.id,
                                           pageIdentifier: info.identifier
                                         })
