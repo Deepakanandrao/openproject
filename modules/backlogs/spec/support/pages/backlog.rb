@@ -419,7 +419,7 @@ module Pages
         find_test_selector("sprint_filter_button").click
       end
       within_dialog "Select items" do
-        sprints.each { |sprint| click_on sprint.name }
+        sprints.each { |sprint| click_on sprint.name, role: "option" }
         click_on "Apply"
       end
       wait_for_network_idle
@@ -430,8 +430,8 @@ module Pages
         find_test_selector("backlog_bucket_filter_button").click
       end
       within_dialog "Select items" do
-        buckets.each { |bucket| click_on bucket.name }
-        click_on I18n.t(:label_inbox) if include_inbox
+        buckets.each { |bucket| click_on bucket.name, role: "option" }
+        click_on(I18n.t(:label_inbox), role: "option") if include_inbox
         click_on "Apply"
       end
       wait_for_network_idle
