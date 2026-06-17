@@ -47,6 +47,8 @@ module OpPrimer
     EXPANSION_OPTIONS = %i[inline dialog].freeze
     EXPANSION_DEFAULT = :inline
 
+    LINES_DEFAULT = 3
+
     attr_reader :direction, :expansion
 
     # The dialog revealed when `expansion: :dialog`. The component owns the
@@ -73,7 +75,7 @@ module OpPrimer
     # rubocop:disable Metrics/AbcSize
     def initialize(
       direction: DIRECTION_DEFAULT,
-      lines: 3,
+      lines: LINES_DEFAULT,
       expansion: EXPANSION_DEFAULT,
       dialog_id: "expandable-text-dialog-#{SecureRandom.hex(4)}",
       expander_arguments: {},
