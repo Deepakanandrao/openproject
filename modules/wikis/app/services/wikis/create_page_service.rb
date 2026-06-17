@@ -29,7 +29,7 @@
 #++
 
 module Wikis
-  class CreateLinkedPageService
+  class CreatePageService
     include ServiceAsErrorSource
     include Dry::Monads[:result]
 
@@ -40,18 +40,9 @@ module Wikis
       @user = user
     end
 
-    def call(title:, parent_identifier:, linkable_type:, linkable_id:)
-      create_page(title:, parent_identifier:).either(
-        ->(info) do
-          link_page(identifier: info.identifier, linkable_type:, linkable_id:)
-        end,
-        ->(error) do
-          ServiceResult.failure(errors: ActiveModel::Errors.new(self)).tap do |result|
-            error_target = error.code == :missing_token ? :base : :wiki_page
-            result.errors.add(error_target, error.code)
-          end
-        end
-      )
+    def create_page_and_link(title:, parent_identifier:, linkable_type:, linkable_id:)
+      create_page(title:, parent_identifier:)
+        .bind { link_page(identifier: it.identifier, linkable_type:, linkable_id:) }
     end
 
     def create_page(title:, parent_identifier:)
@@ -66,13 +57,19 @@ module Wikis
 
     def link_page(identifier:, linkable_type:, linkable_id:)
       create_service = RelationPageLinks::CreateService.new(user:)
-      create_service.call(
+      result = create_service.call(
         provider_id: provider.id,
         linkable_type:,
         linkable_id:,
         author_id: user.id,
         identifier:
       )
+
+      if result.success?
+        Success(result.result)
+      else
+        Failure(result.message)
+      end
     end
   end
 end

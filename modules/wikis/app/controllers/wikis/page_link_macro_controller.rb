@@ -31,6 +31,7 @@
 module Wikis
   class PageLinkMacroController < ApplicationController
     include OpTurbo::ComponentStream
+    include Concerns::ErrorHandling
     include PageSelectionFormInput
     include Dry::Monads[:result]
 
@@ -85,9 +86,9 @@ module Wikis
       parameters = inline_new_params
 
       provider = Provider.visible.find(parameters[:provider_id])
-      result = CreateLinkedPageService.new(provider:, user: current_user)
-                                      .create_page(title: parameters[:page_title],
-                                                   parent_identifier: parameters[:parent_page_identifier])
+      result = CreatePageService.new(provider:, user: current_user)
+                                .create_page(title: parameters[:page_title],
+                                             parent_identifier: parameters[:parent_page_identifier])
 
       result.either(
         ->(info) do
@@ -98,7 +99,7 @@ module Wikis
                                           pageIdentifier: info.identifier
                                         })
         end,
-        ->(error) { render_error_flash_message_via_turbo_stream(message: error.inspect) }
+        ->(error) { render_error_flash_message_via_turbo_stream(message: humanize_error_message(error)) }
       )
 
       respond_with_turbo_streams
