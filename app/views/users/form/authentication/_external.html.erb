@@ -9,7 +9,7 @@
 
 <%= render(Primer::Box.new) do %>
   <%= render(Primer::Beta::Text.new(tag: :div, font_weight: :bold)) { User.human_attribute_name(:identity_url) } %>
-  <%= render(Primer::Beta::Text.new(tag: :div)) { user.identity_url.split(":", 2).last } %>
+  <%= render(Primer::Beta::Text.new(tag: :div)) { user.identity_url&.split(":", 2)&.last } %>
   <%= render(Primer::Beta::Text.new(tag: :div, color: :muted, font_size: :small)) do %>
     <%= I18n.t("user.identity_url_text") %>
   <% end %>

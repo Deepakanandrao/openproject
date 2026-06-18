@@ -13,6 +13,3 @@
 <% end %>
 
 <%= render(Primer::Beta::Button.new(type: :submit, scheme: :primary, name: "submit")) { creating? ? I18n.t(:button_create) : I18n.t(:button_save) } %>
-<% if creating? %>
-  <%= render(Primer::Beta::Button.new(type: :submit, name: "continue")) { I18n.t(:button_create_and_continue) } %>
-<% end %>

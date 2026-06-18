@@ -47,12 +47,12 @@ RSpec.describe Users::FormComponent, type: :component do
   end
 
   context "for a new user" do
-    it "renders the attributes and the create buttons, but no password block" do
+    it "renders the attributes and a single create button, but no password block" do
       render_component(user: User.new)
 
       expect(page).to have_field("user[firstname]")
       expect(page).to have_button(I18n.t(:button_create))
-      expect(page).to have_button(I18n.t(:button_create_and_continue))
+      expect(page).to have_no_button(I18n.t(:button_create_and_continue))
       expect(page).to have_no_css("[data-admin--users-target='passwordFields']", visible: :all)
     end
   end

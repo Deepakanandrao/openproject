@@ -38,7 +38,7 @@
       <%= t("avatars.text_avatar_gravatar_html", gravatar_url: link_to("gravatar.com", "https://gravatar.com")) %>
     <% end %>
     <% if manager.local_avatars_enabled? %>
-      <%= t("avatars.text_avatar_local") %>
+      <%= manager.gravatar_enabled? ? t("avatars.text_avatar_local") : t("avatars.text_avatar_local_only") %>
     <% end %>
   </div>
 </div>

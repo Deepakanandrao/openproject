@@ -54,12 +54,13 @@ module Users
 
       # Built-in account attributes grouped under their own section so they read
       # as account settings rather than as part of the avatar block rendered
-      # above the form. The current status is folded into the section title
-      # (e.g. "Account: active") for persisted users.
+      # above the form. For persisted users the current status is shown as a
+      # read-only line at the top of the section.
       def account_section(form)
         return unless show_account_section?
 
-        form.fieldset_group(title: account_title) do |group|
+        form.fieldset_group(title: I18n.t(:label_account)) do |group|
+          account_status(group) if @user.persisted?
           admin_flag(group) if User.current.admin?
         end
       end
@@ -68,11 +69,13 @@ module Users
         @user.persisted? || User.current.admin?
       end
 
-      def account_title
-        title = I18n.t(:label_account)
-        return title unless @user.persisted?
-
-        "#{title}: #{helpers.full_user_status(@user, true)}"
+      # The current status (e.g. active, locked) as a read-only line rather than
+      # folded into the section title.
+      def account_status(group)
+        status = "#{User.human_attribute_name(:status)}: #{helpers.full_user_status(@user, true)}"
+        group.html_content do
+          render(Primer::Beta::Text.new(tag: :p)) { status }
+        end
       end
 
       def admin_flag(group)
