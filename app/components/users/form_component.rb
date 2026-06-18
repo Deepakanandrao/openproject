@@ -53,12 +53,20 @@ module Users
 
     def input_forms
       forms = [Users::Form::AttributesForm.new(@builder, user: @user, contract: @contract)]
-      forms << Users::Form::AuthenticationSourceForm.new(@builder, user: @user) if show_auth_source?
-      if show_password?
-        forms << Users::Form::PasswordForm.new(@builder, user: @user,
-                                                         assign_random_password_checked: assign_random_password_checked?)
+      if show_authentication?
+        forms << Users::Form::AuthenticationForm.new(@builder,
+                                                     user: @user,
+                                                     render_auth_source: show_auth_source?,
+                                                     render_password: show_password?,
+                                                     render_no_login_message: show_no_login_message?,
+                                                     render_external_auth: show_external_auth?,
+                                                     assign_random_password_checked: assign_random_password_checked?)
       end
       forms
+    end
+
+    def show_authentication?
+      show_auth_source? || show_password? || show_no_login_message? || show_external_auth?
     end
 
     def show_auth_source?

@@ -1,13 +1,5 @@
 <%= render(form_list) %>
 
-<% if show_no_login_message? %>
-  <%= render(Primer::Beta::Text.new(tag: :p, color: :muted)) { I18n.t("user.no_login") } %>
-<% end %>
-
-<% if show_external_auth? %>
-  <%= render("users/form/authentication/external", user: @user) %>
-<% end %>
-
 <%= helpers.render_user_form_hooks(user: @user, form: @builder) %>
 
 <% if show_consent? %>
