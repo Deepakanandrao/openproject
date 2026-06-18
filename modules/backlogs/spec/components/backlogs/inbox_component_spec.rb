@@ -171,7 +171,7 @@ RSpec.describe Backlogs::InboxComponent, type: :component do
         )
       end
 
-      it "renders show-more targeting the full backlog turbo frame with all=1" do
+      it "renders show-more targeting the full backlog turbo frame with all=true" do
         show_link = page.find("##{show_more_id}")
         expect(show_link[:href]).to include("all=true")
         expect(show_link["data-turbo-frame"]).to eq("backlogs_container")

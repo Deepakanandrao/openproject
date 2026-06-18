@@ -68,8 +68,8 @@ RSpec.describe Backlogs::WorkPackagesController do
         end
       end
 
-      context "when all=1" do
-        let(:all) { "1" }
+      context "when all=true" do
+        let(:all) { "true" }
 
         it "replaces the inbox without a show-more row in the stream" do
           subject
@@ -558,8 +558,8 @@ RSpec.describe Backlogs::WorkPackagesController do
       expect(response.body).to include(I18n.t(:"js.button_open_details"))
     end
 
-    context "when all=1 is in params" do
-      let(:params) { { project_id: project.id, id: work_package_id, all: "1" } }
+    context "when all=true is in params" do
+      let(:params) { { project_id: project.id, id: work_package_id, all: "true" } }
 
       it "embeds the all query in deferred action URLs" do
         subject
@@ -863,8 +863,8 @@ RSpec.describe Backlogs::WorkPackagesController do
       end
     end
 
-    context "when all=1 is in params" do
-      let(:params) { { project_id: project.id, id: work_package.id, all: "1" } }
+    context "when all=true is in params" do
+      let(:params) { { project_id: project.id, id: work_package.id, all: "true" } }
 
       it "embeds the all query in the dialog form action URL" do
         subject
@@ -950,8 +950,8 @@ RSpec.describe Backlogs::WorkPackagesController do
       end
     end
 
-    context "when all=1 is in params" do
-      let(:params) { { project_id: project.id, id: work_package.id, all: "1" } }
+    context "when all=true is in params" do
+      let(:params) { { project_id: project.id, id: work_package.id, all: "true" } }
 
       it "embeds the all query in the dialog form action URL" do
         subject
