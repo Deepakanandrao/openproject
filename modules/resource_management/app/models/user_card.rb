@@ -64,9 +64,9 @@ class UserCard < PersistedView
     query.filters.clear
 
     if manual_mode?(filter_mode)
-      set_manual(true)
+      self.manual = true
     else
-      set_manual(false)
+      self.manual = false
 
       query.ordered_entities.destroy_all
       configure_automatic(query, filters_json)
@@ -77,10 +77,6 @@ class UserCard < PersistedView
 
   def manual_mode?(filter_mode)
     filter_mode.to_s == "manual"
-  end
-
-  def set_manual(value)
-    change_by_system { self.manual = value }
   end
 
   def configure_automatic(query, filters_json)

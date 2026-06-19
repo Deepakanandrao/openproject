@@ -28,5 +28,5 @@ See COPYRIGHT and LICENSE files for more details.
 ++#%>
 
 <%= render(Primer::Beta::ProgressBar.new) do |progress| %>
-  <% progress.with_item(percentage: bar_percentage, bg: bar_color, aria: { label: label }) %>
+  <% progress.with_item(percentage: bar_percentage, bg: bar_color, test_selector: "utilization-bar", aria: { label: label }) %>
 <% end %>

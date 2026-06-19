@@ -28,29 +28,33 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module ResourcePlannerViews
-  class BaseContract < ::ModelContract
-    def self.model
-      PersistedView
+require "rails_helper"
+
+RSpec.describe ResourcePlannerViews::UserCardList::UtilizationBarComponent, type: :component do
+  def bar(value) = described_class.new(value:)
+
+  it "renders nothing without a value" do
+    render_inline(bar(nil))
+
+    expect(page).to have_no_test_selector("utilization-bar")
+  end
+
+  describe "the bar colour and width by utilization" do
+    it "is accent and proportional below 100%" do
+      expect(bar(34).send(:bar_color)).to eq(:accent_emphasis)
+      expect(bar(34).send(:bar_percentage)).to eq(34)
     end
 
-    attribute :name
-    stored_attribute :manual, store: :options
+    it "is success exactly at 100%" do
+      expect(bar(100).send(:bar_color)).to eq(:success_emphasis)
+    end
 
-    validate :user_allowed_to_manage_parent
+    it "is danger and capped at 100% above full, while the label keeps the real ratio" do
+      expect(bar(150).send(:bar_color)).to eq(:danger_emphasis)
+      expect(bar(150).send(:bar_percentage)).to eq(100)
 
-    private
-
-    def user_allowed_to_manage_parent
-      planner = model.parent
-      return if planner.nil?
-
-      return if planner.principal == user &&
-                user.allowed_in_project?(:view_resource_planners, planner.project)
-      return if planner.public? &&
-                user.allowed_in_project?(:manage_public_resource_planners, planner.project)
-
-      errors.add :base, :error_unauthorized
+      render_inline(bar(150))
+      expect(page).to have_css("[data-test-selector='utilization-bar'][aria-label='150%']")
     end
   end
 end

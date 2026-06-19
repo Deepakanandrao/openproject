@@ -114,6 +114,7 @@ module ResourcePlannerViews::UserCardList
     def card_options
       {
         classes: "op-user-card",
+        test_selector: "op-user-card",
         data: {
           controller: "resource-management--user-card",
           "resource-management--user-card-url-value": @details_path
