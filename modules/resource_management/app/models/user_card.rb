@@ -28,6 +28,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
+# TODO - OP-19587: support placeholder users (results, cards, add/allocate forms)
 class UserCard < PersistedView
   include ResourceManagement::Categorized
 
@@ -41,15 +42,11 @@ class UserCard < PersistedView
     query = effective_query
     return if query.nil?
 
-    if manually_picked?
-      # A manual view shows exactly its `ordered_entities`. When none have
-      # been added yet, show an empty set instead.
-      return User.none if query.ordered_entities.empty?
+    # A manual view shows exactly its `ordered_entities`. When none have
+    # been added yet, show an empty set instead.
+    return User.none if manually_picked? && query.ordered_entities.empty?
 
-      query.results
-    else
-      query.results.in_project(project)
-    end
+    query.results.in_project(project)
   end
 
   def manually_picked?

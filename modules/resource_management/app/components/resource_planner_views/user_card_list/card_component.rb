@@ -31,6 +31,7 @@
 module ResourcePlannerViews::UserCardList
   # Modelled on +Users::HoverCardComponent+, but kept as its own component
   # so the card can evolve independently of the hover card
+  # TODO - OP-19586: match card layout to spec
   class CardComponent < ApplicationComponent
     include OpPrimer::ComponentHelpers
 
