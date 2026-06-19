@@ -32,11 +32,10 @@ module ResourcePlannerViews
   module WorkPackageTimeline
     # Renders one allocation's bar content. Principals the current user may not
     # see are anonymised, mirroring AllocatedMembersComponent's visibility rule.
+    # Plain server HTML (no Angular `opce-principal`) so it stays reliable inside
+    # FullCalendar's render hooks.
     class AllocationBarComponent < ApplicationComponent
-      include OpPrimer::ComponentHelpers
       include AvatarHelper
-
-      AVATAR_SIZE = 20
 
       def initialize(allocation:, visible_principal_ids: nil)
         super
@@ -63,11 +62,25 @@ module ResourcePlannerViews
         visible_principal_ids.include?(allocation.principal_id)
       end
 
-      def label
+      def principal_name
+        allocation.principal&.name
+      end
+
+      # Gravatar can return a URL that 404s for seeded/placeholder users, which
+      # renders as a broken image; use an image only for a real local avatar.
+      def avatar_image_url
+        return unless local_avatar?(allocation.principal)
+
+        avatar_url(allocation.principal)
+      end
+
+      def initials
+        principal_name.to_s.split.first(2).filter_map { |part| part[0] }.join.upcase
+      end
+
+      def placeholder_label
         if filter_based?
           allocation.filter_name
-        elsif principal_visible?
-          allocation.principal&.name
         else
           t("resource_management.work_package_allocations_dialog.hidden_user")
         end
@@ -89,16 +102,6 @@ module ResourcePlannerViews
 
       def candidate_label
         t("resource_management.work_package_list.allocated_members.additional", count: candidate_count)
-      end
-
-      def avatar
-        if filter_based? || !principal_visible?
-          render(Primer::Beta::Octicon.new(icon: :"person-add", size: :small))
-        else
-          render(Primer::Beta::Avatar.new(src: avatar_url(allocation.principal),
-                                          alt: allocation.principal.name,
-                                          size: AVATAR_SIZE))
-        end
       end
     end
   end

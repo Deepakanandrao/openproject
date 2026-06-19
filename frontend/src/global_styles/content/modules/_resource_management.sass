@@ -2,11 +2,56 @@
   block-size: 100%
   min-block-size: 400px
 
-// Overbooking cue, mirroring the work package list's.
-.resource-allocation--overbooked
-  border: 1px solid var(--borderColor-danger-emphasis, #cf222e)
+// Our own card class, not FullCalendar's `.fc-timeline-event`: the vendor styles
+// force that transparent and borderless with `!important`, so it can't be
+// restyled by specificity.
+.op-rm-timeline-bar
+  display: flex
+  align-items: center
+  gap: 0.25rem
+  inline-size: 100%
+  min-inline-size: 0
+  overflow: hidden
+  white-space: nowrap
+  padding: 2px 0.4rem
+  background: var(--bgColor-default, #ffffff)
+  border: 1px solid var(--borderColor-muted, #d8dee4)
+  border-radius: 6px
+  box-shadow: 0 1px 3px rgba(31, 35, 40, 0.12), 0 1px 2px rgba(31, 35, 40, 0.06)
+  color: var(--fgColor-default, #1f2328)
 
-  .op-rm-timeline-bar::after
+  &--hours
+    flex: 0 0 auto
+    font-weight: 600
+
+  &--label
+    flex: 1 1 auto
+    min-inline-size: 0
+    overflow: hidden
+    text-overflow: ellipsis
+
+  &--badge
+    flex: 0 0 auto
+
+  &--initials
+    flex: 0 0 auto
+    display: inline-flex
+    align-items: center
+    justify-content: center
+    inline-size: 16px
+    block-size: 16px
+    border-radius: 50%
+    background: var(--bgColor-accent-muted, #ddf4ff)
+    color: var(--fgColor-accent, #0969da)
+    font-size: 9px
+    font-weight: 600
+
+// Overbooking cue, keyed off the class we add via `eventClassNames`.
+.resource-allocation--overbooked .op-rm-timeline-bar
+  border-top: 3px solid var(--borderColor-danger-emphasis, #cf222e)
+
+  &::after
     content: "⚠"
+    flex: 0 0 auto
     margin-inline-start: 0.25rem
     color: var(--fgColor-danger, #cf222e)

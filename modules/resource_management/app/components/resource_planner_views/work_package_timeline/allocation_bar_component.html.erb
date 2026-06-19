@@ -1,14 +1,21 @@
-<%= flex_layout(align_items: :center, classes: "op-rm-timeline-bar") do |bar| %>
-  <% bar.with_column(mr: 2) do %>
-    <%= render(Primer::Beta::Text.new(font_weight: :bold, font_size: :small)) { hours_label } %>
-  <% end %>
-  <% bar.with_column(mr: 1) { avatar } %>
-  <% bar.with_column(flex: 1) do %>
-    <%= render(Primer::Beta::Text.new(font_size: :small)) { label } %>
-  <% end %>
-  <% if candidate_badge? %>
-    <% bar.with_column(ml: 1) do %>
-      <%= render(Primer::Beta::Label.new(scheme: :secondary)) { candidate_label } %>
+<div class="op-rm-timeline-bar">
+  <span class="op-rm-timeline-bar--hours"><%= hours_label %></span>
+
+  <% if principal_visible? %>
+    <% if avatar_image_url.present? %>
+      <%= render(Primer::Beta::Avatar.new(src: avatar_image_url, alt: principal_name, size: 16)) %>
+    <% else %>
+      <span class="op-rm-timeline-bar--initials" aria-hidden="true"><%= initials %></span>
     <% end %>
+    <span class="op-rm-timeline-bar--label"><%= principal_name %></span>
+  <% else %>
+    <%= render(Primer::Beta::Octicon.new(icon: :"person-add", size: :small)) %>
+    <span class="op-rm-timeline-bar--label"><%= placeholder_label %></span>
   <% end %>
-<% end %>
+
+  <% if candidate_badge? %>
+    <span class="op-rm-timeline-bar--badge">
+      <%= render(Primer::Beta::Label.new(scheme: :secondary)) { candidate_label } %>
+    </span>
+  <% end %>
+</div>
