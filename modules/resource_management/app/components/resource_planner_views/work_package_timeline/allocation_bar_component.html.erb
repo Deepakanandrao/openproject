@@ -1,0 +1,14 @@
+<%= flex_layout(align_items: :center, classes: "op-rm-timeline-bar") do |bar| %>
+  <% bar.with_column(mr: 2) do %>
+    <%= render(Primer::Beta::Text.new(font_weight: :bold, font_size: :small)) { hours_label } %>
+  <% end %>
+  <% bar.with_column(mr: 1) { avatar } %>
+  <% bar.with_column(flex: 1) do %>
+    <%= render(Primer::Beta::Text.new(font_size: :small)) { label } %>
+  <% end %>
+  <% if candidate_badge? %>
+    <% bar.with_column(ml: 1) do %>
+      <%= render(Primer::Beta::Label.new(scheme: :secondary)) { candidate_label } %>
+    <% end %>
+  <% end %>
+<% end %>

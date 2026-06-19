@@ -53,6 +53,9 @@ Rails.application.routes.draw do
           put "work_packages/:work_package_id/reorder", action: :reorder_work_package, as: :reorder_work_package
 
           delete "work_packages/:work_package_id", action: :remove_work_package, as: :remove_work_package
+
+          get :timeline_resources, controller: "resource_management/work_package_timeline_feeds", defaults: { format: :json }
+          get :timeline_events, controller: "resource_management/work_package_timeline_feeds", defaults: { format: :json }
         end
 
         resources :work_packages, only: [] do

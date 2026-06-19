@@ -1,0 +1,12 @@
+.op-rm-timeline
+  block-size: 100%
+  min-block-size: 400px
+
+// Overbooking cue, mirroring the work package list's.
+.resource-allocation--overbooked
+  border: 1px solid var(--borderColor-danger-emphasis, #cf222e)
+
+  .op-rm-timeline-bar::after
+    content: "⚠"
+    margin-inline-start: 0.25rem
+    color: var(--fgColor-danger, #cf222e)

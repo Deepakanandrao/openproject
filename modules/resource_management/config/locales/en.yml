@@ -133,6 +133,10 @@ en:
         caption: >-
           Create a view based on work packages and see its details and allocation in a list
         label: Work packages list
+      resource_work_package_timeline:
+        caption: >-
+          Create a view based on work packages and see their allocations over time on a timeline
+        label: Work packages timeline
       user_card:
         caption: >-
           Create a view based on users and see their details and allocation in a list of user cards
@@ -182,3 +186,9 @@ en:
         add_work_package: Add work package
         allocate: Allocate
         settings: Configure view
+    work_package_timeline:
+      granularity:
+        day: Day
+        month: Month
+        week: Calendar week
+      query_name: "Resource management work package timeline: %{name}"

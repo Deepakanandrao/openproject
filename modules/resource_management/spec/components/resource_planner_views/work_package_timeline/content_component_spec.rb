@@ -28,24 +28,24 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module ResourceManagement
-  # Builds the content component for a resource planner view. Loads the view's
-  # work packages and their allocations in one place so the allocation columns
-  # (progress bar and members) share a single query rather than each issuing
-  # their own. Requires @project and @resource_planner to be set.
-  module PlannerViewContent
-    def work_package_list_content(view)
-      work_packages = view.is_a?(ResourceManagement::WorkPackageSelection) ? view.work_packages.to_a : []
-      allocations = ResourceAllocation.allocated_for_work_packages(work_packages)
+require "spec_helper"
 
-      ResourcePlannerViews::ContentComponent.new(
-        view:,
-        project: @project,
-        resource_planner: @resource_planner,
-        work_packages:,
-        allocations:,
-        visible_principal_ids: ResourceAllocation.visible_principal_ids(allocations.values.flatten, current_user)
-      )
-    end
+RSpec.describe ResourcePlannerViews::WorkPackageTimeline::ContentComponent, type: :component do
+  shared_let(:project) { create(:project) }
+  shared_let(:user) { create(:admin) }
+  shared_let(:planner) { create(:resource_planner, project:, principal: user) }
+  shared_let(:view) { ResourceWorkPackageTimeline.create!(name: "Timeline", parent: planner, project:, principal: user) }
+
+  before { login_as(user) }
+
+  it "renders the calendar container with feed urls and the GPL license key" do
+    render_inline(described_class.new(view:, project:, resource_planner: planner))
+
+    el = page.find("[data-controller='resource-management--work-package-timeline']")
+    prefix = "data-resource-management--work-package-timeline"
+    expect(el["#{prefix}-license-key-value"]).to eq("GPL-My-Project-Is-Open-Source")
+    expect(el["#{prefix}-resources-url-value"]).to be_present
+    expect(el["#{prefix}-events-url-value"]).to be_present
+    expect(el["#{prefix}-initial-view-value"]).to eq("resourceTimelineWeek")
   end
 end

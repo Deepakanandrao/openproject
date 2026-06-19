@@ -28,24 +28,28 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module ResourceManagement
-  # Builds the content component for a resource planner view. Loads the view's
-  # work packages and their allocations in one place so the allocation columns
-  # (progress bar and members) share a single query rather than each issuing
-  # their own. Requires @project and @resource_planner to be set.
-  module PlannerViewContent
-    def work_package_list_content(view)
-      work_packages = view.is_a?(ResourceManagement::WorkPackageSelection) ? view.work_packages.to_a : []
-      allocations = ResourceAllocation.allocated_for_work_packages(work_packages)
+require "spec_helper"
 
-      ResourcePlannerViews::ContentComponent.new(
-        view:,
-        project: @project,
-        resource_planner: @resource_planner,
-        work_packages:,
-        allocations:,
-        visible_principal_ids: ResourceAllocation.visible_principal_ids(allocations.values.flatten, current_user)
-      )
-    end
+RSpec.describe ResourcePlannerViews::WorkPackageTimeline::ResourceCellComponent, type: :component do
+  shared_let(:project) { create(:project) }
+  shared_let(:user) { create(:admin) }
+  shared_let(:planner) { create(:resource_planner, project:, principal: user) }
+  shared_let(:view) { ResourceWorkPackageTimeline.create!(name: "Timeline", parent: planner, project:, principal: user) }
+  shared_let(:work_package) do
+    create(:work_package, project:, subject: "Develop route optimization", estimated_hours: 80)
+  end
+
+  before { login_as(user) }
+
+  it "renders the subject, type and the allocation summary" do
+    allocation = build_stubbed(:resource_allocation, entity: work_package, allocated_time: 72 * 60)
+
+    render_inline(described_class.new(work_package:, allocations: [allocation],
+                                      project:, resource_planner: planner, view:))
+
+    expect(page).to have_text("Develop route optimization")
+    expect(page).to have_text(/#{work_package.type.name}/i)
+    expect(page).to have_text("72")
+    expect(page).to have_text("90%")
   end
 end
