@@ -187,7 +187,7 @@ module ::ResourceManagement
     def remove_user
       @view.effective_query
            .ordered_entities
-           .where(entity_type: "User", entity_id: params[:user_id])
+           .where(entity_type: "Principal", entity_id: params[:user_id])
            .destroy_all
 
       replace_view_content
@@ -198,7 +198,7 @@ module ::ResourceManagement
 
     def append_user(user)
       query = @view.effective_query
-      return if query.ordered_entities.exists?(entity_type: "User", entity_id: user.id)
+      return if query.ordered_entities.exists?(entity_type: "Principal", entity_id: user.id)
 
       next_position = (query.ordered_entities.maximum(:position) || 0) + 1
       query.ordered_entities.create!(entity: user, position: next_position)
