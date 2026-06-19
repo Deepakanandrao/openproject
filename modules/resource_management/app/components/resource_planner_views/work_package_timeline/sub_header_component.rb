@@ -36,12 +36,6 @@ module ResourcePlannerViews::WorkPackageTimeline
 
     STIMULUS = "resource-management--work-package-timeline"
 
-    GRANULARITIES = {
-      day: "resourceTimelineDays",
-      week: "resourceTimelineWeeks",
-      month: "resourceTimelineMonths"
-    }.freeze
-
     def initialize(project:, resource_planner:, view:)
       super
       @project = project
@@ -50,6 +44,14 @@ module ResourcePlannerViews::WorkPackageTimeline
     end
 
     private
+
+    def granularities
+      Granularity::VIEWS
+    end
+
+    def default_granularity_key
+      Granularity::DEFAULT
+    end
 
     def nav_action(method)
       { action: "#{STIMULUS}##{method}" }

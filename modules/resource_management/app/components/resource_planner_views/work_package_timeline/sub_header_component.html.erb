@@ -26,10 +26,10 @@
     subheader.with_action_menu(
       leading_icon: :clock,
       trailing_icon: :"triangle-down",
-      label: granularity_label(:week),
-      button_arguments: { "aria-label": granularity_label(:week), data: granularity_button_data }
+      label: granularity_label(default_granularity_key),
+      button_arguments: { "aria-label": granularity_label(default_granularity_key), data: granularity_button_data }
     ) do |menu|
-      GRANULARITIES.each do |key, view_name|
+      granularities.each do |key, view_name|
         menu.with_item(
           label: granularity_label(key),
           tag: :button,

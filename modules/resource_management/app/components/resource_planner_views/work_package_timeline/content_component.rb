@@ -67,7 +67,7 @@ module ResourcePlannerViews
           "locale" => I18n.locale.to_s,
           "first-day" => (Setting.start_of_week.presence || 1).to_i,
           "initial-date" => Date.current.iso8601,
-          "initial-view" => "resourceTimelineWeeks",
+          "initial-view" => Granularity.default_view,
           "license-key" => "GPL-My-Project-Is-Open-Source",
           "can-allocate" => can_allocate?,
           "new-allocation-url" => new_allocation_url

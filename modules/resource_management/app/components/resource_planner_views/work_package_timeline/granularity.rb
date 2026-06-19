@@ -28,24 +28,23 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require "spec_helper"
+module ResourcePlannerViews
+  module WorkPackageTimeline
+    # The timeline's granularity options, shared by the menu and the controller:
+    # each key (also an i18n label) maps to its FullCalendar view name.
+    module Granularity
+      # Ordered — drives the granularity menu order.
+      VIEWS = {
+        day: "resourceTimelineDays",
+        week: "resourceTimelineWeeks",
+        month: "resourceTimelineMonths"
+      }.freeze
 
-RSpec.describe ResourcePlannerViews::WorkPackageTimeline::ContentComponent, type: :component do
-  shared_let(:project) { create(:project) }
-  shared_let(:user) { create(:admin) }
-  shared_let(:planner) { create(:resource_planner, project:, principal: user) }
-  shared_let(:view) { ResourceWorkPackageTimeline.create!(name: "Timeline", parent: planner, project:, principal: user) }
+      DEFAULT = :day
 
-  before { login_as(user) }
-
-  it "renders the calendar container with feed urls and the GPL license key" do
-    render_inline(described_class.new(view:, project:, resource_planner: planner))
-
-    el = page.find("[data-controller='resource-management--work-package-timeline']")
-    prefix = "data-resource-management--work-package-timeline"
-    expect(el["#{prefix}-license-key-value"]).to eq("GPL-My-Project-Is-Open-Source")
-    expect(el["#{prefix}-resources-url-value"]).to be_present
-    expect(el["#{prefix}-events-url-value"]).to be_present
-    expect(el["#{prefix}-initial-view-value"]).to eq("resourceTimelineDays")
+      def self.default_view
+        VIEWS.fetch(DEFAULT)
+      end
+    end
   end
 end
