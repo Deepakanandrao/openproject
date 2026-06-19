@@ -37,9 +37,9 @@ module ResourcePlannerViews::WorkPackageTimeline
     STIMULUS = "resource-management--work-package-timeline"
 
     GRANULARITIES = {
-      day: "resourceTimelineDay",
-      week: "resourceTimelineWeek",
-      month: "resourceTimelineMonth"
+      day: "resourceTimelineDays",
+      week: "resourceTimelineWeeks",
+      month: "resourceTimelineMonths"
     }.freeze
 
     def initialize(project:, resource_planner:, view:)

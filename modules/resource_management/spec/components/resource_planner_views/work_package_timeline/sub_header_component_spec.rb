@@ -46,7 +46,7 @@ RSpec.describe ResourcePlannerViews::WorkPackageTimeline::SubHeaderComponent, ty
     expect(html).to include("resource-management--work-package-timeline#prev")
     expect(html).to include("resource-management--work-package-timeline#next")
     expect(html).to include("resource-management--work-package-timeline#setView")
-    expect(html).to include("resourceTimelineWeek")
-    expect(html).to include("resourceTimelineMonth")
+    expect(html).to include("resourceTimelineWeeks")
+    expect(html).to include("resourceTimelineMonths")
   end
 end

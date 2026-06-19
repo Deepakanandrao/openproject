@@ -92,6 +92,28 @@ export default class WorkPackageTimelineController extends Controller {
       plugins: [resourceTimelinePlugin, interactionPlugin],
       initialView: this.initialViewValue,
       initialDate: this.initialDateValue,
+      // Custom views: a fixed span of equal-width day/week/month columns, rather
+      // than FullCalendar's built-in views that zoom into hour or day slots.
+      views: {
+        resourceTimelineDays: {
+          type: 'resourceTimeline',
+          duration: { days: 10 },
+          slotDuration: { days: 1 },
+          slotLabelFormat: { weekday: 'short', month: 'numeric', day: 'numeric' },
+        },
+        resourceTimelineWeeks: {
+          type: 'resourceTimeline',
+          duration: { weeks: 10 },
+          slotDuration: { weeks: 1 },
+          slotLabelFormat: { week: 'long' },
+        },
+        resourceTimelineMonths: {
+          type: 'resourceTimeline',
+          duration: { months: 10 },
+          slotDuration: { months: 1 },
+          slotLabelFormat: { month: 'short' },
+        },
+      },
       locales: allLocales,
       locale: this.localeValue,
       firstDay: this.firstDayValue,

@@ -46,6 +46,6 @@ RSpec.describe ResourcePlannerViews::WorkPackageTimeline::ContentComponent, type
     expect(el["#{prefix}-license-key-value"]).to eq("GPL-My-Project-Is-Open-Source")
     expect(el["#{prefix}-resources-url-value"]).to be_present
     expect(el["#{prefix}-events-url-value"]).to be_present
-    expect(el["#{prefix}-initial-view-value"]).to eq("resourceTimelineWeek")
+    expect(el["#{prefix}-initial-view-value"]).to eq("resourceTimelineWeeks")
   end
 end
