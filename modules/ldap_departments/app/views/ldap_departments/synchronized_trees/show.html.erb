@@ -39,13 +39,13 @@
 
 <section class="admin--edit-section">
   <ul class="attributes-key-value">
-    <li class="attributes-key-value--key"><%= SynchronizedTree.human_attribute_name(:ldap_auth_source) %></li>
+    <li class="attributes-key-value--key"><%= LdapDepartments::SynchronizedTree.human_attribute_name(:ldap_auth_source) %></li>
     <li class="attributes-key-value--value-container"><%= @tree.ldap_auth_source&.name %></li>
-    <li class="attributes-key-value--key"><%= SynchronizedTree.human_attribute_name(:base_dn) %></li>
+    <li class="attributes-key-value--key"><%= LdapDepartments::SynchronizedTree.human_attribute_name(:base_dn) %></li>
     <li class="attributes-key-value--value-container"><%= @tree.base_dn %></li>
-    <li class="attributes-key-value--key"><%= SynchronizedTree.human_attribute_name(:structure_filter_string) %></li>
+    <li class="attributes-key-value--key"><%= LdapDepartments::SynchronizedTree.human_attribute_name(:structure_filter_string) %></li>
     <li class="attributes-key-value--value-container"><%= @tree.structure_filter_string %></li>
-    <li class="attributes-key-value--key"><%= SynchronizedTree.human_attribute_name(:sync_users) %></li>
+    <li class="attributes-key-value--key"><%= LdapDepartments::SynchronizedTree.human_attribute_name(:sync_users) %></li>
     <li class="attributes-key-value--value-container"><%= @tree.sync_users ? t(:general_text_Yes) : t(:general_text_No) %></li>
   </ul>
 </section>
@@ -57,9 +57,9 @@
     <table class="generic-table">
       <thead>
         <tr>
-          <th><%= SynchronizedDepartment.human_attribute_name(:group) %></th>
-          <th><%= SynchronizedDepartment.human_attribute_name(:dn) %></th>
-          <th><%= SynchronizedDepartment.human_attribute_name(:users_count) %></th>
+          <th><%= LdapDepartments::SynchronizedDepartment.human_attribute_name(:group) %></th>
+          <th><%= LdapDepartments::SynchronizedDepartment.human_attribute_name(:dn) %></th>
+          <th><%= LdapDepartments::SynchronizedDepartment.human_attribute_name(:users_count) %></th>
           <th><div class="generic-table--empty-header"></div></th>
         </tr>
       </thead>

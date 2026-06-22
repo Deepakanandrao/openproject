@@ -38,9 +38,9 @@
   <table class="generic-table">
     <thead>
       <tr>
-        <th><%= SynchronizedTree.human_attribute_name(:name) %></th>
-        <th><%= SynchronizedTree.human_attribute_name(:ldap_auth_source) %></th>
-        <th><%= SynchronizedTree.human_attribute_name(:base_dn) %></th>
+        <th><%= LdapDepartments::SynchronizedTree.human_attribute_name(:name) %></th>
+        <th><%= LdapDepartments::SynchronizedTree.human_attribute_name(:ldap_auth_source) %></th>
+        <th><%= LdapDepartments::SynchronizedTree.human_attribute_name(:base_dn) %></th>
         <th><%= t("ldap_departments.synchronized_departments.plural") %></th>
         <th><div class="generic-table--empty-header"></div></th>
       </tr>

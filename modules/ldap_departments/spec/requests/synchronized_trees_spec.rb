@@ -10,8 +10,28 @@ RSpec.describe "LDAP department synchronized trees", :aggregate_failures, :skip_
   before { login_as(admin) }
 
   describe "GET /ldap_departments/synchronized_trees" do
-    it "renders the index" do
+    it "renders the empty index" do
       get ldap_departments_synchronized_trees_path
+
+      expect(response).to have_http_status(:ok)
+    end
+
+    it "renders the index with existing trees" do
+      create(:ldap_synchronized_tree, ldap_auth_source:)
+
+      get ldap_departments_synchronized_trees_path
+
+      expect(response).to have_http_status(:ok)
+    end
+  end
+
+  describe "GET /ldap_departments/synchronized_trees/:id" do
+    let(:tree) { create(:ldap_synchronized_tree, ldap_auth_source:) }
+
+    it "renders the tree with its synchronized departments" do
+      create(:ldap_synchronized_department, synchronized_tree: tree)
+
+      get ldap_departments_synchronized_tree_path(tree_id: tree.id)
 
       expect(response).to have_http_status(:ok)
     end
