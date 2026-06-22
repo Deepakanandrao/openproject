@@ -56,6 +56,20 @@ class Group < Principal
     @synchronized_group_partials ||= []
   end
 
+  # Register a predicate that determines whether a group is managed by an external synchronization
+  # (e.g. the LDAP department sync). Modules register their own check so the core stays agnostic of
+  # them; when no module is loaded a group is never considered managed.
+  #
+  # @yieldparam group[Group] the group to check
+  # @yieldreturn [Boolean] whether the group is managed by that source
+  def self.register_ldap_managed_check(&block)
+    ldap_managed_checks.push(block)
+  end
+
+  def self.ldap_managed_checks
+    @ldap_managed_checks ||= []
+  end
+
   has_many :group_users,
            autosave: true,
            dependent: :destroy
@@ -88,6 +102,12 @@ class Group < Principal
                :create_preference!
 
   scopes :visible, :containing_user, :organizational_units
+
+  # Whether this group is managed by an external synchronization (e.g. LDAP department sync).
+  # Managed departments are read-only in the admin UI and may only be changed by the sync itself.
+  def ldap_managed?
+    self.class.ldap_managed_checks.any? { |check| check.call(self) }
+  end
 
   # Columns required for formatting the group's name.
   def self.columns_for_name(_formatter = nil)
