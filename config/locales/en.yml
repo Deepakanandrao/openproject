@@ -790,6 +790,8 @@ en:
       heading: "This department doesn’t have any hierarchy level below"
       description: "Add departments or users to create sub-items inside another one."
       add_button: "Add"
+      managed_heading: "This department is managed by LDAP synchronization"
+      managed_description: "Its sub-departments and members are kept in sync with LDAP and cannot be added manually."
     add_department_form:
       name_label: "Department name"
       name_placeholder: "Enter department name"
