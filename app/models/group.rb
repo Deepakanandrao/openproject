@@ -176,7 +176,7 @@ class Group < Principal
   private
 
   def uniqueness_of_name
-    scope = Group.where("lastname = ? AND id <> ?", name, id || 0)
+    scope = Group.where(lastname: name).where.not(id: id || 0)
 
     # Regular groups must be globally unique. Organizational units (departments) only need to be
     # unique among their siblings: LDAP directories routinely repeat the same OU name on different

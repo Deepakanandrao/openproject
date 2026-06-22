@@ -2269,6 +2269,7 @@ en:
         url_not_secure_context: >
           is not providing a "Secure Context". Either use HTTPS or a loopback address, such as localhost.
         user_already_in_department: "User %{user_id} is already a member of department %{department_id}."
+        ldap_managed: "This department is managed by LDAP synchronization and cannot be changed manually."
         wrong_length: "is the wrong length (should be %{count} characters)."
       models:
         group:

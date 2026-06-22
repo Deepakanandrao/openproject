@@ -29,17 +29,12 @@
 #++
 
 module Groups
-  class DeleteContract < ::DeleteContract
-    delete_permission(:admin)
-
-    validate :validate_not_ldap_managed
-
+  # Used by the LDAP department synchronization to update managed departments (name, parent and
+  # members). It is the only path allowed to mutate a group that reports `ldap_managed?`, so it
+  # skips the read-only lock enforced for interactive admins by Groups::BaseContract.
+  class SyncUpdateContract < UpdateContract
     private
 
-    # Departments synchronized from LDAP cannot be deleted manually; they are removed only once
-    # their organizational unit disappears from LDAP and the sync drops the mapping.
-    def validate_not_ldap_managed
-      errors.add(:base, :ldap_managed) if model.ldap_managed?
-    end
+    def validate_not_ldap_managed; end
   end
 end
