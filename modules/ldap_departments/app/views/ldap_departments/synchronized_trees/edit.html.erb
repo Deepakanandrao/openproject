@@ -8,7 +8,7 @@
         { href: admin_index_path, text: t(:label_administration) },
         { href: admin_settings_authentication_path, text: t(:label_authentication) },
         { href: ldap_departments_synchronized_trees_path, text: I18n.t("ldap_departments.label_menu_item") },
-        nested_breadcrumb_element(t("ldap_departments.synchronized_trees.singular"), @tree.name)
+        @tree.name
       ],
       selected_item_font_weight: :normal
     )

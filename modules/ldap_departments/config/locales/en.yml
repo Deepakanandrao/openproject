@@ -54,6 +54,10 @@ en:
         info: "The departments themselves and members added outside this synchronization will not be removed."
         verification_html: "Enter the synchronization name %{name} to verify the deletion."
       form:
+        sections:
+          connection: 'LDAP connection'
+          structure: 'Organizational units'
+          users: 'Users'
         auth_source_text: 'Select which LDAP connection should be used.'
         base_dn_text: >
           Enter the base DN whose organizational units should be synchronized. Its direct child OUs
