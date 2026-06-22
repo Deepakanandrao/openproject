@@ -102,7 +102,7 @@ export default class ProjectLifeCycleFormController extends FormPreviewControlle
   }
 
   private updateFlatpickrCalendar() {
-    const dates:Date[] = _.compact(this.dateInputFields.map((field) => this.toDate(field.value)));
+    const dates:Date[] = this.dateInputFields.map((field) => this.toDate(field.value)).filter((x):x is NonNullable<typeof x> => Boolean(x));
     const ignoreNonWorkingDays = false;
     const mode = 'range';
 

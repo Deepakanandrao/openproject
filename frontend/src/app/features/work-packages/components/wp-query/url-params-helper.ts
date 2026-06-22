@@ -229,7 +229,7 @@ export class UrlParamsHelperService {
     if (query.timelineVisible) {
       paramsData.tv = query.timelineVisible;
 
-      if (!_.isEmpty(query.timelineLabels)) {
+      if (Object.keys(query.timelineLabels ?? {}).length > 0) {
         paramsData.tll = JSON.stringify(query.timelineLabels);
       }
 

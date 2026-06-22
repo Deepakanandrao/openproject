@@ -75,7 +75,7 @@ export class WpTableConfigurationSortByTabComponent implements TabComponent, OnI
     }
 
     sortElements = sortElements.map((object) => this.getMatchingSort(object.column.href!, object.direction));
-    this.wpTableSortBy.update(_.compact(sortElements));
+    this.wpTableSortBy.update(sortElements.filter((x):x is NonNullable<typeof x> => Boolean(x)));
   }
 
   ngOnInit() {

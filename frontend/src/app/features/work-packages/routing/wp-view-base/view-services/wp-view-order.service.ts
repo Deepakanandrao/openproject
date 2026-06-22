@@ -166,7 +166,7 @@ export class WorkPackageViewOrderService extends WorkPackageQueryStateService<Qu
       const { value } = this.positions;
 
       // Remove empty or stale values given we can reload them
-      if ((_.isEmpty(value) || this.positions.isValueOlderThan(60000))) {
+      if (((value == null || Object.keys(value).length === 0) || this.positions.isValueOlderThan(60000))) {
         this.positions.clear('Clearing old positions value');
       }
 
