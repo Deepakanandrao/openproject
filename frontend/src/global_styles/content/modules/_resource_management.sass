@@ -25,7 +25,7 @@
 // outranks the global vendor grey (`.fc-day`, id-level) so it applies in Day view too.
 #content-wrapper .op-rm-timeline-view
   .fc-timeline-body .fc-timeline-slot-lane
-    background: rgb(205 205 205 / 60%)
+    background: rgb(205 205 205 / 20%)
 
   // Re-assert today's highlight, which the grey rule above would otherwise outrank.
   .fc-timeline-body .fc-timeline-slot-lane.fc-day-today
@@ -35,7 +35,7 @@
   // span's background explicitly over the grey base.
   .fc-bg-event.op-rm-timeline-active
     background: var(--bgColor-default, #ffffff)
-    opacity: 0.5
+    opacity: 0.8
 
 // Our own card class, not FullCalendar's `.fc-timeline-event`: the vendor styles
 // force that transparent and borderless with `!important`, so it can't be
