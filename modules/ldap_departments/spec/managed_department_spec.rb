@@ -1,0 +1,69 @@
+# frozen_string_literal: true
+
+require_relative "spec_helper"
+
+RSpec.describe "LDAP-managed department locking", :aggregate_failures do # rubocop:disable RSpec/DescribeClass
+  let(:admin) { create(:admin) }
+  let(:department) { create(:department, lastname: "Engineering") }
+
+  context "when the department is mapped from LDAP" do
+    before { create(:ldap_synchronized_department, group: department) }
+
+    it "reports the department as managed" do
+      expect(department.reload.ldap_managed?).to be(true)
+    end
+
+    it "rejects renaming by an admin" do
+      call = Groups::UpdateService.new(user: admin, model: department).call(name: "Renamed")
+
+      expect(call).to be_failure
+      expect(department.reload.name).to eq("Engineering")
+    end
+
+    it "rejects deletion by an admin" do
+      call = Groups::DeleteService.new(user: admin, model: department).call
+
+      expect(call).to be_failure
+      expect(Group.exists?(department.id)).to be(true)
+    end
+
+    it "allows the synchronization itself to change it" do
+      call = Groups::UpdateService
+        .new(user: User.system, model: department, contract_class: Groups::SyncUpdateContract)
+        .call(name: "Renamed")
+
+      expect(call).to be_success
+      expect(department.reload.name).to eq("Renamed")
+    end
+  end
+
+  context "when the department is not managed" do
+    it "allows an admin to rename it" do
+      call = Groups::UpdateService.new(user: admin, model: department).call(name: "Renamed")
+
+      expect(call).to be_success
+    end
+  end
+
+  describe "sibling-scoped name uniqueness" do
+    let(:it_dep) { create(:department, lastname: "IT") }
+    let(:hr_dep) { create(:department, lastname: "HR") }
+
+    it "allows the same name under different parents" do
+      first = build(:department, lastname: "Support", parent: it_dep)
+      second = build(:department, lastname: "Support", parent: hr_dep)
+
+      expect(first).to be_valid
+      expect(second.tap(&:valid?)).to be_valid
+      expect { first.save! && second.save! }.not_to raise_error
+    end
+
+    it "rejects the same name among siblings" do
+      create(:department, lastname: "Support", parent: it_dep)
+      duplicate = build(:department, lastname: "Support", parent: it_dep)
+
+      expect(duplicate).not_to be_valid
+      expect(duplicate.errors[:name]).to be_present
+    end
+  end
+end
