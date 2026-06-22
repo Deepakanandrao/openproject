@@ -16,21 +16,23 @@ module LdapDepartments
       end
 
       def button_links
-        [delete_link]
+        [actions_menu]
       end
 
       private
 
-      def delete_link
-        render(Primer::Beta::IconButton.new(
-                 tag: :a,
-                 icon: :trash,
-                 scheme: :danger,
-                 size: :small,
-                 href: ldap_departments_synchronized_department_path(department_id: model.id),
-                 "aria-label": I18n.t(:button_delete),
-                 data: { turbo_method: :delete, turbo_confirm: I18n.t(:text_are_you_sure) }
-               ))
+      def actions_menu
+        render(Primer::Alpha::ActionMenu.new) do |menu|
+          menu.with_show_button(icon: "kebab-horizontal", scheme: :invisible, "aria-label": I18n.t(:label_actions))
+
+          menu.with_item(
+            label: I18n.t(:button_delete),
+            scheme: :danger,
+            tag: :a,
+            href: ldap_departments_synchronized_department_path(department_id: model.id),
+            content_arguments: { data: { turbo_method: :delete, turbo_confirm: I18n.t(:text_are_you_sure) } }
+          ) { it.with_leading_visual_icon(icon: :trash) }
+        end
       end
     end
   end

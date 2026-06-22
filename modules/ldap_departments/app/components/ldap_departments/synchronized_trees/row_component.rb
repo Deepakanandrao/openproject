@@ -21,32 +21,35 @@ module LdapDepartments
       end
 
       def button_links
-        [edit_link, delete_link]
+        [actions_menu]
       end
 
       private
 
-      def edit_link
-        render(Primer::Beta::IconButton.new(
-                 tag: :a,
-                 icon: :pencil,
-                 scheme: :invisible,
-                 size: :small,
-                 href: edit_ldap_departments_synchronized_tree_path(tree_id: model.id),
-                 "aria-label": I18n.t(:button_edit)
-               ))
+      def actions_menu
+        render(Primer::Alpha::ActionMenu.new) do |menu|
+          menu.with_show_button(icon: "kebab-horizontal", scheme: :invisible, "aria-label": I18n.t(:label_actions))
+          add_edit_item(menu)
+          add_delete_item(menu)
+        end
       end
 
-      def delete_link
-        render(Primer::Beta::IconButton.new(
-                 tag: :a,
-                 icon: :trash,
-                 scheme: :danger,
-                 size: :small,
-                 href: ldap_departments_synchronized_tree_path(tree_id: model.id),
-                 "aria-label": I18n.t(:button_delete),
-                 data: { turbo_method: :delete, turbo_confirm: I18n.t(:text_are_you_sure) }
-               ))
+      def add_edit_item(menu)
+        menu.with_item(
+          label: I18n.t(:button_edit),
+          tag: :a,
+          href: edit_ldap_departments_synchronized_tree_path(tree_id: model.id)
+        ) { it.with_leading_visual_icon(icon: :pencil) }
+      end
+
+      def add_delete_item(menu)
+        menu.with_item(
+          label: I18n.t(:button_delete),
+          scheme: :danger,
+          tag: :a,
+          href: ldap_departments_synchronized_tree_path(tree_id: model.id),
+          content_arguments: { data: { turbo_method: :delete, turbo_confirm: I18n.t(:text_are_you_sure) } }
+        ) { it.with_leading_visual_icon(icon: :trash) }
       end
     end
   end
