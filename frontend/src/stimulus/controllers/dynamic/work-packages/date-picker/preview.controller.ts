@@ -33,7 +33,7 @@ import type { TimezoneService } from 'core-app/core/datetime/timezone.service';
 import {
   debounce,
   DebouncedFunc,
-} from 'lodash';
+} from 'lodash-es';
 import { useAngularServices, type ServiceKey } from 'core-stimulus/mixins/use-angular-services';
 
 export default class PreviewController extends DialogPreviewController {
