@@ -42,7 +42,7 @@ See COPYRIGHT and LICENSE files for more details.
         blankslate.with_description { blank_description }
       end %>
 <% else %>
-  <div class="op-user-card-list">
+  <%= render(Primer::Box.new(classes: "op-user-card-list")) do %>
     <% users.each do |user| %>
       <%= render(
             ResourcePlannerViews::UserCardList::CardComponent.new(
@@ -53,5 +53,5 @@ See COPYRIGHT and LICENSE files for more details.
             )
           ) %>
     <% end %>
-  </div>
+  <% end %>
 <% end %>

@@ -123,7 +123,7 @@ module ::ResourceManagement
 
       append_work_package(work_package)
 
-      replace_work_package_list
+      replace_view_content
       close_dialog_via_turbo_stream(
         "##{ResourcePlannerViews::WorkPackageList::AddWorkPackageDialogComponent::DIALOG_ID}"
       )
@@ -136,7 +136,7 @@ module ::ResourceManagement
            .where(work_package_id: params[:work_package_id])
            .destroy_all
 
-      replace_work_package_list
+      replace_view_content
       respond_with_turbo_streams
     end
 
@@ -150,7 +150,7 @@ module ::ResourceManagement
         end
       end
 
-      replace_work_package_list
+      replace_view_content
       respond_with_turbo_streams
     end
 
@@ -158,7 +158,7 @@ module ::ResourceManagement
     def reorder_work_package
       move_to_index(params[:work_package_id]) { params[:position].to_i - 1 }
 
-      replace_work_package_list
+      replace_view_content
       respond_with_turbo_streams
     end
 
@@ -236,10 +236,6 @@ module ::ResourceManagement
       ordered.each_with_index do |owp, index|
         owp.update_column(:position, index + 1) unless owp.position == index + 1
       end
-    end
-
-    def replace_work_package_list
-      replace_via_turbo_stream(component: work_package_list_content(@view))
     end
 
     def render_configure_step(view, status: :ok)
