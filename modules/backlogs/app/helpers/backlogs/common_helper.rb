@@ -48,7 +48,7 @@ module Backlogs
     end
 
     def backlog_filters
-      RequestStore.fetch(:backlog_filters) { Backlogs::BacklogFilters.from_params(params) }
+      RequestStore.fetch(:backlog_filters) { Backlogs::BacklogFilters.from_params(permitted_params.backlog_filters) }
     end
 
     def backlog_filter_params

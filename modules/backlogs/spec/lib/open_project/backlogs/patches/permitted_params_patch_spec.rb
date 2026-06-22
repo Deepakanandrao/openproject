@@ -28,23 +28,44 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module OpenProject::Backlogs::Patches::PermittedParamsPatch
-  def self.included(base)
-    base.prepend InstanceMethods
-  end
+require "rails_helper"
 
-  module InstanceMethods
-    def update_work_package(args = {})
-      permitted_params = super
+RSpec.describe PermittedParams do
+  let(:user) { build_stubbed(:user) }
 
-      backlogs_params = params.require(:work_package).permit(:story_points)
-      permitted_params.merge!(backlogs_params)
+  subject(:permitted) { described_class.new(params, user).backlog_filters.to_h }
 
-      permitted_params
+  describe "#backlog_filters" do
+    context "with bucket_ids and sprint_ids" do
+      let(:params) { ActionController::Parameters.new(bucket_ids: %w[1 2], sprint_ids: %w[3]) }
+
+      it "permits both arrays" do
+        expect(permitted).to eq("bucket_ids" => %w[1 2], "sprint_ids" => %w[3])
+      end
     end
 
-    def backlog_filters
-      params.permit(:all, bucket_ids: [], sprint_ids: [])
+    context "with the all flag" do
+      let(:params) { ActionController::Parameters.new(all: "1") }
+
+      it "permits all" do
+        expect(permitted).to eq("all" => "1")
+      end
+    end
+
+    context "with bucket_ids as a hash (e.g. bucket_ids[0]=1)" do
+      let(:params) { ActionController::Parameters.new(bucket_ids: { "0" => "1", "1" => "2" }) }
+
+      it "filters it out" do
+        expect(permitted).to eq({})
+      end
+    end
+
+    context "with unpermitted params" do
+      let(:params) { ActionController::Parameters.new(bucket_ids: %w[1], evil: "true") }
+
+      it "filters them out" do
+        expect(permitted).to eq("bucket_ids" => %w[1])
+      end
     end
   end
 end
