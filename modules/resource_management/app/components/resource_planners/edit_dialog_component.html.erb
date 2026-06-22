@@ -28,45 +28,40 @@ See COPYRIGHT and LICENSE files for more details.
 ++#%>
 
 <%=
-  component_wrapper do
-    primer_form_with(
-      id: @form_id,
-      model: @resource_planner,
-      scope: :resource_planner,
-      method: @method,
-      url: form_url
-    ) do |f|
-      flex_layout do |flex|
-        if @base_errors&.any?
-          flex.with_row(mb: 3) do
-            render(Primer::Alpha::Banner.new(icon: :stop, scheme: :danger)) { @base_errors.join("\n") }
-          end
-        end
+  render(
+    Primer::Alpha::Dialog.new(
+      title:,
+      size: :large,
+      classes: "Overlay--size-large-portrait",
+      id: DIALOG_ID,
+      data: { "keep-open-on-submit": true }
+    )
+  ) do |d|
+    d.with_header(variant: :large)
 
-        flex.with_row(mb: 3) do
-          render ResourcePlanners::Forms::DetailsForm.new(f)
-        end
+    d.with_body do
+      render(
+        ResourcePlanners::FormComponent.new(
+          resource_planner: @resource_planner,
+          project: @project,
+          form_id: FORM_ID,
+          dialog_id: DIALOG_ID,
+          url: project_resource_planner_path(@project, @resource_planner),
+          method: :patch,
+          include_default_view: false
+        )
+      )
+    end
 
-        flex.with_row(mb: 3) do
-          render ResourcePlanners::Forms::DatesForm.new(f, dialog_id: @dialog_id)
-        end
-
-        if @include_default_view
-          flex.with_row(mb: 3) do
-            render ResourcePlanners::Forms::DefaultViewForm.new(f)
-          end
-        end
-
-        if can_manage_public?
-          flex.with_row(mb: 3) do
-            render ResourcePlanners::Forms::PublicForm.new(f)
-          end
-        end
-
-        flex.with_row do
-          render ResourcePlanners::Forms::FavoriteForm.new(f)
-        end
-      end
+    d.with_footer do
+      render(
+        ResourcePlanners::FooterComponent.new(
+          dialog_id: DIALOG_ID,
+          form_id: FORM_ID,
+          footer_id: FOOTER_ID,
+          submit_label: I18n.t(:button_save)
+        )
+      )
     end
   end
 %>

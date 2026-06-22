@@ -29,37 +29,59 @@
 #++
 
 module ResourcePlanners
-  class FormComponent < ApplicationComponent
+  class ShowPageHeaderComponent < ApplicationComponent
     include ApplicationHelper
-    include OpTurbo::Streamable
-    include OpPrimer::ComponentHelpers
 
-    def initialize(resource_planner:, project:, base_errors: nil,
-                   form_id: NewDialogComponent::FORM_ID,
-                   dialog_id: NewDialogComponent::DIALOG_ID,
-                   url: nil,
-                   method: :post,
-                   include_default_view: true)
+    def initialize(resource_planner:, project:)
       super
 
       @resource_planner = resource_planner
       @project = project
-      @base_errors = base_errors
-      @form_id = form_id
-      @dialog_id = dialog_id
-      @url = url
-      @method = method
-      @include_default_view = include_default_view
     end
 
     private
 
-    def form_url
-      @url || project_resource_planners_path(@project)
+    def breadcrumb_items
+      [
+        { href: project_overview_path(@project.id), text: @project.name },
+        { href: project_resource_planners_path(@project), text: t(:label_resource_management) },
+        @resource_planner.name
+      ]
     end
 
-    def can_manage_public?
-      User.current.allowed_in_project?(:manage_public_resource_planners, @project)
+    def favorited?
+      @resource_planner.favorited_by?(User.current)
+    end
+
+    # Resource planners are favorited through their `PersistedView` base class,
+    # mirroring the sidebar/index row action (see RowComponent#favorite_item).
+    def favorite_path_for(planner)
+      favorite_path(object_type: "persisted_views", object_id: planner.id)
+    end
+
+    def show_action_menu?
+      edit_allowed? || delete_allowed?
+    end
+
+    def edit_allowed?
+      manage_planner?
+    end
+
+    def delete_allowed?
+      return true if User.current.active_admin?
+
+      manage_planner?
+    end
+
+    def manage_planner?
+      return false if @project.nil?
+
+      owns_planner = @resource_planner.principal == User.current &&
+        User.current.allowed_in_project?(:view_resource_planners, @project)
+      can_manage_public = @resource_planner.public? &&
+        User.current.allowed_in_project?(:manage_public_resource_planners, @project)
+
+      owns_planner || can_manage_public
     end
   end
 end

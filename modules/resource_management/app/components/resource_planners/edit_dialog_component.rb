@@ -29,43 +29,25 @@
 #++
 
 module ResourcePlanners
-  class FooterComponent < ApplicationComponent
+  class EditDialogComponent < ApplicationComponent
     include OpTurbo::Streamable
     include OpPrimer::ComponentHelpers
 
-    def initialize(dialog_id: NewDialogComponent::DIALOG_ID,
-                   form_id: NewDialogComponent::FORM_ID,
-                   footer_id: NewDialogComponent::FOOTER_ID,
-                   submit_label: I18n.t(:button_next))
+    DIALOG_ID = "edit-resource-planner-dialog"
+    FORM_ID = "edit-resource-planner-form"
+    FOOTER_ID = "edit-resource-planner-footer"
+
+    def initialize(resource_planner:, project:)
       super
 
-      @dialog_id = dialog_id
-      @form_id = form_id
-      @footer_id = footer_id
-      @submit_label = submit_label
+      @resource_planner = resource_planner
+      @project = project
     end
 
-    def wrapper_key
-      @footer_id
-    end
+    private
 
-    def call
-      component_wrapper do
-        component_collection do |buttons|
-          buttons.with_component(
-            Primer::Beta::Button.new(data: { close_dialog_id: @dialog_id })
-          ) { I18n.t(:button_cancel) }
-
-          buttons.with_component(
-            Primer::Beta::Button.new(
-              scheme: :primary,
-              form: @form_id,
-              data: { turbo: true },
-              type: :submit
-            )
-          ) { @submit_label }
-        end
-      end
+    def title
+      I18n.t("resource_management.label_edit_resource_planner")
     end
   end
 end
