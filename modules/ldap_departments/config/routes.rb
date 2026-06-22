@@ -5,20 +5,13 @@ Rails.application.routes.draw do
     resources :synchronized_trees,
               param: :tree_id do
       member do
-        # Synchronize the organizational unit structure of a single tree
-        get "synchronize"
-
-        # Destroy warning
-        get "destroy_info"
+        # Synchronize the organizational unit structure and members of a single tree
+        post "synchronize"
       end
     end
 
     resources :synchronized_departments,
               param: :department_id,
-              only: %i(show destroy) do
-      member do
-        get "destroy_info"
-      end
-    end
+              only: %i(destroy)
   end
 end

@@ -1,0 +1,86 @@
+# frozen_string_literal: true
+
+require_relative "../spec_helper"
+
+RSpec.describe "LDAP department synchronized trees", :aggregate_failures, :skip_csrf,
+               type: :rails_request, with_ee: %i[ldap_groups] do
+  shared_let(:admin) { create(:admin) }
+  shared_let(:ldap_auth_source) { create(:ldap_auth_source, base_dn: "dc=example,dc=com") }
+
+  before { login_as(admin) }
+
+  describe "GET /ldap_departments/synchronized_trees" do
+    it "renders the index" do
+      get ldap_departments_synchronized_trees_path
+
+      expect(response).to have_http_status(:ok)
+    end
+  end
+
+  describe "POST /ldap_departments/synchronized_trees" do
+    let(:params) do
+      {
+        synchronized_tree: {
+          name: "IT directory",
+          ldap_auth_source_id: ldap_auth_source.id,
+          base_dn: "ou=IT,dc=example,dc=com",
+          structure_filter_string: "(objectClass=organizationalUnit)",
+          ou_name_attribute: "ou",
+          sync_users: "1"
+        }
+      }
+    end
+
+    it "creates a synchronized tree" do
+      expect { post ldap_departments_synchronized_trees_path, params: }
+        .to change(LdapDepartments::SynchronizedTree, :count).by(1)
+
+      tree = LdapDepartments::SynchronizedTree.last
+      expect(response).to redirect_to(ldap_departments_synchronized_tree_path(tree_id: tree.id))
+      expect(tree.base_dn).to eq("ou=IT,dc=example,dc=com")
+    end
+
+    it "rejects an out-of-base DN" do
+      params[:synchronized_tree][:base_dn] = "ou=IT,dc=other,dc=com"
+
+      expect { post ldap_departments_synchronized_trees_path, params: }
+        .not_to change(LdapDepartments::SynchronizedTree, :count)
+      expect(response).to have_http_status(:unprocessable_entity)
+    end
+  end
+
+  describe "DELETE /ldap_departments/synchronized_trees/:id" do
+    let!(:tree) { create(:ldap_synchronized_tree, ldap_auth_source:) }
+
+    it "removes the tree" do
+      expect { delete ldap_departments_synchronized_tree_path(tree_id: tree.id) }
+        .to change(LdapDepartments::SynchronizedTree, :count).by(-1)
+    end
+  end
+
+  describe "POST /ldap_departments/synchronized_trees/:id/synchronize" do
+    let!(:tree) { create(:ldap_synchronized_tree, ldap_auth_source:) }
+
+    it "runs the synchronization and redirects" do
+      allow(LdapDepartments::SynchronizeTreeService).to receive(:new)
+        .and_return(instance_double(LdapDepartments::SynchronizeTreeService, call: ServiceResult.success(result: 2)))
+      allow(LdapDepartments::SynchronizeMembersService).to receive(:new)
+        .and_return(instance_double(LdapDepartments::SynchronizeMembersService, call: ServiceResult.success))
+
+      post synchronize_ldap_departments_synchronized_tree_path(tree_id: tree.id)
+
+      expect(response).to redirect_to(ldap_departments_synchronized_tree_path(tree_id: tree.id))
+    end
+  end
+
+  context "without the enterprise feature" do
+    it "redirects away from the new form" do
+      allow(EnterpriseToken).to receive(:allows_to?).and_call_original
+      allow(EnterpriseToken).to receive(:allows_to?).with(:ldap_groups).and_return(false)
+
+      get new_ldap_departments_synchronized_tree_path
+
+      expect(response).to have_http_status(:see_other)
+    end
+  end
+end

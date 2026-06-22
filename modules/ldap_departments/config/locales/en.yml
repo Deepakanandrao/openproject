@@ -39,12 +39,11 @@ en:
       singular: 'LDAP department synchronization'
       plural: 'LDAP department synchronizations'
       no_results: 'No LDAP department synchronizations configured yet.'
-      help_text_html: |
+      help_text: >
         This module mirrors the organizational unit (OU) structure of your LDAP directory into the
         OpenProject department hierarchy. Each OU below the configured base DN becomes a department,
-        and users are assigned to the department of the OU they reside in.
-        <br/>
-        Departments are synchronized regularly through a cron job.
+        and users are assigned to the department of the OU they reside in. Departments are
+        synchronized regularly through a cron job.
       destroy:
         title: 'Remove synchronization %{name}'
         heading: 'Remove synchronization %{name}?'
