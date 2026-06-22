@@ -29,43 +29,29 @@
 #++
 
 module Wikis
-  module TextFormatting
-    class WikiLinkMatcher < OpenProject::TextFormatting::Matchers::RegexMatcher
-      include Dry::Monads[:result]
+  class DeferredInlinePageLinkMacroComponent < ApplicationComponent
+    include ApplicationHelper
+    include OpPrimer::ComponentHelpers
 
-      class << self
-        def applicable?(*)
-          super && OpenProject::FeatureDecisions.wiki_enhancements_active?
-        end
+    attr_reader :identifier, :provider_id
 
-        def regexp
-          /\[\[\[([0-9]+):([^\]\n]+)\]\]\]/
-        end
+    def initialize(identifier:, provider_id:, **)
+      super(nil, **)
 
-        def process_match(match, _matched_string, _context)
-          instance = new(
-            provider_id: match[1],
-            identifier: match[2]
-          )
+      @identifier = identifier
+      @provider_id = provider_id
+    end
 
-          instance.process
-        end
-      end
+    def frame_id
+      @frame_id ||= SecureRandom.uuid
+    end
 
-      attr_reader :provider_id, :identifier
-
-      def initialize(provider_id:, identifier:)
-        super()
-
-        @provider_id = provider_id
-        @identifier = identifier
-      end
-
-      def process
-        view_context = ApplicationController.new.view_context
-
-        DeferredInlinePageLinkMacroComponent.new(provider_id:, identifier:).render_in(view_context)
-      end
+    def frame_src
+      url_helpers.load_wiki_page_link_macro_path(
+        provider_id:,
+        page_identifier: identifier,
+        turbo_frame_id: frame_id
+      )
     end
   end
 end
