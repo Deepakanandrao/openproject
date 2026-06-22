@@ -56,7 +56,8 @@ module ResourcePlannerViews
           allocations: @allocations,
           visible_principal_ids: @visible_principal_ids
         )
-      when UserCard
+      # Needs to be ::UserCard, otherwise ResourcePlannerViews::UserCard takes over and shows no results
+      when ::UserCard
         ResourcePlannerViews::UserCardList::ContentComponent.new(
           view: @view,
           project: @project,
