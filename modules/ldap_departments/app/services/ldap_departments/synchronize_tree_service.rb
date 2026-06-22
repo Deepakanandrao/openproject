@@ -142,7 +142,7 @@ module LdapDepartments
 
     def create_department(name, parent_group_id)
       call = Groups::CreateService
-        .new(user: User.system)
+        .new(user: User.system, contract_class: Groups::SyncCreateContract)
         .call(name:, organizational_unit: true, parent_id: parent_group_id)
       require_success!(call, "create department '#{name}'")
       call.result

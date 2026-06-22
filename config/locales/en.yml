@@ -2277,6 +2277,7 @@ en:
             parent_id:
               circular_dependency: "would create a circular group hierarchy."
               organizational_unit_mismatch: "must have the same organizational unit setting as the group."
+              parent_ldap_managed: "is managed by LDAP synchronization and cannot have departments added manually."
         ldap_auth_source:
           attributes:
             tls_certificate_string:

@@ -29,10 +29,10 @@
 #++
 
 module Groups
-  # Used by the LDAP department synchronization to update managed departments (name, parent and
-  # members). It is the only path allowed to mutate a group that reports `ldap_managed?`, so it
-  # skips the read-only lock enforced for interactive admins by Groups::BaseContract.
-  class SyncUpdateContract < UpdateContract
+  # Used by the LDAP department synchronization to create managed departments, including nesting
+  # them under other managed departments. It therefore skips the read-only / managed-parent guards
+  # that block interactive admins in Groups::BaseContract.
+  class SyncCreateContract < CreateContract
     private
 
     def validate_not_ldap_managed; end

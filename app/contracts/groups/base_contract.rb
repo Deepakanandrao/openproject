@@ -42,6 +42,7 @@ module Groups
     validate :validate_unique_users
     validate :validate_users_not_in_other_department
     validate :validate_not_ldap_managed
+    validate :validate_parent_not_ldap_managed
 
     private
 
@@ -49,6 +50,15 @@ module Groups
     # the sync. The sync itself bypasses this through Groups::SyncUpdateContract.
     def validate_not_ldap_managed
       errors.add(:base, :ldap_managed) if model.ldap_managed?
+    end
+
+    # A department managed by LDAP owns its sub-tree, so new or moved departments may not be nested
+    # underneath one. The sync bypasses this through its permissive contracts.
+    def validate_parent_not_ldap_managed
+      return if model.parent_id.blank?
+
+      parent = Group.find_by(id: model.parent_id)
+      errors.add(:parent_id, :parent_ldap_managed) if parent&.ldap_managed?
     end
 
     # Validating on the group_users since those are dealt with in the

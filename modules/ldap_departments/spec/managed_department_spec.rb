@@ -45,6 +45,28 @@ RSpec.describe "LDAP-managed department locking", :aggregate_failures do # ruboc
     end
   end
 
+  describe "adding a child department under a managed parent" do
+    before { create(:ldap_synchronized_department, group: department) }
+
+    it "is rejected for an admin" do
+      call = Groups::CreateService
+        .new(user: admin)
+        .call(name: "Child", organizational_unit: true, parent_id: department.id)
+
+      expect(call).to be_failure
+      expect(call.errors.symbols_for(:parent_id)).to include(:parent_ldap_managed)
+    end
+
+    it "is allowed for the synchronization" do
+      call = Groups::CreateService
+        .new(user: User.system, contract_class: Groups::SyncCreateContract)
+        .call(name: "Child", organizational_unit: true, parent_id: department.id)
+
+      expect(call).to be_success
+      expect(call.result.parent_id).to eq(department.id)
+    end
+  end
+
   describe "sibling-scoped name uniqueness" do
     let(:it_dep) { create(:department, lastname: "IT") }
     let(:hr_dep) { create(:department, lastname: "HR") }
