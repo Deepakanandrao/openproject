@@ -28,10 +28,16 @@
  * ++
  */
 
-import { ApplicationController } from 'stimulus-use';
-import { renderStreamMessage } from '@hotwired/turbo';
+import { ApplicationController, useDebounce } from 'stimulus-use';
+import { FetchRequest } from '@rails/request.js';
+
+const TURBO_STREAM_REFRESH_DELAY = 50;
 
 export default class RefreshOnFormChangesController extends ApplicationController {
+  static debounces = [
+    { name: 'performTurboStreamRefresh', wait: TURBO_STREAM_REFRESH_DELAY },
+  ];
+
   static targets = [
     'form',
   ];
@@ -46,17 +52,49 @@ export default class RefreshOnFormChangesController extends ApplicationControlle
   declare refreshUrlValue:string;
   declare turboStreamUrlValue:string;
 
+  private abortController:AbortController|null = null;
+
+  connect():void {
+    useDebounce(this);
+  }
+
+  disconnect():void {
+    this.abortController?.abort();
+    this.abortController = null;
+  }
+
   triggerReload():void {
     window.location.href = `${this.refreshUrlValue}?${this.getSerializedFormData()}`;
   }
 
-  async triggerTurboStream():Promise<void> {
-    await fetch(`${this.turboStreamUrlValue}?${this.getSerializedFormData()}`, {
-      headers: {
-        Accept: 'text/vnd.turbo-stream.html',
-      },
-    }).then((r) => r.text())
-      .then((html) => renderStreamMessage(html));
+  triggerTurboStream():void {
+    void this.performTurboStreamRefresh();
+  }
+
+  private async performTurboStreamRefresh():Promise<void> {
+    // Cancel any refresh still in flight so a slower, earlier response cannot
+    // arrive last and overwrite the form with stale state (e.g. a half-entered
+    // date range clobbering the completed one).
+    this.abortController?.abort();
+    const abortController = new AbortController();
+    this.abortController = abortController;
+
+    try {
+      const request = new FetchRequest('get', this.turboStreamUrlValue, {
+        query: new FormData(this.formTarget),
+        responseKind: 'turbo-stream',
+        signal: abortController.signal,
+      });
+      await request.perform();
+    } catch (error) {
+      if (!(error instanceof DOMException && error.name === 'AbortError')) {
+        console.error(error);
+      }
+    } finally {
+      if (this.abortController === abortController) {
+        this.abortController = null;
+      }
+    }
   }
 
   private getSerializedFormData():string {
