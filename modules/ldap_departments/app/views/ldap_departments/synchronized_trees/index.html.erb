@@ -24,7 +24,7 @@
       end
     end %>
 
-<%= render EnterpriseEdition::BannerComponent.new(:ldap_groups, variant: :inline) %>
+<%= render EnterpriseEdition::BannerComponent.new(:ldap_groups, variant: :inline, i18n_scope: "ee.upsell.ldap_departments") %>
 
 <div class="op-toast -info">
   <div class="op-toast--content">

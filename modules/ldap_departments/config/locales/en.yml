@@ -24,6 +24,11 @@ en:
     models:
       ldap_departments/synchronized_department: 'Synchronized department'
       ldap_departments/synchronized_tree: 'LDAP department synchronization'
+  ee:
+    upsell:
+      ldap_departments:
+        title: 'LDAP department synchronization'
+        description: 'Mirror your LDAP organizational unit structure into the OpenProject department hierarchy and keep department members in sync automatically.'
   ldap_departments:
     label_menu_item: 'LDAP department synchronization'
     label_n_departments_found:
