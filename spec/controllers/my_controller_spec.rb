@@ -372,29 +372,20 @@ RSpec.describe MyController do
 
     subject { get :working_hours }
 
-    context "with feature enabled", with_flag: { user_working_times: true } do
-      it "responds with success" do
-        subject
-        expect(response).to be_successful
-      end
-
-      it "renders the working_hours template" do
-        subject
-        expect(response).to render_template "working_hours"
-      end
-
-      it "assigns @current_working_hours and @past_working_hours" do
-        subject
-        expect(assigns(:current_working_hours)).to eq(user_working_hours)
-        expect(assigns(:past_working_hours)).to eq([user_working_hours])
-      end
+    it "responds with success" do
+      subject
+      expect(response).to be_successful
     end
 
-    context "with feature disabled", with_flag: { user_working_times: false } do
-      it "responds with forbidden" do
-        subject
-        expect(response).to have_http_status(:forbidden)
-      end
+    it "renders the working_hours template" do
+      subject
+      expect(response).to render_template "working_hours"
+    end
+
+    it "assigns @current_working_hours and @past_working_hours" do
+      subject
+      expect(assigns(:current_working_hours)).to eq(user_working_hours)
+      expect(assigns(:past_working_hours)).to eq([user_working_hours])
     end
   end
 end
