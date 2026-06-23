@@ -55,7 +55,3 @@ OpenProject::FeatureDecisions.add :user_working_times,
 OpenProject::FeatureDecisions.add :wiki_enhancements,
                                   description: "Enables Wiki enhancements, such as the Wikis tab and XWiki integration.",
                                   force_active: true
-
-OpenProject::FeatureDecisions.add :departments,
-                                  description: "Enables the management of departments within the organization."
-
