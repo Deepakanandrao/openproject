@@ -6,6 +6,30 @@ RSpec.describe "LDAP-managed department locking", :aggregate_failures do # ruboc
   let(:admin) { create(:admin) }
   let(:department) { create(:department, lastname: "Engineering") }
 
+  describe "Group#ldap_managed?" do
+    it "is false for an organizational unit without a mapping" do
+      expect(department.ldap_managed?).to be(false)
+    end
+
+    it "is true for an organizational unit with a mapping" do
+      create(:ldap_synchronized_department, group: department)
+
+      expect(department.reload.ldap_managed?).to be(true)
+    end
+
+    it "is false for a regular group without querying the mapping" do
+      group = create(:group)
+      allow(group).to receive(:ldap_departments_synchronized_departments).and_call_original
+
+      expect(group.ldap_managed?).to be(false)
+      expect(group).not_to have_received(:ldap_departments_synchronized_departments)
+    end
+
+    it "is false for an unsaved group" do
+      expect(Group.new.ldap_managed?).to be(false)
+    end
+  end
+
   context "when the department is mapped from LDAP" do
     before { create(:ldap_synchronized_department, group: department) }
 
