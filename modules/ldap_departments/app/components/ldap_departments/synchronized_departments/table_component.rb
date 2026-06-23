@@ -39,6 +39,24 @@ module LdapDepartments
       def blank_icon
         :organization
       end
+
+      # The full department path (e.g. "Human Resources / Support"), built in memory from the
+      # tree's departments to avoid a hierarchy query per row.
+      def path_for(group)
+        names = []
+        current = group
+        while current
+          names.unshift(current.name)
+          current = groups_by_id[current.parent_id]
+        end
+        names.join(" / ")
+      end
+
+      private
+
+      def groups_by_id
+        @groups_by_id ||= rows.filter_map(&:group).index_by(&:id)
+      end
     end
   end
 end

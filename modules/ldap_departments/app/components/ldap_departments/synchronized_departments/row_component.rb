@@ -4,9 +4,11 @@ module LdapDepartments
   module SynchronizedDepartments
     class RowComponent < OpPrimer::BorderBoxRowComponent
       def group
-        return model.group&.name unless model.group
+        return if model.group.nil?
 
-        render(Primer::Beta::Link.new(href: admin_department_path(model.group), font_weight: :bold)) { model.group.name }
+        render(Primer::Beta::Link.new(href: admin_department_path(model.group), font_weight: :bold)) do
+          table.path_for(model.group)
+        end
       end
 
       delegate :dn, to: :model

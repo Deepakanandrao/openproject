@@ -20,7 +20,7 @@ module LdapDepartments
     end
 
     def show
-      @departments = @tree.synchronized_departments.includes(:group)
+      @departments = @tree.synchronized_departments.includes(group: :group_detail)
     end
 
     def new
