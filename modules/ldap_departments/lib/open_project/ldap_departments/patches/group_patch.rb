@@ -10,9 +10,11 @@ module OpenProject::LdapDepartments
                    foreign_key: :group_id,
                    dependent: :destroy
 
-          # A department is managed when an LDAP organizational unit is mapped onto it.
+          # A department is managed when an LDAP organizational unit is mapped onto it. Only
+          # organizational units can ever be managed, so skip the lookup for regular groups.
           register_ldap_managed_check do |group|
             next false if group.new_record?
+            next false unless group.organizational_unit?
 
             group.ldap_departments_synchronized_departments.exists?
           end
