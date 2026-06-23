@@ -93,7 +93,7 @@ module Users
       def render_section(form, section)
         visible_cfs_by_key = section.custom_fields.visible(User.current).index_by(&:column_name)
 
-        form.fieldset_group(title: section_title(section)) do |group|
+        form.fieldset_group(title: section_title(section), mb: 3) do |group|
           section.attribute_order.each do |key|
             if UserCustomFieldSection::BUILT_IN_ATTRIBUTES.include?(key)
               render_built_in(group, key)
