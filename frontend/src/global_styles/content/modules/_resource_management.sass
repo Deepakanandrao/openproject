@@ -37,6 +37,20 @@
     background: var(--bgColor-default, #ffffff)
     opacity: 0.8
 
+  // Header columns mirror the body shading: grey when no work package is active
+  // in the column, white otherwise, today's highlight kept for inactive columns.
+  // The active class is toggled by the controller from the loaded bands, since
+  // FullCalendar does not colour the header from event data. The active rule
+  // comes last so it outranks the equal-specificity today rule.
+  .fc-timeline-header .fc-timeline-slot-label
+    background: rgb(205 205 205 / 20%)
+
+  .fc-timeline-header .fc-timeline-slot-label.fc-day-today
+    background: rgb(255 255 120 / 20%)
+
+  .fc-timeline-header .fc-timeline-slot-label.op-rm-active-col
+    background: var(--bgColor-default)
+
 // Our own card class, not FullCalendar's `.fc-timeline-event`: the vendor styles
 // force that transparent and borderless with `!important`, so it can't be
 // restyled by specificity.
@@ -56,8 +70,8 @@
   color: var(--fgColor-default, #1f2328)
 
   &--hours
+    color: var(--fgColor-muted, #0969da)
     flex: 0 0 auto
-    font-weight: 600
 
   &--label
     flex: 1 1 auto

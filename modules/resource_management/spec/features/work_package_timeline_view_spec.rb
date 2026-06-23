@@ -58,4 +58,13 @@ RSpec.describe "Work package timeline view", :js do
     expect(page).to have_css("[data-test-selector='resource-work-package-timeline']")
     expect(page).to have_css(".op-rm-timeline-view .fc-bg-event.op-rm-timeline-active", wait: 15)
   end
+
+  it "marks header columns that have an active work package" do
+    visit project_resource_planner_view_path(project, planner, view)
+
+    expect(page).to have_css(
+      ".op-rm-timeline-view .fc-timeline-header .fc-timeline-slot-label.op-rm-active-col",
+      wait: 15
+    )
+  end
 end

@@ -170,6 +170,7 @@ export default class WorkPackageTimelineController extends Controller {
       },
       eventContent: (arg) => ({ html: (arg.event.extendedProps.html as string) || '' }),
       eventClassNames: (arg) => (arg.event.extendedProps.overbooked ? ['resource-allocation--overbooked'] : []),
+      eventsSet: () => { this.markActiveColumns(); },
       selectable: this.canAllocateValue && this.newAllocationUrlValue.length > 0,
       select: (info) => {
         const resourceId = info.resource?.id ?? '';
@@ -190,6 +191,25 @@ export default class WorkPackageTimelineController extends Controller {
       .subtract(3, this.unitForViewName(this.calendar.view.type))
       .format('YYYY-MM-DD');
     this.calendar.gotoDate(start);
+  }
+
+  // Mark each header column active when an active-span band covers it.
+  // FullCalendar offers no header-colouring input, so we toggle the class
+  // on the rendered header cells, depending on the union of active columns.
+  private markActiveColumns():void {
+    if (!this.calendar) { return; }
+
+    const bands = this.calendar.getEvents()
+      .filter((event) => event.display === 'background')
+      .map((event) => ({ start: event.startStr, end: event.endStr }));
+
+    this.calendarTarget
+      .querySelectorAll('.fc-timeline-header .fc-timeline-slot-label[data-date]')
+      .forEach((cell) => {
+        const date = cell.getAttribute('data-date') ?? '';
+        const active = bands.some((band) => band.start <= date && date < band.end);
+        cell.classList.toggle('op-rm-active-col', active);
+      });
   }
 
   private granularityKeyFor(viewType:string):string {
