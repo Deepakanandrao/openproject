@@ -30,7 +30,7 @@
 
 require "spec_helper"
 
-RSpec.describe UserCard do
+RSpec.describe ResourceUserCard do
   shared_let(:project) { create(:project, enabled_module_names: %w[resource_management]) }
   shared_let(:other_project) { create(:project, enabled_module_names: %w[resource_management]) }
   shared_let(:user) do

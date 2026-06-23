@@ -59,7 +59,7 @@ RSpec.describe "User card view", :js do
     shared_let(:work_package) { create(:work_package, project:, subject: "Build the thing") }
 
     let(:view) do
-      UserCard.create!(name: "People", parent: resource_planner, project:, principal: user, query:)
+      ResourceUserCard.create!(name: "People", parent: resource_planner, project:, principal: user, query:)
     end
 
     before do
@@ -114,7 +114,7 @@ RSpec.describe "User card view", :js do
 
   describe "switching the filter mode" do
     it "drops the filtered cards and becomes an empty manual list" do
-      view = UserCard.create!(name: "People", parent: resource_planner, project:, principal: user, query:)
+      view = ResourceUserCard.create!(name: "People", parent: resource_planner, project:, principal: user, query:)
       visit project_resource_planner_view_path(project, resource_planner, view)
       expect(page).to have_test_selector("op-user-card", text: member.name)
 
@@ -131,7 +131,7 @@ RSpec.describe "User card view", :js do
 
     it "discards the manually selected cards and shows the filtered list" do
       query.update!(manual_elements: true)
-      view = UserCard.create!(name: "People", parent: resource_planner, project:, principal: user, query:)
+      view = ResourceUserCard.create!(name: "People", parent: resource_planner, project:, principal: user, query:)
       view.query.ordered_entities.create!(entity: member, position: 1)
       visit project_resource_planner_view_path(project, resource_planner, view)
       expect(page).to have_test_selector("op-user-card", text: member.name)
@@ -153,7 +153,7 @@ RSpec.describe "User card view", :js do
 
     let(:view) do
       query.update!(manual_elements: true)
-      UserCard.create!(name: "Special picks", parent: resource_planner, project:, principal: user, query:)
+      ResourceUserCard.create!(name: "Special picks", parent: resource_planner, project:, principal: user, query:)
     end
 
     it "starts empty and adds a user through the autocompleter" do
@@ -190,7 +190,7 @@ RSpec.describe "User card view", :js do
       create(:resource_planner, project:, principal: user,
                                 start_date: Date.new(2026, 1, 9), end_date: Date.new(2026, 1, 12))
     end
-    let(:view) { UserCard.create!(name: "People", parent: planner, project:, principal: user, query:) }
+    let(:view) { ResourceUserCard.create!(name: "People", parent: planner, project:, principal: user, query:) }
 
     before do
       create(:user_working_hours, user: member, valid_from: Date.new(2025, 1, 1), monday: 240)

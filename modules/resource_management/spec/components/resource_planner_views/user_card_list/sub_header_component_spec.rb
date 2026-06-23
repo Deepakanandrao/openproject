@@ -41,8 +41,8 @@ RSpec.describe ResourcePlannerViews::UserCardList::SubHeaderComponent, type: :co
 
   let(:manual) { false }
   let(:view) do
-    create(:user_card, parent: resource_planner, project:, principal: user,
-                       query: create(:user_query, project:, principal: user, manual_elements: manual))
+    create(:resource_user_card, parent: resource_planner, project:, principal: user,
+                                query: create(:user_query, project:, principal: user, manual_elements: manual))
   end
 
   subject(:rendered) do

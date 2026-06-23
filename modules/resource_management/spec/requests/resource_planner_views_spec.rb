@@ -404,27 +404,27 @@ RSpec.describe "ResourcePlannerViews requests",
     end
   end
 
-  describe "UserCard views" do
+  describe "ResourceUserCard views" do
     shared_let(:member) do
       create(:user, member_with_permissions: { project => %i[view_resource_planners] })
     end
 
-    let(:user_card) do
-      UserCard.create!(name: "People", parent: resource_planner, project:, principal: user,
-                       query: UserQuery.new(name: "q", project:, principal: user).tap(&:save!))
+    let(:resource_user_card) do
+      ResourceUserCard.create!(name: "People", parent: resource_planner, project:, principal: user,
+                               query: UserQuery.new(name: "q", project:, principal: user).tap(&:save!))
     end
 
     describe "POST create" do
-      it "persists a UserCard" do
+      it "persists a ResourceUserCard" do
         post project_resource_planner_views_path(project, resource_planner),
              params: {
-               view_class_name: "UserCard",
+               view_class_name: "ResourceUserCard",
                view: { name: "People", filter_mode: "automatic" },
                filters: [{ status: { operator: "=", values: ["active"] } }].to_json
              },
              as: :turbo_stream
 
-        view = UserCard.last
+        view = ResourceUserCard.last
         expect(view.name).to eq("People")
         expect(view.query).to be_a(UserQuery)
         expect(view.query.filters.map(&:name)).to contain_exactly(:status)
@@ -434,53 +434,53 @@ RSpec.describe "ResourcePlannerViews requests",
       it "sets the manual flag for a manual view" do
         post project_resource_planner_views_path(project, resource_planner),
              params: {
-               view_class_name: "UserCard",
+               view_class_name: "ResourceUserCard",
                view: { name: "People", filter_mode: "manual" },
                filters: [{ status: { operator: "=", values: ["active"] } }].to_json
              },
              as: :turbo_stream
 
-        expect(UserCard.last).to be_manually_picked
+        expect(ResourceUserCard.last).to be_manually_picked
       end
     end
 
     describe "PATCH update" do
       it "persists filter changes" do
-        patch project_resource_planner_view_path(project, resource_planner, user_card),
+        patch project_resource_planner_view_path(project, resource_planner, resource_user_card),
               params: {
                 view: { name: "People", filter_mode: "automatic" },
                 filters: [{ status: { operator: "=", values: ["active"] } }].to_json
               },
               as: :turbo_stream
 
-        expect(user_card.reload.query.filters.map(&:name)).to contain_exactly(:status)
+        expect(resource_user_card.reload.query.filters.map(&:name)).to contain_exactly(:status)
       end
     end
 
     describe "POST add_user / DELETE remove_user" do
       it "adds a project member to the view" do
         expect do
-          post users_project_resource_planner_view_path(project, resource_planner, user_card),
+          post users_project_resource_planner_view_path(project, resource_planner, resource_user_card),
                params: { user_id: member.id }, as: :turbo_stream
-        end.to change { user_card.query.ordered_entities.count }.by(1)
+        end.to change { resource_user_card.query.ordered_entities.count }.by(1)
       end
 
       it "does not add the same user twice" do
-        user_card.query.ordered_entities.create!(entity: member, position: 1)
+        resource_user_card.query.ordered_entities.create!(entity: member, position: 1)
 
         expect do
-          post users_project_resource_planner_view_path(project, resource_planner, user_card),
+          post users_project_resource_planner_view_path(project, resource_planner, resource_user_card),
                params: { user_id: member.id }, as: :turbo_stream
-        end.not_to(change { user_card.query.ordered_entities.count })
+        end.not_to(change { resource_user_card.query.ordered_entities.count })
       end
 
       it "removes a previously added user" do
-        user_card.query.ordered_entities.create!(entity: member, position: 1)
+        resource_user_card.query.ordered_entities.create!(entity: member, position: 1)
 
         expect do
-          delete remove_user_project_resource_planner_view_path(project, resource_planner, user_card,
+          delete remove_user_project_resource_planner_view_path(project, resource_planner, resource_user_card,
                                                                 user_id: member.id), as: :turbo_stream
-        end.to change { user_card.query.ordered_entities.count }.by(-1)
+        end.to change { resource_user_card.query.ordered_entities.count }.by(-1)
       end
     end
   end

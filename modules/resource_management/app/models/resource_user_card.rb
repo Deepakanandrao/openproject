@@ -29,7 +29,7 @@
 #++
 
 # TODO - OP-19587: support placeholder users (results, cards, add/allocate forms)
-class UserCard < PersistedView
+class ResourceUserCard < PersistedView
   include ResourceManagement::Categorized
 
   validate :query_must_be_user_query

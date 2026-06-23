@@ -29,7 +29,7 @@
 #++
 
 FactoryBot.define do
-  factory :user_card, class: "UserCard" do
+  factory :resource_user_card, class: "ResourceUserCard" do
     sequence(:name) { |n| "User card #{n}" }
     project
     principal factory: :user
