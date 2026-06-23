@@ -62,6 +62,7 @@ module Users
                                                      render_external_auth: show_external_auth?,
                                                      assign_random_password_checked: assign_random_password_checked?)
       end
+      forms << Users::Form::ConsentForm.new(@builder, user: @user) if show_consent?
       forms
     end
 
