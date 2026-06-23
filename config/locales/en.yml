@@ -2203,14 +2203,8 @@ en:
         type: "Type"
         version: "Version"
         watcher: "Watcher"
-      user_card_view:
-        secondary_info: "Secondary info"
-        show_status_badge: "Show status badge"
-        show_email: "Show email"
-        tag_source: "Tag source"
-        tag_limit: "Tag limit"
-        card_size: "Card size"
-        columns_per_row: "Columns per row"
+      work_package_version:
+        kind: "Kind"
       ordered_persisted_query_entity:
         persisted_query: "Persisted query"
         entity: "Entity"
