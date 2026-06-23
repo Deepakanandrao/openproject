@@ -28,35 +28,48 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module ResourceAllocations
-  class NewDialogComponent < ApplicationComponent
-    include OpTurbo::Streamable
-    include OpPrimer::ComponentHelpers
+module ResourcePlannerViews
+  module UserCardList
+    class AddUserForm < ApplicationForm
+      form do |f|
+        f.autocompleter(
+          name: :user_id,
+          label: User.model_name.human,
+          required: true,
+          autocomplete_options: {
+            component: "opce-user-autocompleter",
+            url: ::API::V3::Utilities::PathHelper::ApiV3Path.principals,
+            resource: "principals",
+            searchKey: "any_name_attribute",
+            focusDirectly: true,
+            multiple: false,
+            appendTo: "##{@append_to}",
+            filters: autocomplete_filters
+          }
+        )
+      end
 
-    DIALOG_ID = "allocate-resource-dialog"
-    FORM_ID = "allocate-resource-form"
-    FOOTER_ID = "allocate-resource-footer"
-    # Shared by both step forms so swapping step 1 for step 2 targets the same
-    # Turbo stream wrapper.
-    BODY_ID = "allocate-resource-dialog-body"
+      def initialize(project:, append_to:, excluded_ids: [])
+        super()
+        @project = project
+        @append_to = append_to
+        @excluded_ids = excluded_ids
+      end
 
-    def initialize(project:, work_package: nil, allocation: nil, resource_planner_id: nil)
-      super
+      private
 
-      @project = project
-      @work_package = work_package
-      @allocation = allocation
-      @resource_planner_id = resource_planner_id
-    end
+      def autocomplete_filters
+        filters = [
+          { name: "type", operator: "=", values: %w[User] },
+          { name: "member", operator: "=", values: [@project.id.to_s] }
+        ]
 
-    private
+        if @excluded_ids.present?
+          filters << { name: "id", operator: "!", values: @excluded_ids.map(&:to_s) }
+        end
 
-    def title
-      I18n.t("resource_management.allocate_resource_dialog.title")
-    end
-
-    def allocation_kind
-      @allocation.filter_based? ? "filter" : "principal"
+        filters
+      end
     end
   end
 end

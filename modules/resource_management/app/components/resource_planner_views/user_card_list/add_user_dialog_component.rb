@@ -28,35 +28,37 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module ResourceAllocations
-  class NewDialogComponent < ApplicationComponent
+module ResourcePlannerViews::UserCardList
+  class AddUserDialogComponent < ApplicationComponent
     include OpTurbo::Streamable
     include OpPrimer::ComponentHelpers
 
-    DIALOG_ID = "allocate-resource-dialog"
-    FORM_ID = "allocate-resource-form"
-    FOOTER_ID = "allocate-resource-footer"
-    # Shared by both step forms so swapping step 1 for step 2 targets the same
-    # Turbo stream wrapper.
-    BODY_ID = "allocate-resource-dialog-body"
+    DIALOG_ID = "rm-add-user-dialog"
+    FORM_ID = "rm-add-user-form"
 
-    def initialize(project:, work_package: nil, allocation: nil, resource_planner_id: nil)
+    def initialize(view:, project:, resource_planner:)
       super
 
+      @view = view
       @project = project
-      @work_package = work_package
-      @allocation = allocation
-      @resource_planner_id = resource_planner_id
+      @resource_planner = resource_planner
     end
 
     private
 
     def title
-      I18n.t("resource_management.allocate_resource_dialog.title")
+      I18n.t("resource_management.user_card_list.add_user_dialog.title")
     end
 
-    def allocation_kind
-      @allocation.filter_based? ? "filter" : "principal"
+    def form_url
+      users_project_resource_planner_view_path(@project, @resource_planner, @view)
+    end
+
+    def already_added_user_ids
+      query = @view.effective_query
+      return [] if query.nil?
+
+      query.ordered_entities.where(entity_type: "User").pluck(:entity_id)
     end
   end
 end

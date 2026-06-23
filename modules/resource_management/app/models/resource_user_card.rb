@@ -28,38 +28,62 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class UserCard < PersistedView
+# TODO - OP-19587: support placeholder users (results, cards, add/allocate forms)
+class ResourceUserCard < PersistedView
   include ResourceManagement::Categorized
-
-  SECONDARY_INFO = %w[role email login none].freeze
-  TAG_SOURCES    = %w[groups roles none].freeze
-  CARD_SIZES     = %w[compact default expanded].freeze
-
-  store_attribute :options, :secondary_info,    :string,  default: "role"
-  store_attribute :options, :show_status_badge, :boolean, default: true
-  store_attribute :options, :show_email,        :boolean, default: false
-  store_attribute :options, :tag_source,        :string,  default: "groups"
-  store_attribute :options, :tag_limit,         :integer, default: 3
-  store_attribute :options, :card_size,         :string,  default: "default"
-  store_attribute :options, :columns_per_row,   :integer, default: 3
-
-  validates :secondary_info, inclusion: { in: SECONDARY_INFO }
-  validates :tag_source,     inclusion: { in: TAG_SOURCES }
-  validates :card_size,      inclusion: { in: CARD_SIZES }
-  validates :tag_limit,       numericality: { only_integer: true, in: 0..10 }
-  validates :columns_per_row, numericality: { only_integer: true, in: 1..4 }
 
   validate :query_must_be_user_query
 
   def results
-    effective_query&.results
+    query = effective_query
+    return if query.nil?
+
+    query.results.in_project(project)
+  end
+
+  def manually_picked?
+    effective_query&.manual_elements? || false
   end
 
   def build_default_query
     UserQuery.new(project:, principal:)
   end
 
+  def apply_query_configuration(filters_json:, filter_mode:)
+    query = effective_query
+    return if query.nil?
+
+    query.filters.clear
+
+    if manual_mode?(filter_mode)
+      query.manual_elements = true
+    else
+      query.manual_elements = false
+
+      query.ordered_entities.destroy_all
+      configure_automatic(query, filters_json)
+    end
+  end
+
   private
+
+  def manual_mode?(filter_mode)
+    filter_mode.to_s == "manual"
+  end
+
+  def configure_automatic(query, filters_json)
+    parse_filters(filters_json).each do |filter|
+      query.where(filter[:attribute], filter[:operator], filter[:values])
+    end
+  end
+
+  def parse_filters(filters_json)
+    return [] if filters_json.blank?
+
+    ::Queries::ParamsParser::APIV3FiltersParser.parse(filters_json)
+  rescue JSON::ParserError
+    []
+  end
 
   def query_must_be_user_query
     resolved = effective_query

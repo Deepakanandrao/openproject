@@ -28,35 +28,15 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module ResourceAllocations
-  class NewDialogComponent < ApplicationComponent
-    include OpTurbo::Streamable
+module ResourcePlannerViews::UserCardList
+  class SubHeaderComponent < ApplicationComponent
     include OpPrimer::ComponentHelpers
 
-    DIALOG_ID = "allocate-resource-dialog"
-    FORM_ID = "allocate-resource-form"
-    FOOTER_ID = "allocate-resource-footer"
-    # Shared by both step forms so swapping step 1 for step 2 targets the same
-    # Turbo stream wrapper.
-    BODY_ID = "allocate-resource-dialog-body"
-
-    def initialize(project:, work_package: nil, allocation: nil, resource_planner_id: nil)
+    def initialize(project:, resource_planner:, view:)
       super
-
       @project = project
-      @work_package = work_package
-      @allocation = allocation
-      @resource_planner_id = resource_planner_id
-    end
-
-    private
-
-    def title
-      I18n.t("resource_management.allocate_resource_dialog.title")
-    end
-
-    def allocation_kind
-      @allocation.filter_based? ? "filter" : "principal"
+      @resource_planner = resource_planner
+      @view = view
     end
   end
 end

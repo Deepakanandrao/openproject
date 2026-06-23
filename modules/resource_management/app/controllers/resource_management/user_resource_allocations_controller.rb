@@ -28,35 +28,47 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module ResourceAllocations
-  class NewDialogComponent < ApplicationComponent
-    include OpTurbo::Streamable
-    include OpPrimer::ComponentHelpers
+module ::ResourceManagement
+  class UserResourceAllocationsController < BaseController
+    include OpTurbo::ComponentStream
 
-    DIALOG_ID = "allocate-resource-dialog"
-    FORM_ID = "allocate-resource-form"
-    FOOTER_ID = "allocate-resource-footer"
-    # Shared by both step forms so swapping step 1 for step 2 targets the same
-    # Turbo stream wrapper.
-    BODY_ID = "allocate-resource-dialog-body"
+    menu_item :resource_management
 
-    def initialize(project:, work_package: nil, allocation: nil, resource_planner_id: nil)
-      super
+    before_action :find_project_by_project_id
+    before_action :find_resource_planner
+    before_action :find_user
+    before_action :authorize
 
-      @project = project
-      @work_package = work_package
-      @allocation = allocation
-      @resource_planner_id = resource_planner_id
+    def index
+      respond_with_dialog ResourcePlannerViews::UserCardList::UserAllocationsDialogComponent.new(
+        project: @project,
+        resource_planner: @resource_planner,
+        user: @user,
+        allocations:,
+        overbooked_ids: ResourceAllocation.overbooked_ids(allocations)
+      )
     end
 
     private
 
-    def title
-      I18n.t("resource_management.allocate_resource_dialog.title")
+    def allocations
+      @allocations ||=
+        ResourceAllocation
+          .allocated
+          .for_principal(@user)
+          .includes(:entity)
+          .to_a
     end
 
-    def allocation_kind
-      @allocation.filter_based? ? "filter" : "principal"
+    def find_resource_planner
+      @resource_planner = ResourcePlanner
+                            .visible(current_user)
+                            .where(project: @project)
+                            .find(params.expect(:resource_planner_id))
+    end
+
+    def find_user
+      @user = User.visible(current_user).find(params.expect(:user_id))
     end
   end
 end

@@ -28,45 +28,62 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module ResourcePlannerViews
+module ResourcePlannerViews::UserCardList
   class ContentComponent < ApplicationComponent
-    include OpTurbo::Streamable
-
-    def initialize(view:, project:, resource_planner:, work_packages: [], allocations: {}, visible_principal_ids: nil)
+    def initialize(view:, project:, resource_planner:)
       super
 
       @view = view
       @project = project
       @resource_planner = resource_planner
-      @work_packages = work_packages
-      @allocations = allocations
-      @visible_principal_ids = visible_principal_ids
     end
 
     private
 
-    def inner_component
-      case @view
-      when ResourceWorkPackageList
-        ResourcePlannerViews::WorkPackageList::ContentComponent.new(
-          view: @view,
-          project: @project,
-          resource_planner: @resource_planner,
-          work_packages: @work_packages,
-          allocations: @allocations,
-          visible_principal_ids: @visible_principal_ids
-        )
-      when ResourceUserCard
-        ResourcePlannerViews::UserCardList::ContentComponent.new(
-          view: @view,
-          project: @project,
-          resource_planner: @resource_planner
-        )
-      end
+    def users
+      @users ||= @view.results.to_a
     end
 
-    def placeholder_heading
-      @view&.name || @resource_planner.name
+    def remove_path_for(user)
+      return nil unless @view.manually_picked?
+
+      helpers.remove_user_project_resource_planner_view_path(
+        @project, @resource_planner, @view, user_id: user.id
+      )
+    end
+
+    def details_path_for(user)
+      helpers.project_user_resource_allocations_path(@project, user, resource_planner_id: @resource_planner.id)
+    end
+
+    def utilization_for(user)
+      return nil unless utilization_window
+
+      ResourceAllocations::Availability
+        .new(user:, allocations: booked_allocations.fetch(user.id, []))
+        .utilization_ratio(utilization_window)
+    end
+
+    def utilization_window
+      return @utilization_window if defined?(@utilization_window)
+
+      from = @resource_planner.start_date
+      to = @resource_planner.end_date
+      @utilization_window = from && to ? from..to : nil
+    end
+
+    def booked_allocations
+      @booked_allocations ||=
+        if utilization_window
+          ResourceAllocation.allocated.for_principal(users).group_by(&:principal_id)
+        else
+          {}
+        end
+    end
+
+    def blank_description
+      key = @view.manually_picked? ? "manual_description" : "description"
+      t("resource_management.user_card_list.blank.#{key}")
     end
   end
 end

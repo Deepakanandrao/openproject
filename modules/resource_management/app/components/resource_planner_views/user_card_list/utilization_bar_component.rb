@@ -28,35 +28,38 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module ResourceAllocations
-  class NewDialogComponent < ApplicationComponent
-    include OpTurbo::Streamable
+module ResourcePlannerViews::UserCardList
+  class UtilizationBarComponent < ApplicationComponent
     include OpPrimer::ComponentHelpers
 
-    DIALOG_ID = "allocate-resource-dialog"
-    FORM_ID = "allocate-resource-form"
-    FOOTER_ID = "allocate-resource-footer"
-    # Shared by both step forms so swapping step 1 for step 2 targets the same
-    # Turbo stream wrapper.
-    BODY_ID = "allocate-resource-dialog-body"
-
-    def initialize(project:, work_package: nil, allocation: nil, resource_planner_id: nil)
+    def initialize(value:)
       super
 
-      @project = project
-      @work_package = work_package
-      @allocation = allocation
-      @resource_planner_id = resource_planner_id
+      @value = value
+    end
+
+    def render?
+      !@value.nil?
+    end
+
+    def label
+      helpers.number_to_percentage(@value, precision: 0)
     end
 
     private
 
-    def title
-      I18n.t("resource_management.allocate_resource_dialog.title")
+    def bar_percentage
+      @value.clamp(0, 100)
     end
 
-    def allocation_kind
-      @allocation.filter_based? ? "filter" : "principal"
+    def bar_color
+      if @value > 100
+        :danger_emphasis
+      elsif @value == 100
+        :success_emphasis
+      else
+        :accent_emphasis
+      end
     end
   end
 end

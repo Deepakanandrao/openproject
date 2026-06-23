@@ -27,44 +27,6 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
 
-<%=
-  render(
-    Primer::Alpha::Dialog.new(
-      id: DIALOG_ID,
-      title:,
-      size: :large,
-      classes: "Overlay--size-large-portrait",
-      data: { "keep-open-on-submit": true }
-    )
-  ) do |dialog|
-    dialog.with_header(variant: :large)
-
-    dialog.with_body(classes: "Overlay-body_autocomplete_height") do
-      if @allocation
-        render(
-          ResourceAllocations::AllocationStep::FormComponent.new(
-            allocation: @allocation,
-            project: @project,
-            allocation_kind:,
-            resource_planner_id: @resource_planner_id
-          )
-        )
-      else
-        render(
-          ResourceAllocations::KindStep::FormComponent.new(
-            project: @project,
-            work_package: @work_package
-          )
-        )
-      end
-    end
-
-    dialog.with_footer do
-      if @allocation
-        render(ResourceAllocations::AllocationStep::FooterComponent.new)
-      else
-        render(ResourceAllocations::KindStep::FooterComponent.new)
-      end
-    end
-  end
-%>
+<%= render(Primer::Beta::ProgressBar.new) do |progress| %>
+  <% progress.with_item(percentage: bar_percentage, bg: bar_color, test_selector: "utilization-bar", aria: { label: label }) %>
+<% end %>

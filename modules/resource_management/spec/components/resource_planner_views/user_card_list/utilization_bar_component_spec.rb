@@ -28,35 +28,33 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module ResourceAllocations
-  class NewDialogComponent < ApplicationComponent
-    include OpTurbo::Streamable
-    include OpPrimer::ComponentHelpers
+require "rails_helper"
 
-    DIALOG_ID = "allocate-resource-dialog"
-    FORM_ID = "allocate-resource-form"
-    FOOTER_ID = "allocate-resource-footer"
-    # Shared by both step forms so swapping step 1 for step 2 targets the same
-    # Turbo stream wrapper.
-    BODY_ID = "allocate-resource-dialog-body"
+RSpec.describe ResourcePlannerViews::UserCardList::UtilizationBarComponent, type: :component do
+  def bar(value) = described_class.new(value:)
 
-    def initialize(project:, work_package: nil, allocation: nil, resource_planner_id: nil)
-      super
+  it "renders nothing without a value" do
+    render_inline(bar(nil))
 
-      @project = project
-      @work_package = work_package
-      @allocation = allocation
-      @resource_planner_id = resource_planner_id
+    expect(page).to have_no_test_selector("utilization-bar")
+  end
+
+  describe "the bar colour and width by utilization" do
+    it "is accent and proportional below 100%" do
+      expect(bar(34).send(:bar_color)).to eq(:accent_emphasis)
+      expect(bar(34).send(:bar_percentage)).to eq(34)
     end
 
-    private
-
-    def title
-      I18n.t("resource_management.allocate_resource_dialog.title")
+    it "is success exactly at 100%" do
+      expect(bar(100).send(:bar_color)).to eq(:success_emphasis)
     end
 
-    def allocation_kind
-      @allocation.filter_based? ? "filter" : "principal"
+    it "is danger and capped at 100% above full, while the label keeps the real ratio" do
+      expect(bar(150).send(:bar_color)).to eq(:danger_emphasis)
+      expect(bar(150).send(:bar_percentage)).to eq(100)
+
+      render_inline(bar(150))
+      expect(page).to have_css("[data-test-selector='utilization-bar'][aria-label='150%']")
     end
   end
 end

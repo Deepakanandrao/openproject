@@ -27,44 +27,31 @@ See COPYRIGHT and LICENSE files for more details.
 
 ++#%>
 
-<%=
-  render(
-    Primer::Alpha::Dialog.new(
-      id: DIALOG_ID,
-      title:,
-      size: :large,
-      classes: "Overlay--size-large-portrait",
-      data: { "keep-open-on-submit": true }
-    )
-  ) do |dialog|
-    dialog.with_header(variant: :large)
+<%= render(
+      ResourcePlannerViews::UserCardList::SubHeaderComponent.new(
+        project: @project,
+        resource_planner: @resource_planner,
+        view: @view
+      )
+    ) %>
 
-    dialog.with_body(classes: "Overlay-body_autocomplete_height") do
-      if @allocation
-        render(
-          ResourceAllocations::AllocationStep::FormComponent.new(
-            allocation: @allocation,
-            project: @project,
-            allocation_kind:,
-            resource_planner_id: @resource_planner_id
-          )
-        )
-      else
-        render(
-          ResourceAllocations::KindStep::FormComponent.new(
-            project: @project,
-            work_package: @work_package
-          )
-        )
-      end
-    end
-
-    dialog.with_footer do
-      if @allocation
-        render(ResourceAllocations::AllocationStep::FooterComponent.new)
-      else
-        render(ResourceAllocations::KindStep::FooterComponent.new)
-      end
-    end
-  end
-%>
+<% if users.empty? %>
+  <%= render(Primer::Beta::Blankslate.new) do |blankslate|
+        blankslate.with_visual_icon(icon: :people)
+        blankslate.with_heading(tag: :h2) { t("resource_management.user_card_list.blank.title") }
+        blankslate.with_description { blank_description }
+      end %>
+<% else %>
+  <%= render(Primer::Box.new(classes: "op-user-card-list")) do %>
+    <% users.each do |user| %>
+      <%= render(
+            ResourcePlannerViews::UserCardList::CardComponent.new(
+              user:,
+              remove_path: remove_path_for(user),
+              utilization: utilization_for(user),
+              details_path: details_path_for(user)
+            )
+          ) %>
+    <% end %>
+  <% end %>
+<% end %>
