@@ -2,12 +2,14 @@
   <span class="op-rm-timeline-bar--hours"><%= hours_label %></span>
 
   <% if principal_visible? %>
-    <% if avatar_image_url.present? %>
-      <%= render(Primer::Beta::Avatar.new(src: avatar_image_url, alt: principal_name, size: 16)) %>
-    <% else %>
-      <span class="op-rm-timeline-bar--initials" aria-hidden="true"><%= initials %></span>
-    <% end %>
-    <span class="op-rm-timeline-bar--label"><%= principal_name %></span>
+    <%= avatar(
+          allocation.principal,
+          size: "mini",
+          hide_name: false,
+          link: false,
+          name_classes: "op-rm-timeline-bar--label",
+          hover_card: { active: true }
+        ) %>
   <% else %>
     <%= render(Primer::Beta::Octicon.new(icon: :"person-add", size: :small)) %>
     <span class="op-rm-timeline-bar--label"><%= placeholder_label %></span>

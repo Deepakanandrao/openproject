@@ -32,8 +32,8 @@ module ResourcePlannerViews
   module WorkPackageTimeline
     # Renders one allocation's bar content. Principals the current user may not
     # see are anonymised, mirroring AllocatedMembersComponent's visibility rule.
-    # Plain server HTML (no Angular `opce-principal`) so it stays reliable inside
-    # FullCalendar's render hooks.
+    # The visible principal is drawn with the shared `opce-principal` element; as
+    # a native custom element it upgrades when FullCalendar injects the bar HTML.
     class AllocationBarComponent < ApplicationComponent
       include AvatarHelper
 
@@ -60,22 +60,6 @@ module ResourcePlannerViews
         return true if visible_principal_ids.nil?
 
         visible_principal_ids.include?(allocation.principal_id)
-      end
-
-      def principal_name
-        allocation.principal&.name
-      end
-
-      # Gravatar can return a URL that 404s for seeded/placeholder users, which
-      # renders as a broken image; use an image only for a real local avatar.
-      def avatar_image_url
-        return unless local_avatar?(allocation.principal)
-
-        avatar_url(allocation.principal)
-      end
-
-      def initials
-        principal_name.to_s.split.first(2).filter_map { |part| part[0] }.join.upcase
       end
 
       def placeholder_label
