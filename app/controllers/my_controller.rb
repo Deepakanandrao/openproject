@@ -130,8 +130,6 @@ class MyController < ApplicationController
   end
 
   def working_hours
-    render_403 unless OpenProject::FeatureDecisions.user_working_times_active?
-
     @current_working_hours = @user.working_hours.current
 
     @future_working_hours = @user.working_hours.upcoming(Date.current + 1)
@@ -144,8 +142,6 @@ class MyController < ApplicationController
   end
 
   def non_working_times
-    render_403 unless OpenProject::FeatureDecisions.user_working_times_active?
-
     @year = (params[:year].presence || Date.current.year).to_i
     @non_working_times = @user.non_working_time_entities_for_year(@year)
   end
