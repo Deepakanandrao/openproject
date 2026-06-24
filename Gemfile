@@ -50,7 +50,7 @@ gem "connection_pool", "~> 3.0.2"
 
 gem "rdoc", ">= 2.4.2"
 
-gem "doorkeeper", "~> 5.9.2"
+gem "doorkeeper", "~> 5.9.3"
 # Maintain our own omniauth due to relative URL root issues
 # see upstream PR: https://github.com/omniauth/omniauth/pull/903
 gem "omniauth", git: "https://github.com/opf/omniauth", ref: "7eb21563ba047ef86d71f099975587b5ec88f9c9"
@@ -205,9 +205,9 @@ gem "carrierwave_direct", "~> 3.0.0"
 gem "fog-aws"
 gem "ssrf_filter", "~> 1.3"
 
-gem "aws-sdk-core", "~> 3.244"
+gem "aws-sdk-core", "~> 3.251"
 # File upload via fog + screenshots on travis
-gem "aws-sdk-s3", "~> 1.217"
+gem "aws-sdk-s3", "~> 1.225"
 
 gem "openproject-token", "~> 8.10.0"
 
@@ -241,7 +241,7 @@ gem "opentelemetry-exporter-otlp", "~> 0.34.0", require: false
 gem "opentelemetry-instrumentation-all", "~> 0.94.0", require: false
 gem "opentelemetry-sdk", "~> 1.10", require: false
 
-gem "view_component", "~> 4.11.0"
+gem "view_component", "~> 4.12.0"
 # Lookbook
 gem "lookbook", "2.3.14"
 

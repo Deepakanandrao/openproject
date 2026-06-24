@@ -36,8 +36,8 @@ fr:
     models:
       resource_allocation: Affectation des ressources
       resource_planner: Planificateur de ressources
+      resource_user_card: User cards
       resource_work_package_list: Liste des lots de travaux
-      user_card: Fiches des utilisateurs
   button_next: Suivant
   label_resource_management: Planification des ressources
   permission_allocate_user_resources: Attribuer des ressources aux utilisateurs
@@ -115,13 +115,35 @@ fr:
       private: Privé
       public: Public
     sub_views: Vues de ce planificateur de ressources
+    user_allocations_dialog:
+      allocate_work_package: Allocate work package
+      blank: This user has no allocated work packages.
+      other_work_packages:
+        one: 1 other work package
+        other: "%{count} other work packages"
+      title: Utilization
+    user_card_list:
+      add_user_dialog:
+        title: Add user
+      blank:
+        description: There are no users matching this view's filters yet.
+        manual_description: No users have been added to this view yet.
+        title: No users to display
+      card:
+        remove: Remove user
+        remove_confirmation: Remove this user from the view?
+      subheader:
+        resource: Resource
+        settings: Configure view
+      utilization:
+        label: Utilization
     view_types:
+      resource_user_card:
+        caption: Create a view based on users and see their details and allocation in a list of user cards
+        label: Users card list
       resource_work_package_list:
         caption: Créez une vue basée sur des lots de travaux et affichez leurs informations et leur affectation dans une liste
         label: Liste des lots de travaux
-      user_card:
-        caption: Créez une vue basée sur des utilisateurs et affichez leurs informations et leur affectation dans une liste de fiches des utilisateurs
-        label: Liste des fiches des utilisateurs
     work_package_allocations_dialog:
       allocate_resource: Allouer une ressource
       context_menu_label: Allocation actions
