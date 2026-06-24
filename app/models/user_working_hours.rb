@@ -89,12 +89,12 @@ class UserWorkingHours < ApplicationRecord
 
   # Returns the ranges of working days without hours, e.g. "Mon-Fri" or "Mon-Tue, Thu-Fri".
   # Days are grouped by whether they are working days (minutes > 0), ignoring hour differences.
-  def working_day_ranges
+  def working_day_ranges(abbreviated: false)
     DAYS
       .map { |day| [day, public_send(day)] }
       .chunk_while { |(_, m1), (_, m2)| m1.positive? == m2.positive? }
       .select { |group| group.first.last.positive? }
-      .map { |group| format_day_range(group) }
+      .map { |group| format_day_range(group, abbreviated:) }
       .join(", ")
   end
 
@@ -109,16 +109,29 @@ class UserWorkingHours < ApplicationRecord
       .join(", ")
   end
 
+  def working_days_count
+    DAYS.count { |day| works_on?(day) }
+  end
+
+  def uniform_daily_hours_label
+    distinct_hours = working_days.map { |day| hours_on(day) }.uniq
+
+    return nil unless distinct_hours.one?
+
+    format_hours_str(distinct_hours.first)
+  end
+
   private
 
-  def format_day_range(group)
+  def format_day_range(group, abbreviated: false)
+    name = abbreviated ? method(:abbr_day_name) : method(:full_day_name)
     first_day = group.first.first
     last_day = group.last.first
 
     if group.length == 1
-      full_day_name(first_day)
+      name.call(first_day)
     else
-      "#{full_day_name(first_day)}-#{full_day_name(last_day)}"
+      "#{name.call(first_day)}-#{name.call(last_day)}"
     end
   end
 
@@ -150,5 +163,17 @@ class UserWorkingHours < ApplicationRecord
     if DAYS.all? { |day| public_send(day).zero? }
       errors.add(:days, :no_working_day)
     end
+  end
+
+  def works_on?(day)
+    public_send(day).positive?
+  end
+
+  def hours_on(day)
+    public_send("#{day}_hours")
+  end
+
+  def working_days
+    DAYS.select { |day| works_on?(day) }
   end
 end

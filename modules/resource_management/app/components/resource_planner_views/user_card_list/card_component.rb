@@ -29,11 +29,11 @@
 #++
 
 module ResourcePlannerViews::UserCardList
-  # Modelled on +Users::HoverCardComponent+, but kept as its own component
-  # so the card can evolve independently of the hover card
-  # TODO - OP-19586: match card layout to spec
+  # Modelled on Users::HoverCardComponent
   class CardComponent < ApplicationComponent
     include OpPrimer::ComponentHelpers
+
+    MULTI_VALUE_DISPLAY_LIMIT = 3
 
     def initialize(user:, details_path:, remove_path: nil, utilization: nil)
       super
@@ -48,8 +48,12 @@ module ResourcePlannerViews::UserCardList
       @user&.visible?(User.current)
     end
 
-    def show_email?
-      (@user == User.current) || User.current.allowed_globally?(:view_user_email)
+    def status_label
+      helpers.full_user_status(@user)
+    end
+
+    def status_scheme
+      @user.active? ? :success : :attention
     end
 
     def utilization?
@@ -60,61 +64,58 @@ module ResourcePlannerViews::UserCardList
       helpers.number_to_percentage(@utilization, precision: 0)
     end
 
-    # Constructs a string in the form of:
-    # "Member of group4, group5"
-    # or
-    # "Member of group1, group2 and 3 more"
-    # The latter string is cut off since the complete list of group names would exceed the allowed `max_length`.
-    def group_membership_summary(max_length = 40)
-      groups = @user.groups.visible.order(:lastname)
-      return no_group_text if groups.empty?
+    def working_hours_summary
+      return t("resource_management.user_card_list.working_hours.blank") if working_hours.blank?
 
-      group_links = linked_group_names(groups)
+      if (hours = working_hours.uniform_daily_hours_label)
+        t("resource_management.user_card_list.working_hours.uniform",
+          hours:,
+          days: working_hours.working_days_count,
+          range: working_hours.working_day_ranges(abbreviated: true))
+      else
+        working_hours.working_days_summary
+      end
+    end
 
-      cutoff_index = calculate_cutoff_index(groups.map(&:name), max_length)
-      build_summary(group_links, cutoff_index)
+    def card_custom_fields
+      @card_custom_fields ||= UserCustomFieldSection
+                                .with_filled_fields_for(@user, visible_on_user_card: true)
+                                .flat_map(&:last)
     end
 
     private
 
-    def linked_group_names(groups)
-      groups.map { |group| link_to(h(group.name), show_group_path(group)) }
+    def working_hours
+      return @working_hours if defined?(@working_hours)
+
+      @working_hours = UserWorkingHours.for_user(@user).current
     end
 
-    def no_group_text
-      t("users.groups.no_results_title_text")
-    end
+    def render_value_labels(value)
+      values = Array(value)
+      remaining = values.size - MULTI_VALUE_DISPLAY_LIMIT
 
-    # Calculate the index at which to cut off the group names, based on plain text length
-    def calculate_cutoff_index(names, max_length)
-      current_length = 0
-
-      names.each_with_index do |name, index|
-        new_length = current_length + name.length + (index > 0 ? 2 : 0) # 2 for ", " separator
-        return index if new_length > max_length
-
-        current_length = new_length
+      labels = values.first(MULTI_VALUE_DISPLAY_LIMIT).map do |item|
+        render(Primer::Beta::Label.new(scheme: :accent, mr: 1)) { item }
       end
 
-      names.size # No cutoff needed -> return the total size
-    end
-
-    def build_summary(links, cutoff_index)
-      summary_links = safe_join(links[0...cutoff_index], ", ")
-      remaining_count = links.size - cutoff_index
-      remaining_count_link = link_to(t("users.groups.more", count: remaining_count), user_path(@user))
-
-      if remaining_count > 0
-        t("users.groups.summary_with_more_html", names: summary_links, count_link: remaining_count_link)
-      else
-        t("users.groups.summary_html", names: summary_links)
+      if remaining > 0
+        labels << render(Primer::Beta::Text.new(font_size: :small, color: :muted)) do
+          t("resource_management.user_card_list.card.multi_value_more", count: remaining)
+        end
       end
+
+      safe_join(labels, " ")
     end
 
     def card_options
       {
         classes: "op-user-card",
         test_selector: "op-user-card",
+        p: 3,
+        border: true,
+        border_radius: 2,
+        overflow: :hidden,
         data: {
           controller: "resource-management--user-card",
           "resource-management--user-card-url-value": @details_path
