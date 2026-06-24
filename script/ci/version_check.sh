@@ -31,8 +31,10 @@ set -e
 
 # script/ci/version_check
 
-PR_BODY="$1"
-PR_TITLE="$2"
+# Read from the PR_BODY / PR_TITLE environment variables, falling back to
+# positional arguments so the script can still be run manually for testing.
+PR_BODY="${PR_BODY:-$1}"
+PR_TITLE="${PR_TITLE:-$2}"
 
 # Extract first work package URL from PR description.
 # IDs can be numeric (e.g. 12345) or semantic (e.g. SC-123: an uppercase prefix, a dash, then a number).
@@ -51,6 +53,7 @@ fi
 
 if [ -z "$WORK_PACKAGE_ID" ]; then
   echo "::warning::PR description does not contain a valid URL to an OpenProject ticket, nor a [ID] in the title."
+  echo "no_ticket=true" >> "$GITHUB_OUTPUT"
   exit 0
 fi
 echo "Work Package ID: $WORK_PACKAGE_ID"
