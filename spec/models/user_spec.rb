@@ -511,6 +511,15 @@ RSpec.describe User do
       create(:group, members: [member])
       expect(member.department).to be_nil
     end
+
+    it "can be eager-loaded to avoid N+1 queries" do
+      department = create(:department, members: [member])
+
+      preloaded = described_class.where(id: member.id).includes(:departments).first
+
+      expect(preloaded.departments).to be_loaded
+      expect(preloaded.department).to eq(department)
+    end
   end
 
   describe "#uses_external_authentication?" do
