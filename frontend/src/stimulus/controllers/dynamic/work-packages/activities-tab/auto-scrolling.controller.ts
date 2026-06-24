@@ -38,10 +38,6 @@ interface CustomEventWithIdParam extends Event {
   };
 }
 
-// Clearance kept above a comment scrolled into view, so it settles below the
-// activities header rather than flush against the top of the scroll container.
-const ANCHOR_SCROLL_TOP_OFFSET = 70;
-
 export default class AutoScrollingController extends BaseController {
   static values = {
     resolvedCommentId: Number,
@@ -159,11 +155,12 @@ export default class AutoScrollingController extends BaseController {
     this.brieflyHighlightAndResetUrl(activityElement, window.location.hash);
 
     // offsetTop is relative to the element's offsetParent, which is not the
-    // scroll container, so measure the gap between the two directly.
+    // scroll container, so measure the gap between the two directly, then back
+    // the target off so the comment lands below the pinned header, not behind it.
     const relativeTop = activityElement.getBoundingClientRect().top
       - scrollableContainer.getBoundingClientRect().top;
     scrollableContainer.scrollTo({
-      top: scrollableContainer.scrollTop + relativeTop - ANCHOR_SCROLL_TOP_OFFSET,
+      top: scrollableContainer.scrollTop + relativeTop - this.anchorScrollOffset(),
       behavior: 'smooth',
     });
   };
@@ -226,7 +223,6 @@ export default class AutoScrollingController extends BaseController {
 
   private tryScroll(activityElement:HTMLElement|null, attempts:number, maxAttempts:number) {
     const scrollableContainer = this.scrollableContainer;
-    const topPadding = ANCHOR_SCROLL_TOP_OFFSET;
 
     if (activityElement && scrollableContainer) {
       scrollableContainer.scrollTop = 0;
@@ -236,7 +232,7 @@ export default class AutoScrollingController extends BaseController {
         const elementRect = activityElement.getBoundingClientRect();
         const relativeTop = elementRect.top - containerRect.top;
 
-        scrollableContainer.scrollTop = relativeTop - topPadding;
+        scrollableContainer.scrollTop = relativeTop - this.anchorScrollOffset();
       }, 50);
     } else if (attempts < maxAttempts) {
       setTimeout(() => {
