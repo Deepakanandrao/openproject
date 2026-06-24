@@ -3,11 +3,11 @@ de:
   activerecord:
     attributes:
       resource_allocation:
-        allocated_hours: Hours
+        allocated_hours: Stunden
         allocated_time: Zugewiesene Zeit
         end_date: Endtermin
         entity: Entität
-        filter_name: Resource filter name
+        filter_name: Name des Ressourcenfilters
         principal: Zugewiesen an
         start_date: Anfangstermin
         state: Status
@@ -65,11 +65,11 @@ de:
       kind:
         filter:
           caption: Set filter criteria based on user attributes to create a placeholder resource.
-          label: Filter criteria
+          label: Filterkriterien
         label: Allocation type
         principal:
           caption: Allocate hours for a specific user.
-          label: User
+          label: Benutzer
       outside_dates:
         description: The selected resource dates, %{resource_dates}, are outside of the work package's dates, %{work_package_dates}.
       overbooking:

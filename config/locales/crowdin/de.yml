@@ -131,7 +131,7 @@ de:
         trial: Probezeitraum
     jemalloc_allocator: Jemalloc Speicher allocator
     journal_aggregation:
-      caption_with_maximum: 'User actions on a work package (changing description, status, values, or writing comments) are grouped if performed within this period. It also controls notification and [webhook](webhook_link) delays. The maximum is %{max} minutes.
+      caption_with_maximum: 'Benutzeraktionen an einem Arbeitspaket (Ändern der Beschreibung, des Status, der Werte oder Schreiben von Kommentaren) werden gruppiert, wenn sie innerhalb dieses Zeitraums durchgeführt werden. Sie steuert auch die Verzögerungen bei Benachrichtigungen und [webhook](webhook_link). Der maximal zulässige Wert ist %{max} Minuten.
 
         '
     import:
@@ -2381,7 +2381,7 @@ de:
               durations_are_not_positive_numbers: Die Dauer muss positiv sein
               hours_per_day_are_missing: Die Anzahl der Stunden pro Tag muss festgelegt werden.
               hours_per_day_is_out_of_bounds: Die Anzahl der Stunden pro Tag darf 24 nicht überschreiten.
-              journal_aggregation_time_minutes_is_out_of_bounds: Aggregation period must be between %{min} and %{max} minutes.
+              journal_aggregation_time_minutes_is_out_of_bounds: Aggregationszeitraum muss zwischen %{min} und %{max} Minuten liegen.
               previous_working_day_changes_unprocessed: Die vorherigen Änderungen an der Konfiguration der Arbeitstage wurden noch nicht angewendet.
               working_days_are_missing: Mindestens ein Wochentag muss als Arbeitstag definiert werden.
         status:
@@ -3477,7 +3477,7 @@ de:
       all_projects: Alle Projekte
       favorites: Favoriten
       leave_project: Projekt verlassen
-      no_favorite_projects: You have no favorite projects.
+      no_favorite_projects: Sie haben keine favorisierten Projekte.
       title: Projekte
   toggle_switch:
     label_on: Ein
@@ -3762,7 +3762,7 @@ de:
         work_package_scheduled: Alle Datumsänderungen
       project_specific_settings:
         description: You can fine-tune your notification settings to only be notified of certain events in specific projects. Add a project below and choose which events should trigger a notification for you. These project-specific settings override default settings above.
-        title: Project-specific notifications
+        title: Projektspezifische Benachrichtigungen
         add_button: Projektspezifische Benachrichtigungen hinzufügen
         dialog_title: Projektspezifische Benachrichtigungen hinzufügen
         list_header: Projekte mit spezifischen Benachrichtigungen
@@ -3896,7 +3896,7 @@ de:
   label_send_invitation: Einladung senden
   label_calculated_value: Berechneter Wert
   label_change_parent: Übergeordnetes Arbeitspaket ändern
-  label_change_password: Change password
+  label_change_password: Passwort ändern
   label_change_plural: Änderungen
   label_change_properties: Eigenschaften ändern
   label_change_status: Statuswechsel
@@ -4183,7 +4183,7 @@ de:
   label_my_account_data: Meine Kontodaten
   label_my_avatar: Mein Avatar
   label_my_queries: Meine Berichte
-  label_my_security: Security
+  label_my_security: Sicherheit
   label_name: Name
   label_never: Nie
   label_new: Neu
