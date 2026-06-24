@@ -1172,7 +1172,6 @@ RSpec.describe "Work package activity", :js, :with_cuprite, with_ee: %i[internal
       before do
         visit project_work_package_path(project, work_package.id, "activity", anchor: "comment-#{comment_1.id}")
         wp_page.wait_for_activity_tab
-        sleep 1 # let the initial auto-scroll settle
       end
 
       it "moves the highlight to the comment newly referenced in the URL hash" do
@@ -1193,7 +1192,6 @@ RSpec.describe "Work package activity", :js, :with_cuprite, with_ee: %i[internal
       before do
         visit project_work_package_path(project, work_package.id, "activity", anchor: "comment-#{comment_1.id}")
         wp_page.wait_for_activity_tab
-        sleep 1 # let the initial auto-scroll settle
       end
 
       it "scrolls to and highlights the comment instead of letting Turbo drop the fragment" do

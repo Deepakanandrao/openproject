@@ -50,10 +50,14 @@ export default class AutoScrollingController extends BaseController {
   declare readonly resolvedCommentIdValue:number;
   declare readonly hasResolvedCommentIdValue:boolean;
 
-  private abortController = new AbortController();
+  private abortController!:AbortController;
 
   connect() {
     super.connect();
+
+    // Construct per connect so a disconnect→reconnect of the same instance gets a
+    // fresh signal; an already-aborted one would silently drop these listeners.
+    this.abortController = new AbortController();
 
     window.addEventListener('hashchange', this.scrollToHashAnchor, { signal: this.abortController.signal });
     this.element.addEventListener('click', this.handleCommentReferenceClick, { signal: this.abortController.signal });
@@ -177,7 +181,10 @@ export default class AutoScrollingController extends BaseController {
     if (!link) { return; }
 
     const anchor = this.sameActivityPageCommentAnchor(link as HTMLAnchorElement);
-    if (!anchor) { return; }
+    // Only claim the click when the comment is rendered here; otherwise let it
+    // navigate, so a link to a comment on another page (or filtered view) is not
+    // swallowed into a hash change that resolves to nothing.
+    if (!anchor || !this.getActivityAnchorElement(anchor)) { return; }
 
     event.preventDefault();
     window.location.hash = `#${anchor.type}-${anchor.id}`;
@@ -293,7 +300,9 @@ export default class AutoScrollingController extends BaseController {
   }
 
   private getActivityAnchorElement(activityAnchor:ActivityAnchor):HTMLElement | null {
-    return document.querySelector(`[data-anchor-${activityAnchor.type}-id="${activityAnchor.id}"]`);
+    // Scope to this controller's own activities frame: the window-level hashchange
+    // listener fires on every controller, and each must only claim its own comments.
+    return this.element.querySelector(`[data-anchor-${activityAnchor.type}-id="${activityAnchor.id}"]`);
   }
 
   private get inputContainer():HTMLElement | null {
