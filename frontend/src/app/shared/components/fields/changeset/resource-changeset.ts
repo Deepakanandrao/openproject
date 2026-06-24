@@ -257,7 +257,7 @@ export class ResourceChangeset<T extends HalResource = HalResource> {
    * @param attribute
    */
   public humanName(attribute:string):string {
-    return _.get(this.schema, `${attribute}.name`, attribute);
+    return (this.schema?.[attribute] as { name?:string }|undefined)?.name ?? attribute;
   }
 
   /**
@@ -488,7 +488,7 @@ export class ResourceChangeset<T extends HalResource = HalResource> {
 
       return links;
     }
-    return { href: _.get(val, 'href', null) };
+    return { href: (val as { href?:string }|null|undefined)?.href ?? null };
   }
 
   /**
