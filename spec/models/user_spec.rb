@@ -495,6 +495,24 @@ RSpec.describe User do
     end
   end
 
+  describe "#department" do
+    subject(:member) { create(:user) }
+
+    it "returns nil when the user belongs to no department" do
+      expect(member.department).to be_nil
+    end
+
+    it "returns the organizational unit the user belongs to" do
+      department = create(:department, members: [member])
+      expect(member.department).to eq(department)
+    end
+
+    it "ignores regular (non-organizational-unit) group memberships" do
+      create(:group, members: [member])
+      expect(member.department).to be_nil
+    end
+  end
+
   describe "#uses_external_authentication?" do
     context "with identity_url" do
       let(:user) { create(:user, identity_url: "test_provider:veryuniqueid") }
