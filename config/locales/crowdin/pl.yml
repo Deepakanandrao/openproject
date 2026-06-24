@@ -21,6 +21,7 @@
 #++
 ---
 pl:
+  label_user_attributes_plural: User attributes
   no_results_title_text: Obecnie nie ma nic do wyświetlenia.
   activities:
     index:
@@ -32,6 +33,7 @@ pl:
         label_activity_show_all: Pokaż wszystko
         label_activity_show_only_comments: Pokaż tylko komentarze
         label_activity_show_only_changes: Pokaż tylko zmiany
+        label_dismiss_comment: Dismiss
         label_sort_asc: Najnowsze na końcu
         label_sort_desc: Najnowsze na początku
         label_type_to_comment: Dodaj komentarz. Wpisz @, aby powiadomić innych.
@@ -44,7 +46,7 @@ pl:
         commented: skomentowano
         internal_comment: Komentarz wewnętrzny
         internal_journal: Komentarze wewnętrzne są widoczne dla ograniczonej grupy członków.
-        unsaved_changes_confirmation_message: Masz niezapisane zmiany. Czy na pewno chcesz zamknąć edytor?
+        unsaved_changes_confirmation_message: Are you sure you want to dismiss your comment? The content that you have written will be lost.
         internal_comment_confirmation:
           title: Upublicznić ten komentarz?
           heading: Upublicznić ten komentarz?
@@ -52,25 +54,29 @@ pl:
           confirm_button_text: Ustaw jako publiczny
   admin:
     reserved_identifiers:
-      title: Zastrzeżone identyfikatory projektów
-      lede_html: Gdy nazwa identyfikatora projektu zostanie zmieniona, poprzedni identyfikator pozostaje zastrzeżony, aby istniejące linki i integracje nadal działały.<br>Tutaj można zwolnić zastrzeżone identyfikatory, aby mogły ich używać inne projekty.
+      btn_release: Unreserve
       col_identifier: Identyfikator
       col_project: Projekt
       col_reserved: Zastrzeżony
-      not_available_in_semantic_mode: Zastrzeżone identyfikatory projektów są dostępne tylko w trybie identyfikatora numerycznego.
-      filter_label: Wyszukaj identyfikatory
-      btn_release: Zwolnij
-      released_notice: Zwolono identyfikator „%{identifier}”.
-      identifier_not_found: Nie można znaleźć zastrzeżonego identyfikatora. Być może został już zwolniony lub projekt został usunięty. Odśwież stronę.
       dialog:
-        title: Zwolnij identyfikator
-        heading: Zwolnić „%{identifier}”?
-        description: Zwolnienia tego identyfikatora nie można cofnąć. Zewnętrzne linki i integracje korzystające z niego przestaną być rozpoznawane, a nazwa stanie się dostępna dla każdego nowego projektu.
         checkbox_label: Rozumiem, że tego działania nie można cofnąć.
-        confirm_button: Zwolnij identyfikator
+        confirm_button: Unreserve identifier
+        description: Unreserving this project identifier cannot be undone. External links and integrations using it will stop resolving, and the name becomes available for any new project to claim.
+        description_with_work_packages:
+          one: Unreserving this project identifier (and its 1 work package identifier) cannot be undone. External links and integrations using it will stop resolving, and the name becomes available for any new project to claim.
+          few: Unreserving this project identifier (and its %{count} work package identifiers) cannot be undone. External links and integrations using it will stop resolving, and the name becomes available for any new project to claim.
+          many: Unreserving this project identifier (and its %{count} work package identifiers) cannot be undone. External links and integrations using it will stop resolving, and the name becomes available for any new project to claim.
+          other: Unreserving this project identifier (and its %{count} work package identifiers) cannot be undone. External links and integrations using it will stop resolving, and the name becomes available for any new project to claim.
+        heading: Unreserve "%{identifier}"?
+        title: Unreserve identifier
+      empty_body: When a project's identifier changes, the previous one will appear here so you can unreserve it once it's safe to do so.
       empty_heading: Brak zastrzeżonych identyfikatorów
+      filter_label: Wyszukaj identyfikatory
+      identifier_not_found: The reserved identifier could not be found. It may have already been unreserved or the project may have been deleted. Please refresh the page.
+      lede_html: When a project's identifier is renamed, the previous identifier is kept reserved so that existing links and integrations keep working.<br>Here you can unreserve identifiers so that they may be used by other projects.
+      released_notice: Identifier "%{identifier}" has been unreserved.
       reserved_ago: "%{time} temu"
-      empty_body: Gdy identyfikator projektu ulegnie zmianie, pojawi się tutaj poprzedni identyfikator, dzięki czemu można go będzie zwolnić, gdy będzie to bezpieczne.
+      title: Zastrzeżone identyfikatory projektów
     plugins:
       no_results_title_text: Obecnie nie ma żadnych zainstalowanych wtyczek.
       no_results_content_text: Więcej informacji znajdziesz na naszej stronie poświęconej integracjom i wtyczkom.
@@ -128,7 +134,7 @@ pl:
         trial: Wersja próbna
     jemalloc_allocator: Alokator pamięci Jemalloc
     journal_aggregation:
-      caption: 'Działania użytkownika w pakiecie roboczym (zmiana opisu, statusu, wartości lub pisanie komentarzy) są grupowane, jeśli zostały wykonane w tym okresie. Kontroluje również powiadomienia i opóźnienia [obiektu webhook](webhook_link).
+      caption_with_maximum: 'User actions on a work package (changing description, status, values, or writing comments) are grouped if performed within this period. It also controls notification and [webhook](webhook_link) delays. The maximum is %{max} minutes.
 
         '
     import:
@@ -441,6 +447,20 @@ pl:
       new_project:
         project_creation: Utworzenie projektu
         notification_text_default: "<p>Witaj,</p> <p>Utworzono nowy projekt: projectValue:name</p> <p>Dziękujemy</p>\n"
+      project_custom_field_sections:
+        destroy:
+          error: The section could not be deleted.
+        drop:
+          error: The section could not be reordered.
+        move:
+          error: The section could not be reordered.
+      user_custom_field_sections:
+        destroy:
+          error: The section could not be deleted.
+        drop:
+          error: The section could not be reordered.
+        move:
+          error: The section could not be reordered.
       work_packages_identifier:
         page_header:
           description: Wybierz pomiędzy klasycznymi numerycznymi identyfikatorami pakietów roboczych albo semantycznymi identyfikatorami specyficznymi dla projektu, które dodają identyfikator projektu do identyfikatora pakietu roboczego.
@@ -692,6 +712,8 @@ pl:
             gain_role: Zyska rolę „%{new_role}”
             lose_role: Utraci rolę „%{old_role}”
             no_change: Brak zmian
+    multi_value_more:
+      other: and %{count} more
     text_add_new_custom_field: 'Aby dodać do projektu nowe pola niestandardowe, najpierw należy je utworzyć.
 
       '
@@ -736,6 +758,8 @@ pl:
         project: 0 oznacza brak ograniczeń
       has_comment:
         project: Umożliwia użytkownikowi dodanie komentarza związanego z atrybutem projektu podczas wybierania wartości w przeglądzie projektu.
+      visible_on_user_card:
+        all: When checked, this field's value is shown in the user information card when hovering over a user across the application.
     tab:
       no_results_title_text: Nie ma jeszcze żadnych pól użytkownika.
       no_results_content_text: Utwórz pole użytkownika
@@ -763,9 +787,11 @@ pl:
         '
       add_button: Dodaj
     detail_blankslate:
-      heading: W tym dziale nie ma żadnej hierarchii poniżej
-      description: Dodaj działy lub użytkowników, aby utworzyć podpozycje wewnątrz innej pozycji.
       add_button: Dodaj
+      description: Dodaj działy lub użytkowników, aby utworzyć podpozycje wewnątrz innej pozycji.
+      heading: W tym dziale nie ma żadnej hierarchii poniżej
+      managed_description: Its sub-departments and members are kept in sync with LDAP and cannot be added manually.
+      managed_heading: This department is managed by LDAP synchronization
     add_department_form:
       name_label: Nazwa działu
       name_placeholder: Wprowadź nazwę działu
@@ -774,6 +800,9 @@ pl:
       heading: Przenieść użytkownika do tego działu?
       description: "%{user} jest obecnie członkiem %{from_department}. Przeniesienie spowoduje usunięcie go z tego działu."
       confirm: Przenieś użytkownika
+      managed_title: User managed by LDAP
+      managed_heading: This user cannot be moved
+      managed_description: "%{user} belongs to %{from_department}, which is managed by LDAP synchronization. Their department membership is controlled by LDAP and cannot be changed here."
     context_menu:
       add_sub_department: Dodaj poddział
       add_user: Dodaj użytkownika
@@ -1352,9 +1381,6 @@ pl:
       priority_color_text: |
         Kliknij, aby przypisać lub zmienić kolor tego priorytetu.
         Można go używać do wyróżniania pakietów roboczych w tabeli.
-    admin:
-      default:
-        caption:
   reactions:
     action_title: Zareaguj
     add_reaction: Dodaj reakcję
@@ -1742,18 +1768,6 @@ pl:
         dependencies: Zależności
   activerecord:
     attributes:
-      work_package_semantic_alias:
-        identifier: Identyfikator
-        work_package: Pakiet roboczy
-      jira_import:
-        projects: Projekty
-      import/jira:
-        name: Nazwa wystąpienia Jira
-        url: Adres URL wystąpienia Jira
-        personal_access_token: Osobisty token dostępu
-      import/jira_open_project_reference:
-        jira: Jira
-        jira_import: Migrator Jira
       announcements:
         show_until: Wyświetlaj do
       attachment:
@@ -1799,6 +1813,7 @@ pl:
         possible_values: Możliwe wartości
         regexp: Wyrażenie regularne
         searchable: Wyszukiwalne
+        visible_on_user_card: Show on user card
         admin_only: Tylko dla administratorów
         has_comment: Dodaj pole tekstowe komentarza
       custom_value:
@@ -1833,6 +1848,23 @@ pl:
         row_count: Liczba wierszy
         column_count: Liczba kolumn
         widgets: Widżety
+      group:
+        group_users: Grupy użytkowników
+        identity_url: Adres URL tożsamości
+        organizational_unit: Jednostka organizacyjna
+        parent: Grupa nadrzędna
+      group_detail:
+        organizational_unit: Jednostka organizacyjna
+        parent: Grupa nadrzędna
+      import/jira:
+        name: Nazwa wystąpienia Jira
+        personal_access_token: Osobisty token dostępu
+        url: Adres URL wystąpienia Jira
+      import/jira_open_project_reference:
+        jira: Jira
+        jira_import: Migrator Jira
+      jira_import:
+        projects: Projekty
       journal:
         notes: Notatki
         cause_type: Typ przyczyny
@@ -1861,6 +1893,21 @@ pl:
         resource: Zasób
       oauth_client:
         client: Identyfikator klienta
+      ordered_persisted_query_entity:
+        persisted_query: Przetrwałe zapytanie
+        entity: Pole
+        position: Pozycja
+      persisted_query:
+        name: Nazwa
+        views: Widoki
+        filters: Filtry
+        orders: Zamówienia
+        selects: Wybory
+      persisted_view:
+        name: Nazwa
+        query: Zapytanie
+        parent: Widok nadrzędny
+        public: Publiczny
       project:
         active_value:
           true: niezarchiwizowane
@@ -2007,14 +2054,8 @@ pl:
         new_password: Nowe hasło
         password_confirmation: Potwierdzenie
         consented_at: Zgodę na
-      group:
-        identity_url: Adres URL tożsamości
-        parent: Grupa nadrzędna
-        organizational_unit: Jednostka organizacyjna
-        group_users: Grupy użytkowników
-      group_detail:
-        parent: Grupa nadrzędna
-        organizational_unit: Jednostka organizacyjna
+      user_custom_field:
+        custom_field_section: Section
       user_preference:
         header_look_and_feel: Wygląd i działanie
         header_alerts: Alerty
@@ -2113,29 +2154,11 @@ pl:
         type: Typ
         version: Wersja
         watcher: Obserwator
-      ordered_persisted_query_entity:
-        persisted_query: Przetrwałe zapytanie
-        entity: Pole
-        position: Pozycja
-      persisted_query:
-        name: Nazwa
-        views: Widoki
-        filters: Filtry
-        orders: Zamówienia
-        selects: Wybory
-      persisted_view:
-        name: Nazwa
-        query: Zapytanie
-        parent: Widok nadrzędny
-        public: Publiczny
-      user_card_view:
-        secondary_info: Dodatkowe informacje
-        show_status_badge: Pokaż odznakę statusu
-        show_email: Pokaż adres e-mail
-        tag_source: Źródło tagów
-        tag_limit: Limit tagów
-        card_size: Rozmiar karty
-        columns_per_row: Liczba kolumn w wierszu
+      work_package_version:
+        kind: Kind
+      work_package_semantic_alias:
+        identifier: Identyfikator
+        work_package: Pakiet roboczy
     errors:
       messages:
         accepted: musi być zaakceptowane.
@@ -2181,6 +2204,7 @@ pl:
         invalid_url: nie jest poprawnym adresem URL.
         invalid_url_scheme: 'nie jest obsługiwanym protokołem (dozwolone: %{allowed_schemes}).'
         is_for_all_cannot_modify: dotyczy wszystkich projektów i dlatego nie można zmodyfikować.
+        ldap_managed: This department is managed by LDAP synchronization and cannot be changed manually.
         less_than_or_equal_to: musi być mniejsze niż lub równe %{count}.
         not_available: jest niedostępne z powodu konfiguracji systemu.
         not_before_start_date: nie może być wcześniejsza niż data rozpoczęcia.
@@ -2218,6 +2242,7 @@ pl:
 
           '
         user_already_in_department: Użytkownik %{user_id} jest już członkiem działu %{department_id}.
+        user_in_ldap_managed_department: This user belongs to a department managed by LDAP synchronization and cannot be moved.
         wrong_length: ma nieprawidłową długość (powinno mieć %{count} znaków).
       models:
         group:
@@ -2225,6 +2250,7 @@ pl:
             parent_id:
               circular_dependency: spowodowałoby utworzenie cyklicznej hierarchii grup.
               organizational_unit_mismatch: musi mieć to samo ustawienie jednostki organizacyjnej, co grupa.
+              parent_ldap_managed: is managed by LDAP synchronization and cannot have departments added manually.
         ldap_auth_source:
           attributes:
             tls_certificate_string:
@@ -2422,11 +2448,12 @@ pl:
         setting:
           attributes:
             base:
-              working_days_are_missing: Co najmniej jeden dzień tygodnia musi być zdefiniowany jako dzień roboczy.
-              previous_working_day_changes_unprocessed: Poprzednie zmiany konfiguracji dni roboczych nie zostały jeszcze zastosowane.
-              hours_per_day_are_missing: Liczba godzin dziennie musi być określona.
               durations_are_not_positive_numbers: Czasy trwania muszą być liczbami dodatnimi.
+              hours_per_day_are_missing: Liczba godzin dziennie musi być określona.
               hours_per_day_is_out_of_bounds: Liczba godzin dziennie nie może przekraczać 24
+              journal_aggregation_time_minutes_is_out_of_bounds: Aggregation period must be between %{min} and %{max} minutes.
+              previous_working_day_changes_unprocessed: Poprzednie zmiany konfiguracji dni roboczych nie zostały jeszcze zastosowane.
+              working_days_are_missing: Co najmniej jeden dzień tygodnia musi być zdefiniowany jako dzień roboczy.
         status:
           attributes:
             default_done_ratio:
@@ -3369,10 +3396,11 @@ pl:
       disabled: Włącz
       enabled: Wyłącz
   enumeration_activities: Działania śledzenia czasu
-  enumeration_work_package_priorities: Priorytety pakietów roboczych
-  enumeration_reported_project_statuses: Zgłoszony status
   enumeration_caption_order_changed: Kolejność została zmieniona.
   enumeration_could_not_be_moved: Nie można przenieść wyliczenia.
+  enumeration_default_value_caption: Making this %{model} the default will override the previous default %{model}.
+  enumeration_reported_project_statuses: Zgłoszony status
+  enumeration_work_package_priorities: Priorytety pakietów roboczych
   enterprise_trials:
     dialog_component:
       title: Wersja próbna Enterprise
@@ -3597,6 +3625,7 @@ pl:
       all_projects: All projects
       favorites: Favorites
       leave_project: Leave project
+      no_favorite_projects: You have no favorite projects.
       title: Projects
   toggle_switch:
     label_on: Wł.
@@ -3851,8 +3880,8 @@ pl:
         submit_button: Zaktualizuj alerty
     notifications:
       participating:
+        description: You will always receive a notification whenever you are mentioned, and for changes to work packages you are watching. These cannot be disabled. However, you can choose to enable or disable receiving notifications for changes to work packages that concern you (where you are assignee, accountable or are shared with you).
         title: Uczestnictwo
-        description: Powiadomienia dotyczące wszystkich działań w pakietach roboczych, do których Cię zaangażowano (jako osobę przypisaną, odpowiedzialną lub obserwator).
         submit_button: Zaktualizuj preferencje
         mentioned: Wzmianka
         watched: Obserwowane
@@ -3860,8 +3889,8 @@ pl:
         responsible: Osoba odpowiedzialna
         shared: Udostępnione dla mnie
       date_alerts:
+        description: You can configure date alerts for work packages where you are assignee, accountable and/or watcher to be automatically notified a few days prior to approaching or overdue deadlines.
         title: Alerty dotyczące dat
-        description: 'Automatyczne powiadomienia, gdy zbliżają się ważne daty otwartych pakietów roboczych, do których Cię zaangażowano (jako osobę: przypisaną, odpowiedzialną lub obserwatora).'
         submit_button: Zaktualizuj alerty dotyczące dat
         start_date: Data rozpoczęcia
         due_date: Data zakończenia
@@ -3875,8 +3904,8 @@ pl:
           three_days_after: 3 dni po
           seven_days_after: 7 dni po
       non_participating:
+        description: You can additionally choose to be notified of any of the following activities for all projects.
         title: Brak uczestnictwa
-        description: Dodatkowe powiadomienia dotyczące działań we wszystkich projektach.
         submit_button: Zaktualizuj preferencje
         work_package_created: Nowe pakiety robocze
         work_package_commented: Wszystkie nowe komentarze
@@ -3884,8 +3913,8 @@ pl:
         work_package_prioritized: Wszystkie zmiany priorytetów
         work_package_scheduled: Wszystkie zmiany daty
       project_specific_settings:
-        title: Ustawienia powiadomień dla danego projektu
-        description: Te ustawienia dla danego projektu zastępują powyższe ustawienia domyślne.
+        description: You can fine-tune your notification settings to only be notified of certain events in specific projects. Add a project below and choose which events should trigger a notification for you. These project-specific settings override default settings above.
+        title: Project-specific notifications
         add_button: Dodaj powiadomienia specyficzne dla projektu
         dialog_title: Dodaj powiadomienia specyficzne dla projektu
         list_header: Projekty z określonymi powiadomieniami
@@ -4257,7 +4286,7 @@ pl:
   label_custom_favicon: Własny favicon
   label_custom_touch_icon: Własny touch icon
   label_departments: Organizacja
-  label_departments_description_html: 'Zdefiniuj strukturę swojej firmy, tworząc działy i poddziały w sposób hierarchiczny. Pozwala to na odzwierciedlenie linii podległości i utrzymanie przejrzystego, uporządkowanego przeglądu organizacji w OpenProject. Można również zaimportować istniejącą strukturę organizacji poprzez [synchronizację grup LDAP](ldap_docs_article).
+  label_departments_description_html: 'Define your company’s structure by creating departments and sub-departments in a hierarchical way. This allows you to reflect reporting lines and maintain a clear, structured overview of your organization within OpenProject. You can also import an existing organization structure through [LDAP department synchronization](ldap_docs_article).
 
     '
   label_logout: Wyloguj
@@ -4265,6 +4294,7 @@ pl:
   label_main_menu: Menu boczne
   label_manage: Zarządzaj
   label_manage_groups: Zarządzaj grupami
+  label_managed_by_ldap: Managed by LDAP synchronization
   label_managed_repositories_vendor: Zarządzane %{vendor} repozytoria
   label_mathematical_operators: Operatory matematyczne
   label_max_size: Maksymalny rozmiar
@@ -5589,6 +5619,7 @@ pl:
     passwords: Hasła
     project_attributes:
       heading: Atrybuty projektu
+      label_add_attribute: Add a project attribute
       label_for_all_projects: Wszystkie projekty
       label_new_attribute: Atrybut projektu
       label_new_section: Sekcja
@@ -5685,8 +5716,30 @@ pl:
     session: Sesja
     user:
       default_preferences: Ustawienia domyślne
-      display_format: Format wyswietlania
       deletion: Usunięcie
+      display_format: Format wyswietlania
+    user_custom_field_sections:
+      built_in_attribute_row_component:
+        label_built_in: Built-in
+        label_built_in_attribute_actions: Built-in attribute actions
+      custom_field_row_component:
+        label_user_custom_field_actions: User attribute actions
+      show_component:
+        label_add_attribute: Add a user attribute
+        label_edit_section: Edit title
+        label_no_user_custom_fields: No user attributes defined in this section
+        label_section_actions: Section actions
+    user_custom_fields:
+      header_component:
+        attribute_filter:
+          label: Filter by attribute name…
+        heading_description: These user attributes appear on user profiles and information cards. You can add new attributes, group them into sections and re-order them.
+      heading: User attributes
+      label_new_attribute: User attribute
+      label_new_section: Section
+      label_untitled_section: User attributes
+      new:
+        heading: New attribute
     working_days:
       section_work_week: Tydzień roboczy
       section_holidays_and_closures: Dni wolne i zamknięcia

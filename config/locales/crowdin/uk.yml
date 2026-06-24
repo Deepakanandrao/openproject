@@ -21,6 +21,7 @@
 #++
 ---
 uk:
+  label_user_attributes_plural: User attributes
   no_results_title_text: Немає що виводити на екран.
   activities:
     index:
@@ -32,6 +33,7 @@ uk:
         label_activity_show_all: Показати все
         label_activity_show_only_comments: Показувати лише коментарі
         label_activity_show_only_changes: Показувати лише зміни
+        label_dismiss_comment: Dismiss
         label_sort_asc: Найновіші внизу
         label_sort_desc: Найновіші вгорі
         label_type_to_comment: Додайте коментар. Введіть @, щоб сповістити людину.
@@ -44,7 +46,7 @@ uk:
         commented: прокоментував(-ла)
         internal_comment: Внутрішній коментар
         internal_journal: Внутрішні коментарі видимі для визначеної групи учасників.
-        unsaved_changes_confirmation_message: У вас є незбережені зміни. Справді закрити редактор?
+        unsaved_changes_confirmation_message: Are you sure you want to dismiss your comment? The content that you have written will be lost.
         internal_comment_confirmation:
           title: Зробити цей коментар загальнодоступним?
           heading: Зробити цей коментар загальнодоступним?
@@ -52,25 +54,29 @@ uk:
           confirm_button_text: Зробити загальнодоступним
   admin:
     reserved_identifiers:
-      title: Зарезервовані ідентифікатори проєктів
-      lede_html: Коли ідентифікатор проєкту перейменовується, попередній ідентифікатор залишається зарезервованим, щоб наявні посилання й інтеграції продовжували працювати.<br>Тут ви можете відв’язати зарезервовані ідентифікатори, щоб їх можна було використовувати для інших проєктів.
+      btn_release: Unreserve
       col_identifier: Ідентифікатор
       col_project: Проєкт
       col_reserved: Зарезервовано
-      not_available_in_semantic_mode: Зарезервовані ідентифікатори проєктів доступні лише в режимі числових ідентифікаторів.
-      filter_label: Шукати ідентифікатори
-      btn_release: Відв’язати
-      released_notice: Ідентифікатор %{identifier} відв’язано.
-      identifier_not_found: Не вдалося знайти зарезервований ідентифікатор. Можливо, його вже відв’язали або проєкт було видалено. Оновіть сторінку.
       dialog:
-        title: Відв’язати ідентифікатор
-        heading: Відв’язати %{identifier}?
-        description: Якщо відв’язати ідентифікатор, цю дію не можна буде відмінити. Зовнішні посилання й інтеграції, що використовують цей ідентифікатор, перестануть розпізнаватися, а ім’я стане доступним для будь-якого нового проєкту.
         checkbox_label: Я розумію, що цю дію не можна відмінити.
-        confirm_button: Відв’язати ідентифікатор
+        confirm_button: Unreserve identifier
+        description: Unreserving this project identifier cannot be undone. External links and integrations using it will stop resolving, and the name becomes available for any new project to claim.
+        description_with_work_packages:
+          one: Unreserving this project identifier (and its 1 work package identifier) cannot be undone. External links and integrations using it will stop resolving, and the name becomes available for any new project to claim.
+          few: Unreserving this project identifier (and its %{count} work package identifiers) cannot be undone. External links and integrations using it will stop resolving, and the name becomes available for any new project to claim.
+          many: Unreserving this project identifier (and its %{count} work package identifiers) cannot be undone. External links and integrations using it will stop resolving, and the name becomes available for any new project to claim.
+          other: Unreserving this project identifier (and its %{count} work package identifiers) cannot be undone. External links and integrations using it will stop resolving, and the name becomes available for any new project to claim.
+        heading: Unreserve "%{identifier}"?
+        title: Unreserve identifier
+      empty_body: When a project's identifier changes, the previous one will appear here so you can unreserve it once it's safe to do so.
       empty_heading: Немає зарезервованих ідентифікаторів
+      filter_label: Шукати ідентифікатори
+      identifier_not_found: The reserved identifier could not be found. It may have already been unreserved or the project may have been deleted. Please refresh the page.
+      lede_html: When a project's identifier is renamed, the previous identifier is kept reserved so that existing links and integrations keep working.<br>Here you can unreserve identifiers so that they may be used by other projects.
+      released_notice: Identifier "%{identifier}" has been unreserved.
       reserved_ago: "%{time} тому"
-      empty_body: Коли ідентифікатор проєкту змінюється, тут з’являється попередній ідентифікатор, щоб ви могли відв’язати його, щойно переконаєтеся, що це безпечно.
+      title: Зарезервовані ідентифікатори проєктів
     plugins:
       no_results_title_text: Зараз немає встановлених плагінів.
       no_results_content_text: Щоб дізнатися більше, ознайомтеся з нашою сторінкою інтеграцій і планів.
@@ -128,7 +134,7 @@ uk:
         trial: Пробний період
     jemalloc_allocator: Розподіл пам'яті Jemalloc
     journal_aggregation:
-      caption: 'Дії користувача над пакетом робіт (зміни опису, статусу чи значень або написання коментарів) групуються, якщо їх було виконано протягом цього періоду. Це налаштування також керує сповіщеннями й затримками [вебхука](webhook_link).
+      caption_with_maximum: 'User actions on a work package (changing description, status, values, or writing comments) are grouped if performed within this period. It also controls notification and [webhook](webhook_link) delays. The maximum is %{max} minutes.
 
         '
     import:
@@ -441,6 +447,20 @@ uk:
       new_project:
         project_creation: Створення проєкту
         notification_text_default: "<p>Вітаємо,</p> <p>Новий проєкт створено: projectValue:name</p> <p>Дякуємо</p>\n"
+      project_custom_field_sections:
+        destroy:
+          error: The section could not be deleted.
+        drop:
+          error: The section could not be reordered.
+        move:
+          error: The section could not be reordered.
+      user_custom_field_sections:
+        destroy:
+          error: The section could not be deleted.
+        drop:
+          error: The section could not be reordered.
+        move:
+          error: The section could not be reordered.
       work_packages_identifier:
         page_header:
           description: Виберіть класичні числові ідентифікатори пакетів робіт або семантичні із зазначенням проєкту (до ідентифікатора пакета робіт додається префікс з ідентифікатором проєкту).
@@ -693,6 +713,8 @@ uk:
             gain_role: Отримає роль «%{new_role}»
             lose_role: Втратить роль «%{old_role}»
             no_change: Немає змін
+    multi_value_more:
+      other: and %{count} more
     text_add_new_custom_field: 'Щоб додати нові користувальницькі поля до проекту, спочатку потрібно створити їх, перш ніж ви зможете додати їх до цього проекту.
 
       '
@@ -737,6 +759,8 @@ uk:
         project: 0 означає відсутність обмежень
       has_comment:
         project: Дає змогу користувачу додати коментар до атрибута проєкту при виборі значення на сторінці «Огляд проєкту».
+      visible_on_user_card:
+        all: When checked, this field's value is shown in the user information card when hovering over a user across the application.
     tab:
       no_results_title_text: Наразі немає спеціальних полів.
       no_results_content_text: Створіть нове спеціальне поле
@@ -764,9 +788,11 @@ uk:
         '
       add_button: Додати
     detail_blankslate:
-      heading: Цей відділ не має ієрархії нижчого рівня
-      description: Додавайте відділи або користувачів, щоб створювати піделементи.
       add_button: Додати
+      description: Додавайте відділи або користувачів, щоб створювати піделементи.
+      heading: Цей відділ не має ієрархії нижчого рівня
+      managed_description: Its sub-departments and members are kept in sync with LDAP and cannot be added manually.
+      managed_heading: This department is managed by LDAP synchronization
     add_department_form:
       name_label: Назва відділу
       name_placeholder: Введіть назву відділу
@@ -775,6 +801,9 @@ uk:
       heading: Перемістити користувача в цей відділ?
       description: "%{user} зараз є членом відділу «%{from_department}», але в разі переміщення більше ним не буде."
       confirm: Перемістити користувача
+      managed_title: User managed by LDAP
+      managed_heading: This user cannot be moved
+      managed_description: "%{user} belongs to %{from_department}, which is managed by LDAP synchronization. Their department membership is controlled by LDAP and cannot be changed here."
     context_menu:
       add_sub_department: Додати підвідділ
       add_user: Додати користувача
@@ -1353,9 +1382,6 @@ uk:
       priority_color_text: |
         Натисніть, щоб призначити або змінити колір для цього пріоритету.
         Його можна використовувати для виділення пакетів роботи в таблиці.
-    admin:
-      default:
-        caption: Якщо зробити цей пріоритет стандартним, він замінить попередній стандартний пріоритет.
   reactions:
     action_title: Реакція
     add_reaction: Додати реакцію
@@ -1741,18 +1767,6 @@ uk:
         dependencies: Залежності
   activerecord:
     attributes:
-      work_package_semantic_alias:
-        identifier: Ідентифікатор
-        work_package: Робочий пакет
-      jira_import:
-        projects: Проєкти
-      import/jira:
-        name: Назва екземпляра Jira
-        url: URL-адреса екземпляра Jira
-        personal_access_token: Персональний маркер доступу
-      import/jira_open_project_reference:
-        jira: Jira
-        jira_import: Jira Migrator
       announcements:
         show_until: Показувати до
       attachment:
@@ -1798,6 +1812,7 @@ uk:
         possible_values: Можливі значення
         regexp: Регулярний вираз
         searchable: Доступно для пошуку
+        visible_on_user_card: Show on user card
         admin_only: Тільки для адміністраторів
         has_comment: Додати текстове поле для коментаря
       custom_value:
@@ -1832,6 +1847,23 @@ uk:
         row_count: Кількість рядків
         column_count: Кількість стовпців
         widgets: Віджети
+      group:
+        group_users: Користувачі групи
+        identity_url: URL-адреса ідентичності
+        organizational_unit: Організаційний підрозділ
+        parent: Батьківська група
+      group_detail:
+        organizational_unit: Організаційний підрозділ
+        parent: Батьківська група
+      import/jira:
+        name: Назва екземпляра Jira
+        personal_access_token: Персональний маркер доступу
+        url: URL-адреса екземпляра Jira
+      import/jira_open_project_reference:
+        jira: Jira
+        jira_import: Jira Migrator
+      jira_import:
+        projects: Проєкти
       journal:
         notes: Примітки
         cause_type: Тип причини
@@ -1860,6 +1892,21 @@ uk:
         resource: Ресурс
       oauth_client:
         client: ID клієнта
+      ordered_persisted_query_entity:
+        persisted_query: Постійний запит
+        entity: Сутність
+        position: Позиція
+      persisted_query:
+        name: Назва
+        views: Подання
+        filters: Фільтри
+        orders: Порядок
+        selects: Вибране
+      persisted_view:
+        name: Назва
+        query: Запит
+        parent: Батьківське подання
+        public: Загальнодоступне
       project:
         active_value:
           true: розархівовано
@@ -2006,14 +2053,8 @@ uk:
         new_password: Новий пароль
         password_confirmation: Підтвердження
         consented_at: Згоден на
-      group:
-        identity_url: URL-адреса ідентичності
-        parent: Батьківська група
-        organizational_unit: Організаційний підрозділ
-        group_users: Користувачі групи
-      group_detail:
-        parent: Батьківська група
-        organizational_unit: Організаційний підрозділ
+      user_custom_field:
+        custom_field_section: Section
       user_preference:
         header_look_and_feel: Оформлення
         header_alerts: Сповіщення
@@ -2112,29 +2153,11 @@ uk:
         type: Тип
         version: Версія
         watcher: Спостерігач
-      ordered_persisted_query_entity:
-        persisted_query: Постійний запит
-        entity: Сутність
-        position: Позиція
-      persisted_query:
-        name: Назва
-        views: Подання
-        filters: Фільтри
-        orders: Порядок
-        selects: Вибране
-      persisted_view:
-        name: Назва
-        query: Запит
-        parent: Батьківське подання
-        public: Загальнодоступне
-      user_card_view:
-        secondary_info: Додаткова інформація
-        show_status_badge: Показати значок статусу
-        show_email: Показати електронну адресу
-        tag_source: Джерело тегів
-        tag_limit: Ліміт тегів
-        card_size: Розмір картки
-        columns_per_row: Стовпців у рядку
+      work_package_version:
+        kind: Kind
+      work_package_semantic_alias:
+        identifier: Ідентифікатор
+        work_package: Робочий пакет
     errors:
       messages:
         accepted: повинні бути прийняті.
@@ -2180,6 +2203,7 @@ uk:
         invalid_url: не є дійсною URL-адресою.
         invalid_url_scheme: 'не є підтримуваним протоколом (дозволено: %{allowed_schemes}).'
         is_for_all_cannot_modify: призначений для всіх проєктів, тому його не можна бути змінити.
+        ldap_managed: This department is managed by LDAP synchronization and cannot be changed manually.
         less_than_or_equal_to: має бути меншим або рівним %{count}
         not_available: "– недоступно через налаштування системи."
         not_before_start_date: не має передувати даті початку.
@@ -2219,6 +2243,7 @@ uk:
 
           '
         user_already_in_department: Користувач %{user_id} уже є членом відділу «%{department_id}».
+        user_in_ldap_managed_department: This user belongs to a department managed by LDAP synchronization and cannot be moved.
         wrong_length: неправильна довжина (повинна бути %{count} символів).
       models:
         group:
@@ -2226,6 +2251,7 @@ uk:
             parent_id:
               circular_dependency: призведе до створення ієрархії циклічної групи.
               organizational_unit_mismatch: має включати той самий організаційний підрозділ, що й група.
+              parent_ldap_managed: is managed by LDAP synchronization and cannot have departments added manually.
         ldap_auth_source:
           attributes:
             tls_certificate_string:
@@ -2425,11 +2451,12 @@ uk:
         setting:
           attributes:
             base:
-              working_days_are_missing: Принаймні один день тижня має бути визначено як робочий.
-              previous_working_day_changes_unprocessed: Попередні зміни конфігурації робочих днів ще не застосовано.
-              hours_per_day_are_missing: Потрібно визначити кількість годин на день.
               durations_are_not_positive_numbers: Тривалість має бути додатним числом.
+              hours_per_day_are_missing: Потрібно визначити кількість годин на день.
               hours_per_day_is_out_of_bounds: Кількість годин на день не може перевищувати 24
+              journal_aggregation_time_minutes_is_out_of_bounds: Aggregation period must be between %{min} and %{max} minutes.
+              previous_working_day_changes_unprocessed: Попередні зміни конфігурації робочих днів ще не застосовано.
+              working_days_are_missing: Принаймні один день тижня має бути визначено як робочий.
         status:
           attributes:
             default_done_ratio:
@@ -3376,10 +3403,11 @@ uk:
       disabled: Увімкнути
       enabled: Вимкнути
   enumeration_activities: Дії щодо відстеження часу
-  enumeration_work_package_priorities: Пріоритети робочого пакету
-  enumeration_reported_project_statuses: Повідомлений статус
   enumeration_caption_order_changed: Порядок змінено.
   enumeration_could_not_be_moved: Неможливо перенести перелічення.
+  enumeration_default_value_caption: Making this %{model} the default will override the previous default %{model}.
+  enumeration_reported_project_statuses: Повідомлений статус
+  enumeration_work_package_priorities: Пріоритети робочого пакету
   enterprise_trials:
     dialog_component:
       title: Пробна версія Enterprise
@@ -3604,6 +3632,7 @@ uk:
       all_projects: All projects
       favorites: Favorites
       leave_project: Leave project
+      no_favorite_projects: You have no favorite projects.
       title: Projects
   toggle_switch:
     label_on: Увімкнено
@@ -3858,8 +3887,8 @@ uk:
         submit_button: Оновити сповіщення
     notifications:
       participating:
+        description: You will always receive a notification whenever you are mentioned, and for changes to work packages you are watching. These cannot be disabled. However, you can choose to enable or disable receiving notifications for changes to work packages that concern you (where you are assignee, accountable or are shared with you).
         title: Бере участь
-        description: Сповіщення про всі дії з пакетами робіт, з якими ви працюєте (як виконавець, відповідальний або спостерігач).
         submit_button: Оновити налаштування
         mentioned: Вас згадали
         watched: Відстеження
@@ -3867,8 +3896,8 @@ uk:
         responsible: Відповідальний
         shared: Доступ надано мені
       date_alerts:
+        description: You can configure date alerts for work packages where you are assignee, accountable and/or watcher to be automatically notified a few days prior to approaching or overdue deadlines.
         title: Сповіщення про дати
-        description: Автоматичні сповіщення про наближення важливих дат для відкритих пакетів робіт, з якими ви працюєте (як виконавець, відповідальний або спостерігач).
         submit_button: Оновити сповіщення про дати
         start_date: Дата початку
         due_date: Дата завершення
@@ -3882,8 +3911,8 @@ uk:
           three_days_after: Через 3 дні
           seven_days_after: Через 7 днів
       non_participating:
+        description: You can additionally choose to be notified of any of the following activities for all projects.
         title: Не бере участі
-        description: Додаткові сповіщення про дії в усіх проєктах.
         submit_button: Оновити налаштування
         work_package_created: Нові пакети робіт
         work_package_commented: Усі нові коментарі
@@ -3891,8 +3920,8 @@ uk:
         work_package_prioritized: Усі зміни пріоритету
         work_package_scheduled: Усі зміни дат
       project_specific_settings:
-        title: Налаштування сповіщень щодо проєктів
-        description: Ці налаштування для конкретного проєкту перевизначають типові налаштування, указані вище.
+        description: You can fine-tune your notification settings to only be notified of certain events in specific projects. Add a project below and choose which events should trigger a notification for you. These project-specific settings override default settings above.
+        title: Project-specific notifications
         add_button: Додати сповіщення щодо проєктів
         dialog_title: Додати сповіщення щодо проєктів
         list_header: Проєкти зі спеціальними сповіщеннями
@@ -4264,7 +4293,7 @@ uk:
   label_custom_favicon: призначені для користувача іконки
   label_custom_touch_icon: Призначений для користувача значок логотипу
   label_departments: Організація
-  label_departments_description_html: 'Визначте структуру своєї компанії, створивши відділи й підвідділи у вигляді ієрархій. Це дає змогу відобразити лінії підпорядкування й забезпечити чітку, структуровану візуалізацію вашої організації в OpenProject. Ви також можете імпортувати наявну структуру організації за допомогою [синхронізації груп LDAP](ldap_docs_article).
+  label_departments_description_html: 'Define your company’s structure by creating departments and sub-departments in a hierarchical way. This allows you to reflect reporting lines and maintain a clear, structured overview of your organization within OpenProject. You can also import an existing organization structure through [LDAP department synchronization](ldap_docs_article).
 
     '
   label_logout: Вийти
@@ -4272,6 +4301,7 @@ uk:
   label_main_menu: Бокове меню
   label_manage: Керувати
   label_manage_groups: Керувати групами
+  label_managed_by_ldap: Managed by LDAP synchronization
   label_managed_repositories_vendor: Керований %{vendor} repositories
   label_mathematical_operators: Математичні оператори
   label_max_size: Максимальний розмір
@@ -5603,6 +5633,7 @@ uk:
     passwords: Паролі
     project_attributes:
       heading: Атрибути проєкту
+      label_add_attribute: Add a project attribute
       label_for_all_projects: Усі проєкти
       label_new_attribute: Атрибут проєкту
       label_new_section: Розділ
@@ -5700,8 +5731,30 @@ uk:
     session: Сесія
     user:
       default_preferences: Параметри за умовчанням
-      display_format: Формат відображення
       deletion: Видалення
+      display_format: Формат відображення
+    user_custom_field_sections:
+      built_in_attribute_row_component:
+        label_built_in: Built-in
+        label_built_in_attribute_actions: Built-in attribute actions
+      custom_field_row_component:
+        label_user_custom_field_actions: User attribute actions
+      show_component:
+        label_add_attribute: Add a user attribute
+        label_edit_section: Edit title
+        label_no_user_custom_fields: No user attributes defined in this section
+        label_section_actions: Section actions
+    user_custom_fields:
+      header_component:
+        attribute_filter:
+          label: Filter by attribute name…
+        heading_description: These user attributes appear on user profiles and information cards. You can add new attributes, group them into sections and re-order them.
+      heading: User attributes
+      label_new_attribute: User attribute
+      label_new_section: Section
+      label_untitled_section: User attributes
+      new:
+        heading: New attribute
     working_days:
       section_work_week: Робочий тиждень
       section_holidays_and_closures: Свята й вихідні

@@ -56,6 +56,7 @@ import { ProjectStoragesResourceService } from 'core-app/core/state/project-stor
 import { IProjectStorage } from 'core-app/core/state/project-storages/project-storage.model';
 import idFromLink from 'core-app/features/hal/helpers/id-from-link';
 import isNewResource from 'core-app/features/hal/helpers/is-new-resource';
+import { isSemanticWorkPackageId } from 'core-app/shared/helpers/work-package-id-pattern';
 
 export interface FieldDescriptor {
   name:string;
@@ -96,7 +97,7 @@ export class WorkPackageSingleViewComponent extends UntilDestroyedMixin implemen
   private readonly I18n = inject(I18nService);
   private readonly hook = inject(HookService);
   private readonly $state = inject(StateService);
-  private readonly elementRef = inject(ElementRef);
+  private readonly elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
   private readonly cdRef = inject(ChangeDetectorRef);
   private readonly PathHelper = inject(PathHelperService);
   private readonly schemaCache = inject(SchemaCacheService);
@@ -155,7 +156,7 @@ export class WorkPackageSingleViewComponent extends UntilDestroyedMixin implemen
   projectStorages = new BehaviorSubject<IProjectStorage[]>([]);
 
   public ngOnInit():void {
-    this.element = this.elementRef.nativeElement as HTMLElement;
+    this.element = this.elementRef.nativeElement;
 
     this.isNewResource = isNewResource(this.workPackage);
 
@@ -283,6 +284,10 @@ export class WorkPackageSingleViewComponent extends UntilDestroyedMixin implemen
    */
   public get idLabel():string {
     return this.workPackage.formattedId;
+  }
+
+  public get selectEntireId():boolean {
+    return isSemanticWorkPackageId(this.idLabel);
   }
 
   public showSwitchToProjectBanner():boolean {

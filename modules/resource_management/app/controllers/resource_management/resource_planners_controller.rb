@@ -120,7 +120,7 @@ module ::ResourceManagement
                             .visible(current_user)
                             .where(project: @project)
                             .with_children
-                            .find(params[:id])
+                            .find(params.expect(:id))
     end
 
     def build_resource_planner

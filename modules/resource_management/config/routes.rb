@@ -56,6 +56,10 @@ Rails.application.routes.draw do
 
           get :timeline_resources, controller: "resource_management/work_package_timeline_feeds", defaults: { format: :json }
           get :timeline_events, controller: "resource_management/work_package_timeline_feeds", defaults: { format: :json }
+
+          get :new_user
+          post :users, action: :add_user
+          delete "users/:user_id", action: :remove_user, as: :remove_user
         end
 
         resources :work_packages, only: [] do
@@ -84,6 +88,12 @@ Rails.application.routes.draw do
     resources :work_packages, only: [] do
       resources :resource_allocations,
                 controller: "resource_management/work_package_resource_allocations",
+                only: :index
+    end
+
+    resources :users, only: [] do
+      resources :resource_allocations,
+                controller: "resource_management/user_resource_allocations",
                 only: :index
     end
   end

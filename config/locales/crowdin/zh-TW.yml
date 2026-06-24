@@ -21,6 +21,7 @@
 #++
 ---
 zh-TW:
+  label_user_attributes_plural: User attributes
   no_results_title_text: 目前無資料可以顯示
   activities:
     index:
@@ -32,6 +33,7 @@ zh-TW:
         label_activity_show_all: 全部顯示
         label_activity_show_only_comments: 僅顯示留言
         label_activity_show_only_changes: 僅顯示檔案異動
+        label_dismiss_comment: Dismiss
         label_sort_asc: 最新的在最下面
         label_sort_desc: 最新的在最上面
         label_type_to_comment: 留言。輸入 @ 來通知他人。
@@ -44,7 +46,7 @@ zh-TW:
         commented: 已留言
         internal_comment: 內部備註
         internal_journal: 內部留言僅對特定成員群組可見。
-        unsaved_changes_confirmation_message: 您有未儲存的變更。您確實要關閉編輯器嗎？
+        unsaved_changes_confirmation_message: Are you sure you want to dismiss your comment? The content that you have written will be lost.
         internal_comment_confirmation:
           title: 公開此評論？
           heading: 公開此評論？
@@ -52,25 +54,26 @@ zh-TW:
           confirm_button_text: 設為公開
   admin:
     reserved_identifiers:
-      title: Reserved project identifiers
-      lede_html: When a project's identifier is renamed, the previous identifier is kept reserved so that existing links and integrations keep working.<br>Here you can release reserved identifiers so that they may be used by other projects.
+      btn_release: Unreserve
       col_identifier: Identifier
       col_project: Project
       col_reserved: Reserved
-      not_available_in_semantic_mode: Reserved project identifiers are only available in numeric identifier mode.
-      filter_label: Search identifiers
-      btn_release: Release
-      released_notice: Identifier "%{identifier}" has been released.
-      identifier_not_found: The reserved identifier could not be found. It may have already been released or the project may have been deleted. Please refresh the page.
       dialog:
-        title: Release identifier
-        heading: Release "%{identifier}"?
-        description: Releasing this identifier cannot be undone. External links and integrations using it will stop resolving, and the name becomes available for any new project to claim.
         checkbox_label: I understand that this cannot be undone.
-        confirm_button: Release identifier
+        confirm_button: Unreserve identifier
+        description: Unreserving this project identifier cannot be undone. External links and integrations using it will stop resolving, and the name becomes available for any new project to claim.
+        description_with_work_packages:
+          other: Unreserving this project identifier (and its %{count} work package identifiers) cannot be undone. External links and integrations using it will stop resolving, and the name becomes available for any new project to claim.
+        heading: Unreserve "%{identifier}"?
+        title: Unreserve identifier
+      empty_body: When a project's identifier changes, the previous one will appear here so you can unreserve it once it's safe to do so.
       empty_heading: No reserved identifiers
+      filter_label: Search identifiers
+      identifier_not_found: The reserved identifier could not be found. It may have already been unreserved or the project may have been deleted. Please refresh the page.
+      lede_html: When a project's identifier is renamed, the previous identifier is kept reserved so that existing links and integrations keep working.<br>Here you can unreserve identifiers so that they may be used by other projects.
+      released_notice: Identifier "%{identifier}" has been unreserved.
       reserved_ago: "%{time} ago"
-      empty_body: When a project's identifier changes, the previous one will appear here so you can release it once it's safe to do so.
+      title: Reserved project identifiers
     plugins:
       no_results_title_text: 目前沒有安裝任何外掛程式
       no_results_content_text: 請參閱我們的整合和外掛頁面以獲取更多資訊。
@@ -128,7 +131,7 @@ zh-TW:
         trial: 試用
     jemalloc_allocator: Jemalloc 記憶體分配器
     journal_aggregation:
-      caption: 'User actions on a work package (changing description, status, values, or writing comments) are grouped if performed within this period. It also controls notification and [webhook](webhook_link) delays.
+      caption_with_maximum: 'User actions on a work package (changing description, status, values, or writing comments) are grouped if performed within this period. It also controls notification and [webhook](webhook_link) delays. The maximum is %{max} minutes.
 
         '
     import:
@@ -423,6 +426,20 @@ zh-TW:
       new_project:
         project_creation: 專案建立
         notification_text_default: "<p>您好，</p> <p>已建立新專案： projectValue:name</p> <p>謝謝</p>\n"
+      project_custom_field_sections:
+        destroy:
+          error: The section could not be deleted.
+        drop:
+          error: The section could not be reordered.
+        move:
+          error: The section could not be reordered.
+      user_custom_field_sections:
+        destroy:
+          error: The section could not be deleted.
+        drop:
+          error: The section could not be reordered.
+        move:
+          error: The section could not be reordered.
       work_packages_identifier:
         page_header:
           description: Choose between classic numerical work package IDs or semantic project-specific ones that prepend the project identifier to the work package ID.
@@ -666,6 +683,8 @@ zh-TW:
             gain_role: 將獲得角色 '%{new_role}'
             lose_role: 將失去角色 '%{old_role}'
             no_change: 未變更
+    multi_value_more:
+      other: and %{count} more
     text_add_new_custom_field: '要加入客製欄位至一個專案，您必須先建立欄位才能將它們加入至此專案。
 
       '
@@ -710,6 +729,8 @@ zh-TW:
         project: 0 means no restriction
       has_comment:
         project: Allows the user to add a comment related to the project attribute when selecting the value in the project overview.
+      visible_on_user_card:
+        all: When checked, this field's value is shown in the user information card when hovering over a user across the application.
     tab:
       no_results_title_text: 目前沒有自定義的欄位
       no_results_content_text: 建立一個新的自定義欄位
@@ -737,9 +758,11 @@ zh-TW:
         '
       add_button: Add
     detail_blankslate:
-      heading: This department doesn’t have any hierarchy level below
-      description: Add departments or users to create sub-items inside another one.
       add_button: Add
+      description: Add departments or users to create sub-items inside another one.
+      heading: This department doesn’t have any hierarchy level below
+      managed_description: Its sub-departments and members are kept in sync with LDAP and cannot be added manually.
+      managed_heading: This department is managed by LDAP synchronization
     add_department_form:
       name_label: Department name
       name_placeholder: Enter department name
@@ -748,6 +771,9 @@ zh-TW:
       heading: Move user to this department?
       description: "%{user} is currently a member of %{from_department}. Moving them will remove them from that department."
       confirm: Move user
+      managed_title: User managed by LDAP
+      managed_heading: This user cannot be moved
+      managed_description: "%{user} belongs to %{from_department}, which is managed by LDAP synchronization. Their department membership is controlled by LDAP and cannot be changed here."
     context_menu:
       add_sub_department: Add sub-department
       add_user: Add user
@@ -1302,9 +1328,6 @@ zh-TW:
       priority_color_text: |
         點擊以指派或變更此優先順序的顏色。
         可用於在表格中突顯工作套件。
-    admin:
-      default:
-        caption: 將此優先順序設為預設值，將會覆寫先前的預設優先順序。
   reactions:
     action_title: 反應
     add_reaction: 加入反應
@@ -1679,18 +1702,6 @@ zh-TW:
         dependencies: 依賴套件
   activerecord:
     attributes:
-      work_package_semantic_alias:
-        identifier: Identifier
-        work_package: Work package
-      jira_import:
-        projects: Projects
-      import/jira:
-        name: Jira instance name
-        url: Jira instance URL
-        personal_access_token: Personal access token
-      import/jira_open_project_reference:
-        jira: Jira
-        jira_import: Jira Migrator
       announcements:
         show_until: 只顯示到
       attachment:
@@ -1736,6 +1747,7 @@ zh-TW:
         possible_values: 可選擇內容
         regexp: 正規表示式
         searchable: 搜索
+        visible_on_user_card: Show on user card
         admin_only: 僅限管理員
         has_comment: Add a comment text field
       custom_value:
@@ -1770,6 +1782,23 @@ zh-TW:
         row_count: 列數
         column_count: 欄數：
         widgets: 小工具
+      group:
+        group_users: Group users
+        identity_url: 身份識別 URL
+        organizational_unit: Organizational unit
+        parent: Parent group
+      group_detail:
+        organizational_unit: Organizational unit
+        parent: Parent group
+      import/jira:
+        name: Jira instance name
+        personal_access_token: Personal access token
+        url: Jira instance URL
+      import/jira_open_project_reference:
+        jira: Jira
+        jira_import: Jira Migrator
+      jira_import:
+        projects: Projects
       journal:
         notes: 備註
         cause_type: 原因類型
@@ -1798,6 +1827,21 @@ zh-TW:
         resource: 資源
       oauth_client:
         client: 客戶端 ID
+      ordered_persisted_query_entity:
+        persisted_query: Persisted query
+        entity: Entity
+        position: Position
+      persisted_query:
+        name: Name
+        views: Views
+        filters: Filters
+        orders: Orders
+        selects: Selects
+      persisted_view:
+        name: Name
+        query: Query
+        parent: Parent view
+        public: Public
       project:
         active_value:
           true: 解除封存
@@ -1944,14 +1988,8 @@ zh-TW:
         new_password: 新密碼
         password_confirmation: 確認密碼
         consented_at: 同意在
-      group:
-        identity_url: 身份識別 URL
-        parent: Parent group
-        organizational_unit: Organizational unit
-        group_users: Group users
-      group_detail:
-        parent: Parent group
-        organizational_unit: Organizational unit
+      user_custom_field:
+        custom_field_section: Section
       user_preference:
         header_look_and_feel: 介面與外觀
         header_alerts: 提醒
@@ -2050,29 +2088,11 @@ zh-TW:
         type: 類型
         version: 版本
         watcher: 監看者
-      ordered_persisted_query_entity:
-        persisted_query: Persisted query
-        entity: Entity
-        position: Position
-      persisted_query:
-        name: Name
-        views: Views
-        filters: Filters
-        orders: Orders
-        selects: Selects
-      persisted_view:
-        name: Name
-        query: Query
-        parent: Parent view
-        public: Public
-      user_card_view:
-        secondary_info: Secondary info
-        show_status_badge: Show status badge
-        show_email: Show email
-        tag_source: Tag source
-        tag_limit: Tag limit
-        card_size: Card size
-        columns_per_row: Columns per row
+      work_package_version:
+        kind: Kind
+      work_package_semantic_alias:
+        identifier: Identifier
+        work_package: Work package
     errors:
       messages:
         accepted: 必須被接受
@@ -2118,6 +2138,7 @@ zh-TW:
         invalid_url: 不是有效的 URL。
         invalid_url_scheme: '不是受支援的協定 (允許的協定: %{allowed_schemes})。'
         is_for_all_cannot_modify: 適用於所有專案，因此無法修改。
+        ldap_managed: This department is managed by LDAP synchronization and cannot be changed manually.
         less_than_or_equal_to: 必須少於或者等於 %{count}。
         not_available: 由於系統配置所以不可用
         not_before_start_date: must not be before the start date.
@@ -2155,6 +2176,7 @@ zh-TW:
 
           '
         user_already_in_department: User %{user_id} is already a member of department %{department_id}.
+        user_in_ldap_managed_department: This user belongs to a department managed by LDAP synchronization and cannot be moved.
         wrong_length: 長度錯誤 (應該要有 %{count} 個字元)
       models:
         group:
@@ -2162,6 +2184,7 @@ zh-TW:
             parent_id:
               circular_dependency: would create a circular group hierarchy.
               organizational_unit_mismatch: must have the same organizational unit setting as the group.
+              parent_ldap_managed: is managed by LDAP synchronization and cannot have departments added manually.
         ldap_auth_source:
           attributes:
             tls_certificate_string:
@@ -2356,11 +2379,12 @@ zh-TW:
         setting:
           attributes:
             base:
-              working_days_are_missing: 每週至少有一天必須定義為工作天。
-              previous_working_day_changes_unprocessed: 之前對工作日組態的變更尚未套用。
-              hours_per_day_are_missing: 必須定義每天的時數。
               durations_are_not_positive_numbers: 持續時間必須是正數
+              hours_per_day_are_missing: 必須定義每天的時數。
               hours_per_day_is_out_of_bounds: 每天小時數不能超過24
+              journal_aggregation_time_minutes_is_out_of_bounds: Aggregation period must be between %{min} and %{max} minutes.
+              previous_working_day_changes_unprocessed: 之前對工作日組態的變更尚未套用。
+              working_days_are_missing: 每週至少有一天必須定義為工作天。
         status:
           attributes:
             default_done_ratio:
@@ -3185,10 +3209,11 @@ zh-TW:
       disabled: 啟用
       enabled: 停用
   enumeration_activities: 工時紀錄活動
-  enumeration_work_package_priorities: 工作套件優先等級
-  enumeration_reported_project_statuses: 報告狀態
   enumeration_caption_order_changed: 成功更改排序。
   enumeration_could_not_be_moved: 無法移動枚舉。
+  enumeration_default_value_caption: Making this %{model} the default will override the previous default %{model}.
+  enumeration_reported_project_statuses: 報告狀態
+  enumeration_work_package_priorities: 工作套件優先等級
   enterprise_trials:
     dialog_component:
       title: 試用企業版
@@ -3413,6 +3438,7 @@ zh-TW:
       all_projects: All projects
       favorites: Favorites
       leave_project: Leave project
+      no_favorite_projects: You have no favorite projects.
       title: Projects
   toggle_switch:
     label_on: 開啟
@@ -3661,8 +3687,8 @@ zh-TW:
         submit_button: Update alerts
     notifications:
       participating:
+        description: You will always receive a notification whenever you are mentioned, and for changes to work packages you are watching. These cannot be disabled. However, you can choose to enable or disable receiving notifications for changes to work packages that concern you (where you are assignee, accountable or are shared with you).
         title: Participating
-        description: Notifications for all activities in work packages you are involved in (assignee, accountable or watcher).
         submit_button: Update preferences
         mentioned: Mentioned
         watched: Watching
@@ -3670,8 +3696,8 @@ zh-TW:
         responsible: Accountable
         shared: Shared with me
       date_alerts:
+        description: You can configure date alerts for work packages where you are assignee, accountable and/or watcher to be automatically notified a few days prior to approaching or overdue deadlines.
         title: Date alerts
-        description: Automatic notifications when important dates are approaching for open work packages you are involved in (assignee, accountable or watcher).
         submit_button: Update date alerts
         start_date: Start date
         due_date: Finish date
@@ -3685,8 +3711,8 @@ zh-TW:
           three_days_after: 3 days after
           seven_days_after: 7 days after
       non_participating:
+        description: You can additionally choose to be notified of any of the following activities for all projects.
         title: Non-participating
-        description: Additional notifications for activities in all projects.
         submit_button: Update preferences
         work_package_created: New work packages
         work_package_commented: All new comments
@@ -3694,8 +3720,8 @@ zh-TW:
         work_package_prioritized: All priority changes
         work_package_scheduled: All date changes
       project_specific_settings:
-        title: Project-specific notification settings
-        description: These project-specific settings override default settings above.
+        description: You can fine-tune your notification settings to only be notified of certain events in specific projects. Add a project below and choose which events should trigger a notification for you. These project-specific settings override default settings above.
+        title: Project-specific notifications
         add_button: Add project-specific notifications
         dialog_title: Add project-specific notifications
         list_header: Projects with specific notifications
@@ -4067,7 +4093,7 @@ zh-TW:
   label_custom_favicon: 自訂圖示
   label_custom_touch_icon: 自訂觸控圖示
   label_departments: Organization
-  label_departments_description_html: 'Define your company’s structure by creating departments and sub-departments in a hierarchical way. This allows you to reflect reporting lines and maintain a clear, structured overview of your organization within OpenProject. You can also import an existing organization structure through [LDAP group synchronisation](ldap_docs_article).
+  label_departments_description_html: 'Define your company’s structure by creating departments and sub-departments in a hierarchical way. This allows you to reflect reporting lines and maintain a clear, structured overview of your organization within OpenProject. You can also import an existing organization structure through [LDAP department synchronization](ldap_docs_article).
 
     '
   label_logout: 登出
@@ -4075,6 +4101,7 @@ zh-TW:
   label_main_menu: 側邊選單
   label_manage: 管理
   label_manage_groups: 管理群組
+  label_managed_by_ldap: Managed by LDAP synchronization
   label_managed_repositories_vendor: 已管理的 %{vendor} 版本庫
   label_mathematical_operators: 數學運算元
   label_max_size: 最大容量
@@ -5392,6 +5419,7 @@ zh-TW:
     passwords: 密碼
     project_attributes:
       heading: 專案屬性
+      label_add_attribute: Add a project attribute
       label_for_all_projects: 所有專案
       label_new_attribute: 專案屬性
       label_new_section: 區段
@@ -5491,8 +5519,30 @@ zh-TW:
     session: 連線
     user:
       default_preferences: 默認偏好設置
-      display_format: 顯示格式
       deletion: 消除
+      display_format: 顯示格式
+    user_custom_field_sections:
+      built_in_attribute_row_component:
+        label_built_in: Built-in
+        label_built_in_attribute_actions: Built-in attribute actions
+      custom_field_row_component:
+        label_user_custom_field_actions: User attribute actions
+      show_component:
+        label_add_attribute: Add a user attribute
+        label_edit_section: Edit title
+        label_no_user_custom_fields: No user attributes defined in this section
+        label_section_actions: Section actions
+    user_custom_fields:
+      header_component:
+        attribute_filter:
+          label: Filter by attribute name…
+        heading_description: These user attributes appear on user profiles and information cards. You can add new attributes, group them into sections and re-order them.
+      heading: User attributes
+      label_new_attribute: User attribute
+      label_new_section: Section
+      label_untitled_section: User attributes
+      new:
+        heading: New attribute
     working_days:
       section_work_week: 工作週
       section_holidays_and_closures: 假日和休息日
