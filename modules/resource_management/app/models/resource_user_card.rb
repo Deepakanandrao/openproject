@@ -28,7 +28,6 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-# TODO - OP-19587: support placeholder users (results, cards, add/allocate forms)
 class ResourceUserCard < PersistedView
   include ResourceManagement::Categorized
 
