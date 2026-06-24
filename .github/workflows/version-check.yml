@@ -30,7 +30,8 @@ jobs:
         id: version-check
         env:
           PR_BODY: ${{ github.event.pull_request.body }}
-        run: ./script/ci/version_check.sh "$PR_BODY"
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: ./script/ci/version_check.sh "$PR_BODY" "$PR_TITLE"
 
       - name: Add comment if versions differ
         if: steps.version-check.outputs.version_mismatch == 'true'
