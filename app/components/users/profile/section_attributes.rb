@@ -67,7 +67,11 @@ module Users
         value = built_in_value(key)
         return if value.blank?
 
-        SectionAttribute.new(label: User.human_attribute_name(key), value:)
+        SectionAttribute.new(label: User.human_attribute_name(key), value:, icon: built_in_icon(key))
+      end
+
+      def built_in_icon(key)
+        :briefcase if key == "department"
       end
 
       def custom_field_attribute(custom_field)
