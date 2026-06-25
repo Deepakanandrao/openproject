@@ -119,6 +119,12 @@ departments:
       - reference: :user__adam_admin
         firstname: Adam
         lastname: Admin
+  - reference: :department__quality_assurance
+    t_name: Quality Assurance
+    members:
+      - reference: :user__tessa_tester
+        firstname: Tessa
+        lastname: Tester
 
 project_custom_field_sections:
   - reference: :default_project_attributes
@@ -137,6 +143,8 @@ projects:
       - principal: :user__marko_marketing
         role: :default_role_member
       - principal: :user__wanda_web
+        role: :default_role_member
+      - principal: :user__tessa_tester
         role: :default_role_member
       - principal: :department__events_operations
         role: :default_role_member
@@ -394,6 +402,17 @@ projects:
             relations:
               - to: :set_date_and_location_of_conference
                 type: follows
+      - start: 15
+        t_subject: Test and quality-check the conference website
+        assigned_to: :user__tessa_tester
+        description: ''
+        status: :default_status_new
+        type: :default_type_task
+        duration: 3
+        schedule_manually: false
+        relations:
+          - to: :setup_conference_website
+            type: follows
       - start: 15
         t_subject: Conference
         description: ''

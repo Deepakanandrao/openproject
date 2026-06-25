@@ -54,7 +54,7 @@ RSpec.describe RootSeeder,
     it "creates the demo data" do # rubocop:disable RSpec/MultipleExpectations
       expect(Project.count).to eq 2
       expect(EnabledModule.count).to eq 19
-      expect(WorkPackage.count).to eq 36
+      expect(WorkPackage.count).to eq 37
       expect(Wiki.count).to eq 2
       expect(Query.having_views.count).to eq 8
       expect(View.where(type: "work_packages_table").count).to eq 5
@@ -74,8 +74,8 @@ RSpec.describe RootSeeder,
 
     it "creates the company departments with their member users" do
       departments = Group.organizational_units
-      expect(departments.count).to eq 6
-      expect(departments.where_detail(parent_id: nil).count).to eq 4
+      expect(departments.count).to eq 7
+      expect(departments.where_detail(parent_id: nil).count).to eq 5
 
       # Compare records, not names: the names are translatable (t_name) and get prefixed in the
       # translated language test contexts.
@@ -119,6 +119,34 @@ RSpec.describe RootSeeder,
       # Assigned to a whole department (group member of the project).
       expect(data.find_reference(:organize_open_source_conference).assigned_to)
         .to eq(data.find_reference(:department__events_operations))
+    end
+
+    it "seeds working hours and vacations for demo users" do
+      data = root_seeder.seed_data
+
+      # Schedule change: three dated schedules for the same user.
+      expect(data.find_reference(:user__dora_design).working_hours.count).to eq 3
+      # Single schedule.
+      expect(data.find_reference(:user__marko_marketing).working_hours.count).to eq 1
+      # No schedule.
+      expect(data.find_reference(:user__connie_comms).working_hours).to be_empty
+      # Vacation seeded.
+      expect(data.find_reference(:user__wanda_web).non_working_times.count).to eq 1
+    end
+
+    it "includes a QA department with a QA user and a QA work package" do
+      data = root_seeder.seed_data
+
+      qa_department = data.find_reference(:department__quality_assurance)
+      tessa = data.find_reference(:user__tessa_tester)
+      expect(qa_department).to be_organizational_unit
+      expect(qa_department.users).to include(tessa)
+
+      qa_work_package = WorkPackage.find_by(assigned_to: tessa)
+      expect(qa_work_package).to be_present
+      # The QA task follows the website setup task.
+      website = data.find_reference(:setup_conference_website)
+      expect(Relation.follows.exists?(from_id: qa_work_package.id, to_id: website.id)).to be true
     end
 
     it "links work packages to their version" do
@@ -234,7 +262,7 @@ RSpec.describe RootSeeder,
 
       it "does not create additional data and does not raise any errors" do # rubocop:disable RSpec/MultipleExpectations
         expect(Project.count).to eq 2
-        expect(WorkPackage.count).to eq 36
+        expect(WorkPackage.count).to eq 37
         expect(Wiki.count).to eq 2
         expect(Query.having_views.count).to eq 8
         expect(View.where(type: "work_packages_table").count).to eq 5
@@ -263,7 +291,7 @@ RSpec.describe RootSeeder,
 
       it "does not create additional data and does not raise any errors" do
         expect(Project.count).to eq 2
-        expect(WorkPackage.count).to eq 36
+        expect(WorkPackage.count).to eq 37
         expect(Wiki.count).to eq 2
       end
     end
@@ -374,7 +402,7 @@ RSpec.describe RootSeeder,
     end
 
     it "creates 4 additional work packages for development" do
-      expect(WorkPackage.count).to eq 40
+      expect(WorkPackage.count).to eq 41
     end
 
     it "creates 1 project with custom fields" do
@@ -403,7 +431,7 @@ RSpec.describe RootSeeder,
 
     it "seeds without any errors, but locks the admin user", :aggregate_failures do
       expect(Project.count).to eq 2
-      expect(WorkPackage.count).to eq 36
+      expect(WorkPackage.count).to eq 37
       expect(root_seeder.admin_user).to be_locked
     end
   end
