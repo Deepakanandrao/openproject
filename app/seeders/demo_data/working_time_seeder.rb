@@ -38,6 +38,7 @@ module DemoData
     SUMMER_HALF_DAYS = { monday: 240, tuesday: 240, wednesday: 240, thursday: 240, friday: 240, saturday: 0, sunday: 0 }.freeze
     THREE_DAY_WEEK   = { monday: 480, tuesday: 480, wednesday: 480, thursday: 0,   friday: 0,   saturday: 0, sunday: 0 }.freeze
     FOUR_DAY_WEEK    = { monday: 480, tuesday: 480, wednesday: 480, thursday: 480, friday: 0,   saturday: 0, sunday: 0 }.freeze
+    VERY_LOW_HOURS   = { monday: 120, tuesday: 0,   wednesday: 120, thursday: 0,   friday: 120, saturday: 0, sunday: 0 }.freeze
 
     # Schedules per user reference. Each entry is [minutes, valid_from, availability_factor], where
     # valid_from is [month, day] within the current year or nil for the start of the year. Multiple
@@ -47,9 +48,9 @@ module DemoData
       user__marko_marketing: [[FULL_TIME, nil, 100]],
       user__wanda_web: [[FULL_TIME, nil, 100]],
       user__evan_events: [[FULL_TIME, nil, 100]],
-      user__ivan_it: [[FULL_TIME, nil, 100]],
+      user__ivan_it: [[FULL_TIME, nil, 80]],               # full-time hours, 80% available
       user__petra_press: [[THREE_DAY_WEEK, nil, 100]],     # part-time three-day week
-      user__fritz_finance: [[FULL_TIME, nil, 80]],         # full-time hours, 80% available
+      user__fritz_finance: [[VERY_LOW_HOURS, nil, 100]],   # part-time, very low hours (6h/week)
       user__dora_design: [                                 # half days over the summer, full otherwise
         [FULL_TIME, nil, 100],
         [SUMMER_HALF_DAYS, [6, 1], 100],

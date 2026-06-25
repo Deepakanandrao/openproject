@@ -38,6 +38,7 @@ RSpec.describe DemoData::WorkingTimeSeeder do
   let(:marko) { create(:user) }  # single full-time schedule + vacation
   let(:dora) { create(:user) }   # schedule change over the summer
   let(:olga) { create(:user) }   # schedule change (four-day week)
+  let(:fritz) { create(:user) }  # part-time, very low hours
   let(:connie) { create(:user) } # no schedule
   let(:polly) { create(:user) }  # no schedule, but a vacation
 
@@ -45,6 +46,7 @@ RSpec.describe DemoData::WorkingTimeSeeder do
     seed_data.store_reference(:user__marko_marketing, marko)
     seed_data.store_reference(:user__dora_design, dora)
     seed_data.store_reference(:user__olga_ops, olga)
+    seed_data.store_reference(:user__fritz_finance, fritz)
     seed_data.store_reference(:user__connie_comms, connie)
     seed_data.store_reference(:user__polly_pr, polly)
 
@@ -65,6 +67,11 @@ RSpec.describe DemoData::WorkingTimeSeeder do
     expect(schedules.map(&:valid_from).uniq.count).to eq 3
 
     expect(olga.working_hours.count).to eq 2
+  end
+
+  it "gives Fritz Finance a part-time schedule with very low hours" do
+    schedule = fritz.working_hours.sole
+    expect(schedule.weekly_working_hours).to eq 6
   end
 
   it "leaves users without a schedule untouched" do
