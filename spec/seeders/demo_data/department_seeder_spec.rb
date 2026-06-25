@@ -40,11 +40,22 @@ RSpec.describe DemoData::DepartmentSeeder do
       departments:
       - name: Marketing & Communications
         reference: :marketing
+        members:
+          - reference: :marko_marketing
+            firstname: Marko
+            lastname: Marketing
       - name: Public Relations
         reference: :public_relations
         parent: :marketing
+        members:
+          - reference: :petra_press
+            firstname: Petra
+            lastname: Press
     SEEDING_DATA_YAML
   end
+
+  # `Groups::AddUsersService` runs under an admin (`Seeder#admin_user`).
+  before { create(:admin) }
 
   it "creates a root department as an organizational unit with the given name" do
     seeder.seed!
@@ -63,6 +74,23 @@ RSpec.describe DemoData::DepartmentSeeder do
     expect(child).to have_attributes(lastname: "Public Relations", organizational_unit: true)
     expect(child.parent).to eq(root)
     expect(root.children).to include(child)
+  end
+
+  it "creates the member users with a derived login and mail and adds them to their department" do
+    seeder.seed!
+
+    marko = seed_data.find_reference(:marko_marketing)
+    expect(marko).to have_attributes(
+      firstname: "Marko",
+      lastname: "Marketing",
+      login: "marko.marketing",
+      mail: "marko.marketing@example.com",
+      status: "active"
+    )
+
+    expect(seed_data.find_reference(:marketing).users).to include(marko)
+    expect(seed_data.find_reference(:public_relations).users)
+      .to include(seed_data.find_reference(:petra_press))
   end
 
   it "is not applicable once an organizational unit already exists" do

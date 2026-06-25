@@ -46,6 +46,7 @@ module DemoData
       seed_data.each("departments") do |department_data|
         department = create_department(department_data)
         seed_data.store_reference(department_data["reference"], department)
+        seed_members(department, department_data)
       end
     end
 
@@ -62,6 +63,41 @@ module DemoData
       return if reference.blank?
 
       seed_data.find_reference(reference).id
+    end
+
+    def seed_members(department, department_data)
+      users = Array(department_data["members"]).map do |member_data|
+        user = create_user(member_data)
+        seed_data.store_reference(member_data["reference"], user)
+        user
+      end
+
+      return if users.empty?
+
+      Groups::AddUsersService
+        .new(department, current_user: admin_user)
+        .call(ids: users.map(&:id), send_notifications: false)
+        .on_failure { |result| raise result.message }
+    end
+
+    def create_user(member_data)
+      firstname = member_data["firstname"]
+      lastname = member_data["lastname"]
+      login = "#{firstname}.#{lastname}".downcase
+
+      User.new(
+        login:,
+        firstname:,
+        lastname:,
+        mail: "#{login}@example.com",
+        status: User.statuses[:active],
+        language: I18n.locale.to_s,
+        password: login,
+        force_password_change: false
+      ).tap do |user|
+        user.notification_settings.build(assignee: true, responsible: true, mentioned: true, watched: true)
+        user.save!(validate: false)
+      end
     end
   end
 end

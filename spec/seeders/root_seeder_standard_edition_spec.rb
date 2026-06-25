@@ -72,6 +72,43 @@ RSpec.describe RootSeeder,
       expect(DocumentType.count).to be >= 3 # at least the 3 default types
     end
 
+    it "creates the company departments with their member users" do
+      departments = Group.organizational_units
+      expect(departments.count).to eq 6
+      expect(departments.where_detail(parent_id: nil).count).to eq 4
+
+      # Compare records, not names: the names are translatable (t_name) and get prefixed in the
+      # translated language test contexts.
+      marketing = root_seeder.seed_data.find_reference(:department__marketing_communications)
+      expect(marketing.children).to contain_exactly(
+        root_seeder.seed_data.find_reference(:department__public_relations),
+        root_seeder.seed_data.find_reference(:department__design_content)
+      )
+
+      fritz = root_seeder.seed_data.find_reference(:user__fritz_finance)
+      expect(fritz).to have_attributes(login: "fritz.finance", mail: "fritz.finance@example.com", status: "active")
+      expect(root_seeder.seed_data.find_reference(:department__finance_administration).users)
+        .to include(fritz)
+    end
+
+    it "adds members to the demo project directly and through their department" do
+      demo_project = Project.find_by(identifier: "demo-project")
+
+      marko = root_seeder.seed_data.find_reference(:user__marko_marketing) # direct member
+      finance = root_seeder.seed_data.find_reference(:department__finance_administration) # group member
+      fritz = root_seeder.seed_data.find_reference(:user__fritz_finance) # member via Finance department
+
+      # Direct member: roles assigned directly, not inherited from a group.
+      marko_member = demo_project.members.find_by(user_id: marko.id)
+      expect(marko_member.member_roles.map(&:inherited_from)).to all(be_nil)
+
+      # The department group itself is a member (groups are excluded from #members, hence #memberships),
+      # and its users inherit the role from it.
+      expect(demo_project.memberships.exists?(user_id: finance.id)).to be true
+      fritz_member = demo_project.members.find_by(user_id: fritz.id)
+      expect(fritz_member.member_roles.map(&:inherited_from)).to all(be_present)
+    end
+
     it "links work packages to their version" do
       count_by_version = WorkPackage.joins(:version).group("versions.name").count
       # testing with strings would fail for the German language test

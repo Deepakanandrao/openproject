@@ -65,18 +65,60 @@ priorities:
 departments:
   - reference: :department__marketing_communications
     t_name: Marketing & Communications
+    members:
+      - reference: :user__marko_marketing
+        firstname: Marko
+        lastname: Marketing
+      - reference: :user__connie_comms
+        firstname: Connie
+        lastname: Comms
   - reference: :department__public_relations
     t_name: Public Relations
     parent: :department__marketing_communications
+    members:
+      - reference: :user__petra_press
+        firstname: Petra
+        lastname: Press
+      - reference: :user__polly_pr
+        firstname: Polly
+        lastname: PR
   - reference: :department__design_content
     t_name: Design & Content
     parent: :department__marketing_communications
+    members:
+      - reference: :user__dora_design
+        firstname: Dora
+        lastname: Design
+      - reference: :user__carl_content
+        firstname: Carl
+        lastname: Content
   - reference: :department__events_operations
     t_name: Events & Operations
+    members:
+      - reference: :user__evan_events
+        firstname: Evan
+        lastname: Events
+      - reference: :user__olga_ops
+        firstname: Olga
+        lastname: Ops
   - reference: :department__web_it
     t_name: Web & IT
+    members:
+      - reference: :user__wanda_web
+        firstname: Wanda
+        lastname: Web
+      - reference: :user__ivan_it
+        firstname: Ivan
+        lastname: IT
   - reference: :department__finance_administration
     t_name: Finance & Administration
+    members:
+      - reference: :user__fritz_finance
+        firstname: Fritz
+        lastname: Finance
+      - reference: :user__adam_admin
+        firstname: Adam
+        lastname: Admin
 
 project_custom_field_sections:
   - reference: :default_project_attributes
@@ -90,6 +132,16 @@ projects:
     status_code: on_track
     t_status_explanation: All tasks are on schedule. The people involved know their tasks. The system is completely set up.
     t_description: This is a short summary of the goals of this demo project.
+    # Some people join the project directly, others through their whole department (group).
+    members:
+      - principal: :user__marko_marketing
+        role: :default_role_member
+      - principal: :user__wanda_web
+        role: :default_role_member
+      - principal: :department__events_operations
+        role: :default_role_member
+      - principal: :department__finance_administration
+        role: :default_role_member
     project_phases:
       - definition: :default_project_phase_initiating
         duration: 20
