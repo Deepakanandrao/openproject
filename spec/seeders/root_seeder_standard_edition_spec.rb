@@ -167,7 +167,7 @@ RSpec.describe RootSeeder,
       expect(default_modules).to include("reporting_module")
     end
 
-    it "creates a weekly recurring meeting with the first two instances" do
+    it "creates a weekly recurring meeting with several instances" do
       expect(RecurringMeeting.count).to eq 1
 
       # The template is created and is no longer in draft state.
@@ -178,14 +178,34 @@ RSpec.describe RootSeeder,
       expect(template.agenda_items.count).to eq 9
       expect(template.agenda_items.sum(:duration_in_minutes)).to eq 60
 
-      # The first instance is created synchronously by the finalizer seeder,
-      # the second by the chained InitNextOccurrenceJob.
-      expect(Meeting.where(template: false).count).to eq 2
+      # The first two instances come from the finalizer seeder (and its chained job), the rest
+      # are instantiated by the MeetingOccurrencesSeeder.
+      expect(Meeting.where(template: false).count).to eq 5
       Meeting.not_templated.find_each do |instance|
         expect(instance.duration).to eq 1.0
         expect(instance.agenda_items.count).to eq 9
         expect(instance.agenda_items.sum(:duration_in_minutes)).to eq 60
       end
+    end
+
+    it "gives the meeting participants and varies their responses across occurrences" do
+      series = RecurringMeeting.first
+
+      # The template carries the regular attendees, all accepting by default.
+      expect(series.template.participants.count).to eq 5
+      expect(series.template.participants).to all(be_participation_accepted)
+
+      occurrences = series.meetings.not_templated.order(:start_time).to_a
+
+      # The first occurrence inherited the template participants, everybody accepted.
+      expect(occurrences.first.participants.count).to eq 5
+      expect(occurrences.first.participants).to all(be_participation_accepted)
+
+      # A later occurrence has declined/tentative responses and extra one-off guests.
+      second = occurrences.second
+      expect(second.participants.count).to eq 7 # 5 regulars + 2 one-off guests
+      statuses = second.participants.pluck(:participation_status)
+      expect(statuses).to include("declined", "tentative")
     end
 
     it "creates different types of queries" do

@@ -61,7 +61,9 @@ module DemoData
         DemoData::WorkPackageBoardSeeder,
         ::Meetings::DemoData::MeetingSeriesSeeder,
         ::Meetings::DemoData::MeetingAgendaItemsSeeder,
-        ::Meetings::DemoData::MeetingSeriesFinalizerSeeder
+        ::Meetings::DemoData::MeetingParticipantsSeeder,
+        ::Meetings::DemoData::MeetingSeriesFinalizerSeeder,
+        ::Meetings::DemoData::MeetingOccurrencesSeeder
       ]
     end
 
