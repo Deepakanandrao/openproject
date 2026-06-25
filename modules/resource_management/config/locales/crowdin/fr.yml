@@ -36,8 +36,8 @@ fr:
     models:
       resource_allocation: Affectation des ressources
       resource_planner: Planificateur de ressources
+      resource_user_card: Fiches des utilisateurs
       resource_work_package_list: Liste des lots de travaux
-      user_card: Fiches des utilisateurs
   button_next: Suivant
   label_resource_management: Planification des ressources
   permission_allocate_user_resources: Attribuer des ressources aux utilisateurs
@@ -115,13 +115,35 @@ fr:
       private: Privé
       public: Public
     sub_views: Vues de ce planificateur de ressources
+    user_allocations_dialog:
+      allocate_work_package: Attribuer un lot de travail
+      blank: Cet utilisateur n'a aucun lot de travail qui lui a été attribué.
+      other_work_packages:
+        one: 1 autre lot de travail
+        other: "%{count} autres lots de travail"
+      title: Utilisation
+    user_card_list:
+      add_user_dialog:
+        title: Ajouter un utilisateur
+      blank:
+        description: Aucun utilisateur ne correspond pour l'instant aux critères de filtrage de cette vue.
+        manual_description: Aucun utilisateur n'a encore été ajouté à cette vue.
+        title: Aucun utilisateur à afficher
+      card:
+        remove: Supprimer l'utilisateur
+        remove_confirmation: Souhaitez-vous supprimer cet utilisateur de la liste ?
+      subheader:
+        resource: Ressource
+        settings: Configurer la vue
+      utilization:
+        label: Utilisation
     view_types:
+      resource_user_card:
+        caption: Créez une vue basée sur des utilisateurs et affichez leurs informations et leur affectation dans une liste de fiches des utilisateurs
+        label: Liste des fiches des utilisateurs
       resource_work_package_list:
         caption: Créez une vue basée sur des lots de travaux et affichez leurs informations et leur affectation dans une liste
         label: Liste des lots de travaux
-      user_card:
-        caption: Créez une vue basée sur des utilisateurs et affichez leurs informations et leur affectation dans une liste de fiches des utilisateurs
-        label: Liste des fiches des utilisateurs
     work_package_allocations_dialog:
       allocate_resource: Allouer une ressource
       context_menu_label: Actions d'allocation
