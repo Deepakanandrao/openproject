@@ -68,10 +68,8 @@ class MeetingsController < ApplicationController
 
       format.turbo_stream do
         update_via_turbo_stream(
-          component: Meetings::MeetingTimeFilterComponent.new(query: @query, project: @project)
-        )
-        update_via_turbo_stream(
-          component: Meetings::MeetingFilterButtonComponent.new(query: @query, project: @project, disable_buttons: false)
+          component: Meetings::IndexSubHeaderComponent.new(query: @query, project: @project, params:, lazy: false),
+          method: "morph"
         )
 
         current_url = url_for(params.permit(:controller, :action, :filters, :project_id, :sortBy, :upcoming))
