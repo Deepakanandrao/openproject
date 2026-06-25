@@ -178,6 +178,11 @@ RSpec.describe RootSeeder,
       expect(template.agenda_items.count).to eq 9
       expect(template.agenda_items.sum(:duration_in_minutes)).to eq 60
 
+      # Agenda items are presented by several different participants, not just the admin,
+      # while the meeting organizer (admin) remains the author of every item.
+      expect(template.agenda_items.pluck(:presenter_id).uniq.count).to be > 1
+      expect(template.agenda_items.pluck(:author_id).uniq).to eq([root_seeder.admin_user.id])
+
       # The first two instances come from the finalizer seeder (and its chained job), the rest
       # are instantiated by the MeetingOccurrencesSeeder.
       expect(Meeting.where(template: false).count).to eq 5
