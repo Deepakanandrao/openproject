@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# -- copyright
+#-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
@@ -26,36 +26,18 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-# ++
+#++
 
-module Meetings
-  module QueryLoading
-    private
+module Queries::Operators
+  class Past < Base
+    label "past"
+    set_symbol "past"
+    require_value false
 
-    def build_meeting_query
-      query = ParamsToQueryService.new(Meeting, current_user).call(params)
-      query.where("project_id", "=", @project.id) if @project
-      apply_default_filter_if_none_given(query)
-      apply_default_time_filter_and_sort(query)
-      query
-    end
+    extend DateRangeClauses
 
-    def apply_default_time_filter_and_sort(query)
-      time_filter = query.filters.find { |f| f.name == :time }
-
-      if time_filter.nil?
-        # Only default to upcoming on the initial, unfiltered view
-        query.where("time", Queries::Operators::Upcoming.symbol, []) unless params.key?(:filters)
-        query.order(start_time: :asc)
-      elsif time_filter.past? && query.orders.none?
-        query.order(start_time: :desc)
-      end
-    end
-
-    def apply_default_filter_if_none_given(query)
-      return if params.key?(:filters)
-
-      query.where("invited_user_id", "=", [User.current.id.to_s])
+    def self.sql_for_field(_values, db_table, db_field)
+      relative_date_range_clause(db_table, db_field, nil, -1)
     end
   end
 end

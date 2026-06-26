@@ -144,7 +144,7 @@ module Meetings
     def attendee_filter
       [
         { attended_user_id: { operator: "=", values: [User.current.id.to_s] } },
-        { time: { operator: "=", values: ["past"] } }
+        { time: { operator: Queries::Operators::Past.symbol, values: [] } }
       ].to_json
     end
 

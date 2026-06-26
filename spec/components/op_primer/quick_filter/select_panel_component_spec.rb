@@ -190,7 +190,7 @@ RSpec.describe OpPrimer::QuickFilter::SelectPanelComponent, type: :component do
   end
 
   context "when other filters are active" do
-    let(:query) { build_meeting_query.where("time", "=", ["future"]) }
+    let(:query) { build_meeting_query.where("time", "past", []) }
 
     before { render_with_items }
 
