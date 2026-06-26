@@ -60,6 +60,17 @@ module DevelopmentData
         ["Release preparation",          "admin",         :full]
       ].freeze
 
+      # APIV3 filter JSON for the automatically filtered timeline: open work packages.
+      OPEN_STATUS_FILTER = %([{"status_id":{"operator":"o","values":[]}}])
+
+      # Hand-picked timeline contents, in a deliberately non-chronological order
+      # to showcase the manual reordering.
+      HANDPICKED_TIMELINE = [
+        "Implement timeline frontend",
+        "Design timeline data model",
+        "Build allocation API"
+      ].freeze
+
       def seed_data!
         print_status "    ↳ Creating the #{PROJECT_IDENTIFIER} project with resource allocations"
 
@@ -67,7 +78,8 @@ module DevelopmentData
         add_members
         seed_working_hours
         work_packages = seed_work_packages
-        seed_planner(work_packages)
+        planner = seed_planner(work_packages)
+        seed_timeline_views(planner, work_packages)
         seed_allocations(work_packages)
       end
 
@@ -153,6 +165,37 @@ module DevelopmentData
         list.save!
 
         planner.update!(default_view_id: list.id)
+        planner
+      end
+
+      def seed_timeline_views(planner, work_packages)
+        seed_filtered_timeline(planner)
+        seed_handpicked_timeline(planner, work_packages)
+      end
+
+      # Configure the query the same way the UI does, so seeded views behave
+      # exactly like user-created ones.
+      def seed_filtered_timeline(planner)
+        view = ResourceWorkPackageTimeline.new(
+          name: "Work packages timeline", parent: planner, project:, principal: planner_owner
+        )
+        view.query = view.build_default_query
+        view.apply_query_configuration(filters_json: OPEN_STATUS_FILTER, filter_mode: "automatic")
+        view.save!
+      end
+
+      def seed_handpicked_timeline(planner, work_packages)
+        view = ResourceWorkPackageTimeline.new(
+          name: "Hand-picked timeline", parent: planner, project:, principal: planner_owner
+        )
+        view.query = view.build_default_query
+        view.apply_query_configuration(filters_json: nil, filter_mode: "manual")
+        view.save!
+
+        HANDPICKED_TIMELINE.each_with_index do |subject, index|
+          work_package = work_packages[subject]
+          view.query.ordered_work_packages.create!(work_package:, position: index + 1) if work_package
+        end
       end
 
       def seed_allocations(work_packages)
