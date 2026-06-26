@@ -47,6 +47,7 @@ class StubIndexController extends Controller {
     isWithinNotificationCenter: () => false,
     isWithinSplitScreen: () => false,
     isJournalsContainerScrolledToBottom: () => false,
+    anchorScrollOffset: () => 0,
   };
 }
 
@@ -103,6 +104,7 @@ describe('Activities tab auto-scrolling controller', () => {
     index.viewPortService.scrollableContainer = scroller;
 
     return {
+      index,
       scroller,
       el131: ctx.container.querySelector<HTMLElement>('[data-anchor-comment-id="131"]')!,
       el139: ctx.container.querySelector<HTMLElement>('[data-anchor-comment-id="139"]')!,
@@ -148,20 +150,22 @@ describe('Activities tab auto-scrolling controller', () => {
     expect(scrollTo).toHaveBeenCalledWith(expect.objectContaining({ behavior: 'smooth' }));
   });
 
-  it('scrolls by the comment offset within the container, independent of offsetParent', async () => {
-    const { scroller, el139 } = await renderActivities();
+  it('scrolls by the comment offset within the container, less the anchor offset', async () => {
+    const { index, scroller, el139 } = await renderActivities();
 
     // The scroll container is offset from the viewport and already scrolled; the
     // comment's offsetParent is some other positioned ancestor, so the target must
-    // be derived from the rect delta, not offsetTop.
+    // be derived from the rect delta, not offsetTop. The viewport service supplies
+    // the offset that seats the comment below the pinned header.
     scroller.getBoundingClientRect = () => ({ top: 100 }) as DOMRect;
     el139.getBoundingClientRect = () => ({ top: 400 }) as DOMRect;
     Object.defineProperty(scroller, 'scrollTop', { value: 50, configurable: true });
+    index.viewPortService.anchorScrollOffset = () => 185;
 
     changeHash('#comment-139');
 
-    // 50 (current scroll) + (400 - 100) (comment offset within container) - 70 (header clearance)
-    expect(scrollTo).toHaveBeenCalledWith({ top: 280, behavior: 'smooth' });
+    // 50 (current scroll) + (400 - 100) (offset within container) - 185 (anchor offset)
+    expect(scrollTo).toHaveBeenCalledWith({ top: 165, behavior: 'smooth' });
   });
 
   it('reacts to every hash change, moving the highlight rather than stacking it', async () => {
