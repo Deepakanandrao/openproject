@@ -48,13 +48,19 @@ module ::ResourceManagement
         project: @project,
         work_package: context_work_package,
         allocation: prefilled_allocation,
+        start_date: params[:start_date],
+        end_date: params[:end_date],
         resource_planner_id: params[:resource_planner_id]
       )
     end
 
     def step
-      # Pre-select the autocompleter when the dialog was opened from a work package.
-      render_allocation_step(ResourceAllocation.new(entity: context_work_package))
+      # Pre-select the autocompleter when the dialog was opened from a work package,
+      # and carry any date range picked on the timeline into the new allocation.
+      render_allocation_step(
+        ResourceAllocation.new(entity: context_work_package,
+                               start_date: params[:start_date], end_date: params[:end_date])
+      )
     end
 
     # Recomputes the inline "outside dates" warning whenever a date field

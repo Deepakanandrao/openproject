@@ -51,6 +51,16 @@ RSpec.describe "ResourceAllocations requests",
       expect(response.body).to include('value="principal"')
       expect(response.body).to include('value="filter"')
     end
+
+    it "carries a timeline date selection as hidden fields through the kind step" do
+      get new_project_resource_allocation_path(project, work_package_id: work_package.id,
+                                                        start_date: "2026-06-10", end_date: "2026-06-12"),
+          as: :turbo_stream
+
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include('name="start_date"', 'value="2026-06-10"')
+      expect(response.body).to include('name="end_date"', 'value="2026-06-12"')
+    end
   end
 
   describe "GET step" do
@@ -75,6 +85,21 @@ RSpec.describe "ResourceAllocations requests",
         expect(response).to have_http_status(:ok)
         expect(response.body).to include("resource_allocation[filter_name]")
         expect(response.body).to include('name="filters"')
+      end
+    end
+
+    context "with start_date and end_date carried from a timeline selection" do
+      it "pre-fills the date fields from the params" do
+        get step_project_resource_allocations_path(project,
+                                                   allocation_kind: "principal",
+                                                   work_package_id: work_package.id,
+                                                   start_date: "2026-06-10",
+                                                   end_date: "2026-06-12"),
+            as: :turbo_stream
+
+        expect(response).to have_http_status(:ok)
+        expect(response.body).to include("2026-06-10")
+        expect(response.body).to include("2026-06-12")
       end
     end
   end
