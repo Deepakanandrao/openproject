@@ -49,6 +49,7 @@ module ResourceManagement
             end: (allocation.end_date + 1).iso8601, # FullCalendar treats the end as exclusive
             extendedProps: {
               overbooked: overbooked.include?(allocation.id),
+              editUrl: edit_url_for(allocation),
               html: render_bar(allocation, visible)
             }
           }
@@ -60,6 +61,18 @@ module ResourceManagement
       end
 
       private
+
+      def edit_url_for(allocation)
+        return unless may_allocate?
+
+        edit_project_resource_allocation_path(@project, allocation)
+      end
+
+      def may_allocate?
+        return @may_allocate if defined?(@may_allocate)
+
+        @may_allocate = current_user.allowed_in_project?(:allocate_user_resources, @project)
+      end
 
       # One background event per work package spanning the days it is active,
       # snapped to whole columns of the requested granularity and clamped to the view.

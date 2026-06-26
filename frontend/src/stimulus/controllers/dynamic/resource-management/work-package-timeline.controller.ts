@@ -200,6 +200,12 @@ export default class WorkPackageTimelineController extends Controller {
         this.openDialog(url.toString());
         this.calendar?.unselect();
       },
+      // The feed only sets editUrl on allocation bars the user may edit, so
+      // background spans and read-only bars carry none and stay inert.
+      eventClick: (info) => {
+        const editUrl = info.event.extendedProps.editUrl as string | undefined;
+        if (editUrl) { this.openDialog(editUrl); }
+      },
     });
 
     this.calendar.render();

@@ -35,7 +35,8 @@ RSpec.describe "Work package timeline feeds", type: :rails_request do
   shared_let(:user) do
     create(:user, member_with_permissions: { project => %i[view_resource_planners view_work_packages] })
   end
-  shared_let(:planner) { create(:resource_planner, project:, principal: user) }
+  # Public so allocators other than the owner can reach it (edit-url scenarios).
+  shared_let(:planner) { create(:resource_planner, project:, principal: user, public: true) }
   shared_let(:wp) { create(:work_package, project:, subject: "Develop route optimization") }
   shared_let(:view) do
     ResourceWorkPackageTimeline.create!(name: "Timeline", parent: planner, project:, principal: user).tap do |v|
@@ -91,6 +92,45 @@ RSpec.describe "Work package timeline feeds", type: :rails_request do
       expect(block_events.map { |e| e["resourceId"].to_i }).to all(eq(wp.id))
       expect(block_events).to all(include("start", "end"))
       expect(block_events.map { |e| e.dig("extendedProps", "overbooked") }).to include(true)
+    end
+
+    def block_events
+      response.parsed_body["events"].reject { |e| e["display"] == "background" }
+    end
+
+    def get_events(start: "2026-05-25", finish: "2026-07-01")
+      get project_resource_planner_view_work_package_timeline_events_path(
+        project, planner, view, start:, end: finish, format: :json
+      )
+    end
+
+    it "carries an edit url on each allocation event for a user who may allocate" do
+      login_as create(:user, member_with_permissions: {
+                        project => %i[view_resource_planners view_work_packages allocate_user_resources]
+                      })
+      get_events
+
+      expect(block_events.map { |e| e.dig("extendedProps", "editUrl") })
+        .to include(edit_project_resource_allocation_path(project, allocation_a),
+                    edit_project_resource_allocation_path(project, allocation_b))
+    end
+
+    it "omits the edit url for a user who may only view" do
+      # the shared `user` has view permissions but not allocate_user_resources
+      get_events
+
+      expect(block_events).to all(satisfy { |e| e.dig("extendedProps", "editUrl").nil? })
+    end
+
+    it "never carries an edit url on the background span events" do
+      login_as create(:user, member_with_permissions: {
+                        project => %i[view_resource_planners view_work_packages allocate_user_resources]
+                      })
+      get_events
+
+      background = response.parsed_body["events"].select { |e| e["display"] == "background" }
+      expect(background).not_to be_empty
+      expect(background).to all(satisfy { |e| e.dig("extendedProps", "editUrl").nil? })
     end
   end
 
