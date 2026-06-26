@@ -38,7 +38,38 @@
       end
     end
 
-    if allowed_to_allocate?
+    if @view.manually_picked?
+      subheader.with_action_menu(
+        leading_icon: :plus,
+        trailing_icon: :"triangle-down",
+        label: t("resource_management.work_package_list.subheader.add"),
+        anchor_align: :end,
+        button_arguments: {
+          scheme: :primary,
+          "aria-label": t("resource_management.work_package_list.subheader.add")
+        }
+      ) do |menu|
+        if allowed_to_allocate?
+          menu.with_item(
+            label: t("resource_management.work_package_list.subheader.allocate"),
+            tag: :a,
+            href: new_project_resource_allocation_path(@project),
+            content_arguments: { data: { controller: "async-dialog" } }
+          ) do |item|
+            item.with_leading_visual_icon(icon: :people)
+          end
+        end
+
+        menu.with_item(
+          label: t("resource_management.work_package_list.subheader.add_work_package"),
+          tag: :a,
+          href: new_work_package_project_resource_planner_view_path(@project, @resource_planner, @view),
+          content_arguments: { data: { controller: "async-dialog" } }
+        ) do |item|
+          item.with_leading_visual_icon(icon: :"op-relations")
+        end
+      end
+    elsif allowed_to_allocate?
       subheader.with_action_button(
         leading_icon: :plus,
         scheme: :primary,

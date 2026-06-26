@@ -72,6 +72,24 @@ module ResourcePlannerViews
 
           see_allocation_item(menu)
           edit_total_work_item(menu) if allowed_to_edit_work?
+          remove_item(menu) if @view.manually_picked?
+        end
+      end
+
+      # Hand-picked work packages can be dropped from the query, mirroring the list view.
+      def remove_item(menu)
+        menu.with_item(
+          label: t("resource_management.work_package_list.context_menu.remove"),
+          scheme: :danger,
+          href: helpers.remove_work_package_project_resource_planner_view_path(
+            @project, @resource_planner, @view, work_package_id: @work_package.id
+          ),
+          form_arguments: {
+            method: :delete,
+            data: { turbo_confirm: t("resource_management.work_package_list.context_menu.remove_confirmation") }
+          }
+        ) do |item|
+          item.with_leading_visual_icon(icon: :trash)
         end
       end
 

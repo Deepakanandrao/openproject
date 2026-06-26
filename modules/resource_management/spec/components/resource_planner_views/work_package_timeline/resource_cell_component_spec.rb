@@ -31,6 +31,8 @@
 require "spec_helper"
 
 RSpec.describe ResourcePlannerViews::WorkPackageTimeline::ResourceCellComponent, type: :component do
+  include Rails.application.routes.url_helpers
+
   shared_let(:project) { create(:project) }
   shared_let(:user) { create(:admin) }
   shared_let(:planner) { create(:resource_planner, project:, principal: user) }
@@ -51,5 +53,42 @@ RSpec.describe ResourcePlannerViews::WorkPackageTimeline::ResourceCellComponent,
     expect(page).to have_text(/#{work_package.type.name}/i)
     expect(page).to have_text("72")
     expect(page).to have_text("90%")
+  end
+
+  def remove_path(target_view)
+    remove_work_package_project_resource_planner_view_path(
+      project, planner, target_view, work_package_id: work_package.id
+    )
+  end
+
+  context "with an automatically filtered view" do
+    it "offers no remove action in the context menu" do
+      render_inline(described_class.new(work_package:, allocations: [],
+                                        project:, resource_planner: planner, view:))
+
+      expect(page).to have_no_css("form[action='#{remove_path(view)}']", visible: :all)
+    end
+  end
+
+  context "with a manually hand-picked view" do
+    let(:manual_query) do
+      Query.new_default(project:, user:).tap do |q|
+        q.name = "q"
+        q.add_filter("manual_sort", "ow", [])
+        q.sort_criteria = [%w[manual_sorting asc]]
+        q.save!
+      end
+    end
+    let(:manual_view) do
+      ResourceWorkPackageTimeline.create!(name: "Manual", parent: planner, project:, principal: user, query: manual_query)
+    end
+
+    it "offers a remove action linked to the remove route" do
+      render_inline(described_class.new(work_package:, allocations: [],
+                                        project:, resource_planner: planner, view: manual_view))
+
+      expect(page).to have_css("form[action='#{remove_path(manual_view)}']", visible: :all)
+      expect(page).to have_text("Remove")
+    end
   end
 end
