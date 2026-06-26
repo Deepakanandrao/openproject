@@ -774,8 +774,6 @@ en:
         project: "Allows the user to add a comment related to the project attribute when selecting the value in the project overview."
       visible_on_user_card:
         all: "When checked, this field's value is shown in the user information card when hovering over a user across the application."
-      semantic_key:
-        all: "Give this custom field a special meaning. For example the \"Job Title\" is shown along the user name in several places"
     semantic_keys:
       none: "None"
       job_title: "Job title"
@@ -5843,6 +5841,18 @@ en:
       label_untitled_section: "User attributes"
       new:
         heading: "New attribute"
+      tabs:
+        attributes: "Attributes"
+        semantic_keys: "Mapped attributes"
+      semantic_keys:
+        description: >-
+          Some attributes can do more than store information — the app uses them to power specific features. Choose which
+          attribute to use for each purpose below. Each attribute can be used for only one purpose,
+          and each purpose for only one attribute.
+        descriptions:
+          job_title: >-
+            Choose the attribute that holds each user's job title. It appears next to their name in several places,
+            such as user cards.
     working_days:
       section_work_week: "Work week"
       section_holidays_and_closures: "Holidays and closures"

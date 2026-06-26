@@ -767,6 +767,10 @@ Rails.application.routes.draw do
       end
 
       resources :user_custom_fields, controller: "/admin/settings/user_custom_fields" do
+        collection do
+          patch :semantic_keys, action: :update_semantic_keys
+        end
+
         member do
           delete "options/:option_id", action: "delete_option", as: :delete_option_of
           post :reorder_alphabetical

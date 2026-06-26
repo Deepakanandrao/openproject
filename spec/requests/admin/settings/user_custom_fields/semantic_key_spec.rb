@@ -30,90 +30,83 @@
 
 require "spec_helper"
 
-RSpec.describe "Admin user custom field semantic key",
+RSpec.describe "Admin user custom field semantic keys",
                :skip_csrf,
                type: :rails_request do
   shared_let(:admin) { create(:admin) }
   shared_let(:section) { create(:user_custom_field_section) }
+  shared_let(:position_field) do
+    create(:user_custom_field, name: "Position", field_format: "string", user_custom_field_section: section)
+  end
+  shared_let(:role_field) do
+    create(:user_custom_field, name: "Role", field_format: "string", user_custom_field_section: section)
+  end
 
   before { login_as(admin) }
 
-  describe "GET new" do
-    it "renders the semantic key select with the job title option" do
-      get new_admin_settings_user_custom_field_path(field_format: "string")
+  describe "GET index" do
+    it "shows tab navigation on the attributes tab without the semantic keys form" do
+      get admin_settings_user_custom_fields_path
 
       expect(response).to have_http_status(:ok)
-      expect(response.body).to include("job_title")
       expect(response.body).to include("Semantic meaning")
+      expect(response.body).not_to include('name="semantic_keys[job_title]"')
+    end
+
+    it "renders the semantic keys assignment form on the semantic_keys tab" do
+      role_field.update!(semantic_key: "job_title")
+
+      get admin_settings_user_custom_fields_path(tab: :semantic_keys)
+
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include('name="semantic_keys[job_title]"')
+      # The currently assigned field is pre-selected
+      expect(response.body).to match(/<option(?=[^>]*\bselected\b)(?=[^>]*value="#{role_field.id}")[^>]*>/)
     end
   end
 
-  describe "POST create" do
-    it "stores the chosen semantic key on the new field" do
-      post admin_settings_user_custom_fields_path,
-           params: {
-             type: "UserCustomField",
-             custom_field: {
-               name: "Position",
-               field_format: "string",
-               custom_field_section_id: section.id,
-               semantic_key: "job_title"
-             }
-           }
+  describe "PATCH semantic_keys (update_semantic_keys)" do
+    it "assigns the chosen custom field to the semantic key" do
+      patch semantic_keys_admin_settings_user_custom_fields_path,
+            params: { semantic_keys: { "job_title" => position_field.id.to_s } }
 
-      custom_field = UserCustomField.find_by(name: "Position")
-      expect(custom_field.semantic_key).to eq("job_title")
+      expect(response).to redirect_to(admin_settings_user_custom_fields_path(tab: :semantic_keys))
+      expect(position_field.reload.semantic_key).to eq("job_title")
+    end
+
+    it "moves the assignment from a previous holder to the new field" do
+      position_field.update!(semantic_key: "job_title")
+
+      patch semantic_keys_admin_settings_user_custom_fields_path,
+            params: { semantic_keys: { "job_title" => role_field.id.to_s } }
+
+      expect(position_field.reload.semantic_key).to be_nil
+      expect(role_field.reload.semantic_key).to eq("job_title")
+    end
+
+    it "clears the assignment when the blank option is chosen" do
+      position_field.update!(semantic_key: "job_title")
+
+      patch semantic_keys_admin_settings_user_custom_fields_path,
+            params: { semantic_keys: { "job_title" => "" } }
+
+      expect(position_field.reload.semantic_key).to be_nil
+    end
+
+    it "ignores unknown semantic keys" do
+      patch semantic_keys_admin_settings_user_custom_fields_path,
+            params: { semantic_keys: { "manager" => position_field.id.to_s } }
+
+      expect(position_field.reload.semantic_key).to be_nil
     end
   end
 
-  context "when a field already owns the job_title semantic key" do
-    shared_let(:job_title_field) do
-      create(:user_custom_field, name: "Job title", field_format: "string",
-                                 user_custom_field_section: section, semantic_key: "job_title")
-    end
-    shared_let(:other_field) do
-      create(:user_custom_field, name: "Other", field_format: "string",
-                                 user_custom_field_section: section)
-    end
+  describe "the per-field edit form" do
+    it "no longer renders a semantic key select" do
+      get edit_admin_settings_user_custom_field_path(position_field)
 
-    describe "GET edit of another field" do
-      it "renders the already-taken option as disabled" do
-        get edit_admin_settings_user_custom_field_path(other_field)
-
-        expect(response.body).to match(/<option(?=[^>]*\bdisabled\b)(?=[^>]*value="job_title")[^>]*>/)
-      end
-    end
-
-    describe "GET edit of the owning field" do
-      it "keeps its own option selectable" do
-        get edit_admin_settings_user_custom_field_path(job_title_field)
-
-        expect(response.body).not_to match(/<option(?=[^>]*\bdisabled\b)(?=[^>]*value="job_title")[^>]*>/)
-      end
-    end
-
-    describe "PATCH update assigning the taken key to another field" do
-      it "does not persist the duplicate semantic key" do
-        patch admin_settings_user_custom_field_path(other_field),
-              params: {
-                type: "UserCustomField",
-                custom_field: { semantic_key: "job_title" }
-              }
-
-        expect(other_field.reload.semantic_key).to be_nil
-      end
-    end
-
-    describe "PATCH update clearing the semantic key (blank option)" do
-      it "removes the semantic key from the owning field" do
-        patch admin_settings_user_custom_field_path(job_title_field),
-              params: {
-                type: "UserCustomField",
-                custom_field: { semantic_key: "" }
-              }
-
-        expect(job_title_field.reload.semantic_key).to be_nil
-      end
+      expect(response).to have_http_status(:ok)
+      expect(response.body).not_to include('name="custom_field[semantic_key]"')
     end
   end
 end
