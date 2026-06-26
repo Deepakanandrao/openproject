@@ -21,6 +21,7 @@
 #++
 ---
 fr:
+  label_user_attributes_plural: Attributs de l'utilisateur
   no_results_title_text: Il n'y a actuellement rien à afficher.
   activities:
     index:
@@ -432,6 +433,20 @@ fr:
       new_project:
         project_creation: Création d'un projet
         notification_text_default: "<p>Bonjour,</p> <p>Un nouveau projet a été créé : projectValue:name</p> <p>Nous vous remercions de votre attention et vous prions d'agréer nos salutations distinguées.</p>\n"
+      project_custom_field_sections:
+        destroy:
+          error: La section n'a pas pu être supprimée.
+        drop:
+          error: Il n'a pas été possible de réorganiser cette section.
+        move:
+          error: Il n'a pas été possible de réorganiser cette section.
+      user_custom_field_sections:
+        destroy:
+          error: La section n'a pas pu être supprimée.
+        drop:
+          error: Il n'a pas été possible de réorganiser cette section.
+        move:
+          error: Il n'a pas été possible de réorganiser cette section.
       work_packages_identifier:
         page_header:
           description: Vous avez le choix entre des identifiants numériques classiques pour les lots de travaux et des identifiants sémantiques spécifiques aux projets, qui ajoutent l'identifiant du projet à l'identifiant du lot de travaux.
@@ -678,6 +693,8 @@ fr:
             gain_role: Le rôle sera élargi '%{new_role}'
             lose_role: Perdra son rôle '%{old_role}'
             no_change: Pas de changement
+    multi_value_more:
+      other: et %{count} autres
     text_add_new_custom_field: 'Pour ajouter de nouveaux champs personnalisés à un projet, vous devez d''abord les créer avant de pouvoir les ajouter à ce projet.
 
       '
@@ -722,6 +739,8 @@ fr:
         project: 0 signifie aucune restriction
       has_comment:
         project: Permet à l'utilisateur d'ajouter un commentaire relatif à l'attribut du projet lorsqu'il sélectionne la valeur dans la vue d'ensemble du projet.
+      visible_on_user_card:
+        all: Lorsque cette case est cochée, la valeur de ce champ s'affiche dans la fiche d'informations de l'utilisateur lorsque vous passez la souris sur un utilisateur, partout dans l'application.
     tab:
       no_results_title_text: Il n'y a actuellement aucun champ personnalisé.
       no_results_content_text: Créer un nouveau champ personnalisé
@@ -749,9 +768,11 @@ fr:
         '
       add_button: Ajouter
     detail_blankslate:
-      heading: Ce service n'a pas de niveau hiérarchique inférieur
-      description: Ajoutez des services ou des utilisateurs pour créer des sous-éléments à l'intérieur d'un autre.
       add_button: Ajouter
+      description: Ajoutez des services ou des utilisateurs pour créer des sous-éléments à l'intérieur d'un autre.
+      heading: Ce service n'a pas de niveau hiérarchique inférieur
+      managed_description: Ses sous-départements et ses membres sont synchronisés via LDAP et ne peuvent pas être ajoutés manuellement.
+      managed_heading: Ce service est géré par synchronisation LDAP
     add_department_form:
       name_label: Nom du service
       name_placeholder: Saisissez le nom du service
@@ -760,6 +781,9 @@ fr:
       heading: Déplacer l'utilisateur vers ce service ?
       description: L'utilisateur %{user} est actuellement membre du service %{from_department}. Si vous le déplacez, il sera retiré de ce service.
       confirm: Déplacer l'utilisateur
+      managed_title: Utilisateur géré via LDAP
+      managed_heading: Cet utilisateur ne peut pas être déplacé
+      managed_description: "%{user} appartient à %{from_department}, qui est géré par synchronisation LDAP. L'appartenance à un service est contrôlée par LDAP et ne peut pas être modifiée ici."
     context_menu:
       add_sub_department: Ajouter un sous-service
       add_user: Ajouter un utilisateur
@@ -1697,18 +1721,6 @@ fr:
         dependencies: Dépendances
   activerecord:
     attributes:
-      work_package_semantic_alias:
-        identifier: Identifiant
-        work_package: Lot de travaux
-      jira_import:
-        projects: Projets
-      import/jira:
-        name: Nom de l'instance Jira
-        url: URL de l'instance Jira
-        personal_access_token: Jeton d'accès personnel
-      import/jira_open_project_reference:
-        jira: Jira
-        jira_import: Migrateur Jira
       announcements:
         show_until: Afficher jusqu'à
       attachment:
@@ -1754,6 +1766,7 @@ fr:
         possible_values: Valeurs possibles
         regexp: Expression régulière
         searchable: Recherchable
+        visible_on_user_card: Afficher sur la fiche utilisateur
         admin_only: Administrateurs uniquement
         has_comment: Ajouter un champ de texte pour les commentaires
       custom_value:
@@ -1788,6 +1801,23 @@ fr:
         row_count: Nombre de lignes
         column_count: Nombre de colonnes
         widgets: Widgets
+      group:
+        group_users: Groupes d'utilisateurs
+        identity_url: URL d'identité
+        organizational_unit: Unité organisationnelle
+        parent: Groupe parent
+      group_detail:
+        organizational_unit: Unité organisationnelle
+        parent: Groupe parent
+      import/jira:
+        name: Nom de l'instance Jira
+        personal_access_token: Jeton d'accès personnel
+        url: URL de l'instance Jira
+      import/jira_open_project_reference:
+        jira: Jira
+        jira_import: Migrateur Jira
+      jira_import:
+        projects: Projets
       journal:
         notes: Notes
         cause_type: Type de cause
@@ -1816,6 +1846,21 @@ fr:
         resource: Ressource
       oauth_client:
         client: ID client
+      ordered_persisted_query_entity:
+        persisted_query: Requête persistante
+        entity: Entité
+        position: Position
+      persisted_query:
+        name: Nom
+        views: Vues
+        filters: Filtres
+        orders: Tris
+        selects: Sélections
+      persisted_view:
+        name: Nom
+        query: Requête
+        parent: Vue parente
+        public: Public
       project:
         active_value:
           true: désarchivé
@@ -1949,6 +1994,7 @@ fr:
       user:
         admin: Administrateur
         auth_source: Sources d'authentification
+        department: Department
         ldap_auth_source: Connexion LDAP
         identity_url: URL d'identité
         current_password: Mot de passe actuel
@@ -1962,14 +2008,8 @@ fr:
         new_password: Nouveau mot de passe
         password_confirmation: Confirmation
         consented_at: Consenti à
-      group:
-        identity_url: URL d'identité
-        parent: Groupe parent
-        organizational_unit: Unité organisationnelle
-        group_users: Groupes d'utilisateurs
-      group_detail:
-        parent: Groupe parent
-        organizational_unit: Unité organisationnelle
+      user_custom_field:
+        custom_field_section: Section
       user_preference:
         header_look_and_feel: Apparence et ergonomie
         header_alerts: Alertes
@@ -2068,29 +2108,11 @@ fr:
         type: Type
         version: Version
         watcher: Observateur
-      ordered_persisted_query_entity:
-        persisted_query: Requête persistante
-        entity: Entité
-        position: Position
-      persisted_query:
-        name: Nom
-        views: Vues
-        filters: Filtres
-        orders: Tris
-        selects: Sélections
-      persisted_view:
-        name: Nom
-        query: Requête
-        parent: Vue parente
-        public: Public
-      user_card_view:
-        secondary_info: Informations secondaires
-        show_status_badge: Afficher le badge de statut
-        show_email: Afficher l'adresse e-mail
-        tag_source: Source des étiquettes
-        tag_limit: Limite des étiquettes
-        card_size: Taille des cartes
-        columns_per_row: Colonne par ligne
+      work_package_version:
+        kind: Type
+      work_package_semantic_alias:
+        identifier: Identifiant
+        work_package: Lot de travaux
     errors:
       messages:
         accepted: doi(ven)t être accepté(e)(s).
@@ -2136,6 +2158,7 @@ fr:
         invalid_url: n'est pas une URL valide.
         invalid_url_scheme: 'n''est pas un protocole pris en charge (autorisés : %{allowed_schemes}).'
         is_for_all_cannot_modify: s'applique à tous les projets et ne peut donc pas être modifié.
+        ldap_managed: Ce service est géré par synchronisation LDAP et ne peut pas être modifié manuellement.
         less_than_or_equal_to: doit être inférieur ou égal à %{count}.
         not_available: n'est pas disponible en raison d'une configuration système.
         not_before_start_date: ne doit pas être avant la date de début.
@@ -2173,6 +2196,7 @@ fr:
 
           '
         user_already_in_department: L'utilisateur %{user_id} est déjà membre du service %{department_id}.
+        user_in_ldap_managed_department: Cet utilisateur appartient à un service géré par synchronisation LDAP et ne peut pas être déplacé.
         wrong_length: est de mauvaise longueur (devrait être %{count} caractères).
       models:
         group:
@@ -2180,6 +2204,7 @@ fr:
             parent_id:
               circular_dependency: créerait une hiérarchie de groupe circulaire.
               organizational_unit_mismatch: doit avoir le même paramètre d'unité organisationnelle que le groupe.
+              parent_ldap_managed: est gérée par synchronisation LDAP et ne permet pas d'ajouter manuellement des services.
         ldap_auth_source:
           attributes:
             tls_certificate_string:
@@ -2415,11 +2440,14 @@ fr:
           is_not_a_valid_target_for_time_entries: 'Le lot de travaux #%{id} n''est pas une cible valide pour réaffecter les entrées de temps.'
           attributes:
             id:
-              format: "%{message}"
-              cannot_add_child_because_of_lack_of_permission: Impossible d'ajouter un enfant, car vous n'avez pas les permissions pour modifier le lot de travaux sélectionné.
               blank: L'ID ne peut pas être vide.
+              cannot_add_child_because_of_lack_of_permission: Impossible d'ajouter un enfant, car vous n'avez pas les permissions pour modifier le lot de travaux sélectionné.
+              format: "%{message}"
             identifier:
+              must_not_be_changed: 'must not be changed manually. Work package identifiers are allocated automatically and resolved through the alias table, so changing them by hand breaks links and identifier history. If this change is deliberate, save with `save(context: :%{context})` and keep the work_package_semantic_aliases table consistent.'
               semantic_identifier_incomplete: et sequence_number doivent être définis en même temps.
+            sequence_number:
+              must_not_be_changed: 'must not be changed manually. It is allocated automatically together with the identifier. If this change is deliberate, save with `save(context: :%{context})`.'
             assigned_to:
               format: "%{message}"
             done_ratio:
@@ -4132,7 +4160,7 @@ fr:
   label_custom_favicon: Favicon personnalisé
   label_custom_touch_icon: Icône de contact personnalisé
   label_departments: Organisation
-  label_departments_description_html: 'Définissez la structure de votre entreprise en créant des services et des sous-services de manière hiérarchique. Cela vous permet de refléter les lignes de rapport et de maintenir une vue d''ensemble claire et structurée de votre organisation au sein d''OpenProject. Vous pouvez également importer une structure d''organisation existante via [Synchronisation de groupe LDAP](ldap_docs_article).
+  label_departments_description_html: 'Définissez la structure de votre entreprise en créant des services et des sous-services selon une organisation hiérarchique. Cela vous permet de refléter les liens hiérarchiques et de conserver une vue d''ensemble claire et structurée de votre organisation au sein d''OpenProject. Vous pouvez également importer une structure organisationnelle existante via la [synchronisation des services via LDAP](ldap_docs_article).
 
     '
   label_logout: Déconnexion
@@ -4140,6 +4168,7 @@ fr:
   label_main_menu: Menu principal
   label_manage: Gérer
   label_manage_groups: Gérer les groupes
+  label_managed_by_ldap: Géré par synchronisation LDAP
   label_managed_repositories_vendor: Référentiels %{vendor} gérés
   label_mathematical_operators: Opérateurs mathématiques
   label_max_size: Taille maximale
@@ -5458,6 +5487,7 @@ fr:
     passwords: Mots de passe
     project_attributes:
       heading: Attributs du projet
+      label_add_attribute: Ajouter un attribut de projet
       label_for_all_projects: Tous les projets
       label_new_attribute: Attribut du projet
       label_new_section: Section
@@ -5555,8 +5585,30 @@ fr:
     session: Session
     user:
       default_preferences: Préférences par défaut
-      display_format: Format d'affichage
       deletion: Suppression
+      display_format: Format d'affichage
+    user_custom_field_sections:
+      built_in_attribute_row_component:
+        label_built_in: Intégré
+        label_built_in_attribute_actions: Actions d'attributs intégrés
+      custom_field_row_component:
+        label_user_custom_field_actions: Actions relatives aux attributs des utilisateurs
+      show_component:
+        label_add_attribute: Ajouter un attribut d'utilisateur
+        label_edit_section: Modifier le titre
+        label_no_user_custom_fields: Aucun attribut d'utilisateur n'est défini dans cette section
+        label_section_actions: Actions de section
+    user_custom_fields:
+      header_component:
+        attribute_filter:
+          label: Filtrer par nom d'attribut…
+        heading_description: Ces attributs d'utilisateur apparaissent dans les profils d'utilisateur et sur les fiches d'information. Vous pouvez ajouter de nouveaux attributs, les regrouper en sections et les réorganiser.
+      heading: Attributs de l'utilisateur
+      label_new_attribute: Attribut de l'utilisateur
+      label_new_section: Section
+      label_untitled_section: Attributs de l'utilisateur
+      new:
+        heading: Nouvel attribut
     working_days:
       section_work_week: Semaine de travail
       section_holidays_and_closures: Vacances et fermetures
@@ -5822,6 +5874,7 @@ fr:
     status_user_and_brute_force: "%{user} et %{brute_force}"
     status_change: Changement de statut
     text_change_disabled_for_provider_login: Le nom et l'adresse e-mail sont définis par votre fournisseur d'accès et ne peuvent donc pas être modifiés.
+    department_ldap_managed_caption: This department is managed by LDAP synchronization and cannot be changed here.
     unlock: Déverrouiller
     unlock_and_reset_failed_logins: Déverrouiller et réinitialiser les échecs de connexion
     error_cannot_delete_user: L'utilisateur ne peut pas être supprimé
