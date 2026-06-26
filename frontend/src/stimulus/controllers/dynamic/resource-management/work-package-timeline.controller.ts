@@ -169,6 +169,7 @@ export default class WorkPackageTimelineController extends Controller {
         headerContent: '',
         cellContent: (arg) => ({ html: (arg.resource?.extendedProps?.html as string) || '' }),
       }],
+      resourceOrder: 'order',
       resources: (_info, success, failure) => {
         fetch(this.resourcesUrlValue, { headers: { Accept: 'application/json' } })
           .then((response) => response.json())

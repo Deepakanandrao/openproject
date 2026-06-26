@@ -35,13 +35,16 @@ module ResourcePlannerViews
     class ResourceCellComponent < ApplicationComponent
       include OpPrimer::ComponentHelpers
 
-      def initialize(work_package:, allocations: [], project: nil, resource_planner: nil, view: nil)
+      def initialize(work_package:, allocations: [], project: nil, resource_planner: nil, view: nil,
+                     first: false, last: false)
         super
         @work_package = work_package
         @allocations = allocations
         @project = project
         @resource_planner = resource_planner
         @view = view
+        @first = first
+        @last = last
       end
 
       private
@@ -72,7 +75,42 @@ module ResourcePlannerViews
 
           see_allocation_item(menu)
           edit_total_work_item(menu) if allowed_to_edit_work?
-          remove_item(menu) if @view.manually_picked?
+
+          if @view.manually_picked?
+            move_item(menu)
+            remove_item(menu)
+          end
+        end
+      end
+
+      # Reorder a hand-picked work package, mirroring the list view's move submenu.
+      # The only row has nowhere to move, so the entry is disabled rather than empty.
+      def move_item(menu)
+        menu.with_sub_menu_item(label: t("resource_management.work_package_list.context_menu.move"),
+                                disabled: @first && @last) do |submenu|
+          submenu.with_leading_visual_icon(icon: :"arrow-right")
+
+          ns = "resource_management.work_package_list.context_menu"
+          unless @first
+            move_action(submenu, direction: "top", label: t("#{ns}.move_to_top"), icon: "move-to-top")
+            move_action(submenu, direction: "up", label: t("#{ns}.move_up"), icon: "chevron-up")
+          end
+          unless @last
+            move_action(submenu, direction: "down", label: t("#{ns}.move_down"), icon: "chevron-down")
+            move_action(submenu, direction: "bottom", label: t("#{ns}.move_to_bottom"), icon: "move-to-bottom")
+          end
+        end
+      end
+
+      def move_action(submenu, direction:, label:, icon:)
+        submenu.with_item(
+          label:,
+          href: helpers.move_work_package_project_resource_planner_view_path(
+            @project, @resource_planner, @view, work_package_id: @work_package.id, direction:
+          ),
+          form_arguments: { method: :put }
+        ) do |item|
+          item.with_leading_visual_icon(icon:)
         end
       end
 

@@ -61,6 +61,12 @@ RSpec.describe ResourcePlannerViews::WorkPackageTimeline::ResourceCellComponent,
     )
   end
 
+  def move_path(target_view, direction:)
+    move_work_package_project_resource_planner_view_path(
+      project, planner, target_view, work_package_id: work_package.id, direction:
+    )
+  end
+
   context "with an automatically filtered view" do
     it "offers no remove action in the context menu" do
       render_inline(described_class.new(work_package:, allocations: [],
@@ -89,6 +95,38 @@ RSpec.describe ResourcePlannerViews::WorkPackageTimeline::ResourceCellComponent,
 
       expect(page).to have_css("form[action='#{remove_path(manual_view)}']", visible: :all)
       expect(page).to have_text("Remove")
+    end
+
+    it "offers all move directions for a middle row" do
+      render_inline(described_class.new(work_package:, allocations: [],
+                                        project:, resource_planner: planner, view: manual_view,
+                                        first: false, last: false))
+
+      expect(page).to have_text("Move")
+      %w[top up down bottom].each do |direction|
+        expect(page).to have_css("form[action='#{move_path(manual_view, direction:)}']", visible: :all)
+      end
+    end
+
+    it "hides upward moves for the first row" do
+      render_inline(described_class.new(work_package:, allocations: [],
+                                        project:, resource_planner: planner, view: manual_view,
+                                        first: true, last: false))
+
+      expect(page).to have_no_css("form[action='#{move_path(manual_view, direction: 'top')}']", visible: :all)
+      expect(page).to have_no_css("form[action='#{move_path(manual_view, direction: 'up')}']", visible: :all)
+      expect(page).to have_css("form[action='#{move_path(manual_view, direction: 'down')}']", visible: :all)
+    end
+
+    it "disables the move entry when it is the only row" do
+      render_inline(described_class.new(work_package:, allocations: [],
+                                        project:, resource_planner: planner, view: manual_view,
+                                        first: true, last: true))
+
+      expect(page).to have_css(".ActionListItem--disabled", text: "Move", visible: :all)
+      %w[top up down bottom].each do |direction|
+        expect(page).to have_no_css("form[action='#{move_path(manual_view, direction:)}']", visible: :all)
+      end
     end
   end
 end

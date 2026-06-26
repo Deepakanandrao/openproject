@@ -33,11 +33,16 @@ module ResourceManagement
     # Feeds the FullCalendar resources (rows): one per work package in the view.
     class ResourcesController < FeedsController
       def index
-        resources = @view.work_packages.map do |work_package|
+        work_packages = @view.work_packages.to_a
+        last_index = work_packages.size - 1
+        resources = work_packages.map.with_index do |work_package, index|
           {
             id: work_package.id,
             title: work_package.subject,
-            extendedProps: { html: render_cell(work_package) }
+            order: index, # used by FullCalendar’s resourceOrder config, for hand-picked WPs
+            extendedProps: {
+              html: render_cell(work_package, first: index.zero?, last: index == last_index)
+            }
           }
         end
 
@@ -46,10 +51,11 @@ module ResourceManagement
 
       private
 
-      def render_cell(work_package)
+      def render_cell(work_package, first:, last:)
         ResourcePlannerViews::WorkPackageTimeline::ResourceCellComponent
           .new(work_package:, allocations: allocations_for(work_package),
-               project: @project, resource_planner: @resource_planner, view: @view)
+               project: @project, resource_planner: @resource_planner, view: @view,
+               first:, last:)
           .render_in(view_context)
       end
 

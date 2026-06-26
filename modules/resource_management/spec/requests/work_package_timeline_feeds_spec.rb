@@ -58,6 +58,14 @@ RSpec.describe "Work package timeline feeds", type: :rails_request do
       expect(cell.dig("extendedProps", "html")).to include("Develop route optimization")
     end
 
+    it "tags each resource with its position so FullCalendar keeps the query order" do
+      create(:work_package, project:, subject: "Second work package")
+      get project_resource_planner_view_work_package_timeline_resources_path(project, planner, view, format: :json)
+
+      orders = response.parsed_body["resources"].pluck("order")
+      expect(orders).to eq((0...orders.size).to_a)
+    end
+
     it "denies users without access" do
       login_as create(:user)
       get project_resource_planner_view_work_package_timeline_resources_path(project, planner, view, format: :json)
