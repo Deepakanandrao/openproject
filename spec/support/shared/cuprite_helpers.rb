@@ -87,11 +87,6 @@ end
 #   expect(page).to have_text("Saved")
 #
 def wait_for_turbo_stream(wait: 10, &block)
-  unless using_cuprite?
-    yield if block
-    return
-  end
-
   unless wait
     yield if block
     return
@@ -101,14 +96,15 @@ def wait_for_turbo_stream(wait: 10, &block)
   timeout_ms = timeout * 1000
   page.execute_script(<<~JS, timeout_ms)
     window.__opTurboStreamRendered = new Promise((resolve, reject) => {
-      const timer = setTimeout(() => reject(new Error('wait_for_turbo_stream: no turbo stream rendered within #{timeout}s')), arguments[0]);
-      document.addEventListener('op:turbo-stream-rendered', () => { clearTimeout(timer); resolve(true); }, { once: true });
+      const handler = () => { clearTimeout(timer); document.removeEventListener('op:turbo-stream-rendered', handler); resolve(true); };
+      const timer = setTimeout(() => { document.removeEventListener('op:turbo-stream-rendered', handler); reject(new Error('wait_for_turbo_stream: no turbo stream rendered within #{timeout}s')); }, arguments[0]);
+      document.addEventListener('op:turbo-stream-rendered', handler);
     });
   JS
 
   yield
 
-  result = page.driver.evaluate_async_script(<<~JS)
+  result = page.evaluate_async_script(<<~JS)
     window.__opTurboStreamRendered.then(() => {
       delete window.__opTurboStreamRendered;
       arguments[0]({ success: true });
@@ -131,11 +127,6 @@ end
 #   expect(page).to have_text("Saved")
 #
 def wait_for_turbo(wait: 10, &block)
-  unless using_cuprite?
-    yield if block
-    return
-  end
-
   unless wait
     yield if block
     return
@@ -145,14 +136,15 @@ def wait_for_turbo(wait: 10, &block)
   timeout_ms = timeout * 1000
   page.execute_script(<<~JS, timeout_ms)
     window.__opTurboLoaded = new Promise((resolve, reject) => {
-      const timer = setTimeout(() => reject(new Error('wait_for_turbo: no turbo:load event within #{timeout}s')), arguments[0]);
-      document.addEventListener('turbo:load', () => { clearTimeout(timer); resolve(true); }, { once: true });
+      const handler = () => { clearTimeout(timer); document.removeEventListener('turbo:load', handler); resolve(true); };
+      const timer = setTimeout(() => { document.removeEventListener('turbo:load', handler); reject(new Error('wait_for_turbo: no turbo:load event within #{timeout}s')); }, arguments[0]);
+      document.addEventListener('turbo:load', handler);
     });
   JS
 
   yield
 
-  result = page.driver.evaluate_async_script(<<~JS)
+  result = page.evaluate_async_script(<<~JS)
     window.__opTurboLoaded.then(() => {
       delete window.__opTurboLoaded;
       arguments[0]({ success: true });
@@ -170,16 +162,15 @@ end
 # Sets up a listener for turbo:frame-load BEFORE yielding, avoiding the race
 # condition where the frame loads before the listener is registered.
 #
+# Pass `frame:` to wait for a specific frame by id; only a turbo:frame-load
+# whose target element has that id satisfies the wait. With no `frame:` the
+# first frame load of any frame satisfies it.
+#
 # @example
 #   wait_for_turbo_frame { click_link "Remove column" }
-#   expect(page).to have_text("Updated")
+#   wait_for_turbo_frame(frame: "backlogs_container") { drop_card }
 #
-def wait_for_turbo_frame(wait: 10, &block)
-  unless using_cuprite?
-    yield if block
-    return
-  end
-
+def wait_for_turbo_frame(frame: nil, wait: 10, &block)
   unless wait
     yield if block
     return
@@ -187,16 +178,25 @@ def wait_for_turbo_frame(wait: 10, &block)
 
   timeout = wait == true ? 10 : wait
   timeout_ms = timeout * 1000
-  page.execute_script(<<~JS, timeout_ms)
+  frame_id = frame&.to_s
+  page.execute_script(<<~JS, timeout_ms, frame_id)
+    const timeoutMs = arguments[0];
+    const frameId = arguments[1];
     window.__opTurboFrameLoaded = new Promise((resolve, reject) => {
-      const timer = setTimeout(() => reject(new Error('wait_for_turbo_frame: no turbo:frame-load event within #{timeout}s')), arguments[0]);
-      document.addEventListener('turbo:frame-load', () => { clearTimeout(timer); resolve(true); }, { once: true });
+      const handler = (event) => {
+        if (frameId && !(event.target instanceof Element && event.target.id === frameId)) { return; }
+        clearTimeout(timer);
+        document.removeEventListener('turbo:frame-load', handler);
+        resolve(true);
+      };
+      const timer = setTimeout(() => { document.removeEventListener('turbo:frame-load', handler); reject(new Error('wait_for_turbo_frame: no turbo:frame-load event within #{timeout}s')); }, timeoutMs);
+      document.addEventListener('turbo:frame-load', handler);
     });
   JS
 
   yield
 
-  result = page.driver.evaluate_async_script(<<~JS)
+  result = page.evaluate_async_script(<<~JS)
     window.__opTurboFrameLoaded.then(() => {
       delete window.__opTurboFrameLoaded;
       arguments[0]({ success: true });
