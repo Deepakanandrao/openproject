@@ -27,7 +27,7 @@ RSpec.describe OpTurbo::ComponentStream do
       it "renders a dispatchEvent turbo stream carrying the detail" do
         get :update, params: { event_name: "op-dispatched:resource-allocations:changed" }, as: :turbo_stream
 
-        expect(response.body).to include '<turbo-stream action="dispatchEvent"'
+        expect(response.body).to have_turbo_stream(action: "dispatchEvent")
         expect(response.body).to include 'event-name="op-dispatched:resource-allocations:changed"'
 
         stream = Nokogiri::HTML5.fragment(response.body).at_css('turbo-stream[action="dispatchEvent"]')
