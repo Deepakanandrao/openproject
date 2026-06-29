@@ -28,44 +28,15 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-module Settings
-  module UserCustomFields
-    class HeaderComponent < ApplicationComponent
-      include ApplicationHelper
-      include OpPrimer::ComponentHelpers
-      include OpTurbo::Streamable
-      include CustomFieldsHelper
-
-      def initialize(allow_custom_field_creation:)
-        super
-
-        @allow_custom_field_creation = allow_custom_field_creation
-      end
-
-      def breadcrumbs_items
-        [{ href: admin_index_path, text: t("label_administration") },
-         { href: admin_settings_user_custom_fields_path, text: t("label_user_and_permission") },
-         t("settings.user_custom_fields.heading")]
-      end
-
-      def tabs
-        [
-          { name: "attributes",
-            path: admin_settings_user_custom_fields_path,
-            label: t("settings.user_custom_fields.tabs.attributes") },
-          { name: "semantic_keys",
-            path: admin_settings_user_custom_fields_path(tab: :semantic_keys),
-            label: t("settings.user_custom_fields.tabs.semantic_keys") }
-        ]
-      end
-
-      def attributes_tab?
-        helpers.selected_tab(tabs)[:name] == "attributes"
-      end
-
-      def allow_custom_field_creation?
-        @allow_custom_field_creation
-      end
+module ResourcePlannerViews
+  # NOTE: this module shadows the top-level ResourceUserCard model within the
+  # ResourcePlannerViews namespace; reference the model as ::ResourceUserCard there.
+  module ResourceUserCard
+    class UpdateContract < ResourcePlannerViews::UpdateContract
+      # `card_fields` is stored in the `options` JSONB column. The store DSL marks
+      # both the virtual attribute and the column writable so the readonly guard
+      # does not flag the selection change.
+      stored_attribute :card_fields, store: :options
     end
   end
 end
