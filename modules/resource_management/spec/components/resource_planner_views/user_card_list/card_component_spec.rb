@@ -43,9 +43,10 @@ RSpec.describe ResourcePlannerViews::UserCardList::CardComponent, type: :compone
   let(:details_path) { "/projects/x/users/#{card_user.id}/resource_allocations" }
   let(:remove_path) { nil }
   let(:utilization) { nil }
+  let(:card_fields) { [] }
 
   subject(:rendered) do
-    render_inline(described_class.new(user: card_user, details_path:, remove_path:, utilization:))
+    render_inline(described_class.new(user: card_user, details_path:, card_fields:, remove_path:, utilization:))
     page
   end
 
@@ -99,6 +100,7 @@ RSpec.describe ResourcePlannerViews::UserCardList::CardComponent, type: :compone
                         build(:custom_value, custom_field: skills, value: opt)
                       end)
       end
+      let(:card_fields) { [skills.column_name] }
 
       it "renders the first 3 values and an overflow counter for the rest" do
         expect(rendered).to have_text("Skills")
@@ -121,6 +123,7 @@ RSpec.describe ResourcePlannerViews::UserCardList::CardComponent, type: :compone
                       member_with_permissions: { project => %i[view_resource_planners] },
                       custom_values: [build(:custom_value, custom_field: location, value: "Berlin")])
       end
+      let(:card_fields) { [location.column_name] }
 
       it "renders the value" do
         expect(rendered).to have_text("Location")
@@ -130,6 +133,8 @@ RSpec.describe ResourcePlannerViews::UserCardList::CardComponent, type: :compone
   end
 
   describe "the working hours row" do
+    let(:card_fields) { %w[working_times] }
+
     context "with a uniform schedule" do
       before do
         create(:user_working_hours, user: card_user, valid_from: 1.year.ago.to_date,
@@ -191,6 +196,39 @@ RSpec.describe ResourcePlannerViews::UserCardList::CardComponent, type: :compone
       it "renders no delete action" do
         expect(rendered).to have_no_css("a[data-turbo-method='delete']")
       end
+    end
+  end
+
+  describe "the department row" do
+    let(:card_fields) { %w[department] }
+
+    context "when the user belongs to a department" do
+      before { create(:department, lastname: "Engineering", members: [card_user]) }
+
+      it "renders the department name" do
+        expect(rendered).to have_text("Engineering")
+      end
+    end
+
+    context "when the user has no department" do
+      it "renders no attribute row" do
+        expect(rendered).to have_no_css(".op-user-card--attribute-value")
+      end
+    end
+  end
+
+  describe "the job title subtitle" do
+    let!(:job_title) do
+      create(:user_custom_field, :string, name: "Position", semantic_key: :job_title)
+    end
+    let(:card_user) do
+      create(:user, firstname: "Carl", lastname: "Cardman",
+                    member_with_permissions: { project => %i[view_resource_planners] },
+                    custom_values: [build(:custom_value, custom_field: job_title, value: "Lead Engineer")])
+    end
+
+    it "renders the job title" do
+      expect(rendered).to have_text("Lead Engineer")
     end
   end
 end

@@ -35,11 +35,14 @@ module ResourcePlannerViews::UserCardList
 
     MULTI_VALUE_DISPLAY_LIMIT = 3
 
-    def initialize(user:, details_path:, remove_path: nil, utilization: nil)
+    CardFieldRow = Data.define(:icon, :label, :value, :multi_value)
+
+    def initialize(user:, details_path:, card_fields: [], remove_path: nil, utilization: nil)
       super
 
       @user = user
       @details_path = details_path
+      @card_fields = card_fields
       @remove_path = remove_path
       @utilization = utilization
     end
@@ -54,6 +57,12 @@ module ResourcePlannerViews::UserCardList
 
     def status_scheme
       @user.active? ? :success : :attention
+    end
+
+    def job_title
+      return unless (custom_field = UserCustomField.for_semantic_key(:job_title))
+
+      @user.formatted_custom_value_for(custom_field).presence
     end
 
     def utilization?
@@ -77,13 +86,50 @@ module ResourcePlannerViews::UserCardList
       end
     end
 
-    def card_custom_fields
-      @card_custom_fields ||= UserCustomFieldSection
-                                .with_filled_fields_for(@user, visible_on_user_card: true)
-                                .flat_map(&:last)
+    def card_field_rows
+      @card_fields.filter_map { |id| card_field_row(id) }
     end
 
     private
+
+    def card_field_row(id)
+      case id
+      when "department"
+        department_row
+      when "working_times"
+        CardFieldRow.new(icon: :clock, label: nil, value: working_hours_summary, multi_value: false)
+      else
+        custom_field_row(id)
+      end
+    end
+
+    def department_row
+      name = @user.department&.name
+      return if name.blank?
+
+      CardFieldRow.new(icon: :briefcase, label: nil, value: name, multi_value: false)
+    end
+
+    def custom_field_row(id)
+      custom_field = custom_fields_by_column_name[id]
+      return if custom_field.nil?
+      return unless filled_custom_field_ids.include?(custom_field.id)
+
+      CardFieldRow.new(
+        icon: nil,
+        label: custom_field.name,
+        value: @user.formatted_custom_value_for(custom_field),
+        multi_value: custom_field.multi_value?
+      )
+    end
+
+    def custom_fields_by_column_name
+      @custom_fields_by_column_name ||= UserCustomField.visible(User.current).index_by(&:column_name)
+    end
+
+    def filled_custom_field_ids
+      @filled_custom_field_ids ||= @user.custom_values.where.not(value: [nil, ""]).pluck(:custom_field_id).uniq
+    end
 
     def working_hours
       return @working_hours if defined?(@working_hours)

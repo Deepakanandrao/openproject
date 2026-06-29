@@ -44,6 +44,10 @@ module ResourcePlannerViews::UserCardList
       @users ||= @view.results.to_a
     end
 
+    def card_fields
+      @view.card_fields
+    end
+
     def remove_path_for(user)
       return nil unless @view.manually_picked?
 
