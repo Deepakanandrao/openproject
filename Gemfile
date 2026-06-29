@@ -198,7 +198,7 @@ gem "puma", "~> 8.0"
 gem "puma-plugin-statsd", "~> 2.7"
 gem "rack-timeout", "~> 0.7.0", require: "rack/timeout/base"
 
-gem "nokogiri", "~> 1.19.2"
+gem "nokogiri", "~> 1.19.4"
 
 gem "carrierwave", "~> 2.2.7"
 gem "carrierwave_direct", "~> 3.0.0"
@@ -276,7 +276,7 @@ group :test do
   gem "rspec-rails", "~> 8.0.4", group: :development
 
   # Retry failures within the same environment
-  gem "retriable", "~> 3.8.0"
+  gem "retriable", "~> 4.1.0"
   gem "rspec-retry", "~> 0.6.1"
 
   # Accessibility tests

@@ -65,7 +65,7 @@ module ResourcePlannerViews
           allocations: @allocations,
           visible_principal_ids: @visible_principal_ids
         )
-      when ResourceUserCard
+      when ::ResourceUserCard # disambiguate from the ResourcePlannerViews::ResourceUserCard contracts namespace
         ResourcePlannerViews::UserCardList::ContentComponent.new(
           view: @view,
           project: @project,

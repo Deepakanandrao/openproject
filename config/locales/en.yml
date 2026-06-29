@@ -774,6 +774,9 @@ en:
         project: "Allows the user to add a comment related to the project attribute when selecting the value in the project overview."
       visible_on_user_card:
         all: "When checked, this field's value is shown in the user information card when hovering over a user across the application."
+    semantic_keys:
+      none: "None"
+      job_title: "Job title"
 
     tab:
       no_results_title_text: There are currently no custom fields.
@@ -1397,7 +1400,6 @@ en:
       You do not have the right to manage members for all projects that the placeholder user is a member of.
     delete_tooltip: "Delete placeholder user"
     deletion_info:
-      heading_html: "Delete placeholder user %{name}"
       data_consequences: >
         All occurrences of the placeholder user (e.g., as assignee, responsible or other user values)
         will be reassigned to an account called "Deleted user".
@@ -1405,8 +1407,8 @@ en:
         As the data of every deleted account is reassigned to this account
         it will not be possible to distinguish the data the user created from
         the data of another deleted account.
-      irreversible: "This action is irreversible"
-      confirmation_html: "Enter the placeholder user name %{name} to confirm the deletion."
+      heading: "Delete placeholder user %{name}?"
+      title: "Delete placeholder user %{name}"
   priorities:
     edit:
       priority_color_text: |
@@ -1791,6 +1793,7 @@ en:
       login_consequences:
         other: "This account will immediately be removed from the system and the user will no longer be able to log in with their credentials."
         self: "Your account will immediately be removed from the system and you will no longer be able to log in using your credentials."
+      title: "Delete %{name}'s account"
     error_inactive_activation_by_mail: >
       Your account has not yet been activated.
       To activate your account, click on the link that was emailed to you.
@@ -1863,6 +1866,7 @@ en:
         regexp: "Regular expression"
         searchable: "Searchable"
         visible_on_user_card: "Show on user card"
+        semantic_key: "Semantic meaning"
         admin_only: "Admin-only"
         has_comment: "Add a comment text field"
       custom_value:
@@ -2090,6 +2094,7 @@ en:
       user:
         admin: "Administrator"
         auth_source: "Authentication source"
+        department: "Department"
         ldap_auth_source: "LDAP connection"
         identity_url: "Identity URL"
         current_password: "Current password"
@@ -3709,18 +3714,17 @@ en:
         learn_about: "Learn more about all new features"
         missing: "There are no highlighted features yet."
         # We need to include the version to invalidate outdated translations in other locales
-        "17_5":
+        "17_6":
           new_features_title: >
             The release contains various new features and improvements, such as:
           new_features_list:
-            line_0: "Project-based work package identifiers for clearer references."
-            line_1: Jira Migrator support for Jira identifiers, due dates, and more.
-            line_2: Option to exclude work package types from Backlogs.
-            line_3: Redesigned sprint views.
-            line_4: Improved work package linking across Documents and text editors.
-            line_5: More flexible meeting schedules and reduced email notification noise.
-            line_6: Nested groups for organizational structures and inherited permissions.
-            line_7: Improved administration interfaces for workflows, users, and type configuration.
+            line_0: "XWiki integration (Corporate plan)."
+            line_1: "Sprint goals."
+            line_2: "'All sprints' overview page."
+            line_3: "Display backlog buckets in work packages and work package tables."
+            line_4: "Improved support for project-based (semantic) identifiers."
+            line_5: "Convert meeting agenda items into work packages."
+            line_6: "Configure cost types per project."
     links:
       upgrade_enterprise_edition: "Upgrade to Enterprise edition"
       postgres_migration: "Migrating your installation to PostgreSQL"
@@ -5837,6 +5841,18 @@ en:
       label_untitled_section: "User attributes"
       new:
         heading: "New attribute"
+      tabs:
+        attributes: "Attributes"
+        semantic_keys: "Mapped attributes"
+      semantic_keys:
+        description: >-
+          Some attributes can do more than store information — the app uses them to power specific features. Choose which
+          attribute to use for each purpose below. Each attribute can be used for only one purpose,
+          and each purpose for only one attribute.
+        descriptions:
+          job_title: >-
+            Choose the attribute that holds each user's job title. It appears next to their name in several places,
+            such as user cards.
     working_days:
       section_work_week: "Work week"
       section_holidays_and_closures: "Holidays and closures"
@@ -6121,6 +6137,7 @@ en:
     status_user_and_brute_force: "%{user} and %{brute_force}"
     status_change: "Status change"
     text_change_disabled_for_provider_login: "The name and email is set by your login provider and can thus not be changed."
+    department_ldap_managed_caption: "This department is managed by LDAP synchronization and cannot be changed here."
     unlock: "Unlock"
     unlock_and_reset_failed_logins: "Unlock and reset failed logins"
     error_cannot_delete_user: "User cannot be deleted"
