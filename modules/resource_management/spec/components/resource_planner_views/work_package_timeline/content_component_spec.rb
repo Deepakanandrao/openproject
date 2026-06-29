@@ -49,6 +49,7 @@ RSpec.describe ResourcePlannerViews::WorkPackageTimeline::ContentComponent, type
     expect(el["#{prefix}-resources-url-value"]).to be_present
     expect(el["#{prefix}-events-url-value"]).to be_present
     expect(el["#{prefix}-initial-view-value"]).to eq("resourceTimelineDays")
+    expect(el["#{prefix}-reload-event-name-value"]).to eq("op-dispatched:resource-allocations:changed")
   end
 
   context "with no work packages" do

@@ -89,7 +89,10 @@ module ResourcePlannerViews
           "first-day" => (Setting.start_of_week.presence || 1).to_i,
           "initial-date" => Date.current.iso8601,
           "initial-view" => Granularity.default_view,
-          "new-allocation-url" => new_allocation_url
+          "new-allocation-url" => new_allocation_url,
+          # Refetch the calendar feeds in place instead of reloading the whole
+          # frame; the server dispatches this event after an allocation changes.
+          "reload-event-name" => "op-dispatched:resource-allocations:changed"
         }
       end
 

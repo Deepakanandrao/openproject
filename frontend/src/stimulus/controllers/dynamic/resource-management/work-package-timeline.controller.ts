@@ -70,6 +70,7 @@ export default class WorkPackageTimelineController extends Controller {
     initialDate: String,
     initialView: String,
     newAllocationUrl: String,
+    reloadEventName: String,
   };
 
   declare readonly calendarTarget:HTMLElement;
@@ -82,20 +83,36 @@ export default class WorkPackageTimelineController extends Controller {
   declare readonly initialDateValue:string;
   declare readonly initialViewValue:string;
   declare readonly newAllocationUrlValue:string;
+  declare readonly reloadEventNameValue:string;
 
   private calendar?:Calendar;
+
+  // Refetches both feeds in place when the server signals an allocation change,
+  // so the calendar updates without reloading (and re-instantiating) the frame.
+  private readonly reloadListener = ():void => {
+    this.calendar?.refetchResources();
+    this.calendar?.refetchEvents();
+  };
 
   // Sent to the events feed. Updated before changeView because FullCalendar fires
   // the fetch mid-transition, while `calendar.view` still reports the old view.
   private currentGranularity:string;
 
   connect() {
+    if (this.reloadEventNameValue) {
+      document.addEventListener(this.reloadEventNameValue, this.reloadListener);
+    }
+
     // Defer to the next frame so the container has its final size before
     // FullCalendar measures it.
     requestAnimationFrame(() => this.initializeCalendar());
   }
 
   disconnect() {
+    if (this.reloadEventNameValue) {
+      document.removeEventListener(this.reloadEventNameValue, this.reloadListener);
+    }
+
     if (this.calendar) {
       this.calendar.destroy();
       this.calendar = undefined;
