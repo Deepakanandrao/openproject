@@ -30,31 +30,23 @@
 
 import { vi } from 'vitest';
 import { setupStimulusTest, type StimulusTestContext } from 'core-stimulus/test-helpers';
-
-// Stub FullCalendar so the controller mounts without a real calendar (which
-// would measure the DOM and fetch the feeds). We only exercise the reload
-// wiring, so a calendar exposing the refetch methods is enough.
-const calendar = vi.hoisted(() => ({
-  render: vi.fn(),
-  destroy: vi.fn(),
-  refetchEvents: vi.fn(),
-  refetchResources: vi.fn(),
-}));
-
-vi.mock('@fullcalendar/core', async (importOriginal) => ({
-  ...await importOriginal<typeof import('@fullcalendar/core')>(),
-  // A plain function so `new Calendar(...)` returns our stub; an arrow would
-  // not be constructable and would leave the controller without a calendar.
-  Calendar: vi.fn(function MockCalendar() { return calendar; }),
-}));
+import WorkPackageTimelineController from './work-package-timeline.controller';
 
 const EVENT_NAME = 'op-dispatched:resource-allocations:changed';
 
 describe('WorkPackageTimelineController', () => {
   let ctx:StimulusTestContext;
 
+  // A stand-in for the FullCalendar instance. We stub `initializeCalendar` so no
+  // real calendar is built (it would measure the DOM and fetch the feeds); the
+  // controller's reload wiring only needs the refetch/destroy methods.
+  const calendar = {
+    destroy: vi.fn(),
+    refetchEvents: vi.fn(),
+    refetchResources: vi.fn(),
+  };
+
   const mountTimeline = async ():Promise<void> => {
-    const { default: WorkPackageTimelineController } = await import('./work-package-timeline.controller');
     ctx = await setupStimulusTest({
       controllers: { 'resource-management--work-package-timeline': WorkPackageTimelineController },
     });
@@ -62,29 +54,27 @@ describe('WorkPackageTimelineController', () => {
     const prefix = 'data-resource-management--work-package-timeline';
     ctx.appendHTML(`
       <div data-controller="resource-management--work-package-timeline"
-           ${prefix}-resources-url-value="/resources"
-           ${prefix}-events-url-value="/events"
-           ${prefix}-locale-value="en"
-           ${prefix}-first-day-value="1"
-           ${prefix}-initial-date-value="2026-06-29"
-           ${prefix}-initial-view-value="resourceTimelineDays"
-           ${prefix}-new-allocation-url-value=""
            ${prefix}-reload-event-name-value="${EVENT_NAME}">
         <div ${prefix}-target="calendar"></div>
       </div>
     `);
 
-    // connect() schedules the calendar init on the next animation frame.
+    // connect() schedules the (stubbed) calendar init on the next animation frame.
     await ctx.nextFrame();
     await ctx.nextFrame();
   };
 
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.spyOn(WorkPackageTimelineController.prototype as unknown as { initializeCalendar:() => void }, 'initializeCalendar')
+      .mockImplementation(function stubInitializeCalendar(this:{ calendar:unknown }) {
+        this.calendar = calendar;
+      });
   });
 
   afterEach(() => {
     ctx.dispose();
+    vi.restoreAllMocks();
   });
 
   it('refetches both feeds when the allocation-changed event fires', async () => {
