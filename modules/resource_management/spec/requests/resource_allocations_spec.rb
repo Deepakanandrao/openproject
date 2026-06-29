@@ -191,7 +191,7 @@ RSpec.describe "ResourceAllocations requests",
         perform
 
         expect(response).to have_http_status(:ok)
-        expect(response.body).to include('target="resource-allocations-list-component"')
+        expect(response.body).to have_turbo_stream(action: "replace", target: "resource-allocations-list-component")
         expect_allocation_change_announced_for(work_package)
       end
     end
@@ -498,10 +498,10 @@ RSpec.describe "ResourceAllocations requests",
     it "offers a Delete button targeting the destroy path" do
       get edit_project_resource_allocation_path(project, allocation), as: :turbo_stream
 
-      button = Nokogiri::HTML5.fragment(response.body)
-        .at_css("a[data-turbo-method='delete'][href$='/resource_allocations/#{allocation.id}']")
-      expect(button).to be_present
-      expect(button.text).to include(I18n.t(:button_delete))
+      expect(response.body).to have_turbo_stream(action: "dialog") do
+        assert_select "a[data-turbo-method='delete'][href$='/resource_allocations/#{allocation.id}']",
+                      text: I18n.t(:button_delete)
+      end
     end
 
     context "for an allocation of another project's work package" do
@@ -654,14 +654,17 @@ RSpec.describe "ResourceAllocations requests",
     it "refreshes the open allocations list and announces the change for the planner table" do
       delete project_resource_allocation_path(project, allocation), as: :turbo_stream
 
-      expect(response.body).to include('target="resource-allocations-list-component"')
+      expect(response.body).to have_turbo_stream(action: "replace", target: "resource-allocations-list-component")
       expect_allocation_change_announced_for(work_package)
     end
 
     it "closes the edit dialog, so deleting from within it dismisses the dialog" do
       delete project_resource_allocation_path(project, allocation), as: :turbo_stream
 
-      expect(response.body).to include(ResourceAllocations::EditDialogComponent::DIALOG_ID)
+      expect(response.body).to have_turbo_stream(
+        action: "closeDialog",
+        target: "##{ResourceAllocations::EditDialogComponent::DIALOG_ID}"
+      )
     end
   end
 
@@ -734,8 +737,7 @@ RSpec.describe "ResourceAllocations requests",
 
       # The user dialog is closed and the kind step is skipped
       expect(response).to have_http_status(:ok)
-      expect(response.body).to include('action="closeDialog"')
-      expect(response.body).to include("##{user_dialog_id}")
+      expect(response.body).to have_turbo_stream(action: "closeDialog", target: "##{user_dialog_id}")
       expect(response.body).not_to include('value="filter"')
     end
 
@@ -758,10 +760,10 @@ RSpec.describe "ResourceAllocations requests",
   # The controller emits a `dispatchEvent` turbo stream carrying the changed
   # work package so an open resource planner table can reload it.
   def expect_allocation_change_announced_for(work_package)
-    event = Nokogiri::HTML5.fragment(response.body).at_css('turbo-stream[action="dispatchEvent"]')
-
-    expect(event).to be_present
-    expect(event["event-name"]).to eq("op-dispatched:resource-allocations:changed")
-    expect(JSON.parse(event["detail"])).to eq("work_package_id" => work_package.id)
+    expect(response.body).to have_turbo_stream(action: "dispatchEvent") do |streams|
+      event = streams.first
+      expect(event["event-name"]).to eq("op-dispatched:resource-allocations:changed")
+      expect(JSON.parse(event["detail"])).to eq("work_package_id" => work_package.id)
+    end
   end
 end
