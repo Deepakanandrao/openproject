@@ -142,8 +142,8 @@ RSpec.describe ResourcePlannerViews::UserCardList::CardComponent, type: :compone
                                     saturday: 0, sunday: 0)
       end
 
-      it "renders the compact summary" do
-        expect(rendered).to have_text("8h/day - 5 days/week (Mon-Fri)")
+      it "renders the per day breakdown" do
+        expect(rendered).to have_text("Mon-Fri 8h")
       end
     end
 

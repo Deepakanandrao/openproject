@@ -76,14 +76,7 @@ module ResourcePlannerViews::UserCardList
     def working_hours_summary
       return t("resource_management.user_card_list.working_hours.blank") if working_hours.blank?
 
-      if (hours = working_hours.uniform_daily_hours_label)
-        t("resource_management.user_card_list.working_hours.uniform",
-          hours:,
-          days: working_hours.working_days_count,
-          range: working_hours.working_day_ranges(abbreviated: true))
-      else
-        working_hours.working_days_summary
-      end
+      working_hours.working_days_summary
     end
 
     def card_field_rows

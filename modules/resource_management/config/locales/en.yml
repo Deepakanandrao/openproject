@@ -161,7 +161,6 @@ en:
         label: Utilization
       working_hours:
         blank: No working hours configured
-        uniform: "%{hours}/day - %{days} days/week (%{range})"
     view_types:
       resource_user_card:
         caption: >-
