@@ -1460,7 +1460,7 @@ GEM
       attr_required (>= 0.0.5)
       faraday (~> 2.0)
       faraday-follow_redirects
-    sys-filesystem (1.5.5)
+    sys-filesystem (1.6.0)
       ffi (~> 1.1)
     table_print (1.5.7)
     terminal-table (4.0.0)
@@ -1781,7 +1781,7 @@ DEPENDENCIES
   stringex (~> 2.8.5)
   structured_warnings (~> 0.5.0)
   svg-graph (~> 2.2.0)
-  sys-filesystem (~> 1.5.0)
+  sys-filesystem (~> 1.6.0)
   table_print (~> 1.5.6)
   test-prof (~> 1.6.0)
   timecop (~> 0.9.0)
@@ -2288,7 +2288,7 @@ CHECKSUMS
   structured_warnings (0.5.0) sha256=864aca5a4d6b63cd3a948f9dcd7f5498af1cf42bcf4fd75e2c315b7d77a30583
   svg-graph (2.2.2) sha256=f928866403055e6539afdfdab5f6268d108b2abc9f002e0fc51b16511809513a
   swd (2.0.3) sha256=4cdbe2a4246c19f093fce22e967ec3ebdd4657d37673672e621bf0c7eb770655
-  sys-filesystem (1.5.5) sha256=6f995890a734b9f0aa55df5e09d99adeb9fd1c288f2c4097269a1f8c95e15033
+  sys-filesystem (1.6.0) sha256=e2a7183e147e9b95aaa1217d65b3e3b479861c554acd18ec36aebb91398b45f6
   table_print (1.5.7) sha256=436664281f93387b882335795e16cfeeb839ad0c785ff7f9110fc0f17c68b5cb
   terminal-table (4.0.0) sha256=f504793203f8251b2ea7c7068333053f0beeea26093ec9962e62ea79f94301d2
   test-prof (1.6.1) sha256=0332d9c39a7c118ed942b2db582f055d9f24964d150004ec6b964d2fa262499e
