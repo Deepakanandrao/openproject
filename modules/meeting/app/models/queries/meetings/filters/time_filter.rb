@@ -37,7 +37,7 @@ class Queries::Meetings::Filters::TimeFilter < Queries::Meetings::Filters::Meeti
   end
 
   def past?
-    operator.to_s == Queries::Operators::Past.symbol
+    operator.to_sym == Queries::Operators::Past.to_sym
   end
 
   def where

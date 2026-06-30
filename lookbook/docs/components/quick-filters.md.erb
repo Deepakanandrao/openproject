@@ -64,4 +64,30 @@ Quick filters and the advanced "All filters" panel edit the same query, so they 
 advanced filter form auto-submits, ideally re-render the entire subheader (or other component that encloses both) via
 morphing to keep things in sync. This will ensure that new quick filters do not have to be dealt with separately.
 
-An example can be seen in `MeetingsController#index`
+This has to be wired up manually in the controller action that the advanced filter form submits to. For example, in
+`MeetingsController#index`:
+
+```ruby
+def index
+  load_meetings
+
+  respond_to do |format|
+    format.html do
+      render "index", locals: { menu_name: project_or_global_menu }
+    end
+
+    format.turbo_stream do
+      # Re-render the whole subheader (which encloses both the quick filters and
+      # the "All filters" panel) via morphing
+      update_via_turbo_stream(
+        component: Meetings::IndexSubHeaderComponent.new(query: @query, project: @project, params:, lazy: false),
+        method: "morph"
+      )
+
+      # Re-render other components as well...
+
+      render turbo_stream: turbo_streams
+    end
+  end
+end
+```
