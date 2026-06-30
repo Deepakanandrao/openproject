@@ -32,12 +32,13 @@ module ResourcePlannerViews::UserCardList
   # Modelled on Users::HoverCardComponent
   class CardComponent < ApplicationComponent
     include OpPrimer::ComponentHelpers
+    include ResourceAllocations::ScheduleSummary
 
     MULTI_VALUE_DISPLAY_LIMIT = 3
 
     CardFieldRow = Data.define(:icon, :label, :value, :multi_value)
 
-    def initialize(user:, details_path:, card_fields: [], remove_path: nil, utilization: nil, working_hours_date: nil)
+    def initialize(user:, details_path:, card_fields: [], remove_path: nil, utilization: nil, working_schedules: [])
       super
 
       @user = user
@@ -45,7 +46,7 @@ module ResourcePlannerViews::UserCardList
       @card_fields = card_fields
       @remove_path = remove_path
       @utilization = utilization
-      @working_hours_date = working_hours_date
+      @working_schedules = working_schedules
     end
 
     def render?
@@ -75,9 +76,9 @@ module ResourcePlannerViews::UserCardList
     end
 
     def working_hours_summary
-      return t("resource_management.user_card_list.working_hours.blank") if working_hours.blank?
+      return t("resource_management.user_card_list.working_hours.blank") if @working_schedules.blank?
 
-      working_hours.working_days_summary
+      schedule_sentence(@working_schedules, compact: true)
     end
 
     def card_field_rows
@@ -123,12 +124,6 @@ module ResourcePlannerViews::UserCardList
 
     def filled_custom_field_ids
       @filled_custom_field_ids ||= @user.custom_values.where.not(value: [nil, ""]).pluck(:custom_field_id).uniq
-    end
-
-    def working_hours
-      return @working_hours if defined?(@working_hours)
-
-      @working_hours = UserWorkingHours.for_user(@user).valid_for_date(@working_hours_date || Date.current)
     end
 
     def render_value_labels(value)

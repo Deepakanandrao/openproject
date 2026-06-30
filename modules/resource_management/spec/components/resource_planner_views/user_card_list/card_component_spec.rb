@@ -44,11 +44,11 @@ RSpec.describe ResourcePlannerViews::UserCardList::CardComponent, type: :compone
   let(:remove_path) { nil }
   let(:utilization) { nil }
   let(:card_fields) { [] }
-  let(:working_hours_date) { nil }
+  let(:working_schedules) { [] }
 
   subject(:rendered) do
     render_inline(described_class.new(user: card_user, details_path:, card_fields:, remove_path:, utilization:,
-                                      working_hours_date:))
+                                      working_schedules:))
     page
   end
 
@@ -138,10 +138,10 @@ RSpec.describe ResourcePlannerViews::UserCardList::CardComponent, type: :compone
     let(:card_fields) { %w[working_times] }
 
     context "with a uniform schedule" do
-      before do
-        create(:user_working_hours, user: card_user, valid_from: 1.year.ago.to_date,
+      let(:working_schedules) do
+        [build(:user_working_hours, user: card_user, valid_from: 1.year.ago.to_date,
                                     monday: 480, tuesday: 480, wednesday: 480, thursday: 480, friday: 480,
-                                    saturday: 0, sunday: 0)
+                                    saturday: 0, sunday: 0)]
       end
 
       it "renders the per day breakdown" do
@@ -150,14 +150,26 @@ RSpec.describe ResourcePlannerViews::UserCardList::CardComponent, type: :compone
     end
 
     context "with a non uniform schedule" do
-      before do
-        create(:user_working_hours, user: card_user, valid_from: 1.year.ago.to_date,
+      let(:working_schedules) do
+        [build(:user_working_hours, user: card_user, valid_from: 1.year.ago.to_date,
                                     monday: 480, tuesday: 480, wednesday: 480, thursday: 480, friday: 360,
-                                    saturday: 0, sunday: 0)
+                                    saturday: 0, sunday: 0)]
       end
 
       it "renders the per day breakdown" do
         expect(rendered).to have_text("Mon-Thu 8h, Fri 6h")
+      end
+    end
+
+    context "with a reduced availability factor" do
+      let(:working_schedules) do
+        [build(:user_working_hours, user: card_user, valid_from: 1.year.ago.to_date, availability_factor: 80,
+                                    monday: 480, tuesday: 480, wednesday: 480, thursday: 480, friday: 480,
+                                    saturday: 0, sunday: 0)]
+      end
+
+      it "appends the compact availability note" do
+        expect(rendered).to have_text("Mon-Fri 8h (80% available)")
       end
     end
 
@@ -168,20 +180,19 @@ RSpec.describe ResourcePlannerViews::UserCardList::CardComponent, type: :compone
     end
 
     context "with a schedule that changes" do
-      let(:working_hours_date) { Date.new(2025, 6, 1) }
-
-      before do
-        create(:user_working_hours, user: card_user, valid_from: Date.new(2025, 1, 1),
+      let(:working_schedules) do
+        [build(:user_working_hours, user: card_user, valid_from: Date.new(2025, 1, 1),
                                     monday: 480, tuesday: 480, wednesday: 480, thursday: 480, friday: 480,
-                                    saturday: 0, sunday: 0)
-        create(:user_working_hours, user: card_user, valid_from: Date.new(2025, 9, 1),
+                                    saturday: 0, sunday: 0),
+         build(:user_working_hours, user: card_user, valid_from: Date.new(2025, 9, 1),
                                     monday: 240, tuesday: 240, wednesday: 240, thursday: 240, friday: 240,
-                                    saturday: 0, sunday: 0)
+                                    saturday: 0, sunday: 0)]
       end
 
-      it "renders the schedule valid at the given date, not the current one" do
-        expect(rendered).to have_text("Mon-Fri 8h")
-        expect(rendered).to have_no_text("Mon-Fri 4h")
+      it "renders all relevant schedules with their end dates" do
+        expect(rendered).to have_text(
+          "Mon-Fri 8h until #{I18n.l(Date.new(2025, 8, 31))}, Mon-Fri 4h"
+        )
       end
     end
   end

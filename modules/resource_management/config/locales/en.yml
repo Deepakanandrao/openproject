@@ -161,6 +161,8 @@ en:
         label: Utilization
       working_hours:
         blank: No working hours configured
+        schedule_availability_compact: "%{schedule} (%{factor}% available)"
+        schedule_change_compact: until %{date}, %{schedule}
     view_types:
       resource_user_card:
         caption: >-
