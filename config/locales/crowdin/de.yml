@@ -5076,7 +5076,7 @@ de:
       managed_path_note: 'Das folgende Verzeichnis wird gelöscht werden: %{path}'
       repository_verification_html: Geben Sie die Projektkennung %{identifier} ein, um die Löschung des Projektarchivs zu bestätigen.
       subtitle: Wollen Sie wirklich das %{repository_type} des Projekts %{project_name} löschen?
-      subtitle_not_managed_html: Wollen Sie wirklich die verknüpfte %{repository_type} %{url} aus dem Projekt %{project_name} entfernen?
+      subtitle_not_managed_html: Wollen Sie wirklich das verknüpfte %{repository_type} %{url} aus dem Projekt %{project_name} entfernen?
       title_html: "%{repository_type} löschen"
       title_not_managed: Verknüpftes %{repository_type} löschen?
     errors:

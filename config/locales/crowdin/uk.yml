@@ -32,7 +32,7 @@ uk:
         label_activity_show_all: Показати все
         label_activity_show_only_comments: Показувати лише коментарі
         label_activity_show_only_changes: Показувати лише зміни
-        label_dismiss_comment: Dismiss
+        label_dismiss_comment: Відхилити
         label_sort_asc: Найновіші внизу
         label_sort_desc: Найновіші вгорі
         label_type_to_comment: Додайте коментар. Введіть @, щоб сповістити людину.
@@ -45,7 +45,7 @@ uk:
         commented: прокоментував(-ла)
         internal_comment: Внутрішній коментар
         internal_journal: Внутрішні коментарі видимі для визначеної групи учасників.
-        unsaved_changes_confirmation_message: Are you sure you want to dismiss your comment? The content that you have written will be lost.
+        unsaved_changes_confirmation_message: Хочете відхилити свій коментар? Введений вами вміст буде втрачено.
         internal_comment_confirmation:
           title: Зробити цей коментар загальнодоступним?
           heading: Зробити цей коментар загальнодоступним?
@@ -53,25 +53,25 @@ uk:
           confirm_button_text: Зробити загальнодоступним
   admin:
     reserved_identifiers:
-      btn_release: Unreserve
+      btn_release: Скасувати резервування
       col_identifier: Ідентифікатор
       col_project: Проєкт
       col_reserved: Зарезервовано
       dialog:
         checkbox_label: Я розумію, що цю дію не можна відмінити.
-        confirm_button: Unreserve identifier
-        description: Unreserving this project identifier cannot be undone. External links and integrations using it will stop resolving, and the name becomes available for any new project to claim.
+        confirm_button: Скасувати резервування ідентифікатора
+        description: Скасування резервування цього ідентифікатора проєкту неможливо відмінити. Зовнішні посилання й інтеграції, що його використовують, перестануть працювати, а ім’я стане доступним для будь-якого нового проєкту.
         description_with_work_packages:
-          one: Unreserving this project identifier (and its 1 work package identifier) cannot be undone. External links and integrations using it will stop resolving, and the name becomes available for any new project to claim.
-          few: Unreserving this project identifier (and its %{count} work package identifiers) cannot be undone. External links and integrations using it will stop resolving, and the name becomes available for any new project to claim.
-          many: Unreserving this project identifier (and its %{count} work package identifiers) cannot be undone. External links and integrations using it will stop resolving, and the name becomes available for any new project to claim.
-          other: Unreserving this project identifier (and its %{count} work package identifiers) cannot be undone. External links and integrations using it will stop resolving, and the name becomes available for any new project to claim.
-        heading: Unreserve "%{identifier}"?
-        title: Unreserve identifier
-      empty_body: When a project's identifier changes, the previous one will appear here so you can unreserve it once it's safe to do so.
+          one: Скасування резервування цього ідентифікатора проєкту (і його 1 ідентифікатора пакета робіт) неможливо відмінити. Зовнішні посилання й інтеграції, що його використовують, перестануть працювати, а ім’я стане доступним для будь-якого нового проєкту.
+          few: Скасування резервування цього ідентифікатора проєкту (і його %{count} ідентифікаторів пакетів робіт) неможливо відмінити. Зовнішні посилання й інтеграції, що його використовують, перестануть працювати, а ім’я стане доступним для будь-якого нового проєкту.
+          many: Скасування резервування цього ідентифікатора проєкту (і його %{count} ідентифікаторів пакетів робіт) неможливо відмінити. Зовнішні посилання й інтеграції, що його використовують, перестануть працювати, а ім’я стане доступним для будь-якого нового проєкту.
+          other: Скасування резервування цього ідентифікатора проєкту (і його %{count} ідентифікатора пакета робіт) неможливо відмінити. Зовнішні посилання й інтеграції, що його використовують, перестануть працювати, а ім’я стане доступним для будь-якого нового проєкту.
+        heading: Скасувати резервування ідентифікатора %{identifier}?
+        title: Скасувати резервування ідентифікатора
+      empty_body: Коли ідентифікатор проєкту змінюється, тут з’являється попередній ідентифікатор, щоб ви могли скасувати його резервування, щойно переконаєтеся, що це безпечно.
       empty_heading: Немає зарезервованих ідентифікаторів
       filter_label: Шукати ідентифікатори
-      identifier_not_found: The reserved identifier could not be found. It may have already been unreserved or the project may have been deleted. Please refresh the page.
+      identifier_not_found: Не вдалося знайти зарезервований ідентифікатор. Можливо, його резервування вже скасовано або проєкт було видалено. Оновіть сторінку.
       lede_html: When a project's identifier is renamed, the previous identifier is kept reserved so that existing links and integrations keep working.<br>Here you can unreserve identifiers so that they may be used by other projects.
       released_notice: Identifier "%{identifier}" has been unreserved.
       reserved_ago: "%{time} тому"
