@@ -48,7 +48,8 @@ class GitlabMergeRequest < ApplicationRecord
             :repository,
             :state,
             :title,
-            :gitlab_updated_at, presence: true
+            :gitlab_updated_at,
+            presence: true
   validates :body,
             presence: { unless: :partial? }
   validate :validate_labels_schema

@@ -48,7 +48,8 @@ class GithubPullRequest < ApplicationRecord
             :repository,
             :state,
             :title,
-            :github_updated_at, presence: true
+            :github_updated_at,
+            presence: true
   validates :body,
             :comments_count,
             :review_comments_count,

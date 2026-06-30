@@ -54,5 +54,6 @@ class GitlabPipeline < ApplicationRecord
             :name,
             :ci_details,
             :commit_id,
-            :username, presence: true
+            :username,
+            presence: true
 end

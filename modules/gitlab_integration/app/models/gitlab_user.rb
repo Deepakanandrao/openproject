@@ -36,5 +36,6 @@ class GitlabUser < ApplicationRecord
             :gitlab_name,
             :gitlab_username,
             :gitlab_email,
-            :gitlab_avatar_url, presence: true
+            :gitlab_avatar_url,
+            presence: true
 end
