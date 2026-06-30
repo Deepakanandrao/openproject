@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -27,36 +28,17 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class Queries::Meetings::Filters::TimeFilter < Queries::Meetings::Filters::MeetingFilter
-  def available_operators
-    [Queries::Operators::Upcoming, Queries::Operators::Past]
-  end
+module Queries::Operators
+  # Value-less operator selecting today and onward, for date/datetime fields.
+  class Upcoming < Base
+    label "upcoming"
+    set_symbol "upcoming"
+    require_value false
 
-  def default_operator
-    Queries::Operators::Upcoming
-  end
+    extend DateRangeClauses
 
-  def past?
-    operator.to_sym == Queries::Operators::Past.to_sym
-  end
-
-  def where
-    if past?
-      ['"meetings"."start_time" < ?', Time.current]
-    else
-      ['"meetings"."start_time" + "meetings"."duration" * interval \'1 hour\' >= ?', Time.current]
+    def self.sql_for_field(_values, db_table, db_field)
+      relative_date_range_clause(db_table, db_field, 0, nil)
     end
-  end
-
-  def human_name
-    Meeting.human_attribute_name(:start_time)
-  end
-
-  def type
-    :date
-  end
-
-  def self.key
-    :time
   end
 end
