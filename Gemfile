@@ -120,7 +120,7 @@ gem "mail", "2.9.0"
 gem "csv", "~> 3.3"
 
 # provide compatible filesystem information for available storage
-gem "sys-filesystem", "~> 1.5.0", require: false
+gem "sys-filesystem", "~> 1.6.0", require: false
 
 gem "bcrypt", "~> 3.1.22"
 
