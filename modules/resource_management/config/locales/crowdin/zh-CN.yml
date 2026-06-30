@@ -36,8 +36,8 @@ zh-CN:
     models:
       resource_allocation: 资源分配
       resource_planner: 资源规划工具
+      resource_user_card: 用户卡
       resource_work_package_list: 工作包列表
-      user_card: 用户卡
   button_next: 下一步
   label_resource_management: 资源规划
   permission_allocate_user_resources: 分配用户资源
@@ -53,6 +53,7 @@ zh-CN:
   resource_management:
     action:
       delete: 删除
+      edit: 编辑
       favorite: 添加至收藏夹
       make_private: 设为私有
       make_public: 设为公开
@@ -103,6 +104,7 @@ zh-CN:
       success_message: 资源分配已更新。
       title: 编辑分配
     favorite_caption: 将此视图标记为收藏项，并添加到边栏菜单的顶部。
+    label_edit_resource_planner: 编辑资源规划工具
     label_new_resource_planner: 新建资源规划工具
     label_resource_planner: 资源规划工具
     label_resource_planner_plural: 资源规划工具
@@ -115,10 +117,43 @@ zh-CN:
       private: 私用
       public: 公开
     sub_views: 此资源规划工具中的视图
+    user_allocations_dialog:
+      allocate_work_package: 分配工作包
+      blank: 此用户没有分配的工作包。
+      other_work_packages:
+        other: 其他 %{count} 个工作包
+      title: 使用情况
+    user_card_list:
+      add_user_dialog:
+        title: 添加用户
+      blank:
+        description: 还没有与此视图的筛选条件相符的用户。
+        manual_description: 此视图中尚未添加任何用户。
+        title: 没有可显示的用户
+      card:
+        remove: 移除用户
+        remove_confirmation: 是否将此用户从视图中移除？
+      fields:
+        working_times: Working times
+        input_label: Fields
+        input_caption: Select the fields that will be displayed in the user card for this view
+        input_placeholder: Add a field
+        drag_area_label: Displayed fields
+      subheader:
+        resource: 资源
+        settings: 配置视图
+      utilization:
+        label: 使用情况
     view_types:
+      resource_user_card:
+        caption: 基于用户创建视图，并在用户卡列表中查看其详细信息和分配情况
+        label: 用户卡列表
       resource_work_package_list:
         caption: 基于工作包创建视图，并在列表中查看其详细信息和分配情况
         label: 工作包列表
+      resource_work_package_timeline:
+        caption: Create a view based on work packages and see their allocations over time on a timeline
+        label: Work packages timeline
       user_card:
         caption: 基于用户创建视图，并在用户卡列表中查看其详细信息和分配情况
         label: 用户卡列表
@@ -166,3 +201,19 @@ zh-CN:
         add_work_package: 添加工作包
         allocate: 分配
         settings: 配置视图
+    work_package_timeline:
+      blank:
+        add_work_package: Add work package
+        configure_view: Configure view
+        description: There are no work packages matching this view's filters yet.
+        manual_description: Add work packages to this view to plan their allocation over time.
+        title: No work packages to display
+      granularity:
+        day: Day
+        month: Month
+        week: Calendar week
+      navigation:
+        next: Next period
+        previous: Previous period
+        today: Today
+      query_name: 'Resource management work package timeline: %{name}'
