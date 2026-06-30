@@ -37,7 +37,7 @@ module ResourcePlannerViews::UserCardList
 
     CardFieldRow = Data.define(:icon, :label, :value, :multi_value)
 
-    def initialize(user:, details_path:, card_fields: [], remove_path: nil, utilization: nil)
+    def initialize(user:, details_path:, card_fields: [], remove_path: nil, utilization: nil, working_hours_date: nil)
       super
 
       @user = user
@@ -45,6 +45,7 @@ module ResourcePlannerViews::UserCardList
       @card_fields = card_fields
       @remove_path = remove_path
       @utilization = utilization
+      @working_hours_date = working_hours_date
     end
 
     def render?
@@ -127,7 +128,7 @@ module ResourcePlannerViews::UserCardList
     def working_hours
       return @working_hours if defined?(@working_hours)
 
-      @working_hours = UserWorkingHours.for_user(@user).current
+      @working_hours = UserWorkingHours.for_user(@user).valid_for_date(@working_hours_date || Date.current)
     end
 
     def render_value_labels(value)

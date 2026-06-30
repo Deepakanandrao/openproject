@@ -44,9 +44,11 @@ RSpec.describe ResourcePlannerViews::UserCardList::CardComponent, type: :compone
   let(:remove_path) { nil }
   let(:utilization) { nil }
   let(:card_fields) { [] }
+  let(:working_hours_date) { nil }
 
   subject(:rendered) do
-    render_inline(described_class.new(user: card_user, details_path:, card_fields:, remove_path:, utilization:))
+    render_inline(described_class.new(user: card_user, details_path:, card_fields:, remove_path:, utilization:,
+                                      working_hours_date:))
     page
   end
 
@@ -162,6 +164,24 @@ RSpec.describe ResourcePlannerViews::UserCardList::CardComponent, type: :compone
     context "without a configured schedule" do
       it "renders the placeholder" do
         expect(rendered).to have_text(I18n.t("resource_management.user_card_list.working_hours.blank"))
+      end
+    end
+
+    context "with a schedule that changes" do
+      let(:working_hours_date) { Date.new(2025, 6, 1) }
+
+      before do
+        create(:user_working_hours, user: card_user, valid_from: Date.new(2025, 1, 1),
+                                    monday: 480, tuesday: 480, wednesday: 480, thursday: 480, friday: 480,
+                                    saturday: 0, sunday: 0)
+        create(:user_working_hours, user: card_user, valid_from: Date.new(2025, 9, 1),
+                                    monday: 240, tuesday: 240, wednesday: 240, thursday: 240, friday: 240,
+                                    saturday: 0, sunday: 0)
+      end
+
+      it "renders the schedule valid at the given date, not the current one" do
+        expect(rendered).to have_text("Mon-Fri 8h")
+        expect(rendered).to have_no_text("Mon-Fri 4h")
       end
     end
   end
