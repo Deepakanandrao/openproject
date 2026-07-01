@@ -155,6 +155,16 @@ This follows the APIv3 standards, and also fixes a bug related to the self link.
 <!-- END SECURITY FIXES AUTOMATED SECTION -->
 <!--more-->
 
+### Brute-force protection for LDAP user binds
+
+Resulting from a [security advisory report](https://github.com/opf/openproject/security/advisories/GHSA-vhfq-8mwf-g79w), we have improved how user binds are being protected against brute force inside OpenProject.
+While we expect production AD systems to perform their own brute force protections, administrators of OpenProject might be confused as the login with an LDAP user bind is transparent, and they might expect our brute force protection settings to apply.
+
+OpenProject 17.6 implements a Rack::Attack throttle rule for internal login mechanisms, also protecting LDAP binds specifically.
+We'd like to thank the contributors of this report, [@GEONWOOHAN](https://github.com/GEONWOOHAN), [@QwQP0](https://github.com/QwQP0), [@minnnjuuu](https://github.com/minnnjuuu), and [@dkstjwls06](https://github.com/dkstjwls06)
+
+
+
 ## Bug fixes and changes
 
 <!-- Warning: Anything within the below lines will be automatically removed by the release script -->
