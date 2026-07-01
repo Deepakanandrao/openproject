@@ -53,6 +53,8 @@ es:
           description: Su comentario será visible para cualquier persona que pueda acceder a este paquete de trabajo. ¿Seguro que desea hacerlo?
           confirm_button_text: Hacer pública
   admin:
+    banners:
+      environment_configured_readonly: These values are configured via environment variables and cannot be edited here.
     reserved_identifiers:
       btn_release: Anular reserva
       col_identifier: Identificador
@@ -1394,44 +1396,51 @@ es:
       no_results_content_text: Crear un nuevo tipo
     edit:
       form_configuration:
-        tab: Configuración del formulario
-        label_group: Sección
-        reset_to_defaults: Restablecer formulario
         add_attribute_group: Sección
         add_query_group: Tabla de paquetes de trabajo relacionados
+        blankslate_description: Añade grupos usando el botón de arriba o arrastra atributos desde el panel de la izquierda.
+        blankslate_title: Aún no hay grupos
+        builtin_field: Campo integrado
+        confirm_delete_group: "¿Seguro que quieres eliminar esta sección? Esta acción no se puede deshacer automáticamente."
+        confirm_reset: "¿Seguro que quieres restablecer la configuración del formulario?"
+        custom_field: Campo personalizado
         delete_group: Eliminar sección
-        remove_attribute: Eliminar de la sección
         drag_to_activate: Arrastra campos desde aquí para activarlos
         drag_to_reorder: Arrastra para reordenar
         edit_query: Editar consulta
-        custom_field: Campo personalizado
-        filter_inactive: Atributos del filtro
-        inactive_attributes_heading: Atributos inactivos
-        no_inactive_attributes: No hay atributos inactivos
-        blankslate_title: Aún no hay grupos
-        blankslate_description: Añade grupos usando el botón de arriba o arrastra atributos desde el panel de la izquierda.
-        group_actions: Acciones de sección
-        rename_group: Renombrar sección
-        confirm_delete_group: "¿Seguro que quieres eliminar esta sección? Esta acción no se puede deshacer automáticamente."
-        group_name_label: Nombre de la sección
-        row_actions: Acciones de fila
-        query_group_label: Tabla de paquetes de trabajo relacionados
         empty_group_hint: Arrastra los atributos aquí
+        filter_inactive: Atributos del filtro
+        group_actions: Acciones de sección
+        group_name_label: Nombre de la sección
+        inactive_attributes_heading: Atributos inactivos
         invalid_attribute_groups: La carga útil de la configuración del formulario no es válida.
         invalid_query: La configuración de la consulta insertada no es válida.
+        label_group: Sección
+        no_inactive_attributes: No hay atributos inactivos
         not_found: No se ha podido encontrar el elemento de configuración del formulario solicitado.
-        untitled_group: Grupo sin nombre
-        reset_title: Restablecer la configuración del formulario
-        confirm_reset: "¿Seguro que quieres restablecer la configuración del formulario?"
-        builtin_field: Campo integrado
+        query_group_label: Tabla de paquetes de trabajo relacionados
+        remove_attribute: Eliminar de la sección
+        rename_group: Renombrar sección
         reset_description: 'Se restablecerán los atributos al grupo predeterminado y se deshabilitarán TODOS los campos personalizados.
 
           '
+        reset_title: Restablecer la configuración del formulario
+        reset_to_defaults: Restablecer formulario
+        row_actions: Acciones de fila
+        tab: Configuración del formulario
+        untitled_group: Grupo sin nombre
+      project_attributes:
+        actions:
+          label_disable_all: Disable all
+          label_enable_all: Enable all
+        description: Select the project attributes that you want to enable for this work package type. Enabled project attributes are displayed in a separate tab in work packages of this type. Users with the necessary permissions can view and edit these attributes there.
+        filter: Search by section or name
+        tab: Project attributes
       projects:
-        tab: Proyectos
         enable_all: Habilitar en todos los proyectos
         select_projects: Seleccionar proyectos
         select_projects_description: Seleccione los proyectos en los que desea utilizar este tipo.
+        tab: Proyectos
       settings:
         tab: Ajustes
         type_color_text: El color seleccionado distingue distintos tipos en los diagramas de Gantt o en las tablas de paquetes de trabajo. Por lo tanto, se recomienda usar un color intenso.
@@ -2132,6 +2141,7 @@ es:
         cannot_delete_mapping: es obligatorio. No se puede eliminar.
         cant_link_a_work_package_with_a_descendant: Un paquete de trabajo no puede ser vinculado a una de sus subtareas.
         circular_dependency: Esta relación podría crear una dependencia circular.
+        configured_via_env: The configuration of this object is managed through environment variables and can't be changed at runtime.
         confirmation: no coincide con %{attribute}.
         could_not_be_copied: "%{dependency} no se pudo copiar (en su totalidad)."
         datetime_must_be_in_future: debe ser en el futuro.
@@ -5093,16 +5103,13 @@ es:
     create_managed_delay: 'Nota: el repositorio es administrado, se crea asincrónicamente en el disco y estará disponible en breve.'
     create_successful: El repositorio ha sido registrado.
     delete_sucessful: El repositorio ha sido eliminado.
-    destroy:
-      confirmation: Si continúa, se borarrá definitivamente el repositorio gestionado.
-      info: La eliminación del repositorio no se puede deshacer.
-      info_not_managed: 'Nota: Esto NO borrará el contenido de este repositorio, ya que no es gestionado por OpenProject.'
-      managed_path_note: 'Se borrará el directorio siguiente: %{path}'
-      repository_verification_html: Introduce el identificador del proyecto %{identifier} para confirmar la eliminación de su repositorio.
-      subtitle: "¿Esta seguro de que desea eliminar el tipo %{repository_type} del proyecto %{project_name}?"
-      subtitle_not_managed_html: "¿De verdad quieres eliminar el enlace %{repository_type} %{url} del proyecto %{project_name}?"
-      title_html: Eliminar el %{repository_type}
-      title_not_managed: Eliminar el %{repository_type} linkado?
+    destroy_dialog:
+      description: The %{repository_type} repository at %{path} and all its contents will be permanently deleted.
+      description_not_managed: The linked %{repository_type} at %{url} will be removed from the project. This will not delete the contents of this repository, as it is not managed by OpenProject.
+      heading: Delete this %{repository_type}?
+      heading_not_managed: Remove this linked %{repository_type}?
+      title: Delete repository
+      title_not_managed: Remove repository
     errors:
       build_failed: No se puede crear el repositorio con la configuración seleccionada. %{reason}
       managed_delete: No fue posible eliminar el repositorio gestionado.

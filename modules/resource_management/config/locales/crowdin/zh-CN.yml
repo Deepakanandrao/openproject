@@ -7,7 +7,7 @@ zh-CN:
         allocated_time: 分配时间
         end_date: 结束日期
         entity: 实体
-        filter_name: 资源过滤器名称
+        filter_name: 资源筛选器名称
         principal: 受理人
         start_date: 开始日期
         state: 地区
@@ -59,31 +59,31 @@ zh-CN:
       make_public: 设为公开
       unfavorite: 取消收藏
     allocation:
-      hours: "%{value}h"
+      hours: "%{value} 小时"
       no_work: 此工作包没有计划的工作
       summary: "%{allocated} / %{scheduled}"
     allocate_resource_dialog:
       kind:
         filter:
-          caption: 基于用户属性设置过滤条件以创建占位符资源。
-          label: 过滤器条件
+          caption: 基于用户特性设置筛选条件以创建占位符资源。
+          label: 筛选条件
         label: 分配类型
         principal:
           caption: 为特定用户分配小时数。
           label: 用户
       outside_dates:
-        description: 所选资源日期 %{resource_dates}在工作包日期 %{work_package_dates} 之外。
+        description: 所选资源日期 %{resource_dates} 在工作包日期 %{work_package_dates} 之外。
       overbooking:
         capacity_summary: "%{available} 可用 - %{scheduled} 预定"
-        description: The selected user, %{user}, would be allocated beyond their working hours during this period.
+        description: 为所选用户 %{user} 分配的任务将超出其在此期间的工作时数。
         hidden_work: 其他分配
-        schedule_availability: "%{schedule} (%{factor}% 可用于项目工作)"
-        schedule_change: 直到 %{date}，然后 %{schedule}
-        schedule_note: 该用户工作 %{schedule}。
+        schedule_availability: "%{schedule}（%{factor}% 可用于项目工作）"
+        schedule_change: 截至 %{date}，然后%{schedule}
+        schedule_note: 此用户%{schedule}工作。
         submit: 分配加班时间
         title: 是否要为用户分配加班时间？
       submit: 分配
-      success_message: 资源分配。
+      success_message: 资源已分配。
       title: 分配资源
     blankslate:
       desc: 创建资源规划工具以开始规划此项目的容量。
@@ -131,29 +131,34 @@ zh-CN:
         manual_description: 此视图中尚未添加任何用户。
         title: 没有可显示的用户
       card:
+        multi_value_more: "+%{count} more"
         remove: 移除用户
         remove_confirmation: 是否将此用户从视图中移除？
       fields:
-        working_times: Working times
-        input_label: Fields
-        input_caption: Select the fields that will be displayed in the user card for this view
-        input_placeholder: Add a field
-        drag_area_label: Displayed fields
+        working_times: 工作时间
+        input_label: 字段
+        input_caption: 选择将在此视图的用户卡中显示的字段
+        input_placeholder: 添加字段
+        drag_area_label: 显示的字段
       subheader:
         resource: 资源
         settings: 配置视图
       utilization:
         label: 使用情况
+      working_hours:
+        blank: No working hours configured
+        schedule_availability_compact: "%{schedule} (%{factor}% available)"
+        schedule_change_compact: until %{date}, %{schedule}
     view_types:
       resource_user_card:
-        caption: 基于用户创建视图，并在用户卡列表中查看其详细信息和分配情况
+        caption: 基于用户创建视图，并在用户卡列表中查看其详细信息和分配
         label: 用户卡列表
       resource_work_package_list:
         caption: 基于工作包创建视图，并在列表中查看其详细信息和分配情况
         label: 工作包列表
       resource_work_package_timeline:
-        caption: Create a view based on work packages and see their allocations over time on a timeline
-        label: Work packages timeline
+        caption: 创建基于工作包的视图，并在时间线上查看其分配在一段时间内的变化
+        label: 工作包时间线
       user_card:
         caption: 基于用户创建视图，并在用户卡列表中查看其详细信息和分配情况
         label: 用户卡列表
@@ -163,7 +168,7 @@ zh-CN:
       delete_confirmation: 确定要删除此分配吗？此操作无法撤消。
       delete_success: 资源分配已删除。
       hidden_user: 隐藏用户
-      overbooked: The user is allocated beyond their working hours during this period.
+      overbooked: 为该用户分配的任务将超出其在此期间的工作时数。
       title: 分配
     work_package_list:
       add_work_package_dialog:
@@ -203,17 +208,17 @@ zh-CN:
         settings: 配置视图
     work_package_timeline:
       blank:
-        add_work_package: Add work package
-        configure_view: Configure view
-        description: There are no work packages matching this view's filters yet.
-        manual_description: Add work packages to this view to plan their allocation over time.
-        title: No work packages to display
+        add_work_package: 添加工作包
+        configure_view: 配置视图
+        description: 还没有与此视图的筛选条件相符的工作包。
+        manual_description: 向此视图添加工作包，以规划其分配在一段时间内的变化。
+        title: 没有可显示的工作包
       granularity:
-        day: Day
-        month: Month
-        week: Calendar week
+        day: 天
+        month: 月
+        week: 日历周
       navigation:
-        next: Next period
-        previous: Previous period
-        today: Today
-      query_name: 'Resource management work package timeline: %{name}'
+        next: 下一个期间
+        previous: 上一个期间
+        today: 今天
+      query_name: 资源管理工作包时间线：%{name}
