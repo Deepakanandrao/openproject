@@ -2890,6 +2890,7 @@ ru:
   button_add_sub_item: Добавить подпроект
   button_add_member: Добавить участника
   button_add_watcher: Добавить наблюдателя
+  button_all_filters: All filters
   button_annotate: Комментировать
   button_apply: Применить
   button_apply_changes: Применить изменения
@@ -4376,6 +4377,7 @@ ru:
 
     '
   label_part_of: является частью
+  label_past: Past
   label_password_lost: Забыли пароль?
   label_password_rule_lowercase: Нижний регистр
   label_password_rule_numeric: Числовые символы
@@ -4559,6 +4561,7 @@ ru:
   label_type_new: Новый тип
   label_type_plural: Типы
   label_ui: Интерфейс пользователя
+  label_upcoming: Upcoming
   label_updated_time: Обновлено %{value} назад
   label_updated_time_at: "%{author} %{age}"
   label_updated_time_by: Обновил %{author} %{age} назад

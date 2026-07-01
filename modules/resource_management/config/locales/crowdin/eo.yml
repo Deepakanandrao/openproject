@@ -99,7 +99,7 @@ eo:
           label: Manually hand-picked
       title: Configure view
     edit_allocation_dialog:
-      submit: Save
+      submit: Konservi
       success_message: Resource allocation updated.
       title: Edit allocation
     favorite_caption: Make this view a favorite to add it on the top section of the sidebar menu.
@@ -150,7 +150,7 @@ eo:
       context_menu:
         add_filter_criteria: Add filter criteria
         add_user_group: Add user group
-        edit_total_work: Edit total work
+        edit_total_work: Redaktu la tutan laboron
         label: More actions
         move: Move
         move_down: Move down

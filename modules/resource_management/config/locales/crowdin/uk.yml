@@ -3,11 +3,11 @@ uk:
   activerecord:
     attributes:
       resource_allocation:
-        allocated_hours: Hours
+        allocated_hours: Години
         allocated_time: Виділений час
         end_date: Дата завершення
         entity: Сутність
-        filter_name: Resource filter name
+        filter_name: Назва фільтра ресурсів
         principal: Виконавець
         start_date: Дата початку
         state: Стан
@@ -66,7 +66,7 @@ uk:
         filter:
           caption: Задайте критерії фільтра на основі атрибутів користувача, щоб створити ресурс-заповнювач.
           label: Критерії фільтра
-        label: Тип призначення
+        label: Тип виділення ресурсів
         principal:
           caption: Призначайте години для конкретного користувача.
           label: Користувач
@@ -74,16 +74,16 @@ uk:
         description: Вибрані дати ресурсу, %{resource_dates}, виходять за межі термінів виконання пакета робіт, %{work_package_dates}.
       overbooking:
         capacity_summary: "%{available} доступно · %{scheduled} заплановано"
-        description: Вибраному користувачу %{user} у цей період буде призначено більше годин роботи, ніж передбачено його робочим графіком.
-        hidden_work: Інші призначення
-        schedule_availability: "%{schedule} (%{factor}% available for project work)"
+        description: Вибраному користувачу %{user} у цей період буде призначено більше годин роботи, ніж передбачено його робочим часом.
+        hidden_work: Інші виділення ресурсів
+        schedule_availability: "%{schedule} (%{factor}% доступно для роботи над проєктом)"
         schedule_change: до %{date}, потім %{schedule}
-        schedule_note: This user works %{schedule}.
-        submit: Призначити понаднормову роботу
-        title: Хочете призначити користувачу понаднормову роботу?
-      submit: Призначити
-      success_message: Ресурси призначено.
-      title: Призначити ресурс
+        schedule_note: Цей користувач працює %{schedule}.
+        submit: Виділити понаднормовий час
+        title: Хочете виділити цьому користувачу понаднормовий час?
+      submit: Виділити
+      success_message: Ресурси виділено.
+      title: Виділити ресурс
     blankslate:
       desc: Створіть планувальник ресурсів, щоб почати планувати завантаження для цього проєкту.
       title: Ще немає планувальників ресурсів
@@ -100,8 +100,8 @@ uk:
       title: Налаштувати подання
     edit_allocation_dialog:
       submit: Зберегти
-      success_message: Призначення ресурсів оновлено.
-      title: Редагувати призначення
+      success_message: Виділення ресурсів оновлено.
+      title: Редагувати виділення ресурсів
     favorite_caption: Якщо додати це подання у вибране, воно з’явиться у верхній частині меню бічної панелі.
     label_new_resource_planner: Новий планувальник ресурсів
     label_resource_planner: Планувальник ресурсів
@@ -123,13 +123,13 @@ uk:
         caption: Створіть подання на основі користувачів, щоб переглядати інформацію про них і дані про призначення в списку карток користувачів
         label: Список карток користувачів
     work_package_allocations_dialog:
-      allocate_resource: Призначити ресурс
-      context_menu_label: Дії з призначення
-      delete_confirmation: Справді видалити це призначення? Цю дію не можна відмінити.
-      delete_success: Призначення ресурсу видалено.
+      allocate_resource: Виділити ресурс
+      context_menu_label: Дії з виділення ресурсів
+      delete_confirmation: Справді видалити це виділення ресурсу? Цю дію не можна відмінити.
+      delete_success: Виділення ресурсу видалено.
       hidden_user: Прихований користувач
-      overbooked: Користувачу в цей період призначено більше годин роботи, ніж передбачено його робочим графіком.
-      title: Призначення
+      overbooked: Користувачу в цей період призначено більше годин роботи, ніж передбачено його робочим часом.
+      title: Виділення ресурсів
     work_package_list:
       add_work_package_dialog:
         title: Додати пакет робіт

@@ -2887,6 +2887,7 @@ he:
   button_add_sub_item: Add sub-item
   button_add_member: Add member
   button_add_watcher: הוספת צופה
+  button_all_filters: All filters
   button_annotate: באר
   button_apply: החל
   button_apply_changes: Apply changes
@@ -4373,6 +4374,7 @@ he:
 
     '
   label_part_of: part of
+  label_past: Past
   label_password_lost: שכחת את הסיסמא?
   label_password_rule_lowercase: אותיות קטנות
   label_password_rule_numeric: Numeric Characters
@@ -4556,6 +4558,7 @@ he:
   label_type_new: סוג חדש
   label_type_plural: סוגים
   label_ui: ממשק משתמש
+  label_upcoming: Upcoming
   label_updated_time: Updated %{value} ago
   label_updated_time_at: "%{author} %{age}"
   label_updated_time_by: Updated by %{author} %{age} ago

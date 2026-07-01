@@ -2803,6 +2803,7 @@ sv:
   button_add_sub_item: Add sub-item
   button_add_member: Lägg till medlem
   button_add_watcher: Lägg till bevakare
+  button_all_filters: All filters
   button_annotate: Kommentera
   button_apply: Tilldela
   button_apply_changes: Apply changes
@@ -4243,6 +4244,7 @@ sv:
 
     '
   label_part_of: del av
+  label_past: Past
   label_password_lost: Glömt ditt lösenord?
   label_password_rule_lowercase: Gemener
   label_password_rule_numeric: Numeriska tecken
@@ -4426,6 +4428,7 @@ sv:
   label_type_new: Ny typ
   label_type_plural: Typer
   label_ui: Användargränssnitt
+  label_upcoming: Upcoming
   label_updated_time: Uppdaterad %{value} sen
   label_updated_time_at: "%{author} %{age}"
   label_updated_time_by: Uppdaterad av %{author} %{age} sen

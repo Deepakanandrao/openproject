@@ -2802,6 +2802,7 @@ da:
   button_add_sub_item: Add sub-item
   button_add_member: Tilføj medlem
   button_add_watcher: Tilføj tilsynsførende
+  button_all_filters: All filters
   button_annotate: Anmærke
   button_apply: Benyt
   button_apply_changes: Apply changes
@@ -4242,6 +4243,7 @@ da:
 
     '
   label_part_of: del af
+  label_past: Past
   label_password_lost: Glemt din adgangskode?
   label_password_rule_lowercase: Små bogstaver
   label_password_rule_numeric: Tal
@@ -4425,6 +4427,7 @@ da:
   label_type_new: Ny type
   label_type_plural: Typer
   label_ui: Brugergrænseflade
+  label_upcoming: Upcoming
   label_updated_time: Opdateret %{value} siden
   label_updated_time_at: "%{author} %{age}"
   label_updated_time_by: Opdateret af %{author} %{age} siden

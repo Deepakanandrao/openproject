@@ -2801,6 +2801,7 @@ fi:
   button_add_sub_item: Add sub-item
   button_add_member: Lisää jäsen
   button_add_watcher: Lisää seuraaja
+  button_all_filters: All filters
   button_annotate: Lisää selitys
   button_apply: Ota käyttöön
   button_apply_changes: Apply changes
@@ -4241,6 +4242,7 @@ fi:
 
     '
   label_part_of: osana
+  label_past: Past
   label_password_lost: Unohditko salasanasi?
   label_password_rule_lowercase: Pienet kirjaimet
   label_password_rule_numeric: Numeeriset merkit
@@ -4424,6 +4426,7 @@ fi:
   label_type_new: Uusi tyyppi
   label_type_plural: Tehtävätyypit
   label_ui: Käyttöliittymä
+  label_upcoming: Upcoming
   label_updated_time: Päivitetty %{value} sitten
   label_updated_time_at: "%{author} %{age}"
   label_updated_time_by: Päivittänyt %{author} %{age} sitten

@@ -164,7 +164,7 @@ zh-CN:
         child_pages:
           button: 子页面列表
           include_parent: 包括上级
-          text: "[Placeholder] 此项的子页面列表："
+          text: "[占位符] 此项的子页面列表："
           page: 维基页面
           this_page: 本页
           hint: '将此字段留空可列出当前页面的所有子页面。如果您想引用不同的页面，请提供其标题或标识符。

@@ -2803,6 +2803,7 @@ fil:
   button_add_sub_item: Add sub-item
   button_add_member: Magdagdag ng miyembro
   button_add_watcher: Magdagdag ng manunuod
+  button_all_filters: All filters
   button_annotate: Anotasyon
   button_apply: Ilagay
   button_apply_changes: Apply changes
@@ -4243,6 +4244,7 @@ fil:
 
     '
   label_part_of: bahagi ng
+  label_past: Past
   label_password_lost: Nakalimutan ang iyong password?
   label_password_rule_lowercase: Lowercase
   label_password_rule_numeric: Ang mga karakter na numeric
@@ -4426,6 +4428,7 @@ fil:
   label_type_new: Bagong uri
   label_type_plural: Mga uri
   label_ui: User Interface
+  label_upcoming: Upcoming
   label_updated_time: I-update ang nakalipas na %{value}
   label_updated_time_at: "%{author}%{age}"
   label_updated_time_by: Naka-update sa %{author}%{age} na nakalipas

@@ -2770,6 +2770,7 @@ id:
   button_add_sub_item: Add sub-item
   button_add_member: Add member
   button_add_watcher: Tambah pemantau
+  button_all_filters: All filters
   button_annotate: Anotasi
   button_apply: Apply
   button_apply_changes: Menerapkan perubahan
@@ -4189,6 +4190,7 @@ id:
 
     '
   label_part_of: bagian dari
+  label_past: Past
   label_password_lost: Lupa password?
   label_password_rule_lowercase: Huruf kecil
   label_password_rule_numeric: Karakter numerik
@@ -4372,6 +4374,7 @@ id:
   label_type_new: Tipe baru
   label_type_plural: Tipe
   label_ui: Antarmuka user
+  label_upcoming: Upcoming
   label_updated_time: Diperbarui %{value} yang lalu
   label_updated_time_at: "%{author} %{age}"
   label_updated_time_by: Diperbarui oleh %{author} %{age} yang lalu

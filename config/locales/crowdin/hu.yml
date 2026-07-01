@@ -2857,6 +2857,7 @@ hu:
   button_add_sub_item: Add sub-item
   button_add_member: Tag hozzáadása
   button_add_watcher: Megfigyelő hozzáadása
+  button_all_filters: All filters
   button_annotate: Jegyzetekkel ellát
   button_apply: Alkalmaz
   button_apply_changes: Változások alkalmazása
@@ -4307,6 +4308,7 @@ hu:
 
     '
   label_part_of: része
+  label_past: Past
   label_password_lost: Elfelejtetted a jelszavad?
   label_password_rule_lowercase: Kisbetűk
   label_password_rule_numeric: Numerikus karakterek
@@ -4490,6 +4492,7 @@ hu:
   label_type_new: Új típus
   label_type_plural: Típus
   label_ui: Felhasználói felület
+  label_upcoming: Upcoming
   label_updated_time: Ezelőtt frissített %{value}
   label_updated_time_at: "%{author} %{age}"
   label_updated_time_by: Frissítve %{author} %{age} ezelőtt

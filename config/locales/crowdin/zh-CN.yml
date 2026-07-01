@@ -60,17 +60,17 @@ zh-CN:
       dialog:
         checkbox_label: 我明白此操作无法撤消。
         confirm_button: 取消保留标识符
-        description: 此项目标识符取消保留后，将无法撤消。使用此标识符的外部链接和集成将停止解析，该名称可供任何新项目认领。
+        description: 此项目标识符取消保留后，将无法撤消。使用此标识符的外部链接和集成将停止解析，任何新项目都可以使用该名称。
         description_with_work_packages:
-          other: 此项目标识符（及其 %{count} 个工作包标识符）取消保留后，将无法撤消。使用此标识符的外部链接和集成将停止解析，该名称可供任何新项目认领。
+          other: 此项目标识符（及其 %{count} 个工作包标识符）取消保留后，将无法撤消。使用此标识符的外部链接和集成将停止解析，任何新项目都可以使用该名称。
         heading: 是否取消保留“%{identifier}”？
         title: 取消保留标识符
       empty_body: 项目的标识符更改后，上一个标识符会出现在此处，以便您在确认安全后将其取消保留。
       empty_heading: 没有保留的标识符
       filter_label: 搜索标识符
-      identifier_not_found: 找不到保留的标识符。该标识符可能已取消保留，或者项目可能已被删除。请刷新页面。
-      lede_html: 重命名项目标识符时，会保留之前的标识符，以确保现有链接和集成可正常使用。<br>可以在此处取消保留标识符，以供其他项目使用。
-      released_notice: 标识符“%{identifier}”已取消保留。
+      identifier_not_found: 找不到保留的标识符。该标识符可能已被取消保留，或者项目可能已被删除。请刷新页面。
+      lede_html: 重命名项目标识符时，会保留之前的标识符，以确保现有链接和集成可正常使用。<br>可以在此处取消保留标识符，供其他项目使用。
+      released_notice: 标识符“%{identifier}”已被取消保留。
       reserved_ago: "%{time}前"
       title: 保留的项目标识符
     plugins:
@@ -549,7 +549,7 @@ zh-CN:
         例如：uid=openproject,ou=system,dc=example,dc=com
       system_user_password: 输入系统用户的绑定密码
       base_dn: |
-        输入 LDAP 中您希望 OpenProject 查找用户和组的子树的基本 DN。
+        输入 LDAP 中您希望 OpenProject 查找用户和组的子树的基础 DN。
         OpenProject 将仅在此子树中筛选提供的用户名。
         示例：ou=users,dc=example,dc=com
       filter_string: |
@@ -1784,7 +1784,7 @@ zh-CN:
         attr_mail: 电子邮件属性
         filter_string: 筛选字符串
         admin: 管理员
-        base_dn: 基本 DN
+        base_dn: 基础 DN
         host: 主机
         onthefly: 自动创建用户
         port: 端口
@@ -2070,8 +2070,8 @@ zh-CN:
         public: 公开
       user_card_view:
         secondary_info: 次要信息
-        show_status_badge: 显示状态标识
-        show_email: 显示邮箱
+        show_status_badge: 显示状态徽章
+        show_email: 显示电子邮件地址
         tag_source: 标签来源
         tag_limit: 标签限制
         card_size: 卡片大小
@@ -2362,7 +2362,7 @@ zh-CN:
               durations_are_not_positive_numbers: 持续时间必须是正数
               hours_per_day_are_missing: 必须定义每天的小时数
               hours_per_day_is_out_of_bounds: 每天小时数不能超过24
-              journal_aggregation_time_minutes_is_out_of_bounds: 聚合期必须在 %{min} 到 %{max} 分钟。
+              journal_aggregation_time_minutes_is_out_of_bounds: 聚合期必须在 %{min} 到 %{max} 分钟之间。
               previous_working_day_changes_unprocessed: 先前对工作日配置的更改尚未应用。
               working_days_are_missing: 每周必须至少有一天定义为工作日。
         status:
@@ -2761,6 +2761,7 @@ zh-CN:
   button_add_sub_item: 添加子项目
   button_add_member: 添加成员
   button_add_watcher: 添加关注者
+  button_all_filters: All filters
   button_annotate: 批注
   button_apply: 应用
   button_apply_changes: 应用更改
@@ -3419,7 +3420,7 @@ zh-CN:
     project_select_component:
       all_projects: 所有项目
       favorites: 收藏夹
-      leave_project: 退出项目
+      leave_project: 离开项目
       no_favorite_projects: 您没有收藏的项目。
       title: 项目
   toggle_switch:
@@ -3477,7 +3478,7 @@ zh-CN:
 
             '
           new_features_list:
-            line_0: XWiki 集成（企业方案）。
+            line_0: XWiki 集成（公司方案）。
             line_1: 冲刺目标。
             line_2: "“所有冲刺”概览页面。"
             line_3: 在工作包和工作包表中显示积压工作存储桶。
@@ -3668,7 +3669,7 @@ zh-CN:
         submit_button: 更新提醒
     notifications:
       participating:
-        description: 每当有人提及您，以及您关注的工作包发生更改时，您都会收到通知。无法禁用这些通知。但是，您可以选择允许或禁止接收与您有关（您是受理人、负责人或与您共享）的工作包更改的通知。
+        description: 每当有人提及您，以及您关注的工作包发生更改时，您都会收到通知。无法禁用这些通知。不过，您可以选择允许或禁止接收与您有关（您是受理人、负责人或与您共享）的工作包更改的通知。
         title: 参与
         submit_button: 更新偏好设置
         mentioned: 被提及
@@ -4074,7 +4075,7 @@ zh-CN:
   label_custom_favicon: 自定义图标
   label_custom_touch_icon: 自定义触摸图标
   label_departments: 组织
-  label_departments_description_html: '以分级方式创建部门和分部门来定义您公司的结构。 这使您能够在OpenProject中反映报告线，并保持清晰、有条理的组织概述。 您也可以通过 [LDAP 组同步](ldap_docs_article)导入一个现有的组织结构。
+  label_departments_description_html: '以分级方式创建部门和子部门来定义您公司的结构。 这使您能够在 OpenProject 中反映报告线，并保持清晰、有条理的组织概览。 您也可以通过 [LDAP 群组同步](ldap_docs_article)导入一个现有的组织结构。
 
     '
   label_logout: 注销
@@ -4123,7 +4124,7 @@ zh-CN:
   label_my_account_data: 我的账户数据
   label_my_avatar: 我的头像
   label_my_queries: 我的自定义查询
-  label_my_security: 安全
+  label_my_security: 安全性
   label_name: 名称
   label_never: 永不
   label_new: 新增
@@ -4178,6 +4179,7 @@ zh-CN:
 
     '
   label_part_of: 一部分
+  label_past: Past
   label_password_lost: 忘记密码？
   label_password_rule_lowercase: 小写字母
   label_password_rule_numeric: 数字
@@ -4361,6 +4363,7 @@ zh-CN:
   label_type_new: 新类型
   label_type_plural: 类型
   label_ui: 用户界面
+  label_upcoming: Upcoming
   label_updated_time: "%{value}前更新"
   label_updated_time_at: "%{author} %{age}"
   label_updated_time_by: "%{author} 于 %{age}前更新"
@@ -4469,7 +4472,7 @@ zh-CN:
   label_x_working_days_time_off:
     other: 休息时间：%{count} 个工作日
   label_x_items_selected:
-    other: 已选%{count}项
+    other: 已选择 %{count} 个条目
   label_yesterday: 昨天
   label_zen_mode: 极简模式
   label_role_type: 类型

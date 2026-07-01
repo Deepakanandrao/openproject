@@ -7,7 +7,7 @@ zh-CN:
         allocated_time: 分配时间
         end_date: 结束日期
         entity: 实体
-        filter_name: 资源过滤器名称
+        filter_name: 资源筛选器名称
         principal: 受理人
         start_date: 开始日期
         state: 地区
@@ -58,31 +58,31 @@ zh-CN:
       make_public: 设为公开
       unfavorite: 取消收藏
     allocation:
-      hours: "%{value}h"
+      hours: "%{value} 小时"
       no_work: 此工作包没有计划的工作
       summary: "%{allocated} / %{scheduled}"
     allocate_resource_dialog:
       kind:
         filter:
-          caption: 基于用户属性设置过滤条件以创建占位符资源。
-          label: 过滤器条件
+          caption: 基于用户特性设置筛选条件以创建占位符资源。
+          label: 筛选条件
         label: 分配类型
         principal:
           caption: 为特定用户分配小时数。
           label: 用户
       outside_dates:
-        description: 所选资源日期 %{resource_dates}在工作包日期 %{work_package_dates} 之外。
+        description: 所选资源日期 %{resource_dates} 在工作包日期 %{work_package_dates} 之外。
       overbooking:
         capacity_summary: "%{available} 可用 - %{scheduled} 预定"
-        description: The selected user, %{user}, would be allocated beyond their working hours during this period.
+        description: 为所选用户 %{user} 分配的任务将超出其在此期间的工作时数。
         hidden_work: 其他分配
-        schedule_availability: "%{schedule} (%{factor}% 可用于项目工作)"
-        schedule_change: 直到 %{date}，然后 %{schedule}
-        schedule_note: 该用户工作 %{schedule}。
+        schedule_availability: "%{schedule}（%{factor}% 可用于项目工作）"
+        schedule_change: 截至 %{date}，然后%{schedule}
+        schedule_note: 此用户%{schedule}工作。
         submit: 分配加班时间
         title: 是否要为用户分配加班时间？
       submit: 分配
-      success_message: 资源分配。
+      success_message: 资源已分配。
       title: 分配资源
     blankslate:
       desc: 创建资源规划工具以开始规划此项目的容量。
@@ -128,7 +128,7 @@ zh-CN:
       delete_confirmation: 确定要删除此分配吗？此操作无法撤消。
       delete_success: 资源分配已删除。
       hidden_user: 隐藏用户
-      overbooked: The user is allocated beyond their working hours during this period.
+      overbooked: 为该用户分配的任务将超出其在此期间的工作时数。
       title: 分配
     work_package_list:
       add_work_package_dialog:

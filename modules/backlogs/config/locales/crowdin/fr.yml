@@ -44,7 +44,7 @@ fr:
       sprint_goal:
         text: Objectif du sprint
       work_package:
-        backlog_bucket: Compartiment des commandes en attente
+        backlog_bucket: Bucket de backlog
         backlogs_work_package_type: Type de backlog
         position: Position
         sprint: Sprint

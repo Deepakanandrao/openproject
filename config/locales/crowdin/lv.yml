@@ -2845,6 +2845,7 @@ lv:
   button_add_sub_item: Add sub-item
   button_add_member: Pievienotu dalībnieku
   button_add_watcher: Pievienot sekotāju
+  button_all_filters: All filters
   button_annotate: Annotate
   button_apply: Apstiprināt
   button_apply_changes: Apply changes
@@ -4308,6 +4309,7 @@ lv:
 
     '
   label_part_of: part of
+  label_past: Past
   label_password_lost: Atjaunot paroli
   label_password_rule_lowercase: Lowercase
   label_password_rule_numeric: Numeric Characters
@@ -4491,6 +4493,7 @@ lv:
   label_type_new: New type
   label_type_plural: Veidi
   label_ui: Lietotāja interfeiss
+  label_upcoming: Upcoming
   label_updated_time: Updated %{value} ago
   label_updated_time_at: "%{author} %{age}"
   label_updated_time_by: Atjaunoja %{author} pirms %{age}

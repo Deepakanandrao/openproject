@@ -2799,6 +2799,7 @@ nl:
   button_add_sub_item: Add sub-item
   button_add_member: Lid toevoegen
   button_add_watcher: Watcher toevoegen
+  button_all_filters: All filters
   button_annotate: Aantekeningen
   button_apply: Toepassen
   button_apply_changes: Veranderingen doorvoeren
@@ -4239,6 +4240,7 @@ nl:
 
     '
   label_part_of: onderdeel van
+  label_past: Past
   label_password_lost: Wachtwoord vergeten?
   label_password_rule_lowercase: Kleine letters
   label_password_rule_numeric: Numerieke tekens
@@ -4422,6 +4424,7 @@ nl:
   label_type_new: Nieuw type
   label_type_plural: Typen
   label_ui: Gebruiksinterface
+  label_upcoming: Upcoming
   label_updated_time: Bijgewerkt %{value} geleden
   label_updated_time_at: "%{author} %{age}"
   label_updated_time_by: Bijgewerkt door %{author} %{age} geleden

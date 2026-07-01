@@ -193,7 +193,7 @@ eo:
       columns:
         projects: Projects
         last_change: Last change
-        added: Added
+        added: Aldonita
         label_ago: "%{amount} ago"
       run:
         title: Import run
@@ -608,10 +608,10 @@ eo:
     new:
       label_new_color: Nova koloro
     edit:
-      label_edit_color: Edit Color
+      label_edit_color: Redakti koloron
     form:
       label_new_color: Nova koloro
-      label_edit_color: Edit color
+      label_edit_color: Redakti koloron
     label_no_color: Senkolora
     label_properties: Properties
     label_really_delete_color: 'Are you sure, you want to delete the following color? Types using this color will not be deleted.
@@ -740,18 +740,18 @@ eo:
     confirmation_live_message_unchecked: The button to proceed is now inactive. You need to tick the checkbox to continue.
   departments:
     edit: Edit department
-    add_user: Add user
+    add_user: Aldoni uzanton
     add_department: Add department
     blankslate:
       heading: Your organization has no departments
       description: 'Start by adding departments or users to the organization. Each department can be used to create a hierarchy below it, to navigate and create sub-department inside a hierarchy click on the created item.
 
         '
-      add_button: Add
+      add_button: Aldoni
     detail_blankslate:
       heading: This department doesn’t have any hierarchy level below
       description: Add departments or users to create sub-items inside another one.
-      add_button: Add
+      add_button: Aldoni
     add_department_form:
       name_label: Department name
       name_placeholder: Enter department name
@@ -762,9 +762,9 @@ eo:
       confirm: Move user
     context_menu:
       add_sub_department: Add sub-department
-      add_user: Add user
+      add_user: Aldoni uzanton
     flash:
-      user_added: User was successfully added to the department.
+      user_added: Uzanto estis sukcese aldonita al la departemento.
       user_removed: User was successfully removed from the department.
       department_created: Department was successfully created.
     errors:
@@ -1324,7 +1324,7 @@ eo:
         It can be used for highlighting work packages in the table.
   reactions:
     action_title: React
-    add_reaction: Add reaction
+    add_reaction: Aldoni reagon
     react_with: React with %{reaction}
     and_user: and %{user}
     and_others:
@@ -1372,12 +1372,12 @@ eo:
     edit:
       form_configuration:
         tab: Formulara agordo
-        label_group: Section
+        label_group: Sekcio
         reset_to_defaults: Reset form
-        add_attribute_group: Section
-        add_query_group: Related work packages table
-        delete_group: Delete section
-        remove_attribute: Remove from section
+        add_attribute_group: Sekcio
+        add_query_group: Tablo de rilataj laborpakoj
+        delete_group: Forigi sekcion
+        remove_attribute: Forigi el sekcio
         drag_to_activate: Drag fields from here to activate them
         drag_to_reorder: Drag to reorder
         edit_query: Edit query
@@ -1407,7 +1407,7 @@ eo:
       projects:
         tab: Projektoj
         enable_all: Enable for all projects
-        select_projects: Select projects
+        select_projects: Elektu projektojn
         select_projects_description: Select the projects in which you would like to use this type.
       settings:
         tab: Agordoj
@@ -1436,8 +1436,8 @@ eo:
         pdf_export_templates:
           label: PDF Export templates
           actions:
-            label_enable_all: Enable all
-            label_disable_all: Disable all
+            label_enable_all: Aktivigi ĉiujn
+            label_disable_all: Malŝalti ĉiujn
   versions:
     overview:
       work_packages_in_archived_projects: The version is shared with archived projects which still have work packages assigned to this version. These are counted, but will not appear in the linked views.
@@ -2004,7 +2004,7 @@ eo:
         workdays: Working days
       users/invitation/form_model:
         principal_type: Invitation type
-        id_or_email: Name or email address
+        id_or_email: Nomo aŭ retpoŝta adreso
       user_non_working_time:
         start_date: Start date
         end_date: End date
@@ -2120,7 +2120,7 @@ eo:
         error_readonly: was attempted to be written but is not writable.
         error_conflict: Information has been updated by at least one other user in the meantime.
         error_not_found: not found.
-        email: is not a valid email address.
+        email: ne estas valida retpoŝtadreso.
         empty: Ĝi ne povas esti malplena.
         enterprise_plan_required: requires at least the %{plan_name}.
         even: must be even.
@@ -2803,6 +2803,7 @@ eo:
   button_add_sub_item: Add sub-item
   button_add_member: Aldoni membron
   button_add_watcher: Aldoni observanton
+  button_all_filters: All filters
   button_annotate: Komenti
   button_apply: Ekuzi
   button_apply_changes: Apply changes
@@ -3129,7 +3130,7 @@ eo:
     upsell:
       buy_now_button: Buy now
       plans_title: Enterprise plans
-      title: Enterprise add-on
+      title: Entreprena aldonaĵo
       plan_title: Enterprise %{plan} add-on
       plan_name: "%{plan} enterprise plan"
       trial_text: This feature is included in your active Enterprise trial.
@@ -3631,7 +3632,7 @@ eo:
       mails_and_notifications: Emails and notifications
       mcp_configurations: Model Context Protocol (MCP)
     quick_add:
-      label: Add…
+      label: Aldoni…
   my_account:
     notifications_and_email:
       title: Notification and email
@@ -3709,7 +3710,7 @@ eo:
         title: Send me daily email reminders for unread notifications
         description: You will receive these reminders only for unread notifications and only at hours you specify. Until you configure a time zone for your account, the times will be interpreted to be in UTC.
         enabled: Enable daily email reminders
-        add_time: Add time
+        add_time: Aldoni tempon
         remove_time: Remove time
         time_slot_label: Reminder time (UTC)
       workdays:
@@ -3722,13 +3723,13 @@ eo:
       email_alerts:
         title: Email alerts for other items that are not work packages
         description: Notifications today are limited to work packages. You can choose to continue receiving email alerts for these events until they are included in notifications.
-        news_added: News added
+        news_added: Novaĵoj aldonitaj
         news_commented: Comment on a news item
-        document_added: Document added
+        document_added: Dokumento aldonita
         forum_messages: Forum message posted
-        wiki_page_added: Wiki page added
+        wiki_page_added: Vikipaĝo aldonita
         wiki_page_updated: Wiki page updated
-        membership_added: Membership added
+        membership_added: Membreco aldonita
         membership_updated: Membership updated
         submit_button: Update alerts
     notifications:
@@ -4006,7 +4007,7 @@ eo:
   label_enumerations: Enumerations
   label_enterprise: Entrepreno
   label_enterprise_active_users: "%{current}/%{limit} rezervitaj aktivaj uzantoj"
-  label_enterprise_edition: Enterprise edition
+  label_enterprise_edition: Entreprena Eldono
   label_enterprise_support: Enterprise support
   label_environment: Medio
   label_estimates_and_progress: Estimates and progress
@@ -4243,6 +4244,7 @@ eo:
 
     '
   label_part_of: patro de
+  label_past: Past
   label_password_lost: Ĉu vu forgesis vian pasvorton?
   label_password_rule_lowercase: Minusklo
   label_password_rule_numeric: Numeraj signoj
@@ -4426,6 +4428,7 @@ eo:
   label_type_new: Nova tipo
   label_type_plural: Specoj
   label_ui: Fasado
+  label_upcoming: Upcoming
   label_updated_time: Updated %{value} ago
   label_updated_time_at: "%{author} %{age}"
   label_updated_time_by: Ĝisdatigita de %{author} antaŭ %{age}
@@ -4710,7 +4713,7 @@ eo:
       added_by:
         without_message: "%{user} added you as a member to the project '%{project}'."
         with_message: "%{user} added you as a member to the project '%{project}' writing:"
-      roles: 'You have the following roles:'
+      roles: 'Vi havas la jenajn rolojn:'
   mail_member_updated_project:
     subject: "%{project} - Your roles have been updated"
     body:
@@ -4776,8 +4779,8 @@ eo:
   notice_locking_conflict_warning: This page has been updated by someone else. To not lose your edits, copy them locally and reload to view the updated version.
   notice_locking_conflict_danger: Could not save your changes because of conflicting modifications. To not lose your edits, copy them locally and reload to view the updated version.
   notice_locking_conflict_action_button: Discard changes and reload
-  notice_member_added: Added %{name} to the project.
-  notice_members_added: Added %{number} users to the project.
+  notice_member_added: "%{name} estis aldonita al la projekto."
+  notice_members_added: Aldonis %{number} uzantojn al la projekto.
   notice_member_removed: Removed %{user} from project.
   notice_member_deleted: "%{user} has been removed from the project and deleted."
   notice_no_principals_found: No results found.
@@ -4850,21 +4853,21 @@ eo:
           label_actions: Work package actions
         parent: Parent
         undisclosed: Undisclosed
-  permission_add_work_package_comments: Add comments
-  permission_add_work_packages: Add work packages
+  permission_add_work_package_comments: Aldoni komentojn
+  permission_add_work_packages: Aldonu laborpakaĵojn
   permission_add_messages: Post messages
   permission_add_project: Create projects
   permission_add_portfolios: Create portfolios
   permission_add_programs: Create programs
-  permission_add_work_package_attachments: Add attachments
-  permission_add_work_package_attachments_explanation: Allows adding attachments without Edit work packages permission
-  permission_add_internal_comments: Write internal comments
+  permission_add_work_package_attachments: Aldoni aldonaĵojn
+  permission_add_work_package_attachments_explanation: Permesas aldoni aldonaĵojn sen permeso por redakti laborpakaĵojn
+  permission_add_internal_comments: Skribi internajn komentojn
   permission_archive_project: Aktivi projekton
   permission_create_user: Create users
   permission_manage_user: Edit users
   permission_manage_placeholder_user: Create, edit, and delete placeholder users
-  permission_add_subprojects: Create subprojects
-  permission_add_work_package_watchers: Add watchers
+  permission_add_subprojects: Krei subprojektojn
+  permission_add_work_package_watchers: Aldoni observantojn
   permission_assign_versions: Assign versions
   permission_browse_repository: Read-only access to repository (browse and checkout)
   permission_change_work_package_status: Change work package status
@@ -4884,14 +4887,14 @@ eo:
   permission_edit_work_package_comments: Moderate comments
   permission_edit_work_package_comments_explanation: 'Caution: Users with this permission are able to edit anyone''s comment.'
   permission_edit_work_packages: Edit work packages
-  permission_edit_messages: Edit messages
+  permission_edit_messages: Redakti mesaĝojn
   permission_edit_own_internal_comments: Edit own internal comments
   permission_edit_own_work_package_comments: Edit own comments
   permission_edit_own_messages: Edit own messages
   permission_edit_own_time_entries: Edit own time logs
   permission_edit_others_internal_comments: Moderate internal comments
   permission_edit_others_internal_comments_explanation: 'Caution: Users with this permission are able to edit other users'' internal comments.'
-  permission_edit_project: Edit project
+  permission_edit_project: Redatki projekton
   permission_edit_project_attributes: Edit project attributes
   permission_edit_project_phases: Edit project phases
   permission_edit_reportings: Edit reportings
@@ -4955,7 +4958,7 @@ eo:
   permission_view_shared_work_packages: View work package shares
   permission_view_time_entries: View spent time
   permission_view_timelines: View timelines
-  permission_view_user_email: View users' mail addresses
+  permission_view_user_email: Vidi la retpoŝtadresojn de uzantoj
   permission_view_wiki_edits: View wiki history
   permission_view_wiki_pages: View wiki
   permission_work_package_assigned: Become assignee/responsible
@@ -5216,7 +5219,7 @@ eo:
   setting_sendmail_arguments: Arguments for sendmail
   setting_smtp_enable_starttls_auto: Automatically use STARTTLS if available
   setting_smtp_ssl: Use SSL connection
-  setting_smtp_address: SMTP server
+  setting_smtp_address: SMTP-servilo
   setting_smtp_port: SMTP port
   setting_smtp_authentication: SMTP authentication
   setting_smtp_user_name: SMTP username
@@ -5470,7 +5473,7 @@ eo:
       label_for_all_projects: All projects
       label_new_attribute: Project attribute
       label_new_section: Section
-      label_edit_section: Edit title
+      label_edit_section: Redakti titolon
       label_section_actions: Section actions
       heading_description: These project attributes appear in the overview page of each project. You can add new attributes, group them into sections and re-order them as you please. These attributes can be enabled or disabled but not re-ordered at a project level.
       label_project_custom_field_actions: Project attribute actions
@@ -5910,7 +5913,7 @@ eo:
       comment_verb: comment
       comment_description: Can view and comment this work package.
       edit: Redakti
-      edit_verb: edit
+      edit_verb: redakti
       edit_description: Can view, comment and edit this work package.
       view: Montri
       view_verb: view

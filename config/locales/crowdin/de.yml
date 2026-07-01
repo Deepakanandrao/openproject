@@ -2797,6 +2797,7 @@ de:
   button_add_sub_item: Unterelement hinzufügen
   button_add_member: Mitglied hinzufügen
   button_add_watcher: Beobachter hinzufügen
+  button_all_filters: All filters
   button_annotate: Kommentieren
   button_apply: Anwenden
   button_apply_changes: Änderungen anwenden
@@ -3532,17 +3533,17 @@ de:
         learn_about: Erfahren Sie mehr über die neuen Funktionen
         missing: Es gibt noch keine hervorgehobenen Funktionen.
         '17_6':
-          new_features_title: 'The release contains various new features and improvements, such as:
+          new_features_title: 'Dieses Release enthält verschiedene neue Funktionen und Verbesserungen, wie z. B:
 
             '
           new_features_list:
-            line_0: XWiki integration (Corporate plan).
-            line_1: Sprint goals.
-            line_2: "'All sprints' overview page."
-            line_3: Display backlog buckets in work packages and work package tables.
-            line_4: Improved support for project-based (semantic) identifiers.
-            line_5: Convert meeting agenda items into work packages.
-            line_6: Configure cost types per project.
+            line_0: XWiki-Integration (Corporate-Plan).
+            line_1: Sprint-Ziele.
+            line_2: Übersichtsseite „Alle Sprints“.
+            line_3: Zeige Backlog Buckets in Arbeitspaketen und Arbeitspaket-Tabellen.
+            line_4: Verbesserte Unterstützung für projektbezogene (semantische) Identifikatoren.
+            line_5: Tagesordnungspunkte einer Besprechung in Arbeitspakete umwandeln.
+            line_6: Kostenarten pro Projekt konfigurieren.
     links:
       upgrade_enterprise_edition: Auf Enterprise Edition upgraden
       postgres_migration: Migration Ihrer Installation zu PostgreSQL
@@ -4237,6 +4238,7 @@ de:
 
     '
   label_part_of: enthalten in
+  label_past: Past
   label_password_lost: Kennwort vergessen?
   label_password_rule_lowercase: Kleinbuchstaben
   label_password_rule_numeric: Ziffern
@@ -4420,6 +4422,7 @@ de:
   label_type_new: Neuer Typ
   label_type_plural: Typen
   label_ui: Nutzeroberfläche
+  label_upcoming: Upcoming
   label_updated_time: Vor %{value} aktualisiert
   label_updated_time_at: "%{author} %{age}"
   label_updated_time_by: Von %{author} vor %{age} aktualisiert
@@ -6162,8 +6165,8 @@ de:
     scopes:
       api_v3: Vollständiger API(v3)-Zugriff
       api_v3_text: Die Anwendung erhält vollen Lese- und Schreibzugriff auf die OpenProject API v3, um Aktionen in Ihrem Namen durchzuführen.
-      mcp: Access to MCP
-      mcp_text: Application will receive access to the OpenProject MCP endpoints. They are a limited subset of APIv3, that's tailored for usage with AI agents.
+      mcp: Zugang zu MCP
+      mcp_text: Die Anwendung erhält Zugriff auf die OpenProject-MCP-Endpunkte. Dabei handelt es sich um eine Untermenge von APIv3 Endpunkten, die speziell für die Verwendung mit KI-Agenten ausgelegt ist.
     grants:
       created_date: Genehmigt
       scopes: Berechtigungen

@@ -2803,6 +2803,7 @@ af:
   button_add_sub_item: Add sub-item
   button_add_member: Add member
   button_add_watcher: Voeg kyker by
+  button_all_filters: All filters
   button_annotate: Annoteer
   button_apply: Pas toe
   button_apply_changes: Apply changes
@@ -4243,6 +4244,7 @@ af:
 
     '
   label_part_of: part of
+  label_past: Past
   label_password_lost: Jou wagwoord vergeet?
   label_password_rule_lowercase: Kleinletters
   label_password_rule_numeric: Numeriese karakters
@@ -4426,6 +4428,7 @@ af:
   label_type_new: New type
   label_type_plural: Soorte
   label_ui: User Interface
+  label_upcoming: Upcoming
   label_updated_time: Updated %{value} ago
   label_updated_time_at: "%{author} %{age}"
   label_updated_time_by: Updated by %{author} %{age} ago

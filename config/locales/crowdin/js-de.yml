@@ -162,7 +162,7 @@ de:
           nested_macro: Dieses Makro verweist rekursiv auf %{model} %{id}.
           invalid_attribute: Das ausgewählte Attribut '%{name}' existiert nicht.
         child_pages:
-          button: List of sub-pages
+          button: Liste der Unterseiten
           include_parent: Elternseite anzeigen
           text: "[Platzhalter] Liste der Unterseiten von"
           page: Wiki-Seite

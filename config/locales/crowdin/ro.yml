@@ -2845,6 +2845,7 @@ ro:
   button_add_sub_item: Adaugă subelement
   button_add_member: Adaugă participant
   button_add_watcher: Adaugă observator
+  button_all_filters: All filters
   button_annotate: Adnotare
   button_apply: Aplică
   button_apply_changes: Aplică modificările
@@ -4308,6 +4309,7 @@ ro:
 
     '
   label_part_of: parte a
+  label_past: Past
   label_password_lost: V-aţi uitat parola?
   label_password_rule_lowercase: Litere mici
   label_password_rule_numeric: Cifre
@@ -4491,6 +4493,7 @@ ro:
   label_type_new: Tip nou
   label_type_plural: Tipuri
   label_ui: Interfaţa cu utilizatorul
+  label_upcoming: Upcoming
   label_updated_time: Actualizat acum %{value}
   label_updated_time_at: "%{author} %{age}"
   label_updated_time_by: Actualizat de %{author} acum %{age}

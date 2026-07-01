@@ -2763,6 +2763,7 @@ ja:
   button_add_sub_item: サブアイテムを追加
   button_add_member: メンバーを追加
   button_add_watcher: ウォッチャーを追加
+  button_all_filters: All filters
   button_annotate: 注釈を付ける
   button_apply: 適用
   button_apply_changes: 保存
@@ -4180,6 +4181,7 @@ ja:
 
     '
   label_part_of: 以下の一部：
+  label_past: Past
   label_password_lost: パスワードの再発行
   label_password_rule_lowercase: 小文字
   label_password_rule_numeric: 数値文字
@@ -4363,6 +4365,7 @@ ja:
   label_type_new: 新しいタイプ
   label_type_plural: ワークパッケージのタイプ
   label_ui: UI（ユーザインターフェイス）
+  label_upcoming: Upcoming
   label_updated_time: "%{value}前に更新"
   label_updated_time_at: "%{author} %{age}"
   label_updated_time_by: "%{author}が%{age}前に更新"

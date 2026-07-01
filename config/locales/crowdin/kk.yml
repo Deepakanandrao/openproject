@@ -2803,6 +2803,7 @@ kk:
   button_add_sub_item: Add sub-item
   button_add_member: Add member
   button_add_watcher: Add watcher
+  button_all_filters: All filters
   button_annotate: Annotate
   button_apply: Apply
   button_apply_changes: Apply changes
@@ -4243,6 +4244,7 @@ kk:
 
     '
   label_part_of: part of
+  label_past: Past
   label_password_lost: Forgot your password?
   label_password_rule_lowercase: Lowercase
   label_password_rule_numeric: Numeric Characters
@@ -4426,6 +4428,7 @@ kk:
   label_type_new: New type
   label_type_plural: Types
   label_ui: User Interface
+  label_upcoming: Upcoming
   label_updated_time: Updated %{value} ago
   label_updated_time_at: "%{author} %{age}"
   label_updated_time_by: Updated by %{author} %{age} ago

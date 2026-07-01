@@ -2802,6 +2802,7 @@ el:
   button_add_sub_item: Add sub-item
   button_add_member: Προσθήκη μέλους
   button_add_watcher: Προσθήκη παρατηρητή
+  button_all_filters: All filters
   button_annotate: Σχολιασμός
   button_apply: Εφαρμογή
   button_apply_changes: Apply changes
@@ -4242,6 +4243,7 @@ el:
 
     '
   label_part_of: μέρος του
+  label_past: Past
   label_password_lost: Ξεχάσατε τον κωδικό σας;
   label_password_rule_lowercase: Πεζά
   label_password_rule_numeric: Αριθμητικοί Χαρακτήρες
@@ -4425,6 +4427,7 @@ el:
   label_type_new: Νέος τύπος
   label_type_plural: Τύποι
   label_ui: Διεπαφή Χρήστη
+  label_upcoming: Upcoming
   label_updated_time: Ενημερώθηκε πριν από %{value}
   label_updated_time_at: "%{author} %{age}"
   label_updated_time_by: Ενημερώθηκε από τον %{author} πριν από %{age}
