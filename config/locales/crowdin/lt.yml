@@ -2928,6 +2928,7 @@ lt:
   button_add_sub_item: Add sub-item
   button_add_member: Pridėti narį
   button_add_watcher: Pridėti stebėtojų
+  button_all_filters: All filters
   button_annotate: Rašyti pastabą
   button_apply: Taikyti
   button_apply_changes: Pritaikyti pakeitimus
@@ -4415,6 +4416,7 @@ lt:
 
     '
   label_part_of: dalis
+  label_past: Past
   label_password_lost: Pamiršote slaptažodį?
   label_password_rule_lowercase: Mažosios raidės
   label_password_rule_numeric: Skaitiniai simboliai
@@ -4598,6 +4600,7 @@ lt:
   label_type_new: Naujas tipas
   label_type_plural: Tipai
   label_ui: Vartotojo sąsaja
+  label_upcoming: Upcoming
   label_updated_time: Atnaujinta prieš %{value}
   label_updated_time_at: "%{author} %{age}"
   label_updated_time_by: "%{author} atnaujino prieš %{age}"

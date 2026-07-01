@@ -2809,6 +2809,7 @@ ms:
   button_add_sub_item: Tambah sub-item
   button_add_member: Tambah ahli
   button_add_watcher: Tambah pemerhati
+  button_all_filters: All filters
   button_annotate: Anotasi
   button_apply: Gunakan
   button_apply_changes: Guna pakai perubahan
@@ -4231,6 +4232,7 @@ ms:
 
     '
   label_part_of: sebahagian daripada
+  label_past: Past
   label_password_lost: Lupa kata laluan anda?
   label_password_rule_lowercase: Huruf Kecil
   label_password_rule_numeric: Aksara Nombor
@@ -4416,6 +4418,7 @@ ms:
   label_type_new: Jenis baharu
   label_type_plural: Jenis
   label_ui: Antara Muka Pengguna
+  label_upcoming: Upcoming
   label_updated_time: Dikemas kini %{value} yang lalu
   label_updated_time_at: "%{author} %{age}"
   label_updated_time_by: Dikemas kini oleh %{author} %{age} yang lalu

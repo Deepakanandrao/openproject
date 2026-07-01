@@ -2843,6 +2843,7 @@ bg:
   button_add_sub_item: Add sub-item
   button_add_member: Добавяне на член
   button_add_watcher: Добавяне на наблюдател
+  button_all_filters: All filters
   button_annotate: Добавяне на обяснителни бележки
   button_apply: Приложи
   button_apply_changes: Приложи промените
@@ -4284,6 +4285,7 @@ bg:
 
     '
   label_part_of: part of
+  label_past: Past
   label_password_lost: Forgot your password?
   label_password_rule_lowercase: Lowercase
   label_password_rule_numeric: Numeric Characters
@@ -4467,6 +4469,7 @@ bg:
   label_type_new: Нов тип
   label_type_plural: Видове
   label_ui: Потребителски интерфейс
+  label_upcoming: Upcoming
   label_updated_time: Актуализиран преди %{value}
   label_updated_time_at: "%{author} %{age}"
   label_updated_time_by: Актуализирана от %{author} преди %{age}

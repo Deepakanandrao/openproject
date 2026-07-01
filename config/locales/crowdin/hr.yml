@@ -2885,6 +2885,7 @@ hr:
   button_add_sub_item: Add sub-item
   button_add_member: Dodaj člana
   button_add_watcher: Dodaj nadglednika
+  button_all_filters: All filters
   button_annotate: Kreiraj bilješku
   button_apply: Primjeni
   button_apply_changes: Apply changes
@@ -4349,6 +4350,7 @@ hr:
 
     '
   label_part_of: dio
+  label_past: Past
   label_password_lost: Zaboravili ste lozinku?
   label_password_rule_lowercase: Mala slova
   label_password_rule_numeric: Znamenke
@@ -4532,6 +4534,7 @@ hr:
   label_type_new: Novi tip
   label_type_plural: Tipovi
   label_ui: Korisničko sučelje
+  label_upcoming: Upcoming
   label_updated_time: Ažurirano prije %{value}
   label_updated_time_at: "%{author}%{age}"
   label_updated_time_by: Ažurirao korisnik %{author} prije %{age}

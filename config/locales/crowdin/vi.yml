@@ -2805,6 +2805,7 @@ vi:
   button_add_sub_item: Thêm mục phụ
   button_add_member: Thêm thành viên
   button_add_watcher: Thêm người theo dõi
+  button_all_filters: All filters
   button_annotate: Chú giải
   button_apply: Áp dụng
   button_apply_changes: Áp dụng thay đổi
@@ -4223,6 +4224,7 @@ vi:
 
     '
   label_part_of: một phần của
+  label_past: Past
   label_password_lost: Quên Mật Khẩu?
   label_password_rule_lowercase: Chữ thường
   label_password_rule_numeric: Kiểu số
@@ -4406,6 +4408,7 @@ vi:
   label_type_new: Kiểu mới
   label_type_plural: các loại
   label_ui: Giao diện người dùng
+  label_upcoming: Upcoming
   label_updated_time: Cập nhật cách đây %{value}
   label_updated_time_at: "%{author} %{age}"
   label_updated_time_by: Cập nhật bởi %{author} cách đây %{age}

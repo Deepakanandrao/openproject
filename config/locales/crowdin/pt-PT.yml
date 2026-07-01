@@ -2843,6 +2843,7 @@ pt-PT:
   button_add_sub_item: Adicionar sub-item
   button_add_member: Adicionar membro
   button_add_watcher: Adicionar observadores
+  button_all_filters: All filters
   button_annotate: Anotar
   button_apply: Aplicar
   button_apply_changes: Aplicar alterações
@@ -4284,6 +4285,7 @@ pt-PT:
 
     '
   label_part_of: parte de
+  label_past: Past
   label_password_lost: Esqueceu a sua senha?
   label_password_rule_lowercase: Minúsculas
   label_password_rule_numeric: Carateres Numéricos
@@ -4467,6 +4469,7 @@ pt-PT:
   label_type_new: Novo tipo
   label_type_plural: Tipos
   label_ui: Interface do utilizador
+  label_upcoming: Upcoming
   label_updated_time: Alterado há %{value} atrás
   label_updated_time_at: "%{author} %{age}"
   label_updated_time_by: Atualizado por %{author} há %{age}

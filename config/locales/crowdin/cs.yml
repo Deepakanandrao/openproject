@@ -2931,6 +2931,7 @@ cs:
   button_add_sub_item: Přidat podpoložku
   button_add_member: Přidat člena
   button_add_watcher: Přidat sledující
+  button_all_filters: All filters
   button_annotate: Komentovat
   button_apply: Použít
   button_apply_changes: Použít změny
@@ -4418,6 +4419,7 @@ cs:
 
     '
   label_part_of: část
+  label_past: Past
   label_password_lost: Zapomněli jste heslo?
   label_password_rule_lowercase: Malá písmena
   label_password_rule_numeric: Numerické znaky
@@ -4601,6 +4603,7 @@ cs:
   label_type_new: Nový typ
   label_type_plural: Typy
   label_ui: Uživatelské rozhraní
+  label_upcoming: Upcoming
   label_updated_time: Aktualizováno před %{value}
   label_updated_time_at: "%{author} %{age}"
   label_updated_time_by: Aktualizováno uživatelem %{author} před %{age}

@@ -2928,6 +2928,7 @@ uk:
   button_add_sub_item: Додати піделемент
   button_add_member: Додати учасника
   button_add_watcher: Додати спостерігача
+  button_all_filters: All filters
   button_annotate: Коментувати
   button_apply: Застосувати
   button_apply_changes: Застосувати зміни
@@ -4415,6 +4416,7 @@ uk:
 
     '
   label_part_of: частина
+  label_past: Past
   label_password_lost: Забули Ваш пароль?
   label_password_rule_lowercase: До нижнього регістру
   label_password_rule_numeric: Цифрові символи
@@ -4598,6 +4600,7 @@ uk:
   label_type_new: Новий тип
   label_type_plural: Типи
   label_ui: Користувацький інтерфейс
+  label_upcoming: Upcoming
   label_updated_time: Оновлений %{value} назад
   label_updated_time_at: "%{author} %{age}"
   label_updated_time_by: Оновлено %{author} %{age} назад

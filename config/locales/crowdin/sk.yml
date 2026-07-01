@@ -2927,6 +2927,7 @@ sk:
   button_add_sub_item: Add sub-item
   button_add_member: Pridať člena
   button_add_watcher: Pridať pozorovateľa
+  button_all_filters: All filters
   button_annotate: Komentovať
   button_apply: Použiť
   button_apply_changes: Apply changes
@@ -4414,6 +4415,7 @@ sk:
 
     '
   label_part_of: súčasťou
+  label_past: Past
   label_password_lost: Zabudli ste heslo?
   label_password_rule_lowercase: Malé písmená
   label_password_rule_numeric: Číselné znaky
@@ -4597,6 +4599,7 @@ sk:
   label_type_new: Nový typ
   label_type_plural: Typy
   label_ui: Používateľské rozhranie
+  label_upcoming: Upcoming
   label_updated_time: Aktualizované pred %{value}
   label_updated_time_at: "%{author} %{age}"
   label_updated_time_by: Aktualizované používateľom %{author} pred %{age}

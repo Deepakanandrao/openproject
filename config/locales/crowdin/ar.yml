@@ -3011,6 +3011,7 @@ ar:
   button_add_sub_item: Add sub-item
   button_add_member: أضف عضو
   button_add_watcher: إضافة مراقب
+  button_all_filters: All filters
   button_annotate: كتابة تعليق
   button_apply: تطبيق
   button_apply_changes: Apply changes
@@ -4544,6 +4545,7 @@ ar:
 
     '
   label_part_of: جزء من
+  label_past: Past
   label_password_lost: هل نسيت كلمة المرور ؟
   label_password_rule_lowercase: أحرف صغيرة
   label_password_rule_numeric: أحرف رقمية
@@ -4727,6 +4729,7 @@ ar:
   label_type_new: نوع جديد
   label_type_plural: الأنواع
   label_ui: واجهة المستخدم
+  label_upcoming: Upcoming
   label_updated_time: قبل%{value} تحديث
   label_updated_time_at: "%{author} %{age}"
   label_updated_time_by: قبل %{author}%{age} تحديث وفق
